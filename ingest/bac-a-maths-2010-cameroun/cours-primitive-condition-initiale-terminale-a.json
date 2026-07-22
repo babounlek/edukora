@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-primitive-condition-initiale-terminale-a",
+  "meta": {
+    "titre": "Déterminer une primitive vérifiant une condition initiale",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Primitives et calcul intégral",
+    "duree_estimee_min": 20,
+    "tags": [
+      "primitive",
+      "constante d'intégration",
+      "condition initiale"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2010-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2010",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2010-cameroun-ex3-3",
+    "correction_id": "corr-bac-a-maths-2010-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction admet une infinité de primitives, qui ne diffèrent que par une constante. Dès qu'une condition supplémentaire est imposée, comme une primitive qui s'annule en un point donné, cette constante devient parfaitement déterminée. Ce cours montre comment passer de la forme générale à cette unique primitive."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Primitives usuelles : $e^{x}$, $e^{ax+b}$",
+        "Notion de primitive d'une somme de fonctions"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la primitive générale à la primitive imposée",
+      "contenu_markdown": "Si $F_0$ est une primitive particulière d'une fonction $f$ sur un intervalle, alors toutes les primitives de $f$ sur cet intervalle s'écrivent $F(x)=F_0(x)+K$, où $K$ est une constante réelle quelconque. Pour déterminer la valeur de $K$ correspondant à une condition du type « $F(x_0)=y_0$ », on remplace $x$ par $x_0$ dans l'expression générale de $F$, on pose le résultat égal à $y_0$, puis on résout cette équation en $K$.",
+      "formule_principale": "F(x)=F_0(x)+K,\\quad F(x_0)=y_0 \\Rightarrow K=y_0-F_0(x_0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la primitive de $f(x)=-\\dfrac{1}{2}e^{2x}+e^{x}$ qui s'annule en $x_0=\\ln 2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer une primitive de chaque terme",
+          "justification": "On intègre terme à terme",
+          "resultat_markdown": "$\\int-\\dfrac{1}{2}e^{2x}dx=-\\dfrac{1}{4}e^{2x}$ et $\\int e^{x}dx=e^{x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la forme générale de toutes les primitives",
+          "justification": "On ajoute une constante K quelconque",
+          "resultat_markdown": "$F(x)=-\\dfrac{1}{4}e^{2x}+e^{x}+K$"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire la condition F(ln2)=0",
+          "justification": "On remplace x par ln2 dans l'expression générale",
+          "resultat_markdown": "$F(\\ln 2)=-\\dfrac{1}{4}\\times4+2+K=1+K$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre en K",
+          "justification": "On pose l'expression égale à 0",
+          "resultat_markdown": "$1+K=0 \\Rightarrow K=-1$"
+        }
+      ],
+      "conclusion_markdown": "La primitive de $f$ qui s'annule en $x_0=\\ln 2$ est $F(x)=-\\dfrac{1}{4}e^{2x}+e^{x}-1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la constante $K$ dans la forme générale et donner directement une seule primitive comme « la » réponse",
+          "pourquoi_faux": "Une fonction admet une infinité de primitives sur un intervalle donné : sans préciser la constante, la réponse est incomplète tant qu'aucune condition supplémentaire n'a été utilisée.",
+          "correction_markdown": "Écris toujours $F(x)=\\ldots+K$ avant d'utiliser la condition donnée pour déterminer $K$."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe en intégrant un terme comme $-\\dfrac{1}{2}e^{2x}$",
+          "pourquoi_faux": "Une primitive de $e^{2x}$ est $\\dfrac{1}{2}e^{2x}$ (à cause du facteur $2$ dans l'exposant) : oublier ce facteur, ou se tromper sur le signe du coefficient $-\\dfrac12$, change complètement le résultat.",
+          "correction_markdown": "Vérifie chaque primitive obtenue en la dérivant : tu dois retomber exactement sur la fonction de départ, terme par terme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer la primitive de $f(x)=e^{x}$ qui s'annule en $x_0=0$.",
+          "solution_markdown": "Forme générale : $F(x)=e^{x}+K$. $F(0)=1+K=0 \\Rightarrow K=-1$. $F(x)=e^{x}-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer la primitive de $f(x)=e^{2x}-1$ qui vaut $3$ en $x_0=0$.",
+          "solution_markdown": "Forme générale : $F(x)=\\dfrac{1}{2}e^{2x}-x+K$. $F(0)=\\dfrac{1}{2}+K=3 \\Rightarrow K=\\dfrac{5}{2}$. $F(x)=\\dfrac{1}{2}e^{2x}-x+\\dfrac{5}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer la primitive de $f(x)=e^{3x}-2e^{x}$ qui s'annule en $x_0=\\ln 2$.",
+          "solution_markdown": "Forme générale : $F(x)=\\dfrac{1}{3}e^{3x}-2e^{x}+K$. En $x_0=\\ln2$ : $e^{\\ln2}=2$, $e^{3\\ln2}=2^3=8$. $F(\\ln2)=\\dfrac{1}{3}\\times8-2\\times2+K=\\dfrac{8}{3}-4+K=-\\dfrac{4}{3}+K$. On impose $F(\\ln2)=0$ : $K=\\dfrac{4}{3}$. $F(x)=\\dfrac{1}{3}e^{3x}-2e^{x}+\\dfrac{4}{3}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction a une infinité de primitives sur un intervalle : elles diffèrent toutes d'une constante K.",
+        "Intègre toujours terme à terme, puis vérifie chaque terme en le dérivant.",
+        "Une condition du type « la primitive s'annule (ou vaut une valeur donnée) en un point » se traduit toujours par une équation simple en K, obtenue en substituant ce point dans la forme générale.",
+        "Résous cette équation en K pour obtenir l'unique primitive correspondant à la condition imposée."
+      ]
+    }
+  ]
+}

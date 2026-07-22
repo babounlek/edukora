@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>{{ lesson.title }}</title>
+<link rel="stylesheet" href="{{ katex_css_url }}">
+<script src="{{ katex_js_url }}"></script>
+<script src="{{ katex_auto_render_url }}"></script>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Georgia", "Times New Roman", serif;
+        color: #1a1a1a;
+        margin: 0;
+        padding: 0 40px 40px 40px;
+        line-height: 1.55;
+        font-size: 14px;
+        text-align: justify;
+    }
+    .brand-header {
+        background: #0a6e4e;
+        color: #ffffff;
+        margin: 0 -40px 28px -40px;
+        padding: 22px 40px 18px 40px;
+    }
+    .brand-header .brand {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        margin: 0 0 6px 0;
+    }
+    .brand-header h1 {
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row span {
+        background: rgba(255,255,255,0.15);
+        border-radius: 3px;
+        padding: 3px 10px;
+    }
+    h2 {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #0a6e4e;
+        border-bottom: 1px solid #d8d8d8;
+        padding-bottom: 6px;
+        margin-top: 32px;
+        font-size: 17px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 14px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 14px 0;
+        font-size: 13px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: center;
+    }
+    hr {
+        border: none;
+        border-top: 1px dashed #bbb;
+        margin: 28px 0;
+    }
+    .cta {
+        margin-top: 40px;
+        padding: 20px 24px;
+        background: #e8f5ef;
+        border: 1px solid #0a6e4e;
+        border-radius: 6px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        text-align: center;
+        /* Bloc publicitaire = une seule unité visuelle (accroche + CTA) : ne doit
+           jamais être coupé au milieu par un saut de page Chromium, sans quoi la
+           moitié atterrit en bas d'une page et l'autre moitié en haut de la
+           suivante. break-inside (norme actuelle) + page-break-inside (alias
+           historique, gardé pour la compatibilité du moteur d'impression) disent
+           tous deux la même chose ici - redondant par prudence, pas par erreur. */
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .cta p.title {
+        font-weight: bold;
+        font-size: 15px;
+        color: #0a6e4e;
+        margin: 0 0 6px 0;
+    }
+    .cta p.body {
+        font-size: 12.5px;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
+    .cta .link {
+        display: inline-block;
+        background: #0a6e4e;
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 4px;
+        font-size: 13px;
+        text-decoration: none;
+    }
+    .footer-note {
+        margin-top: 14px;
+        font-size: 10.5px;
+        color: #999;
+        text-align: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .footer-note a {
+        color: inherit;
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+    <div class="brand-header">
+        <p class="brand">{{ site_name }} - Sujet gratuit</p>
+        <h1>{{ lesson.title }}</h1>
+        <div class="meta-row">
+            <span>{{ header.matiere }}</span>
+            {% if header.serie %}<span>Série {{ header.serie }}</span>{% endif %}
+            {% if header.examen %}<span>{{ header.examen }}</span>{% endif %}
+            {% if header.annee %}<span>Session {{ header.annee }}</span>{% endif %}
+            {% if header.duree %}<span>Durée : {{ header.duree }}</span>{% endif %}
+            {% if header.coefficient %}<span>Coefficient : {{ header.coefficient }}</span>{% endif %}
+            {% if header.origine %}<span>{{ header.origine }}{% if header.etablissement %} - {{ header.etablissement }}{% endif %}</span>{% endif %}
+        </div>
+    </div>
+
+    {{ content_html|safe }}
+
+    <div class="cta">
+        <p class="title">Envie de vérifier tes réponses ?</p>
+        <p class="body">La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {{ site_name }} dès 10 FCFA.</p>
+        <a href="{{ site_url }}" class="link">{{ site_url_display }}</a>
+    </div>
+    <p class="footer-note"><a href="{{ site_url }}">{{ site_name }}</a> - Sujet en libre accès, à partager. La correction reste réservée aux abonnés.</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Si le CDN KaTeX a mal chargé (renderMathInElement indéfini) ou que le rendu
+            // échoue pour une autre raison, on ne bloque jamais la génération du PDF pour
+            // autant : mieux vaut livrer un PDF avec du LaTeX brut que timeout et ne livrer
+            // aucun PDF - window.__katexDone doit toujours finir par passer à true.
+            try {
+                if (typeof renderMathInElement === "function") {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+            } catch (e) {
+                // rendu KaTeX best-effort, jamais une condition d'échec du PDF
+            }
+            window.__katexDone = true;
+        });
+    </script>
+</body>
+</html>

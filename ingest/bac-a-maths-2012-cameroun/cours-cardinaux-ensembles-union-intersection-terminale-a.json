@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-cardinaux-ensembles-union-intersection-terminale-a",
+  "meta": {
+    "titre": "Dénombrer des sous-populations avec les cardinaux d'ensembles",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Ensembles et dénombrement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "cardinal",
+      "union",
+      "intersection",
+      "ensembles"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2012-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2012",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2012-cameroun-ex2-0",
+    "correction_id": "corr-bac-a-maths-2012-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'une population se répartit selon deux caractéristiques qui peuvent se cumuler chez une même personne (posséder deux types d'objets, pratiquer deux activités, etc.), compter naïvement en additionnant les deux effectifs conduit à une double comptabilisation des cas communs. Les cardinaux d'ensembles corrigent ce défaut une fois pour toutes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire des ensembles : union, intersection, complémentaire",
+        "Notion de cardinal (nombre d'éléments) d'un ensemble fini"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cardinal de l'union et sous-catégories strictes",
+      "contenu_markdown": "Pour deux ensembles finis $F$ et $P$ décrivant deux caractéristiques d'une même population, le cardinal de leur union est $\\text{Card}(F\\cup P)=\\text{Card}(F)+\\text{Card}(P)-\\text{Card}(F\\cap P)$ : on retranche l'intersection pour ne pas compter deux fois les éléments qui possèdent les deux caractéristiques. Le nombre d'éléments qui possèdent uniquement $F$ (et pas $P$) est $\\text{Card}(F)-\\text{Card}(F\\cap P)$. Le nombre d'éléments qui ne possèdent ni $F$ ni $P$ s'obtient en retranchant $\\text{Card}(F\\cup P)$ à l'effectif total de la population.",
+      "formule_principale": "\\text{Card}(F\\cup P)=\\text{Card}(F)+\\text{Card}(P)-\\text{Card}(F\\cap P)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur 25 personnes, 11 possèdent un téléphone fixe, 15 un téléphone portable, et 5 possèdent les deux. Déterminer le nombre de personnes possédant uniquement un téléphone fixe, et le nombre n'en possédant aucun.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les cardinaux donnés",
+          "justification": "On note F le fixe, P le portable",
+          "resultat_markdown": "$\\text{Card}(F)=11$, $\\text{Card}(P)=15$, $\\text{Card}(F\\cap P)=5$, population totale $25$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de personnes possédant uniquement F",
+          "justification": "On retranche l'intersection à Card(F)",
+          "resultat_markdown": "$11-5=6$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le cardinal de l'union",
+          "justification": "On additionne les deux cardinaux et on retranche l'intersection",
+          "resultat_markdown": "$\\text{Card}(F\\cup P)=11+15-5=21$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le nombre de personnes n'ayant ni F ni P",
+          "justification": "On retranche l'union à l'effectif total",
+          "resultat_markdown": "$25-21=4$"
+        }
+      ],
+      "conclusion_markdown": "6 personnes possèdent uniquement un téléphone fixe, et 4 personnes ne possèdent aucun des deux types de téléphone."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer Card(F)+Card(P) et considérer directement ce résultat comme le nombre de personnes ayant au moins un des deux téléphones",
+          "pourquoi_faux": "Cette somme compte deux fois les personnes qui possèdent les deux types de téléphone : il faut impérativement retrancher le cardinal de l'intersection.",
+          "correction_markdown": "Retranche toujours Card(F∩P) après avoir additionné Card(F) et Card(P) pour obtenir le cardinal correct de l'union."
+        },
+        {
+          "erreur_markdown": "Confondre Card(F) (tous ceux qui ont un téléphone fixe, y compris ceux qui ont aussi un portable) avec Card(F seul) (uniquement le fixe)",
+          "pourquoi_faux": "Ce sont deux nombres différents : le premier inclut l'intersection, le second l'exclut explicitement.",
+          "correction_markdown": "Précise toujours si un effectif donné correspond à la catégorie complète ou à la sous-catégorie stricte avant de l'utiliser dans un calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur 40 élèves, 22 pratiquent le football, 18 pratiquent le basketball, et 8 pratiquent les deux. Combien d'élèves ne pratiquent aucun des deux sports ?",
+          "solution_markdown": "$\\text{Card}(F\\cup B)=22+18-8=32$. Aucun des deux : $40-32=8$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur 60 clients d'une boutique, 35 achètent des vêtements, 5 n'achètent ni vêtements ni chaussures, et 20 achètent uniquement des vêtements. Déterminer le nombre de clients qui achètent des chaussures.",
+          "solution_markdown": "Union : $60-5=55$ clients achètent au moins un des deux. Intersection : $\\text{Card}(V\\cap C)=\\text{Card}(V)-\\text{Card}(V\\text{ seul})=35-20=15$. $\\text{Card}(C)=\\text{Card}(V\\cup C)-\\text{Card}(V)+\\text{Card}(V\\cap C)=55-35+15=35$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur une population de N personnes, Card(F)=30, Card(P)=25, et le nombre de personnes ne possédant ni F ni P est le double du nombre de personnes possédant les deux. Sachant que N=70, déterminer Card(F∩P).",
+          "solution_markdown": "Notons $k=\\text{Card}(F\\cap P)$. Aucun des deux : $2k$. Union : $\\text{Card}(F\\cup P)=30+25-k=55-k$. Comme $\\text{Card}(F\\cup P)+2k=N=70$ (l'union et son complémentaire se partagent toute la population) : $55-k+2k=70 \\Rightarrow 55+k=70 \\Rightarrow k=15$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le cardinal de l'union de deux ensembles s'obtient toujours en retranchant l'intersection de la somme des deux cardinaux.",
+        "Une sous-catégorie stricte (« uniquement F ») s'obtient en retranchant l'intersection du cardinal de la catégorie complète.",
+        "Le nombre d'éléments hors des deux catégories s'obtient en retranchant le cardinal de l'union à l'effectif total.",
+        "Un schéma (diagramme de Venn) aide à visualiser ces relations et à éviter les confusions entre catégorie complète et sous-catégorie stricte."
+      ]
+    }
+  ]
+}

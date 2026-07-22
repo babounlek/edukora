@@ -1,0 +1,67 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:catalog_lesson_changelist' %}">Lessons</a>
+&rsaquo; Purger tout le contenu
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  {% if result %}
+    <div class="module" style="padding: 12px 16px; margin: 20px 0;">
+      <h2>Contenu supprimé</h2>
+      <p>
+        {{ result.lessons }} leçon{{ result.lessons|pluralize }},
+        {{ result.exercises }} exercice{{ result.exercises|pluralize }},
+        {{ result.figures }} figure{{ result.figures|pluralize }} et
+        {{ result.cours }} cours supprimé{{ result.cours|pluralize }},
+        ainsi que {{ result.fichiers }} fichier{{ result.fichiers|pluralize }} (PDF de sujet / images) supprimé{{ result.fichiers|pluralize }} du disque.
+      </p>
+      <p>Le référentiel (matières, séries, cursus, tags) n'a pas été touché.</p>
+    </div>
+  {% else %}
+
+    {% if error %}
+      <p style="color: var(--error-fg, #ba2121); font-weight: bold;">{{ error }}</p>
+    {% endif %}
+
+    <div class="module" style="padding: 12px 16px; margin: 20px 0; border: 1px solid var(--error-fg, #ba2121);">
+      <h2 style="color: var(--error-fg, #ba2121); margin-top: 0;">Action irréversible</h2>
+      <p>Cette action supprime <strong>définitivement</strong> tout le contenu pédagogique :</p>
+      <ul>
+        <li>{{ counts.lessons }} leçon{{ counts.lessons|pluralize }} (fiches, sujets, corrigés)</li>
+        <li>{{ counts.exercises }} exercice{{ counts.exercises|pluralize }}</li>
+        <li>{{ counts.figures }} figure{{ counts.figures|pluralize }} (images)</li>
+        <li>{{ counts.cours }} cours</li>
+      </ul>
+      <p>
+        Ainsi que les PDF de sujet et images de figures déjà stockés sur disque.
+        Le référentiel (matières, séries, cursus, tags) n'est pas affecté.
+      </p>
+      <p><strong>Il n'y a pas de retour en arrière possible une fois validé.</strong></p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <p>
+        <label for="id_confirmation">Tapez <code>{{ confirmation_phrase }}</code> ci-dessous pour confirmer :</label><br>
+        <input type="text" id="id_confirmation" name="confirmation" autocomplete="off" style="width: 300px; margin-top: 6px;">
+      </p>
+      <button
+        type="submit"
+        style="background: var(--error-fg, #ba2121); color: #fff; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer;"
+        {% if not counts.lessons and not counts.cours %}disabled{% endif %}
+      >
+        Supprimer définitivement tout le contenu
+      </button>
+    </form>
+
+  {% endif %}
+
+</div>
+{% endblock %}

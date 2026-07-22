@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-histogramme-polygone-effectifs-terminale-a",
+  "meta": {
+    "titre": "Regrouper une série en classes d'égale amplitude et construire l'histogramme des effectifs",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Statistiques - représentations graphiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "histogramme",
+      "polygone des effectifs",
+      "regroupement de classes",
+      "moyenne"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2013-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2013",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2013-cameroun-ex2-1",
+    "correction_id": "corr-bac-a-maths-2013-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une série statistique donnée par des classes d'amplitudes inégales est difficile à représenter honnêtement par un histogramme classique. La regrouper en classes de même largeur simplifie à la fois la lecture graphique et le calcul de la moyenne, sans perdre d'information sur l'effectif total."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau d'effectifs par classes",
+        "Calcul d'une moyenne pondérée par les effectifs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Regrouper, tracer, moyenner",
+      "contenu_markdown": "Pour regrouper une série en classes de même amplitude, on fusionne les classes initiales qui se combinent pour donner la nouvelle amplitude souhaitée, en additionnant leurs effectifs ; l'effectif total de la série reste inchangé. Une fois les classes d'égale amplitude obtenues, l'histogramme se construit en traçant, pour chaque classe, un rectangle de hauteur directement égale à l'effectif (aucune correction n'est nécessaire puisque toutes les largeurs sont identiques). Le polygone des effectifs relie par des segments les points (centre de classe, effectif). La moyenne se calcule ensuite comme d'habitude, en pondérant chaque centre de classe regroupée par son nouvel effectif.",
+      "formule_principale": "\\bar{x}=\\dfrac{\\sum_i c_i n_i}{N}\\ (\\text{avec les classes regroupées})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Regrouper en 4 classes d'amplitude 10 la série [80,90[:3, [90,95[:15, [95,100[:22, [100,105[:18, [105,110[:12, [110,120[:5, puis calculer sa moyenne.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les fusions nécessaires",
+          "justification": "On combine les classes de largeur 5 deux par deux pour obtenir une largeur 10",
+          "resultat_markdown": "[90,95[ et [95,100[ fusionnent en [90,100[ ; [100,105[ et [105,110[ fusionnent en [100,110["
+        },
+        {
+          "numero": 2,
+          "action": "Additionner les effectifs fusionnés",
+          "justification": "L'effectif d'une classe fusionnée est la somme des effectifs des classes d'origine",
+          "resultat_markdown": "[90,100[ : 15+22=37 ; [100,110[ : 18+12=30"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le nouveau tableau",
+          "justification": "Les classes [80,90[ et [110,120[ avaient déjà l'amplitude 10, elles restent inchangées",
+          "resultat_markdown": "[80,90[:3, [90,100[:37, [100,110[:30, [110,120[:5"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier l'effectif total",
+          "justification": "La somme doit rester égale à l'effectif total d'origine",
+          "resultat_markdown": "3+37+30+5=75, identique à l'effectif d'origine"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la moyenne avec les nouveaux centres de classes",
+          "justification": "Centres : 85, 95, 105, 115",
+          "resultat_markdown": "$\\bar{x}=\\dfrac{85\\times3+95\\times37+105\\times30+115\\times5}{75}=\\dfrac{7495}{75}\\approx99{,}93$"
+        }
+      ],
+      "conclusion_markdown": "La série regroupée en 4 classes d'amplitude 10 a un effectif total de 75 et une moyenne d'environ 99,93."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Fusionner des classes qui ne sont pas adjacentes, ou dans le désordre",
+          "pourquoi_faux": "Un regroupement de classes doit respecter l'ordre croissant des valeurs : on ne peut fusionner que des classes consécutives, sous peine de casser la structure ordonnée de la série.",
+          "correction_markdown": "Fusionne toujours des classes adjacentes, dans l'ordre où elles apparaissent dans le tableau d'origine."
+        },
+        {
+          "erreur_markdown": "Continuer à utiliser les centres des classes d'origine pour calculer la moyenne après un regroupement",
+          "pourquoi_faux": "Une fois les classes regroupées, ce sont les nouveaux centres (ceux des classes fusionnées) qui doivent être utilisés, pas ceux des classes initiales qui n'existent plus dans le nouveau tableau.",
+          "correction_markdown": "Recalcule systématiquement les centres à partir des nouvelles classes avant de pondérer par les nouveaux effectifs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Regrouper en 2 classes d'amplitude 20 la série [0,10[:5, [10,20[:8, [20,30[:12, [30,40[:15.",
+          "solution_markdown": "[0,20[ : 5+8=13 ; [20,40[ : 12+15=27. Vérification : 13+27=40=5+8+12+15."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la moyenne de la série regroupée précédente.",
+          "solution_markdown": "Centres : 10 et 30. $\\bar{x}=\\dfrac{10\\times13+30\\times27}{40}=\\dfrac{130+810}{40}=\\dfrac{940}{40}=23{,}5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 6 classes d'amplitude 5 est regroupée en 3 classes d'amplitude 10. Sachant que la moyenne de la série regroupée est 42 et que deux des trois nouveaux effectifs sont 20 et 25 pour des centres 25 et 35 respectivement, et que l'effectif total est 70, déterminer le centre et l'effectif de la troisième classe.",
+          "solution_markdown": "Troisième effectif : $70-20-25=25$. On note $c$ le centre inconnu. $\\dfrac{25\\times20+35\\times25+c\\times25}{70}=42 \\Rightarrow 500+875+25c=2940 \\Rightarrow 25c=1565 \\Rightarrow c=62{,}6$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Regrouper des classes d'amplitudes différentes en classes égales facilite la construction de l'histogramme et le calcul de la moyenne.",
+        "L'effectif total ne change jamais lors d'un regroupement : c'est une vérification systématique à faire.",
+        "Avec des classes d'égale amplitude, la hauteur de l'histogramme est directement l'effectif, sans aucune correction.",
+        "Utilise toujours les centres des nouvelles classes, jamais ceux des classes d'origine, pour tout calcul effectué après le regroupement."
+      ]
+    }
+  ]
+}

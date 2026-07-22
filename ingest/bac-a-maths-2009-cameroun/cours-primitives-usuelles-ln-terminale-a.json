@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-primitives-usuelles-ln-terminale-a",
+  "meta": {
+    "titre": "Primitives usuelles de la forme k/(ax+b)",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Primitives et calcul intégral",
+    "duree_estimee_min": 20,
+    "tags": [
+      "primitive",
+      "logarithme",
+      "QCM"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex1-1",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Reconnaître une primitive en $\\ln$ est l'un des réflexes les plus rentables du BAC : dès qu'une fonction s'écrit comme une constante divisée par une expression affine, sa primitive s'exprime avec un logarithme. Ce cours donne la formule, la démarche pour l'appliquer sans erreur de signe, et les pièges classiques des QCM sur ce thème."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée de $\\ln|u(x)|$ : $\\left(\\ln|u|\\right)'=\\dfrac{u'}{u}$",
+        "Résolution d'inéquations pour déterminer le signe d'une expression affine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Primitive d'une fonction de la forme k/(ax+b)",
+      "contenu_markdown": "Si $f(x)=\\dfrac{k}{ax+b}$ avec $a\\neq 0$, alors une primitive de $f$ sur tout intervalle où $ax+b$ ne s'annule pas est $F(x)=\\dfrac{k}{a}\\ln|ax+b|+C$. Sur un intervalle où le signe de $ax+b$ est connu et constant, on peut remplacer $|ax+b|$ par l'expression correspondant à ce signe (par exemple $ax+b$ si $ax+b>0$, ou $-(ax+b)$ sinon).",
+      "formule_principale": "F(x)=\\dfrac{k}{a}\\ln|ax+b|+C",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer une primitive de $f(x)=\\dfrac{3}{2-x}$ sur $]2,+\\infty[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire 2-x sous la forme ax+b",
+          "justification": "On identifie les coefficients pour appliquer la formule",
+          "resultat_markdown": "$2-x=-x+2$, donc $a=-1$ et $b=2$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de la primitive",
+          "justification": "$F(x)=\\dfrac{k}{a}\\ln|ax+b|+C$ avec $k=3$",
+          "resultat_markdown": "$F(x)=\\dfrac{3}{-1}\\ln|2-x|+C=-3\\ln|2-x|+C$"
+        },
+        {
+          "numero": 3,
+          "action": "Adapter la valeur absolue au signe de 2-x sur l'intervalle donné",
+          "justification": "Sur $]2,+\\infty[$, $2-x<0$, donc $|2-x|=x-2$",
+          "resultat_markdown": "$F(x)=-3\\ln(x-2)+C$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier par dérivation",
+          "justification": "On dérive le résultat obtenu pour retrouver f",
+          "resultat_markdown": "$F'(x)=-3\\times\\dfrac{1}{x-2}=\\dfrac{-3}{x-2}=\\dfrac{3}{2-x}=f(x)$ : la vérification est concluante"
+        }
+      ],
+      "conclusion_markdown": "Sur $]2,+\\infty[$, une primitive de $f$ est $F(x)=-3\\ln(x-2)+C$, quelle que soit la constante $C$ choisie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $F(x)=-3\\ln(2-x)$ sur $]2,+\\infty[$",
+          "pourquoi_faux": "Sur cet intervalle, $2-x$ est strictement négatif, donc $\\ln(2-x)$ n'existe pas : le logarithme n'est défini que pour un nombre strictement positif.",
+          "correction_markdown": "Remplace toujours $\\ln(2-x)$ par $\\ln|2-x|$, puis explicite la valeur absolue selon le signe réel de $2-x$ sur l'intervalle étudié."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par $a$ et écrire $F(x)=k\\ln|ax+b|$ au lieu de $\\dfrac{k}{a}\\ln|ax+b|$",
+          "pourquoi_faux": "En dérivant $k\\ln|ax+b|$, on obtient $k\\times\\dfrac{a}{ax+b}$, qui contient un facteur $a$ en trop par rapport à $f(x)=\\dfrac{k}{ax+b}$.",
+          "correction_markdown": "Dérive systématiquement ta primitive obtenue pour vérifier qu'elle redonne bien $f(x)$ : c'est le moyen le plus fiable de repérer un facteur oublié."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer une primitive de $f(x)=\\dfrac{2}{x+1}$ sur $]-1,+\\infty[$.",
+          "solution_markdown": "Ici $a=1$, $b=1$, $k=2$, donc $F(x)=\\dfrac{2}{1}\\ln|x+1|+C=2\\ln(x+1)+C$ (car $x+1>0$ sur cet intervalle)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer une primitive de $f(x)=\\dfrac{5}{3-2x}$ sur $\\left]-\\infty,\\dfrac{3}{2}\\right[$.",
+          "solution_markdown": "Ici $3-2x=-2x+3$, donc $a=-2$, $b=3$, $k=5$. $F(x)=\\dfrac{5}{-2}\\ln|3-2x|+C=-\\dfrac{5}{2}\\ln(3-2x)+C$ (car $3-2x>0$ sur cet intervalle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer une primitive de $f(x)=\\dfrac{2x}{x^{2}-4}$ sur $]2,+\\infty[$ (indication : reconnaître une forme u'/u).",
+          "solution_markdown": "En posant $u(x)=x^{2}-4$, on a $u'(x)=2x$, donc $f=\\dfrac{u'}{u}$. Une primitive est $F(x)=\\ln|u(x)|+C=\\ln|x^{2}-4|+C$, soit $F(x)=\\ln(x^{2}-4)+C$ sur $]2,+\\infty[$ où $x^{2}-4>0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fraction de la forme $\\dfrac{k}{ax+b}$ a toujours pour primitive $\\dfrac{k}{a}\\ln|ax+b|+C$ : identifie $a$, $b$ et $k$ avant tout calcul.",
+        "N'écris jamais $\\ln(\\cdot)$ sans valeur absolue tant que tu n'as pas vérifié le signe de l'expression sur l'intervalle donné.",
+        "Vérifie systématiquement ta primitive en la dérivant : c'est le contrôle le plus rapide et le plus fiable.",
+        "Plus généralement, toute fraction reconnaissable sous la forme $\\dfrac{u'}{u}$ a pour primitive $\\ln|u|+C$, même quand $u$ n'est pas affine.",
+        "Ce type de calcul revient très régulièrement dans les QCM du BAC : les quatre propositions jouent presque toujours sur un signe ou un coefficient oublié."
+      ]
+    }
+  ]
+}

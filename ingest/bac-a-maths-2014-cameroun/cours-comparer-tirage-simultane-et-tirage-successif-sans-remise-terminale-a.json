@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-comparer-tirage-simultane-et-tirage-successif-sans-remise-terminale-a",
+  "meta": {
+    "titre": "Comparer un tirage simultané et un tirage successif sans remise",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Dénombrement et probabilités",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tirage simultané",
+      "tirage successif sans remise",
+      "combinaisons",
+      "probabilité",
+      "urne"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2014-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2014",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2014-cameroun-ex2-0",
+    "correction_id": "corr-bac-a-maths-2014-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un problème d'urne, on hésite parfois entre modéliser le tirage de plusieurs boules « d'un coup » (tirage simultané) ou boule après boule sans les remettre (tirage successif sans remise). Bonne nouvelle : pour tout événement qui ne dépend pas de l'ordre d'obtention, les deux modèles donnent exactement la même probabilité, ce qui permet de choisir la méthode de calcul la plus rapide."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Combinaisons $\\binom{n}{k}$ et leur formule $\\binom{n}{k}=\\dfrac{n!}{k!(n-k)!}$",
+        "Probabilités conditionnelles simples (tirages successifs sans remise)",
+        "Principe multiplicatif pour compter des tirages"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équivalence des deux modèles pour un événement non ordonné",
+      "contenu_markdown": "Tirer simultanément $k$ boules parmi $n$, ou tirer successivement $k$ boules sans remise en ne retenant que l'ensemble des boules obtenues (sans tenir compte de l'ordre), décrivent le même univers d'issues avec les mêmes probabilités. Un événement qui ne dépend que de la composition du tirage (par exemple « une boule de chaque couleur », « exactement $j$ boules d'une certaine couleur ») a donc la même probabilité dans les deux modèles : on peut la calculer avec des combinaisons $\\binom{n}{k}$, ou en additionnant les probabilités de chaque ordre possible dans le modèle séquentiel. En revanche, dès qu'un événement dépend explicitement de l'ordre d'apparition (par exemple « une boule rouge au premier tirage », ou « la seconde boule tirée est noire »), il faut revenir directement au modèle séquentiel : les combinaisons ne s'appliquent plus telles quelles.",
+      "formule_principale": "P(\\text{événement non ordonné})=\\dfrac{\\text{Card(favorable, tirage simultané)}}{\\binom{n}{k}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une urne contient 4 boules rouges et 6 boules noires. Calculer la probabilité d'obtenir une boule de chaque couleur (a) en tirant simultanément 2 boules, (b) en tirant successivement 2 boules sans remise, et comparer.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la probabilité en tirage simultané",
+          "justification": "On compte les tirages favorables par le principe multiplicatif, puis on divise par le nombre total de tirages $\\binom{10}{2}$",
+          "resultat_markdown": "$p=\\dfrac{\\binom{4}{1}\\times\\binom{6}{1}}{\\binom{10}{2}}=\\dfrac{24}{45}=\\dfrac{8}{15}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la probabilité en tirage successif sans remise",
+          "justification": "On additionne les probabilités des deux ordres possibles (rouge puis noire, ou noire puis rouge)",
+          "resultat_markdown": "$p=\\dfrac{4}{10}\\times\\dfrac{6}{9}+\\dfrac{6}{10}\\times\\dfrac{4}{9}=\\dfrac{24}{90}+\\dfrac{24}{90}=\\dfrac{48}{90}=\\dfrac{8}{15}$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer les deux résultats",
+          "justification": "L'événement « une boule de chaque couleur » ne dépend pas de l'ordre d'obtention",
+          "resultat_markdown": "Les deux calculs donnent exactement $\\dfrac{8}{15}$ : les deux modèles sont équivalents pour cet événement."
+        }
+      ],
+      "conclusion_markdown": "Les deux méthodes donnent la même probabilité $\\dfrac{8}{15}$, ce qui confirme que le choix du modèle (simultané ou successif sans remise) n'a pas d'incidence sur le résultat, tant que l'événement étudié ne dépend pas de l'ordre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser les combinaisons pour calculer une probabilité qui dépend de l'ordre (par exemple « boule rouge au premier tirage »)",
+          "pourquoi_faux": "Les combinaisons $\\binom{n}{k}$ ne distinguent pas l'ordre d'apparition des éléments : elles ne peuvent donc pas capturer un événement qui porte spécifiquement sur le premier ou le second tirage.",
+          "correction_markdown": "Pour un événement lié à l'ordre, reviens directement au modèle séquentiel et calcule la probabilité conditionnelle ou marginale associée à ce rang précis de tirage."
+        },
+        {
+          "erreur_markdown": "Refaire tout le calcul en dénombrement alors qu'un résultat équivalent a déjà été obtenu par tirage simultané",
+          "pourquoi_faux": "Quand l'événement ne dépend pas de l'ordre, le résultat du tirage simultané est automatiquement valable pour le tirage successif sans remise : refaire le calcul est une perte de temps évitable en examen.",
+          "correction_markdown": "Identifie d'abord si l'événement dépend de l'ordre ou non ; si ce n'est pas le cas, réutilise directement la probabilité déjà calculée, quitte à la vérifier rapidement par un second calcul si le temps le permet."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une urne contient 3 boules blanches et 5 boules noires. On tire simultanément 2 boules. Calculer la probabilité d'obtenir une boule de chaque couleur.",
+          "solution_markdown": "$\\binom{8}{2}=28$. Favorable : $\\binom{3}{1}\\times\\binom{5}{1}=15$. $p=\\dfrac{15}{28}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'urne précédente (3 blanches, 5 noires) et calculer, par un tirage successif sans remise de 2 boules, la probabilité d'obtenir une boule de chaque couleur. Vérifier la cohérence avec le résultat de l'exercice 1.",
+          "solution_markdown": "$P(\\text{blanche puis noire})=\\dfrac{3}{8}\\times\\dfrac{5}{7}=\\dfrac{15}{56}$ ; $P(\\text{noire puis blanche})=\\dfrac{5}{8}\\times\\dfrac{3}{7}=\\dfrac{15}{56}$. Somme $=\\dfrac{30}{56}=\\dfrac{15}{28}$, ce qui coïncide bien avec le résultat de l'exercice 1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la même urne (3 blanches, 5 noires), calculer la probabilité que la première boule tirée (sans remise, 2 tirages) soit blanche. Expliquer pourquoi on ne peut pas utiliser directement les combinaisons pour cette question.",
+          "solution_markdown": "Le premier tirage se fait dans l'urne complète, donc $p=\\dfrac{3}{8}$. On ne peut pas passer par les combinaisons ici car l'événement dépend explicitement du rang du tirage (le premier), alors que $\\binom{n}{k}$ ne distingue pas l'ordre d'obtention des éléments."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Tirage simultané et tirage successif sans remise donnent le même univers de probabilités pour tout événement qui ne dépend pas de l'ordre.",
+        "Pour un événement non ordonné, choisis la méthode la plus rapide : combinaisons en tirage simultané, ou somme des probabilités des ordres possibles en tirage successif.",
+        "Dès qu'un événement dépend de l'ordre (premier tirage, second tirage), reviens obligatoirement au modèle séquentiel.",
+        "Un résultat déjà obtenu par un modèle reste valable pour l'autre modèle, tant que l'événement ne change pas de nature : utilise cette équivalence pour vérifier tes calculs rapidement."
+      ]
+    }
+  ]
+}

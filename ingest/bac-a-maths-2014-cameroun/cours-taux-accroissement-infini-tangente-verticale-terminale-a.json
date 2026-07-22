@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-taux-accroissement-infini-tangente-verticale-terminale-a",
+  "meta": {
+    "titre": "Taux d'accroissement infini et tangente verticale",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Dérivabilité et tangentes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "taux d'accroissement",
+      "dérivabilité",
+      "tangente verticale",
+      "demi-tangente"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2014-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2014",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-bac-a-maths-2014-cameroun-pb-2",
+    "correction_id": "corr-bac-a-maths-2014-cameroun-pb"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction peut être parfaitement continue en un point tout en n'y étant pas dérivable : c'est le cas lorsque le taux d'accroissement explose vers l'infini. Loin d'être un échec du calcul, ce résultat renseigne précisément sur l'allure de la courbe : elle y admet une tangente verticale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition du nombre dérivé comme limite du taux d'accroissement",
+        "Calcul de limites (formes indéterminées, croissances comparées)",
+        "Lecture graphique d'une tangente"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Interpréter la limite du taux d'accroissement",
+      "contenu_markdown": "Le taux d'accroissement de $f$ en $x_0$ est le quotient $\\dfrac{f(x)-f(x_0)}{x-x_0}$. Si $\\displaystyle\\lim_{x\\to x_0}\\dfrac{f(x)-f(x_0)}{x-x_0}$ existe et est un nombre fini $\\ell$, alors $f$ est dérivable en $x_0$ et $f'(x_0)=\\ell$ : la courbe admet en ce point une tangente de coefficient directeur $\\ell$. Si au contraire cette limite est infinie ($+\\infty$ ou $-\\infty$), $f$ n'est pas dérivable en $x_0$, mais la courbe admet quand même une tangente en ce point : une tangente verticale (d'équation $x=x_0$), orientée vers le haut si la limite vaut $+\\infty$, vers le bas si elle vaut $-\\infty$. Si $x_0$ est une borne du domaine (comme une extrémité d'intervalle), on ne peut étudier qu'une limite latérale, et on parle alors de demi-tangente verticale.",
+      "formule_principale": "\\lim_{x\\to x_0}\\dfrac{f(x)-f(x_0)}{x-x_0}=\\pm\\infty \\;\\Longrightarrow\\; \\text{tangente verticale en } x_0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(0)=2$ et $f(x)=x\\ln x+2$ pour $x>0$. Étudier la dérivabilité de $f$ à droite en $0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le taux d'accroissement en 0",
+          "justification": "Définition du taux d'accroissement, ici à droite car $D_f=[0,+\\infty[$",
+          "resultat_markdown": "$\\dfrac{f(x)-f(0)}{x-0}=\\dfrac{x\\ln x+2-2}{x}=\\dfrac{x\\ln x}{x}=\\ln x$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite de ce taux quand x tend vers 0 à droite",
+          "justification": "Limite usuelle de $\\ln x$ en $0^+$",
+          "resultat_markdown": "$\\lim_{x\\to0^+}\\ln x=-\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter le résultat",
+          "justification": "La limite du taux d'accroissement est infinie",
+          "resultat_markdown": "$f$ n'est pas dérivable à droite en $0$ ; $(C_f)$ admet en $0$ une demi-tangente verticale orientée vers le bas."
+        }
+      ],
+      "conclusion_markdown": "La limite infinie du taux d'accroissement signale une demi-tangente verticale au point d'abscisse $0$, et non une absence de tangente."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure que « f n'a pas de tangente » lorsque la limite du taux d'accroissement est infinie",
+          "pourquoi_faux": "Une limite infinie ne signifie pas l'absence de tangente : elle indique une tangente verticale, qui est une tangente à part entière (mais non représentable par un coefficient directeur fini).",
+          "correction_markdown": "Dis toujours « tangente verticale » (ou demi-tangente verticale si on est à une borne du domaine), jamais « pas de tangente », lorsque la limite du taux d'accroissement est infinie."
+        },
+        {
+          "erreur_markdown": "Ne pas préciser le sens de la demi-tangente (vers le haut ou vers le bas)",
+          "pourquoi_faux": "Le signe de la limite infinie ($+\\infty$ ou $-\\infty$) donne une information géométrique précise sur l'orientation de la demi-tangente, utile notamment pour tracer correctement la courbe.",
+          "correction_markdown": "Relie systématiquement le signe de la limite infinie à l'orientation de la demi-tangente : $+\\infty$ vers le haut, $-\\infty$ vers le bas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=\\sqrt{x}$ sur $[0,+\\infty[$. Étudier la dérivabilité à droite de $f$ en $0$.",
+          "solution_markdown": "$\\dfrac{f(x)-f(0)}{x}=\\dfrac{\\sqrt{x}}{x}=\\dfrac{1}{\\sqrt{x}}\\to+\\infty$ quand $x\\to0^+$ : $f$ n'est pas dérivable à droite en $0$, demi-tangente verticale orientée vers le haut."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=x^{2/3}$ pour $x\\in\\mathbb{R}$. Étudier la dérivabilité de $g$ en $0$ (limites à gauche et à droite du taux d'accroissement).",
+          "solution_markdown": "$\\dfrac{g(x)-g(0)}{x}=\\dfrac{x^{2/3}}{x}=x^{-1/3}$. À droite : $\\lim_{x\\to0^+}x^{-1/3}=+\\infty$. À gauche : $\\lim_{x\\to0^-}x^{-1/3}=-\\infty$. La fonction n'est pas dérivable en $0$ ; la courbe y admet une tangente verticale, avec des demi-tangentes de sens opposés de part et d'autre (point de rebroussement)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(0)=0$ et $h(x)=x\\ln(x^2)$ pour $x\\neq0$. Étudier la dérivabilité de $h$ en $0$.",
+          "solution_markdown": "$\\dfrac{h(x)-h(0)}{x}=\\dfrac{x\\ln(x^2)}{x}=\\ln(x^2)=2\\ln|x|$. Or $\\lim_{x\\to0}\\ln|x|=-\\infty$, donc $\\lim_{x\\to0}\\dfrac{h(x)-h(0)}{x}=-\\infty$ : $h$ n'est pas dérivable en $0$, et $(C_h)$ admet en $0$ une tangente verticale orientée vers le bas (des deux côtés, la limite étant la même à gauche et à droite ici)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une limite finie du taux d'accroissement donne la dérivabilité et le nombre dérivé ; une limite infinie donne une tangente verticale (pas une absence de tangente).",
+        "Précise toujours le sens de la demi-tangente à partir du signe de la limite infinie.",
+        "Si le point est une borne du domaine, une seule limite latérale est pertinente : on parle alors de demi-tangente verticale.",
+        "Ce type de résultat s'observe fréquemment avec des racines, des puissances fractionnaires, ou des fonctions faisant intervenir $\\ln$."
+      ]
+    }
+  ]
+}

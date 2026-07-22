@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-limite-produit-exponentielle-factorisation-terminale-a",
+  "meta": {
+    "titre": "Lever une indétermination par factorisation dans une somme d'exponentielles",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Limites de fonctions exponentielles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "limite",
+      "forme indéterminée",
+      "factorisation",
+      "exponentielle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2010-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2010",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2010-cameroun-ex3-0",
+    "correction_id": "corr-bac-a-maths-2010-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une fonction combine deux puissances différentes de l'exponentielle, comme $e^{2x}$ et $e^{x}$, l'écriture d'origine masque souvent lequel des deux termes l'emporte à l'infini. Factoriser par la puissance commune transforme cette incertitude en un produit parfaitement maîtrisable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites usuelles de $e^{x}$ en $+\\infty$ et en $-\\infty$",
+        "Règles de limite d'un produit de deux fonctions",
+        "Identités de puissances : $e^{2x}=(e^{x})^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser par la puissance commune de l'exponentielle",
+      "contenu_markdown": "Une expression du type $ae^{2x}+be^{x}$ se factorise en $e^{x}(ae^{x}+b)$, en utilisant $e^{2x}=e^{x}\\times e^{x}$. Cette écriture transforme la somme en un produit de deux facteurs : $e^{x}$, dont la limite est toujours connue, et $(ae^{x}+b)$, une expression affine en $e^{x}$ dont la limite se calcule directement à partir de la limite de $e^{x}$. On combine ensuite les limites des deux facteurs avec les règles usuelles du produit.",
+      "formule_principale": "ae^{2x}+be^{x}=e^{x}(ae^{x}+b)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les limites en $+\\infty$ et en $-\\infty$ de $f(x)=-\\dfrac{1}{2}e^{2x}+e^{x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la forme indéterminée en +infini",
+          "justification": "$-\\dfrac{1}{2}e^{2x}\\to-\\infty$ et $e^{x}\\to+\\infty$ : on ne sait pas encore lequel l'emporte",
+          "resultat_markdown": "forme $-\\infty+\\infty$"
+        },
+        {
+          "numero": 2,
+          "action": "Factoriser par e^x",
+          "justification": "On fait apparaître un produit de deux facteurs à limites connues",
+          "resultat_markdown": "$f(x)=e^{x}\\left(-\\dfrac{1}{2}e^{x}+1\\right)$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier la limite en +infini",
+          "justification": "$e^{x}\\to+\\infty$ et $-\\dfrac{1}{2}e^{x}+1\\to-\\infty$",
+          "resultat_markdown": "produit de deux facteurs tendant respectivement vers $+\\infty$ et $-\\infty$ : $f(x)\\to-\\infty$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier la limite en -infini",
+          "justification": "$e^{x}\\to0$ et $-\\dfrac{1}{2}e^{x}+1\\to1$",
+          "resultat_markdown": "produit d'un facteur tendant vers $0$ par un facteur tendant vers une limite finie non nulle : $f(x)\\to0$"
+        }
+      ],
+      "conclusion_markdown": "$\\lim_{x\\to+\\infty}f(x)=-\\infty$ et $\\lim_{x\\to-\\infty}f(x)=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure $\\lim_{x\\to+\\infty}f(x)$ en additionnant directement $-\\infty$ (pour $-\\frac12e^{2x}$) et $+\\infty$ (pour $e^x$)",
+          "pourquoi_faux": "C'est une forme indéterminée : sans factoriser, on ne sait pas lequel des deux termes croît le plus vite, donc on ne peut rien conclure sur la somme.",
+          "correction_markdown": "Factorise systématiquement par la puissance commune de l'exponentielle avant de conclure sur une somme de plusieurs termes exponentiels."
+        },
+        {
+          "erreur_markdown": "Oublier de refaire l'étude en $-\\infty$ sous prétexte que la limite en $+\\infty$ a déjà été trouvée",
+          "pourquoi_faux": "Les deux facteurs de la forme factorisée n'ont pas du tout le même comportement en $+\\infty$ et en $-\\infty$ : chaque limite doit être étudiée séparément.",
+          "correction_markdown": "Traite systématiquement les deux limites (en $+\\infty$ et en $-\\infty$) séparément à partir de la même écriture factorisée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\lim_{x\\to+\\infty}\\left(e^{2x}-3e^{x}\\right)$.",
+          "solution_markdown": "$e^{2x}-3e^{x}=e^{x}(e^{x}-3)$. Quand $x\\to+\\infty$, $e^{x}\\to+\\infty$ et $e^{x}-3\\to+\\infty$ : le produit de deux facteurs tendant vers $+\\infty$ tend vers $+\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\lim_{x\\to-\\infty}\\left(2e^{2x}-e^{x}\\right)$.",
+          "solution_markdown": "$2e^{2x}-e^{x}=e^{x}(2e^{x}-1)$. Quand $x\\to-\\infty$, $e^{x}\\to0$ et $2e^{x}-1\\to-1$. Le produit d'un facteur tendant vers 0 par un facteur tendant vers $-1$ tend vers $0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $\\lim_{x\\to+\\infty}\\left(-e^{2x}+2e^{x}+1\\right)$.",
+          "solution_markdown": "On factorise par $e^{x}$ les deux premiers termes : $-e^{2x}+2e^{x}+1=e^{x}(-e^{x}+2)+1$. Quand $x\\to+\\infty$, $e^{x}\\to+\\infty$ et $-e^{x}+2\\to-\\infty$, donc $e^{x}(-e^{x}+2)\\to-\\infty$ (produit de deux facteurs tendant vers l'infini de signes opposés). En ajoutant $1$, la limite reste $-\\infty$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une somme de plusieurs puissances d'exponentielle se factorise toujours par la puissance la plus basse, ici $e^{x}$.",
+        "Cette factorisation transforme une forme indéterminée en un produit de facteurs à limites connues.",
+        "Refais toujours le calcul séparément en $+\\infty$ et en $-\\infty$ : les deux facteurs n'ont généralement pas le même comportement dans les deux cas.",
+        "Ce réflexe de factorisation est l'un des plus rentables du BAC dès qu'une fonction combine plusieurs puissances de l'exponentielle."
+      ]
+    }
+  ]
+}

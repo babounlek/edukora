@@ -1,0 +1,68 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:catalog_lesson_changelist' %}">Lessons</a>
+&rsaquo; Ingestion des contenus
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  <p>
+    Dossier surveillé : <code>{{ ingest_dir }}</code>.
+    Ré-ingérer ne recrée ni ne modifie les contenus déjà en base (un fichier déjà
+    traité est simplement ignoré) - relancer plusieurs fois sur le même dossier est
+    sans risque.
+  </p>
+
+  {% if report %}
+    <div class="module" style="padding: 12px 16px; margin: 20px 0;">
+      <h2>Résultat</h2>
+      <p>
+        {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
+        {{ report.created }} objet{{ report.created|pluralize }} créé{{ report.created|pluralize }},
+        {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
+      </p>
+      {% if report.errors %}
+        <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
+        <ul>
+          {% for error in report.errors %}
+            <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if report.pdf_en_cours %}
+        <p>
+          PDF de sujet : génération lancée en arrière-plan pour {{ report.pdf_en_cours|length }}
+          leçon{{ report.pdf_en_cours|length|pluralize }} - actualisez cette page dans quelques
+          instants pour vérifier le résultat (liste des leçons publiées). En cas d'échec silencieux,
+          le détail est dans <code>logs/sujet_pdf_generation.log</code>.
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="module" style="padding: 12px 16px; margin-bottom: 20px;">
+    <h2>Fichiers présents dans le dossier ({{ files|length }})</h2>
+    {% if files %}
+      <ul>
+        {% for name in files %}
+          <li>{{ name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Aucun fichier .json dans le dossier.</p>
+    {% endif %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" class="default" value="Lancer l'ingestion"{% if not files %} disabled{% endif %}>
+  </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-moyenne-mode-mediane-serie-groupee-terminale-a",
+  "meta": {
+    "titre": "Moyenne, classe modale et médiane d'une série statistique groupée en classes",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Statistiques - paramètres de position",
+    "duree_estimee_min": 30,
+    "tags": [
+      "moyenne pondérée",
+      "classe modale",
+      "médiane",
+      "interpolation linéaire"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex2-1",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un tableau de moyennes groupées par tranches, il est tentant de vouloir calculer une moyenne exacte : c'est impossible, puisqu'on ne connaît pas les valeurs individuelles. Ce cours montre comment contourner cette limite avec les centres de classes, puis comment lire ou calculer les deux autres indicateurs de position que sont le mode et la médiane."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'une moyenne pondérée",
+        "Lecture d'un tableau d'effectifs et calcul d'effectifs cumulés",
+        "Résolution d'une proportionnalité simple (pour l'interpolation linéaire)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne, classe modale et médiane d'une série groupée",
+      "contenu_markdown": "Pour une série groupée en classes, on remplace chaque classe par son centre $c_i$ (demi-somme des bornes), et la moyenne se calcule comme une moyenne pondérée : $\\bar{x}=\\dfrac{\\sum_i c_i n_i}{N}$. La classe modale est simplement celle qui a le plus grand effectif : aucun calcul, une lecture directe du tableau suffit. La médiane, elle, se situe dans la classe où l'effectif cumulé croissant dépasse pour la première fois $\\dfrac{N}{2}$ ; à l'intérieur de cette classe, on l'obtient par interpolation linéaire : $\\text{Me}=L+\\dfrac{\\frac{N}{2}-CF}{f}\\times h$, où $L$ est la borne inférieure de la classe médiane, $CF$ l'effectif cumulé juste avant elle, $f$ son effectif et $h$ son amplitude.",
+      "formule_principale": "\\text{Me}=L+\\dfrac{\\frac{N}{2}-CF}{f}\\times h",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la moyenne, la classe modale et la médiane de la série groupée : $[0;7[\\to6$, $[7;10[\\to18$, $[10;14[\\to24$, $[14;20[\\to12$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les centres de classes",
+          "justification": "Chaque classe est remplacée par sa demi-somme des bornes",
+          "resultat_markdown": "$c_1=3{,}5\\ ;\\ c_2=8{,}5\\ ;\\ c_3=12\\ ;\\ c_4=17$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la moyenne pondérée",
+          "justification": "On applique $\\bar{x}=\\dfrac{\\sum c_i n_i}{N}$ avec $N=60$",
+          "resultat_markdown": "$3{,}5\\times6+8{,}5\\times18+12\\times24+17\\times12=21+153+288+204=666$, donc $\\bar{x}=\\dfrac{666}{60}=11{,}1$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier la classe modale",
+          "justification": "C'est la classe au plus grand effectif",
+          "resultat_markdown": "$[10;14[$ (effectif $24$)"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les effectifs cumulés croissants",
+          "justification": "On cumule les effectifs classe par classe pour repérer la classe médiane",
+          "resultat_markdown": "$6,\\ 24,\\ 48,\\ 60$"
+        },
+        {
+          "numero": 5,
+          "action": "Repérer la classe médiane et appliquer l'interpolation",
+          "justification": "N/2=30 ; 24<30\\leq48 donc la classe médiane est [10;14[, avec L=10, CF=24, f=24, h=4",
+          "resultat_markdown": "$\\text{Me}=10+\\dfrac{30-24}{24}\\times4=10+1=11$"
+        }
+      ],
+      "conclusion_markdown": "La moyenne de la série est $11{,}1$, la classe modale est $[10;14[$ et la médiane est $11$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser les bornes des classes au lieu de leur centre pour calculer la moyenne",
+          "pourquoi_faux": "Les bornes ne représentent pas les valeurs réelles de la série : seul le centre de chaque classe est une estimation raisonnable de la valeur moyenne des individus qu'elle contient.",
+          "correction_markdown": "Calcule toujours le centre $c_i=\\dfrac{\\text{borne inf}+\\text{borne sup}}{2}$ avant de pondérer par les effectifs."
+        },
+        {
+          "erreur_markdown": "Confondre la classe modale (celle au plus grand effectif) avec la classe médiane (celle qui contient le rang N/2)",
+          "pourquoi_faux": "Ce sont deux notions différentes qui peuvent tomber sur des classes différentes : le mode dépend de la fréquence, la médiane dépend de la position dans l'ordre cumulé.",
+          "correction_markdown": "Traite ces deux calculs séparément, avec leur méthode propre : lecture directe pour le mode, effectifs cumulés et interpolation pour la médiane."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la moyenne de la série groupée : $[0;10[\\to4$, $[10;20[\\to6$.",
+          "solution_markdown": "Centres : $c_1=5$, $c_2=15$. $N=10$. $\\bar{x}=\\dfrac{5\\times4+15\\times6}{10}=\\dfrac{20+90}{10}=11$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la série $[0;5[\\to3$, $[5;10[\\to7$, $[10;15[\\to10$, déterminer la classe médiane et calculer la médiane.",
+          "solution_markdown": "Effectif total $N=20$, donc $N/2=10$. Effectifs cumulés : $3$, $3+7=10$, $10+10=20$. Le cumul atteint exactement $10$ à la fin de la classe $[5;10[$ : la classe médiane est donc $[5;10[$, avec $L=5$, $CF=3$, $f=7$, $h=5$. $\\text{Me}=5+\\dfrac{10-3}{7}\\times5=5+5=10$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série groupée a pour classes $[0;10[$, $[10;20[$, $[20;30[$ avec des effectifs $n_1$, $n_2$, $n_3$ inconnus mais on sait que $n_1+n_2+n_3=50$, que la classe modale est $[10;20[$ et que la médiane vaut exactement $15$. Que peut-on en déduire sur le lien entre $n_1$ et $n_2$ ?",
+          "solution_markdown": "La médiane $15$ est le milieu de la classe $[10;20[$. La formule d'interpolation donne $15=10+\\dfrac{25-n_1}{n_2}\\times10$, soit $\\dfrac{25-n_1}{n_2}=0{,}5$, donc $n_1=25-0{,}5\\,n_2$. L'effectif cumulé avant la classe médiane, $n_1$, doit rester inférieur à $25$, ce qui est cohérent avec le fait que la classe médiane doit contenir le rang $25$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une série groupée, remplace toujours chaque classe par son centre avant de calculer une moyenne pondérée.",
+        "Le mode se lit directement dans le tableau : c'est la classe au plus grand effectif, sans calcul.",
+        "La médiane se calcule en deux temps : repérer la classe médiane grâce aux effectifs cumulés croissants, puis appliquer l'interpolation linéaire à l'intérieur de cette classe.",
+        "Ces trois indicateurs racontent des choses différentes sur la même série : ne les confonds jamais, même s'ils tombent parfois sur des valeurs proches.",
+        "Au BAC, ce type de question est systématiquement associé à la construction d'un diagramme ou d'un polygone des effectifs cumulés sur la même série : les effectifs cumulés calculés ici te resserviront directement."
+      ]
+    }
+  ]
+}

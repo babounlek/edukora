@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-polygone-effectifs-cumules-terminale-a",
+  "meta": {
+    "titre": "Construire le polygone des effectifs cumulés croissants",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Statistiques - représentations graphiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "effectifs cumulés",
+      "polygone",
+      "médiane graphique"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex2-2",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le polygone des effectifs cumulés croissants donne une image visuelle de l'accumulation progressive des effectifs au fil des classes. Il complète la médiane calculée par interpolation : on peut même retrouver la médiane graphiquement, en lisant l'abscisse du point d'ordonnée N/2 sur cette courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul des effectifs cumulés croissants d'une série groupée",
+        "Placement de points dans un repère avec une échelle imposée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction du polygone des effectifs cumulés croissants",
+      "contenu_markdown": "On place, pour chaque classe, un point dont l'abscisse est la borne supérieure de la classe et dont l'ordonnée est l'effectif cumulé atteint à cette borne. On ajoute un point de départ à l'effectif cumulé nul, situé à la borne inférieure de la toute première classe, pour que la courbe parte bien de zéro. On relie ensuite tous ces points par des segments de droite consécutifs, dans l'ordre des abscisses croissantes.",
+      "formule_principale": "\\text{point}_i=(\\text{borne sup de la classe }i\\,;\\,\\text{effectif cumulé jusqu'à cette borne})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire le polygone des effectifs cumulés croissants de la série $[0;7[\\to6$, $[7;10[\\to18$, $[10;14[\\to24$, $[14;20[\\to12$ (échelles : $0{,}5\\ \\text{cm}$ pour une unité de moyenne, $1\\ \\text{cm}$ pour $10$ élèves).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les effectifs cumulés croissants",
+          "justification": "On cumule les effectifs classe par classe",
+          "resultat_markdown": "$6,\\ 24,\\ 48,\\ 60$"
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque effectif cumulé à la borne supérieure de sa classe",
+          "justification": "Le polygone se construit à partir des couples (borne supérieure, effectif cumulé)",
+          "resultat_markdown": "$(7;6),\\ (10;24),\\ (14;48),\\ (20;60)$"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter le point de départ à effectif cumulé nul",
+          "justification": "Avant la première classe, l'effectif cumulé est nul par convention",
+          "resultat_markdown": "$(0;0)$"
+        },
+        {
+          "numero": 4,
+          "action": "Placer les cinq points avec les échelles imposées et les relier",
+          "justification": "0,5 cm par unité de moyenne en abscisse, 1 cm pour 10 élèves en ordonnée",
+          "resultat_markdown": "segments consécutifs reliant $(0;0)$, $(7;6)$, $(10;24)$, $(14;48)$, $(20;60)$"
+        }
+      ],
+      "conclusion_markdown": "Le polygone obtenu est une ligne brisée croissante, qui permet de retrouver graphiquement la médiane en lisant l'abscisse du point d'ordonnée $30$ (soit $N/2$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le point de départ (0;0)",
+          "pourquoi_faux": "Sans ce point, la courbe commence directement à $(7;6)$ et ne montre plus que l'effectif cumulé était nul avant la première classe.",
+          "correction_markdown": "Ajoute systématiquement le point à effectif cumulé nul, situé à la borne inférieure de la première classe."
+        },
+        {
+          "erreur_markdown": "Utiliser la borne inférieure de chaque classe au lieu de sa borne supérieure pour placer les points",
+          "pourquoi_faux": "L'effectif cumulé calculé correspond à tous les individus reçus jusqu'à la fin de la classe, donc jusqu'à sa borne supérieure, pas jusqu'à son début.",
+          "correction_markdown": "Associe toujours l'effectif cumulé à la borne supérieure de la classe correspondante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner les points à placer pour construire le polygone des effectifs cumulés croissants de la série $[0;10[\\to5$, $[10;20[\\to15$.",
+          "solution_markdown": "Effectifs cumulés : $5$, puis $5+15=20$. Points : $(0;0)$, $(10;5)$, $(20;20)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "À partir du polygone des effectifs cumulés croissants de points $(0;0)$, $(5;4)$, $(10;12)$, $(15;20)$, retrouver graphiquement la médiane sachant que l'effectif total est $20$.",
+          "solution_markdown": "$N/2=10$. Le cumul atteint exactement $10$ à l'abscisse $10$ (deuxième point) : la médiane vaut donc $10$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le polygone des effectifs cumulés croissants d'une série passe par $(0;0)$, $(10;a)$, $(20;50)$, avec effectif total $50$. Sachant que la médiane de cette série vaut $15$ et se situe dans la classe $[10;20[$, déterminer $a$.",
+          "solution_markdown": "La médiane $15$ est le milieu de la classe $[10;20[$. La formule d'interpolation donne $15=10+\\dfrac{25-a}{50-a}\\times10$, soit $\\dfrac{25-a}{50-a}=0{,}5$, donc $25-a=0{,}5(50-a)=25-0{,}5a$, d'où $-a=-0{,}5a$, soit $a=0$. Le cumul avant la classe médiane est donc nul dans ce cas particulier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le polygone des effectifs cumulés croissants relie les points (borne supérieure de classe, effectif cumulé), en partant toujours du point à effectif nul.",
+        "Il permet de retrouver graphiquement la médiane, en lisant l'abscisse du point d'ordonnée N/2.",
+        "Respecte scrupuleusement les échelles imposées par l'énoncé : elles conditionnent la lisibilité et l'exactitude de la lecture graphique.",
+        "Cette construction est le pendant graphique du calcul de la médiane par interpolation : les deux méthodes doivent donner le même résultat."
+      ]
+    }
+  ]
+}

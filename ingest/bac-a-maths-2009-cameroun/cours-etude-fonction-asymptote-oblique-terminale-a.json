@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-etude-fonction-asymptote-oblique-terminale-a",
+  "meta": {
+    "titre": "Étude complète d'une fonction : variations, tableau, asymptote oblique et position relative",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "dérivée",
+      "sens de variation",
+      "tableau de variation",
+      "asymptote oblique",
+      "position relative"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex4-1",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'étude complète d'une fonction est l'exercice-type du BAC en mathématiques : dérivée, tableau de variation, asymptotes, position de la courbe par rapport à une droite, puis construction graphique. Ce cours regroupe la méthode complète à travers l'exemple d'une fonction mêlant terme affine et exponentielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivation des fonctions usuelles, y compris composées avec l'exponentielle",
+        "Étude du signe d'une expression",
+        "Notion de limite d'une fonction en $+\\infty$ et en $-\\infty$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre étapes d'une étude de fonction avec asymptote oblique",
+      "contenu_markdown": "Une étude complète de fonction suit toujours le même schéma. Premièrement, on calcule la dérivée $f'(x)$ et on étudie son signe pour en déduire le sens de variation de $f$ : $f$ est croissante là où $f'>0$, décroissante là où $f'<0$. Deuxièmement, on dresse le tableau de variation en y plaçant les limites aux bornes et les valeurs remarquables. Troisièmement, pour prouver qu'une droite $y=ax+b$ est asymptote oblique à la courbe en $+\\infty$ (ou en $-\\infty$), on calcule $\\lim\\big(f(x)-(ax+b)\\big)$ : si cette limite vaut $0$, la droite est asymptote. Quatrièmement, la position relative de la courbe par rapport à cette droite se déduit directement du signe de $f(x)-(ax+b)$, qu'on a déjà calculé à l'étape précédente.",
+      "formule_principale": "\\lim_{x\\to+\\infty}\\big(f(x)-(ax+b)\\big)=0 \\iff y=ax+b \\text{ est asymptote oblique en } +\\infty",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=x-2+e^{-x}$ définie sur $\\mathbb{R}$. Étudier le sens de variation de $f$, montrer que $y=x-2$ est asymptote oblique à sa courbe en $+\\infty$, et étudier la position relative de la courbe et de cette droite.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la dérivée",
+          "justification": "On dérive terme à terme : la dérivée de $x-2$ est $1$, celle de $e^{-x}$ est $-e^{-x}$",
+          "resultat_markdown": "$f'(x)=1-e^{-x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de f'(x)",
+          "justification": "$1-e^{-x}>0 \\iff e^{-x}<1 \\iff -x<0 \\iff x>0$",
+          "resultat_markdown": "$f'(x)<0$ sur $]-\\infty,0[$, $f'(0)=0$, $f'(x)>0$ sur $]0,+\\infty[$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le sens de variation et le minimum",
+          "justification": "f décroît puis croît : elle admet un minimum en x=0",
+          "resultat_markdown": "$f$ décroissante sur $]-\\infty,0[$, croissante sur $]0,+\\infty[$, $f(0)=-1$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer f(x)-(x-2)",
+          "justification": "On isole la différence entre la courbe et la droite candidate",
+          "resultat_markdown": "$f(x)-(x-2)=e^{-x}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la limite de cette différence en $+\\infty$",
+          "justification": "$e^{-x}\\to0$ quand $x\\to+\\infty$",
+          "resultat_markdown": "$\\lim_{x\\to+\\infty}\\big(f(x)-(x-2)\\big)=0$, donc $y=x-2$ est asymptote oblique en $+\\infty$"
+        },
+        {
+          "numero": 6,
+          "action": "Étudier le signe de $f(x)-(x-2)=e^{-x}$",
+          "justification": "L'exponentielle est toujours strictement positive",
+          "resultat_markdown": "$e^{-x}>0$ pour tout $x$, donc $f(x)>x-2$ partout : la courbe est toujours au-dessus de la droite"
+        }
+      ],
+      "conclusion_markdown": "La fonction $f$ admet un minimum $-1$ en $x=0$, sa courbe admet la droite $y=x-2$ comme asymptote oblique en $+\\infty$, et reste strictement au-dessus de cette droite sur tout $\\mathbb{R}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le calcul de l'asymptote oblique avec une simple vérification numérique sur quelques valeurs de x",
+          "pourquoi_faux": "Une asymptote se prouve par un calcul de limite, valable pour tout x suffisamment grand, jamais par un contrôle sur des valeurs particulières qui ne garantit rien au-delà.",
+          "correction_markdown": "Calcule systématiquement $\\lim\\big(f(x)-(ax+b)\\big)$ et conclus à partir de cette limite, pas à partir d'un tableau de valeurs."
+        },
+        {
+          "erreur_markdown": "Refaire un calcul de signe séparé pour la position relative alors qu'il a déjà été fait pour l'asymptote",
+          "pourquoi_faux": "La différence $f(x)-(ax+b)$ calculée pour prouver l'asymptote est exactement la quantité dont il faut étudier le signe pour la position relative : les deux questions utilisent le même calcul.",
+          "correction_markdown": "Réutilise directement l'expression de $f(x)-(ax+b)$ obtenue pour l'asymptote : il ne reste qu'à en étudier le signe, sans recalculer quoi que ce soit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=x+1+e^{-x}$ sur $\\mathbb{R}$. Calculer $g'(x)$ et étudier son signe.",
+          "solution_markdown": "$g'(x)=1-e^{-x}$. Comme pour $f$, $g'(x)<0$ sur $]-\\infty,0[$, $g'(0)=0$, $g'(x)>0$ sur $]0,+\\infty[$ : $g$ décroît puis croît, avec un minimum en $x=0$ où $g(0)=1+1=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que la droite $y=x+1$ est asymptote oblique à la courbe de $g(x)=x+1+e^{-x}$ en $+\\infty$, et étudier la position relative.",
+          "solution_markdown": "$g(x)-(x+1)=e^{-x}$, dont la limite en $+\\infty$ est $0$ : la droite $y=x+1$ est donc asymptote oblique en $+\\infty$. Comme $e^{-x}>0$ pour tout $x$, la courbe de $g$ reste toujours strictement au-dessus de cette droite."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=2x-3+e^{-2x}$ sur $\\mathbb{R}$. Déterminer une droite asymptote oblique à la courbe de $h$ en $+\\infty$, étudier la position relative, puis étudier le sens de variation de $h$.",
+          "solution_markdown": "$h(x)-(2x-3)=e^{-2x}\\to0$ quand $x\\to+\\infty$, donc $y=2x-3$ est asymptote oblique en $+\\infty$. Comme $e^{-2x}>0$ pour tout $x$, la courbe reste au-dessus de cette droite sur tout $\\mathbb{R}$. Pour les variations : $h'(x)=2-2e^{-2x}$, positif quand $e^{-2x}<1$, soit quand $-2x<0$, soit $x>0$. Donc $h$ décroît sur $]-\\infty,0[$ et croît sur $]0,+\\infty[$, avec un minimum en $x=0$ où $h(0)=-3+1=-2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une étude de fonction suit toujours le même schéma : dérivée et signe, tableau de variation, asymptotes, position relative, puis construction.",
+        "Le signe de f'(x) donne directement le sens de variation : positif signifie croissante, négatif signifie décroissante.",
+        "Une droite $y=ax+b$ est asymptote oblique en $+\\infty$ exactement quand $\\lim_{x\\to+\\infty}\\big(f(x)-(ax+b)\\big)=0$.",
+        "La position relative de la courbe par rapport à cette droite se lit directement dans le signe de cette même différence : pas besoin de refaire un calcul séparé.",
+        "Au BAC, cette étude complète représente presque toujours la moitié des points d'un exercice de fonction : soigne particulièrement la rigueur des justifications de signe."
+      ]
+    }
+  ]
+}

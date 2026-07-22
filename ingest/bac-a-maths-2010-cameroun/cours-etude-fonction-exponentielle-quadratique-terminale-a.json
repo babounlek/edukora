@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-etude-fonction-exponentielle-quadratique-terminale-a",
+  "meta": {
+    "titre": "Étudier le signe de la dérivée d'une fonction exponentielle quadratique",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Dérivation et sens de variation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dérivée",
+      "signe",
+      "exponentielle",
+      "sens de variation"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2010-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2010",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2010-cameroun-ex3-1",
+    "correction_id": "corr-bac-a-maths-2010-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une dérivée qui s'écrit comme une somme de plusieurs puissances de l'exponentielle ne se lit pas directement : il faut la factoriser pour en extraire le signe. Ce cours montre la démarche complète, de la factorisation jusqu'à l'identification de l'extremum, sur un exemple typique du BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée de $e^{u(x)}$ : $\\left(e^{u}\\right)'=u'e^{u}$",
+        "Stricte croissance de la fonction exponentielle : $e^{a}<e^{b} \\iff a<b$",
+        "Lien entre signe de la dérivée et sens de variation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser une dérivée exponentielle pour en étudier le signe",
+      "contenu_markdown": "Quand une dérivée s'écrit comme un polynôme en $e^{x}$, par exemple $-e^{2x}+e^{x}$, on la factorise par la plus petite puissance présente : $-e^{2x}+e^{x}=e^{x}(1-e^{x})$. Le facteur $e^{x}$ est toujours strictement positif, donc le signe de la dérivée est entièrement déterminé par le second facteur. On étudie ensuite ce second facteur avec une inéquation simple, en utilisant la stricte croissance de l'exponentielle pour comparer $e^{x}$ à une valeur donnée : $e^{x}<k \\iff x<\\ln k$ (pour $k>0$).",
+      "formule_principale": "-e^{2x}+e^{x}=e^{x}(1-e^{x})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier le signe de $f'(x)=-e^{2x}+e^{x}$ et en déduire le sens de variation de $f(x)=-\\dfrac{1}{2}e^{2x}+e^{x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Factoriser la dérivée",
+          "justification": "On factorise par la puissance commune la plus basse, e^x",
+          "resultat_markdown": "$f'(x)=e^{x}\\big(1-e^{x}\\big)$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le signe du facteur toujours positif",
+          "justification": "$e^{x}>0$ pour tout réel $x$",
+          "resultat_markdown": "le signe de f'(x) est celui de $1-e^{x}$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'inéquation 1-e^x>0",
+          "justification": "On compare $e^{x}$ à $1=e^{0}$ en utilisant la stricte croissance de l'exponentielle",
+          "resultat_markdown": "$1-e^{x}>0 \\iff e^{x}<1 \\iff x<0$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur le signe de f'(x) et le sens de variation",
+          "justification": "On rassemble les trois cas : x<0, x=0, x>0",
+          "resultat_markdown": "$f'(x)>0$ sur $]-\\infty,0[$ (f croissante), $f'(0)=0$, $f'(x)<0$ sur $]0,+\\infty[$ (f décroissante)"
+        },
+        {
+          "numero": 5,
+          "action": "Identifier l'extremum",
+          "justification": "La dérivée change de signe de + à - en x=0 : c'est un maximum",
+          "resultat_markdown": "maximum en $x=0$, $f(0)=\\dfrac{1}{2}$"
+        }
+      ],
+      "conclusion_markdown": "$f$ est croissante sur $]-\\infty,0[$, décroissante sur $]0,+\\infty[$, avec un maximum $\\dfrac{1}{2}$ atteint en $x=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Étudier le signe de $-e^{2x}+e^{x}$ sans factoriser, en essayant de comparer directement $e^{2x}$ et $e^{x}$ terme à terme",
+          "pourquoi_faux": "Sans factorisation, il faut comparer deux exponentielles de puissances différentes, ce qui est plus source d'erreur qu'une comparaison simple de $e^{x}$ à une constante après factorisation.",
+          "correction_markdown": "Factorise toujours par la puissance la plus basse avant d'étudier le signe : tu ramènes le problème à comparer $e^{x}$ à un nombre fixe."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que le facteur mis en évidence par la factorisation est bien toujours strictement positif",
+          "pourquoi_faux": "Si ce facteur pouvait changer de signe, il faudrait aussi l'étudier séparément : le raccourci qui consiste à ne regarder que l'autre facteur ne fonctionne que parce que $e^{x}>0$ pour tout $x$.",
+          "correction_markdown": "Justifie explicitement, en une ligne, que le facteur exponentiel isolé par la factorisation est toujours strictement positif, avant de te concentrer sur l'autre facteur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Étudier le signe de $g'(x)=e^{x}(2-e^{x})$ sur $\\mathbb{R}$.",
+          "solution_markdown": "$e^{x}>0$ toujours, donc le signe de $g'(x)$ est celui de $2-e^{x}$. $2-e^{x}>0 \\iff e^{x}<2 \\iff x<\\ln2$. Donc $g'(x)>0$ sur $]-\\infty,\\ln2[$, $g'(\\ln2)=0$, $g'(x)<0$ sur $]\\ln2,+\\infty[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Factoriser $h'(x)=-3e^{2x}+6e^{x}$ et étudier son signe.",
+          "solution_markdown": "$h'(x)=e^{x}(-3e^{x}+6)=3e^{x}(2-e^{x})$. Comme $3e^{x}>0$ toujours, le signe de $h'(x)$ est celui de $2-e^{x}$, positif pour $x<\\ln2$, nul en $x=\\ln2$, négatif pour $x>\\ln2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=e^{2x}-4e^{x}+3$ (avec $k$ à dériver). Calculer $k'(x)$, la factoriser, et étudier son signe.",
+          "solution_markdown": "$k'(x)=2e^{2x}-4e^{x}=2e^{x}(e^{x}-2)$. Comme $2e^{x}>0$ toujours, le signe de $k'(x)$ est celui de $e^{x}-2$ : négatif si $e^{x}<2$ soit $x<\\ln2$, nul en $x=\\ln2$, positif si $x>\\ln2$. Donc $k'(x)<0$ sur $]-\\infty,\\ln2[$ et $k'(x)>0$ sur $]\\ln2,+\\infty[$ : $k$ admet un minimum en $x=\\ln2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une dérivée qui combine plusieurs puissances d'exponentielle se factorise toujours par la puissance la plus basse.",
+        "Le facteur exponentiel isolé (comme $e^{x}$ ou $2e^{x}$) est toujours strictement positif : seul l'autre facteur porte le signe global.",
+        "La comparaison $e^{x}<k$ se résout par $x<\\ln k$, grâce à la stricte croissance de l'exponentielle : c'est le réflexe qui remplace toute inéquation exponentielle par une inéquation affine.",
+        "Un changement de signe de la dérivée signale toujours un extremum local : croissante puis décroissante donne un maximum, décroissante puis croissante donne un minimum."
+      ]
+    }
+  ]
+}

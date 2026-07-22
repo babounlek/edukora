@@ -1,0 +1,48 @@
+{
+  "epreuve_source": "bac-a-maths-2012-cameroun.pdf",
+  "matiere": "Mathématiques",
+  "niveau": "Terminale",
+  "serie": "A",
+  "examen": "BAC",
+  "annee": "2012",
+  "duree_epreuve": "3h",
+  "coefficient": "2",
+  "origine": "officiel",
+  "etablissement": null,
+  "statut": "brouillon",
+  "figures": [],
+  "numero_exercice": "2",
+  "enonce_markdown": "## Exercice 2 (5 points)\n\nLes résultats seront donnés sous forme de fractions irréductibles.\n\nUne étude faite sur $25$ personnes révèle que, parmi elles, $11$ possèdent un téléphone fixe, $15$ possèdent un téléphone portable et $5$ possèdent à la fois un téléphone fixe et un téléphone portable.\n\n1. Déterminer le nombre de personnes qui :\n(a) possèdent uniquement un téléphone fixe. (1 point)\n(b) ne possèdent ni téléphone fixe ni téléphone portable. (1 point)\n\n2. On choisit au hasard et simultanément deux personnes parmi les $25$. Déterminer la probabilité de chacun des événements suivants :\n\n$A$ : « chacune des personnes choisies possède un téléphone portable ». (1,5 point)\n\n$B$ : « chacune des personnes choisies possède uniquement un téléphone portable ». (1,5 point)\n",
+  "points": "5",
+  "themes": [
+    "ensembles et cardinaux",
+    "dénombrement",
+    "probabilités",
+    "tirage simultané"
+  ],
+  "difficulte_estimee": "moyenne",
+  "mots_cles_recherche": [
+    "cardinal union intersection ensembles",
+    "dénombrement téléphone fixe portable",
+    "probabilité tirage simultané",
+    "fraction irréductible probabilité"
+  ],
+  "incertitudes": [],
+  "corrige_markdown": "## 1. Dénombrement des sous-populations\n\n### Rappel de méthode\nPour dénombrer des sous-populations définies par deux caractéristiques qui peuvent se chevaucher (par exemple posséder un téléphone fixe et/ou un téléphone portable), on utilise les cardinaux d'ensembles : le cardinal de l'union est $\\text{Card}(F\\cup P)=\\text{Card}(F)+\\text{Card}(P)-\\text{Card}(F\\cap P)$, ce qui évite de compter deux fois les éléments communs. Le nombre d'éléments qui possèdent uniquement une caractéristique s'obtient en retranchant l'intersection à cet ensemble : $\\text{Card}(F\\text{ seul})=\\text{Card}(F)-\\text{Card}(F\\cap P)$. Le nombre d'éléments qui ne possèdent aucune des deux caractéristiques s'obtient en retranchant le cardinal de l'union à l'effectif total de la population.\n\nOn note $F$ l'ensemble des personnes possédant un téléphone fixe et $P$ celui des personnes possédant un téléphone portable. On donne $\\text{Card}(F)=11$, $\\text{Card}(P)=15$, $\\text{Card}(F\\cap P)=5$, sur une population totale de $25$ personnes.\n\n### (a) Personnes possédant uniquement un téléphone fixe\n\n$$\\text{Card}(F\\text{ seul})=\\text{Card}(F)-\\text{Card}(F\\cap P)=11-5=6$$\n\n$6$ personnes possèdent uniquement un téléphone fixe.\n\n### (b) Personnes ne possédant aucun des deux téléphones\n\nOn calcule d'abord le cardinal de l'union :\n$$\\text{Card}(F\\cup P)=\\text{Card}(F)+\\text{Card}(P)-\\text{Card}(F\\cap P)=11+15-5=21$$\n\nLe nombre de personnes ne possédant ni l'un ni l'autre est :\n$$25-\\text{Card}(F\\cup P)=25-21=4$$\n\n$4$ personnes ne possèdent ni téléphone fixe ni téléphone portable.\n\n### Piège à éviter\nNe calcule jamais $\\text{Card}(F)+\\text{Card}(P)$ sans retrancher $\\text{Card}(F\\cap P)$ pour obtenir l'union : les $5$ personnes qui possèdent les deux téléphones seraient sinon comptées deux fois, ce qui fausse tous les résultats qui en découlent.\n\n## 2. Tirage simultané de deux personnes\n\nUn tirage simultané de $k$ éléments parmi $n$ (sans tenir compte de l'ordre) se dénombre par la formule générale $\\binom{n}{k}=\\dfrac{n!}{k!(n-k)!}$, soit, pour $k=2$, $\\binom{n}{2}=\\dfrac{n(n-1)}{2}$. L'univers total correspond ici au choix simultané de $2$ personnes parmi $25$, soit $\\binom{25}{2}=\\dfrac{25\\times24}{2}=300$ tirages possibles, équiprobables.\n\n### Événement A : chacune des personnes choisies possède un téléphone portable\n\nLes deux personnes doivent être choisies parmi les $\\text{Card}(P)=15$ personnes possédant un téléphone portable (que celui-ci soit ou non associé à un téléphone fixe) :\n$$\\text{Card}(A)=\\binom{15}{2}=\\dfrac{15\\times14}{2}=105$$\n\n$$P(A)=\\dfrac{105}{300}=\\dfrac{7}{20}$$\n\n### Événement B : chacune des personnes choisies possède uniquement un téléphone portable\n\n### Rappel de méthode\nQuand un événement porte sur une sous-population elle-même incluse dans une catégorie plus large (par exemple « uniquement téléphone portable », inclus dans « téléphone portable »), il faut d'abord recalculer l'effectif exact de cette sous-population avant de dénombrer un tirage simultané : on retranche l'effectif de l'intersection (ceux qui possèdent aussi l'autre caractéristique) de l'effectif de la catégorie large. Une fois cet effectif précisé, la probabilité d'un tirage simultané de $k$ éléments dans cette sous-population parmi une population totale de $n$ personnes se calcule comme d'habitude par $P=\\dfrac{\\binom{m}{k}}{\\binom{n}{k}}$, où $m$ est l'effectif de la sous-population concernée.\n\nLe nombre de personnes possédant uniquement un téléphone portable (et pas de téléphone fixe) est :\n$$\\text{Card}(P\\text{ seul})=\\text{Card}(P)-\\text{Card}(F\\cap P)=15-5=10$$\n\nLes deux personnes choisies doivent provenir de ces $10$ personnes :\n$$\\text{Card}(B)=\\binom{10}{2}=\\dfrac{10\\times9}{2}=45$$\n\n$$P(B)=\\dfrac{45}{300}=\\dfrac{3}{20}$$\n\n### Conseil\nAvant de dénombrer un événement comme « uniquement portable », vérifie toujours si l'effectif à utiliser est celui de la catégorie complète ($15$ pour $P$) ou celui de la sous-catégorie stricte ($10$ pour $P$ seul) : confondre les deux est l'erreur la plus fréquente sur ce type de question.\n",
+  "rappels_de_methode": [
+    {
+      "id": "rdm-bac-a-maths-2012-cameroun-ex2-0",
+      "competence": "Dénombrer des sous-populations avec cardinaux d'ensembles (union, intersection)",
+      "contenu_markdown": "Pour dénombrer des sous-populations définies par deux caractéristiques qui peuvent se chevaucher (par exemple posséder un téléphone fixe et/ou un téléphone portable), on utilise les cardinaux d'ensembles : le cardinal de l'union est $\\text{Card}(F\\cup P)=\\text{Card}(F)+\\text{Card}(P)-\\text{Card}(F\\cap P)$, ce qui évite de compter deux fois les éléments communs. Le nombre d'éléments qui possèdent uniquement une caractéristique s'obtient en retranchant l'intersection à cet ensemble : $\\text{Card}(F\\text{ seul})=\\text{Card}(F)-\\text{Card}(F\\cap P)$. Le nombre d'éléments qui ne possèdent aucune des deux caractéristiques s'obtient en retranchant le cardinal de l'union à l'effectif total de la population.",
+      "cours_genere": true,
+      "cours_id": "cours-cardinaux-ensembles-union-intersection-terminale-a"
+    },
+    {
+      "id": "rdm-bac-a-maths-2012-cameroun-ex2-1",
+      "competence": "Calculer une probabilité sur une sous-population emboîtée dans un tirage simultané",
+      "contenu_markdown": "Quand un événement porte sur une sous-population elle-même incluse dans une catégorie plus large (par exemple « uniquement téléphone portable », inclus dans « téléphone portable »), il faut d'abord recalculer l'effectif exact de cette sous-population avant de dénombrer un tirage simultané : on retranche l'effectif de l'intersection (ceux qui possèdent aussi l'autre caractéristique) de l'effectif de la catégorie large. Une fois cet effectif précisé, la probabilité d'un tirage simultané de $k$ éléments dans cette sous-population parmi une population totale de $n$ personnes se calcule comme d'habitude par $P=\\dfrac{\\binom{m}{k}}{\\binom{n}{k}}$, où $m$ est l'effectif de la sous-population concernée.",
+      "cours_genere": true,
+      "cours_id": "cours-probabilite-sous-population-emboitee-terminale-a"
+    }
+  ]
+}

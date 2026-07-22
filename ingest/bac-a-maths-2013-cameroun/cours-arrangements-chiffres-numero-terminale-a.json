@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-arrangements-chiffres-numero-terminale-a",
+  "meta": {
+    "titre": "Calculer une probabilité avec des arrangements de chiffres",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Dénombrement et probabilités",
+    "duree_estimee_min": 20,
+    "tags": [
+      "arrangement",
+      "probabilité",
+      "dénombrement",
+      "numéro"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2013-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2013",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2013-cameroun-ex2-0",
+    "correction_id": "corr-bac-a-maths-2013-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un numéro à plusieurs chiffres cache toujours deux univers de dénombrement différents : celui où les chiffres peuvent librement se répéter, et celui où on impose une contrainte comme « tous différents » ou « tous identiques ». Distinguer ces cas est la clé pour ne pas se tromper de formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Principe multiplicatif de dénombrement",
+        "Notion d'arrangement (dénombrement avec ordre, sans répétition)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Univers total et sous-cas contraints",
+      "contenu_markdown": "Un numéro à $k$ positions, chacune choisie librement parmi $n$ valeurs (avec répétition possible), donne un univers total de $n^k$ numéros. Si l'on impose que les $k$ chiffres soient tous différents, on utilise un arrangement sans répétition : $n\\times(n-1)\\times\\cdots\\times(n-k+1)$, chaque position ayant une valeur de moins disponible que la précédente. Si l'on impose au contraire que les $k$ chiffres soient tous identiques, un seul choix (celui du chiffre commun) détermine tout le numéro : il n'y a que $n$ possibilités.",
+      "formule_principale": "n^k \\text{ (total)}\\ ;\\ n(n-1)\\cdots(n-k+1) \\text{ (tous différents)}\\ ;\\ n \\text{ (tous identiques)}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une tombola de 10000 billets à 4 chiffres, calculer la probabilité qu'un billet ait 4 chiffres tous différents, puis la probabilité qu'il ait 4 chiffres tous identiques.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'univers total",
+          "justification": "4 positions, chacune parmi 10 chiffres, avec répétition possible",
+          "resultat_markdown": "$10^4=10000$"
+        },
+        {
+          "numero": 2,
+          "action": "Dénombrer les numéros à 4 chiffres différents",
+          "justification": "Arrangement sans répétition de 4 chiffres parmi 10",
+          "resultat_markdown": "$10\\times9\\times8\\times7=5040$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la probabilité correspondante",
+          "justification": "Rapport favorable sur total",
+          "resultat_markdown": "$P=\\dfrac{5040}{10000}=\\dfrac{63}{125}$"
+        },
+        {
+          "numero": 4,
+          "action": "Dénombrer les numéros à 4 chiffres identiques",
+          "justification": "Un seul chiffre à choisir, répété 4 fois",
+          "resultat_markdown": "$10$ numéros"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la probabilité correspondante",
+          "justification": "Rapport favorable sur total",
+          "resultat_markdown": "$P=\\dfrac{10}{10000}=\\dfrac{1}{1000}$"
+        }
+      ],
+      "conclusion_markdown": "$P(\\text{4 chiffres différents})=\\dfrac{63}{125}$ et $P(\\text{4 chiffres identiques})=\\dfrac{1}{1000}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser une combinaison $\\binom{10}{4}$ au lieu d'un arrangement pour compter les numéros à chiffres différents",
+          "pourquoi_faux": "Dans un numéro, l'ordre des positions compte : le numéro 1234 est différent de 4321. Une combinaison ignorerait cet ordre et sous-compterait largement les possibilités.",
+          "correction_markdown": "Utilise systématiquement un arrangement (avec ordre) dès que la position de chaque chiffre a une signification propre, comme dans un numéro."
+        },
+        {
+          "erreur_markdown": "Oublier que le premier chiffre d'un numéro de tombola peut être 0 (comme dans l'exemple 0000)",
+          "pourquoi_faux": "Contrairement à certains numéros de téléphone ou plaques d'immatriculation où le premier chiffre ne peut pas être 0, ici l'énoncé précise explicitement que 0000 est un numéro valide.",
+          "correction_markdown": "Vérifie toujours si l'énoncé autorise ou non un 0 en première position avant de fixer le nombre de choix disponibles pour cette position."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un code de 3 chiffres est tiré au hasard parmi les 1000 codes possibles (000 à 999). Calculer la probabilité que les 3 chiffres soient tous différents.",
+          "solution_markdown": "Univers total : $10^3=1000$. Favorable : $10\\times9\\times8=720$. $P=\\dfrac{720}{1000}=\\dfrac{9}{125}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour le même code à 3 chiffres, calculer la probabilité que les 3 chiffres soient tous identiques.",
+          "solution_markdown": "Favorable : $10$ codes (000, 111, ..., 999). $P=\\dfrac{10}{1000}=\\dfrac{1}{100}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un numéro de 5 chiffres est tiré parmi les 100000 numéros possibles. Calculer la probabilité que le numéro ait exactement 2 chiffres identiques consécutifs à une position donnée, et les 3 autres chiffres tous différents entre eux et différents du chiffre répété (on admettra que cette contrainte ne concerne qu'une paire de positions consécutives fixée à l'avance).",
+          "solution_markdown": "On fixe la paire de positions consécutives concernée. Choix du chiffre répété : 10 façons. Les 3 positions restantes doivent recevoir des chiffres tous différents entre eux et différents du chiffre répété : $9\\times8\\times7$ façons. Favorable : $10\\times9\\times8\\times7=5040$. Univers total : $10^5=100000$. $P=\\dfrac{5040}{100000}=\\dfrac{63}{1250}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un numéro à k positions avec répétition libre donne toujours un univers total de n^k.",
+        "« Tous différents » se dénombre avec un arrangement (l'ordre compte, pas de répétition) : n(n-1)...(n-k+1).",
+        "« Tous identiques » se dénombre en ne choisissant qu'un seul chiffre, répété partout : n possibilités.",
+        "Vérifie toujours si le premier chiffre peut être 0 avant de fixer le nombre de choix disponibles pour chaque position."
+      ]
+    }
+  ]
+}

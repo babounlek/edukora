@@ -1,0 +1,43 @@
+{
+  "epreuve_source": "bac-a-maths-2014-cameroun.pdf",
+  "matiere": "Mathématiques",
+  "niveau": "Terminale",
+  "serie": "A",
+  "examen": "BAC",
+  "annee": "2014",
+  "duree_epreuve": "3h",
+  "coefficient": "2",
+  "origine": "officiel",
+  "etablissement": null,
+  "statut": "brouillon",
+  "figures": [],
+  "numero_exercice": "2",
+  "enonce_markdown": "## Exercice 2 (5 points)\n\nUne urne contient $10$ boules indiscernables au toucher : $4$ boules rouges et $6$ boules noires.\n\n1. On tire simultanément $2$ boules de cette urne. Calculer :\n(a) la probabilité $p_1$ d'obtenir une boule de chaque couleur. (1 point)\n(b) la probabilité $p_2$ d'obtenir exactement $2$ boules rouges. (1 point)\n(c) la probabilité $p_3$ d'obtenir moins de deux boules rouges. (1 point)\n\n2. On tire maintenant une boule de l'urne, qu'on ne remet pas, puis on tire une seconde boule. Calculer :\n(a) la probabilité $p_4$ d'obtenir une boule de chaque couleur. (1 point)\n(b) la probabilité $p_5$ d'obtenir une boule rouge au premier tirage. (1 point)\n",
+  "points": "5",
+  "themes": [
+    "dénombrement",
+    "probabilités",
+    "tirage simultané",
+    "tirage successif sans remise",
+    "combinaisons"
+  ],
+  "difficulte_estimee": "moyenne",
+  "mots_cles_recherche": [
+    "urne boules rouges noires",
+    "tirage simultané probabilité",
+    "tirage successif sans remise",
+    "combinaisons C(n,k)",
+    "probabilité conditionnelle premier tirage"
+  ],
+  "incertitudes": [],
+  "corrige_markdown": "## Mise en place\n\nL'urne contient $4$ boules rouges et $6$ boules noires ($10-4=6$), soit $10$ boules indiscernables au toucher au total.\n\n## 1. Tirage simultané de 2 boules\n\nL'univers total d'un tirage simultané de $2$ boules parmi $10$ est donné par la formule générale des combinaisons $\\binom{n}{k}=\\dfrac{n!}{k!(n-k)!}$ :\n$$\\binom{10}{2}=\\dfrac{10\\times9}{2\\times1}=45$$\n\n### (a) p1 : une boule de chaque couleur\n\nD'après le principe multiplicatif, le nombre de tirages favorables est $\\binom{4}{1}\\times\\binom{6}{1}$ :\n$$\\text{Card(favorable)}=\\binom{4}{1}\\times\\binom{6}{1}=4\\times6=24$$\n$$p_1=\\dfrac{24}{45}=\\dfrac{8}{15}$$\n\n### (b) p2 : exactement 2 boules rouges\n\n$$\\text{Card(favorable)}=\\binom{4}{2}=\\dfrac{4\\times3}{2\\times1}=6$$\n$$p_2=\\dfrac{6}{45}=\\dfrac{2}{15}$$\n\n### (c) p3 : moins de deux boules rouges\n\n« Moins de deux boules rouges » signifie $0$ ou $1$ boule rouge parmi les $2$ tirées. Comme on ne tire que $2$ boules, les seules possibilités sont $0$, $1$ ou $2$ boules rouges : l'événement « moins de deux boules rouges » est donc l'événement contraire de « exactement $2$ boules rouges » :\n$$p_3=1-p_2=1-\\dfrac{2}{15}=\\dfrac{13}{15}$$\n\n### Conseil\nVérifie ce résultat par un calcul direct : $p_3=P(0\\text{ rouge})+P(1\\text{ rouge})=\\dfrac{\\binom{6}{2}}{45}+p_1=\\dfrac{15}{45}+\\dfrac{24}{45}=\\dfrac{39}{45}=\\dfrac{13}{15}$. Les deux méthodes doivent coïncider.\n\n## 2. Tirage successif sans remise de 2 boules\n\n### Rappel de méthode\nTirer simultanément $2$ boules dans une urne, ou tirer successivement $2$ boules sans remise en ne s'intéressant qu'à l'ensemble des deux boules obtenues (sans tenir compte de l'ordre), correspondent au même modèle probabiliste : les deux points de vue comptent les mêmes issues avec les mêmes probabilités. Un événement qui ne dépend pas de l'ordre d'obtention (comme « une boule de chaque couleur ») a donc exactement la même probabilité dans les deux situations, et peut se calculer soit par combinaisons $\\binom{n}{k}$, soit en additionnant les probabilités de chaque ordre possible dans le tirage successif. En revanche, un événement qui dépend explicitement de l'ordre (comme « une boule rouge au premier tirage ») doit être traité directement dans le modèle séquentiel, sans passer par les combinaisons.\n\nD'après ce principe, comme l'événement « une boule de chaque couleur » ne dépend pas de l'ordre d'obtention, on doit retrouver $p_4=p_1=\\dfrac{8}{15}$. Vérifions-le par un calcul direct.\n\n### (a) p4 : une boule de chaque couleur\n\nOn calcule la probabilité de chacun des deux ordres possibles, puis on les additionne (ce sont deux événements incompatibles) :\n$$P(\\text{rouge puis noire})=\\dfrac{4}{10}\\times\\dfrac{6}{9}=\\dfrac{24}{90}$$\n$$P(\\text{noire puis rouge})=\\dfrac{6}{10}\\times\\dfrac{4}{9}=\\dfrac{24}{90}$$\n$$p_4=\\dfrac{24}{90}+\\dfrac{24}{90}=\\dfrac{48}{90}=\\dfrac{8}{15}$$\n\nOn retrouve bien $p_4=p_1=\\dfrac{8}{15}$, ce qui confirme le rappel ci-dessus.\n\n### (b) p5 : boule rouge au premier tirage\n\nLe premier tirage se fait dans l'urne complète, avant tout retrait : c'est un événement qui dépend explicitement de l'ordre, on reste donc dans le modèle séquentiel et on calcule directement le rapport entre le nombre de boules rouges et l'effectif total de départ.\n$$p_5=\\dfrac{4}{10}=\\dfrac{2}{5}$$\n\n### Piège à éviter\nNe complique jamais $p_5$ en tenant compte du second tirage ni du fait que le tirage se fasse « sans remise » : la question porte uniquement sur le premier tirage, qui se déroule dans les conditions initiales de l'urne (10 boules, dont 4 rouges), sans aucune information supplémentaire à exploiter à ce stade.\n",
+  "rappels_de_methode": [
+    {
+      "id": "rdm-bac-a-maths-2014-cameroun-ex2-0",
+      "competence": "Équivalence entre tirage simultané et tirage successif sans remise pour un événement non ordonné",
+      "contenu_markdown": "Tirer simultanément $2$ boules dans une urne, ou tirer successivement $2$ boules sans remise en ne s'intéressant qu'à l'ensemble des deux boules obtenues (sans tenir compte de l'ordre), correspondent au même modèle probabiliste : les deux points de vue comptent les mêmes issues avec les mêmes probabilités. Un événement qui ne dépend pas de l'ordre d'obtention (comme « une boule de chaque couleur ») a donc exactement la même probabilité dans les deux situations, et peut se calculer soit par combinaisons $\\binom{n}{k}$, soit en additionnant les probabilités de chaque ordre possible dans le tirage successif. En revanche, un événement qui dépend explicitement de l'ordre (comme « une boule rouge au premier tirage ») doit être traité directement dans le modèle séquentiel, sans passer par les combinaisons.",
+      "cours_genere": true,
+      "cours_id": "cours-comparer-tirage-simultane-et-tirage-successif-sans-remise-terminale-a"
+    }
+  ]
+}

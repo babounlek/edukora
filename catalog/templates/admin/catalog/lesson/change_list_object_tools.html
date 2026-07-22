@@ -1,0 +1,13 @@
+{% extends "admin/change_list_object_tools.html" %}
+
+{% block object-tools-items %}
+  <li>
+    <a href="{% url 'admin:catalog_lesson_ingestion' %}" class="button">Ingestion des contenus</a>
+  </li>
+  {% if request.user.is_superuser %}
+    <li>
+      <a href="{% url 'admin:catalog_lesson_purge' %}" class="button" style="background: var(--error-fg, #ba2121);">Purger tout le contenu</a>
+    </li>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}

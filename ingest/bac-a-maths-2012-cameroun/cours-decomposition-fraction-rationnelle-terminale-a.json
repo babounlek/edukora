@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-decomposition-fraction-rationnelle-terminale-a",
+  "meta": {
+    "titre": "Décomposer une fraction rationnelle par division euclidienne polynomiale",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Fractions rationnelles et division polynomiale",
+    "duree_estimee_min": 25,
+    "tags": [
+      "division euclidienne",
+      "fraction rationnelle",
+      "décomposition"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2012-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2012",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2012-cameroun-ex3-0",
+    "correction_id": "corr-bac-a-maths-2012-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fraction rationnelle comme $\\dfrac{x^2+4x+5}{x+2}$ paraît difficile à étudier directement : limites, dérivée et asymptotes semblent tous demander un calcul distinct. En la réécrivant comme une partie entière plus un terme simple en $\\dfrac{1}{x+d}$, un seul calcul de division euclidienne débloque toute l'étude qui suit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Développement et factorisation de polynômes du second degré",
+        "Notion de division euclidienne de polynômes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Division euclidienne d'un polynôme par (x+d)",
+      "contenu_markdown": "Pour un polynôme $P(x)$ de degré supérieur ou égal à celui du diviseur $(x+d)$, il existe un unique couple (quotient $Q(x)$, reste $r$) tel que $P(x)=(x+d)Q(x)+r$, avec $r$ une constante puisque le diviseur est de degré 1. On en déduit immédiatement $\\dfrac{P(x)}{x+d}=Q(x)+\\dfrac{r}{x+d}$ pour tout $x\\neq-d$. En pratique, pour un polynôme du second degré, on peut souvent deviner directement $Q(x)$ en cherchant à faire apparaître le diviseur au carré ou en identifiant les coefficients terme à terme.",
+      "formule_principale": "P(x)=(x+d)Q(x)+r \\Longrightarrow \\dfrac{P(x)}{x+d}=Q(x)+\\dfrac{r}{x+d}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer $a$, $b$, $c$ tels que $\\dfrac{x^2+4x+5}{x+2}=ax+b+\\dfrac{c}{x+2}$ pour tout $x\\neq-2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher à faire apparaître (x+2)^2 dans le numérateur",
+          "justification": "On compare x^2+4x+5 à (x+2)^2=x^2+4x+4",
+          "resultat_markdown": "$(x+2)^2=x^2+4x+4$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'écart entre le numérateur et ce carré",
+          "justification": "On soustrait pour identifier le reste",
+          "resultat_markdown": "$x^2+4x+5-(x^2+4x+4)=1$"
+        },
+        {
+          "numero": 3,
+          "action": "Réécrire le numérateur",
+          "justification": "On combine les deux résultats précédents",
+          "resultat_markdown": "$x^2+4x+5=(x+2)^2+1=(x+2)(x+2)+1$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser chaque membre par (x+2)",
+          "justification": "On sépare le quotient et le reste",
+          "resultat_markdown": "$\\dfrac{x^2+4x+5}{x+2}=(x+2)+\\dfrac{1}{x+2}$"
+        },
+        {
+          "numero": 5,
+          "action": "Identifier a, b, c",
+          "justification": "On compare avec la forme demandée ax+b+c/(x+2)",
+          "resultat_markdown": "$a=1$, $b=2$, $c=1$"
+        }
+      ],
+      "conclusion_markdown": "$\\dfrac{x^2+4x+5}{x+2}=x+2+\\dfrac{1}{x+2}$ pour tout $x\\neq-2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat en redéveloppant $(ax+b)(x+2)+c$ pour le comparer au numérateur d'origine",
+          "pourquoi_faux": "Une erreur de calcul dans l'identification de $a$, $b$ ou $c$ passe facilement inaperçue si on ne revient pas au numérateur de départ pour vérifier.",
+          "correction_markdown": "Développe systématiquement $(ax+b)(x+2)+c$ après avoir trouvé $a$, $b$, $c$, et vérifie que tu retombes bien sur le numérateur d'origine."
+        },
+        {
+          "erreur_markdown": "Confondre le reste de la division (une constante) avec un terme qui dépendrait encore de x",
+          "pourquoi_faux": "Quand on divise par un polynôme de degré 1, le reste est nécessairement de degré strictement inférieur à 1, donc une constante : s'il reste un terme en x, la division n'est pas terminée.",
+          "correction_markdown": "Poursuis la division jusqu'à obtenir un reste constant, sans aucun terme en x restant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décomposer $\\dfrac{x^2+3x+1}{x+1}$ sous la forme $ax+b+\\dfrac{c}{x+1}$.",
+          "solution_markdown": "$(x+1)^2=x^2+2x+1$. $x^2+3x+1-(x^2+2x+1)=x$, ce qui n'est pas constant : on ajuste en écrivant $x^2+3x+1=(x+1)(x+2)+(-1)$. Vérification : $(x+1)(x+2)=x^2+3x+2$, et $x^2+3x+1-(x^2+3x+2)=-1$. Donc $\\\\dfrac{x^2+3x+1}{x+1}=(x+2)-\\\\dfrac{1}{x+1}$, soit $a=1$, $b=2$, $c=-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décomposer $\\dfrac{2x^2+5x+3}{x+1}$ sous la forme $ax+b+\\dfrac{c}{x+1}$.",
+          "solution_markdown": "On cherche $(2x+3)(x+1)=2x^2+5x+3$. Le reste est donc $0$ : $\\\\dfrac{2x^2+5x+3}{x+1}=2x+3$ (aucun terme en $\\\\frac{c}{x+1}$, soit $c=0$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décomposer $\\dfrac{x^2-x+4}{x-3}$ sous la forme $ax+b+\\dfrac{c}{x-3}$.",
+          "solution_markdown": "On cherche $(x+2)(x-3)=x^2-x-6$. Écart : $x^2-x+4-(x^2-x-6)=10$. Donc $x^2-x+4=(x-3)(x+2)+10$, soit $\\\\dfrac{x^2-x+4}{x-3}=(x+2)+\\\\dfrac{10}{x-3}$, avec $a=1$, $b=2$, $c=10$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fraction rationnelle avec un numérateur de degré 2 et un dénominateur de degré 1 se décompose toujours en une partie affine plus un terme constant divisé par le dénominateur.",
+        "La méthode la plus rapide consiste à faire apparaître le carré du diviseur dans le numérateur, puis à isoler l'écart constant restant.",
+        "Vérifie toujours ta décomposition en redéveloppant, pour t'assurer que tu retombes exactement sur le numérateur de départ.",
+        "Cette décomposition est indispensable pour étudier les limites, la dérivée et les asymptotes d'une fonction rationnelle de ce type."
+      ]
+    }
+  ]
+}

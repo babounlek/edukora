@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-systeme-lineaire-2x2-changement-variable-terminale-a",
+  "meta": {
+    "titre": "Résoudre un système linéaire 2x2 et l'exploiter par changement de variable",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Systèmes d'équations et changement de variable",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système linéaire",
+      "substitution",
+      "changement de variable",
+      "logarithme"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex1-0",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup d'exercices du BAC déguisent un simple système linéaire derrière une écriture qui semble plus compliquée : logarithmes, exponentielles, ou même un système trigonométrique. Reconnaître que deux équations qui portent sur $\\ln x$ et $\\ln y$, par exemple, ont exactement la structure d'un système en $x$ et $y$ permet de réutiliser un résultat déjà acquis sans reprendre tout le calcul. Ce cours part de la méthode de résolution d'un système linéaire classique, puis montre comment l'exploiter par changement de variable dans un contexte logarithmique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul littéral et résolution d'une équation du premier degré à une inconnue",
+        "Propriétés du logarithme népérien : $\\ln$ est défini uniquement sur $]0,+\\infty[$",
+        "Passage de $\\ln x=a$ à $x=e^{a}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre un système linéaire par substitution",
+      "contenu_markdown": "Pour résoudre un système de deux équations linéaires à deux inconnues $\\begin{cases} au+bv=c \\\\ du+ev=f\\end{cases}$, on isole une inconnue dans une équation (par exemple $v$ dans la première), puis on remplace cette expression dans la seconde équation. On obtient une équation à une seule inconnue $u$, qu'on résout normalement ; on revient ensuite à $v$ en réinjectant la valeur trouvée de $u$.",
+      "formule_principale": "au+bv=c \\Rightarrow v=\\dfrac{c-au}{b}\\ (\\text{si } b\\neq 0)",
+      "variantes": [
+        {
+          "nom": "Méthode par combinaison linéaire",
+          "quand_utiliser": "Quand les coefficients d'une même inconnue sont faciles à égaler par multiplication (évite les fractions de la substitution)",
+          "contenu_markdown": "On multiplie chaque équation par un facteur choisi pour que les coefficients d'une même inconnue soient opposés, puis on additionne les deux équations : cette inconnue disparaît et il ne reste qu'une équation à une inconnue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre le système $\\begin{cases}2x+y=1\\\\5x+3y=4\\end{cases}$, puis en déduire l'ensemble des solutions de $\\begin{cases}2\\ln x+\\ln y=1\\\\5\\ln x+3\\ln y=4\\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler y dans la première équation",
+          "justification": "y est le terme le plus simple à extraire",
+          "resultat_markdown": "$y=1-2x$"
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer dans la seconde équation",
+          "justification": "On substitue l'expression de y pour obtenir une équation à une seule inconnue",
+          "resultat_markdown": "$5x+3(1-2x)=4 \\Rightarrow 5x+3-6x=4 \\Rightarrow -x+3=4 \\Rightarrow x=-1$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer y",
+          "justification": "On réinjecte x=-1 dans y=1-2x",
+          "resultat_markdown": "$y=1-2\\times(-1)=3$"
+        },
+        {
+          "numero": 4,
+          "action": "Poser X=ln x et Y=ln y dans le second système",
+          "justification": "Le second système a exactement la même structure que le premier une fois ce changement de variable effectué",
+          "resultat_markdown": "$\\begin{cases}2X+Y=1\\\\5X+3Y=4\\end{cases}$, donc $X=-1$ et $Y=3$"
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à x et y",
+          "justification": "$X=\\ln x=-1$ donne $x=e^{-1}$, et $Y=\\ln y=3$ donne $y=e^{3}$",
+          "resultat_markdown": "$x=\\dfrac{1}{e}\\ ;\\ y=e^{3}$"
+        }
+      ],
+      "conclusion_markdown": "Le système en $x,y$ a pour solution $(-1;3)$, et le système logarithmique a pour ensemble solution $\\left\\{\\left(\\dfrac{1}{e};e^{3}\\right)\\right\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Résoudre le système logarithmique en repartant de zéro sans remarquer qu'il a la même structure que le système déjà résolu",
+          "pourquoi_faux": "On refait deux fois le même travail, avec un risque d'erreur de calcul supplémentaire, alors que la seule chose qui change est le nom des inconnues.",
+          "correction_markdown": "Repère systématiquement quand un système ressemble à un système déjà résolu : pose $X=\\ln x$, $Y=\\ln y$ (ou toute autre substitution adaptée) pour t'en convaincre avant de recalculer."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que $x>0$ et $y>0$ à la fin, alors que l'énoncé porte sur $\\ln x$ et $\\ln y$",
+          "pourquoi_faux": "$\\ln x$ n'est défini que pour $x>0$ : une solution du système en $X,Y$ ne redonne une solution valable en $x,y$ que si $x=e^{X}$ et $y=e^{Y}$ sont bien strictement positifs.",
+          "correction_markdown": "Termine toujours en rappelant que $x=e^{X}>0$ et $y=e^{Y}>0$ quelles que soient les valeurs de $X$ et $Y$ : la solution est donc automatiquement dans le domaine de définition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+2y=5\\\\3x-y=1\\end{cases}$.",
+          "solution_markdown": "De la première équation, $x=5-2y$. En remplaçant dans la seconde : $3(5-2y)-y=1 \\Rightarrow 15-6y-y=1 \\Rightarrow -7y=-14 \\Rightarrow y=2$. Puis $x=5-2\\times2=1$. Solution : $(x,y)=(1,2)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En déduire l'ensemble des solutions de $\\begin{cases}e^{x}+2e^{y}=5\\\\3e^{x}-e^{y}=1\\end{cases}$ à partir du système précédent.",
+          "solution_markdown": "On pose $X=e^{x}$ et $Y=e^{y}$ : le système devient $\\begin{cases}X+2Y=5\\\\3X-Y=1\\end{cases}$, identique à l'exercice précédent, donc $X=1$ et $Y=2$. On revient à $x$ et $y$ : $e^{x}=1 \\Rightarrow x=0$ et $e^{y}=2 \\Rightarrow y=\\ln 2$. Solution : $(x,y)=(0,\\ln 2)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases}\\ln(x)+\\ln(y)=\\ln 6\\\\x-y=1\\end{cases}$ avec $x>0$ et $y>0$.",
+          "solution_markdown": "La première équation donne $\\ln(xy)=\\ln 6$, donc $xy=6$ (par injectivité du logarithme sur $]0,+\\infty[$). Avec $x-y=1$, on a $x=y+1$, donc $(y+1)y=6 \\Rightarrow y^{2}+y-6=0$. Le discriminant est $\\Delta=1+24=25$, donc $y=\\dfrac{-1\\pm 5}{2}$, soit $y=2$ ou $y=-3$. Comme $y>0$, on garde $y=2$, d'où $x=3$. Solution : $(x,y)=(3,2)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système en $\\ln x$, $\\ln y$ (ou $e^{x}$, $e^{y}$) n'est souvent qu'un système linéaire déguisé : pose $X=\\ln x$ (ou $X=e^{x}$) pour t'en rendre compte.",
+        "La substitution reste la méthode la plus sûre : isole une inconnue, remplace, résous, puis reviens en arrière.",
+        "Vérifie toujours ta solution dans les deux équations d'origine, pas seulement dans celle qui a servi à substituer.",
+        "Au BAC, ce type de question teste ta capacité à reconnaître une structure connue sous un habillage différent, pas seulement ta maîtrise du calcul brut."
+      ]
+    }
+  ]
+}

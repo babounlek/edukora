@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-factorisation-polynome-degre3-changement-variable-terminale-a",
+  "meta": {
+    "titre": "Factoriser un polynôme de degré 3 connaissant une racine évidente",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Polynômes et changement de variable",
+    "duree_estimee_min": 30,
+    "tags": [
+      "polynôme",
+      "racine évidente",
+      "division euclidienne",
+      "changement de variable"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2013-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2013",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2013-cameroun-ex1-0",
+    "correction_id": "corr-bac-a-maths-2013-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Résoudre directement une équation du troisième degré est hors de portée avec les outils du BAC. Mais dès qu'on connaît (ou qu'on devine) une racine évidente, tout se ramène à une division euclidienne suivie d'une équation du second degré, parfaitement maîtrisable. Ce cours montre la démarche complète, puis comment la réutiliser pour des équations en logarithme ou en exponentielle qui suivent le même polynôme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de la valeur d'un polynôme en un point",
+        "Division euclidienne de polynômes",
+        "Résolution d'une équation du second degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la racine évidente à la factorisation complète",
+      "contenu_markdown": "Si $P$ est un polynôme de degré 3 et si $P(a)=0$ pour une valeur $a$ simple à tester, alors $(x-a)$ divise $P(x)$ exactement. On effectue la division euclidienne de $P(x)$ par $(x-a)$ pour obtenir $P(x)=(x-a)(x^2+bx+c)$, où le polynôme du second degré restant se résout avec le discriminant. Cette factorisation permet de résoudre entièrement $P(x)=0$, et se réutilise telle quelle pour toute équation qui prend la forme $P(t)=0$ après un changement de variable ($t=\\ln x$, $t=e^x$, etc.), à condition de revenir ensuite à $x$ en respectant les contraintes propres à cette variable.",
+      "formule_principale": "P(a)=0 \\Rightarrow P(x)=(x-a)(x^2+bx+c)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $P(x)=x^3-6x^2+5x+12$ vérifie $P(3)=0$, résoudre $P(x)=0$, puis en déduire les solutions de $e^{3x}-6e^{2x}+5e^{x}+12=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que 3 est racine",
+          "justification": "On calcule P(3) directement",
+          "resultat_markdown": "$P(3)=27-54+15+12=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Diviser P(x) par (x-3)",
+          "justification": "Puisque 3 est racine, la division est exacte",
+          "resultat_markdown": "$P(x)=(x-3)(x^2-3x-4)$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre le facteur du second degré",
+          "justification": "Discriminant Δ=9+16=25",
+          "resultat_markdown": "$x=-1$ ou $x=4$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur P(x)=0",
+          "justification": "On rassemble les trois racines",
+          "resultat_markdown": "$S=\\{-1;3;4\\}$"
+        },
+        {
+          "numero": 5,
+          "action": "Poser t=e^x pour la nouvelle équation",
+          "justification": "$e^{3x}-6e^{2x}+5e^{x}+12=P(e^x)$",
+          "resultat_markdown": "$P(t)=0$ avec $t=e^x>0$, donc $t\\in\\{-1,3,4\\}$, et $t=-1$ est rejeté"
+        },
+        {
+          "numero": 6,
+          "action": "Revenir à x",
+          "justification": "$e^x=3$ ou $e^x=4$",
+          "resultat_markdown": "$x=\\ln3$ ou $x=\\ln4$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions de $e^{3x}-6e^{2x}+5e^{x}+12=0$ est $\\{\\ln3\\,;\\,\\ln4\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher à deviner directement une factorisation complète sans passer par la division euclidienne",
+          "pourquoi_faux": "Sans une méthode systématique comme la division euclidienne, il est facile de se tromper sur les coefficients b et c du facteur du second degré, surtout quand ils ne sont pas des entiers évidents.",
+          "correction_markdown": "Effectue toujours la division euclidienne étape par étape, en vérifiant à la fin que le reste est bien nul."
+        },
+        {
+          "erreur_markdown": "Oublier de rejeter les racines incompatibles avec la nouvelle variable (par exemple une racine négative pour t=e^x)",
+          "pourquoi_faux": "Le changement de variable impose des contraintes : t=e^x doit être strictement positif, donc toute racine négative ou nulle de l'équation en t ne correspond à aucun x réel.",
+          "correction_markdown": "Vérifie systématiquement, pour chaque racine trouvée en t, qu'elle respecte bien la contrainte de la variable introduite avant de revenir à x."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que $Q(x)=x^3-2x^2-5x+6$ vérifie $Q(1)=0$, factoriser $Q(x)$ et résoudre $Q(x)=0$.",
+          "solution_markdown": "$Q(x)=(x-1)(x^2-x-6)$. Le facteur du second degré a pour discriminant $\\Delta=1+24=25$, racines $x=3$ ou $x=-2$. $S=\\{-2;1;3\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En utilisant le résultat précédent, résoudre $\\ln^3 x-2\\ln^2 x-5\\ln x+6=0$.",
+          "solution_markdown": "En posant $t=\\ln x$, on retrouve $Q(t)=0$, donc $t\\in\\{-2,1,3\\}$. Comme $\\ln x$ peut prendre n'importe quelle valeur réelle, toutes les solutions sont acceptables : $x=e^{-2}$, $x=e^{1}=e$, ou $x=e^{3}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sachant que $R(x)=2x^3-3x^2-11x+6$ vérifie $R(3)=0$, factoriser $R(x)$ et en déduire les solutions de $2e^{3x}-3e^{2x}-11e^{x}+6=0$.",
+          "solution_markdown": "Division de $2x^3-3x^2-11x+6$ par $(x-3)$ : quotient $2x^2+3x-2$, reste $0$. Discriminant de $2x^2+3x-2$ : $\\Delta=9+16=25$, racines $x=\\dfrac{-3+5}{4}=\\dfrac{1}{2}$ ou $x=\\dfrac{-3-5}{4}=-2$. Donc $R(x)=(x-3)(2x^2+3x-2)$, et $R(x)=0$ a pour solutions $\\left\\{-2;\\dfrac12;3\\right\\}$. Pour l'équation en $e^x$, on pose $t=e^x>0$ : $t\\in\\{-2,\\frac12,3\\}$, on rejette $t=-2$, il reste $e^x=\\frac12 \\Rightarrow x=-\\ln2$, ou $e^x=3 \\Rightarrow x=\\ln3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une racine évidente d'un polynôme de degré 3 se vérifie en calculant sa valeur en ce point : si le résultat est nul, la factorisation par (x-a) est garantie.",
+        "La division euclidienne transforme systématiquement le problème en une équation du second degré, résoluble par discriminant.",
+        "Cette factorisation se réutilise telle quelle pour toute équation ramenée au même polynôme par changement de variable.",
+        "Le retour à l'inconnue d'origine exige toujours de vérifier les contraintes propres à la variable introduite (positivité pour e^x, aucune restriction pour ln x)."
+      ]
+    }
+  ]
+}

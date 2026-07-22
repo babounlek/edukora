@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-denombrement-probabilites-tirage-simultane-terminale-a",
+  "meta": {
+    "titre": "Dénombrement et probabilités pour un tirage simultané",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Probabilités et dénombrement",
+    "duree_estimee_min": 35,
+    "tags": [
+      "combinaisons",
+      "probabilité",
+      "tirage simultané",
+      "événement contraire"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex3-0",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tirage simultané de plusieurs boules dans une urne est l'un des contextes les plus fréquents des exercices de probabilités au BAC. La clé est de reconnaître que l'ordre de sortie n'a pas d'importance, ce qui impose l'usage des combinaisons plutôt que des arrangements, puis de maîtriser deux réflexes qui accélèrent considérablement le calcul : passer par l'événement contraire pour un « au moins un », et lister méthodiquement les répartitions possibles pour un événement portant sur une somme de valeurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de combinaison $\\binom{n}{k}$ et sa formule",
+        "Principe multiplicatif de dénombrement",
+        "Notion de probabilité dans un univers équiprobable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Modèle combinatoire d'un tirage simultané",
+      "contenu_markdown": "Quand on tire simultanément $k$ objets indiscernables au toucher parmi $n$, l'ordre de sortie n'a pas d'importance : le nombre total de tirages possibles est $\\binom{n}{k}$, et chacun de ces tirages est équiprobable. La probabilité d'un événement $E$ est $P(E)=\\dfrac{\\text{Card}(E)}{\\binom{n}{k}}$. Pour compter les tirages favorables à un événement qui porte sur plusieurs catégories d'objets, on choisit indépendamment le nombre d'objets de chaque catégorie exigé par l'événement, et on multiplie les combinaisons obtenues (principe multiplicatif). Deux techniques accélèrent le calcul : pour un événement « au moins un », on passe par le complémentaire avec $P(E)=1-P(\\overline{E})$ ; pour un événement portant sur une somme de valeurs, on liste d'abord toutes les répartitions entre catégories qui donnent cette somme, puis on dénombre chacune séparément avant d'additionner les résultats compatibles entre eux.",
+      "formule_principale": "P(E)=\\dfrac{\\text{Card}(E)}{\\binom{n}{k}}",
+      "variantes": [
+        {
+          "nom": "Passage au complémentaire",
+          "quand_utiliser": "Dès qu'un événement est formulé avec « au moins un »",
+          "contenu_markdown": "$P(E)=1-P(\\overline{E})$, où $\\overline{E}$ (« aucun ») est presque toujours plus simple à dénombrer que $E$ directement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une urne contient $8$ boules marquées $10$, $4$ boules marquées $15$ et $3$ boules marquées $20$. On tire simultanément $3$ boules. Calculer la probabilité d'obtenir un total de $50$ points.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dénombrer l'univers total",
+          "justification": "Le tirage est simultané, donc non ordonné : on utilise une combinaison",
+          "resultat_markdown": "$\\binom{15}{3}=455$"
+        },
+        {
+          "numero": 2,
+          "action": "Lister toutes les répartitions (a,b,c) avec a+b+c=3",
+          "justification": "On cherche toutes les façons de répartir 3 boules entre les 3 catégories, avant de sélectionner celles qui donnent 50 points",
+          "resultat_markdown": "$(3,0,0)\\to30\\ ;\\ (0,3,0)\\to45\\ ;\\ (0,0,3)\\to60\\ ;\\ (2,1,0)\\to35\\ ;\\ (2,0,1)\\to40\\ ;\\ (1,2,0)\\to40\\ ;\\ (1,1,1)\\to45\\ ;\\ (0,2,1)\\to50\\ ;\\ (1,0,2)\\to50\\ ;\\ (0,1,2)\\to55$"
+        },
+        {
+          "numero": 3,
+          "action": "Retenir les répartitions qui donnent exactement 50",
+          "justification": "Seules deux répartitions correspondent à la somme demandée",
+          "resultat_markdown": "$(0,2,1)$ et $(1,0,2)$"
+        },
+        {
+          "numero": 4,
+          "action": "Dénombrer chaque répartition retenue",
+          "justification": "On applique le principe multiplicatif à chaque répartition",
+          "resultat_markdown": "$(0,2,1)$ : $\\binom{8}{0}\\binom{4}{2}\\binom{3}{1}=1\\times6\\times3=18$ ; $(1,0,2)$ : $\\binom{8}{1}\\binom{4}{0}\\binom{3}{2}=8\\times1\\times3=24$"
+        },
+        {
+          "numero": 5,
+          "action": "Additionner et diviser par l'univers total",
+          "justification": "Les deux répartitions sont incompatibles entre elles, donc on additionne",
+          "resultat_markdown": "$\\text{Card}(D)=18+24=42$, donc $P(D)=\\dfrac{42}{455}=\\dfrac{6}{65}$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité d'obtenir un total de $50$ points en tirant $3$ boules est $\\dfrac{6}{65}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser un arrangement $A_n^k$ au lieu d'une combinaison $\\binom{n}{k}$ pour un tirage simultané",
+          "pourquoi_faux": "Un tirage simultané ne distingue pas l'ordre des boules sorties : compter les arrangements reviendrait à compter plusieurs fois le même tirage.",
+          "correction_markdown": "Vérifie toujours si l'énoncé précise « simultanément » (combinaison) ou « successivement, avec ou sans remise » (arrangement) avant de choisir la formule."
+        },
+        {
+          "erreur_markdown": "Oublier une répartition possible en cherchant les combinaisons qui donnent une somme imposée",
+          "pourquoi_faux": "Une répartition oubliée fait sous-évaluer silencieusement le résultat final, sans qu'aucun signe d'erreur n'apparaisse dans le calcul.",
+          "correction_markdown": "Dresse systématiquement la liste complète et ordonnée de toutes les répartitions $(a,b,c)$ avec $a+b+c=k$ avant de sélectionner celles qui conviennent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une urne contient $5$ boules rouges et $3$ boules noires. On tire simultanément $2$ boules. Calculer la probabilité d'obtenir deux boules rouges.",
+          "solution_markdown": "Univers total : $\\binom{8}{2}=28$. Favorable : $\\binom{5}{2}=10$. $P=\\dfrac{10}{28}=\\dfrac{5}{14}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec la même urne ($5$ rouges, $3$ noires), calculer la probabilité d'obtenir au moins une boule noire lors d'un tirage simultané de $2$ boules.",
+          "solution_markdown": "Complémentaire : aucune boule noire, donc les deux boules sont rouges : $\\binom{5}{2}=10$, donc $P(\\text{aucune noire})=\\dfrac{10}{28}=\\dfrac{5}{14}$. $P(\\text{au moins une noire})=1-\\dfrac{5}{14}=\\dfrac{9}{14}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une urne contient $6$ boules marquées $5$, $3$ boules marquées $10$ et $2$ boules marquées $20$. On tire simultanément $3$ boules. Calculer la probabilité d'obtenir un total de $25$ points.",
+          "solution_markdown": "Univers total : $\\binom{11}{3}=165$. Répartitions $(a,b,c)$ avec $a+b+c=3$ et $5a+10b+20c=25$ : en simplifiant par $5$, $a+2b+4c=5$ ; en soustrayant $a+b+c=3$, on obtient $b+3c=2$, dont la seule solution en entiers naturels est $c=0$, $b=2$, $a=1$. Dénombrement : $\\binom{6}{1}\\binom{3}{2}\\binom{2}{0}=6\\times3\\times1=18$. $P=\\dfrac{18}{165}=\\dfrac{6}{55}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tirage simultané se dénombre toujours avec des combinaisons $\\binom{n}{k}$, jamais avec des arrangements.",
+        "Le nombre total de tirages possibles est le dénominateur commun à toutes les probabilités demandées sur une même urne : calcule-le une seule fois.",
+        "Face à un « au moins un », passe systématiquement par le complémentaire : $P(E)=1-P(\\overline{E})$.",
+        "Face à une somme de valeurs imposée, dresse la liste complète des répartitions possibles avant de dénombrer : une répartition oubliée fausse le résultat sans laisser de trace.",
+        "Au BAC, ces exercices combinent presque toujours plusieurs de ces techniques dans un même sujet : identifie à chaque sous-question laquelle s'applique."
+      ]
+    }
+  ]
+}

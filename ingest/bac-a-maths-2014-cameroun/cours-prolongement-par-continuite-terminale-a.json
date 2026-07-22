@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-prolongement-par-continuite-terminale-a",
+  "meta": {
+    "titre": "Prolonger une fonction par continuité en un point",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Limites et continuité",
+    "duree_estimee_min": 25,
+    "tags": [
+      "prolongement par continuité",
+      "limite finie",
+      "continuité en un point",
+      "croissances comparées"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2014-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2014",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-bac-a-maths-2014-cameroun-pb-0",
+    "correction_id": "corr-bac-a-maths-2014-cameroun-pb"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines formules ne sont pas définies en un point précis (division par zéro, logarithme de zéro, etc.) alors même que la fonction se comporte parfaitement bien juste à côté de ce point. Le prolongement par continuité permet de « boucher ce trou » proprement, en donnant à la fonction une valeur cohérente en ce point."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de limites, en particulier les croissances comparées ($\\lim_{x\\to0^+}x\\ln x=0$)",
+        "Définition de la continuité en un point : $\\lim_{x\\to x_0}f(x)=f(x_0)$",
+        "Notion de limite à droite / à gauche"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Prolonger une fonction par continuité",
+      "contenu_markdown": "Soit $f$ une fonction définie par une expression qui n'a pas de sens en un point $x_0$, mais qui est définie au voisinage de $x_0$ (sauf en $x_0$). Si $\\lim_{x\\to x_0}f(x)$ existe et est finie, on peut définir une nouvelle fonction $\\tilde f$, égale à $f$ partout ailleurs, et telle que $\\tilde f(x_0)=\\lim_{x\\to x_0}f(x)$. Cette fonction $\\tilde f$ est alors continue en $x_0$, par construction même : $\\lim_{x\\to x_0}\\tilde f(x)=\\tilde f(x_0)$. On dit que $\\tilde f$ est le prolongement par continuité de $f$ en $x_0$. Pour vérifier qu'une valeur imposée $f(x_0)$ réalise bien ce prolongement, il suffit de calculer $\\lim_{x\\to x_0}f(x)$ et de comparer au $f(x_0)$ donné.",
+      "formule_principale": "\\tilde f(x_0)=\\lim_{x\\to x_0}f(x)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f$ définie par $f(0)=2$ et $f(x)=x\\ln x+2$ pour $x>0$. Montrer que $f$ est continue à droite en $0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la limite de la formule quand x tend vers 0 à droite",
+          "justification": "Croissances comparées : $\\lim_{x\\to0^+}x\\ln x=0$",
+          "resultat_markdown": "$\\lim_{x\\to0^+}(x\\ln x+2)=0+2=2$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer cette limite à la valeur imposée f(0)",
+          "justification": "Définition de la continuité en un point",
+          "resultat_markdown": "$\\lim_{x\\to0^+}f(x)=2=f(0)$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "Les deux valeurs coïncident exactement",
+          "resultat_markdown": "$f$ est continue à droite en $0$ : la valeur $f(0)=2$ réalise bien le prolongement par continuité de $x\\ln x+2$ en $0$."
+        }
+      ],
+      "conclusion_markdown": "La fonction $f$ est bien continue à droite en $0$, car la valeur imposée $f(0)=2$ correspond exactement à la limite de $x\\ln x+2$ quand $x\\to0^+$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que $f$ est continue en $x_0$ sans avoir calculé explicitement la limite de la formule en ce point",
+          "pourquoi_faux": "La continuité en $x_0$ n'est pas automatique dès qu'une valeur $f(x_0)$ est donnée : il faut impérativement vérifier que cette valeur coïncide avec la limite calculée.",
+          "correction_markdown": "Calcule toujours $\\lim_{x\\to x_0}f(x)$ séparément, puis compare-la explicitement à $f(x_0)$ avant de conclure à la continuité."
+        },
+        {
+          "erreur_markdown": "Oublier que le prolongement ne concerne parfois qu'un seul côté du point (continuité à droite seulement, si $x_0$ est une borne du domaine)",
+          "pourquoi_faux": "Si $x_0$ est une extrémité du domaine (comme $0$ pour $D_f=[0,+\\infty[$), on ne peut étudier que la limite à droite : la limite à gauche n'a pas de sens car la fonction n'y est pas définie.",
+          "correction_markdown": "Identifie d'abord si $x_0$ est un point intérieur ou une borne du domaine, pour savoir s'il faut étudier une limite bilatérale ou seulement une limite à droite (ou à gauche)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=x^2\\ln x$ pour $x>0$ et $g(0)=0$. Montrer que $g$ est continue à droite en $0$.",
+          "solution_markdown": "$\\lim_{x\\to0^+}x^2\\ln x=0$ par croissances comparées, donc $\\lim_{x\\to0^+}g(x)=0=g(0)$ : $g$ est continue à droite en $0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h(x)=\\dfrac{\\sin x}{x}$ pour $x\\neq0$. Quelle valeur faut-il donner à $h(0)$ pour que $h$ soit continue en $0$ ?",
+          "solution_markdown": "$\\lim_{x\\to0}\\dfrac{\\sin x}{x}=1$ (limite usuelle), donc il faut poser $h(0)=1$ pour que $h$ soit continue en $0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=x\\ln x-x+1$ pour $x>0$. Peut-on prolonger $k$ par continuité en $0$ ? Si oui, avec quelle valeur ?",
+          "solution_markdown": "$\\lim_{x\\to0^+}x\\ln x=0$ et $\\lim_{x\\to0^+}(-x+1)=1$, donc $\\lim_{x\\to0^+}k(x)=0+1=1$ : on peut prolonger $k$ par continuité en $0$ en posant $k(0)=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On prolonge une fonction par continuité en un point où sa formule n'est pas définie, à condition que la limite en ce point existe et soit finie.",
+        "La valeur du prolongement est exactement cette limite : $\\tilde f(x_0)=\\lim_{x\\to x_0}f(x)$.",
+        "Pour vérifier une continuité imposée par l'énoncé, calcule toujours la limite séparément et compare-la à la valeur donnée.",
+        "Si $x_0$ est une borne du domaine, une seule limite latérale (à droite ou à gauche) est pertinente."
+      ]
+    }
+  ]
+}

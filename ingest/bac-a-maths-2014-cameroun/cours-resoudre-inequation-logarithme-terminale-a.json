@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-resoudre-inequation-logarithme-terminale-a",
+  "meta": {
+    "titre": "Résoudre une inéquation du type ln x > k",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Fonction logarithme népérien",
+    "duree_estimee_min": 20,
+    "tags": [
+      "logarithme népérien",
+      "inéquation",
+      "monotonie",
+      "fonction exponentielle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2014-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2014",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-bac-a-maths-2014-cameroun-pb-1",
+    "correction_id": "corr-bac-a-maths-2014-cameroun-pb"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Étudier le signe d'une dérivée qui contient un logarithme conduit presque toujours à devoir résoudre une inéquation du type $\\ln x>k$. Une seule idée suffit à chaque fois : utiliser la stricte croissance de la fonction $\\ln$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Stricte croissance de la fonction $\\ln$ sur $]0,+\\infty[$",
+        "Relation entre $\\ln$ et exponentielle : $\\ln(e^k)=k$",
+        "Résolution d'inéquations simples"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre $\\ln x>k$",
+      "contenu_markdown": "La fonction $\\ln$ est strictement croissante sur $]0,+\\infty[$. Pour résoudre une inéquation du type $\\ln x>k$ (avec $k$ réel), on remarque que $k=\\ln(e^k)$, ce qui ramène l'inégalité à $\\ln x>\\ln(e^k)$. Par stricte croissance de $\\ln$, cette inégalité équivaut à $x>e^k$. On procède de façon symétrique pour $\\ln x<k$ (qui équivaut à $x<e^k$), $\\ln x\\geq k$ (qui équivaut à $x\\geq e^k$), etc. Cette méthode transforme systématiquement une inégalité portant sur $\\ln x$ en une comparaison directe de $x$ à un nombre réel positif.",
+      "formule_principale": "\\ln x>k \\iff x>e^{k}",
+      "variantes": [
+        "\\ln x<k \\iff x<e^{k}",
+        "\\ln x\\geq k \\iff x\\geq e^{k}",
+        "\\ln x\\leq k \\iff x\\leq e^{k}"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre, pour $x>0$, l'inéquation $1+\\ln x>0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler ln x",
+          "justification": "On soustrait 1 de chaque côté",
+          "resultat_markdown": "$1+\\ln x>0 \\iff \\ln x>-1$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier k et appliquer la formule générale",
+          "justification": "Ici $k=-1$, donc $\\ln x>-1 \\iff x>e^{-1}$",
+          "resultat_markdown": "$\\ln x>-1 \\iff x>e^{-1}=\\dfrac{1}{e}$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "Traduction en intervalle",
+          "resultat_markdown": "$1+\\ln x>0 \\iff x\\in\\left]\\dfrac{1}{e}\\,;\\,+\\infty\\right[$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $\\left]\\dfrac{1}{e}\\,;\\,+\\infty\\right[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Passer à l'exponentielle « au hasard » sans justifier par la croissance de ln",
+          "pourquoi_faux": "C'est la stricte croissance de $\\ln$ (ou de l'exponentielle) qui garantit que l'inégalité est conservée dans le même sens : sans le mentionner, le raisonnement n'est pas justifié.",
+          "correction_markdown": "Mentionne toujours explicitement que $\\ln$ est strictement croissante sur $]0,+\\infty[$ avant d'en déduire l'équivalence entre $\\ln x>k$ et $x>e^k$."
+        },
+        {
+          "erreur_markdown": "Oublier la condition $x>0$ (domaine de définition de $\\ln x$) en présentant la solution finale",
+          "pourquoi_faux": "L'inéquation $\\ln x>k$ n'a de sens que pour $x>0$ : toute réponse doit rester cohérente avec ce domaine, même si $e^k$ est déjà strictement positif.",
+          "correction_markdown": "Vérifie que l'intervalle solution obtenu est bien inclus dans $]0,+\\infty[$ (c'est automatique ici puisque $e^k>0$, mais garde le réflexe de le vérifier)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre, pour $x>0$ : $\\ln x>2$.",
+          "solution_markdown": "$\\ln x>2 \\iff x>e^2$. Solution : $]e^2,+\\infty[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre, pour $x>0$ : $2+\\ln x\\leq0$.",
+          "solution_markdown": "$2+\\ln x\\leq0 \\iff \\ln x\\leq-2 \\iff x\\leq e^{-2}$. Solution : $]0\\,;e^{-2}]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $g(x)=2\\ln x-3$ pour $x>0$. Résoudre $g(x)>0$ et interpréter le résultat comme le signe d'une dérivée.",
+          "solution_markdown": "$2\\ln x-3>0 \\iff \\ln x>\\dfrac{3}{2} \\iff x>e^{3/2}$. Si $g$ représentait la dérivée d'une fonction $\\varphi$, on en déduirait que $\\varphi$ est strictement croissante sur $\\left]e^{3/2},+\\infty\\right[$ et strictement décroissante sur $\\left]0,e^{3/2}\\right[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour résoudre $\\ln x>k$, on écrit $k=\\ln(e^k)$ puis on utilise la stricte croissance de $\\ln$ : $\\ln x>k \\iff x>e^k$.",
+        "La même idée s'applique à $<$, $\\geq$, $\\leq$, en gardant le même sens d'inégalité (car $\\ln$ est croissante).",
+        "Justifie toujours l'équivalence par la monotonie de $\\ln$.",
+        "Cette méthode est la clé pour étudier le signe de nombreuses dérivées faisant intervenir un logarithme."
+      ]
+    }
+  ]
+}

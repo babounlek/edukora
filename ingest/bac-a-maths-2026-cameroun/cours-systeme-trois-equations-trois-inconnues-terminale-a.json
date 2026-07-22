@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-systeme-trois-equations-trois-inconnues-terminale-a",
+  "meta": {
+    "titre": "Résoudre un système de trois équations à trois inconnues",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Systèmes d'équations et mise en situation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "système d'équations",
+      "combinaison linéaire",
+      "mise en équation",
+      "situation-problème"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2026-cameroun",
+    "epreuve_titre": "Évaluations Harmonisées Régionales N°1 - Épreuve zéro de Mathématiques - Série A4 - Cameroun - 2026",
+    "exercice_numero": "Partie B",
+    "rappel_id": "rdm-bac-a-maths-2026-cameroun-pb-0",
+    "correction_id": "corr-bac-a-maths-2026-cameroun-pb"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'une situation concrète (prix de plusieurs produits, mélanges, partages) mêle trois quantités inconnues liées par trois informations différentes, on aboutit à un système de trois équations à trois inconnues. Une méthode systématique, la combinaison linéaire répétée, permet de le résoudre à chaque fois, sans avoir besoin de deviner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'un système de deux équations à deux inconnues",
+        "Combinaison linéaire d'équations (multiplier une équation par un nombre, additionner ou soustraire deux équations)",
+        "Mise en équation d'une situation concrète"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre un système 3x3 par élimination successive",
+      "contenu_markdown": "Pour un système $\\begin{cases}a_1x+b_1y+c_1z=d_1\\\\a_2x+b_2y+c_2z=d_2\\\\a_3x+b_3y+c_3z=d_3\\end{cases}$, on choisit une inconnue à éliminer en premier (souvent celle dont les coefficients se combinent le plus simplement). On multiplie une ou plusieurs équations par des coefficients bien choisis pour que cette inconnue ait des coefficients opposés ou égaux, puis on additionne ou soustrait deux équations à la fois pour l'éliminer. En répétant l'opération sur deux paires d'équations différentes (impliquant toutes les trois équations de départ), on obtient un système de deux équations à deux inconnues (les deux inconnues restantes), que l'on sait résoudre par substitution ou combinaison. On remonte ensuite : la valeur d'une inconnue permet de trouver la seconde grâce au système 2x2, puis les deux valeurs trouvées permettent de trouver la troisième inconnue en les substituant dans une des équations de départ. On termine systématiquement par une vérification dans l'équation non utilisée pour ce dernier calcul.",
+      "formule_principale": "\\text{Éliminer une inconnue par combinaison} \\;\\to\\; \\text{système 2x2} \\;\\to\\; \\text{remonter par substitution}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre le système $\\begin{cases}2j+3s+l=18\\,500\\\\j+4s+2l=22\\,000\\\\3j+2s+2l=23\\,000\\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir d'éliminer l (le coefficient 1 ou 2 se prête bien à un ajustement rapide)",
+          "justification": "On multiplie la première équation par 2 pour obtenir un coefficient de l égal à celui des deux autres équations",
+          "resultat_markdown": "$4j+6s+2l=37\\,000$"
+        },
+        {
+          "numero": 2,
+          "action": "Soustraire la deuxième équation à cette nouvelle équation",
+          "justification": "Les coefficients de l s'annulent (2-2=0)",
+          "resultat_markdown": "$3j+2s=15\\,000$"
+        },
+        {
+          "numero": 3,
+          "action": "Soustraire la troisième équation à cette même nouvelle équation",
+          "justification": "Les coefficients de l s'annulent à nouveau",
+          "resultat_markdown": "$j+4s=14\\,000$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le système 2x2 obtenu par substitution",
+          "justification": "On isole j dans la dernière équation et on substitue dans l'autre",
+          "resultat_markdown": "$j=14\\,000-4s$, puis $3(14\\,000-4s)+2s=15\\,000 \\Rightarrow s=2\\,700$, donc $j=3\\,200$"
+        },
+        {
+          "numero": 5,
+          "action": "Substituer j et s dans une équation de départ pour trouver l",
+          "justification": "On utilise la première équation",
+          "resultat_markdown": "$2\\times3\\,200+3\\times2\\,700+l=18\\,500 \\Rightarrow l=4\\,000$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier dans l'équation non utilisée pour ce dernier calcul",
+          "justification": "On contrôle avec la deuxième équation",
+          "resultat_markdown": "$3\\,200+4\\times2\\,700+2\\times4\\,000=3\\,200+10\\,800+8\\,000=22\\,000$ : validé"
+        }
+      ],
+      "conclusion_markdown": "Le triplet solution est $(j,s,l)=(3\\,200\\,;\\,2\\,700\\,;\\,4\\,000)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Combiner deux équations en n'utilisant que deux des trois équations du système, puis s'arrêter là",
+          "pourquoi_faux": "Un système de trois équations à trois inconnues nécessite d'utiliser les trois équations pour être entièrement résolu : deux combinaisons suffisent pour éliminer une inconnue, mais il faut ensuite résoudre le système 2x2 restant puis remonter jusqu'à la troisième inconnue.",
+          "correction_markdown": "Assure-toi d'avoir utilisé les trois équations de départ, et vérifie ta solution finale dans une équation qui n'a pas servi au tout dernier calcul."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier toute l'équation (y compris le second membre) lors d'une combinaison linéaire",
+          "pourquoi_faux": "Multiplier une équation par un coefficient doit s'appliquer à tous les termes, y compris celui de droite : oublier ce dernier terme change complètement l'équation et invalide toute la suite du calcul.",
+          "correction_markdown": "Recopie l'équation en entier avant de la multiplier, terme par terme, second membre inclus."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+y+z=6\\\\x-y+z=2\\\\x+y-z=0\\end{cases}$.",
+          "solution_markdown": "$(1)-(2)$ : $2y=4 \\Rightarrow y=2$. $(1)-(3)$ : $2z=6 \\Rightarrow z=3$. Dans $(1)$ : $x+2+3=6 \\Rightarrow x=1$. Solution : $(x,y,z)=(1,2,3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un devis pour 2 stylos, 1 cahier et 3 crayons coûte 2 900 FCFA. Un devis pour 1 stylo, 2 cahiers et 1 crayon coûte 2 100 FCFA. Un devis pour 3 stylos, 1 cahier et 2 crayons coûte 3 300 FCFA. Trouver le prix d'un stylo, d'un cahier et d'un crayon.",
+          "solution_markdown": "En notant $s,c,r$ les prix : $\\begin{cases}2s+c+3r=2\\,900\\\\s+2c+r=2\\,100\\\\3s+c+2r=3\\,300\\end{cases}$. En combinant $(1)$ et $(3)$ : $(3)-(1)$ donne $s-2r=400$, donc $s=400+2r$. En substituant dans $(2)$ et $(1)$, puis en résolvant, on trouve $r=300$, $s=1\\,000$, $c=400$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Trois amis partagent 100 fruits entre pommes, bananes et oranges. Le nombre de pommes est le double du nombre d'oranges. Le nombre de bananes dépasse celui des pommes de 10. Combien y a-t-il de fruits de chaque sorte ?",
+          "solution_markdown": "Notons $p,b,o$ les nombres de pommes, bananes, oranges. $\\begin{cases}p+b+o=100\\\\p=2o\\\\b=p+10\\end{cases}$. En substituant $p=2o$ et $b=2o+10$ dans la première équation : $2o+(2o+10)+o=100 \\Rightarrow 5o+10=100 \\Rightarrow o=18$. Donc $p=36$ et $b=46$. Vérification : $36+46+18=100$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système 3x3 se résout en éliminant une inconnue par combinaison linéaire pour se ramener à un système 2x2 déjà maîtrisé.",
+        "Multiplie toujours l'équation entière (y compris le second membre) lors d'une combinaison.",
+        "Remonte étape par étape : trouve d'abord deux inconnues via le système 2x2, puis la troisième par substitution dans une équation de départ.",
+        "Termine systématiquement par une vérification dans l'équation non utilisée pour le dernier calcul : c'est la garantie qu'aucune erreur ne s'est glissée dans la résolution."
+      ]
+    }
+  ]
+}

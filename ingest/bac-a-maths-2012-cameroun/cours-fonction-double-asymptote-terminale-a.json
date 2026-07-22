@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-fonction-double-asymptote-terminale-a",
+  "meta": {
+    "titre": "Étudier une fonction du type ax+b+c/(x+d) : signe de la dérivée et double asymptote",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Étude de fonctions rationnelles",
+    "duree_estimee_min": 35,
+    "tags": [
+      "fonction rationnelle",
+      "asymptote verticale",
+      "asymptote oblique",
+      "dérivée",
+      "tableau de variation"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2012-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2012",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2012-cameroun-ex3-1",
+    "correction_id": "corr-bac-a-maths-2012-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction rationnelle décomposée sous la forme $ax+b+\\dfrac{c}{x+d}$ possède presque toujours deux asymptotes à la fois : une verticale, là où le dénominateur s'annule, et une oblique, qui décrit le comportement à l'infini. Ce cours montre comment obtenir les deux d'un seul coup à partir de cette écriture, puis comment en déduire le tableau de variation complet."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposition d'une fraction rationnelle en partie entière plus terme en 1/(x+d)",
+        "Dérivée d'une fonction du type 1/(x+d)",
+        "Factorisation d'une différence de carrés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Asymptotes et signe de la dérivée à partir de la forme décomposée",
+      "contenu_markdown": "Pour une fonction $f(x)=ax+b+\\dfrac{c}{x+d}$, le comportement au voisinage de $x=-d$ (où $\\dfrac{c}{x+d}$ explose) donne l'asymptote verticale d'équation $x=-d$. Le comportement à l'infini, où $\\dfrac{c}{x+d}\\to0$, donne l'asymptote oblique d'équation $y=ax+b$ (car $f(x)-(ax+b)\\to0$). La dérivée est $f'(x)=a-\\dfrac{c}{(x+d)^2}=\\dfrac{a(x+d)^2-c}{(x+d)^2}$ ; si $a$ et $c$ sont de même signe, le numérateur se factorise en différence de carrés, ce qui donne directement le signe de $f'(x)$ et les intervalles de monotonie de part et d'autre de l'asymptote verticale.",
+      "formule_principale": "f(x)=ax+b+\\dfrac{c}{x+d} \\Rightarrow \\text{asymptote verticale } x=-d,\\ \\text{asymptote oblique } y=ax+b",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les asymptotes et les variations de $f(x)=x+2+\\dfrac{1}{x+2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'asymptote verticale",
+          "justification": "Le terme 1/(x+2) explose quand x tend vers -2",
+          "resultat_markdown": "asymptote verticale $x=-2$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'asymptote oblique",
+          "justification": "$f(x)-(x+2)=\\dfrac{1}{x+2}\\to0$ quand $x\\to\\pm\\infty$",
+          "resultat_markdown": "asymptote oblique $y=x+2$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la dérivée",
+          "justification": "$f'(x)=1-\\dfrac{1}{(x+2)^2}$",
+          "resultat_markdown": "$f'(x)=\\dfrac{(x+2)^2-1}{(x+2)^2}$"
+        },
+        {
+          "numero": 4,
+          "action": "Factoriser le numérateur en différence de carrés",
+          "justification": "$(x+2)^2-1^2=[(x+2)-1][(x+2)+1]$",
+          "resultat_markdown": "$(x+1)(x+3)$"
+        },
+        {
+          "numero": 5,
+          "action": "Étudier le signe de f'(x)",
+          "justification": "Le dénominateur (x+2)^2 est toujours positif, donc le signe de f' est celui de (x+1)(x+3)",
+          "resultat_markdown": "$f'(x)>0$ pour $x<-3$ ou $x>-1$ ; $f'(x)<0$ pour $-3<x<-1$ (avec $x\\neq-2$ exclu)"
+        }
+      ],
+      "conclusion_markdown": "$f$ est croissante sur $]-\\infty,-3]$, décroissante sur $[-3,-2[$, décroissante sur $]-2,-1]$, croissante sur $[-1,+\\infty[$, avec un maximum local $-2$ en $x=-3$ et un minimum local $2$ en $x=-1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'asymptote verticale et ne chercher que l'asymptote oblique",
+          "pourquoi_faux": "Une fonction rationnelle avec un dénominateur qui s'annule sur le domaine admet presque toujours une asymptote verticale en ce point, en plus de son éventuelle asymptote oblique à l'infini : les deux coexistent et doivent être données.",
+          "correction_markdown": "Cherche systématiquement les deux types d'asymptotes : verticale (où le dénominateur s'annule) et oblique ou horizontale (comportement à l'infini)."
+        },
+        {
+          "erreur_markdown": "Annoncer un maximum ou un minimum global à partir d'extrema locaux situés de part et d'autre d'une asymptote verticale",
+          "pourquoi_faux": "La présence d'une asymptote verticale sépare la courbe en deux branches indépendantes : un extremum local sur une branche n'a aucune relation d'ordre garantie avec un extremum local sur l'autre branche.",
+          "correction_markdown": "Précise toujours qu'un extremum obtenu de cette façon est local, jamais global, dès qu'une asymptote verticale traverse le tableau de variation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer les deux asymptotes de $g(x)=x-1+\\dfrac{4}{x+1}$.",
+          "solution_markdown": "Asymptote verticale : $x=-1$ (le dénominateur s'annule en $-1$). Asymptote oblique : $y=x-1$ (car $\\dfrac{4}{x+1}\\to0$ à l'infini)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Étudier le signe de la dérivée de $g(x)=x-1+\\dfrac{4}{x+1}$.",
+          "solution_markdown": "$g'(x)=1-\\dfrac{4}{(x+1)^2}=\\dfrac{(x+1)^2-4}{(x+1)^2}$. Numérateur : $(x+1-2)(x+1+2)=(x-1)(x+3)$. Comme $(x+1)^2>0$, le signe de $g'$ est celui de $(x-1)(x+3)$ : positif pour $x<-3$ ou $x>1$, négatif pour $-3<x<1$ (avec $x\\\\neq-1$ exclu)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=2x+\\dfrac{9}{x-2}$. Déterminer les asymptotes, la dérivée factorisée, et les extrema locaux.",
+          "solution_markdown": "Asymptote verticale : $x=2$. Asymptote oblique : $y=2x$ (car $\\\\dfrac{9}{x-2}\\\\to0$ à l'infini). $h'(x)=2-\\\\dfrac{9}{(x-2)^2}=\\\\dfrac{2(x-2)^2-9}{(x-2)^2}$. On résout $2(x-2)^2=9 \\\\Rightarrow (x-2)^2=\\\\dfrac{9}{2} \\\\Rightarrow x-2=\\\\pm\\\\dfrac{3}{\\\\sqrt2}$, soit $x=2\\\\pm\\\\dfrac{3\\\\sqrt2}{2}$. Ce sont les deux points où $h'$ s'annule, séparant les intervalles de croissance et de décroissance, avec un maximum local à gauche de l'asymptote et un minimum local à droite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction $f(x)=ax+b+\\dfrac{c}{x+d}$ révèle ses deux asymptotes directement dans son écriture : $x=-d$ (verticale) et $y=ax+b$ (oblique).",
+        "La dérivée $f'(x)=a-\\dfrac{c}{(x+d)^2}$ se factorise souvent en différence de carrés, ce qui simplifie beaucoup l'étude du signe.",
+        "Une asymptote verticale sépare toujours la courbe en deux branches : les extrema obtenus de part et d'autre restent locaux, jamais globaux.",
+        "Cette méthode s'applique à toute fonction homographique ou rationnelle simple ramenée à cette forme décomposée."
+      ]
+    }
+  ]
+}

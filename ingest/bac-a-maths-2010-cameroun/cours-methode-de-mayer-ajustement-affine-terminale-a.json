@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-methode-de-mayer-ajustement-affine-terminale-a",
+  "meta": {
+    "titre": "Ajuster une série statistique double par la méthode de Mayer",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Statistique à deux variables",
+    "duree_estimee_min": 30,
+    "tags": [
+      "méthode de Mayer",
+      "ajustement affine",
+      "point moyen",
+      "prévision"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2010-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2010",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2010-cameroun-ex2-0",
+    "correction_id": "corr-bac-a-maths-2010-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un nuage de points qui semble globalement aligné, on cherche une droite qui le résume au mieux, pour décrire la tendance ou faire une prévision. La méthode de Mayer offre une façon simple, rapide et sans calcul de covariance, d'obtenir cette droite d'ajustement, à partir de deux points moyens seulement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'une moyenne arithmétique",
+        "Équation d'une droite à partir de deux points ou d'un point et d'un coefficient directeur",
+        "Lecture d'un tableau de données à deux variables"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de Mayer, étape par étape",
+      "contenu_markdown": "On range la série par ordre croissant des abscisses, puis on la partage en deux groupes de même effectif (le premier groupe rassemble les plus petites valeurs, le second les plus grandes). On calcule le point moyen de chaque groupe, $G_1(\\bar{x}_1,\\bar{y}_1)$ et $G_2(\\bar{x}_2,\\bar{y}_2)$. La droite d'ajustement de Mayer est la droite $(G_1G_2)$, de coefficient directeur $a=\\dfrac{\\bar{y}_2-\\bar{y}_1}{\\bar{x}_2-\\bar{x}_1}$, dont on détermine l'ordonnée à l'origine en réinjectant les coordonnées de $G_1$ (ou $G_2$) dans $y=ax+b$. Quand les deux groupes ont le même effectif, cette droite passe automatiquement par le point moyen global de toute la série, ce qui donne une vérification immédiate.",
+      "formule_principale": "a=\\dfrac{\\bar{y}_2-\\bar{y}_1}{\\bar{x}_2-\\bar{x}_1}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ajuster par la méthode de Mayer la série des prix du kilogramme de viande de 1992 à 2001 (10 années), puis prévoir le prix en 2007.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Partager la série en deux groupes de même effectif",
+          "justification": "10 années, donc deux groupes de 5, dans l'ordre chronologique",
+          "resultat_markdown": "groupe 1 : 1992-1996 ; groupe 2 : 1997-2001"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le point moyen de chaque groupe",
+          "justification": "On fait la moyenne des années et des prix dans chaque groupe",
+          "resultat_markdown": "$G_1(1994\\,;1371)$ et $G_2(1999\\,;1525)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le coefficient directeur de (G1G2)",
+          "justification": "$a=\\dfrac{\\bar{y}_2-\\bar{y}_1}{\\bar{x}_2-\\bar{x}_1}$",
+          "resultat_markdown": "$a=\\dfrac{1525-1371}{1999-1994}=\\dfrac{154}{5}=30{,}8$"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer l'ordonnée à l'origine",
+          "justification": "On réinjecte les coordonnées de G1 dans y=ax+b",
+          "resultat_markdown": "$1371=30{,}8\\times1994+b \\Rightarrow b=-60044{,}2$"
+        },
+        {
+          "numero": 5,
+          "action": "Utiliser la droite pour prévoir le prix en 2007",
+          "justification": "On remplace x par 2007 dans l'équation de la droite",
+          "resultat_markdown": "$y=30{,}8\\times2007-60044{,}2=1771{,}4$"
+        }
+      ],
+      "conclusion_markdown": "La droite d'ajustement de Mayer est $y=30{,}8x-60044{,}2$, et la prévision pour 2007 est d'environ $1771{,}4$ FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répartir les observations au hasard entre les deux groupes plutôt que dans l'ordre chronologique des abscisses",
+          "pourquoi_faux": "La méthode de Mayer suppose que le premier groupe rassemble les valeurs les plus petites en abscisse et le second les plus grandes : mélanger les groupes détruit la logique de la méthode et fausse le coefficient directeur.",
+          "correction_markdown": "Trie toujours la série par abscisses croissantes avant de la partager en deux groupes de même effectif."
+        },
+        {
+          "erreur_markdown": "Faire des groupes de tailles différentes sans ajuster le raisonnement",
+          "pourquoi_faux": "La propriété qui garantit que la droite de Mayer passe par le point moyen global $G$ n'est vraie, de façon simple, que lorsque les deux groupes ont le même effectif.",
+          "correction_markdown": "Si l'effectif total est impair, précise clairement comment tu répartis l'observation médiane, et vérifie ta droite en la comparant au point moyen global."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série de 6 points a pour groupe 1 (3 premiers points) le point moyen $G_1(2,5)$ et pour groupe 2 (3 derniers points) le point moyen $G_2(8,17)$. Donner l'équation de la droite de Mayer.",
+          "solution_markdown": "$a=\\dfrac{17-5}{8-2}=\\dfrac{12}{6}=2$. Avec $G_1$ : $5=2\\times2+b \\Rightarrow b=1$. Droite : $y=2x+1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la série précédente, vérifier que la droite obtenue passe bien par le point moyen global, sachant que celui-ci est $G(5,11)$.",
+          "solution_markdown": "On remplace $x=5$ dans $y=2x+1$ : $y=2\\times5+1=11$, ce qui correspond exactement à l'ordonnée de $G$ : la droite passe bien par $G$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 8 observations a pour points moyens de groupes $G_1(3,20)$ et $G_2(11,52)$. Prévoir la valeur de $y$ pour $x=15$, et discuter la fiabilité de cette prévision.",
+          "solution_markdown": "$a=\\dfrac{52-20}{11-3}=\\dfrac{32}{8}=4$. Avec $G_1$ : $20=4\\times3+b \\Rightarrow b=8$. Droite : $y=4x+8$. Pour $x=15$ : $y=4\\times15+8=68$. Comme $x=15$ dépasse largement l'intervalle d'observation (les abscisses des groupes vont de 3 à 11), cette prévision est une extrapolation risquée : rien ne garantit que la tendance linéaire observée se poursuive au-delà des données recueillies."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode de Mayer ajuste une série par la droite passant par les points moyens de deux groupes d'effectifs égaux.",
+        "Trie toujours la série par abscisses croissantes avant de constituer les deux groupes.",
+        "La droite obtenue passe par le point moyen global de la série quand les deux groupes ont le même effectif : utilise ce fait pour vérifier ton calcul.",
+        "Toute prévision par extrapolation doit être nuancée : plus on s'éloigne de la plage des données observées, moins la prévision est fiable."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-probabilite-sous-population-emboitee-terminale-a",
+  "meta": {
+    "titre": "Calculer une probabilité sur une sous-population emboîtée dans un tirage simultané",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Probabilités et dénombrement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "probabilité",
+      "sous-ensemble",
+      "tirage simultané",
+      "combinaisons"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2012-cameroun",
+    "epreuve_titre": "Baccalauréat série A4 - Mathématiques - Cameroun - 2012",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2012-cameroun-ex2-1",
+    "correction_id": "corr-bac-a-maths-2012-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un événement de probabilité peut porter sur une catégorie « au sens large » (par exemple, posséder un téléphone portable, qu'on ait aussi un fixe ou non) ou sur une sous-catégorie stricte (uniquement le portable). Confondre les deux effectifs est l'erreur la plus fréquente sur ce type de question : ce cours montre comment les distinguer avant tout calcul de probabilité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Cardinaux d'ensembles (union, intersection, sous-catégorie stricte)",
+        "Combinaisons $\\binom{n}{k}$ et probabilité dans un univers équiprobable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier le bon effectif avant de dénombrer",
+      "contenu_markdown": "Avant de calculer la probabilité d'un événement portant sur une catégorie de personnes ou d'objets, il faut déterminer avec précision l'effectif exact de cette catégorie : s'agit-il de la catégorie au sens large (qui peut inclure des éléments partagés avec une autre catégorie), ou d'une sous-catégorie stricte (qui exclut explicitement ces éléments partagés) ? Une fois cet effectif $m$ précisé, la probabilité d'un tirage simultané de $k$ éléments pris dans cette catégorie, parmi une population totale de $n$, est $P=\\dfrac{\\binom{m}{k}}{\\binom{n}{k}}$.",
+      "formule_principale": "P=\\dfrac{\\binom{m}{k}}{\\binom{n}{k}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur 25 personnes, 15 possèdent un téléphone portable, dont 5 possèdent aussi un téléphone fixe. On choisit simultanément 2 personnes parmi les 25. Calculer la probabilité que les deux choisies possèdent uniquement un téléphone portable.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la catégorie visée par l'énoncé",
+          "justification": "L'événement porte sur « uniquement portable », pas sur « portable » au sens large",
+          "resultat_markdown": "sous-catégorie stricte : portable seul"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'effectif de cette sous-catégorie",
+          "justification": "On retranche l'intersection à l'effectif de la catégorie large",
+          "resultat_markdown": "$15-5=10$ personnes possèdent uniquement un portable"
+        },
+        {
+          "numero": 3,
+          "action": "Dénombrer les tirages favorables",
+          "justification": "Les deux personnes doivent provenir de ces 10 personnes",
+          "resultat_markdown": "$\\binom{10}{2}=45$"
+        },
+        {
+          "numero": 4,
+          "action": "Dénombrer l'univers total et calculer la probabilité",
+          "justification": "Tirage simultané de 2 personnes parmi 25",
+          "resultat_markdown": "$\\binom{25}{2}=300$, donc $P=\\dfrac{45}{300}=\\dfrac{3}{20}$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité que les deux personnes choisies possèdent uniquement un téléphone portable est $\\dfrac{3}{20}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $\\binom{15}{2}$ (effectif de la catégorie large « portable ») au lieu de $\\binom{10}{2}$ pour un événement portant sur « uniquement portable »",
+          "pourquoi_faux": "Les 15 personnes possédant un portable incluent les 5 qui ont aussi un fixe : ces 5 personnes ne doivent pas être comptées dans l'événement « uniquement portable ».",
+          "correction_markdown": "Retranche systématiquement l'intersection de l'effectif de la catégorie large avant de dénombrer un événement portant sur une sous-catégorie stricte."
+        },
+        {
+          "erreur_markdown": "Oublier de recalculer l'univers total après avoir précisé la sous-catégorie",
+          "pourquoi_faux": "L'univers total du tirage reste la population complète (25 personnes) : seul l'effectif favorable change selon l'événement étudié, pas le dénominateur de la probabilité.",
+          "correction_markdown": "Le dénominateur $\\binom{n}{k}$ ne change jamais d'un événement à l'autre sur la même population : seul le numérateur (l'effectif favorable) varie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur 30 étudiants, 18 étudient l'anglais, dont 6 étudient aussi l'espagnol. On choisit simultanément 2 étudiants parmi les 30. Calculer la probabilité que les deux étudient uniquement l'anglais.",
+          "solution_markdown": "Anglais seul : $18-6=12$. $\\binom{12}{2}=66$. $\\binom{30}{2}=435$. $P=\\dfrac{66}{435}=\\dfrac{22}{145}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur 20 personnes, 12 pratiquent la natation, 8 pratiquent la course, et 3 pratiquent les deux. On choisit simultanément 2 personnes. Calculer la probabilité que les deux pratiquent uniquement la course.",
+          "solution_markdown": "Course seule : $8-3=5$. $\\binom{5}{2}=10$. $\\binom{20}{2}=190$. $P=\\dfrac{10}{190}=\\dfrac{1}{19}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur 50 clients, 30 achètent du pain, 22 achètent des pâtisseries, et 10 achètent les deux. On choisit simultanément 3 clients. Calculer la probabilité que les trois achètent uniquement des pâtisseries.",
+          "solution_markdown": "Pâtisseries seules : $22-10=12$. $\\binom{12}{3}=220$. $\\binom{50}{3}=19600$. $P=\\dfrac{220}{19600}=\\dfrac{11}{980}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant tout calcul de probabilité sur une catégorie, précise si l'énoncé vise la catégorie large ou une sous-catégorie stricte.",
+        "Une sous-catégorie stricte s'obtient toujours en retranchant l'intersection de l'effectif de la catégorie large.",
+        "Le dénominateur de la probabilité (l'univers total) ne change jamais d'un événement à l'autre sur la même population.",
+        "Cette distinction entre catégorie large et sous-catégorie stricte est la source d'erreur la plus fréquente sur ce type d'exercice au BAC."
+      ]
+    }
+  ]
+}

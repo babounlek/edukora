@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-forme-indeterminee-factorisation-terminale-a",
+  "meta": {
+    "titre": "Lever une forme indéterminée par factorisation et croissances comparées",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale",
+    "serie": null,
+    "sous_theme": "Limites et croissances comparées",
+    "duree_estimee_min": 30,
+    "tags": [
+      "limite",
+      "forme indéterminée",
+      "croissances comparées",
+      "factorisation"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2009-cameroun",
+    "epreuve_titre": "Baccalauréat série A - Mathématiques - Cameroun - 2009",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-a-maths-2009-cameroun-ex4-0",
+    "correction_id": "corr-bac-a-maths-2009-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une limite où plusieurs termes partent vers des infinis de signes opposés, l'écriture de départ ne permet jamais de conclure directement : il faut la transformer. Ce cours montre comment factoriser une expression pour faire apparaître une forme dont chaque facteur a une limite connue, en s'appuyant sur les croissances comparées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites usuelles de l'exponentielle en $+\\infty$ et en $-\\infty$",
+        "Croissances comparées : $\\lim_{x\\to+\\infty}xe^{-x}=0$ et formes analogues",
+        "Règles de limite d'un produit et d'une somme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser pour lever une indétermination",
+      "contenu_markdown": "Quand une limite se présente comme une somme ou une différence de termes qui tendent vers des infinis de signe opposé (ou vers une forme du type $\\infty-\\infty$), on ne peut pas conclure terme à terme : il faut réécrire l'expression, le plus souvent en factorisant par le terme dominant, pour faire apparaître un produit ou un quotient dont chaque facteur a une limite connue et compatible. Les croissances comparées (comme $\\lim_{x\\to+\\infty}xe^{-x}=0$, ou $\\lim_{x\\to-\\infty}xe^{x}=0$) servent alors à déterminer la limite du facteur restant, qui prime toujours sur l'intuition tirée de la seule écriture algébrique de départ.",
+      "formule_principale": "\\lim_{x\\to-\\infty}xe^{x}=0\\quad(\\text{croissances comparées})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $f(x)=x-2+e^{-x}=x\\left(1-\\dfrac{2}{x}+\\dfrac{1}{xe^{x}}\\right)$ pour $x\\neq0$, calculer $\\lim_{x\\to-\\infty}f(x)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la forme indéterminée dans l'écriture d'origine",
+          "justification": "$x\\to-\\infty$ et $e^{-x}\\to+\\infty$ : l'addition directe ne permet pas de conclure",
+          "resultat_markdown": "forme $-\\infty+\\infty$, indéterminée"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser l'écriture factorisée",
+          "justification": "On réécrit f comme un produit dont chaque facteur peut être étudié séparément",
+          "resultat_markdown": "$f(x)=x\\left(1-\\dfrac{2}{x}+\\dfrac{1}{xe^{x}}\\right)$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier la limite de $xe^{x}$ en $-\\infty$",
+          "justification": "On pose t=-x qui tend vers +infini pour se ramener à une croissance comparée usuelle",
+          "resultat_markdown": "$xe^{x}=-te^{-t}\\to0$ ; comme $x<0$ et $e^{x}>0$, $xe^{x}\\to0^{-}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire la limite de $\\dfrac{1}{xe^{x}}$",
+          "justification": "L'inverse d'une quantité qui tend vers 0 par valeurs négatives tend vers -infini",
+          "resultat_markdown": "$\\dfrac{1}{xe^{x}}\\to-\\infty$"
+        },
+        {
+          "numero": 5,
+          "action": "Assembler la limite du facteur entre parenthèses",
+          "justification": "$\\dfrac{2}{x}\\to0$ et $\\dfrac{1}{xe^{x}}\\to-\\infty$",
+          "resultat_markdown": "$1-\\dfrac{2}{x}+\\dfrac{1}{xe^{x}}\\to-\\infty$"
+        },
+        {
+          "numero": 6,
+          "action": "Conclure sur le produit",
+          "justification": "x tend vers -infini et le facteur entre parenthèses tend aussi vers -infini : un produit de deux termes tendant vers -infini tend vers +infini",
+          "resultat_markdown": "$f(x)\\to+\\infty$"
+        }
+      ],
+      "conclusion_markdown": "$\\lim_{x\\to-\\infty}f(x)=+\\infty$, malgré l'apparence de la forme d'origine qui semblait indéterminée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure directement à partir de $f(x)=x-2+e^{-x}$ en additionnant les limites de chaque terme",
+          "pourquoi_faux": "$x\\to-\\infty$ pendant que $e^{-x}\\to+\\infty$ : on obtient une forme $\\infty-\\infty$ qui ne se résout jamais par simple somme des limites, il faut transformer l'écriture.",
+          "correction_markdown": "Dès qu'une somme de limites donne une forme indéterminée, factorise systématiquement par le terme qui semble dominant avant de conclure."
+        },
+        {
+          "erreur_markdown": "Oublier de déterminer le signe de $xe^{x}$ (pas seulement sa valeur limite) avant de conclure sur $\\dfrac{1}{xe^{x}}$",
+          "pourquoi_faux": "$xe^{x}\\to0$ ne suffit pas : selon que la quantité approche $0$ par valeurs positives ou négatives, l'inverse part vers $+\\infty$ ou vers $-\\infty$.",
+          "correction_markdown": "Précise toujours le signe de l'expression qui tend vers 0 avant d'écrire la limite de son inverse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\lim_{x\\to+\\infty}(x-e^{x})$.",
+          "solution_markdown": "On factorise par $e^{x}$ : $x-e^{x}=e^{x}\\left(\\dfrac{x}{e^{x}}-1\\right)$. Par croissances comparées, $\\dfrac{x}{e^{x}}\\to0$, donc le facteur entre parenthèses tend vers $-1$. Comme $e^{x}\\to+\\infty$, le produit tend vers $-\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\lim_{x\\to-\\infty}\\left(x+xe^{x}\\right)$.",
+          "solution_markdown": "On factorise par $x$ : $x+xe^{x}=x(1+e^{x})$. Quand $x\\to-\\infty$, $e^{x}\\to0$, donc $1+e^{x}\\to1$. Comme $x\\to-\\infty$, le produit $x(1+e^{x})\\to-\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $\\lim_{x\\to-\\infty}\\left(x^{2}e^{x}-x\\right)$.",
+          "solution_markdown": "On factorise par $x$ : $x^{2}e^{x}-x=x(xe^{x}-1)$. Par croissances comparées, $xe^{x}\\to0$ quand $x\\to-\\infty$ (même argument que dans l'exemple résolu), donc $xe^{x}-1\\to-1$. Comme $x\\to-\\infty$, le produit $x(xe^{x}-1)$ est le produit de $x\\to-\\infty$ par un facteur tendant vers $-1<0$, donc le produit tend vers $+\\infty$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une somme de termes qui partent vers des infinis de signe opposé ne se résout jamais en additionnant les limites terme à terme : il faut transformer l'écriture.",
+        "La factorisation par le terme dominant est le réflexe de base pour lever ce type d'indétermination.",
+        "Les croissances comparées ($xe^{x}$, $\\dfrac{e^{x}}{x}$, etc.) donnent la limite du facteur restant après factorisation, et priment toujours sur l'intuition algébrique.",
+        "Précise toujours le signe d'une quantité qui tend vers 0 avant d'écrire la limite de son inverse : le signe change tout.",
+        "Ce type de calcul est un classique du BAC dans les études de fonctions mêlant exponentielle et polynôme : entraîne-toi à repérer le bon facteur dominant."
+      ]
+    }
+  ]
+}
