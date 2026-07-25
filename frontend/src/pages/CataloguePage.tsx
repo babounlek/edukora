@@ -4,7 +4,7 @@ import { BookOpen, CheckCircle2, Lock, Search, Unlock } from "lucide-react"
 
 import { listCursus, listLessons, listSubjects } from "@/api/endpoints"
 import type { Cursus, Lesson, Subject } from "@/api/types"
-import { formatCursusGroups } from "@/lib/cursus"
+import { examLevelsFor, formatCursusGroups, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
@@ -39,15 +39,6 @@ export function CataloguePage() {
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
 
-  useSeo({
-    title: "Corrigés BEPC, Probatoire et BAC",
-    // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
-    // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
-    description: countryLabel
-      ? `${countryLabel} : fiches de révision, corrigés d'annales et sujets inédits pour le BEPC, le Probatoire et le BAC, classés par matière et par série.`
-      : undefined,
-  })
-
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [cursusList, setCursusList] = useState<Cursus[]>([])
@@ -56,6 +47,22 @@ export function CataloguePage() {
   const [origineFilter, setOrigineFilter] = useState("")
   const [search, setSearch] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+
+  // Niveaux d'examen réellement présents pour ce pays (voir examLevelsFor) - jamais un
+  // texte fixe : la plupart des pays n'ont pas de Probatoire. Repli générique tant que
+  // cursusList n'a pas encore chargé, pour éviter un flash vide au premier rendu.
+  const examLevels = examLevelsFor(cursusList)
+  const examLevelsHero = examLevels.length > 0 ? examLevels.join(" · ") : "BEPC · Probatoire · BAC"
+  const examLevelsProse = examLevels.length > 0 ? joinExamLevelsFr(examLevels) : "le BEPC, le Probatoire et le BAC"
+
+  useSeo({
+    title: "Corrigés BEPC, Probatoire et BAC",
+    // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
+    // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
+    description: countryLabel
+      ? `${countryLabel} : fiches de révision, corrigés d'annales et sujets inédits pour ${examLevelsProse}, classés par matière et par série.`
+      : undefined,
+  })
 
   useEffect(() => {
     listSubjects(country).then(setSubjects).catch(() => {})
@@ -95,7 +102,7 @@ export function CataloguePage() {
         />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <p className="mb-2 font-display text-sm italic text-primary">
-            BEPC · Probatoire · BAC{countryLabel ? ` — ${countryLabel}` : ""}
+            {examLevelsHero}{countryLabel ? ` — ${countryLabel}` : ""}
           </p>
           <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
             Des corrigés qui t'apprennent{" "}

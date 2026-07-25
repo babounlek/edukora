@@ -19,6 +19,7 @@ import {
 import { useSeo } from "@/lib/seo"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
+import { countryFlagEmoji } from "@/lib/countryFlag"
 
 type Step = "phone" | "code"
 
@@ -104,13 +105,18 @@ export function LoginPage() {
                 <div className="flex gap-2">
                   {countries.length > 0 && (
                     <Select value={dialCountry} onValueChange={setDialCountry}>
-                      <SelectTrigger className="w-[92px] shrink-0">
-                        <SelectValue />
+                      <SelectTrigger className="w-[108px] shrink-0">
+                        {/* Replié : drapeau + indicatif seulement (place limitée à côté
+                            du numéro). Liste ouverte : + le nom du pays - avec 14 pays,
+                            l'indicatif seul ("+221") ne dit rien à personne. */}
+                        <SelectValue>
+                          {countryFlagEmoji(dialCountry)} +{selectedCountry?.dial_code || "?"}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((c) => (
                           <SelectItem key={c.id} value={c.code.toLowerCase()}>
-                            +{c.dial_code || "?"}
+                            {countryFlagEmoji(c.code)} +{c.dial_code || "?"} · {c.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
