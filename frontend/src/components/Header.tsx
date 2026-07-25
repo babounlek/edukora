@@ -39,7 +39,10 @@ function CountrySwitcher() {
     <Select value={country} onValueChange={handleChange}>
       <SelectTrigger className="h-9 w-[72px] gap-1 px-2 text-xs sm:w-[92px] sm:text-sm">
         <Globe className="size-3.5 shrink-0 text-muted-foreground" />
-        <SelectValue />
+        {/* Enfant explicite : replié, affiche le code ("CM") plutôt que le nom du
+            pays sélectionné (comportement par défaut de SelectValue), pour rester
+            compact dans le header - la liste ouverte, elle, garde les noms complets. */}
+        <SelectValue>{country.toUpperCase()}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {countries.map((c) => (
