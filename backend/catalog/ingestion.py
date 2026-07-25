@@ -14,6 +14,10 @@ très courant au Cameroun) : le champ `serie` peut contenir plusieurs codes
 séparés par un tiret, une virgule ou un slash ("C-E", "C, E", "C/E"), et le
 champ `coefficient` peut être une valeur unique ou un objet {code_serie:
 coefficient} quand il diffère selon la série (voir _format_coefficient).
+
+Le pays n'est jamais lu dans le JSON (la compétence correction-experte ne le
+fournit pas) : il est dérivé du chemin sur disque, convention
+`ingest/<code_pays>/<epreuve>/...json` - voir _country_code_from_path.
 """
 
 import json
@@ -24,7 +28,7 @@ from pathlib import Path
 from django.core.files.base import ContentFile
 from django.db import transaction
 
-from .models import Cours, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, Origine, OrigineFigure, RappelDeMethode, Series, StatutContenu, Subject, Tag, _join_fr
+from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, Origine, OrigineFigure, RappelDeMethode, Series, StatutContenu, Subject, Tag, _join_fr
 
 
 class IngestionError(Exception):
@@ -116,29 +120,66 @@ REQUIRED_KEYS = [
 ]
 
 
-def _resolve_subject(matiere_raw):
+def _country_code_from_path(path):
+    """
+    Dérive le code pays (ex: "cm") du chemin sur disque : convention
+    `ingest/<code_pays>/<epreuve>/...` (voir INGEST_DIR dans catalog.admin) - le
+    sous-dossier direct sous le dossier littéralement nommé "ingest" porte le code
+    pays. Fonctionne quel que soit le chemin passé à run_ingestion (dossier racine,
+    sous-dossier pays, ou fichier unique) puisqu'on résout toujours le chemin absolu
+    avant de chercher ce repère.
+    """
+    parts = path.resolve().parts
+    lowered = [p.lower() for p in parts]
+    if "ingest" not in lowered:
+        return None
+    idx = lowered.index("ingest")
+    if idx + 1 >= len(parts):
+        return None
+    return parts[idx + 1]
+
+
+def _resolve_country(code):
+    if not code:
+        raise IngestionError(
+            "Impossible de déterminer le pays : le fichier ne se trouve pas sous "
+            "un dossier ingest/<code_pays>/...",
+        )
+    try:
+        return Country.objects.get(code__iexact=code)
+    except Country.DoesNotExist:
+        raise IngestionError(f"Pays inconnu : {code!r} - créez d'abord ce Country en base.")
+
+
+def _resolve_subject(matiere_raw, country):
     code = MATIERE_MAP.get(_normalize(matiere_raw))
     if not code:
         raise IngestionError(
             f"Matière inconnue : {matiere_raw!r}. Attendu l'une de : {sorted(set(MATIERE_MAP.values()))}",
         )
     try:
-        return Subject.objects.get(code=code)
+        return Subject.objects.get(code=code, country=country)
     except Subject.DoesNotExist:
-        raise IngestionError(f"Subject introuvable en base pour le code {code!r}.")
+        raise IngestionError(f"Subject introuvable en base pour le code {code!r} et le pays {country}.")
 
 
-def _resolve_cursus_list(examen_raw, serie_raw):
-    """Retourne la liste des Cursus concernés (plusieurs si l'épreuve est commune à plusieurs séries)."""
+def _resolve_cursus_list(examen_raw, serie_raw, country):
+    """
+    Retourne la liste des Cursus concernés (plusieurs si l'épreuve est commune à
+    plusieurs séries), toujours filtrée par `country` : Examen est un référentiel
+    partagé entre pays, mais Subject/Series/(country, examen, série) sont propres à
+    chaque pays - sans ce filtre, deux pays partageant un même (examen, série) (ex:
+    BAC Série C ailleurs qu'au Cameroun) feraient lever *.MultipleObjectsReturned.
+    """
     examen = EXAMEN_MAP.get(_normalize(examen_raw))
     if not examen:
         raise IngestionError(f"Examen inconnu : {examen_raw!r}. Attendu BEPC/Probatoire/BAC/Autre.")
 
     if examen == Examen.BEPC:
         try:
-            return [Cursus.objects.get(examen=examen, series__isnull=True)]
+            return [Cursus.objects.get(country=country, examen=examen, series__isnull=True)]
         except Cursus.DoesNotExist:
-            raise IngestionError("Cursus BEPC introuvable en base.")
+            raise IngestionError(f"Cursus BEPC introuvable en base pour {country}.")
 
     serie_parts = _split_series(serie_raw)
     if not serie_parts:
@@ -152,10 +193,10 @@ def _resolve_cursus_list(examen_raw, serie_raw):
                 f"Série inconnue : {part!r} (dans {serie_raw!r}). Attendu l'une de : {sorted(set(SERIE_MAP.values()))}",
             )
         try:
-            series = Series.objects.get(code=series_code)
-            cursus_list.append(Cursus.objects.get(examen=examen, series=series))
+            series = Series.objects.get(code=series_code, country=country)
+            cursus_list.append(Cursus.objects.get(country=country, examen=examen, series=series))
         except (Series.DoesNotExist, Cursus.DoesNotExist):
-            raise IngestionError(f"Cursus introuvable pour examen={examen_raw!r}, série={part!r}.")
+            raise IngestionError(f"Cursus introuvable pour pays={country}, examen={examen_raw!r}, série={part!r}.")
 
     return cursus_list
 
@@ -309,14 +350,19 @@ def ingest_exercise(data, source_dir=None):
 
     `source_dir` : dossier où chercher les fichiers PNG référencés par `data["figures"]`
     (voir _attach_figures) - toujours le dossier du fichier JSON source, transmis par
-    run_ingestion. Sans figures dans le JSON, ce paramètre n'est jamais utilisé.
+    run_ingestion. Sert aussi, désormais, à déterminer le pays de l'épreuve (voir
+    _country_code_from_path) : obligatoire même sans figures dans le JSON.
     """
     missing = [key for key in REQUIRED_KEYS if not data.get(key)]
     if missing:
         raise IngestionError(f"Champs obligatoires manquants : {missing}")
 
-    subject = _resolve_subject(data["matiere"])
-    cursus_list = _resolve_cursus_list(data["examen"], data.get("serie"))
+    if source_dir is None:
+        raise IngestionError("source_dir manquant : impossible de déterminer le pays de cet exercice.")
+    country = _resolve_country(_country_code_from_path(source_dir))
+
+    subject = _resolve_subject(data["matiere"], country)
+    cursus_list = _resolve_cursus_list(data["examen"], data.get("serie"), country)
 
     year = None
     if data.get("annee"):
@@ -336,9 +382,13 @@ def ingest_exercise(data, source_dir=None):
     with transaction.atomic():
         # cursus est M2M : ne peut pas faire partie de la clé de get_or_create.
         # Une épreuve est identifiée par (source, matière, année) ; le(s) cursus s'y ajoutent ensuite.
+        # Filtré par pays (via cursus__country) pour ne jamais fusionner deux épreuves
+        # de pays différents qui partageraient par coïncidence (source, matière, année)
+        # - ex. deux "bac-blanc-maths-2024" non désambiguïsés dans leur epreuve_source.
         lesson = Lesson.objects.filter(
             epreuve_source=epreuve_source, subject=subject, year=year, lesson_type=LessonType.CORR,
-        ).first()
+            cursus__country=country,
+        ).distinct().first()
         if lesson is None:
             # Regroupe par examen pour ne pas répéter le diplôme quand l'épreuve concerne
             # plusieurs séries : "BAC C et E" plutôt que "BAC - Série C / BAC - Série E".
@@ -478,7 +528,12 @@ def ingest_cours(data):
         rappel.save(update_fields=["cours"])
         return duplicate, False
 
-    subject = _resolve_subject(meta["matiere"])
+    # Un Cours n'a pas de dossier source à lui (pas de source_dir ici, contrairement à
+    # ingest_exercise) : le pays se déduit du Cursus déjà résolu pour l'exercice dont
+    # il dérive plutôt que d'être re-parsé - garanti non vide, cursus est obligatoire
+    # sur Lesson (voir Lesson.cursus) et déjà peuplé à ce stade de l'ingestion.
+    country = rappel.exercise.lesson.cursus.first().country
+    subject = _resolve_subject(meta["matiere"], country)
 
     # all-or-nothing, même raison que le bloc équivalent d'ingest_exercise : sans ce
     # bloc, une exception levée par compile_from_sections() (ex. une forme de section

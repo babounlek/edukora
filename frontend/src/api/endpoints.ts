@@ -3,6 +3,7 @@ import type {
   Cours,
   CoursContent,
   CoursPreview,
+  Country,
   Cursus,
   Lesson,
   LessonContent,
@@ -40,6 +41,7 @@ export function getMe() {
 export interface LessonFilters {
   subject?: string
   cursus?: number
+  country?: string
   lesson_type?: string
   origine?: string
   search?: string
@@ -72,6 +74,7 @@ export function previewLesson(id: number) {
 export interface CoursFilters {
   subject?: string
   cursus?: number
+  country?: string
   search?: string
   page?: number
 }
@@ -99,12 +102,18 @@ export function previewCours(id: number) {
   return apiRequest<CoursPreview>(`/access/cours/preview/${id}/`, { auth: false })
 }
 
-export function listSubjects() {
-  return apiRequest<Subject[]>("/catalog/subjects/", { auth: false })
+export function listSubjects(country?: string) {
+  const query = country ? `?country=${country}` : ""
+  return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false })
 }
 
-export function listCursus() {
-  return apiRequest<Cursus[]>("/catalog/cursus/", { auth: false })
+export function listCursus(country?: string) {
+  const query = country ? `?country=${country}` : ""
+  return apiRequest<Cursus[]>(`/catalog/cursus/${query}`, { auth: false })
+}
+
+export function listCountries() {
+  return apiRequest<Country[]>("/catalog/countries/", { auth: false })
 }
 
 export function listPlans(cursusId?: number) {

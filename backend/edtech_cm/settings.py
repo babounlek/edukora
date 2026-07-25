@@ -73,7 +73,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = config(
-    "CORS_ALLOWED_ORIGINS", default="http://localhost:5173", cast=Csv(),
+    "CORS_ALLOWED_ORIGINS", default="http://localhost",  cast=Csv(),
 )
 
 # Nom et domaine de la plateforme - provisoires tant que le produit est en conception,
@@ -83,7 +83,7 @@ SITE_NAME = config("SITE_NAME", default="EduKamer")
 # Domaine du frontend (SPA Vite, servie séparément de cette API) - utilisé pour
 # construire les URLs absolues du sitemap.xml (catalog.sitemap), qui doivent pointer
 # vers les pages consultables par un visiteur, jamais vers cette API.
-FRONTEND_URL = config("FRONTEND_URL", default="https://edukamer.cm").rstrip("/")
+FRONTEND_URL = config("FRONTEND_URL", default="https://edukora.africa").rstrip("/")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -178,9 +178,39 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+# Cible de `collectstatic` en production : Caddy sert ces fichiers directement depuis
+# le volume partagé (voir docker-compose.yml), Django ne les sert jamais lui-même
+# hors DEBUG.
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # PDF de sujet (public, jamais le corrigé - voir catalog/sujet_pdf.py) : généré hors
 # ligne par une commande dédiée, jamais dans le cycle de requête HTTP. Stockage local,
 # pas de protection d'accès nécessaire puisque le contenu est déjà public par nature.
 MEDIA_URL = "media/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+
+# Sécurité HTTPS - actif derrière le reverse proxy Caddy en production (voir
+# docker-compose.yml / Caddyfile). Dérivé de DEBUG par défaut mais surchargeable via
+# l'environnement, pour pouvoir tester la stack Docker en local sans TLS sans avoir
+# à réactiver DEBUG=True juste pour ça.
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+# Caddy pose cet en-tête sur toute requête proxyée : sans ça, Django ne peut jamais
+# savoir que la connexion d'origine était en HTTPS (il ne voit que du HTTP en interne
+# entre Caddy et gunicorn) et request.is_secure()/CSRF/redirections se comportent
+# comme si le site tournait en clair.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=not DEBUG, cast=bool)
+SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT
+CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
+# Démarre à 1 semaine plutôt que la valeur classique d'1 an (31536000) : HSTS est mis
+# en cache par les navigateurs eux-mêmes, une erreur de config HTTPS ici n'est pas
+# trivialement réversible pour les visiteurs déjà passés - à monter progressivement
+# une fois le HTTPS confirmé stable en production.
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=604800 if SECURE_SSL_REDIRECT else 0, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_SSL_REDIRECT
+SECURE_HSTS_PRELOAD = False

@@ -4,19 +4,38 @@ import { useNavigate, useLocation } from "react-router-dom"
 import { requestOtp, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useSeo } from "@/lib/seo"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
+import { catalogueHomePath } from "@/lib/countryPath"
 
 type Step = "phone" | "code"
+
+/**
+ * L'inscription (validation du numéro + paiement Campay) ne gère aujourd'hui que
+ * le Cameroun côté backend (voir User.phone_validator et payments/campay_client.py).
+ * Le sélecteur d'indicatif ci-dessous est réel, mais la soumission reste bloquée
+ * pour tout autre pays tant que ce contrat backend n'est pas étendu.
+ */
+const SUPPORTED_REGISTRATION_COUNTRIES = ["cm"]
 
 export function LoginPage() {
   useSeo({ title: "Connexion" })
 
+  const { country: browsingCountry, countries } = useCountry()
   const [step, setStep] = useState<Step>("phone")
+  const [dialCountry, setDialCountry] = useState(browsingCountry)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -25,7 +44,10 @@ export function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/"
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? catalogueHomePath(browsingCountry)
+
+  const isSupported = SUPPORTED_REGISTRATION_COUNTRIES.includes(dialCountry)
+  const selectedCountry = countries.find((c) => c.code.toLowerCase() === dialCountry)
 
   async function handleRequestOtp(event: FormEvent) {
     event.preventDefault()
@@ -79,19 +101,43 @@ export function LoginPage() {
             <form onSubmit={handleRequestOtp} className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="phone">Numéro de téléphone</Label>
-                <Input
-                  id="phone"
-                  inputMode="numeric"
-                  placeholder="677123456"
-                  autoComplete="off"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                  maxLength={9}
-                  autoFocus
-                />
+                <div className="flex gap-2">
+                  {countries.length > 0 && (
+                    <Select value={dialCountry} onValueChange={setDialCountry}>
+                      <SelectTrigger className="w-[92px] shrink-0">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((c) => (
+                          <SelectItem key={c.id} value={c.code.toLowerCase()}>
+                            +{c.dial_code || "?"}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <Input
+                    id="phone"
+                    inputMode="numeric"
+                    placeholder="677123456"
+                    autoComplete="off"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                    maxLength={9}
+                    autoFocus
+                    disabled={!isSupported}
+                  />
+                </div>
               </div>
-              {error && <p className="text-sm text-destructive">{error}</p>}
-              <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
+              {!isSupported ? (
+                <p className="text-sm text-muted-foreground">
+                  L'inscription est disponible uniquement pour les numéros camerounais pour l'instant.
+                  {selectedCountry ? ` ${selectedCountry.label} arrive bientôt.` : ""}
+                </p>
+              ) : (
+                error && <p className="text-sm text-destructive">{error}</p>
+              )}
+              <Button type="submit" disabled={isSubmitting || !isSupported} className="w-full" size="lg">
                 {isSubmitting ? "Envoi..." : "Recevoir le code"}
               </Button>
             </form>

@@ -6,15 +6,18 @@ import { readCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { CoursContent } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LessonMarkdown } from "@/components/LessonMarkdown"
 import { useSeo } from "@/lib/seo"
+import { coursListPath } from "@/lib/countryPath"
 
 export function CoursReaderPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { isAuthenticated, isLoading } = useAuth()
+  const { country } = useCountry()
 
   const [content, setContent] = useState<CoursContent | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -52,7 +55,7 @@ export function CoursReaderPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
         <p className="text-destructive">{error}</p>
-        <Link to="/cours" className="mt-3 inline-block text-sm text-primary hover:underline">
+        <Link to={coursListPath(country)} className="mt-3 inline-block text-sm text-primary hover:underline">
           Retour aux cours
         </Link>
       </div>
@@ -62,7 +65,7 @@ export function CoursReaderPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to="/cours"
+        to={coursListPath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />

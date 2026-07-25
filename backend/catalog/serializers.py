@@ -2,7 +2,13 @@ from rest_framework import serializers
 
 from access.services import has_access
 
-from .models import Cours, Cursus, Lesson, Series, StatutContenu, Subject, Tag
+from .models import Cours, Country, Cursus, Lesson, Series, StatutContenu, Subject, Tag
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ["id", "code", "label", "dial_code", "currency"]
 
 
 class SeriesSerializer(serializers.ModelSerializer):
@@ -24,12 +30,13 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class CursusSerializer(serializers.ModelSerializer):
+    country = CountrySerializer(read_only=True)
     series = SeriesSerializer(read_only=True)
     examen_display = serializers.CharField(source="get_examen_display", read_only=True)
 
     class Meta:
         model = Cursus
-        fields = ["id", "examen", "examen_display", "series"]
+        fields = ["id", "country", "examen", "examen_display", "series"]
 
 
 class _HasAccessMixin:

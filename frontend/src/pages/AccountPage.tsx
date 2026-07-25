@@ -5,16 +5,19 @@ import { CheckCircle2, Copy, Gift, MessageCircle } from "lucide-react"
 import { getMyProgression, listMySubscriptions } from "@/api/endpoints"
 import type { Progression, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
+import { catalogueHomePath } from "@/lib/countryPath"
 
 export function AccountPage() {
   useSeo({ title: "Mon compte" })
 
   const { user, logout, isAuthenticated, isLoading } = useAuth()
+  const { country } = useCountry()
   const navigate = useNavigate()
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [progression, setProgression] = useState<Progression | null>(null)
@@ -32,7 +35,7 @@ export function AccountPage() {
 
   function handleLogout() {
     logout()
-    navigate("/")
+    navigate(catalogueHomePath(country))
   }
 
   if (isLoading || !user) return null

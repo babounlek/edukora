@@ -1,8 +1,8 @@
 from django.db.models import Q
 from rest_framework import generics, permissions
 
-from .models import Cours, Cursus, Lesson, StatutContenu, Subject
-from .serializers import CoursSerializer, CursusSerializer, LessonSerializer, SubjectSerializer
+from .models import Cours, Country, Cursus, Lesson, StatutContenu, Subject
+from .serializers import CoursSerializer, CountrySerializer, CursusSerializer, LessonSerializer, SubjectSerializer
 
 
 class LessonListView(generics.ListAPIView):
@@ -13,7 +13,7 @@ class LessonListView(generics.ListAPIView):
         qs = (
             Lesson.objects.filter(statut=StatutContenu.VALIDE)
             .select_related("subject")
-            .prefetch_related("cursus__series", "themes")
+            .prefetch_related("cursus__series", "cursus__country", "themes")
         )
 
         params = self.request.query_params
@@ -21,6 +21,8 @@ class LessonListView(generics.ListAPIView):
             qs = qs.filter(subject__code=subject)
         if cursus_id := params.get("cursus"):
             qs = qs.filter(cursus__id=cursus_id)
+        if country := params.get("country"):
+            qs = qs.filter(cursus__country__code__iexact=country)
         if lesson_type := params.get("lesson_type"):
             qs = qs.filter(lesson_type=lesson_type)
         if origine := params.get("origine"):
@@ -44,7 +46,7 @@ class LessonDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = Lesson.objects.filter(statut=StatutContenu.VALIDE).select_related(
         "subject",
-    ).prefetch_related("cursus__series")
+    ).prefetch_related("cursus__series", "cursus__country")
 
 
 class CoursListView(generics.ListAPIView):
@@ -55,7 +57,7 @@ class CoursListView(generics.ListAPIView):
         qs = (
             Cours.objects.filter(statut=StatutContenu.VALIDE)
             .select_related("subject")
-            .prefetch_related("cursus__series", "tags")
+            .prefetch_related("cursus__series", "cursus__country", "tags")
         )
 
         params = self.request.query_params
@@ -63,6 +65,10 @@ class CoursListView(generics.ListAPIView):
             qs = qs.filter(subject__code=subject)
         if cursus_id := params.get("cursus"):
             qs = qs.filter(cursus__id=cursus_id)
+        if country := params.get("country"):
+            # cursus vide = notion commune à toutes les séries de tout pays (voir
+            # Cours.cursus) - exclue par erreur si on filtrait juste sur cursus__country.
+            qs = qs.filter(Q(cursus__isnull=True) | Q(cursus__country__code__iexact=country))
         if search := params.get("search"):
             qs = qs.filter(
                 Q(titre__icontains=search)
@@ -78,18 +84,35 @@ class CoursDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = Cours.objects.filter(statut=StatutContenu.VALIDE).select_related(
         "subject",
-    ).prefetch_related("cursus__series", "tags")
+    ).prefetch_related("cursus__series", "cursus__country", "tags")
 
 
 class SubjectListView(generics.ListAPIView):
-    queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = None
+
+    def get_queryset(self):
+        qs = Subject.objects.all()
+        if country := self.request.query_params.get("country"):
+            qs = qs.filter(country__code__iexact=country)
+        return qs
+
+
+class CountryListView(generics.ListAPIView):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
 
 
 class CursusListView(generics.ListAPIView):
-    queryset = Cursus.objects.select_related("series").all()
     serializer_class = CursusSerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
+
+    def get_queryset(self):
+        qs = Cursus.objects.select_related("series", "country").all()
+        if country := self.request.query_params.get("country"):
+            qs = qs.filter(country__code__iexact=country)
+        return qs

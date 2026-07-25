@@ -22,19 +22,21 @@ INGEST_DIR = Path(settings.BASE_DIR) / "ingest"
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ["code", "label"]
+    list_display = ["code", "label", "dial_code", "currency"]
     search_fields = ["code", "label"]
 
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ["code", "label"]
+    list_display = ["code", "label", "country"]
+    list_filter = ["country"]
     search_fields = ["code", "label"]
 
 
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):
-    list_display = ["code", "label"]
+    list_display = ["code", "label", "country"]
+    list_filter = ["country"]
     search_fields = ["code", "label"]
 
 

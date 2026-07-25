@@ -1,0 +1,26 @@
+:80 {
+    encode zstd gzip
+
+
+    handle_path /static/* {
+        root * /srv/staticfiles
+        file_server
+    }
+
+
+    handle_path /media/* {
+        root * /srv/media
+        file_server
+    }
+
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /sitemap.xml /sitemap-*.xml
+    handle @backend {
+        reverse_proxy backend:8000
+    }
+
+    handle {
+        root * /srv/frontend
+        try_files {path} /index.html
+        file_server
+    }
+}

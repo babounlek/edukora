@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse
 
-from .models import Cours, Lesson, StatutContenu
+from .models import Cours, Country, Lesson, StatutContenu
 
 # django.contrib.sitemaps résout le domaine via request.get_host() ou le framework
 # Sites - les deux donneraient le domaine de CETTE API, pas celui du frontend où les
@@ -19,11 +19,19 @@ from .models import Cours, Lesson, StatutContenu
 MAX_URLS_PER_SITEMAP = 1000
 
 _STATIC_PAGES = [
-    ("", "1.0", "daily"),
-    ("/cours", "0.8", "daily"),
     ("/tarifs", "0.5", "weekly"),
     ("/cgu", "0.3", "monthly"),
     ("/confidentialite", "0.3", "monthly"),
+]
+
+# Catalogue et liste des cours existent une fois par pays (/cm, /cm/cours, /sn, ...) -
+# voir CataloguePage/CoursListPage côté frontend, qui filtrent par pays via l'URL.
+# Contrairement aux fiches Lesson/Cours (URL plate, contenu unique quel que soit le
+# pays), ces deux pages affichent un résultat différent selon le pays : chacune
+# mérite sa propre entrée indexable plutôt qu'une seule version mélangée.
+_PER_COUNTRY_PAGES = [
+    ("", "1.0", "daily"),
+    ("/cours", "0.8", "daily"),
 ]
 
 
@@ -43,6 +51,13 @@ def _all_entries():
         _url_entry(f"{base}{path}", priority=priority, changefreq=changefreq)
         for path, priority, changefreq in _STATIC_PAGES
     ]
+
+    for country_code in Country.objects.values_list("code", flat=True):
+        code = country_code.lower()
+        entries.extend(
+            _url_entry(f"{base}/{code}{path}", priority=priority, changefreq=changefreq)
+            for path, priority, changefreq in _PER_COUNTRY_PAGES
+        )
 
     for lesson in Lesson.objects.filter(statut=StatutContenu.VALIDE).only("id", "updated_at"):
         entries.append(_url_entry(f"{base}/lecons/{lesson.id}", lastmod=lesson.updated_at, priority="0.7"))

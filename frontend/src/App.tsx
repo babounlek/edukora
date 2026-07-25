@@ -1,11 +1,13 @@
 import { Suspense, lazy } from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import { AuthProvider } from "@/context/AuthContext"
+import { CountryProvider } from "@/context/CountryContext"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { RouteFallback } from "@/components/RouteFallback"
+import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 
 // Chargées à la demande (une par route) plutôt qu'au démarrage : les pages de
 // lecture (Lesson/Cours détail + lire) embarquent à elles seules react-markdown +
@@ -24,33 +26,47 @@ const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ defa
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage })))
 const TermsPage = lazy(() => import("@/pages/TermsPage").then((m) => ({ default: m.TermsPage })))
 
+/**
+ * `/` seul n'est jamais l'URL canonique d'une page (voir countryPath.ts) : on
+ * redirige vers le dernier pays choisi (localStorage), sinon le pays par défaut -
+ * lu de façon synchrone pour rediriger dès le premier rendu, sans attendre le fetch
+ * de la liste des pays (CountryProvider).
+ */
+function RootRedirect() {
+  const target = localStorage.getItem(COUNTRY_STORAGE_KEY) || DEFAULT_COUNTRY_CODE
+  return <Navigate to={`/${target}`} replace />
+}
+
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="edukamer-theme">
       <AuthProvider>
         <BrowserRouter>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">
-              <Suspense fallback={<RouteFallback />}>
-                <Routes>
-                  <Route path="/" element={<CataloguePage />} />
-                  <Route path="/lecons/:id" element={<LessonDetailPage />} />
-                  <Route path="/lecons/:id/lire" element={<LessonReaderPage />} />
-                  <Route path="/cours" element={<CoursListPage />} />
-                  <Route path="/cours/:id" element={<CoursDetailPage />} />
-                  <Route path="/cours/:id/lire" element={<CoursReaderPage />} />
-                  <Route path="/connexion" element={<LoginPage />} />
-                  <Route path="/tarifs" element={<PricingPage />} />
-                  <Route path="/abonnement" element={<SubscribePage />} />
-                  <Route path="/compte" element={<AccountPage />} />
-                  <Route path="/confidentialite" element={<PrivacyPage />} />
-                  <Route path="/cgu" element={<TermsPage />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
+          <CountryProvider>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">
+                <Suspense fallback={<RouteFallback />}>
+                  <Routes>
+                    <Route path="/" element={<RootRedirect />} />
+                    <Route path="/:country" element={<CataloguePage />} />
+                    <Route path="/:country/cours" element={<CoursListPage />} />
+                    <Route path="/lecons/:id" element={<LessonDetailPage />} />
+                    <Route path="/lecons/:id/lire" element={<LessonReaderPage />} />
+                    <Route path="/cours/:id" element={<CoursDetailPage />} />
+                    <Route path="/cours/:id/lire" element={<CoursReaderPage />} />
+                    <Route path="/connexion" element={<LoginPage />} />
+                    <Route path="/tarifs" element={<PricingPage />} />
+                    <Route path="/abonnement" element={<SubscribePage />} />
+                    <Route path="/compte" element={<AccountPage />} />
+                    <Route path="/confidentialite" element={<PrivacyPage />} />
+                    <Route path="/cgu" element={<TermsPage />} />
+                  </Routes>
+                </Suspense>
+              </main>
+              <Footer />
+            </div>
+          </CountryProvider>
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>

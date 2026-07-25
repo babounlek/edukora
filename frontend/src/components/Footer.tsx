@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom"
 import { Mail, MessageCircle } from "lucide-react"
 import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
+import { useCountry } from "@/context/CountryContext"
+import { catalogueHomePath, coursListPath } from "@/lib/countryPath"
 
 const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const { country } = useCountry()
 
   return (
     <footer className="mt-auto border-t border-border/80 bg-background">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div>
-          <Link to="/" className="flex items-baseline gap-2">
+          <Link to={catalogueHomePath(country)} className="flex items-baseline gap-2">
             <span className="font-display text-lg font-semibold tracking-tight text-primary">
               {SITE_NAME}
             </span>
@@ -25,8 +28,8 @@ export function Footer() {
         </div>
 
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-          <Link to="/" className="transition-colors hover:text-foreground">Leçons</Link>
-          <Link to="/cours" className="transition-colors hover:text-foreground">Cours</Link>
+          <Link to={catalogueHomePath(country)} className="transition-colors hover:text-foreground">Leçons</Link>
+          <Link to={coursListPath(country)} className="transition-colors hover:text-foreground">Cours</Link>
           <Link to="/tarifs" className="transition-colors hover:text-foreground">Tarifs</Link>
           <Link to="/compte" className="transition-colors hover:text-foreground">Mon compte</Link>
         </nav>

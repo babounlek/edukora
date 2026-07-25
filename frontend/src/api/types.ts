@@ -19,8 +19,17 @@ export interface Subject {
   label: string
 }
 
+export interface Country {
+  id: number
+  code: string
+  label: string
+  dial_code: string
+  currency: string
+}
+
 export interface Cursus {
   id: number
+  country: Country
   examen: string
   examen_display: string
   series: Series | null

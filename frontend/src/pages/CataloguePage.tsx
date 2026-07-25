@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { BookOpen, CheckCircle2, Lock, Search, Unlock } from "lucide-react"
 
 import { listCursus, listLessons, listSubjects } from "@/api/endpoints"
@@ -40,6 +40,8 @@ export function CataloguePage() {
       "Fiches de révision, corrigés d'annales et sujets inédits pour le BEPC, le Probatoire et le BAC au Cameroun, classés par matière et par série.",
   })
 
+  const { country } = useParams<{ country: string }>()
+
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [cursusList, setCursusList] = useState<Cursus[]>([])
@@ -50,9 +52,13 @@ export function CataloguePage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    listSubjects().then(setSubjects).catch(() => {})
-    listCursus().then(setCursusList).catch(() => {})
-  }, [])
+    listSubjects(country).then(setSubjects).catch(() => {})
+    listCursus(country).then(setCursusList).catch(() => {})
+    // Une matière/un cursus sélectionné dans un autre pays n'existe plus dans les
+    // nouvelles listes.
+    setSubjectFilter("")
+    setCursusFilter("")
+  }, [country])
 
   useEffect(() => {
     setIsLoading(true)
@@ -60,6 +66,7 @@ export function CataloguePage() {
       listLessons({
         subject: subjectFilter || undefined,
         cursus: cursusFilter ? Number(cursusFilter) : undefined,
+        country,
         origine: origineFilter || undefined,
         search: search || undefined,
       })
@@ -67,7 +74,7 @@ export function CataloguePage() {
         .finally(() => setIsLoading(false))
     }, 300)
     return () => clearTimeout(timeout)
-  }, [subjectFilter, cursusFilter, origineFilter, search])
+  }, [subjectFilter, cursusFilter, origineFilter, search, country])
 
   return (
     <div>

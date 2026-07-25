@@ -6,8 +6,10 @@ import { checkPaymentStatus, initiatePayment, listCursus, listPlans } from "@/ap
 import { ApiError } from "@/api/client"
 import type { Cursus, Plan } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import { formatAmount } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
+import { catalogueHomePath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,6 +24,7 @@ export function SubscribePage() {
   const cursusId = searchParams.get("cursus")
   const navigate = useNavigate()
   const { isAuthenticated, isLoading, user } = useAuth()
+  const { country } = useCountry()
 
   const [cursus, setCursus] = useState<Cursus | null>(null)
   const [plans, setPlans] = useState<Plan[]>([])
@@ -187,7 +190,7 @@ export function SubscribePage() {
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">Abonnement activé !</p>
               <Button asChild>
-                <Link to="/">Retour au catalogue</Link>
+                <Link to={catalogueHomePath(country)}>Retour au catalogue</Link>
               </Button>
             </div>
           )}

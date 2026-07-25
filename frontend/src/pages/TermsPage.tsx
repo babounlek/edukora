@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react"
 
 import { useSeo } from "@/lib/seo"
 import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
+import { useCountry } from "@/context/CountryContext"
+import { catalogueHomePath } from "@/lib/countryPath"
 
 const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 
@@ -11,11 +13,12 @@ export function TermsPage() {
     title: "Conditions générales d'utilisation et de vente",
     description: `Fonctionnement des abonnements ${SITE_NAME}, paiement, remboursement et propriété intellectuelle.`,
   })
+  const { country } = useCountry()
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to="/"
+        to={catalogueHomePath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />

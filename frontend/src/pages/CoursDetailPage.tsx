@@ -10,9 +10,12 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LessonMarkdown } from "@/components/LessonMarkdown"
+import { useCountry } from "@/context/CountryContext"
+import { coursListPath } from "@/lib/countryPath"
 
 export function CoursDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const { country } = useCountry()
 
   const [cours, setCours] = useState<Cours | null>(null)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
@@ -49,7 +52,7 @@ export function CoursDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to="/cours"
+        to={coursListPath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />

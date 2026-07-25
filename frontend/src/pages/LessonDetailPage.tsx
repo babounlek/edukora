@@ -10,9 +10,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { LessonMarkdown } from "@/components/LessonMarkdown"
 import { formatCursusGroups } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
+import { useCountry } from "@/context/CountryContext"
+import { catalogueHomePath } from "@/lib/countryPath"
 
 export function LessonDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const { country } = useCountry()
 
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [preview, setPreview] = useState<LessonPreview | null>(null)
@@ -49,7 +52,7 @@ export function LessonDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to="/"
+        to={catalogueHomePath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />

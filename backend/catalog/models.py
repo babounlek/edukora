@@ -1,5 +1,6 @@
 import re
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
@@ -78,27 +79,44 @@ class LessonType(models.TextChoices):
 
 
 class Subject(models.Model):
-    """Référentiel des matières. Table dédiée pour accueillir plus tard icône/couleur/coefficient."""
+    """
+    Référentiel des matières. Table dédiée pour accueillir plus tard icône/couleur/
+    coefficient. Rattaché à Country : un intitulé ou une liste de matières peut
+    différer d'un pays à l'autre (voir Series pour le même raisonnement).
+    """
 
-    code = models.CharField(max_length=20, unique=True)
+    country = models.ForeignKey("Country", on_delete=models.PROTECT, related_name="subjects")
+    code = models.CharField(max_length=20)
     label = models.CharField(max_length=100)
 
     class Meta:
         ordering = ["label"]
+        constraints = [
+            models.UniqueConstraint(fields=["country", "code"], name="unique_subject_par_pays"),
+        ]
 
     def __str__(self):
         return self.label
 
 
 class Series(models.Model):
-    """Référentiel des séries (A, SES, C, D, E, TI, COM)."""
+    """
+    Référentiel des séries (A, SES, C, D, E, TI, COM). Rattaché à Country : rien ne
+    garantit qu'un code de série désigne la même chose (ni même qu'il existe) d'un
+    pays à l'autre du système éducatif francophone - voir Cursus.clean() qui vérifie
+    la cohérence (country, series.country).
+    """
 
-    code = models.CharField(max_length=10, unique=True)
+    country = models.ForeignKey("Country", on_delete=models.PROTECT, related_name="series_set")
+    code = models.CharField(max_length=10)
     label = models.CharField(max_length=100)
 
     class Meta:
         ordering = ["code"]
         verbose_name_plural = "séries"
+        constraints = [
+            models.UniqueConstraint(fields=["country", "code"], name="unique_series_par_pays"),
+        ]
 
     def __str__(self):
         return f"Série {self.code} ({self.label})"
@@ -114,6 +132,17 @@ class Country(models.Model):
 
     code = models.CharField(max_length=10, unique=True)
     label = models.CharField(max_length=100)
+    dial_code = models.CharField(
+        max_length=5, blank=True,
+        help_text="Indicatif téléphonique international, sans le + (ex : 237).",
+    )
+    currency = models.CharField(
+        max_length=3, blank=True,
+        help_text=(
+            "Code devise ISO 4217 (ex : XAF). Donnée seule pour l'instant - aucun code "
+            "ne s'en sert encore : le paiement (Campay) ne gère que le Cameroun."
+        ),
+    )
 
     class Meta:
         ordering = ["label"]
@@ -145,6 +174,16 @@ class Cursus(models.Model):
         if self.series:
             return f"{self.get_examen_display()} - {self.series}"
         return self.get_examen_display()
+
+    def clean(self):
+        """
+        Series est maintenant rattachée à un Country (voir Series) : rien n'empêche
+        au niveau des FK de lier un Cursus à la Series d'un AUTRE pays que le sien -
+        vérifié ici plutôt que par une contrainte SQL (impossible à exprimer proprement
+        entre deux FK dans une UniqueConstraint/CheckConstraint standard).
+        """
+        if self.series_id and self.country_id and self.series.country_id != self.country_id:
+            raise ValidationError("La série doit appartenir au même pays que le cursus.")
 
 
 class ExamSession(models.Model):
