@@ -32,11 +32,17 @@ class TagSerializer(serializers.ModelSerializer):
 class CursusSerializer(serializers.ModelSerializer):
     country = CountrySerializer(read_only=True)
     series = SeriesSerializer(read_only=True)
-    examen_display = serializers.CharField(source="get_examen_display", read_only=True)
+    # display_examen() plutôt que get_examen_display() : le nom affiché peut être
+    # différent du libellé générique selon le pays (ex: BFEM au Sénégal) - voir
+    # ExamenLabel dans catalog.models.
+    examen_display = serializers.SerializerMethodField()
 
     class Meta:
         model = Cursus
         fields = ["id", "country", "examen", "examen_display", "series"]
+
+    def get_examen_display(self, obj):
+        return obj.display_examen()
 
 
 class _HasAccessMixin:

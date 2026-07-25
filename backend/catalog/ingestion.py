@@ -93,6 +93,7 @@ SERIE_MAP = {
 
 EXAMEN_MAP = {
     "bepc": Examen.BEPC,
+    "bfem": Examen.BEPC,  # nom sénégalais du même niveau (fin de collège) - voir ExamenLabel.
     "probatoire": Examen.PROBATOIRE,
     "bac": Examen.BAC,
     "autre": Examen.AUTRE,
@@ -394,7 +395,7 @@ def ingest_exercise(data, source_dir=None):
             # plusieurs séries : "BAC C et E" plutôt que "BAC - Série C / BAC - Série E".
             groups = {}
             for c in cursus_list:
-                group = groups.setdefault(c.examen, {"examen_display": c.get_examen_display(), "series": []})
+                group = groups.setdefault(c.examen, {"examen_display": c.display_examen(), "series": []})
                 if c.series:
                     group["series"].append(c.series.code)
             cursus_label = " / ".join(

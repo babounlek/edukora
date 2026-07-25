@@ -152,6 +152,40 @@ class Country(models.Model):
         return self.label
 
 
+class ExamenLabel(models.Model):
+    """
+    Nom réellement affiché d'un niveau d'examen (Examen) pour un pays, quand il diffère
+    du libellé générique - ex : le Sénégal appelle son BEPC "BFEM". Examen reste un code
+    interne fixe et partagé (stable pour l'ingestion et la logique métier, voir
+    catalog.ingestion.EXAMEN_MAP) ; cette table ne fait que l'habiller différemment
+    selon le pays. Absence de ligne pour un (country, examen) -> on retombe sur le
+    libellé générique de Examen.choices - voir resolve_examen_label().
+    """
+
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="examen_labels")
+    examen = models.CharField(max_length=20, choices=Examen.choices)
+    label = models.CharField(max_length=100, help_text="Ex : BFEM (pour le Sénégal, examen=BEPC).")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["country", "examen"], name="unique_examen_label_par_pays"),
+        ]
+        ordering = ["country", "examen"]
+
+    def __str__(self):
+        return f"{self.country} - {self.get_examen_display()} -> {self.label}"
+
+
+def resolve_examen_label(country, examen_code):
+    """
+    Nom affiché de l'examen pour ce pays : l'override de ExamenLabel s'il existe, sinon
+    le libellé générique (Examen.choices). Partagé par Cursus/ExamSession/Lesson plutôt
+    que dupliqué, pour qu'un seul endroit résolve cette règle.
+    """
+    override = ExamenLabel.objects.filter(country=country, examen=examen_code).values_list("label", flat=True).first()
+    return override or dict(Examen.choices).get(examen_code, examen_code)
+
+
 class Cursus(models.Model):
     """
     Combinaison valide (pays, examen, série) d'un système scolaire donné.
@@ -172,8 +206,11 @@ class Cursus(models.Model):
 
     def __str__(self):
         if self.series:
-            return f"{self.get_examen_display()} - {self.series}"
-        return self.get_examen_display()
+            return f"{self.display_examen()} - {self.series}"
+        return self.display_examen()
+
+    def display_examen(self):
+        return resolve_examen_label(self.country, self.examen)
 
     def clean(self):
         """
@@ -207,7 +244,10 @@ class ExamSession(models.Model):
         ordering = ["annee", "examen"]
 
     def __str__(self):
-        return f"{self.get_examen_display()} {self.annee} ({self.country}) - {self.date_debut:%d/%m/%Y}"
+        return f"{self.display_examen()} {self.annee} ({self.country}) - {self.date_debut:%d/%m/%Y}"
+
+    def display_examen(self):
+        return resolve_examen_label(self.country, self.examen)
 
     @classmethod
     def prochaine_pour(cls, country, examen):
@@ -307,9 +347,11 @@ class Lesson(models.Model):
         depuis du texte généré par l'IA (peu fiable : correction-experte peut
         l'omettre ou changer sa mise en forme selon les sessions).
         """
-        series_codes = [c.series.code for c in self.cursus.select_related("series").all() if c.series]
-        examens = sorted({c.examen for c in self.cursus.all()})
-        examen_display = " / ".join(dict(Examen.choices).get(e, e) for e in examens) or None
+        cursus_list = list(self.cursus.select_related("series", "country").all())
+        series_codes = [c.series.code for c in cursus_list if c.series]
+        # display_examen() plutôt que Examen.choices brut : un même code interne (ex.
+        # BEPC) peut s'appeler différemment selon le pays - voir ExamenLabel.
+        examen_display = " / ".join(sorted({c.display_examen() for c in cursus_list})) or None
 
         return {
             "matiere": self.subject.label,

@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .ingestion import IngestionError, _country_code_from_path, ingest_exercise
-from .models import Cours, Country, Cursus, Examen, Lesson, LessonType, Series, StatutContenu, Subject
+from .models import Cours, Country, Cursus, Examen, ExamenLabel, Lesson, LessonType, Series, StatutContenu, Subject, resolve_examen_label
 
 
 def _exercise_payload(epreuve_source, numero="1"):
@@ -234,6 +234,62 @@ class SeedCountryCommandTests(TestCase):
         cm_subject_count = Subject.objects.filter(country__code="CM").count()
         self._run("bj", "Bénin")
         self.assertEqual(Subject.objects.filter(country__code="CM").count(), cm_subject_count)
+
+
+class ExamenLabelTests(TestCase):
+    """Le nom affiché d'un examen peut différer du code interne selon le pays (ex :
+    le Sénégal appelle son BEPC "BFEM") - voir catalog.models.ExamenLabel."""
+
+    def setUp(self):
+        self.cm = Country.objects.get(code="CM")
+        self.sn = Country.objects.create(code="SN", label="Sénégal")
+        ExamenLabel.objects.create(country=self.sn, examen=Examen.BEPC, label="BFEM")
+
+    def test_resolve_examen_label_returns_override_when_present(self):
+        self.assertEqual(resolve_examen_label(self.sn, Examen.BEPC), "BFEM")
+
+    def test_resolve_examen_label_falls_back_to_generic_choice(self):
+        # Pas d'override pour BAC au Sénégal, ni pour le Cameroun du tout.
+        self.assertEqual(resolve_examen_label(self.sn, Examen.BAC), "BAC")
+        self.assertEqual(resolve_examen_label(self.cm, Examen.BEPC), "BEPC")
+
+    def test_cursus_str_uses_country_override(self):
+        cursus = Cursus.objects.create(country=self.sn, examen=Examen.BEPC, series=None)
+        self.assertEqual(str(cursus), "BFEM")
+
+    def test_lesson_header_info_uses_country_override(self):
+        subject = Subject.objects.get(country=self.cm, code="MATHS")
+        cursus = Cursus.objects.create(country=self.sn, examen=Examen.BEPC, series=None)
+        lesson = Lesson.objects.create(
+            title="Test BFEM", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(cursus)
+        self.assertEqual(lesson.header_info()["examen"], "BFEM")
+
+    def test_ingestion_accepts_bfem_alias_and_uses_it_in_lesson_title(self):
+        Subject.objects.create(country=self.sn, code="MATHS", label="Mathématiques")
+        Cursus.objects.create(country=self.sn, examen=Examen.BEPC, series=None)
+
+        payload = {
+            "epreuve_source": "bfem-maths-2024", "numero_exercice": "1",
+            "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé.",
+            "matiere": "Mathématiques", "serie": "-", "examen": "BFEM",
+        }
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/sn/bfem-maths-2024"))
+        self.assertIn("BFEM", exercise.lesson.title)
+
+    def test_examen_map_tolerates_bfem_for_college_level(self):
+        from .ingestion import EXAMEN_MAP
+
+        self.assertEqual(EXAMEN_MAP["bfem"], Examen.BEPC)
+
+    def test_api_exposes_country_specific_examen_display(self):
+        cursus = Cursus.objects.create(country=self.sn, examen=Examen.BEPC, series=None)
+        response = self.client.get(reverse("catalog:cursus-list"), {"country": "sn"})
+        data = response.json()
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["id"], cursus.id)
+        self.assertEqual(data[0]["examen_display"], "BFEM")
 
 
 class SitemapCountryFanOutTests(TestCase):

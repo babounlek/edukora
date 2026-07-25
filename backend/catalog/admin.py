@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import path
 
 from .ingestion import run_ingestion
-from .models import Cours, Country, Cursus, ExamSession, Exercise, Figure, Lesson, RappelDeMethode, Series, StatutContenu, Subject, Tag
+from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, RappelDeMethode, Series, StatutContenu, Subject, Tag
 from .sujet_pdf import queue_sujet_pdf_generation
 
 # Phrase à taper pour confirmer la purge (voir LessonAdmin.purge_view) - une action qui
@@ -43,6 +43,12 @@ class SeriesAdmin(admin.ModelAdmin):
 @admin.register(Cursus)
 class CursusAdmin(admin.ModelAdmin):
     list_display = ["country", "examen", "series"]
+    list_filter = ["country", "examen"]
+
+
+@admin.register(ExamenLabel)
+class ExamenLabelAdmin(admin.ModelAdmin):
+    list_display = ["country", "examen", "label"]
     list_filter = ["country", "examen"]
 
 
