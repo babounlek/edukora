@@ -35,14 +35,20 @@ function CountrySwitcher() {
     )
   }
 
+  const currentLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+
   return (
     <Select value={country} onValueChange={handleChange}>
-      <SelectTrigger className="h-9 w-[72px] gap-1 px-2 text-xs sm:w-[92px] sm:text-sm">
+      <SelectTrigger className="h-9 w-[72px] shrink-0 gap-1 px-2 text-xs sm:w-auto sm:max-w-[150px] sm:text-sm">
         <Globe className="size-3.5 shrink-0 text-muted-foreground" />
-        {/* Enfant explicite : replié, affiche le code ("CM") plutôt que le nom du
-            pays sélectionné (comportement par défaut de SelectValue), pour rester
-            compact dans le header - la liste ouverte, elle, garde les noms complets. */}
-        <SelectValue>{country.toUpperCase()}</SelectValue>
+        {/* Enfant explicite (pas le comportement par défaut de SelectValue) : replié,
+            le visiteur doit voir clairement sur quel pays il navigue - le nom complet
+            sur desktop, le code ("CM") sur mobile faute de place. La liste ouverte,
+            elle, garde toujours les noms complets. */}
+        <SelectValue>
+          <span className="sm:hidden">{country.toUpperCase()}</span>
+          <span className="hidden truncate sm:inline">{currentLabel ?? country.toUpperCase()}</span>
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {countries.map((c) => (

@@ -6,6 +6,7 @@ import { listCours, listCursus, listSubjects } from "@/api/endpoints"
 import type { Cours, Cursus, Subject } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
+import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -34,13 +35,16 @@ function CoursCardSkeleton() {
 }
 
 export function CoursListPage() {
+  const { country } = useParams<{ country: string }>()
+  const { countries } = useCountry()
+  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+
   useSeo({
     title: "Cours de révision",
-    description:
-      "Cours structurés (méthode, exemple résolu, erreurs classiques, exercices) pour le BEPC, le Probatoire et le BAC au Cameroun.",
+    description: countryLabel
+      ? `${countryLabel} : cours structurés (méthode, exemple résolu, erreurs classiques, exercices) pour le BEPC, le Probatoire et le BAC.`
+      : undefined,
   })
-
-  const { country } = useParams<{ country: string }>()
 
   const [coursList, setCoursList] = useState<Cours[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -87,7 +91,7 @@ export function CoursListPage() {
         />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <p className="mb-2 font-display text-sm italic text-primary">
-            Cours
+            Cours{countryLabel ? ` — ${countryLabel}` : ""}
           </p>
           <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
             Maîtrise la <span className="text-primary">méthode</span>, pas juste l'exercice du jour.

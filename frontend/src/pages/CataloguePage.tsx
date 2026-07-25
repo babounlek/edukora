@@ -6,6 +6,7 @@ import { listCursus, listLessons, listSubjects } from "@/api/endpoints"
 import type { Cursus, Lesson, Subject } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
+import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -34,13 +35,18 @@ function LessonCardSkeleton() {
 }
 
 export function CataloguePage() {
+  const { country } = useParams<{ country: string }>()
+  const { countries } = useCountry()
+  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+
   useSeo({
     title: "Corrigés BEPC, Probatoire et BAC",
-    description:
-      "Fiches de révision, corrigés d'annales et sujets inédits pour le BEPC, le Probatoire et le BAC au Cameroun, classés par matière et par série.",
+    // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
+    // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
+    description: countryLabel
+      ? `${countryLabel} : fiches de révision, corrigés d'annales et sujets inédits pour le BEPC, le Probatoire et le BAC, classés par matière et par série.`
+      : undefined,
   })
-
-  const { country } = useParams<{ country: string }>()
 
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -89,7 +95,7 @@ export function CataloguePage() {
         />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <p className="mb-2 font-display text-sm italic text-primary">
-            BEPC · Probatoire · BAC
+            BEPC · Probatoire · BAC{countryLabel ? ` — ${countryLabel}` : ""}
           </p>
           <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
             Des corrigés qui t'apprennent{" "}
