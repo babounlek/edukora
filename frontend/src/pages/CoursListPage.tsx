@@ -91,7 +91,7 @@ export function CoursListPage() {
         />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <p className="mb-2 font-display text-sm italic text-primary">
-            Cours{countryLabel ? ` — ${countryLabel}` : ""}
+            Cours{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
           <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
             Maîtrise la <span className="text-primary">méthode</span>, pas juste l'exercice du jour.
