@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "subscriptions",
     "payments",
     "access",
+    "quiz",
 ]
 
 AUTH_USER_MODEL = "users.User"

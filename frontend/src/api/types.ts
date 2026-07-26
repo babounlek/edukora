@@ -172,3 +172,61 @@ export interface PaymentStatusResponse {
   status: TransactionStatus
   subscription_active: boolean
 }
+
+export type ModeQuiz = "PRATIQUE" | "DIAGNOSTIC"
+export type ResultatDeclare = "REUSSI" | "PARTIEL" | "ECHEC"
+export type TypeReponse = "OUVERTE" | "QCM"
+
+export interface QuizChoix {
+  lettre: string
+  texte: string
+}
+
+export interface QuizAnswerInfo {
+  reponse_choisie: string
+  resultat_declare: string
+  est_correcte: boolean
+}
+
+export interface QuizQuestion {
+  id: number
+  ordre: number
+  numero: string
+  enonce_intro_markdown: string
+  enonce_markdown: string
+  type_reponse: TypeReponse
+  choix: QuizChoix[]
+  // Présents uniquement une fois la question répondue (voir quiz.views._question_payload côté backend).
+  corrige_markdown?: string
+  reponse_correcte?: string
+  reponse?: QuizAnswerInfo
+}
+
+export interface QuizSession {
+  id: number
+  mode: ModeQuiz
+  cursus: number
+  started_at: string
+  completed_at: string | null
+  total_questions: number
+  questions: QuizQuestion[]
+}
+
+export interface QuizCorrige {
+  corrige_markdown: string
+  reponse_correcte: string
+}
+
+export interface QuizThemeScore {
+  theme: string
+  total: number
+  reussies: number
+}
+
+export interface QuizResult {
+  id: number
+  total_questions: number
+  questions_repondues: number
+  score: number
+  par_theme: QuizThemeScore[]
+}

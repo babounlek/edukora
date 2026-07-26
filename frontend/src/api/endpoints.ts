@@ -8,11 +8,16 @@ import type {
   Lesson,
   LessonContent,
   LessonPreview,
+  ModeQuiz,
   Paginated,
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
   Progression,
+  QuizCorrige,
+  QuizQuestion,
+  QuizResult,
+  QuizSession,
   Subject,
   Subscription,
   User,
@@ -143,4 +148,42 @@ export function listMySubscriptions() {
 
 export function getMyProgression() {
   return apiRequest<Progression>("/access/progression/")
+}
+
+export interface StartQuizSessionParams {
+  cursus: number
+  mode?: ModeQuiz
+  subject?: number
+  n?: number
+}
+
+export function startQuizSession(params: StartQuizSessionParams) {
+  return apiRequest<QuizSession>("/quiz/sessions/", {
+    method: "POST",
+    body: params,
+  })
+}
+
+export function getQuizSession(id: number) {
+  return apiRequest<QuizSession>(`/quiz/sessions/${id}/`)
+}
+
+export function revealQuizCorrige(sessionId: number, quizQuestionId: number) {
+  return apiRequest<QuizCorrige>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/corrige/`)
+}
+
+export interface AnswerQuizQuestionParams {
+  reponse_choisie?: string
+  resultat_declare?: string
+}
+
+export function answerQuizQuestion(sessionId: number, quizQuestionId: number, params: AnswerQuizQuestionParams) {
+  return apiRequest<QuizQuestion>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/answer/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
+export function completeQuizSession(sessionId: number) {
+  return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
 }

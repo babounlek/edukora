@@ -28,6 +28,7 @@ urlpatterns = [
     path("subscriptions/", include("subscriptions.urls")),
     path("payments/", include("payments.urls")),
     path("access/", include("access.urls")),
+    path("quiz/", include("quiz.urls")),
     path("sitemap.xml", sitemap_index, name="sitemap-index"),
     path("sitemap-<int:page>.xml", sitemap_chunk, name="sitemap-chunk"),
 ]

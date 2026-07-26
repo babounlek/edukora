@@ -67,9 +67,13 @@ export function Header() {
   const { pathname } = useLocation()
 
   const isTarifsSection = pathname.startsWith("/tarifs")
-  const isCoursSection = !isTarifsSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
+  const isQuizSection = !isTarifsSection && pathname.startsWith("/quiz")
+  const isCoursSection = !isTarifsSection && !isQuizSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
   const isLeconsSection =
-    !isCoursSection && !isTarifsSection && (pathname === catalogueHomePath(country) || pathname.startsWith("/lecons"))
+    !isCoursSection &&
+    !isTarifsSection &&
+    !isQuizSection &&
+    (pathname === catalogueHomePath(country) || pathname.startsWith("/lecons"))
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-sm">
@@ -89,6 +93,9 @@ export function Header() {
           </Button>
           <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
             <Link to={coursListPath(country)}>Cours</Link>
+          </Button>
+          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
+            <Link to="/quiz">Quiz</Link>
           </Button>
           <Button asChild variant={isTarifsSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
             <Link to="/tarifs">Tarifs</Link>

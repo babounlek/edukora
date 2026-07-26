@@ -25,6 +25,9 @@ const PricingPage = lazy(() => import("@/pages/PricingPage").then((m) => ({ defa
 const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })))
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage })))
 const TermsPage = lazy(() => import("@/pages/TermsPage").then((m) => ({ default: m.TermsPage })))
+const QuizStartPage = lazy(() => import("@/pages/QuizStartPage").then((m) => ({ default: m.QuizStartPage })))
+const QuizSessionPage = lazy(() => import("@/pages/QuizSessionPage").then((m) => ({ default: m.QuizSessionPage })))
+const QuizResultPage = lazy(() => import("@/pages/QuizResultPage").then((m) => ({ default: m.QuizResultPage })))
 
 /**
  * `/` seul n'est jamais l'URL canonique d'une page (voir countryPath.ts) : on
@@ -59,6 +62,9 @@ function App() {
                     <Route path="/tarifs" element={<PricingPage />} />
                     <Route path="/abonnement" element={<SubscribePage />} />
                     <Route path="/compte" element={<AccountPage />} />
+                    <Route path="/quiz" element={<QuizStartPage />} />
+                    <Route path="/quiz/session/:id" element={<QuizSessionPage />} />
+                    <Route path="/quiz/session/:id/resultat" element={<QuizResultPage />} />
                     <Route path="/confidentialite" element={<PrivacyPage />} />
                     <Route path="/cgu" element={<TermsPage />} />
                   </Routes>
