@@ -28,7 +28,7 @@ from pathlib import Path
 from django.core.files.base import ContentFile
 from django.db import transaction
 
-from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, Origine, OrigineFigure, RappelDeMethode, Series, StatutContenu, Subject, Tag, _join_fr
+from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, Origine, OrigineFigure, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag, TypeReponse, _join_fr
 
 
 class IngestionError(Exception):
@@ -116,8 +116,7 @@ ORIGINE_MAP = {
 }
 
 REQUIRED_KEYS = [
-    "epreuve_source", "numero_exercice", "enonce_markdown", "corrige_markdown",
-    "matiere", "serie", "examen",
+    "epreuve_source", "numero_exercice", "matiere", "serie", "examen",
 ]
 
 
@@ -259,10 +258,16 @@ def _attach_figures(exercise, figures_data, source_dir):
     Crée un Figure par entrée de `figures_data`, en lisant le PNG depuis `source_dir`
     (le dossier du fichier JSON source - voir SKILL.md "Traitement des figures et
     images" : les PNG sont livrés à côté des JSON de l'épreuve, jamais encodés dans
-    le JSON). Réécrit ensuite dans enonce_markdown/corrige_markdown chaque occurrence
-    du nom de fichier original par l'URL réelle du fichier stocké, pour que le
-    placeholder `![fig-N](nom_original.png)` pointe vers une image effectivement
-    servable une fois la Lesson compilée.
+    le JSON). Réécrit ensuite chaque occurrence du nom de fichier original par l'URL
+    réelle du fichier stocké, pour que le placeholder `![fig-N](nom_original.png)`
+    pointe vers une image effectivement servable.
+
+    Appelée après création des Question de `exercise` (voir ingest_exercise) : une
+    figure peut être partagée par plusieurs sous-questions (ex. un graphique lu par
+    la question 1 et exploité de nouveau en question 3), donc le placeholder est
+    recherché dans le texte de chaque Question plutôt que dans un unique champ comme
+    avant la scission en sous-questions - ainsi que dans enonce_intro_markdown, qui
+    peut lui aussi référencer une figure partagée en préambule.
     """
     if not figures_data:
         return
@@ -270,8 +275,7 @@ def _attach_figures(exercise, figures_data, source_dir):
     if source_dir is None:
         raise IngestionError("figures présentes dans le JSON mais aucun dossier source fourni pour résoudre les PNG.")
 
-    enonce = exercise.enonce_markdown
-    corrige = exercise.corrige_markdown
+    questions = list(exercise.questions.all())
     illisibles_indispensables = []
 
     for fig_data in figures_data:
@@ -305,19 +309,21 @@ def _attach_figures(exercise, figures_data, source_dir):
             origine=origine,
         )
 
-        enonce = enonce.replace(filename, figure.image.url)
-        corrige = corrige.replace(filename, figure.image.url)
+        for question in questions:
+            enonce = question.enonce_markdown.replace(filename, figure.image.url)
+            corrige = question.corrige_markdown.replace(filename, figure.image.url)
+            if enonce != question.enonce_markdown or corrige != question.corrige_markdown:
+                question.enonce_markdown = enonce
+                question.corrige_markdown = corrige
+                question.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
+
+        intro = exercise.enonce_intro_markdown.replace(filename, figure.image.url)
+        if intro != exercise.enonce_intro_markdown:
+            exercise.enonce_intro_markdown = intro
+            exercise.save(update_fields=["enonce_intro_markdown", "updated_at"])
 
         if indispensable and _normalize(lisibilite) == "illisible":
             illisibles_indispensables.append(fig_id)
-
-    update_fields = []
-    if enonce != exercise.enonce_markdown:
-        exercise.enonce_markdown = enonce
-        update_fields.append("enonce_markdown")
-    if corrige != exercise.corrige_markdown:
-        exercise.corrige_markdown = corrige
-        update_fields.append("corrige_markdown")
 
     # Filet de sécurité mécanique pour la règle SKILL.md ("figure indispensable et
     # illisible -> incertitude majeure, mentionnée en premier") : la compétence est
@@ -330,10 +336,7 @@ def _attach_figures(exercise, figures_data, source_dir):
         )
         if note not in exercise.incertitudes:
             exercise.incertitudes = [note, *exercise.incertitudes]
-            update_fields.append("incertitudes")
-
-    if update_fields:
-        exercise.save(update_fields=update_fields)
+            exercise.save(update_fields=["incertitudes"])
 
 
 def ingest_exercise(data, source_dir=None):
@@ -353,10 +356,20 @@ def ingest_exercise(data, source_dir=None):
     (voir _attach_figures) - toujours le dossier du fichier JSON source, transmis par
     run_ingestion. Sert aussi, désormais, à déterminer le pays de l'épreuve (voir
     _country_code_from_path) : obligatoire même sans figures dans le JSON.
+
+    `data["questions"]` porte la décomposition en sous-questions atomiques (voir
+    catalog.models.Question) - toujours au moins une entrée, même pour un exercice à
+    une seule question. enonce_markdown/corrige_markdown de l'Exercise ne sont plus lus
+    depuis le JSON : ils sont compilés depuis les Question créées (voir
+    Exercise.compile_from_questions), appelée en toute fin de cette fonction.
     """
     missing = [key for key in REQUIRED_KEYS if not data.get(key)]
     if missing:
         raise IngestionError(f"Champs obligatoires manquants : {missing}")
+
+    questions_data = data.get("questions") or []
+    if not questions_data:
+        raise IngestionError("'questions' est requis et doit contenir au moins une entrée.")
 
     if source_dir is None:
         raise IngestionError("source_dir manquant : impossible de déterminer le pays de cet exercice.")
@@ -449,36 +462,54 @@ def ingest_exercise(data, source_dir=None):
         if existing:
             return existing, False
 
-        difficulte = DIFFICULTE_MAP.get(_normalize(data.get("difficulte_estimee")), "")
-
         exercise = Exercise.objects.create(
             lesson=lesson,
             numero_exercice=numero_exercice,
             points=str(data.get("points") or ""),
-            enonce_markdown=_strip_em_dash(data["enonce_markdown"]),
-            corrige_markdown=_strip_em_dash(data["corrige_markdown"]),
-            difficulte_estimee=difficulte,
+            enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
             incertitudes=data.get("incertitudes") or [],
             statut=StatutContenu.VALIDE,
         )
-        exercise.themes.set(_get_or_create_tags(data.get("themes")))
         exercise.mots_cles_recherche.set(_get_or_create_tags(data.get("mots_cles_recherche")))
 
-        for rappel_data in data.get("rappels_de_methode") or []:
-            # _strip_em_dash appliqué identiquement ici et sur corrige_markdown
-            # ci-dessus : _annotate_cours_links (voir models.py) fait correspondre
-            # les deux par inclusion de chaîne exacte, donc une normalisation qui
-            # diffère entre les deux casserait ce rapprochement silencieusement.
-            RappelDeMethode.objects.get_or_create(
-                external_id=rappel_data["id"],
-                defaults={
-                    "exercise": exercise,
-                    "competence": _strip_em_dash(rappel_data.get("competence", "")),
-                    "contenu_markdown": _strip_em_dash(rappel_data.get("contenu_markdown", "")),
-                },
+        for ordre, q_data in enumerate(questions_data, start=1):
+            if not q_data.get("enonce_markdown") or not q_data.get("corrige_markdown"):
+                raise IngestionError(f"questions[{ordre - 1}] : enonce_markdown et corrige_markdown sont requis.")
+
+            difficulte = DIFFICULTE_MAP.get(_normalize(q_data.get("difficulte_estimee")), "")
+            type_reponse = TypeReponse.QCM if _normalize(q_data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
+
+            question = Question.objects.create(
+                exercise=exercise,
+                numero=str(q_data.get("numero") or ordre),
+                ordre=ordre,
+                enonce_markdown=_strip_em_dash(q_data["enonce_markdown"]),
+                corrige_markdown=_strip_em_dash(q_data["corrige_markdown"]),
+                difficulte_estimee=difficulte,
+                type_reponse=type_reponse,
+                choix=_strip_em_dash(q_data.get("choix") or []),
+                reponse_correcte=str(q_data.get("reponse_correcte") or ""),
             )
+            question.themes.set(_get_or_create_tags(q_data.get("themes")))
+
+            for rappel_data in q_data.get("rappels_de_methode") or []:
+                # _strip_em_dash appliqué identiquement ici et sur corrige_markdown
+                # ci-dessus : _annotate_cours_links (voir models.py) fait correspondre
+                # les deux par inclusion de chaîne exacte, donc une normalisation qui
+                # diffère entre les deux casserait ce rapprochement silencieusement.
+                # Le rappel reste rattaché à l'Exercise (pas à la Question) : Cours
+                # continue de se générer au niveau de l'épreuve, pas de la sous-question.
+                RappelDeMethode.objects.get_or_create(
+                    external_id=rappel_data["id"],
+                    defaults={
+                        "exercise": exercise,
+                        "competence": _strip_em_dash(rappel_data.get("competence", "")),
+                        "contenu_markdown": _strip_em_dash(rappel_data.get("contenu_markdown", "")),
+                    },
+                )
 
         _attach_figures(exercise, data.get("figures") or [], source_dir)
+        exercise.compile_from_questions()
 
         lesson.compile_from_exercises()
 

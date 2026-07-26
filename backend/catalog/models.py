@@ -66,6 +66,11 @@ class Difficulte(models.TextChoices):
     ELEVEE = "ELEVEE", "Élevée"
 
 
+class TypeReponse(models.TextChoices):
+    OUVERTE = "OUVERTE", "Réponse ouverte (auto-évaluation)"
+    QCM = "QCM", "Choix multiple (correction automatique)"
+
+
 class StatutContenu(models.TextChoices):
     BROUILLON = "BROUILLON", "Brouillon"
     VALIDE = "VALIDE", "Validé"
@@ -483,6 +488,14 @@ class Exercise(models.Model):
     validé et compilé automatiquement à l'ingestion (voir catalog.ingestion). Un exercice
     = une unité ; plusieurs exercices d'une même épreuve sont compilés ensemble en un
     seul Lesson (lesson_type=CORR).
+
+    Un exercice peut avoir plusieurs sous-questions notées indépendamment (QCM à
+    plusieurs items, problème à sous-parties numérotées) - voir Question, l'unité
+    atomique de correction. enonce_markdown/corrige_markdown ne sont plus saisis
+    directement : ils sont compilés depuis les Question rattachées (voir
+    compile_from_questions()), exactement comme Lesson.content_markdown est compilé
+    depuis les Exercise validés - aucun consommateur de ces deux champs n'a besoin de
+    changer, ils restent de vrais champs stockés.
     """
 
     numero_exercice = models.CharField(
@@ -491,12 +504,29 @@ class Exercise(models.Model):
     )
     points = models.CharField(max_length=20, blank=True)
 
-    enonce_markdown = models.TextField()
-    corrige_markdown = models.TextField()
+    enonce_intro_markdown = models.TextField(
+        blank=True,
+        help_text=(
+            "Préambule partagé par toutes les sous-questions (ex. consigne commune d'un "
+            "QCM), affiché avant la première Question. Vide si l'exercice n'a pas de "
+            "préambule propre (le cas le plus courant)."
+        ),
+    )
+    enonce_markdown = models.TextField(
+        blank=True,
+        help_text="Compilé depuis les Question rattachées - voir compile_from_questions().",
+    )
+    corrige_markdown = models.TextField(
+        blank=True,
+        help_text="Compilé depuis les Question rattachées - voir compile_from_questions().",
+    )
 
+    # themes est un cumul des Question rattachées (voir compile_from_questions) -
+    # difficulte_estimee, elle, n'a pas d'équivalent utile au niveau de l'exercice
+    # entier (une moyenne/un max seraient arbitraires) : elle vit uniquement sur
+    # Question désormais, seule granularité pertinente pour le Mode Quiz.
     themes = models.ManyToManyField(Tag, blank=True, related_name="exercises_as_theme")
     mots_cles_recherche = models.ManyToManyField(Tag, blank=True, related_name="exercises_as_keyword")
-    difficulte_estimee = models.CharField(max_length=10, choices=Difficulte.choices, blank=True)
     incertitudes = models.JSONField(default=list, blank=True)
 
     statut = models.CharField(max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON)
@@ -520,6 +550,78 @@ class Exercise(models.Model):
 
     def __str__(self):
         return f"{self.lesson.epreuve_source or self.lesson.title} - Ex. {self.numero_exercice}"
+
+    def compile_from_questions(self):
+        """
+        Concatène les Question rattachées (dans l'ordre) pour peupler enonce_markdown/
+        corrige_markdown - même principe que Lesson.compile_from_exercises(). Appelée
+        à l'ingestion après création des Question et attache des figures (voir
+        catalog.ingestion.ingest_exercise), et par clean_em_dash après correction du
+        contenu source des Question.
+
+        Peuple aussi self.themes en union des thèmes de chaque Question : themes vit
+        maintenant au niveau de la Question (granularité utile au Mode Quiz), mais
+        Lesson.compile_from_exercises() lit encore exercise.themes.all() pour bâtir les
+        thèmes de la Lesson (recherche plein texte) - sans ce recopiage, cette agrégation
+        se viderait silencieusement.
+        """
+        questions = list(self.questions.prefetch_related("themes").order_by("ordre"))
+        intro = f"{self.enonce_intro_markdown}\n\n" if self.enonce_intro_markdown else ""
+        self.enonce_markdown = intro + "\n\n".join(q.enonce_markdown for q in questions)
+        self.corrige_markdown = "\n\n".join(q.corrige_markdown for q in questions)
+        self.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
+
+        themes = set()
+        for question in questions:
+            themes.update(question.themes.all())
+        self.themes.set(themes)
+
+
+class Question(models.Model):
+    """
+    Sous-question atomique d'un Exercise - unité de correction indépendante, unité de
+    base pour le Mode Quiz (auto-évaluation/test de niveau). Un exercice simple (le cas
+    le plus courant) a une seule Question ; un exercice à tiroirs (QCM à plusieurs
+    items, problème à sous-parties numérotées) en a plusieurs - la décomposition vient
+    de correction-experte, qui la connaît déjà en interne au moment de rédiger le
+    corrigé (étape de segmentation), jamais reconstruite après coup par un parsing du
+    texte assemblé.
+    """
+
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name="questions")
+    numero = models.CharField(
+        max_length=10,
+        help_text="Repère au sein de l'exercice parent (ex : 1, 2, a, b) - pas forcément numero_exercice.",
+    )
+    ordre = models.PositiveSmallIntegerField(help_text="Ordre d'affichage/résolution au sein de l'exercice.")
+
+    enonce_markdown = models.TextField()
+    corrige_markdown = models.TextField()
+
+    themes = models.ManyToManyField(Tag, blank=True, related_name="questions_as_theme")
+    difficulte_estimee = models.CharField(max_length=10, choices=Difficulte.choices, blank=True)
+
+    type_reponse = models.CharField(max_length=10, choices=TypeReponse.choices, default=TypeReponse.OUVERTE)
+    choix = models.JSONField(
+        default=list, blank=True,
+        help_text="[{\"lettre\": \"a\", \"texte\": \"...\"}] si type_reponse=QCM, sinon vide.",
+    )
+    reponse_correcte = models.CharField(
+        max_length=10, blank=True,
+        help_text="Lettre correcte si type_reponse=QCM (ex : 'b'), sinon vide.",
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["exercise", "ordre"]
+        constraints = [
+            models.UniqueConstraint(fields=["exercise", "numero"], name="unique_question_par_exercice"),
+        ]
+
+    def __str__(self):
+        return f"{self.exercise} - Q{self.numero}"
 
 
 class OrigineFigure(models.TextChoices):

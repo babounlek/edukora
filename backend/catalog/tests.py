@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .ingestion import IngestionError, _country_code_from_path, ingest_exercise
-from .models import Cours, Country, Cursus, Examen, ExamenLabel, Lesson, LessonType, Series, StatutContenu, Subject, resolve_examen_label
+from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Lesson, LessonType, Question, Series, StatutContenu, Subject, Tag, TypeReponse, resolve_examen_label
 from .sujet_pdf import _render_html
 
 
@@ -16,11 +16,12 @@ def _exercise_payload(epreuve_source, numero="1"):
     return {
         "epreuve_source": epreuve_source,
         "numero_exercice": numero,
-        "enonce_markdown": "Énoncé.",
-        "corrige_markdown": "Corrigé.",
         "matiere": "Mathématiques",
         "serie": "C",
         "examen": "BAC",
+        "questions": [
+            {"numero": "1", "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé."},
+        ],
     }
 
 
@@ -273,8 +274,8 @@ class ExamenLabelTests(TestCase):
 
         payload = {
             "epreuve_source": "bfem-maths-2024", "numero_exercice": "1",
-            "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé.",
             "matiere": "Mathématiques", "serie": "-", "examen": "BFEM",
+            "questions": [{"numero": "1", "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé."}],
         }
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/sn/bfem-maths-2024"))
         self.assertIn("BFEM", exercise.lesson.title)
@@ -336,3 +337,177 @@ class SujetPdfTemplateTests(TestCase):
 
         self.assertIn("Sujet de test", html)
         self.assertIn("Contenu de test.", html)
+
+
+class QuestionModelTests(TestCase):
+    """Question est l'unité atomique de correction (voir catalog.models.Question) -
+    un Exercise peut en avoir plusieurs, chacune notée/thématisée indépendamment."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.lesson = Lesson.objects.create(
+            title="Test", subject=self.subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(self.cursus)
+        self.exercise = Exercise.objects.create(lesson=self.lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+
+    def test_unique_numero_per_exercise(self):
+        Question.objects.create(exercise=self.exercise, numero="1", ordre=1, enonce_markdown="a", corrige_markdown="b")
+        with self.assertRaises(Exception):
+            Question.objects.create(exercise=self.exercise, numero="1", ordre=2, enonce_markdown="c", corrige_markdown="d")
+
+    def test_compile_from_questions_concatenates_in_order_and_rolls_up_themes(self):
+        derivation = Question.objects.create(
+            exercise=self.exercise, numero="2", ordre=2,
+            enonce_markdown="Calculer la derivee.", corrige_markdown="f'(x) = 2x.",
+        )
+        limite = Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1,
+            enonce_markdown="Calculer la limite.", corrige_markdown="La limite vaut 0.",
+        )
+        theme_deriv = Tag.objects.create(name="derivation")
+        theme_limite = Tag.objects.create(name="limites")
+        derivation.themes.add(theme_deriv)
+        limite.themes.add(theme_limite)
+        self.exercise.enonce_intro_markdown = "Etudier la fonction f."
+
+        self.exercise.compile_from_questions()
+
+        self.assertTrue(self.exercise.enonce_markdown.startswith("Etudier la fonction f."))
+        # ordre=1 (limite) doit preceder ordre=2 (derivation), pas l'ordre de creation.
+        self.assertLess(
+            self.exercise.enonce_markdown.index("Calculer la limite."),
+            self.exercise.enonce_markdown.index("Calculer la derivee."),
+        )
+        self.assertIn("f'(x) = 2x.", self.exercise.corrige_markdown)
+        self.assertEqual(set(self.exercise.themes.values_list("name", flat=True)), {"derivation", "limites"})
+
+
+class QuestionIngestionTests(TestCase):
+    """L'ingestion doit decomposer un exercice en Question atomiques plutot que de
+    tout aplatir dans un seul enonce_markdown/corrige_markdown - voir
+    catalog.ingestion.ingest_exercise et le plan de ce chantier."""
+
+    def _payload(self, **overrides):
+        payload = {
+            "epreuve_source": "bac-maths-2024", "numero_exercice": "1",
+            "matiere": "Mathematiques", "serie": "C", "examen": "BAC",
+            "enonce_intro_markdown": "Pour chacune des questions, une seule reponse est exacte.",
+            "questions": [
+                {
+                    "numero": "1", "enonce_markdown": "Question 1 : 2+2 = ?", "corrige_markdown": "### Corrige\n\n4.",
+                    "difficulte_estimee": "faible", "themes": ["arithmetique"],
+                },
+                {
+                    "numero": "2", "enonce_markdown": "Question 2 : derivee de x^2 ?",
+                    "corrige_markdown": "### Corrige\n\n2x.", "difficulte_estimee": "moyenne",
+                    "themes": ["derivation"], "type_reponse": "qcm",
+                    "choix": [{"lettre": "a", "texte": "2x"}, {"lettre": "b", "texte": "x"}],
+                    "reponse_correcte": "a",
+                },
+            ],
+        }
+        payload.update(overrides)
+        return payload
+
+    def test_creates_one_question_per_entry_with_correct_order_and_fields(self):
+        exercise, created = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertTrue(created)
+        questions = list(exercise.questions.order_by("ordre"))
+        self.assertEqual(len(questions), 2)
+        self.assertEqual(questions[0].numero, "1")
+        self.assertEqual(questions[0].difficulte_estimee, Difficulte.FAIBLE)
+        self.assertEqual(questions[0].type_reponse, TypeReponse.OUVERTE)
+        self.assertEqual(questions[1].numero, "2")
+        self.assertEqual(questions[1].type_reponse, TypeReponse.QCM)
+        self.assertEqual(questions[1].reponse_correcte, "a")
+        self.assertEqual(questions[1].choix, [{"lettre": "a", "texte": "2x"}, {"lettre": "b", "texte": "x"}])
+
+    def test_exercise_fields_are_compiled_from_questions(self):
+        exercise, _ = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertIn("Pour chacune des questions", exercise.enonce_markdown)
+        self.assertIn("Question 1 : 2+2 = ?", exercise.enonce_markdown)
+        self.assertIn("Question 2 : derivee de x^2 ?", exercise.enonce_markdown)
+        self.assertIn("4.", exercise.corrige_markdown)
+        self.assertIn("2x.", exercise.corrige_markdown)
+        self.assertEqual(
+            set(exercise.themes.values_list("name", flat=True)), {"arithmetique", "derivation"},
+        )
+
+    def test_lesson_still_compiles_correctly_from_the_compiled_exercise(self):
+        exercise, _ = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+        exercise.lesson.refresh_from_db()
+        self.assertIn("Question 1 : 2+2 = ?", exercise.lesson.content_markdown)
+
+    def test_rejects_payload_without_questions(self):
+        payload = self._payload()
+        payload["questions"] = []
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+    def test_rejects_question_missing_corrige(self):
+        payload = self._payload()
+        del payload["questions"][0]["corrige_markdown"]
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+    def test_shared_figure_placeholder_replaced_across_multiple_questions(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "graphique.png").write_bytes(b"fake-png-bytes")
+
+            payload = self._payload(
+                figures=[{
+                    "id": "fig-1", "fichier": "graphique.png", "page_source": 1,
+                    "type": "courbe", "legende": "Courbe de f", "indispensable": True, "lisibilite": "bonne",
+                }],
+            )
+            payload["questions"][0]["enonce_markdown"] = "Lire fig-1 (graphique.png) et calculer f(0)."
+            payload["questions"][1]["corrige_markdown"] = "### Corrige\n\nOn relit fig-1 (graphique.png) : 2x."
+
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        questions = list(exercise.questions.order_by("ordre"))
+        # Le placeholder markdown "(graphique.png)" doit avoir disparu, remplacé par une
+        # vraie URL servable - qui contient légitimement "graphique.png" en fin de chemin
+        # (ex. /media/figures/graphique.png), donc on vérifie le motif de lien markdown
+        # d'origine plutôt que la simple présence du nom de fichier.
+        self.assertNotIn("(graphique.png)", questions[0].enonce_markdown)
+        self.assertIn("/media/figures/", questions[0].enonce_markdown)
+        self.assertNotIn("(graphique.png)", questions[1].corrige_markdown)
+        self.assertIn("/media/figures/", questions[1].corrige_markdown)
+
+
+class CleanEmDashQuestionTests(TestCase):
+    """clean_em_dash doit nettoyer Question (nouvelle source du contenu) et recompiler
+    Exercise, pas l'inverse - voir catalog.management.commands.clean_em_dash."""
+
+    def test_cleans_question_and_recompiles_exercise(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        lesson = Lesson.objects.create(
+            title="Test", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(cursus)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        dash = "—"
+        Question.objects.create(
+            exercise=exercise, numero="1", ordre=1,
+            enonce_markdown=f"Texte avec un tiret cadratin {dash} ici.", corrige_markdown=f"Corrige {dash} aussi.",
+        )
+        exercise.compile_from_questions()
+        self.assertIn(dash, exercise.enonce_markdown)
+
+        call_command("clean_em_dash", stdout=StringIO())
+
+        exercise.refresh_from_db()
+        question = exercise.questions.first()
+        self.assertNotIn(dash, question.enonce_markdown)
+        self.assertNotIn(dash, exercise.enonce_markdown)
+        self.assertIn("-", exercise.enonce_markdown)

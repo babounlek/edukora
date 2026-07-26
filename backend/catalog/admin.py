@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import path
 
 from .ingestion import run_ingestion
-from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, RappelDeMethode, Series, StatutContenu, Subject, Tag
+from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag
 from .sujet_pdf import queue_sujet_pdf_generation
 
 # Phrase à taper pour confirmer la purge (voir LessonAdmin.purge_view) - une action qui
@@ -68,7 +68,7 @@ class TagAdmin(admin.ModelAdmin):
 class ExerciseInline(admin.TabularInline):
     model = Exercise
     extra = 0
-    fields = ["numero_exercice", "points", "difficulte_estimee", "statut"]
+    fields = ["numero_exercice", "points", "statut"]
     show_change_link = True
 
 
@@ -244,14 +244,37 @@ class FigureInline(admin.TabularInline):
     fields = ["external_id", "image", "type_figure", "indispensable", "lisibilite", "origine"]
 
 
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 0
+    fields = ["numero", "ordre", "difficulte_estimee", "type_reponse", "reponse_correcte"]
+    show_change_link = True
+
+
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ["lesson", "numero_exercice", "difficulte_estimee", "statut", "updated_at"]
-    list_filter = ["statut", "difficulte_estimee"]
+    list_display = ["lesson", "numero_exercice", "statut", "updated_at"]
+    list_filter = ["statut"]
     search_fields = ["lesson__title", "lesson__epreuve_source", "enonce_markdown"]
     filter_horizontal = ["themes", "mots_cles_recherche"]
     autocomplete_fields = ["lesson"]
-    inlines = [RappelDeMethodeInline, FigureInline]
+    inlines = [QuestionInline, RappelDeMethodeInline, FigureInline]
+    actions = ["recompiler_depuis_questions"]
+
+    @admin.action(description="Recompiler enonce/corrige/themes depuis les Question")
+    def recompiler_depuis_questions(self, request, queryset):
+        for exercise in queryset:
+            exercise.compile_from_questions()
+        self.message_user(request, f"{queryset.count()} exercice(s) recompilé(s).")
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ["exercise", "numero", "difficulte_estimee", "type_reponse"]
+    list_filter = ["type_reponse", "difficulte_estimee"]
+    search_fields = ["exercise__lesson__title", "enonce_markdown"]
+    filter_horizontal = ["themes"]
+    autocomplete_fields = ["exercise"]
 
 
 @admin.register(Cours)

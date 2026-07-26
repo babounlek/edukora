@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from catalog.ingestion import _strip_em_dash
-from catalog.models import Cours, Exercise, Lesson, RappelDeMethode
+from catalog.models import Cours, Exercise, Lesson, Question, RappelDeMethode
 
 
 class Command(BaseCommand):
@@ -13,15 +13,26 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
+        # Question porte désormais le contenu source (Exercise.enonce_markdown/
+        # corrige_markdown est compilé depuis les Question, voir
+        # Exercise.compile_from_questions) - on nettoie donc Question, puis on
+        # recompile Exercise pour propager la correction.
+        question_fixed = 0
+        exercises_a_recompiler = set()
+        for question in Question.objects.all():
+            enonce = _strip_em_dash(question.enonce_markdown)
+            corrige = _strip_em_dash(question.corrige_markdown)
+            if enonce != question.enonce_markdown or corrige != question.corrige_markdown:
+                question.enonce_markdown = enonce
+                question.corrige_markdown = corrige
+                question.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
+                question_fixed += 1
+                exercises_a_recompiler.add(question.exercise_id)
+
         exercise_fixed = 0
-        for exercise in Exercise.objects.all():
-            enonce = _strip_em_dash(exercise.enonce_markdown)
-            corrige = _strip_em_dash(exercise.corrige_markdown)
-            if enonce != exercise.enonce_markdown or corrige != exercise.corrige_markdown:
-                exercise.enonce_markdown = enonce
-                exercise.corrige_markdown = corrige
-                exercise.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
-                exercise_fixed += 1
+        for exercise in Exercise.objects.filter(pk__in=exercises_a_recompiler):
+            exercise.compile_from_questions()
+            exercise_fixed += 1
 
         rappel_fixed = 0
         for rappel in RappelDeMethode.objects.all():
@@ -54,6 +65,7 @@ class Command(BaseCommand):
             cours.compile_from_sections()
 
         self.stdout.write(self.style.SUCCESS(
-            f"{exercise_fixed} exercice(s), {rappel_fixed} rappel(s) de méthode, "
-            f"{cours_fixed} cours corrigé(s). Contenus compilés recalculés.",
+            f"{question_fixed} question(s) ({exercise_fixed} exercice(s) recompilé(s)), "
+            f"{rappel_fixed} rappel(s) de méthode, {cours_fixed} cours corrigé(s). "
+            "Contenus compilés recalculés.",
         ))
