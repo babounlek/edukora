@@ -9,6 +9,7 @@ from django.urls import reverse
 
 from .ingestion import IngestionError, _country_code_from_path, ingest_exercise
 from .models import Cours, Country, Cursus, Examen, ExamenLabel, Lesson, LessonType, Series, StatutContenu, Subject, resolve_examen_label
+from .sujet_pdf import _render_html
 
 
 def _exercise_payload(epreuve_source, numero="1"):
@@ -309,3 +310,29 @@ class SitemapCountryFanOutTests(TestCase):
         for code in ["cm", "bj"]:
             self.assertIn(f"<loc>{base}/{code}</loc>", xml)
             self.assertIn(f"<loc>{base}/{code}/cours</loc>", xml)
+
+
+class SujetPdfTemplateTests(TestCase):
+    """
+    `_render_html` (l'étape Django avant que Playwright ne transforme le HTML en PDF)
+    doit au moins parser sans lever de TemplateSyntaxError - régression : un
+    `{{ Edukora Africa }}` corrompu (un `{{ site_name }}` cassé par un renommage du
+    site, probablement un remplacement automatique malheureux) a fait échouer toute
+    génération de PDF en silence pour l'utilisateur (l'erreur n'apparaissait que dans
+    logs/sujet_pdf_generation.log) - voir catalog/templates/catalog/sujet_pdf_template.html.
+    Ne nécessite pas Chromium/Playwright : seul le rendu Django est vérifié ici.
+    """
+
+    def test_render_html_does_not_raise_template_syntax_error(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        lesson = Lesson.objects.create(
+            title="Sujet de test", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, content_markdown="Contenu de test.",
+        )
+        lesson.cursus.add(cursus)
+
+        html = _render_html(lesson)
+
+        self.assertIn("Sujet de test", html)
+        self.assertIn("Contenu de test.", html)
