@@ -20,7 +20,7 @@ def backfill_question_per_exercise(apps, schema_editor):
     for exercise in Exercise.objects.filter(questions__isnull=True):
         question = Question.objects.create(
             exercise=exercise,
-            numero=exercise.numero_exercice,
+            numero=1,
             ordre=1,
             enonce_markdown=exercise.enonce_markdown,
             corrige_markdown=exercise.corrige_markdown,
