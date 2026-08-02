@@ -13,18 +13,25 @@ export interface Series {
   label: string
 }
 
-export interface Subject {
-  id: number
-  code: string
-  label: string
-}
-
 export interface Country {
   id: number
   code: string
   label: string
   dial_code: string
   currency: string
+  has_lessons: boolean
+}
+
+export interface Subject {
+  id: number
+  code: string
+  label: string
+  country: Country
+}
+
+export interface Pays {
+  code: string
+  label: string
 }
 
 export interface Cursus {
@@ -40,9 +47,9 @@ export interface Tag {
   name: string
 }
 
-export type LessonType = "FICHE" | "CORR" | "SUJET"
+export type EpreuveType = "FICHE" | "CORR" | "SUJET"
 
-export interface LessonRelatedCours {
+export interface EpreuveRelatedCours {
   id: number
   titre: string
   has_access: boolean
@@ -50,12 +57,12 @@ export interface LessonRelatedCours {
 
 export type Origine = "OFFICIEL" | "BLANC" | "ETABLISSEMENT" | "AUTRE"
 
-export interface Lesson {
+export interface Epreuve {
   id: number
   title: string
   subject: Subject
   cursus: Cursus[]
-  lesson_type: LessonType
+  lesson_type: EpreuveType
   lesson_type_display: string
   year: number | null
   duree_epreuve: string
@@ -67,11 +74,11 @@ export interface Lesson {
   has_access: boolean
   is_read: boolean
   exercises_count: number
-  related_cours: LessonRelatedCours[]
+  related_cours: EpreuveRelatedCours[]
   sujet_pdf_url: string | null
 }
 
-export interface LessonHeader {
+export interface EpreuveHeader {
   matiere: string
   serie: string | null
   examen: string | null
@@ -80,21 +87,22 @@ export interface LessonHeader {
   coefficient: string | null
   origine: string | null
   etablissement: string | null
+  pays: Pays
 }
 
-export interface LessonContent {
+export interface EpreuveContent {
   id: number
   title: string
   content_markdown: string
-  header: LessonHeader
+  header: EpreuveHeader
   sujet_pdf_url: string | null
 }
 
-export interface LessonPreview {
+export interface EpreuvePreview {
   id: number
   title: string
   preview_markdown: string
-  header: LessonHeader
+  header: EpreuveHeader
 }
 
 export interface Cours {
@@ -114,6 +122,7 @@ export interface CoursHeader {
   serie: string | null
   sous_theme: string | null
   duree_estimee_min: number | null
+  pays: Pays
 }
 
 export interface CoursContent {
@@ -131,7 +140,7 @@ export interface CoursPreview {
 }
 
 export interface Progression {
-  lessons: Lesson[]
+  lessons: Epreuve[]
   cours: Cours[]
 }
 
@@ -191,11 +200,22 @@ export interface QuizAnswerInfo {
 export interface QuizQuestion {
   id: number
   ordre: number
-  numero: string
-  enonce_intro_markdown: string
   enonce_markdown: string
   type_reponse: TypeReponse
   choix: QuizChoix[]
+  subject_label: string
+  // Présent uniquement pour un item CompetenceItem, source du quiz depuis la bascule
+  // (voir quiz.views._question_payload côté backend) - un item n'appartient à aucune
+  // épreuve/leçon d'origine, contrairement à numero/lesson_id/enonce_intro_markdown
+  // ci-dessous.
+  theme?: string
+  // Présents uniquement pour l'historique pré-bascule (source catalog.Question,
+  // extraite d'une épreuve réelle) - jamais peuplés pour une session créée après la
+  // bascule vers CompetenceItem.
+  numero?: string
+  enonce_intro_markdown?: string
+  lesson_id?: number
+  lesson_title?: string
   // Présents uniquement une fois la question répondue (voir quiz.views._question_payload côté backend).
   corrige_markdown?: string
   reponse_correcte?: string
@@ -206,6 +226,7 @@ export interface QuizSession {
   id: number
   mode: ModeQuiz
   cursus: number
+  cursus_display: string
   started_at: string
   completed_at: string | null
   total_questions: number

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
-import { ArrowLeft, Check, X } from "lucide-react"
+import { ArrowLeft, BookOpenText, Check, X } from "lucide-react"
 
 import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -11,7 +11,7 @@ import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { LessonMarkdown } from "@/components/LessonMarkdown"
+import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -161,6 +161,12 @@ export function QuizSessionPage() {
         Quitter le quiz
       </Link>
 
+      <div className="mb-3 flex flex-wrap items-center gap-1.5">
+        <Badge variant="secondary">{session.cursus_display}</Badge>
+        <Badge variant="outline">{question.subject_label}</Badge>
+        {question.theme && <Badge variant="outline">{question.theme}</Badge>}
+      </div>
+
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">
           Question {currentIndex + 1} / {session.questions.length}
@@ -173,8 +179,22 @@ export function QuizSessionPage() {
         </div>
       </div>
 
+      {/* Uniquement pour l'historique pré-bascule : un CompetenceItem n'appartient à
+          aucune épreuve/leçon d'origine vers laquelle renvoyer (voir QuizQuestion ci-dessus). */}
+      {question.lesson_id && (
+        <a
+          href={`/epreuves/${question.lesson_id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-4 flex w-fit items-center gap-1.5 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          <BookOpenText className="size-3.5" />
+          Voir l'épreuve d'origine
+        </a>
+      )}
+
       <article className="prose prose-neutral max-w-none text-justify dark:prose-invert">
-        <LessonMarkdown markdown={enonce} />
+        <EpreuveMarkdown markdown={enonce} />
       </article>
 
       {question.type_reponse === "QCM" ? (
@@ -215,7 +235,7 @@ export function QuizSessionPage() {
 
           {(questionCorrige || question.reponse) && (
             <article className="prose prose-neutral max-w-none border-l-2 border-border pl-4 text-justify dark:prose-invert">
-              <LessonMarkdown markdown={question.corrige_markdown ?? questionCorrige?.corrige_markdown ?? ""} />
+              <EpreuveMarkdown markdown={question.corrige_markdown ?? questionCorrige?.corrige_markdown ?? ""} />
             </article>
           )}
 
