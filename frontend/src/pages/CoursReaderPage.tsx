@@ -9,7 +9,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { LessonMarkdown } from "@/components/LessonMarkdown"
+import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { CountryBadge } from "@/components/CountryBadge"
 import { useSeo } from "@/lib/seo"
 import { coursListPath } from "@/lib/countryPath"
 
@@ -65,24 +66,25 @@ export function CoursReaderPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to={coursListPath(country)}
+        to={coursListPath(content?.header.pays.code.toLowerCase() ?? country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
         Retour aux cours
       </Link>
 
-      <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display">
+      <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
         <h1 className="font-display">{content?.title}</h1>
         {content?.header && (
           <div className="not-prose mb-6 flex flex-wrap gap-1.5">
+            <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
             <Badge variant="secondary">{content.header.matiere}</Badge>
             {content.header.serie && <Badge variant="outline">Série {content.header.serie}</Badge>}
             {content.header.sous_theme && <Badge variant="outline">{content.header.sous_theme}</Badge>}
             {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
           </div>
         )}
-        <LessonMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
+        <EpreuveMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
       </article>
     </div>
   )

@@ -58,13 +58,25 @@ export function flattenReactText(node: unknown): string {
 
 export type CalloutVariant = "piege" | "conseil" | "rappel"
 
-const CALLOUT_TITLES: Record<string, CalloutVariant> = {
-  "Piège à éviter": "piege",
-  "Conseil": "conseil",
-  "Rappel de méthode": "rappel",
-}
+// "Rappel de m[eé]thode" plutôt que "Rappel de méthode" littéral : SKILL.md exige
+// l'accent (et avertit noir sur blanc qu'un titre différent perd la mise en valeur
+// silencieusement), mais correction-experte génère très régulièrement "methode" sans
+// accent en pratique - sur tout le corpus déjà ingéré vérifié, systématiquement. Sans
+// cette tolérance, le bloc reste un `### ...` brut au lieu de l'encadré coloré prévu,
+// exactement l'avertissement du skill mais côté génération plutôt que plateforme.
+// Chaque motif reste ancré (^...$) pour ne matcher que l'intitulé entier, pas une
+// sous-chaîne.
+const CALLOUT_TITLE_PATTERNS: [pattern: string, variant: CalloutVariant][] = [
+  ["Piège à éviter", "piege"],
+  ["Conseil", "conseil"],
+  ["Rappel de m[eé]thode", "rappel"],
+]
 
-const TITLES_ALTERNATION = Object.keys(CALLOUT_TITLES).join("|")
+const TITLES_ALTERNATION = CALLOUT_TITLE_PATTERNS.map(([pattern]) => pattern).join("|")
+
+function resolveCalloutVariant(title: string): CalloutVariant | undefined {
+  return CALLOUT_TITLE_PATTERNS.find(([pattern]) => new RegExp(`^${pattern}$`).test(title))?.[1]
+}
 
 /**
  * correction-experte doit désormais utiliser un titre `### Piège à éviter` / `### Conseil` /
@@ -80,14 +92,14 @@ export function extractCallouts(markdown: string): string {
     "gm",
   )
   markdown = markdown.replace(headingRe, (_match, title: string, body: string) => {
-    const variant = CALLOUT_TITLES[title]
+    const variant = resolveCalloutVariant(title)
     const quoted = body.trim().split("\n").map((line) => (line ? `> ${line}` : ">")).join("\n")
     return `> [CALLOUT:${variant}]\n>\n${quoted}\n\n`
   })
 
   const paragraphRe = new RegExp(`^\\*\\*(${TITLES_ALTERNATION})\\.?\\*\\*[ \\t]*(.*)$`, "gm")
   markdown = markdown.replace(paragraphRe, (_match, title: string, rest: string) => {
-    const variant = CALLOUT_TITLES[title]
+    const variant = resolveCalloutVariant(title)
     return `> [CALLOUT:${variant}]\n>\n> ${rest}`
   })
 

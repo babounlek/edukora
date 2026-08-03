@@ -1,0 +1,72 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:quiz_competenceitem_changelist' %}">Competence items</a>
+&rsaquo; Ingestion des lots
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  <p>
+    Dossier surveillé : <code>{{ ingest_dir }}</code>.
+    Ré-ingérer ne recrée ni ne modifie les items déjà en base (un lot déjà traité,
+    identifié par <code>external_id</code>, est simplement ignoré) - relancer
+    plusieurs fois sur le même dossier est sans risque.
+  </p>
+
+  <div class="module" style="padding: 12px 16px; margin: 20px 0; border-left: 4px solid var(--error-fg, #ba2121);">
+    <p style="margin: 0;">
+      <strong>Attention :</strong> chaque item entre en base avec le statut
+      <strong>Validé</strong> et devient immédiatement visible par de vrais élèves en
+      Quiz - il n'y a aucune étape de relecture humaine après ce clic. La seule
+      garantie de qualité est l'auto-vérification déjà appliquée par le skill
+      <code>concepteur-quiz-competence</code> au moment de la génération. Un item
+      publié à tort reste rattrapable après coup via l'action « Repasser en
+      Brouillon » sur la liste des Competence items.
+    </p>
+  </div>
+
+  {% if report %}
+    <div class="module" style="padding: 12px 16px; margin: 20px 0;">
+      <h2>Résultat</h2>
+      <p>
+        {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
+        {{ report.created }} item{{ report.created|pluralize }} créé{{ report.created|pluralize }} (statut validé),
+        {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
+      </p>
+      {% if report.errors %}
+        <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
+        <ul>
+          {% for error in report.errors %}
+            <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="module" style="padding: 12px 16px; margin-bottom: 20px;">
+    <h2>Fichiers présents dans le dossier ({{ files|length }})</h2>
+    {% if files %}
+      <ul>
+        {% for name in files %}
+          <li>{{ name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Aucun fichier .json dans le dossier.</p>
+    {% endif %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" class="default" value="Lancer l'ingestion"{% if not files %} disabled{% endif %}>
+  </form>
+
+</div>
+{% endblock %}

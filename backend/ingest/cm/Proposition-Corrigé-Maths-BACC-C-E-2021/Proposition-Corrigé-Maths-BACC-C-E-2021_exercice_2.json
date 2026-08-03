@@ -1,0 +1,153 @@
+{
+  "epreuve_source": "Proposition-Corrigé-Maths-BACC-C-E-2021",
+  "numero_exercice": "2",
+  "matiere": "Mathématiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2021",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "points": "6 (estimation d'après les annotations manuscrites du barème)",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "Proposition-Corrigé-Maths-BACC-C-E-2021_exercice_2_fig_1.png",
+      "page_source": 9,
+      "type": "courbe",
+      "legende": "Hyperbole (Σ) et son image (Σ') par la rotation de centre O et d'angle -π/6, avec leurs asymptotes respectives",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "## Exercice 2\n\nCet exercice comporte deux parties indépendantes : probabilités (Partie I) et coniques/rotation (Partie II).",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "Une urne contient des boules indiscernables au toucher, marquées des nombres $0$, $\\sqrt3$ ou $-\\sqrt3$ (composition telle que la première boule tirée porte le nombre $0$ avec une probabilité de $\\dfrac{2}{6}$, le nombre $\\sqrt3$ avec une probabilité de $\\dfrac{3}{6}$, et le nombre $-\\sqrt3$ avec une probabilité de $\\dfrac{1}{6}$). On tire successivement et sans remise deux boules de cette urne. On note $\\lambda$ la variable aléatoire qui, à chaque tirage, associe la somme des nombres marqués sur les deux boules tirées.\n\nDéterminer la loi de probabilité de $\\lambda$.",
+      "corrige_markdown": "### Rappel de méthode\nQuand une variable aléatoire est définie comme la somme des résultats de deux tirages successifs sans remise, on construit un arbre de probabilités à deux niveaux : les probabilités des branches du second niveau dépendent de la composition de l'urne **après** le premier tirage (une boule en moins). La probabilité de chaque issue finale est le produit des probabilités le long du chemin, et la probabilité d'une valeur de la variable est la somme des chemins qui y conduisent.\n\n**1. Loi de probabilité de $\\lambda$**\n\nL'univers image (ensemble des valeurs prises par $\\lambda$) est $\\lambda(\\Omega) = \\{-\\sqrt3\\,;0\\,;\\sqrt3\\,;2\\sqrt3\\}$, obtenu en sommant deux à deux les valeurs $0$, $\\sqrt3$, $-\\sqrt3$ possibles à chaque tirage.\n\nEn parcourant l'arbre des tirages successifs sans remise :\n$$P(\\lambda=-\\sqrt3) = P(0,-\\sqrt3) + P(-\\sqrt3,0) = \\frac26\\times\\frac15 + \\frac16\\times\\frac25 = \\frac{2}{30}+\\frac{2}{30} = \\frac{4}{30}$$\n$$P(\\lambda=0) = P(0,0)+P(\\sqrt3,-\\sqrt3)+P(-\\sqrt3,\\sqrt3) = \\frac26\\times\\frac15+\\frac36\\times\\frac15+\\frac16\\times\\frac35 = \\frac{2}{30}+\\frac{3}{30}+\\frac{3}{30}=\\frac{8}{30}$$\n$$P(\\lambda=\\sqrt3) = P(0,\\sqrt3)+P(\\sqrt3,0) = \\frac26\\times\\frac35+\\frac36\\times\\frac25 = \\frac{6}{30}+\\frac{6}{30}=\\frac{12}{30}$$\n$$P(\\lambda=2\\sqrt3) = P(\\sqrt3,\\sqrt3) = \\frac36\\times\\frac25 = \\frac{6}{30}$$\n\n| $\\lambda_i$ | $-\\sqrt3$ | $0$ | $\\sqrt3$ | $2\\sqrt3$ |\n|---|---|---|---|---|\n| $P(\\lambda=\\lambda_i)$ | $\\dfrac{4}{30}$ | $\\dfrac{8}{30}$ | $\\dfrac{12}{30}$ | $\\dfrac{6}{30}$ |\n\nOn vérifie que $\\dfrac{4+8+12+6}{30} = \\dfrac{30}{30} = 1$ : la loi est complète.\n\n### Conseil\nAvant de passer à l'espérance, vérifie systématiquement que la somme des probabilités obtenues vaut $1$. C'est le test de cohérence le plus rapide et il rapporte des points au barème s'il est explicitement mentionné.",
+      "themes": [
+        "probabilités",
+        "loi de probabilité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-Proposition-Corrigé-Maths-BACC-C-E-2021-ex2-0",
+          "competence": "Loi de probabilité, espérance et écart-type d'une variable aléatoire (tirages successifs sans remise)",
+          "contenu_markdown": "Quand une variable aléatoire est définie comme la somme des résultats de deux tirages successifs sans remise, on construit un arbre de probabilités à deux niveaux : les probabilités des branches du second niveau dépendent de la composition de l'urne **après** le premier tirage (une boule en moins). La probabilité de chaque issue finale est le produit des probabilités le long du chemin, et la probabilité d'une valeur de la variable est la somme des chemins qui y conduisent.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.2",
+      "enonce_markdown": "Une urne contient des boules indiscernables au toucher, marquées des nombres $0$, $\\sqrt3$ ou $-\\sqrt3$ (composition telle que la première boule tirée porte le nombre $0$ avec une probabilité de $\\dfrac{2}{6}$, le nombre $\\sqrt3$ avec une probabilité de $\\dfrac{3}{6}$, et le nombre $-\\sqrt3$ avec une probabilité de $\\dfrac{1}{6}$). On tire successivement et sans remise deux boules de cette urne. On note $\\lambda$ la variable aléatoire qui, à chaque tirage, associe la somme des nombres marqués sur les deux boules tirées.\n\nCalculer l'espérance mathématique et l'écart-type de $\\lambda$.",
+      "corrige_markdown": "**2. Espérance et écart-type de $\\lambda$**\n\n$$E(\\lambda) = \\sum \\lambda_i P(\\lambda=\\lambda_i) = -\\sqrt3\\times\\frac{4}{30}+0\\times\\frac{8}{30}+\\sqrt3\\times\\frac{12}{30}+2\\sqrt3\\times\\frac{6}{30} = \\frac{-4\\sqrt3+12\\sqrt3+12\\sqrt3}{30}=\\frac{20\\sqrt3}{30}$$\n$$\\boxed{E(\\lambda) = \\frac{2\\sqrt3}{3}}$$\n\nPour la variance, on utilise la formule de König-Huygens $V(\\lambda) = \\left(\\sum \\lambda_i^2 P(\\lambda=\\lambda_i)\\right) - E(\\lambda)^2$ :\n$$\\sum \\lambda_i^2 P(\\lambda=\\lambda_i) = 3\\times\\frac{4}{30}+0\\times\\frac{8}{30}+3\\times\\frac{12}{30}+12\\times\\frac{6}{30} = \\frac{12+36+72}{30} = \\frac{120}{30}=4$$\n$$E(\\lambda)^2 = \\left(\\frac{2\\sqrt3}{3}\\right)^2 = \\frac{4\\times3}{9}=\\frac{12}{9}=\\frac43$$\n$$V(\\lambda) = 4-\\frac43 = \\frac{12-4}{3}=\\frac83$$\n$$\\sigma(\\lambda) = \\sqrt{V(\\lambda)} = \\sqrt{\\frac83} = \\frac{2\\sqrt6}{3} \\approx 1{,}63$$\n\n### Piège à éviter\nDans la formule de König-Huygens, on élève chaque valeur $\\lambda_i$ au carré **avant** de multiplier par sa probabilité, jamais l'inverse : $\\lambda_i^2 \\times P(\\lambda=\\lambda_i)$, pas $(\\lambda_i \\times P(\\lambda=\\lambda_i))^2$. Une confusion fréquente consiste aussi à oublier de mettre $E(\\lambda)$ au carré avant de le soustraire.",
+      "themes": [
+        "probabilités",
+        "espérance",
+        "écart-type"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.1",
+      "enonce_markdown": "Le plan est muni d'un repère orthonormé $(O\\,;\\vec{\\imath},\\vec{\\jmath})$. On note $(\\Sigma)$ l'ensemble des points $M(X,Y)$ tels que $4X^2 - Y^2 = -4$, et $r$ la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{6}$.\n\nDéterminer la nature et les éléments caractéristiques de $(\\Sigma)$.",
+      "corrige_markdown": "### Rappel de méthode\nUne équation de la forme $\\alpha X^2 - \\beta Y^2 = \\gamma$ (ou l'inverse) se ramène à la forme réduite $\\dfrac{Y^2}{b^2}-\\dfrac{X^2}{a^2}=1$ (axe focal porté par $(Oy)$) ou $\\dfrac{X^2}{a^2}-\\dfrac{Y^2}{b^2}=1$ (axe focal porté par $(Ox)$) : c'est le signe du terme isolé à droite, une fois l'équation mise sous forme de différence de deux carrés valant $1$, qui indique l'axe focal. On lit alors directement $a$, $b$, puis $c=\\sqrt{a^2+b^2}$, foyers, sommets, excentricité $e=c/a$ (ou $c/b$ selon l'axe), asymptotes de pente $\\pm b/a$, et directrices.\n\n**1. Nature et éléments caractéristiques de $(\\Sigma)$**\n\n$$M(X,Y)\\in(\\Sigma) \\iff 4X^2-Y^2=-4 \\iff -X^2+\\frac{Y^2}{4}=1 \\iff \\frac{Y^2}{2^2}-\\frac{X^2}{1^2}=1.$$\n\n$(\\Sigma)$ est une hyperbole de centre $O$, d'axe focal $(O\\,;\\vec\\jmath)$ (l'axe des ordonnées), avec les notations habituelles $a=1$ (demi-axe non focal) et $b=2$ (demi-axe focal, ici porté par $(Oy)$).\n\n- Demi-distance focale : $c=\\sqrt{a^2+b^2}=\\sqrt{1+4}=\\sqrt5$.\n- Foyers : $F(0\\,;\\sqrt5)$, $F'(0\\,;-\\sqrt5)$. Axe focal : $(O\\,;\\vec\\jmath)$.\n- Sommets : $B(0\\,;2)$, $B'(0\\,;-2)$.\n- Excentricité : $e=\\dfrac{c}{b}=\\dfrac{\\sqrt5}{2}$.\n- Asymptotes : $(\\Delta): y=2x$ et $(\\Delta'): y=-2x$.\n- Directrices : $(D): y=\\dfrac{4\\sqrt5}{5}$ et $(D'): y=-\\dfrac{4\\sqrt5}{5}$.\n\n### Piège à éviter\nIci, le demi-axe focal ($b=2$) est **plus grand** que l'autre ($a=1$), et surtout, l'axe focal est porté par $(Oy)$ et non par $(Ox)$ : l'équation réduite s'écrit $\\dfrac{Y^2}{b^2}-\\dfrac{X^2}{a^2}=1$, avec $Y^2$ en premier. Écrire directement \"foyers sur $(Ox)$\" par réflexe, sans vérifier quel terme est positif dans la forme réduite, est l'erreur la plus fréquente sur ce type de conique.",
+      "themes": [
+        "hyperbole",
+        "forme réduite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-Proposition-Corrigé-Maths-BACC-C-E-2021-ex2-1",
+          "competence": "Hyperbole : forme réduite, éléments caractéristiques et image par une rotation",
+          "contenu_markdown": "Une équation de la forme $\\alpha X^2 - \\beta Y^2 = \\gamma$ (ou l'inverse) se ramène à la forme réduite $\\dfrac{Y^2}{b^2}-\\dfrac{X^2}{a^2}=1$ (axe focal porté par $(Oy)$) ou $\\dfrac{X^2}{a^2}-\\dfrac{Y^2}{b^2}=1$ (axe focal porté par $(Ox)$) : c'est le signe du terme isolé à droite, une fois l'équation mise sous forme de différence de deux carrés valant $1$, qui indique l'axe focal. On lit alors directement $a$, $b$, puis $c=\\sqrt{a^2+b^2}$, foyers, sommets, excentricité $e=c/a$ (ou $c/b$ selon l'axe), asymptotes de pente $\\pm b/a$, et directrices.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.2.a",
+      "enonce_markdown": "Donner l'expression analytique de $r$.",
+      "corrige_markdown": "**2.a. Expression analytique de $r$**\n\n$r$ est la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{6}$ : son écriture complexe est $z'=e^{-i\\pi/6}z$, avec\n$$e^{-i\\pi/6}=\\cos\\frac{\\pi}{6}-i\\sin\\frac{\\pi}{6}=\\frac{\\sqrt3}{2}-\\frac12 i.$$\n\nPour $M(x\\,;y)$ d'affixe $z=x+iy$ et $M'(x'\\,;y')$ d'affixe $z'=x'+iy'$ :\n$$x'+iy' = \\left(\\frac{\\sqrt3}{2}-\\frac12 i\\right)(x+iy) = \\frac{\\sqrt3}{2}x+\\frac12 y + i\\left(-\\frac12 x+\\frac{\\sqrt3}{2}y\\right).$$\n\nPar identification des parties réelle et imaginaire :\n$$\\boxed{r:\\begin{cases} x'=\\dfrac{\\sqrt3}{2}x+\\dfrac12 y \\\\ y'=-\\dfrac12 x+\\dfrac{\\sqrt3}{2}y\\end{cases}}$$",
+      "themes": [
+        "rotation",
+        "écriture complexe"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.2.b",
+      "enonce_markdown": "Déterminer une équation de l'ensemble $(\\Sigma')$, image de $(\\Sigma)$ par $r$.",
+      "corrige_markdown": "**2.b. Équation de $(\\Sigma')$, image de $(\\Sigma)$ par $r$**\n\nSoit $M(X,Y)\\in(\\Sigma)$ et $M'(X',Y')=r(M)$. D'après la question précédente :\n$$\\begin{cases} X' = \\dfrac{\\sqrt3}{2}X+\\dfrac12 Y \\\\ Y'=-\\dfrac12 X+\\dfrac{\\sqrt3}{2}Y\\end{cases} \\iff \\begin{cases} 2X'=\\sqrt3 X+Y \\\\ 2Y'=-X+\\sqrt3 Y\\end{cases}.$$\n\nEn résolvant ce système en $X,Y$ (par exemple par combinaison linéaire, $\\sqrt3\\times(2X')+1\\times(-2Y') = 3X+\\sqrt3Y+X-\\sqrt3Y=4X$) :\n$$X=\\frac12(\\sqrt3X'-Y'), \\qquad Y=\\frac12(X'+\\sqrt3Y').$$\n\nOn reporte dans $4X^2-Y^2=-4$ :\n$$4\\times\\frac14(\\sqrt3X'-Y')^2-\\frac14(X'+\\sqrt3Y')^2=-4$$\n$$(\\sqrt3X'-Y')^2-\\frac14(X'+\\sqrt3Y')^2=-4$$\n$$\\left(3X'^2-2\\sqrt3X'Y'+Y'^2\\right)-\\frac14\\left(X'^2+2\\sqrt3X'Y'+3Y'^2\\right)=-4$$\n\nEn multipliant tout par $4$ pour éliminer le dénominateur :\n$$4\\left(3X'^2-2\\sqrt3X'Y'+Y'^2\\right)-\\left(X'^2+2\\sqrt3X'Y'+3Y'^2\\right)=-16$$\n$$12X'^2-8\\sqrt3X'Y'+4Y'^2-X'^2-2\\sqrt3X'Y'-3Y'^2=-16$$\n$$11X'^2+Y'^2-10\\sqrt3X'Y'+16=0.$$\n\n$$\\boxed{(\\Sigma') : 11X^2+Y^2-10\\sqrt3XY+16=0}$$",
+      "themes": [
+        "rotation",
+        "image d'une conique"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.2.b'",
+      "enonce_markdown": "Déterminer la nature et les éléments caractéristiques de $(\\Sigma')$.",
+      "corrige_markdown": "**2.b'. Nature et éléments caractéristiques de $(\\Sigma')$**\n\n$(\\Sigma)$ est une hyperbole de centre $O$ ; $r$ est une rotation de centre $O$, qui conserve les distances et l'angle entre une courbe et ses éléments caractéristiques ; $(\\Sigma')$, image de $(\\Sigma)$ par $r$, est donc aussi une hyperbole, de centre $r(O)=O$ et de même excentricité $e=\\dfrac{\\sqrt5}{2}$.\n\nLes éléments caractéristiques de $(\\Sigma')$ s'obtiennent en appliquant $r$ à ceux de $(\\Sigma)$ :\n- Foyers : $F_1\\left(\\dfrac{\\sqrt5}{2}\\,;\\dfrac{\\sqrt{15}}{2}\\right)$ et $F_1'\\left(-\\dfrac{\\sqrt5}{2}\\,;-\\dfrac{\\sqrt{15}}{2}\\right)$.\n- Sommets : $B_1\\begin{pmatrix}1\\\\\\sqrt3\\end{pmatrix}$ et $B_1'\\begin{pmatrix}-1\\\\-\\sqrt3\\end{pmatrix}$.\n- Asymptotes : l'image de $(\\Delta): y=2x$ par la rotation d'angle $-\\dfrac{\\pi}{6}$ est la droite $(\\Delta_1)$ passant par $O$ dont la pente s'obtient par la formule de l'angle différence, $\\tan\\!\\left(\\arctan2-\\dfrac{\\pi}{6}\\right)=\\dfrac{2-\\tan(\\pi/6)}{1+2\\tan(\\pi/6)}=\\dfrac{2-\\frac{1}{\\sqrt3}}{1+\\frac{2}{\\sqrt3}}=\\dfrac{2\\sqrt3-1}{\\sqrt3+2}=(-8+5\\sqrt3)$ après rationalisation : $(\\Delta_1): y=(-8+5\\sqrt3)x$. De même, l'image de $(\\Delta'): y=-2x$ est $(\\Delta_1'): y=(8+5\\sqrt3)x$.\n\n### Conseil\nQuand une transformation (ici une rotation) conserve les distances et les angles, il est presque toujours plus rapide de transformer directement les **éléments caractéristiques** de la conique de départ (foyers, sommets, asymptotes) que de repartir de l'équation cartésienne obtenue en b. pour les retrouver : cela évite une nouvelle mise sous forme réduite, souvent plus lourde après une rotation qui introduit un terme croisé en $XY$.",
+      "themes": [
+        "hyperbole",
+        "éléments caractéristiques"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.2.c",
+      "enonce_markdown": "Construire, dans le repère $(O\\,;\\vec{\\imath},\\vec{\\jmath})$, les ensembles $(\\Sigma)$ et $(\\Sigma')$.",
+      "corrige_markdown": "**2.c. Construction de $(\\Sigma)$ et $(\\Sigma')$**\n\n$(\\Sigma')$ s'obtient à partir de $(\\Sigma)$ par la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{6}$ (soit $-30°$) : chaque branche de $(\\Sigma)$, ainsi que ses asymptotes, doit être tournée de $-30°$ autour de l'origine pour donner $(\\Sigma')$ et ses propres asymptotes $(\\Delta_1)$, $(\\Delta_1')$.\n\n![fig-1](Proposition-Corrigé-Maths-BACC-C-E-2021_exercice_2_fig_1.png)\n\n### Piège à éviter\nSur le graphique, $(\\Sigma)$ a son axe focal vertical (les branches s'ouvrent vers le haut et vers le bas) tandis que $(\\Sigma')$, tournée de $-30°$, a ses branches inclinées : ne pas tracer $(\\Sigma')$ avec des branches encore verticales ou horizontales, l'inclinaison de $-30°$ doit être visible sur le dessin.",
+      "themes": [
+        "hyperbole",
+        "construction graphique"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "variable aléatoire",
+    "loi de probabilité",
+    "espérance mathématique",
+    "écart-type",
+    "König-Huygens",
+    "hyperbole",
+    "excentricité",
+    "asymptotes",
+    "rotation",
+    "BAC C E 2021"
+  ],
+  "incertitudes": [
+    "La composition exacte de l'urne (nombre total de boules de chaque sorte) n'est pas donnée explicitement dans le document source : elle a été déduite des probabilités du premier tirage affichées sur l'arbre (2/6, 3/6, 1/6) et confirmée par la cohérence de tous les calculs ultérieurs (loi complète sommant à 1, résultats identiques à ceux du corrigé source).",
+    "Le total de points (6) est une estimation obtenue en additionnant les annotations manuscrites au crayon rouge visibles sur la copie source ; ce n'est pas un barème officiel publié."
+  ],
+  "statut": "brouillon"
+}

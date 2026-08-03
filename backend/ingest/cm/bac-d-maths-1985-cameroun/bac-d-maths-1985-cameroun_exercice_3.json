@@ -1,0 +1,119 @@
+{
+  "epreuve_source": "bac-d-maths-1985-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1985",
+  "duree_epreuve": "3h15",
+  "coefficient": "4",
+  "numero_exercice": "3",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°3**\\n\\nSoit $a$ un réel non nul et $p$ un réel tel que $0<p<2$. On considère la suite $(U_n)_{n\\in\\mathbb N}$ définie par :\\n$$U_0=0\\,;\\quad U_1=a\\,;\\quad\\forall n\\ge1,\\ U_{n+1}=pU_n-(p-1)U_{n-1}$$\\nSoit $(V_n)_{n\\in\\mathbb N}$ la suite telle que $V_n=U_{n+1}-U_n$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1°- Montrer que (Vn)n∈ℕ est une suite géométrique dont on donnera le premier terme et la raison en fonction de a et p.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une suite $(V_n)$ est géométrique, on exprime $V_{n+1}$ en fonction de $V_n$ à l'aide de la relation de récurrence vérifiée par $(U_n)$, jusqu'à obtenir une égalité du type $V_{n+1}=q\\times V_n$ avec $q$ constant.\\n\\n### Corrigé\\nPar définition, $V_n=U_{n+1}-U_n$ pour tout $n\\in\\mathbb N$. Calculons $V_{n+1}$ :\\n$$V_{n+1}=U_{n+2}-U_{n+1}$$\\nLa relation de récurrence $U_{n+1}=pU_n-(p-1)U_{n-1}$, appliquée au rang $n+1$ (valable dès que $n+1\\ge1$, soit $n\\ge0$), donne :\\n$$U_{n+2}=pU_{n+1}-(p-1)U_n$$\\nEn reportant dans l'expression de $V_{n+1}$ :\\n$$V_{n+1}=\\big[pU_{n+1}-(p-1)U_n\\big]-U_{n+1}=(p-1)U_{n+1}-(p-1)U_n=(p-1)\\big(U_{n+1}-U_n\\big)$$\\nC'est-à-dire :\\n$$V_{n+1}=(p-1)\\,V_n$$\\n\\nCette égalité étant vraie pour tout $n\\in\\mathbb N$, la suite $(V_n)$ est **géométrique de raison $q=p-1$**.\\n\\n**Premier terme.** $V_0=U_1-U_0=a-0=a$.\\n\\n$$\\boxed{(V_n)\\text{ est géométrique, de premier terme }V_0=a\\text{ et de raison }p-1}$$\\n\\n### Piège à éviter\\nLa relation de récurrence de l'énoncé fait intervenir $U_{n-1}$ : pour l'appliquer sans faire sortir l'indice de $\\mathbb N$, il faut l'utiliser au rang $n+1$ (ce qui fait apparaître $U_n$ et $U_{n+1}$, tous deux bien définis dès $n\\ge0$) plutôt qu'au rang $n$ directement.",
+      "themes": [
+        "suites récurrentes",
+        "suite géométrique",
+        "récurrence"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e3-1",
+          "competence": "Demonstration qu'une suite auxiliaire est geometrique",
+          "contenu_markdown": "Pour montrer qu'une suite $(V_n)$ est géométrique, on exprime $V_{n+1}$ en fonction de $V_n$ à l'aide de la relation de récurrence vérifiée par $(U_n)$, jusqu'à obtenir une égalité du type $V_{n+1}=q\\times V_n$ avec $q$ constant.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2°- On pose Sn=V0+V1+…+Vn-1. Calculer Sn en fonction en n, a et de p.",
+      "corrige_markdown": "### Rappel de méthode\\nLa somme des $n$ premiers termes d'une suite géométrique de premier terme $V_0$ et de raison $q\\neq1$ est $V_0+V_1+\\cdots+V_{n-1}=V_0\\times\\dfrac{1-q^n}{1-q}$.\\n\\n### Corrigé\\nD'après la question précédente, $(V_n)$ est géométrique de premier terme $V_0=a$ et de raison $q=p-1$. Comme $0<p<2$, on a $-1<p-1<1$, donc $q\\neq1$ (sauf si $p=2$, exclu par l'énoncé) : la formule de la somme géométrique s'applique.\\n\\n$$S_n=V_0+V_1+\\cdots+V_{n-1}=a\\times\\frac{1-(p-1)^n}{1-(p-1)}$$\\nOr $1-(p-1)=1-p+1=2-p$, donc :\\n$$\\boxed{S_n=\\dfrac{a\\big(1-(p-1)^n\\big)}{2-p}}$$",
+      "themes": [
+        "suites géométriques",
+        "somme de termes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e3-2",
+          "competence": "Somme des n premiers termes d'une suite geometrique",
+          "contenu_markdown": "La somme des $n$ premiers termes d'une suite géométrique de premier terme $V_0$ et de raison $q\\neq1$ est $V_0+V_1+\\cdots+V_{n-1}=V_0\\times\\dfrac{1-q^n}{1-q}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3°- Calculer Sn en fonction de Un, puis en déduire Un en fonction de n, a et de p. Quelle est la limite de Un quand n tend vers l'infini ?",
+      "corrige_markdown": "### Rappel de méthode\\nUne somme de différences consécutives $\\sum_{k=0}^{n-1}(U_{k+1}-U_k)$ est télescopique : tous les termes intermédiaires s'annulent deux à deux, et il ne reste que le dernier terme moins le premier, $U_n-U_0$.\\n\\n### Corrigé\\n**Expression de $S_n$ en fonction de $U_n$.** Par définition, $S_n=V_0+V_1+\\cdots+V_{n-1}=(U_1-U_0)+(U_2-U_1)+\\cdots+(U_n-U_{n-1})$. Cette somme est télescopique : chaque terme $U_k$ ($1\\le k\\le n-1$) apparaît une fois avec $+$ et une fois avec $-$, et s'annule. Il reste :\\n$$S_n=U_n-U_0$$\\nComme $U_0=0$, on obtient simplement :\\n$$\\boxed{S_n=U_n}$$\\n\\n**Expression de $U_n$.** En combinant avec le résultat de la question 2 :\\n$$\\boxed{U_n=\\dfrac{a\\big(1-(p-1)^n\\big)}{2-p}}$$\\n\\n**Limite quand $n\\to+\\infty$.** Comme $0<p<2$, on a $-1<p-1<1$, c'est-à-dire $|p-1|<1$. Donc $(p-1)^n\\to0$ quand $n\\to+\\infty$ (limite classique d'une suite géométrique de raison de valeur absolue strictement inférieure à $1$). Il vient :\\n$$\\lim_{n\\to+\\infty}U_n=\\frac{a(1-0)}{2-p}=\\boxed{\\dfrac{a}{2-p}}$$\\n\\n### Piège à éviter\\nLa convergence de $(p-1)^n$ vers $0$ repose uniquement sur $|p-1|<1$, garanti par la condition $0<p<2$ de l'énoncé : si cette condition n'était pas vérifiée (par exemple $p\\ge2$), la suite $(U_n)$ n'aurait pas de limite finie.",
+      "themes": [
+        "somme télescopique",
+        "suites récurrentes",
+        "limite d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e3-3",
+          "competence": "Somme telescopique et limite d'une suite geometrique de raison |q|<1",
+          "contenu_markdown": "Une somme de différences consécutives $\\sum_{k=0}^{n-1}(U_{k+1}-U_k)$ est télescopique : tous les termes intermédiaires s'annulent deux à deux, et il ne reste que le dernier terme moins le premier, $U_n-U_0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4°- On pose a=1 et p=3/2. Déterminer n0∈ℕ tel que : ∀n≥n0, |Un-2|<10⁻⁵.",
+      "corrige_markdown": "### Rappel de méthode\\nPour déterminer le plus petit rang $n_0$ à partir duquel une suite convergente reste à moins de $\\varepsilon$ de sa limite, on exprime l'écart $|U_n-\\ell|$ sous forme d'une puissance décroissante, on pose l'inégalité $|U_n-\\ell|<\\varepsilon$, on la résout par passage au logarithme (népérien ou décimal), puis on prend le plus petit entier supérieur ou égal à la borne trouvée.\\n\\n### Corrigé\\nPour $a=1$ et $p=\\dfrac32$, on a $p-1=\\dfrac12$ et $2-p=\\dfrac12$. D'après la question 3 :\\n$$U_n=\\dfrac{1\\times\\left(1-\\left(\\frac12\\right)^n\\right)}{\\frac12}=2\\left(1-\\left(\\frac12\\right)^n\\right)=2-\\left(\\frac12\\right)^{n-1}$$\\net la limite est $\\ell=\\dfrac a{2-p}=\\dfrac1{\\frac12}=2$.\\n\\nOn cherche le plus petit $n_0\\in\\mathbb N$ tel que, pour tout $n\\ge n_0$ :\\n$$|U_n-2|<10^{-5}$$\\nOr $U_n-2=-\\left(\\dfrac12\\right)^{n-1}$, donc $|U_n-2|=\\left(\\dfrac12\\right)^{n-1}$, quantité strictement décroissante en $n$. L'inégalité devient :\\n$$\\left(\\frac12\\right)^{n-1}<10^{-5}$$\\nEn passant au logarithme népérien (croissant, l'inégalité se conserve) :\\n$$(n-1)\\ln\\frac12<\\ln(10^{-5})\\iff-(n-1)\\ln2<-5\\ln10\\iff(n-1)\\ln2>5\\ln10$$\\n$$n-1>\\frac{5\\ln10}{\\ln2}=\\frac{5\\times2{,}302585\\ldots}{0{,}693147\\ldots}\\approx16{,}61$$\\nDonc $n-1\\ge17$, c'est-à-dire $n\\ge18$.\\n\\n**Vérification numérique.** $\\left(\\dfrac12\\right)^{17}\\approx7{,}63\\times10^{-6}<10^{-5}$ (condition vérifiée pour $n=18$), tandis que $\\left(\\dfrac12\\right)^{16}\\approx1{,}526\\times10^{-5}>10^{-5}$ (condition non vérifiée pour $n=17$).\\n\\n$$\\boxed{n_0=18}$$\\n\\n### Conseil\\nComme $|U_n-2|=\\left(\\frac12\\right)^{n-1}$ est strictement décroissante, il suffit de vérifier l'inégalité au rang candidat trouvé par le calcul et au rang immédiatement inférieur, pour confirmer que $n_0$ est bien le plus petit rang qui convient (et non un rang plus tardif qui marche aussi mais n'est pas minimal).",
+      "themes": [
+        "application numérique",
+        "suites convergentes",
+        "logarithmes",
+        "inéquations"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e3-4",
+          "competence": "Determination du rang a partir duquel une suite convergente approche sa limite a epsilon pres",
+          "contenu_markdown": "Pour déterminer le plus petit rang $n_0$ à partir duquel une suite convergente reste à moins de $\\varepsilon$ de sa limite, on exprime l'écart $|U_n-\\ell|$ sous forme d'une puissance décroissante, on pose l'inégalité $|U_n-\\ell|<\\varepsilon$, on la résout par passage au logarithme (népérien ou décimal), puis on prend le plus petit entier supérieur ou égal à la borne trouvée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "incertitudes": [
+    "L'énoncé source indique littéralement que la relation de récurrence $U_{n+1}=pU_n-(p-1)U_{n-1}$ est valable pour $n\\in\\mathbb N,\\ n\\ge2$. Sous cette lecture stricte, $U_2$ ne serait défini par aucune règle (seuls $U_0$ et $U_1$ sont donnés), ce qui rendrait l'exercice insoluble. La lecture cohérente, adoptée dans ce corrigé, est que la relation est valable pour $n\\ge1$ (probable coquille de l'énoncé source) : elle définit alors $U_2=pU_1-(p-1)U_0$ dès le premier rang utile, et l'ensemble de l'exercice (suite géométrique, somme télescopique, limite, application numérique) devient parfaitement cohérent et se résout sans contradiction."
+  ],
+  "mots_cles_recherche": [
+    "suites récurrentes",
+    "suite géométrique",
+    "somme télescopique",
+    "limite d'une suite",
+    "logarithmes",
+    "application numérique",
+    "bac D 1985",
+    "Cameroun"
+  ],
+  "statut": "corrige"
+}

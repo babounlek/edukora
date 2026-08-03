@@ -1,0 +1,57 @@
+# Declenchement manuel uniquement (bouton "Run workflow" dans l'onglet Actions de
+# GitHub) - CamPay fait transiter de vrais paiements en production, un merge sur
+# main ne doit pas partir tout seul sans qu'un humain choisisse le moment.
+#
+# Secrets requis (Settings > Secrets and variables > Actions du repo GitHub) :
+#   DEPLOY_HOST     - IP ou domaine du Droplet
+#   DEPLOY_USER     - utilisateur SSH (non-root, avec droits sur DEPLOY_PATH et Docker)
+#   DEPLOY_SSH_KEY  - cle privee SSH correspondante (jamais celle de ton poste perso -
+#                      en generer une dediee au deploiement, cle publique ajoutee au
+#                      Droplet via authorized_keys)
+#   DEPLOY_PATH     - chemin absolu du clone du repo sur le Droplet (ex. /srv/edukora)
+
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branche, tag ou commit a deployer"
+        required: false
+        default: main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy sur le Droplet via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.DEPLOY_PATH }}"
+
+            echo "Recuperation de ${{ github.event.inputs.ref }}..."
+            git fetch --all --tags --prune
+            git checkout --detach "origin/${{ github.event.inputs.ref }}" 2>/dev/null \
+              || git checkout --detach "${{ github.event.inputs.ref }}"
+
+            echo "Build et redemarrage des services..."
+            docker compose up -d --build
+
+            echo "Nettoyage des images/layers inutilisees (>72h)..."
+            docker system prune -f --filter "until=72h"
+
+      - name: Verification post-deploiement
+        run: |
+          sleep 5
+          status=$(curl -s -o /dev/null -w "%{http_code}" "https://${{ vars.SITE_DOMAIN || 'edukora.africa' }}")
+          echo "HTTP $status"
+          if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
+            echo "::error::Le site ne repond pas correctement apres le deploiement (HTTP $status)"
+            exit 1
+          fi

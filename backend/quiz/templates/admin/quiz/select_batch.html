@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:quiz_competenceitem_changelist' %}">Competence items</a>
+&rsaquo; Sélection d'un lot
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  <p>
+    Sélectionne, pour un pays donné, jusqu'à N compétences dont la couverture en
+    <code>CompetenceItem</code> validés est sous le plancher choisi, avec leur
+    matériel de référence. N'invente aucun contenu ici - le résultat est une requête
+    de génération à transmettre au skill <code>concepteur-quiz-competence</code>
+    (copier le JSON ci-dessous, ou lire le fichier écrit sur disque).
+  </p>
+
+  <form method="post" class="module aligned" style="padding: 12px 16px; margin: 20px 0;">
+    {% csrf_token %}
+    <div class="form-row">
+      <label for="id_pays">Pays</label>
+      <select name="pays" id="id_pays">
+        {% for country in countries %}
+          <option value="{{ country.code }}">{{ country.label }} ({{ country.code }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="id_limit">Limite de compétences</label>
+      <input type="number" name="limit" id="id_limit" value="{{ default_limit }}" min="1">
+    </div>
+    <div class="form-row">
+      <label for="id_floor">Plancher de couverture</label>
+      <input type="number" name="floor" id="id_floor" value="{{ default_floor }}" min="1">
+    </div>
+    <div class="submit-row">
+      <input type="submit" class="default" value="Sélectionner">
+    </div>
+  </form>
+
+  {% if requests_json %}
+    <div class="module" style="padding: 12px 16px; margin: 20px 0;">
+      <h2>Requêtes de génération ({{ output_path }})</h2>
+      <p>À transmettre telles quelles, une par une, au skill <code>concepteur-quiz-competence</code>.</p>
+      <textarea readonly rows="25" style="width: 100%; font-family: monospace;">{{ requests_json }}</textarea>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

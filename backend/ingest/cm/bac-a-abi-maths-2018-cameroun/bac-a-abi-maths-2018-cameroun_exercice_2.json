@@ -1,0 +1,60 @@
+{
+  "epreuve_source": "bac-a-abi-maths-2018-cameroun.pdf",
+  "numero_exercice": "2",
+  "matiere": "Mathématiques",
+  "serie": "A",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2018",
+  "duree_epreuve": "3h",
+  "coefficient": "2",
+  "points": "5",
+  "figures": [],
+  "enonce_intro_markdown": "### Exercice 2 (5 points)\n\nDans une urne, il y a 9 boules distinctes et indiscernables au toucher : 5 portent le nombre 100, 3 le nombre 50 et une le nombre 0. On tire au hasard et simultanément 3 boules de cette urne et on fait la somme des nombres inscrits sur les trois boules.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Dans une urne, il y a 9 boules distinctes et indiscernables au toucher : 5 portent le nombre 100, 3 le nombre 50 et une le nombre 0. On tire au hasard et simultanément 3 boules de cette urne et on fait la somme des nombres inscrits sur les trois boules.\n\nJustifier que les différentes sommes qu'on peut obtenir sont : $100$, $150$, $200$, $250$ et $300$.",
+      "corrige_markdown": "### Rappel de méthode\nPour un tirage simultané de $k$ objets parmi $n$, le nombre total de tirages possibles est $C_n^k$. Lorsque les objets tirés sont répartis en catégories, le nombre de tirages contenant exactement un certain nombre d'objets de chaque catégorie s'obtient en multipliant les combinaisons associées à chaque catégorie (règle du produit).\n\n**1.** L'urne contient 3 catégories de boules : 5 boules « 100 », 3 boules « 50 » et 1 boule « 0 ». On tire 3 boules ; notons $(n_{100}\\,;\\,n_{50}\\,;\\,n_0)$ le nombre de boules tirées dans chaque catégorie, avec $n_{100}+n_{50}+n_0=3$, $0\\leq n_{100}\\leq5$, $0\\leq n_{50}\\leq3$ et $0\\leq n_0\\leq1$ (une seule boule porte le 0).\n\nEn énumérant toutes les répartitions possibles compatibles avec ces contraintes, on obtient les sommes suivantes :\n\n| $n_{100}$ | $n_{50}$ | $n_0$ | Somme |\n|---|---|---|---|\n| 3 | 0 | 0 | $300$ |\n| 2 | 1 | 0 | $250$ |\n| 2 | 0 | 1 | $200$ |\n| 1 | 2 | 0 | $200$ |\n| 1 | 1 | 1 | $150$ |\n| 0 | 3 | 0 | $150$ |\n| 0 | 2 | 1 | $100$ |\n\nAucune autre répartition n'est possible (la contrainte $n_0\\leq1$ élimine par exemple $(1\\,;\\,0\\,;\\,2)$ et $(0\\,;\\,1\\,;\\,2)$). Les sommes obtenues sont donc exactement $100$, $150$, $200$, $250$ et $300$, ce qui justifie l'énoncé.",
+      "themes": [
+        "dénombrement",
+        "combinaisons"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-maths-2018-cameroun-ex2-1",
+          "competence": "Dénombrement par tirage simultané avec plusieurs catégories",
+          "contenu_markdown": "Pour un tirage simultané de $k$ objets parmi $n$, le nombre total de tirages possibles est $C_n^k$. Lorsque les objets tirés sont répartis en catégories, le nombre de tirages contenant exactement un certain nombre d'objets de chaque catégorie s'obtient en multipliant les combinaisons associées à chaque catégorie (règle du produit).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Dans une urne, il y a 9 boules distinctes et indiscernables au toucher : 5 portent le nombre 100, 3 le nombre 50 et une le nombre 0. On tire au hasard et simultanément 3 boules de cette urne et on fait la somme des nombres inscrits sur les trois boules.\n\nCalculer la probabilité de chacun des événements ci-dessous :\n   - $A$ : « La somme des trois nombres est égale à $300$ » ;\n   - $B$ : « La somme des trois nombres est plus petite que $300$ » ;\n   - $C$ : « La somme des trois nombres est égale à $150$ ».",
+      "corrige_markdown": "**2.** Le nombre total de tirages de 3 boules parmi les 9 est :\n\n$$C_9^3=\\frac{9!}{3!\\,6!}=84$$\n\n**Événement $A$ (somme $=300$)** : la seule répartition possible est $(3\\,;\\,0\\,;\\,0)$, c'est-à-dire les 3 boules tirées portent toutes le nombre 100. Le nombre de tirages favorables est $C_5^3\\times C_3^0\\times C_1^0=10\\times1\\times1=10$.\n\n$$P(A)=\\frac{10}{84}=\\frac{5}{42}\\approx0{,}119$$\n\n**Événement $B$ (somme $<300$)** : $B$ est l'événement contraire de $A$ (les seules sommes possibles sont $100,150,200,250,300$, donc « somme $<300$ » équivaut à « somme $\\neq300$ »).\n\n$$P(B)=1-P(A)=1-\\frac{10}{84}=\\frac{74}{84}=\\frac{37}{42}\\approx0{,}881$$\n\n**Événement $C$ (somme $=150$)** : deux répartitions donnent 150 : $(1\\,;\\,1\\,;\\,1)$ et $(0\\,;\\,3\\,;\\,0)$.\n\nPour $(1\\,;\\,1\\,;\\,1)$ : $C_5^1\\times C_3^1\\times C_1^1=5\\times3\\times1=15$ tirages.\n\nPour $(0\\,;\\,3\\,;\\,0)$ : $C_5^0\\times C_3^3\\times C_1^0=1\\times1\\times1=1$ tirage.\n\nNombre total de tirages favorables à $C$ : $15+1=16$.\n\n$$P(C)=\\frac{16}{84}=\\frac{4}{21}\\approx0{,}190$$\n\n### Piège à éviter\nNe mélange pas les événements $A$ et $C$ avec un simple calcul de proportion sur les boules : la somme obtenue dépend de la composition complète du tirage de 3 boules, pas d'une seule boule isolée. Il faut systématiquement identifier toutes les répartitions $(n_{100}\\,;\\,n_{50}\\,;\\,n_0)$ qui donnent la somme recherchée avant de sommer leurs dénombrements.\n\n### Conseil\nPour l'événement $B$, calcule toujours l'événement contraire quand l'énoncé contient une inégalité stricte sur une liste finie de valeurs possibles (ici, la seule valeur exclue par « $<300$ » est $300$ lui-même) : c'est presque toujours plus rapide que d'additionner les probabilités des 4 sommes restantes une par une.",
+      "themes": [
+        "probabilités",
+        "événement contraire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "tirage simultané sans remise",
+    "combinaison C(n,k)",
+    "règle du produit",
+    "événement contraire",
+    "urne boules distinctes"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

@@ -1,0 +1,93 @@
+{
+  "epreuve_source": "bac-a-maths-2005-cameroun.pdf",
+  "numero_exercice": "1",
+  "points": "5",
+  "figures": [],
+  "incertitudes": [],
+  "enonce_intro_markdown": "",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Determiner la primitive $U$ de la fonction numerique $u$ definie par $u(x) = \\dfrac{2x+1}{x^2+x+1}$ qui s'annule en 0.",
+      "corrige_markdown": "### Rappel de methode\nQuand une fraction a exactement la forme $\\dfrac{v'(x)}{v(x)}$ (le numerateur est la derivee du denominateur), une primitive est $\\ln|v(x)|$.\n\n### Corrige\nOn pose $v(x) = x^2+x+1$. Sa derivee est $v'(x) = 2x+1$, qui est exactement le numerateur de $u(x)$ :\n\n$$u(x) = \\frac{v'(x)}{v(x)}$$\n\nDe plus, $v(x)=x^2+x+1$ a pour discriminant $\\Delta = 1-4=-3<0$, donc $v(x)>0$ pour tout $x$ reel (parabole sans racine reelle, tournee vers le haut) : on peut donc omettre la valeur absolue.\n\nLes primitives de $u$ sont donc de la forme :\n\n$$U(x) = \\ln(x^2+x+1) + k, \\quad k\\in\\mathbb{R}$$\n\nLa condition $U(0)=0$ donne :\n\n$$U(0) = \\ln(0+0+1)+k = \\ln1+k = 0+k = k$$\n\nDonc $k=0$, et :\n\n$$U(x) = \\ln(x^2+x+1)$$\n\n### Conseil\nAvant de conclure qu'une primitive est un logarithme, verifie toujours le signe du denominateur sur l'intervalle d'etude : ici $x^2+x+1>0$ sur $\\mathbb{R}$ tout entier (discriminant negatif), ce qui autorise a ecrire $\\ln(x^2+x+1)$ sans valeur absolue.",
+      "themes": [
+        "primitives",
+        "fonction logarithme",
+        "forme v'/v"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2005-cameroun-ex1-q1-0",
+          "competence": "Primitive d'une fraction du type v'/v",
+          "contenu_markdown": "Quand une fraction a exactement la forme $\\dfrac{v'(x)}{v(x)}$ (le numerateur est la derivee du denominateur), une primitive est $\\ln|v(x)|$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Resoudre dans $\\mathbb{R}$ l'equation d'inconnue $x$ suivante : $2e^{2x} - 7e^x + 6 = 0$.",
+      "corrige_markdown": "### Rappel de methode\nUne equation ne comportant que $e^x$ et $e^{2x}=(e^x)^2$ se ramene, par le changement d'inconnue $t=e^x$ ($t>0$), a une equation du second degre en $t$.\n\n### Corrige\nOn pose $t=e^x$, avec $t>0$. Comme $e^{2x}=(e^x)^2=t^2$, l'equation devient :\n\n$$2t^2 - 7t + 6 = 0$$\n\nDiscriminant :\n\n$$\\Delta = (-7)^2 - 4\\times2\\times6 = 49-48 = 1$$\n\n$$t = \\frac{7\\pm\\sqrt1}{4} = \\frac{7\\pm1}{4}$$\n\nD'ou $t=2$ ou $t=\\dfrac{6}{4}=\\dfrac32$. Les deux valeurs sont strictement positives, donc acceptables pour $t=e^x$.\n\n**Retour a $x$** :\n\n$$e^x=2 \\iff x=\\ln2 \\qquad\\qquad e^x=\\frac32 \\iff x=\\ln\\frac32$$\n\n$$S = \\left\\{\\ln2\\,;\\ \\ln\\frac32\\right\\}$$\n\n### Piege a eviter\nNe pas oublier de verifier que chaque valeur de $t$ trouvee est strictement positive avant de repasser a $x=\\ln t$ : une valeur de $t$ negative ou nulle serait a rejeter, car $e^x>0$ pour tout $x$ reel.",
+      "themes": [
+        "equations exponentielles",
+        "changement de variable",
+        "second degre"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2005-cameroun-ex1-q2-0",
+          "competence": "Changement de variable t=e^x",
+          "contenu_markdown": "Une equation ne comportant que $e^x$ et $e^{2x}=(e^x)^2$ se ramene, par le changement d'inconnue $t=e^x$ ($t>0$), a une equation du second degre en $t$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Resoudre dans $\\mathbb{R}\\times\\mathbb{R}$ le systeme $(S)$ : $\\begin{cases} e^{x\\ln3} - e^{y\\ln27} = 0 \\\\ \\ln x - 2\\ln y = 1 \\end{cases}$.",
+      "corrige_markdown": "### Rappel de methode\n$e^{a\\ln b} = b^a$ pour $b>0$ : cela permet de reecrire chaque exponentielle comme une puissance. Le second membre de $(S)$ n'a de sens que si $x>0$ et $y>0$ (domaine du logarithme).\n\n### Corrige\n**Domaine** : $x>0$ et $y>0$ (necessaire pour que $\\ln x$ et $\\ln y$ soient definis).\n\n**Premiere equation.** On utilise $e^{a\\ln b}=b^a$ :\n\n$$e^{x\\ln3} = 3^x \\qquad \\text{et} \\qquad e^{y\\ln27} = 27^y = (3^3)^y = 3^{3y}$$\n\nL'equation devient :\n\n$$3^x = 3^{3y} \\iff x=3y$$\n\n(la fonction $t\\mapsto3^t$ etant strictement croissante, donc injective).\n\n**Deuxieme equation.**\n\n$$\\ln x - 2\\ln y = 1 \\iff \\ln x - \\ln(y^2) = 1 \\iff \\ln\\left(\\frac{x}{y^2}\\right) = 1 \\iff \\frac{x}{y^2} = e^1 = e$$\n\nsoit $x = e\\,y^2$.\n\n**Resolution du systeme.** On a $x=3y$ et $x=ey^2$, donc :\n\n$$3y = ey^2$$\n\nComme $y>0$, on peut diviser par $y$ :\n\n$$3 = ey \\iff y = \\frac{3}{e}$$\n\nD'ou :\n\n$$x = 3y = 3\\times\\frac3e = \\frac9e$$\n\n**Verification des conditions de domaine** : $x=\\dfrac9e>0$ et $y=\\dfrac3e>0$, conditions satisfaites.\n\n$$S = \\left\\{\\left(\\frac9e\\,;\\,\\frac3e\\right)\\right\\}$$\n\n### Piege a eviter\nPoser le domaine ($x>0$, $y>0$) avant de manipuler les logarithmes est indispensable : sans cette precaution, on risque d'accepter une solution qui annule un logarithme dans l'equation de depart.",
+      "themes": [
+        "equations exponentielles",
+        "logarithme neperien",
+        "systemes d'equations"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2005-cameroun-ex1-q3-0",
+          "competence": "Reecrire une exponentielle en puissance",
+          "contenu_markdown": "$e^{a\\ln b} = b^a$ pour $b>0$ : cela permet de reecrire chaque exponentielle comme une puissance. Le second membre de $(S)$ n'a de sens que si $x>0$ et $y>0$ (domaine du logarithme).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "primitives",
+    "equations exponentielles",
+    "logarithme neperien",
+    "systemes d'equations",
+    "BAC A Cameroun"
+  ],
+  "matiere": "Mathematiques",
+  "serie": "A",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2005",
+  "duree_epreuve": "3h",
+  "coefficient": "2",
+  "niveau": "Terminale",
+  "statut": "brouillon"
+}

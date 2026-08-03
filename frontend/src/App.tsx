@@ -7,15 +7,16 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { RouteFallback } from "@/components/RouteFallback"
+import { ScrollToTop } from "@/components/ScrollToTop"
 import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 
 // Chargées à la demande (une par route) plutôt qu'au démarrage : les pages de
-// lecture (Lesson/Cours détail + lire) embarquent à elles seules react-markdown +
+// lecture (Épreuve/Cours détail + lire) embarquent à elles seules react-markdown +
 // katex + le pipeline remark/rehype, largement le plus gros morceau du bundle -
 // aucune raison de le télécharger avant qu'un élève ouvre effectivement un contenu.
 const CataloguePage = lazy(() => import("@/pages/CataloguePage").then((m) => ({ default: m.CataloguePage })))
-const LessonDetailPage = lazy(() => import("@/pages/LessonDetailPage").then((m) => ({ default: m.LessonDetailPage })))
-const LessonReaderPage = lazy(() => import("@/pages/LessonReaderPage").then((m) => ({ default: m.LessonReaderPage })))
+const EpreuveDetailPage = lazy(() => import("@/pages/EpreuveDetailPage").then((m) => ({ default: m.EpreuveDetailPage })))
+const EpreuveReaderPage = lazy(() => import("@/pages/EpreuveReaderPage").then((m) => ({ default: m.EpreuveReaderPage })))
 const CoursListPage = lazy(() => import("@/pages/CoursListPage").then((m) => ({ default: m.CoursListPage })))
 const CoursDetailPage = lazy(() => import("@/pages/CoursDetailPage").then((m) => ({ default: m.CoursDetailPage })))
 const CoursReaderPage = lazy(() => import("@/pages/CoursReaderPage").then((m) => ({ default: m.CoursReaderPage })))
@@ -45,6 +46,7 @@ function App() {
     <ThemeProvider defaultTheme="system" storageKey="edukamer-theme">
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <CountryProvider>
             <div className="flex min-h-screen flex-col">
               <Header />
@@ -54,8 +56,8 @@ function App() {
                     <Route path="/" element={<RootRedirect />} />
                     <Route path="/:country" element={<CataloguePage />} />
                     <Route path="/:country/cours" element={<CoursListPage />} />
-                    <Route path="/lecons/:id" element={<LessonDetailPage />} />
-                    <Route path="/lecons/:id/lire" element={<LessonReaderPage />} />
+                    <Route path="/epreuves/:slug" element={<EpreuveDetailPage />} />
+                    <Route path="/epreuves/:slug/lire" element={<EpreuveReaderPage />} />
                     <Route path="/cours/:id" element={<CoursDetailPage />} />
                     <Route path="/cours/:id/lire" element={<CoursReaderPage />} />
                     <Route path="/connexion" element={<LoginPage />} />

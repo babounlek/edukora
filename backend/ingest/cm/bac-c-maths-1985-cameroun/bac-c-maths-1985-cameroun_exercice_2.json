@@ -1,0 +1,70 @@
+{
+  "epreuve_source": "bac-c-maths-1985-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1985",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**\\n\\nSoit $a$ un entier naturel et $X$ un nombre qui s'écrit $\\overline{1335}$ dans la base $a$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Donner l'écriture de $X$ dans la base $(a+1)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour convertir un nombre ecrit dans une base a vers une autre base, le plus efficace est de reconnaitre une identite algebrique (comme un cube ou un carre d'un binome) qui relie les puissances de a a des puissances de la nouvelle base (a+1), plutot que de repasser systematiquement par l'ecriture en base dix.\\n\\n### Corrigé\\n\\n$X$ s'écrit $\\overline{1335}$ en base $a$ signifie, par définition d'une écriture en base $a$ (avec chiffres $1,3,3,5$, valables seulement si $a>5$ puisque le chiffre $5$ doit être strictement inférieur à la base) :\\n\\n$$X=1\\times a^3+3\\times a^2+3\\times a+5$$\\n\\nReconnaissons une identité remarquable : $(a+1)^3=a^3+3a^2+3a+1$ (développement du cube d'une somme, $\\binom30=1,\\binom31=3,\\binom32=3,\\binom33=1$). Or $X=a^3+3a^2+3a+5=(a^3+3a^2+3a+1)+4$.\\n\\nDonc **$X=(a+1)^3+4$**.\\n\\nPosons $b=a+1$ : $X=b^3+4=1\\times b^3+0\\times b^2+0\\times b+4$. Comme $a>5$, on a $b=a+1>6$, donc en particulier $b>4$ : le chiffre $4$ est bien valide dans la base $b$ (strictement inférieur à $b$).\\n\\n**L'écriture de $X$ dans la base $(a+1)$ est donc $\\overline{1004}$** (dans la base $a+1$).",
+      "themes": [
+        "numération",
+        "changement de base",
+        "identités remarquables"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985-c-maths-ex2-1-0",
+          "competence": "Changement de base par identité remarquable",
+          "contenu_markdown": "Pour convertir un nombre ecrit dans une base a vers une autre base, le plus efficace est de reconnaitre une identite algebrique (comme un cube ou un carre d'un binome) qui relie les puissances de a a des puissances de la nouvelle base (a+1), plutot que de repasser systematiquement par l'ecriture en base dix.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Déterminer $a$ sachant que ce nombre écrit dans la base dix est inférieur ou égal à $500$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour determiner une base inconnue a partir d'une contrainte numerique (ici une inegalite), exprimer d'abord le nombre en base dix comme un polynome en a, puis tester les valeurs entieres de a compatibles avec la contrainte de validite des chiffres (ici a>5), en verifiant a chaque fois l'inegalite imposee.\\n\\n### Corrigé\\n\\nL'écriture $\\overline{1335}$ en base $a$ n'a de sens que si tous les chiffres utilisés sont strictement inférieurs à $a$ : le plus grand chiffre est $5$, donc il faut **$a\\geqslant6$**.\\n\\nD'après la question précédente, $X=a^3+3a^2+3a+5$ (valeur de $X$ écrite en base dix). La fonction $a\\mapsto a^3+3a^2+3a+5$ est strictement croissante sur $[6,+\\infty[$ (somme de fonctions strictement croissantes pour $a>0$), donc il suffit de tester les entiers $a\\geqslant6$ successivement.\\n\\n**Pour $a=6$** : $X=6^3+3\\times6^2+3\\times6+5=216+3\\times36+18+5=216+108+18+5=347$. Or $347\\leqslant500$ : la condition est vérifiée.\\n\\n**Pour $a=7$** : $X=7^3+3\\times7^2+3\\times7+5=343+3\\times49+21+5=343+147+21+5=516$. Or $516>500$ : la condition n'est plus vérifiée.\\n\\nComme $a\\mapsto X(a)$ est strictement croissante, $X(a)>500$ pour tout $a\\geqslant7$. Le seul entier $a\\geqslant6$ vérifiant $X(a)\\leqslant500$ est donc **$a=6$**.\\n\\n### Piège à éviter\\n\\nNe pas oublier la contrainte de validité des chiffres ($a\\geqslant6$, à cause du chiffre $5$) avant de tester des valeurs : sans elle, on pourrait être tenté de tester des valeurs de $a$ trop petites, qui ne correspondent à aucune écriture en base $a$ valide.",
+      "themes": [
+        "numération",
+        "changement de base",
+        "identités remarquables",
+        "résolution d'inéquation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985-c-maths-ex2-2-0",
+          "competence": "Recherche d'une base par encadrement",
+          "contenu_markdown": "Pour determiner une base inconnue a partir d'une contrainte numerique (ici une inegalite), exprimer d'abord le nombre en base dix comme un polynome en a, puis tester les valeurs entieres de a compatibles avec la contrainte de validite des chiffres (ici a>5), en verifiant a chaque fois l'inegalite imposee.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "numération",
+    "changement de base",
+    "identité remarquable",
+    "cube d'un binôme"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

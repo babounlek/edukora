@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { BookOpen, CheckCircle2, Lock, Search, Unlock } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Link, useParams, useSearchParams } from "react-router-dom"
+import { ArrowRight, BookOpen, LayoutGrid, List, Loader2, Search, X } from "lucide-react"
 
-import { listCursus, listLessons, listSubjects } from "@/api/endpoints"
-import type { Cursus, Lesson, Subject } from "@/api/types"
-import { examLevelsFor, formatCursusGroups, joinExamLevelsFr } from "@/lib/cursus"
+import heroStudent from "@/assets/hero-student.jpg"
+import { getMyProgression, listCursus, listEpreuves, listSubjects } from "@/api/endpoints"
+import type { Cursus, Epreuve, Progression, Subject } from "@/api/types"
+import { examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
+import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { EpreuveCard } from "@/components/EpreuveCard"
+import { EpreuveListRow } from "@/components/EpreuveListRow"
 import {
   Select,
   SelectContent,
@@ -19,7 +23,20 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-function LessonCardSkeleton() {
+type ViewMode = "cards" | "list"
+
+const VIEW_MODE_STORAGE_KEY = "edukamer_catalogue_view"
+
+// Portée session (sessionStorage), jamais localStorage : les critères de recherche
+// doivent survivre à un aller-retour vers une fiche épreuve (voir "Retour au
+// catalogue", qui pointe vers une URL nue plutôt que de dépiler l'historique), mais
+// pas à travers plusieurs visites - un lien partagé ou un nouvel onglet doit repartir
+// sur un catalogue vierge plutôt que d'afficher silencieusement une recherche
+// oubliée d'il y a plusieurs jours. Une clé par pays : les critères d'un pays n'ont
+// aucun sens pour un autre.
+const CATALOGUE_FILTERS_STORAGE_KEY_PREFIX = "edukamer_catalogue_filters_"
+
+function EpreuveCardSkeleton() {
   return (
     <Card className="overflow-hidden">
       <CardContent className="flex flex-col gap-2 p-4">
@@ -38,15 +55,65 @@ export function CataloguePage() {
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const { isAuthenticated } = useAuth()
+  const [progression, setProgression] = useState<Progression | null>(null)
 
-  const [lessons, setLessons] = useState<Lesson[]>([])
+  // "Reprendre ma lecture" - jusqu'ici uniquement visible sur /compte, où un
+  // utilisateur qui revient doit activement penser à aller la chercher. Ici c'est
+  // silencieusement absent (pas d'erreur affichée) pour un visiteur anonyme ou sans
+  // historique : ce n'est qu'un raccourci, jamais un contenu qu'on impose de voir.
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setProgression(null)
+      return
+    }
+    getMyProgression().then(setProgression).catch(() => {})
+  }, [isAuthenticated])
+
+  // La query string est la source de vérité des filtres (pas un useState en plus) :
+  // une recherche filtrée doit rester bookmarkable/partageable et survivre à un
+  // rechargement, et le bouton précédent/suivant du navigateur doit la restaurer.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const subjectFilter = searchParams.get("subject") ?? ""
+  const cursusFilter = searchParams.get("cursus") ?? ""
+  const origineFilter = searchParams.get("origine") ?? ""
+  const orderingFilter = searchParams.get("ordering") ?? ""
+  const search = searchParams.get("search") ?? ""
+
+  const [epreuves, setEpreuves] = useState<Epreuve[]>([])
+  const [count, setCount] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
+  const [page, setPage] = useState(1)
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [cursusList, setCursusList] = useState<Cursus[]>([])
-  const [subjectFilter, setSubjectFilter] = useState("")
-  const [cursusFilter, setCursusFilter] = useState("")
-  const [origineFilter, setOrigineFilter] = useState("")
-  const [search, setSearch] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+
+  // Préférence d'affichage personnelle (pas un filtre de recherche) : persistée en
+  // localStorage plutôt que dans l'URL, comme le thème - pas besoin d'être partagée
+  // via un lien, mais doit survivre à la navigation et aux prochaines visites.
+  const [viewMode, setViewModeState] = useState<ViewMode>(() => {
+    try {
+      return (localStorage.getItem(VIEW_MODE_STORAGE_KEY) as ViewMode) || "cards"
+    } catch {
+      return "cards"
+    }
+  })
+
+  function setViewMode(mode: ViewMode) {
+    try {
+      localStorage.setItem(VIEW_MODE_STORAGE_KEY, mode)
+    } catch {
+      // stockage indisponible (navigation privée) - la préférence ne persistera pas
+    }
+    setViewModeState(mode)
+  }
+
+  // Détecte un vrai changement de pays (valeur précédente vs actuelle) plutôt que
+  // "est-ce le premier appel" : StrictMode invoque cet effet deux fois au montage
+  // avec la même valeur, un simple ref booléen s'y ferait piéger et purgerait à tort
+  // les filtres d'une URL partagée (ex. /cm?subject=MATH) dès le chargement.
+  const previousCountryRef = useRef(country)
 
   // Niveaux d'examen réellement présents pour ce pays (voir examLevelsFor) - jamais un
   // texte fixe : la plupart des pays n'ont pas de Probatoire. Repli générique tant que
@@ -56,38 +123,107 @@ export function CataloguePage() {
   const examLevelsProse = examLevels.length > 0 ? joinExamLevelsFr(examLevels) : "le BEPC, le Probatoire et le BAC"
 
   useSeo({
-    title: "Corrigés BEPC, Probatoire et BAC",
+    title: "Cours, corrigés et quiz - BEPC, Probatoire, BAC",
     // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
     // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
     description: countryLabel
-      ? `${countryLabel} : fiches de révision, corrigés d'annales et sujets inédits pour ${examLevelsProse}, classés par matière et par série.`
+      ? `${countryLabel} : cours structurés, corrigés d'annales et quiz d'entraînement pour ${examLevelsProse}, classés par matière et par série.`
       : undefined,
   })
+
+  function updateFilter(key: string, value: string) {
+    const next = new URLSearchParams(searchParams)
+    if (value) next.set(key, value)
+    else next.delete(key)
+    try {
+      sessionStorage.setItem(CATALOGUE_FILTERS_STORAGE_KEY_PREFIX + country, next.toString())
+    } catch {
+      // navigation privée ou quota plein - la préférence ne survivra simplement pas
+    }
+    setSearchParams(next, { replace: true })
+  }
+
+  // Restaure les critères de recherche sauvegardés par updateFilter lors de la
+  // dernière visite de ce pays DANS CET ONGLET - seulement si l'URL d'arrivée est
+  // entièrement vierge (jamais si elle porte déjà des paramètres explicites, ex. un
+  // lien partagé). hasRestoredFiltersRef garantit une exécution unique par montage :
+  // sans ce garde-fou, vider les filtres à la main les ferait immédiatement
+  // réapparaître au prochain rendu.
+  const hasRestoredFiltersRef = useRef(false)
+  useEffect(() => {
+    if (hasRestoredFiltersRef.current) return
+    hasRestoredFiltersRef.current = true
+    if (!country || searchParams.toString() !== "") return
+    try {
+      const saved = sessionStorage.getItem(CATALOGUE_FILTERS_STORAGE_KEY_PREFIX + country)
+      if (saved) setSearchParams(new URLSearchParams(saved), { replace: true })
+    } catch {
+      // navigation privée - repli silencieux sur un catalogue vierge
+    }
+  }, [country, searchParams, setSearchParams])
 
   useEffect(() => {
     listSubjects(country).then(setSubjects).catch(() => {})
     listCursus(country).then(setCursusList).catch(() => {})
+
+    if (previousCountryRef.current === country) return
+    previousCountryRef.current = country
+
     // Une matière/un cursus sélectionné dans un autre pays n'existe plus dans les
     // nouvelles listes.
-    setSubjectFilter("")
-    setCursusFilter("")
-  }, [country])
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        next.delete("subject")
+        next.delete("cursus")
+        return next
+      },
+      { replace: true },
+    )
+  }, [country, setSearchParams])
 
   useEffect(() => {
     setIsLoading(true)
     const timeout = setTimeout(() => {
-      listLessons({
+      listEpreuves({
         subject: subjectFilter || undefined,
         cursus: cursusFilter ? Number(cursusFilter) : undefined,
         country,
         origine: origineFilter || undefined,
         search: search || undefined,
+        ordering: orderingFilter === "year" ? "year" : undefined,
+        page: 1,
       })
-        .then((data) => setLessons(data.results))
+        .then((data) => {
+          setEpreuves(data.results)
+          setCount(data.count)
+          setHasMore(data.next !== null)
+          setPage(1)
+        })
         .finally(() => setIsLoading(false))
     }, 300)
     return () => clearTimeout(timeout)
-  }, [subjectFilter, cursusFilter, origineFilter, search, country])
+  }, [subjectFilter, cursusFilter, origineFilter, orderingFilter, search, country])
+
+  function handleLoadMore() {
+    const nextPage = page + 1
+    setIsLoadingMore(true)
+    listEpreuves({
+      subject: subjectFilter || undefined,
+      cursus: cursusFilter ? Number(cursusFilter) : undefined,
+      country,
+      origine: origineFilter || undefined,
+      search: search || undefined,
+      ordering: orderingFilter === "year" ? "year" : undefined,
+      page: nextPage,
+    })
+      .then((data) => {
+        setEpreuves((prev) => [...prev, ...data.results])
+        setHasMore(data.next !== null)
+        setPage(nextPage)
+      })
+      .finally(() => setIsLoadingMore(false))
+  }
 
   return (
     <div>
@@ -100,33 +236,65 @@ export function CataloguePage() {
             backgroundSize: "28px 28px",
           }}
         />
-        <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
-          <p className="mb-2 font-display text-sm italic text-primary">
-            {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
-          </p>
-          <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
-            Des corrigés qui t'apprennent{" "}
-            <span className="text-primary">à réussir</span>, pas juste la réponse.
-          </h1>
-          <p className="mt-4 max-w-lg text-muted-foreground">
-            Fiches de révision, corrigés d'annales et sujets inédits rédigés par des
-            enseignants, classés par matière et par série.
-          </p>
+        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 py-14 sm:px-6 md:grid-cols-[1.15fr_1fr] md:items-center md:gap-10">
+          <div>
+            <p className="mb-2 font-display text-sm italic text-primary">
+              {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
+            </p>
+            <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
+              La méthode qui t'apprend{" "}
+              <span className="text-primary">à réussir</span>, pas juste la réponse.
+            </h1>
+            <p className="mt-4 max-w-lg text-muted-foreground">
+              Cours structurés, corrigés d'annales et quiz d'entraînement, classés par
+              matière et par série.
+            </p>
+          </div>
+          <img
+            src={heroStudent}
+            alt="Élève souriante prenant des notes, ordinateur portable ouvert sur son bureau"
+            className="w-full rounded-2xl border border-border"
+          />
         </div>
       </section>
 
+      {progression && progression.lessons.length > 0 && (
+        <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+          <Link
+            to={`/epreuves/${progression.lessons[0].slug}/lire`}
+            className="flex animate-fade-up items-center justify-between gap-3 rounded-lg border border-border bg-accent/40 px-4 py-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent"
+          >
+            <span className="min-w-0">
+              <span className="text-muted-foreground">Reprendre : </span>
+              <span className="font-medium">{progression.lessons[0].title}</span>
+            </span>
+            <ArrowRight className="size-4 shrink-0 text-primary" />
+          </Link>
+        </div>
+      )}
+
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mb-8 flex flex-col flex-wrap gap-3 sm:flex-row">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Rechercher une leçon..."
+              placeholder="Rechercher une épreuve..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              onChange={(e) => updateFilter("search", e.target.value)}
+              className="pl-9 pr-9"
             />
+            {search && (
+              <button
+                type="button"
+                onClick={() => updateFilter("search", "")}
+                aria-label="Effacer la recherche"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            )}
           </div>
-          <Select value={subjectFilter || "all"} onValueChange={(v) => setSubjectFilter(v === "all" ? "" : v)}>
+          <Select value={subjectFilter || "all"} onValueChange={(v) => updateFilter("subject", v === "all" ? "" : v)}>
             <SelectTrigger className="sm:w-56">
               <SelectValue placeholder="Toutes les matières" />
             </SelectTrigger>
@@ -139,7 +307,7 @@ export function CataloguePage() {
               ))}
             </SelectContent>
           </Select>
-          <Select value={cursusFilter || "all"} onValueChange={(v) => setCursusFilter(v === "all" ? "" : v)}>
+          <Select value={cursusFilter || "all"} onValueChange={(v) => updateFilter("cursus", v === "all" ? "" : v)}>
             <SelectTrigger className="sm:w-56">
               <SelectValue placeholder="Tous les cursus" />
             </SelectTrigger>
@@ -153,7 +321,7 @@ export function CataloguePage() {
               ))}
             </SelectContent>
           </Select>
-          <Select value={origineFilter || "all"} onValueChange={(v) => setOrigineFilter(v === "all" ? "" : v)}>
+          <Select value={origineFilter || "all"} onValueChange={(v) => updateFilter("origine", v === "all" ? "" : v)}>
             <SelectTrigger className="sm:w-56">
               <SelectValue placeholder="Toutes origines" />
             </SelectTrigger>
@@ -165,76 +333,91 @@ export function CataloguePage() {
               <SelectItem value="AUTRE">Autre</SelectItem>
             </SelectContent>
           </Select>
+          <Select value={orderingFilter || "recent"} onValueChange={(v) => updateFilter("ordering", v === "recent" ? "" : v)}>
+            <SelectTrigger className="sm:w-56">
+              <SelectValue placeholder="Trier par année" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="recent">Plus récentes d'abord</SelectItem>
+              <SelectItem value="year">Plus anciennes d'abord</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <LessonCardSkeleton key={i} />
+              <EpreuveCardSkeleton key={i} />
             ))}
           </div>
-        ) : lessons.length === 0 ? (
+        ) : epreuves.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-20 text-center text-muted-foreground">
             <BookOpen className="size-8" />
-            <p>Aucune leçon ne correspond à ces critères.</p>
+            <p>Aucune épreuve ne correspond à ces critères.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {lessons.map((lesson, index) => (
-              <Link
-                key={lesson.id}
-                to={lesson.has_access ? `/lecons/${lesson.id}/lire` : `/lecons/${lesson.id}`}
-                className="animate-fade-up"
-                style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
-              >
-                <Card className="group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5">
-                  <CardContent className="flex flex-col gap-2 p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <h2 className="line-clamp-2 font-display font-medium leading-snug">
-                        {lesson.title}
-                      </h2>
-                      <Badge variant={lesson.lesson_type === "SUJET" ? "gold" : "outline"} className="shrink-0">
-                        {lesson.lesson_type_display}
-                      </Badge>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <Badge variant="secondary">{lesson.subject.label}</Badge>
-                      {formatCursusGroups(lesson.cursus).map((group) => (
-                        <Badge key={group.key} variant="outline">{group.label}</Badge>
-                      ))}
-                      {lesson.year && <Badge variant="outline">{lesson.year}</Badge>}
-                      {lesson.origine !== "OFFICIEL" && (
-                        <Badge variant="outline">
-                          {lesson.origine_display}
-                          {lesson.etablissement ? ` - ${lesson.etablissement}` : ""}
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                      {lesson.has_access ? (
-                        <>
-                          <Unlock className="size-3.5 text-success" />
-                          Accès inclus dans ton abonnement
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="size-3.5" />
-                          Abonnement requis
-                        </>
-                      )}
-                      {lesson.is_read && (
-                        <>
-                          <span aria-hidden="true">·</span>
-                          <CheckCircle2 className="size-3.5 text-success" />
-                          Lu
-                        </>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
+          <>
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <p className="text-sm text-muted-foreground">
+                {count} épreuve{count > 1 ? "s" : ""} trouvée{count > 1 ? "s" : ""}
+              </p>
+              <div className="flex shrink-0 gap-1 rounded-md border border-border p-0.5">
+                <Button
+                  variant={viewMode === "cards" ? "secondary" : "ghost"}
+                  size="icon"
+                  className="size-7"
+                  aria-label="Affichage en cartes"
+                  aria-pressed={viewMode === "cards"}
+                  onClick={() => setViewMode("cards")}
+                >
+                  <LayoutGrid className="size-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "secondary" : "ghost"}
+                  size="icon"
+                  className="size-7"
+                  aria-label="Affichage en liste"
+                  aria-pressed={viewMode === "list"}
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="size-4" />
+                </Button>
+              </div>
+            </div>
+
+            {viewMode === "cards" ? (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {epreuves.map((epreuve, index) => (
+                  <EpreuveCard
+                    key={epreuve.id}
+                    epreuve={epreuve}
+                    className="animate-fade-up"
+                    style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {epreuves.map((epreuve, index) => (
+                  <EpreuveListRow
+                    key={epreuve.id}
+                    epreuve={epreuve}
+                    className="animate-fade-up"
+                    style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+                  />
+                ))}
+              </div>
+            )}
+
+            {hasMore && (
+              <div className="mt-8 flex justify-center">
+                <Button variant="outline" onClick={handleLoadMore} disabled={isLoadingMore}>
+                  {isLoadingMore && <Loader2 className="size-4 animate-spin" />}
+                  Charger plus
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

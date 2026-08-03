@@ -13,13 +13,6 @@ export function extractCountryFromPath(pathname: string): string | null {
   return COUNTRY_SEGMENT_RE.exec(pathname)?.[1] ?? null
 }
 
-/** Remplace le segment pays d'un chemin déjà préfixé ; sans préfixe, retourne le chemin tel quel. */
-export function replaceCountryInPath(pathname: string, newCountry: string): string {
-  return COUNTRY_SEGMENT_RE.test(pathname)
-    ? pathname.replace(COUNTRY_SEGMENT_RE, `/${newCountry}$2`)
-    : pathname
-}
-
 export function catalogueHomePath(country: string): string {
   return `/${country}`
 }

@@ -1,0 +1,175 @@
+{
+  "epreuve_source": "bac-c-e-maths-2007-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2007",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "2",
+  "points": null,
+  "enonce_intro_markdown": "**Exercice 2**\n\nPour tout $n$ de $\\mathbb{N}$ et $x$ de $\\mathbb{R}$, on note $f_n$ la fonction définie par $f_n(x)=\\dfrac{e^{nx}}{1+e^x}$. On définit la suite $(u_n)$ par son terme général $u_n=\\displaystyle\\int_0^1f_n(x)\\,dx$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "1. (a) Démontrer que la suite $(u_n)$ est définie et à termes positifs.",
+      "corrige_markdown": "### Rappel de methode\nUne fonction continue sur un segment [a,b] y est intégrable ; si de plus elle est positive sur ce segment, son intégrale sur [a,b] est positive (ou nulle).\n\n### Corrige\nPour tout $n\\in\\mathbb{N}$, $f_n:x\\mapsto\\dfrac{e^{nx}}{1+e^x}$ est continue sur $[0;1]$ (quotient de fonctions continues, dénominateur $1+e^x>0$ ne s'annulant jamais). Elle est donc intégrable sur $[0;1]$ : **$u_n=\\displaystyle\\int_0^1f_n(x)\\,dx$ est bien définie.**\n\nDe plus, $e^{nx}>0$ et $1+e^x>0$ pour tout $x$, donc $f_n(x)>0$ sur $[0;1]$ : par positivité de l'intégrale d'une fonction positive, **$u_n>0$**.",
+      "themes": [
+        "intégrabilité",
+        "positivité d'une intégrale"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-0",
+          "competence": "Intégrale d'une fonction continue positive sur un segment",
+          "contenu_markdown": "Une fonction continue sur un segment [a,b] y est intégrable ; si de plus elle est positive sur ce segment, son intégrale sur [a,b] est positive (ou nulle).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "(b) Calculer $u_1$ et $u_0+u_1$. En déduire la valeur exacte de $u_0$.",
+      "corrige_markdown": "### Rappel de methode\nu1=∫e^x/(1+e^x)dx se calcule en reconnaissant une forme u'/u dont la primitive est ln|u| ; la somme u0+u1 se calcule en remarquant que les numérateurs 1 et e^x s'additionnent en (1+e^x), simplifiant tout le quotient à 1.\n\n### Corrige\n$$u_1=\\int_0^1\\dfrac{e^x}{1+e^x}\\,dx=\\Big[\\ln(1+e^x)\\Big]_0^1=\\ln(1+e)-\\ln2=\\ln\\dfrac{1+e}2$$\n\n$$u_0+u_1=\\int_0^1\\dfrac{1}{1+e^x}\\,dx+\\int_0^1\\dfrac{e^x}{1+e^x}\\,dx=\\int_0^1\\dfrac{1+e^x}{1+e^x}\\,dx=\\int_0^11\\,dx=1$$\n\n$$u_0=1-u_1=1-\\ln\\dfrac{1+e}2=1+\\ln\\dfrac2{1+e}$$",
+      "themes": [
+        "calcul de primitive",
+        "forme u'/u"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-1",
+          "competence": "Simplification de la somme u0+u1 par recombinaison des numérateurs",
+          "contenu_markdown": "u1=∫e^x/(1+e^x)dx se calcule en reconnaissant une forme u'/u dont la primitive est ln|u| ; la somme u0+u1 se calcule en remarquant que les numérateurs 1 et e^x s'additionnent en (1+e^x), simplifiant tout le quotient à 1.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.c",
+      "enonce_markdown": "(c) Pour tout $n$ de $\\mathbb{N}$, calculer $u_n+u_{n+1}$ en fonction de $n$.",
+      "corrige_markdown": "### Rappel de methode\nu_n+u_{n+1} se calcule en additionnant les numérateurs e^{nx}+e^{(n+1)x}=e^{nx}(1+e^x), ce qui simplifie exactement le dénominateur commun (1+e^x).\n\n### Corrige\n$$u_n+u_{n+1}=\\int_0^1\\dfrac{e^{nx}+e^{(n+1)x}}{1+e^x}\\,dx=\\int_0^1\\dfrac{e^{nx}(1+e^x)}{1+e^x}\\,dx=\\int_0^1e^{nx}\\,dx$$\n\nPour $n\\geq1$ : $\\displaystyle\\int_0^1e^{nx}\\,dx=\\left[\\dfrac{e^{nx}}n\\right]_0^1=\\dfrac{e^n-1}n$.\n\n(Pour $n=0$, on retrouve directement $\\int_0^11\\,dx=1$, cohérent avec la question 1.b.)\n\n$$\\boxed{u_n+u_{n+1}=\\dfrac{e^n-1}n\\ \\ (n\\geq1)}$$",
+      "themes": [
+        "suite d'intégrales",
+        "simplification algébrique"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-2",
+          "competence": "Calcul de u_n+u_{n+1} par recombinaison des exponentielles",
+          "contenu_markdown": "u_n+u_{n+1} se calcule en additionnant les numérateurs e^{nx}+e^{(n+1)x}=e^{nx}(1+e^x), ce qui simplifie exactement le dénominateur commun (1+e^x).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "2. (a) Démontrer que la suite $(u_n)$ est croissante.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer qu'une suite définie par une intégrale est croissante, on étudie le signe de u_{n+1}-u_n en le ramenant à une seule intégrale dont on montre que l'intégrande est positif.\n\n### Corrige\n$$u_{n+1}-u_n=\\int_0^1\\dfrac{e^{(n+1)x}-e^{nx}}{1+e^x}\\,dx=\\int_0^1\\dfrac{e^{nx}(e^x-1)}{1+e^x}\\,dx$$\n\nPour $x\\in[0;1]$ : $x\\geq0\\Rightarrow e^x\\geq1\\Rightarrow e^x-1\\geq0$. Par ailleurs $e^{nx}>0$ et $1+e^x>0$. Donc l'intégrande est $\\geq0$ sur $[0;1]$, d'où :\n$$u_{n+1}-u_n\\geq0$$\n\n**$(u_n)$ est donc croissante.**",
+      "themes": [
+        "monotonie d'une suite définie par une intégrale"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-3",
+          "competence": "Étudier le signe de u_{n+1}-u_n via l'intégrande",
+          "contenu_markdown": "Pour montrer qu'une suite définie par une intégrale est croissante, on étudie le signe de u_{n+1}-u_n en le ramenant à une seule intégrale dont on montre que l'intégrande est positif.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "(b) Démontrer que pour tout $n$ de $\\mathbb{N}$, et pour tout $x$ de l'intervalle $[0;1]$, $\\dfrac{e^{nx}}{e+1}\\leq f_n(x)\\leq\\dfrac12e^{nx}$.",
+      "corrige_markdown": "### Rappel de methode\nPour encadrer un quotient e^{nx}/(1+e^x) sur un intervalle, on encadre le dénominateur (1+e^x) sur cet intervalle, puis on en déduit un encadrement de son inverse (en inversant le sens des inégalités), qu'on multiplie par e^{nx}>0.\n\n### Corrige\nPour $x\\in[0;1]$ : $0\\leq x\\leq1\\Rightarrow e^0\\leq e^x\\leq e^1\\Rightarrow1\\leq e^x\\leq e$, donc $2\\leq1+e^x\\leq1+e$.\n\nEn inversant (fonction décroissante, valeurs strictement positives) :\n$$\\dfrac1{1+e}\\leq\\dfrac1{1+e^x}\\leq\\dfrac12$$\n\nEn multipliant par $e^{nx}>0$ (ne change pas le sens des inégalités) :\n$$\\boxed{\\dfrac{e^{nx}}{e+1}\\leq f_n(x)\\leq\\dfrac12e^{nx}}$$",
+      "themes": [
+        "encadrement",
+        "monotonie de l'inverse"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-4",
+          "competence": "Encadrer un quotient via l'encadrement de son dénominateur",
+          "contenu_markdown": "Pour encadrer un quotient e^{nx}/(1+e^x) sur un intervalle, on encadre le dénominateur (1+e^x) sur cet intervalle, puis on en déduit un encadrement de son inverse (en inversant le sens des inégalités), qu'on multiplie par e^{nx}>0.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.c",
+      "enonce_markdown": "(c) En déduire un encadrement de $u_n$.",
+      "corrige_markdown": "### Rappel de methode\nL'intégration d'un encadrement sur un même intervalle conserve le sens des inégalités.\n\n### Corrige\nEn intégrant l'encadrement de la question 2.(b) sur $[0;1]$ (l'intégration conserve l'ordre) :\n\nPour $n\\geq1$ : $\\displaystyle\\int_0^1e^{nx}\\,dx=\\dfrac{e^n-1}n$, donc :\n$$\\dfrac{e^n-1}{n(e+1)}\\leq u_n\\leq\\dfrac{e^n-1}{2n}$$\n\n(Pour $n=0$ : $\\int_0^11\\,dx=1$, donnant $\\dfrac1{e+1}\\leq u_0\\leq\\dfrac12$, encadrement bien vérifié par la valeur exacte $u_0=1+\\ln\\frac2{1+e}\\approx0{,}380$.)",
+      "themes": [
+        "intégration d'un encadrement"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-5",
+          "competence": "Intégrer un encadrement pour en déduire un encadrement de u_n",
+          "contenu_markdown": "L'intégration d'un encadrement sur un même intervalle conserve le sens des inégalités.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Déduire de la question 2.(b) la limite de $u_n$ puis celle de $\\dfrac{u_n}{e^n}$.",
+      "corrige_markdown": "### Rappel de methode\nSi u_n est encadrée par deux suites qui tendent toutes deux vers +∞, alors u_n tend aussi vers +∞ (comparaison) ; pour étudier u_n/e^n, on divise l'encadrement précédent par e^n et on passe à la limite.\n\n### Corrige\n**Limite de $u_n$.** D'après 2.(c), pour $n\\geq1$ : $u_n\\geq\\dfrac{e^n-1}{n(e+1)}$. Or $\\dfrac{e^n-1}{n(e+1)}\\to+\\infty$ quand $n\\to+\\infty$ (l'exponentielle $e^n$ l'emporte sur $n$ par croissances comparées). Par comparaison, **$\\lim_{n\\to+\\infty}u_n=+\\infty$**.\n\n**Limite de $\\dfrac{u_n}{e^n}$.** En divisant l'encadrement de 2.(c) par $e^n>0$ :\n$$\\dfrac{e^n-1}{n(e+1)e^n}\\leq\\dfrac{u_n}{e^n}\\leq\\dfrac{e^n-1}{2ne^n}$$\n\nOr $\\dfrac{e^n-1}{e^n}=1-e^{-n}\\to1$ quand $n\\to+\\infty$, donc le terme de gauche est équivalent à $\\dfrac1{n(e+1)}\\to0$ et celui de droite à $\\dfrac1{2n}\\to0$. Par le théorème des gendarmes :\n$$\\lim_{n\\to+\\infty}\\dfrac{u_n}{e^n}=0$$",
+      "themes": [
+        "limite par comparaison",
+        "théorème des gendarmes"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2007-ex2-6",
+          "competence": "Limites d'une suite encadrée par comparaison et gendarmes",
+          "contenu_markdown": "Si u_n est encadrée par deux suites qui tendent toutes deux vers +∞, alors u_n tend aussi vers +∞ (comparaison) ; pour étudier u_n/e^n, on divise l'encadrement précédent par e^n et on passe à la limite.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "suite d'intégrales",
+    "encadrement",
+    "théorème des gendarmes",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "barème non précisé",
+      "description": "Le PDF source (Douala Mathematical Society, dvipdfm/TeX) n'indique aucun barème par exercice ni par question. Le champ 'points' est donc laissé à null plutôt que d'inventer une pondération."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

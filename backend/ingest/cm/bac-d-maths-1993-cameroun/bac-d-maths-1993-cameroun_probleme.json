@@ -1,0 +1,236 @@
+{
+  "epreuve_source": "bac-d-maths-1993-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1993",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme",
+  "points": 12,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème**\\n\\nSoit la fonction numérique de la variable réelle $x$ définie par :\\n$$f(x)=2x+1+\\ln\\left|\\frac{x}{x+1}\\right|$$\\noù $\\ln$ représente la fonction logarithme népérien.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Déterminer l'ensemble de définition de f. Calculer les limites de f aux bornes de son ensemble de définition.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une fonction $\\ln|u(x)|$ exclut les valeurs annulant le dénominateur de $u$ et celles annulant $u$ lui-même. Les limites s'obtiennent en étudiant séparément le comportement de $\\left|\\dfrac x{x+1}\\right|$ près de chaque borne exclue et à l'infini.\\n\\n### Corrigé\\n**Ensemble de définition.** $\\left|\\dfrac x{x+1}\\right|$ doit être défini ($x\\neq-1$) et non nul ($x\\neq0$) :\\n$$D_f=\\mathbb R\\setminus\\{-1,0\\}=\\,]-\\infty,-1[\\,\\cup\\,]-1,0[\\,\\cup\\,]0,+\\infty[$$\\n\\n**Limites en $-1$ et $0$.** Au voisinage de $-1$ : le numérateur $x\\to-1\\neq0$ tandis que $x+1\\to0$, donc $\\left|\\dfrac x{x+1}\\right|\\to+\\infty$ et $\\ln\\left|\\dfrac x{x+1}\\right|\\to+\\infty$ (des deux côtés, le rapport en valeur absolue explosant identiquement) :\\n$$\\lim_{x\\to-1^-}f(x)=+\\infty\\qquad\\lim_{x\\to-1^+}f(x)=+\\infty$$\\n\\nAu voisinage de $0$ : le numérateur $x\\to0$ tandis que $x+1\\to1\\neq0$, donc $\\left|\\dfrac x{x+1}\\right|\\to0^+$ et $\\ln\\left|\\dfrac x{x+1}\\right|\\to-\\infty$ :\\n$$\\lim_{x\\to0^-}f(x)=-\\infty\\qquad\\lim_{x\\to0^+}f(x)=-\\infty$$\\n\\n**Limites en $\\pm\\infty$.** $\\left|\\dfrac x{x+1}\\right|\\to1$ (quotient de deux termes équivalents à $x$), donc $\\ln\\left|\\dfrac x{x+1}\\right|\\to0$, et $2x+1$ domine :\\n$$\\lim_{x\\to-\\infty}f(x)=-\\infty\\qquad\\lim_{x\\to+\\infty}f(x)=+\\infty$$",
+      "themes": [
+        "domaine de définition",
+        "logarithme",
+        "valeur absolue",
+        "limites"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-1",
+          "competence": "Domaine et limites d'une fonction en ln de valeur absolue d'un quotient",
+          "contenu_markdown": "Le domaine de définition d'une fonction $\\ln|u(x)|$ exclut les valeurs annulant le dénominateur de $u$ et celles annulant $u$ lui-même. Les limites s'obtiennent en étudiant séparément le comportement de $\\left|\\dfrac x{x+1}\\right|$ près de chaque borne exclue et à l'infini.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Étudier le sens de variation de f et dresser son tableau de variation.",
+      "corrige_markdown": "### Rappel de méthode\\nLa dérivée de $\\ln|u(x)|$ est $\\dfrac{u'(x)}{u(x)}$, quel que soit le signe de $u(x)$ (pourvu que $u(x)\\neq0$).\\n\\n### Corrigé\\nÉcrivons $f(x)=2x+1+\\ln|x|-\\ln|x+1|$ (propriété du logarithme d'un quotient, valable ici car $x$ et $x+1$ sont chacun non nuls sur $D_f$). Dérivons terme à terme, avec $\\left(\\ln|x|\\right)'=\\dfrac1x$ et $\\left(\\ln|x+1|\\right)'=\\dfrac1{x+1}$ :\\n$$f'(x)=2+\\frac1x-\\frac1{x+1}$$\\n\\nRéduisons au même dénominateur $x(x+1)$ :\\n$$\\frac1x-\\frac1{x+1}=\\frac{(x+1)-x}{x(x+1)}=\\frac1{x(x+1)}$$\\n$$f'(x)=2+\\frac1{x(x+1)}=\\frac{2x(x+1)+1}{x(x+1)}=\\frac{2x^2+2x+1}{x(x+1)}$$\\n\\n**Signe du numérateur.** Le trinôme $2x^2+2x+1$ a pour discriminant $\\Delta=4-8=-4<0$ : il est donc **toujours strictement positif** (coefficient dominant $2>0$, pas de racine réelle).\\n\\n**Signe de $f'(x)$.** Il est donc celui de $x(x+1)$ :\\n- $x<-1$ ou $x>0$ : $x(x+1)>0$, donc $f'(x)>0$ ;\\n- $-1<x<0$ : $x(x+1)<0$, donc $f'(x)<0$.\\n\\n**Tableau de variations.**\\n$$\\begin{array}{|c|ccccc|}\\hline x&-\\infty&&-1&&0&&+\\infty\\\\\\hline f'(x)&&+&\\|&-&\\|&+&\\\\\\hline f(x)&-\\infty\\nearrow&&+\\infty&\\searrow&+\\infty&&\\\\&&&&&-\\infty&\\nearrow&+\\infty\\\\\\hline\\end{array}$$\\n\\n(Sur $]-\\infty,-1[$, $f$ croît de $-\\infty$ à $+\\infty$ ; sur $]-1,0[$, $f$ décroît de $+\\infty$ à $-\\infty$ ; sur $]0,+\\infty[$, $f$ croît de $-\\infty$ à $+\\infty$.)\\n\\n### Piège à éviter\\nLe numérateur $2x^2+2x+1$ ne s'annule jamais (discriminant strictement négatif) : le signe de $f'$ dépend donc uniquement du dénominateur $x(x+1)$, sans jamais changer à l'intérieur de chacun des trois intervalles de $D_f$.",
+      "themes": [
+        "dérivation",
+        "logarithme",
+        "tableau de variations"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-2",
+          "competence": "Etude du sens de variation d'une fonction en ln de valeur absolue",
+          "contenu_markdown": "La dérivée de $\\ln|u(x)|$ est $\\dfrac{u'(x)}{u(x)}$, quel que soit le signe de $u(x)$ (pourvu que $u(x)\\neq0$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Déterminer les coordonnées du point P de (C) où la tangente est parallèle à la droite d'équation y=-2x, puis donner l'équation de cette tangente.",
+      "corrige_markdown": "### Rappel de méthode\\nDeux droites sont parallèles si et seulement si elles ont la même pente : trouver un point où la tangente à (C) est parallèle à y=-2x revient à résoudre f'(x)=-2.\\n\\n### Corrigé\\nLa tangente à $(\\mathcal C)$ au point d'abscisse $x_0$ est parallèle à la droite $y=-2x$ (pente $-2$) si et seulement si $f'(x_0)=-2$.\\n\\nD'après la question 2, $f'(x)=2+\\dfrac1{x(x+1)}$. Résolvons :\\n$$2+\\frac1{x(x+1)}=-2\\iff\\frac1{x(x+1)}=-4\\iff x(x+1)=-\\frac14$$\\n$$\\iff x^2+x+\\frac14=0\\iff\\left(x+\\frac12\\right)^2=0\\iff x=-\\frac12$$\\n\\n(racine double, unique solution). Ce point est bien dans $D_f$ (différent de $-1$ et $0$).\\n\\n**Ordonnée de $P$.** $f\\left(-\\dfrac12\\right)=2\\times\\left(-\\dfrac12\\right)+1+\\ln\\left|\\dfrac{-1/2}{1/2}\\right|=-1+1+\\ln|-1|=0+\\ln1=0$.\\n\\n$$\\boxed{P\\left(-\\frac12\\,,\\,0\\right)}$$\\n\\n**Équation de la tangente en $P$.** Pente $-2$, passant par $P\\left(-\\dfrac12,0\\right)$ :\\n$$y=-2\\left(x+\\frac12\\right)+0=-2x-1$$\\n\\n$$\\boxed{y=-2x-1}$$",
+      "themes": [
+        "tangente",
+        "droites parallèles",
+        "résolution d'équation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-3",
+          "competence": "Recherche d'un point a tangente de pente donnee",
+          "contenu_markdown": "Deux droites sont parallèles si et seulement si elles ont la même pente : trouver un point où la tangente à (C) est parallèle à y=-2x revient à résoudre f'(x)=-2.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Démontrer que la courbe (C) de f admet la droite D d'équation y=2x+1 pour asymptote. Étudier la position de (C) par rapport à l'asymptote D.",
+      "corrige_markdown": "### Rappel de méthode\\nUne droite $y=ax+b$ est asymptote à la courbe de $f$ si $\\lim[f(x)-(ax+b)]=0$. Le signe de cette différence, étudié via la comparaison de $\\left|\\dfrac x{x+1}\\right|$ à $1$, donne la position de la courbe par rapport à l'asymptote.\\n\\n### Corrigé\\n**Démonstration de l'asymptote.** Étudions $f(x)-(2x+1)$ :\\n$$f(x)-(2x+1)=\\ln\\left|\\frac x{x+1}\\right|$$\\nOr $\\left|\\dfrac x{x+1}\\right|\\to1$ quand $x\\to\\pm\\infty$ (quotient de deux termes équivalents à $x$), donc :\\n$$\\lim_{x\\to+\\infty}\\left[f(x)-(2x+1)\\right]=\\ln1=0\\qquad\\lim_{x\\to-\\infty}\\left[f(x)-(2x+1)\\right]=\\ln1=0$$\\n\\n$$\\boxed{D:y=2x+1\\text{ est asymptote à }(\\mathcal C)\\text{ en }+\\infty\\text{ et en }-\\infty}$$\\n\\n**Position de $(\\mathcal C)$ par rapport à $D$.** Le signe de $f(x)-(2x+1)=\\ln\\left|\\dfrac x{x+1}\\right|$ est celui de $\\left|\\dfrac x{x+1}\\right|-1$. Comparons $x^2$ à $(x+1)^2$ (élévation au carré légitime, les deux membres étant positifs) :\\n$$x^2-(x+1)^2=x^2-x^2-2x-1=-2x-1$$\\nDonc $\\left|\\dfrac x{x+1}\\right|>1\\iff x^2>(x+1)^2\\iff-2x-1>0\\iff x<-\\dfrac12$, et l'inégalité est inversée pour $x>-\\dfrac12$.\\n\\nOn en déduit, sur $D_f$ :\\n- Pour $x<-1$ ou $-1<x<-\\dfrac12$ (c'est-à-dire $x<-\\dfrac12$, $x\\neq-1$) : $\\left|\\dfrac x{x+1}\\right|>1$, donc $f(x)-(2x+1)>0$ : **$(\\mathcal C)$ est au-dessus de $D$** ;\\n- Pour $-\\dfrac12<x<0$ ou $x>0$ (c'est-à-dire $x>-\\dfrac12$, $x\\neq0$) : $\\left|\\dfrac x{x+1}\\right|<1$, donc $f(x)-(2x+1)<0$ : **$(\\mathcal C)$ est en-dessous de $D$** ;\\n- En $x=-\\dfrac12$ (point $P$ trouvé en question 3) : $\\left|\\dfrac x{x+1}\\right|=1$, donc $f(x)-(2x+1)=0$ : **$(\\mathcal C)$ coupe $D$ exactement au point $P\\left(-\\frac12,0\\right)$.**\\n\\n### Conseil\\nComparer les carrés $x^2$ et $(x+1)^2$ plutôt que de raisonner directement sur le signe de $x$ et $x+1$ évite une disjonction de cas plus lourde ; c'est la même astuce que celle employée pour les fonctions $\\ln\\left|\\frac{x-1}{x+1}\\right|$ rencontrées dans d'autres sujets de ce type.",
+      "themes": [
+        "asymptote oblique",
+        "position relative d'une courbe",
+        "logarithme"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-4",
+          "competence": "Demonstration d'une asymptote oblique et etude de la position relative",
+          "contenu_markdown": "Une droite $y=ax+b$ est asymptote à la courbe de $f$ si $\\lim[f(x)-(ax+b)]=0$. Le signe de cette différence, étudié via la comparaison de $\\left|\\dfrac x{x+1}\\right|$ à $1$, donne la position de la courbe par rapport à l'asymptote.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "5. Construire D et (C) dans un repère orthonormé (unité = 2 cm).",
+      "corrige_markdown": "### Rappel de méthode\\nOn trace d'abord les asymptotes (verticales x=-1, x=0, et oblique D:y=2x+1), puis chaque branche de (C) en respectant le tableau de variations et la position par rapport à D.\\n\\n### Corrigé\\nAvec l'unité $2\\,\\text{cm}$, on trace :\\n- Les asymptotes verticales $x=-1$ et $x=0$ (pointillés) et l'asymptote oblique $D:y=2x+1$ ;\\n- La branche sur $]-\\infty,-1[$ : croissante de $-\\infty$ à $+\\infty$, au-dessus de $D$ (d'après la question 4) ;\\n- La branche sur $]-1,0[$ : décroissante de $+\\infty$ à $-\\infty$, passant par $P\\left(-\\frac12,0\\right)$ où elle croise $D$ (au-dessus de $D$ avant $P$, en-dessous après) ;\\n- La branche sur $]0,+\\infty[$ : croissante de $-\\infty$ à $+\\infty$, en-dessous de $D$ (d'après la question 4).",
+      "themes": [
+        "représentation graphique",
+        "asymptotes",
+        "tableau de variations"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-5",
+          "competence": "Construction d'une courbe representative a trois branches",
+          "contenu_markdown": "On trace d'abord les asymptotes (verticales x=-1, x=0, et oblique D:y=2x+1), puis chaque branche de (C) en respectant le tableau de variations et la position par rapport à D.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "6. Montrer que $\\Omega\\left(-\\frac12,0\\right)$ est centre de symétrie de $(C)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer que $\\Omega(a,b)$ est centre de symétrie de $(C)$, on démontre l'identité $f(2a-x)+f(x)=2b$ pour tout $x$ du domaine (avec $2a-x$ dans le domaine dès que $x$ y est).\\n\\n### Corrigé\\nOn conjecture $\\Omega\\left(-\\frac12,0\\right)$, le point $P$ trouvé en question 3 étant un candidat naturel (point d'inflexion apparent où $(C)$ traverse $D$). Ici $a=-\\frac12$ donc $2a=-1$, et on doit vérifier :\\n$$f(-1-x)+f(x)=0 \\quad \\text{pour tout } x \\in D_f \\text{ avec } -1-x\\in D_f.$$\\nDomaine : si $x\\neq -1$ et $x\\neq 0$, alors $-1-x\\neq 0$ et $-1-x\\neq -1$ (car $x\\neq -1$ donne $-1-x\\neq 0$, et $x\\neq 0$ donne $-1-x\\neq -1$) : la symétrie envoie bien $D_f$ dans $D_f$.\\nCalcul de $f(-1-x)$ : on remplace $x$ par $-1-x$ dans $f(x)=2x+1+\\ln\\left|\\dfrac{x}{x+1}\\right|$ :\\n$$f(-1-x)=2(-1-x)+1+\\ln\\left|\\frac{-1-x}{-1-x+1}\\right|=-2x-1+\\ln\\left|\\frac{-1-x}{-x}\\right|.$$\\nOr $\\dfrac{-1-x}{-x}=\\dfrac{-(x+1)}{-x}=\\dfrac{x+1}{x}$, donc :\\n$$f(-1-x)=-2x-1+\\ln\\left|\\frac{x+1}{x}\\right|=-2x-1+\\ln\\left|\\frac{x}{x+1}\\right|^{-1}=-2x-1-\\ln\\left|\\frac{x}{x+1}\\right|.$$\\nOn additionne alors :\\n$$f(-1-x)+f(x)=\\left(-2x-1-\\ln\\left|\\frac{x}{x+1}\\right|\\right)+\\left(2x+1+\\ln\\left|\\frac{x}{x+1}\\right|\\right)=0.$$\\nL'identité est vérifiée pour tout $x\\in D_f$ (avec $-1-x\\in D_f$), donc $\\Omega\\left(-\\dfrac12,0\\right)$ est centre de symétrie de $(C)$.\\n\\n### Piège à éviter\\nOublier de vérifier au préalable que $-1-x$ reste dans $D_f$ dès que $x\\in D_f$ : sans cette vérification, l'identité $f(-1-x)+f(x)=0$ n'a même pas de sens pour certaines valeurs de $x$.",
+      "themes": [
+        "centre de symétrie",
+        "étude de fonction"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-6",
+          "competence": "Demonstration d'un centre de symetrie par l'identite f(2a-x)+f(x)=2b",
+          "contenu_markdown": "Pour montrer que $\\Omega(a,b)$ est centre de symétrie de $(C)$, on démontre l'identité $f(2a-x)+f(x)=2b$ pour tout $x$ du domaine (avec $2a-x$ dans le domaine dès que $x$ y est).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "7. Calculer, en cm², l'aire de la partie du plan comprise entre (C), D et les droites d'équations $x=\\frac12$ et $x=2$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire entre une courbe $(C)$ et son asymptote $D$ sur $[a,b]$ (avec $(C)$ toujours du même côté de $D$ sur cet intervalle) est $\\int_a^b |f(x)-y_D(x)|\\,dx$, en unités d'aire ; on multiplie ensuite par l'aire réelle d'une unité graphique pour obtenir le résultat en cm².\\n\\n### Corrigé\\nSur $\\left[\\frac12,2\\right]$ (intervalle inclus dans $]0,+\\infty[$, donc $x>0$ et $x+1>0$), on a $f(x)-(2x+1)=\\ln\\dfrac{x}{x+1}$ (la valeur absolue est inutile ici car $\\dfrac{x}{x+1}>0$).\\nD'après la question 4, sur $]0,+\\infty[$ la courbe $(C)$ est en-dessous de $D$, donc $\\ln\\dfrac{x}{x+1}\\leqslant 0$ sur cet intervalle (on le vérifie directement : $0<\\dfrac{x}{x+1}<1$ pour $x>0$, donc $\\ln\\dfrac{x}{x+1}<0$). L'aire cherchée est donc :\\n$$\\mathcal{A}=\\int_{1/2}^{2}\\left[(2x+1)-f(x)\\right]dx=\\int_{1/2}^{2}\\left(-\\ln\\frac{x}{x+1}\\right)dx=\\int_{1/2}^{2}\\ln\\frac{x+1}{x}\\,dx.$$\\nOn calcule une primitive de $\\ln\\dfrac{x+1}{x}=\\ln(x+1)-\\ln(x)$ par intégration par parties : une primitive de $\\ln(t)$ est $t\\ln(t)-t$, donc une primitive de $\\ln(x+1)-\\ln(x)$ est :\\n$$H(x)=(x+1)\\ln(x+1)-(x+1)-\\big[x\\ln(x)-x\\big]=(x+1)\\ln(x+1)-x\\ln(x)-1.$$\\nOn évalue :\\n$$H(2)=3\\ln3-2\\ln2-1,\\qquad H\\left(\\frac12\\right)=\\frac32\\ln\\frac32-\\frac12\\ln\\frac12-1.$$\\n$$H\\left(\\frac12\\right)=\\frac32(\\ln3-\\ln2)-\\frac12(-\\ln2)-1=\\frac32\\ln3-\\frac32\\ln2+\\frac12\\ln2-1=\\frac32\\ln3-\\ln2-1.$$\\nDonc :\\n$$\\mathcal{A}=H(2)-H\\left(\\frac12\\right)=\\left(3\\ln3-2\\ln2-1\\right)-\\left(\\frac32\\ln3-\\ln2-1\\right)=\\frac32\\ln3-\\ln2 \\text{ (unités d'aire)}.$$\\nChaque unité graphique valant $2\\,\\text{cm}$, une unité d'aire vaut $2\\times2=4\\,\\text{cm}^2$. L'aire cherchée en cm² est donc :\\n$$\\mathcal{A}=4\\left(\\frac32\\ln3-\\ln2\\right)=6\\ln3-4\\ln2\\ \\text{cm}^2\\approx 3{,}82\\ \\text{cm}^2.$$\\n\\n### Piège à éviter\\nOublier le facteur de conversion $4$ lié à l'unité graphique $2\\,\\text{cm}$ : le résultat de l'intégrale donne une aire en unités graphiques, pas directement en cm².",
+      "themes": [
+        "calcul intégral",
+        "aire entre courbe et asymptote",
+        "primitive de ln"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-7",
+          "competence": "Calcul d'aire entre une courbe et son asymptote avec conversion d'unite",
+          "contenu_markdown": "L'aire entre une courbe $(C)$ et son asymptote $D$ sur $[a,b]$ (avec $(C)$ toujours du même côté de $D$ sur cet intervalle) est $\\int_a^b |f(x)-y_D(x)|\\,dx$, en unités d'aire ; on multiplie ensuite par l'aire réelle d'une unité graphique pour obtenir le résultat en cm².",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "8. On pose, pour tout entier naturel $n\\geqslant1$, $U_n=f(n)-2n-1$. a) Calculer $U_1$, $U_2$, $U_3$. b) Démontrer que $U_n<0$ pour tout $n\\geqslant1$. c) Étudier le sens de variation de $(U_n)$. d) En déduire la nature de $(U_n)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une suite définie par $U_n=f(n)$ avec $f$ étudiée, on calcule les premiers termes par substitution directe, on étudie le signe et le sens de variation en comparant $U_{n+1}-U_n$ à $0$, puis on conclut sur la nature (convergente/divergente) en s'appuyant sur le sens de variation et une borne connue.\\n\\n### Corrigé\\nPour $n\\geqslant 1$, on pose $U_n=f(n)-2n-1=\\ln\\dfrac{n}{n+1}$ (d'après la question 4, $f(x)-(2x+1)=\\ln\\left|\\dfrac{x}{x+1}\\right|=\\ln\\dfrac{x}{x+1}$ pour $x>0$).\\n\\n**a) Calcul de $U_1,U_2,U_3$ :**\\n$$U_1=\\ln\\frac12=-\\ln2,\\qquad U_2=\\ln\\frac23,\\qquad U_3=\\ln\\frac34.$$\\n\\n**b) Signe de $U_n$ pour $n\\geqslant1$ :** pour $n\\geqslant1$, on a $0<\\dfrac{n}{n+1}<1$ (car $n<n+1$ et les deux sont strictement positifs), donc $\\ln\\dfrac{n}{n+1}<0$, c'est-à-dire $U_n<0$ pour tout $n\\geqslant1$.\\n\\n**c) Sens de variation :** on calcule $U_{n+1}-U_n$ :\\n$$U_{n+1}-U_n=\\ln\\frac{n+1}{n+2}-\\ln\\frac{n}{n+1}=\\ln\\left(\\frac{n+1}{n+2}\\times\\frac{n+1}{n}\\right)=\\ln\\frac{(n+1)^2}{n(n+2)}.$$\\nOn développe le numérateur et le dénominateur de la fraction à l'intérieur du logarithme :\\n$$(n+1)^2=n^2+2n+1,\\qquad n(n+2)=n^2+2n.$$\\nDonc $(n+1)^2-n(n+2)=(n^2+2n+1)-(n^2+2n)=1>0$, ce qui donne $(n+1)^2>n(n+2)$, donc $\\dfrac{(n+1)^2}{n(n+2)}>1$ (car $n(n+2)>0$ pour $n\\geqslant1$), donc :\\n$$U_{n+1}-U_n=\\ln\\frac{(n+1)^2}{n(n+2)}>\\ln(1)=0.$$\\nLa suite $(U_n)$ est donc strictement croissante.\\n\\n**d) Nature de la suite :** $(U_n)$ est croissante (question précédente) et majorée par $0$ (question b), donc, d'après le théorème de la limite monotone, $(U_n)$ converge. Sa limite $\\ell$ vérifie $\\ell\\leqslant0$. Or $U_n=\\ln\\dfrac{n}{n+1}=\\ln\\dfrac{1}{1+\\frac1n}$, et $\\dfrac1n\\to0$ quand $n\\to+\\infty$, donc $\\dfrac{1}{1+\\frac1n}\\to1$, d'où $U_n\\to\\ln(1)=0$. La suite $(U_n)$ converge vers $0$.\\n\\n### Piège à éviter\\nConfondre « croissante et majorée par $0$ » avec « converge vers $0$ » sans démonstration : la borne $0$ garantit seulement l'existence d'une limite $\\ell\\leqslant0$, il faut ensuite calculer cette limite explicitement (ici via $U_n=\\ln\\frac{1}{1+1/n}$).",
+      "themes": [
+        "suites numériques",
+        "logarithme",
+        "monotonie",
+        "convergence",
+        "théorème de la limite monotone"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-8",
+          "competence": "Etude complete d'une suite definie a partir d'une fonction (signe, monotonie, convergence)",
+          "contenu_markdown": "Pour une suite définie par $U_n=f(n)$ avec $f$ étudiée, on calcule les premiers termes par substitution directe, on étudie le signe et le sens de variation en comparant $U_{n+1}-U_n$ à $0$, puis on conclut sur la nature (convergente/divergente) en s'appuyant sur le sens de variation et une borne connue.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "9. On pose $S_n=U_1+U_2+\\cdots+U_n$. Calculer $S_n$ en fonction de $n$, puis déterminer $\\displaystyle\\lim_{n\\to+\\infty}S_n$.",
+      "corrige_markdown": "### Rappel de méthode\\nUne somme de termes de la forme $\\ln(k)-\\ln(k+1)$ (ou plus généralement $g(k)-g(k+1)$) est une somme télescopique : tous les termes intermédiaires s'annulent deux à deux et il ne reste que le premier et le dernier.\\n\\n### Corrigé\\nOn pose $S_n=U_1+U_2+\\cdots+U_n=\\displaystyle\\sum_{k=1}^{n}\\ln\\frac{k}{k+1}$. On remarque que $\\ln\\dfrac{k}{k+1}=\\ln(k)-\\ln(k+1)$, donc :\\n$$S_n=\\sum_{k=1}^{n}\\big[\\ln(k)-\\ln(k+1)\\big]=\\big[\\ln(1)-\\ln(2)\\big]+\\big[\\ln(2)-\\ln(3)\\big]+\\cdots+\\big[\\ln(n)-\\ln(n+1)\\big].$$\\nDans cette somme, chaque terme $\\ln(k)$ pour $k=2,\\ldots,n$ apparaît une fois avec le signe $+$ (dans le terme d'indice $k-1$) et une fois avec le signe $-$ (dans le terme d'indice $k$) : tous ces termes s'annulent deux à deux (télescopage). Il ne reste que le premier terme $\\ln(1)$ et le dernier terme $-\\ln(n+1)$ :\\n$$S_n=\\ln(1)-\\ln(n+1)=0-\\ln(n+1)=-\\ln(n+1).$$\\n**Limite de $S_n$ quand $n\\to+\\infty$ :** on a $n+1\\to+\\infty$ donc $\\ln(n+1)\\to+\\infty$ (limite usuelle du logarithme en $+\\infty$), donc :\\n$$\\lim_{n\\to+\\infty}S_n=\\lim_{n\\to+\\infty}\\big[-\\ln(n+1)\\big]=-\\infty.$$\\nLa suite $(S_n)$ diverge vers $-\\infty$.\\n\\n### Piège à éviter\\nNe pas confondre la nature de $(U_n)$ (convergente vers $0$, question 8) avec celle de sa somme partielle $(S_n)$ : une suite peut tendre vers $0$ tout en ayant une somme de ses termes qui diverge (ici vers $-\\infty$, car les termes négatifs $U_n$ ne tendent pas assez vite vers $0$).",
+      "themes": [
+        "somme télescopique",
+        "suites numériques",
+        "limite du logarithme"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-pb-9",
+          "competence": "Calcul d'une somme telescopique et etude de sa limite",
+          "contenu_markdown": "Une somme de termes de la forme $\\ln(k)-\\ln(k+1)$ (ou plus généralement $g(k)-g(k+1)$) est une somme télescopique : tous les termes intermédiaires s'annulent deux à deux et il ne reste que le premier et le dernier.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction logarithme",
+    "asymptote oblique",
+    "asymptote verticale",
+    "domaine de définition ln|u(x)|",
+    "tableau de variations",
+    "tangente à une courbe",
+    "centre de symétrie",
+    "aire entre courbe et asymptote",
+    "primitive de ln",
+    "suite Un = f(n)",
+    "somme télescopique",
+    "convergence d'une suite",
+    "bac D Cameroun 1993"
+  ],
+  "incertitudes": [
+    "Le texte source de l'énoncé du problème présente plusieurs passages dégradés à l'OCR (signes + / - ambigus, exposants mal lus) ; les lectures retenues ont toutes été validées par cohérence mathématique interne (dérivée de signe constant au numérateur, position cohérente entre asymptote et courbe, identité de symétrie vérifiée algébriquement, valeurs numériques exactes de la suite (Un) et de la somme (Sn) confirmées par calcul indépendant)."
+  ],
+  "statut": "corrige"
+}

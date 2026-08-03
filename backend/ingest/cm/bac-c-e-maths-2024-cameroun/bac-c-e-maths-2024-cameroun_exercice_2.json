@@ -1,0 +1,108 @@
+{
+  "epreuve_source": "bac-c-e-maths-2024-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2024",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "numero_exercice": "2",
+  "points": 3,
+  "enonce_intro_markdown": "**Exercice 2 (3 points)**\\n\\nL'espace vectoriel $E_3$ est rapporté à une base $(\\vec\\imath,\\vec\\jmath,\\vec k)$, $\\varphi$ l'endomorphisme de $E_3$ défini par : $\\varphi(\\vec\\imath)=\\vec\\imath+2\\vec\\jmath-\\vec k$, $\\varphi(\\vec\\jmath)=2\\vec\\imath+\\vec\\jmath+\\vec k$ et $\\varphi(\\vec k)=3\\vec\\jmath-3\\vec k$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Déterminer une base du noyau (Ker$\\varphi$) de $\\varphi$, puis justifier que $\\varphi$ n'est pas bijectif.",
+      "corrige_markdown": "### Rappel de methode\\nResoudre phi(a i+b j+c k)=0 conduit a un systeme lineaire homogene ; sa solution non triviale, trouvee par elimination, engendre le noyau ; un noyau non reduit a {0} signifie que phi n'est pas injectif, donc pas bijectif (en dimension finie).\\n\\n### Corrige\\n$\\varphi(a\\vec\\imath+b\\vec\\jmath+c\\vec k)=\\vec0$ s'écrit, avec la matrice $\\begin{pmatrix}1&2&0\\2&1&3\\-1&1&-3\\end{pmatrix}$, comme le système :\\n\\n$\\begin{cases}a+2b=0&(L_1)\\2a+b+3c=0&(L_2)\\-a+b-3c=0&(L_3)\\end{cases}$\\n\\n$(L_1)$ donne $a=-2b$.\\n\\nEn substituant dans $(L_2)$ : $2(-2b)+b+3c=0\\Leftrightarrow-4b+b+3c=0\\Leftrightarrow-3b+3c=0\\Leftrightarrow c=b$.\\n\\nEn substituant $a=-2b$ dans $(L_3)$ : $-(-2b)+b-3c=0\\Leftrightarrow2b+b-3c=0\\Leftrightarrow3b-3c=0\\Leftrightarrow c=b$ : cette troisième équation redonne exactement la même relation $c=b$ que $(L_2)$ (le système n'a donc que $2$ équations indépendantes, pas $3$).\\n\\nEn posant $t=b$ (paramètre libre), les solutions sont $(a,b,c)=(-2t,t,t)=t(-2,1,1)$, $t\\in\\mathbb R$.\\n\\n**$\\ker\\varphi=\\text{Vect}(-2\\vec\\imath+\\vec\\jmath+\\vec k)$**, une droite vectorielle.\\n\\nVérification en réinjectant $t=1$ dans la matrice de départ :\\n\\n$\\begin{pmatrix}1&2&0\\2&1&3\\-1&1&-3\\end{pmatrix}\\begin{pmatrix}-2\\1\\1\\end{pmatrix}=\\begin{pmatrix}1\\times(-2)+2\\times1+0\\times1\\2\\times(-2)+1\\times1+3\\times1\\-1\\times(-2)+1\\times1-3\\times1\\end{pmatrix}=\\begin{pmatrix}-2+2+0\\-4+1+3\\2+1-3\\end{pmatrix}=\\begin{pmatrix}0\\0\\0\\end{pmatrix}$ : $\\varphi(-2\\vec\\imath+\\vec\\jmath+\\vec k)=\\vec0$ **exactement**, ce qui confirme le résultat.\\n\\n$\\ker\\varphi\\neq\\{\\vec0\\}$ (il contient au moins le vecteur non nul $-2\\vec\\imath+\\vec\\jmath+\\vec k$) : **$\\varphi$ n'est pas injectif, donc pas bijectif** (en dimension finie, injectif $\\iff$ bijectif $\\iff$ noyau réduit à $\\{\\vec0\\}$).",
+      "themes": [
+        "noyau",
+        "système linéaire",
+        "injectivité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e2-1",
+          "competence": "Noyau via systeme lineaire, non bijectivite",
+          "contenu_markdown": "Resoudre phi(a i+b j+c k)=0 conduit a un systeme lineaire homogene ; sa solution non triviale, trouvee par elimination, engendre le noyau ; un noyau non reduit a {0} signifie que phi n'est pas injectif, donc pas bijectif (en dimension finie).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2.a) Montrer que l'image (Im$\\varphi$) de $\\varphi$ est un plan vectoriel de $E_3$.",
+      "corrige_markdown": "### Rappel de methode\\nLe theoreme du rang donne dim(Im phi)=dim(E3)-dim(ker phi)=3-1=2 : Im phi est bien un plan vectoriel.\\n\\n### Corrige\\n$\\dim(\\ker\\varphi)=1\\Rightarrow\\dim(\\text{Im}\\,\\varphi)=\\dim(E_3)-\\dim(\\ker\\varphi)=3-1=2$ (théorème du rang) : **Im $\\varphi$ est un plan vectoriel de $E_3$**.\\n\\nVérification directe du rang : les deux premières lignes de la matrice, $(1,2,0)$ et $(2,1,3)$, ne sont pas proportionnelles ($\\frac12\\neq\\frac21$), donc le rang de la matrice est au moins $2$. Le noyau étant de dimension $1$ (question 1), le rang vaut exactement $3-1=2$, pas $3$ : **rang $=2$**, confirmant $\\dim(\\text{Im}\\,\\varphi)=2$.",
+      "themes": [
+        "image",
+        "théorème du rang"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e2-2",
+          "competence": "Theoreme du rang applique a phi",
+          "contenu_markdown": "Le theoreme du rang donne dim(Im phi)=dim(E3)-dim(ker phi)=3-1=2 : Im phi est bien un plan vectoriel.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "2.b) Vérifier que $\\varphi(\\vec k)=2\\varphi(\\vec\\imath)-\\varphi(\\vec\\jmath)$.",
+      "corrige_markdown": "### Rappel de methode\\nVerification directe par combinaison lineaire des images connues de i et j.\\n\\n### Corrige\\n$2\\varphi(\\vec\\imath)-\\varphi(\\vec\\jmath)=2(\\vec\\imath+2\\vec\\jmath-\\vec k)-(2\\vec\\imath+\\vec\\jmath+\\vec k)$\\n\\n$=(2\\vec\\imath+4\\vec\\jmath-2\\vec k)-(2\\vec\\imath+\\vec\\jmath+\\vec k)$\\n\\n$=(2-2)\\vec\\imath+(4-1)\\vec\\jmath+(-2-1)\\vec k=3\\vec\\jmath-3\\vec k$.\\n\\nOr $\\varphi(\\vec k)=3\\vec\\jmath-3\\vec k$ (troisième colonne de la matrice de $\\varphi$) : les deux expressions coïncident terme à terme.\\n\\n**$\\varphi(\\vec k)=2\\varphi(\\vec\\imath)-\\varphi(\\vec\\jmath)$**.",
+      "themes": [
+        "combinaison linéaire"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e2-3",
+          "competence": "Verification par combinaison lineaire",
+          "contenu_markdown": "Verification directe par combinaison lineaire des images connues de i et j.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "2.c) En déduire une base de Im$\\varphi$.",
+      "corrige_markdown": "### Rappel de methode\\nPuisque phi(k) est combinaison lineaire de phi(i) et phi(j), Im phi est engendre par phi(i) et phi(j) seuls ; ces deux vecteurs etant non colineaires, ils forment une base du plan Im phi.\\n\\n### Corrige\\nPuisque $\\varphi(\\vec k)$ est combinaison linéaire de $\\varphi(\\vec\\imath)$ et $\\varphi(\\vec\\jmath)$ (question précédente), tout vecteur de $\\text{Im}\\,\\varphi=\\text{Vect}(\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath),\\varphi(\\vec k))$ s'exprime déjà comme combinaison de $\\varphi(\\vec\\imath)$ et $\\varphi(\\vec\\jmath)$ seuls : $\\text{Im}\\,\\varphi=\\text{Vect}(\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath))$.\\n\\nVérifions que $\\varphi(\\vec\\imath)=(1,2,-1)$ et $\\varphi(\\vec\\jmath)=(2,1,1)$ ne sont pas colinéaires : s'ils l'étaient, il existerait $k\\in\\mathbb R$ tel que $(2,1,1)=k(1,2,-1)$, soit $k=2$ (première coordonnée), mais alors la deuxième coordonnée donnerait $1=2k=4$, ce qui est faux. Les deux vecteurs **ne sont pas colinéaires**.\\n\\n$\\text{Im}\\,\\varphi$ étant de dimension $2$ (question 2a) et $\\big(\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath)\\big)$ formant une famille libre de $2$ vecteurs de cet espace de dimension $2$ : **$\\big(\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath)\\big)=\\big(\\vec\\imath+2\\vec\\jmath-\\vec k,\\ 2\\vec\\imath+\\vec\\jmath+\\vec k\\big)$ est une base de Im $\\varphi$**.",
+      "themes": [
+        "base d'un plan vectoriel"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e2-4",
+          "competence": "Base de Im phi via phi(i),phi(j)",
+          "contenu_markdown": "Puisque phi(k) est combinaison lineaire de phi(i) et phi(j), Im phi est engendre par phi(i) et phi(j) seuls ; ces deux vecteurs etant non colineaires, ils forment une base du plan Im phi.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "endomorphisme",
+    "noyau",
+    "image",
+    "théorème du rang"
+  ],
+  "incertitudes": [],
+  "figures": [],
+  "statut": "brouillon"
+}

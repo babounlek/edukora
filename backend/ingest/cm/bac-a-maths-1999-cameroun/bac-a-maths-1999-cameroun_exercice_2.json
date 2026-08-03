@@ -1,0 +1,115 @@
+{
+  "epreuve_source": "bac-a-maths-1999-cameroun.pdf",
+  "numero_exercice": "2",
+  "matiere": "Mathématiques",
+  "serie": "A",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1999",
+  "duree_epreuve": "3h",
+  "coefficient": null,
+  "points": "05",
+  "figures": [],
+  "enonce_intro_markdown": "On jette une punaise en l'air et on observe sa position lorsqu'elle retombe sur le sol. On suppose que cette expérience donne lieu à deux issues possibles $A$ ou $B$, avec $p(A)=\\dfrac58$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Sachant que la probabilité pour que $A$ se réalise est égale à $\\dfrac58$, calculer $p(B)$. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nLorsqu'une expérience aléatoire n'a que deux issues possibles $A$ et $B$, les événements sont complémentaires : $p(B)=1-p(A)$.\n\n**Calcul.** Les événements $A$ et $B$ sont les deux seules issues possibles de l'expérience, ils sont donc complémentaires : $p(A)+p(B)=1$.\n\n$$p(B)=1-p(A)=1-\\frac58=\\frac38$$",
+      "themes": [
+        "probabilités",
+        "événements complémentaires"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-1999-cameroun-ex2-q1-1",
+          "competence": "Probabilité de l'événement complémentaire",
+          "contenu_markdown": "Lorsqu'une expérience aléatoire n'a que deux issues possibles $A$ et $B$, les événements sont complémentaires : $p(B)=1-p(A)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "La punaise est jetée trois fois en l'air de façon identique et indépendante. Calculer la probabilité de réaliser $A$ une fois au moins. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour calculer la probabilité de « au moins un succès » sur plusieurs répétitions indépendantes, il est presque toujours plus rapide de passer par l'événement contraire : $P(\\text{au moins un succès})=1-P(\\text{aucun succès})$.\n\n**Calcul.** La punaise est jetée 3 fois de façon identique et indépendante, avec $p(A)=\\dfrac58$ et $p(B)=\\dfrac38$ à chaque lancer. On cherche la probabilité de l'événement « $A$ se réalise au moins une fois ».\n\nL'événement contraire de « $A$ au moins une fois » est « $A$ ne se réalise jamais », c'est-à-dire que $B$ se réalise aux trois lancers. Par indépendance des trois lancers :\n\n$$P(\\text{aucun }A)=p(B)\\times p(B)\\times p(B)=\\left(\\frac38\\right)^3=\\frac{27}{512}$$\n\nDonc :\n\n$$P(\\text{au moins un }A)=1-\\frac{27}{512}=\\frac{485}{512}$$\n\n### Piège à éviter\nNe calcule pas directement cette probabilité en additionnant les cas « exactement une fois », « exactement deux fois » et « exactement trois fois » : c'est plus long et plus source d'erreurs que de passer par l'événement contraire.",
+      "themes": [
+        "probabilités",
+        "événement contraire",
+        "répétition d'épreuves indépendantes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-1999-cameroun-ex2-q2-1",
+          "competence": "Probabilité d'au moins un succès (événement contraire)",
+          "contenu_markdown": "Pour calculer la probabilité de « au moins un succès » sur plusieurs répétitions indépendantes, il est presque toujours plus rapide de passer par l'événement contraire : $P(\\text{au moins un succès})=1-P(\\text{aucun succès})$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.a",
+      "enonce_markdown": "On note $X$ la variable aléatoire réelle qui prend pour valeurs le nombre de fois que $A$ est réalisé au cours des trois lancers de la punaise. Déterminer la loi de probabilité de $X$. (2,5pts)",
+      "corrige_markdown": "### Rappel de méthode\nQuand une expérience à deux issues est répétée $n$ fois de façon identique et indépendante, le nombre de réalisations d'un événement de probabilité $p$ suit une loi binomiale de paramètres $n$ et $p$ : $P(X=k)=\\dbinom nk p^k(1-p)^{n-k}$.\n\n**Détermination de la loi.** On note $X$ la variable aléatoire qui compte le nombre de fois que $A$ se réalise sur 3 lancers identiques et indépendants, avec $p(A)=\\dfrac58$ à chaque lancer : $X$ suit donc une loi binomiale de paramètres $n=3$ et $p=\\dfrac58$. $X$ peut prendre les valeurs $0,1,2,3$.\n\n$$P(X=0)=\\binom30\\left(\\frac58\\right)^0\\left(\\frac38\\right)^3=1\\times1\\times\\frac{27}{512}=\\frac{27}{512}$$\n\n$$P(X=1)=\\binom31\\left(\\frac58\\right)^1\\left(\\frac38\\right)^2=3\\times\\frac58\\times\\frac9{64}=\\frac{135}{512}$$\n\n$$P(X=2)=\\binom32\\left(\\frac58\\right)^2\\left(\\frac38\\right)^1=3\\times\\frac{25}{64}\\times\\frac38=\\frac{225}{512}$$\n\n$$P(X=3)=\\binom33\\left(\\frac58\\right)^3\\left(\\frac38\\right)^0=1\\times\\frac{125}{512}\\times1=\\frac{125}{512}$$\n\n| $x_i$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $P(X=x_i)$ | $\\dfrac{27}{512}$ | $\\dfrac{135}{512}$ | $\\dfrac{225}{512}$ | $\\dfrac{125}{512}$ |\n\n### Conseil\nAvant de rendre ta copie, vérifie toujours que la somme des probabilités de la loi de $X$ vaut exactement 1 : ici $27+135+225+125=512$, donc $\\dfrac{512}{512}=1$ ✓. C'est un moyen rapide et fiable de repérer une erreur de calcul dans les coefficients binomiaux ou les puissances.",
+      "themes": [
+        "probabilités",
+        "loi binomiale",
+        "loi de probabilité d'une variable aléatoire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-1999-cameroun-ex2-q3a-1",
+          "competence": "Loi binomiale",
+          "contenu_markdown": "Quand une expérience à deux issues est répétée $n$ fois de façon identique et indépendante, le nombre de réalisations d'un événement de probabilité $p$ suit une loi binomiale de paramètres $n$ et $p$ : $P(X=k)=\\dbinom nk p^k(1-p)^{n-k}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.b",
+      "enonce_markdown": "Calculer l'espérance mathématique de $X$. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nL'espérance mathématique d'une variable aléatoire suivant une loi binomiale $\\mathcal B(n,p)$ vaut $E(X)=np$.\n\n**Calcul.** $X$ suit une loi binomiale de paramètres $n=3$ (trois lancers) et $p=\\dfrac58$ (probabilité de $A$ à chaque lancer), donc :\n\n$$E(X)=3\\times\\frac58=\\frac{15}8=1{,}875$$",
+      "themes": [
+        "probabilités",
+        "espérance mathématique",
+        "loi binomiale"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-1999-cameroun-ex2-q3b-1",
+          "competence": "Espérance mathématique d'une loi binomiale",
+          "contenu_markdown": "L'espérance mathématique d'une variable aléatoire suivant une loi binomiale $\\mathcal B(n,p)$ vaut $E(X)=np$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probabilité de l'événement complémentaire",
+    "au moins une fois",
+    "loi de probabilité d'une variable aléatoire",
+    "loi binomiale",
+    "espérance mathématique"
+  ],
+  "incertitudes": [
+    "Le coefficient de l'épreuve n'est pas lisible/imprimé dans le document source ; le champ « coefficient » est laissé à null."
+  ],
+  "statut": "brouillon"
+}

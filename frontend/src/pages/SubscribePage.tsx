@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import { CheckCircle2, Loader2, XCircle } from "lucide-react"
+import { AlertCircle, CheckCircle2, Loader2, XCircle } from "lucide-react"
 
 import { checkPaymentStatus, initiatePayment, listCursus, listPlans } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -15,7 +15,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-type PaymentPhase = "form" | "pending" | "success" | "failed"
+type PaymentPhase = "form" | "pending" | "success" | "failed" | "timeout"
+
+// ~2 minutes à 3s d'intervalle - au-delà, on suppose que la confirmation opérateur
+// bloque quelque part plutôt que de laisser un spinner tourner indéfiniment sans
+// aucune échappatoire (source de tickets support : l'utilisateur ne sait pas s'il
+// doit attendre, réessayer, ou si son argent est parti).
+const MAX_POLL_ATTEMPTS = 40
 
 export function SubscribePage() {
   useSeo({ title: "Abonnement" })
@@ -64,17 +70,32 @@ export function SubscribePage() {
   }, [])
 
   function pollTransaction(transactionId: number) {
+    let attempts = 0
     pollRef.current = window.setInterval(async () => {
+      attempts += 1
       try {
         const result = await checkPaymentStatus(transactionId)
         if (result.status !== "PENDING") {
           if (pollRef.current) window.clearInterval(pollRef.current)
           setPhase(result.status === "SUCCESSFUL" ? "success" : "failed")
+          return
         }
       } catch {
         // on continue de sonder, une erreur ponctuelle du reseau ne doit pas interrompre l'attente
       }
+      if (attempts >= MAX_POLL_ATTEMPTS) {
+        if (pollRef.current) window.clearInterval(pollRef.current)
+        setPhase("timeout")
+      }
     }, 3000)
+  }
+
+  function cancelPending() {
+    if (pollRef.current) {
+      window.clearInterval(pollRef.current)
+      pollRef.current = null
+    }
+    setPhase("form")
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -182,6 +203,27 @@ export function SubscribePage() {
               <p className="text-sm text-muted-foreground">
                 Une demande Mobile Money a été envoyée au {phoneNumber}. Cette page se met à jour automatiquement.
               </p>
+              <button
+                type="button"
+                onClick={cancelPending}
+                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+              >
+                Annuler
+              </button>
+            </div>
+          )}
+
+          {phase === "timeout" && (
+            <div className="flex flex-col items-center gap-3 py-6 text-center">
+              <AlertCircle className="size-10 text-warning" />
+              <p className="font-display font-medium">La confirmation prend plus de temps que prévu</p>
+              <p className="text-sm text-muted-foreground">
+                As-tu validé la demande sur ton téléphone ? Si le paiement passe malgré tout, ton
+                abonnement s'activera automatiquement dès la confirmation de l'opérateur.
+              </p>
+              <Button variant="outline" onClick={() => setPhase("form")}>
+                Réessayer
+              </Button>
             </div>
           )}
 

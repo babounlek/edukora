@@ -1,0 +1,117 @@
+{
+  "epreuve_source": "bac-c-maths-1991-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1991",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**\\n\\nSoit $f$ la fonction définie sur $\\mathbb{R}$ par :\\n$$\\begin{cases}f(x)=xe^{1/x} & \\text{si } x<0\\\\ f(0)=0 & \\\\ f(x)=\\dfrac{x^2}{x+2} & \\text{si } x>0\\end{cases}$$\\nOn donne : $e^{-1/2}\\approx0{,}6$ ; $e^{-1}\\approx0{,}4$.",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "1. a) Etudier la continuité de $f$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour étudier la continuité d'une fonction définie par morceaux en un point de raccordement, on compare la limite à gauche, la limite à droite et la valeur en ce point ; les trois doivent coïncider. Sur chaque morceau ailleurs qu'au raccordement, la fonction est continue comme composée/quotient de fonctions usuelles, sous réserve que le dénominateur ne s'annule pas.\\n\\n### Corrigé\\n**Continuité sur $\\mathbb{R}^*$.** Pour $x<0$, $f(x)=xe^{1/x}$ est continue comme produit de $x\\mapsto x$ et de la composée $x\\mapsto e^{1/x}$ (elle-même composée de $x\\mapsto1/x$, continue sur $\\mathbb{R}^*$, et de l'exponentielle, continue sur $\\mathbb{R}$). Pour $x>0$, $f(x)=\\dfrac{x^2}{x+2}$ est continue comme quotient de fonctions continues, le dénominateur $x+2$ ne s'annulant jamais pour $x>0$ (il vaut au moins $2$). **$f$ est donc continue sur $\\mathbb{R}^*$.**\\n\\n**Continuité en $0$.**\\n\\nLimite à gauche : posons $u=1/x\\to-\\infty$ quand $x\\to0^-$. Alors $x=1/u$ et :\\n$$\\lim_{x\\to0^-}f(x)=\\lim_{u\\to-\\infty}\\frac{e^u}{u}$$\\nPar croissances comparées, $e^u\\to0$ beaucoup plus vite que $u\\to-\\infty$, donc $\\dfrac{e^u}{u}\\to0$ :\\n$$\\lim_{x\\to0^-}f(x)=0$$\\n\\nLimite à droite :\\n$$\\lim_{x\\to0^+}f(x)=\\lim_{x\\to0^+}\\frac{x^2}{x+2}=\\frac{0}{2}=0$$\\n\\nLes deux limites latérales valent $0=f(0)$ : **$f$ est continue en $0$**, donc continue sur $\\mathbb{R}$ tout entier.",
+      "themes": [
+        "continuité",
+        "fonction définie par morceaux",
+        "croissances comparées"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1991-e2-1a",
+          "competence": "Continuite d'une fonction definie par morceaux",
+          "contenu_markdown": "Pour étudier la continuité d'une fonction définie par morceaux en un point de raccordement, on compare la limite à gauche, la limite à droite et la valeur en ce point ; les trois doivent coïncider. Sur chaque morceau ailleurs qu'au raccordement, la fonction est continue comme composée/quotient de fonctions usuelles, sous réserve que le dénominateur ne s'annule pas.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "b) Etudier la dérivabilité de $f$ et donner l'expression de $f'(x)$.",
+      "corrige_markdown": "### Rappel de méthode\\nLa dérivabilité en un point de raccordement se teste en comparant les nombres dérivés à gauche et à droite (limites des taux d'accroissement) ; s'ils coïncident et sont finis, $f$ est dérivable en ce point avec cette valeur commune pour dérivée. Ailleurs, on dérive chaque morceau avec les règles usuelles (produit, quotient, composée).\\n\\n### Corrigé\\n**Dérivabilité en $0$.**\\n\\nTaux d'accroissement à gauche : $\\dfrac{f(x)-f(0)}{x-0}=\\dfrac{xe^{1/x}}{x}=e^{1/x}$. Quand $x\\to0^-$, $1/x\\to-\\infty$, donc $e^{1/x}\\to0$ :\\n$$f'_g(0)=\\lim_{x\\to0^-}e^{1/x}=0$$\\n\\nTaux d'accroissement à droite : $\\dfrac{f(x)-f(0)}{x-0}=\\dfrac{x^2/(x+2)}{x}=\\dfrac{x}{x+2}$. Quand $x\\to0^+$ :\\n$$f'_d(0)=\\lim_{x\\to0^+}\\frac{x}{x+2}=\\frac{0}{2}=0$$\\n\\nLes deux nombres dérivés valent $0$ : **$f$ est dérivable en $0$, avec $f'(0)=0$.**\\n\\n**Dérivée sur $\\mathbb{R}^*$.**\\n\\nPour $x<0$ : $f(x)=xe^{1/x}$, dérivée d'un produit avec $\\dfrac{d}{dx}e^{1/x}=-\\dfrac1{x^2}e^{1/x}$ :\\n$$f'(x)=e^{1/x}+x\\times\\left(-\\frac1{x^2}\\right)e^{1/x}=e^{1/x}\\left(1-\\frac1x\\right)=\\frac{x-1}{x}\\,e^{1/x}$$\\n\\nPour $x>0$ : $f(x)=\\dfrac{x^2}{x+2}$, dérivée d'un quotient :\\n$$f'(x)=\\frac{2x(x+2)-x^2\\times1}{(x+2)^2}=\\frac{2x^2+4x-x^2}{(x+2)^2}=\\frac{x^2+4x}{(x+2)^2}=\\frac{x(x+4)}{(x+2)^2}$$\\n\\n**En résumé :**\\n$$f'(x)=\\begin{cases}\\dfrac{x-1}{x}\\,e^{1/x} & \\text{si } x<0\\\\ 0 & \\text{si } x=0\\\\ \\dfrac{x(x+4)}{(x+2)^2} & \\text{si } x>0\\end{cases}$$\\n\\n### Piège à éviter\\nNe pas oublier la dérivée de $1/x$ dans le calcul de $\\dfrac{d}{dx}e^{1/x}$ (dérivée de fonction composée) : c'est $-\\dfrac1{x^2}e^{1/x}$ et non $e^{1/x}$ seul, une erreur fréquente qui fausserait tout le signe de $f'$ sur $\\mathbb{R}_-^*$.",
+      "themes": [
+        "dérivabilité",
+        "dérivée d'un produit",
+        "dérivée d'un quotient",
+        "dérivée d'une composée"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1991-e2-1b",
+          "competence": "Derivabilite en un point de raccordement et calcul de f'",
+          "contenu_markdown": "La dérivabilité en un point de raccordement se teste en comparant les nombres dérivés à gauche et à droite (limites des taux d'accroissement) ; s'ils coïncident et sont finis, $f$ est dérivable en ce point avec cette valeur commune pour dérivée. Ailleurs, on dérive chaque morceau avec les règles usuelles (produit, quotient, composée).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Terminer l'étude de la fonction $f$.",
+      "corrige_markdown": "### Rappel de méthode\\nTerminer l'étude d'une fonction consiste à déterminer le signe de $f'$ sur chaque intervalle du domaine, à en déduire le sens de variation, puis à rassembler ces résultats (avec les limites déjà connues) dans un tableau de variation unique.\\n\\n### Corrigé\\n**Signe de $f'$ sur $\\mathbb{R}_-^*$.** $f'(x)=\\dfrac{x-1}{x}e^{1/x}$, avec $e^{1/x}>0$ toujours : le signe de $f'(x)$ est celui de $\\dfrac{x-1}{x}$. Pour $x<0$ : $x-1<0$ (car $x<0<1$) et $x<0$, donc $\\dfrac{x-1}{x}=\\dfrac{\\text{négatif}}{\\text{négatif}}>0$. **$f'(x)>0$ pour tout $x<0$.**\\n\\n**Signe de $f'$ sur $\\mathbb{R}_+^*$.** $f'(x)=\\dfrac{x(x+4)}{(x+2)^2}$ : le dénominateur $(x+2)^2>0$ toujours, et pour $x>0$, le numérateur $x(x+4)>0$ (produit de deux facteurs strictement positifs). **$f'(x)>0$ pour tout $x>0$.**\\n\\n**Bilan.** Avec $f'(0)=0$ (question 1.b), on a $f'(x)\\geqslant0$ sur $\\mathbb{R}$ tout entier, avec égalité seulement au point isolé $x=0$ : **$f$ est strictement croissante sur $\\mathbb{R}$**, sans extremum local (le point $(0,0)$ est un point à tangente horizontale mais pas un extremum, puisque $f$ continue de croître de part et d'autre).\\n\\n**Limites aux bornes.**\\n\\nEn $-\\infty$ : $f(x)=xe^{1/x}$. Quand $x\\to-\\infty$, $1/x\\to0^-$, donc $e^{1/x}\\to1$, donc $f(x)\\sim x\\to-\\infty$ :\\n$$\\lim_{x\\to-\\infty}f(x)=-\\infty$$\\n\\nEn $+\\infty$ : $f(x)=\\dfrac{x^2}{x+2}$, et $x^2\\to+\\infty$, $x+2\\to+\\infty$, avec $\\dfrac{x^2}{x+2}\\sim x\\to+\\infty$ :\\n$$\\lim_{x\\to+\\infty}f(x)=+\\infty$$\\n\\n**Tableau de variation.**\\n$$\\begin{array}{c|ccccc}\\nx & -\\infty & & 0 & & +\\infty\\\\\\n\\hline\\nf'(x) & & + & 0 & + &\\\\\\n\\hline\\n& & & 0 & & +\\infty\\\\\\nf(x) & -\\infty & \\nearrow & & \\nearrow & \\\\\\n\\end{array}$$\\n\\n### Piège à éviter\\nUn point où $f'$ s'annule n'est pas systématiquement un extremum local : ici $f'(0)=0$ mais $f'$ garde le même signe (positif) de part et d'autre de $0$, donc $f$ continue de croître strictement à travers ce point - c'est un point d'inflexion à tangente horizontale, pas un minimum ni un maximum.",
+      "themes": [
+        "tableau de variation",
+        "signe de la dérivée",
+        "extremum local"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1991-e2-2",
+          "competence": "Tableau de variation complet a partir du signe de f prime",
+          "contenu_markdown": "Terminer l'étude d'une fonction consiste à déterminer le signe de $f'$ sur chaque intervalle du domaine, à en déduire le sens de variation, puis à rassembler ces résultats (avec les limites déjà connues) dans un tableau de variation unique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. On appelle $(C)$ la courbe représentative de la fonction $f$ dans un repère orthonormé $(o,\\vec i,\\vec j)$. Etudier les branches infinies de la courbe $(C)$ (on pourra utiliser le résultat $\\lim_{u\\to0}\\dfrac{e^u-1}{u}=1$). Tracer la courbe $(C)$ (unité sur les axes : 2 cm).",
+      "corrige_markdown": "### Rappel de méthode\\nUne branche infinie se caractérise en étudiant $f(x)-\\alpha x$ pour une droite candidate $y=\\alpha x+\\beta$ : si cette différence tend vers un réel $\\beta$, la droite $y=\\alpha x+\\beta$ est asymptote. Le résultat fourni $\\lim_{u\\to0}\\dfrac{e^u-1}{u}=1$ permet de transformer une expression du type $x(e^{1/x}-1)$ en une limite calculable, par changement de variable $u=1/x$.\\n\\n### Corrigé\\n**Branche infinie en $-\\infty$.** On a $\\displaystyle\\lim_{x\\to-\\infty}f(x)=-\\infty$ (question 2). Étudions $f(x)-x=xe^{1/x}-x=x\\big(e^{1/x}-1\\big)$.\\n\\nPosons $u=1/x$ ; quand $x\\to-\\infty$, $u\\to0^-$, et $x=\\dfrac1u$ :\\n$$f(x)-x=\\frac1u\\big(e^u-1\\big)=\\frac{e^u-1}{u}$$\\n\\nD'après le résultat donné, $\\displaystyle\\lim_{u\\to0}\\frac{e^u-1}{u}=1$, donc :\\n$$\\lim_{x\\to-\\infty}\\big[f(x)-x\\big]=1$$\\n\\n**La droite d'équation $y=x+1$ est donc asymptote oblique à $(C)$ en $-\\infty$.**\\n\\n**Branche infinie en $+\\infty$.** On a $\\displaystyle\\lim_{x\\to+\\infty}f(x)=+\\infty$ (question 2). Effectuons la division euclidienne de $x^2$ par $x+2$ :\\n$$x^2=(x+2)(x-2)+4 \\;\\Longrightarrow\\; f(x)=\\frac{x^2}{x+2}=(x-2)+\\frac{4}{x+2}$$\\n\\nDonc $f(x)-(x-2)=\\dfrac4{x+2}$, et :\\n$$\\lim_{x\\to+\\infty}\\big[f(x)-(x-2)\\big]=\\lim_{x\\to+\\infty}\\frac4{x+2}=0$$\\n\\n**La droite d'équation $y=x-2$ est donc asymptote oblique à $(C)$ en $+\\infty$.**\\n\\n**Position de $(C)$ par rapport à ses asymptotes.** En $+\\infty$, $f(x)-(x-2)=\\dfrac4{x+2}>0$ pour $x>0$ : $(C)$ est **au-dessus** de son asymptote $y=x-2$. En $-\\infty$, le signe de $f(x)-(x+1)=\\dfrac{e^u-1}u-1$ (avec $u=1/x\\to0^-$) nécessiterait une étude plus fine du signe de $e^u-1-u$ ; on admettra, ou on pourra vérifier numériquement à l'aide des valeurs données ($e^{-1/2}\\approx0{,}6$, $e^{-1}\\approx0{,}4$), la position relative sur quelques points.\\n\\n**Points de repère pour le tracé** (unité $2$ cm sur les axes), en utilisant les valeurs approchées données : $f(-2)=-2e^{-1/2}\\approx-2\\times0{,}6=-1{,}2$ ; $f(-1)=-1\\times e^{-1}\\approx-0{,}4$ ; $f(0)=0$ (point à tangente horizontale) ; $f(1)=\\dfrac1{1+2}=\\dfrac13\\approx0{,}33$ ; $f(2)=\\dfrac4{2+2}=1$.\\n\\n**Tracé de $(C)$.** La courbe part de l'asymptote $y=x+1$ en $-\\infty$, croît strictement (sans jamais redescendre) en passant par $(-2,-1{,}2)$, $(-1,-0{,}4)$, puis par le point $(0,0)$ à tangente horizontale, puis continue de croître en passant par $(1,\\frac13)$, $(2,1)$, en se rapprochant asymptotiquement de la droite $y=x-2$ en $+\\infty$.\\n\\n### Piège à éviter\\nAttention au changement de variable $u=1/x$ : quand $x\\to-\\infty$, on a bien $u\\to0^-$ (et non $u\\to0^+$), ce qui ne change pas la valeur de la limite $\\lim_{u\\to0}\\frac{e^u-1}u=1$ (valable des deux côtés) mais il faut le vérifier avant d'appliquer un résultat donné pour une limite bilatérale en un point.",
+      "themes": [
+        "branches infinies",
+        "asymptote oblique",
+        "division euclidienne de polynômes"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1991-e2-3",
+          "competence": "Etude des branches infinies et asymptotes obliques",
+          "contenu_markdown": "Une branche infinie se caractérise en étudiant $f(x)-\\alpha x$ pour une droite candidate $y=\\alpha x+\\beta$ : si cette différence tend vers un réel $\\beta$, la droite $y=\\alpha x+\\beta$ est asymptote. Le résultat fourni $\\lim_{u\\to0}\\dfrac{e^u-1}{u}=1$ permet de transformer une expression du type $x(e^{1/x}-1)$ en une limite calculable, par changement de variable $u=1/x$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "fonction définie par morceaux",
+    "continuité",
+    "dérivabilité",
+    "croissances comparées",
+    "branches infinies",
+    "asymptote oblique",
+    "tableau de variation"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

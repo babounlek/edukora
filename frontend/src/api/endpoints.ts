@@ -5,9 +5,9 @@ import type {
   CoursPreview,
   Country,
   Cursus,
-  Lesson,
-  LessonContent,
-  LessonPreview,
+  Epreuve,
+  EpreuveContent,
+  EpreuvePreview,
   ModeQuiz,
   Paginated,
   PaymentInitiateResponse,
@@ -43,7 +43,7 @@ export function getMe() {
   return apiRequest<User>("/auth/me/")
 }
 
-export interface LessonFilters {
+export interface EpreuveFilters {
   subject?: string
   cursus?: number
   country?: string
@@ -51,29 +51,31 @@ export interface LessonFilters {
   origine?: string
   search?: string
   page?: number
+  exclude_read?: boolean
+  ordering?: "year"
 }
 
-export function listLessons(filters: LessonFilters = {}) {
+export function listEpreuves(filters: EpreuveFilters = {}) {
   const params = new URLSearchParams()
   Object.entries(filters).forEach(([key, value]) => {
     if (value !== undefined && value !== "") params.set(key, String(value))
   })
   const query = params.toString()
-  return apiRequest<Paginated<Lesson>>(`/catalog/lessons/${query ? `?${query}` : ""}`, {
+  return apiRequest<Paginated<Epreuve>>(`/catalog/lessons/${query ? `?${query}` : ""}`, {
     auth: "optional",
   })
 }
 
-export function getLesson(id: number) {
-  return apiRequest<Lesson>(`/catalog/lessons/${id}/`, { auth: "optional" })
+export function getEpreuve(slug: string) {
+  return apiRequest<Epreuve>(`/catalog/lessons/${slug}/`, { auth: "optional" })
 }
 
-export function readLesson(id: number) {
-  return apiRequest<LessonContent>(`/access/read/${id}/`)
+export function readEpreuve(slug: string) {
+  return apiRequest<EpreuveContent>(`/access/read/${slug}/`)
 }
 
-export function previewLesson(id: number) {
-  return apiRequest<LessonPreview>(`/access/preview/${id}/`, { auth: false })
+export function previewEpreuve(slug: string) {
+  return apiRequest<EpreuvePreview>(`/access/preview/${slug}/`, { auth: false })
 }
 
 export interface CoursFilters {

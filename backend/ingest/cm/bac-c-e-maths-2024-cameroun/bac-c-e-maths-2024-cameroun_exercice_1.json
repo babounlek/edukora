@@ -1,0 +1,67 @@
+{
+  "epreuve_source": "bac-c-e-maths-2024-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2024",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "numero_exercice": "1",
+  "points": 3,
+  "enonce_intro_markdown": "**Exercice 1 (3 points)**\\n\\nUne urne contient six boules portant des numéros de 1 à 6 et indiscernables au toucher. On tire au hasard une boule de l'urne, note son numéro «$a$» et la remet dans l'urne. On fait un deuxième tirage dans la même urne et note le numéro «$b$» de la boule ainsi tirée. Soit $(E)$ l'équation différentielle $y''+2ay'+by=0$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Montrer que la probabilité pour qu'une équation caractéristique de $(E)$ admette deux solutions réelles distinctes ou confondues est de $\\dfrac{29}{36}$.",
+      "corrige_markdown": "### Rappel de methode\\nL'equation caracteristique r^2+2ar+b=0 admet deux solutions reelles (distinctes ou confondues) si et seulement si son discriminant reduit a^2-b est positif ou nul ; il suffit de denombrer, parmi les 36 couples (a,b) equiprobables, ceux verifiant a^2>=b.\\n\\n### Corrige\\nL'équation caractéristique de $(E)$ est $r^2+2ar+b=0$, de discriminant réduit $\\Delta'=a^2-1\\times b=a^2-b$. Elle admet deux solutions réelles (distinctes si $\\Delta'>0$, confondues si $\\Delta'=0$) $\\Leftrightarrow\\Delta'\\geqslant0\\Leftrightarrow a^2\\geqslant b$.\\n\\nIl y a $6\\times6=36$ couples $(a,b)\\in\\{1,2,3,4,5,6\\}^2$ équiprobables. Comptons, pour chaque valeur de $a$, le nombre de valeurs de $b\\in\\{1,\\ldots,6\\}$ vérifiant $b\\leqslant a^2$ :\\n\\n- $a=1$ : $a^2=1$, donc $b\\leqslant1$, soit $b\\in\\{1\\}$ : **$1$ valeur**.\\n- $a=2$ : $a^2=4$, donc $b\\leqslant4$, soit $b\\in\\{1,2,3,4\\}$ : **$4$ valeurs**.\\n- $a=3$ : $a^2=9\\geqslant6$, donc la condition $b\\leqslant9$ est vraie pour tout $b\\in\\{1,\\ldots,6\\}$ : **$6$ valeurs**.\\n- $a=4$ : $a^2=16\\geqslant6$ : **$6$ valeurs**.\\n- $a=5$ : $a^2=25\\geqslant6$ : **$6$ valeurs**.\\n- $a=6$ : $a^2=36\\geqslant6$ : **$6$ valeurs**.\\n\\nLe nombre total de couples favorables est $1+4+6+6+6+6=29$.\\n\\n**$P=\\dfrac{29}{36}$** (les $29$ couples favorables ont été recomptés un par un ci-dessus : $29/36$ est donc la probabilité exacte, pas une approximation).",
+      "themes": [
+        "probabilités",
+        "équation caractéristique",
+        "discriminant"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e1-1",
+          "competence": "Denombrement des couples (a,b) avec a^2>=b",
+          "contenu_markdown": "L'equation caracteristique r^2+2ar+b=0 admet deux solutions reelles (distinctes ou confondues) si et seulement si son discriminant reduit a^2-b est positif ou nul ; il suffit de denombrer, parmi les 36 couples (a,b) equiprobables, ceux verifiant a^2>=b.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Combien de fois au minimum doit-on répéter cette expérience pour être sûr d'avoir au moins 98% de chances que l'équation caractéristique de $(E)$ ait au moins une fois, deux solutions non réelles ?",
+      "corrige_markdown": "### Rappel de methode\\nLa probabilite d'avoir deux solutions non reelles (complexes conjuguees) a chaque experience est 1-29/36=7/36 ; en repetant n fois de facon independante, P(au moins une fois)=1-(29/36)^n, a rendre >=0,98, ce qui se resout par recherche du plus petit entier n convenable.\\n\\n### Corrige\\n$P(\\text{2 solutions non réelles à une expérience})=1-\\dfrac{29}{36}=\\dfrac{36-29}{36}=\\dfrac7{36}$.\\n\\n$P(\\text{2 solutions réelles à une expérience})=\\dfrac{29}{36}$ (calculée en question 1).\\n\\nLes $n$ répétitions sont indépendantes, donc $P(\\text{2 solutions réelles aux $n$ répétitions})=\\left(\\dfrac{29}{36}\\right)^n$, et par événement contraire :\\n\\n$P(\\text{au moins une fois 2 solutions non réelles en $n$ répétitions})=1-\\left(\\dfrac{29}{36}\\right)^n$.\\n\\nOn cherche le plus petit entier $n$ tel que $1-\\left(\\dfrac{29}{36}\\right)^n\\geqslant0{,}98\\Leftrightarrow\\left(\\dfrac{29}{36}\\right)^n\\leqslant0{,}02$.\\n\\n$\\dfrac{29}{36}\\in]0,1[$, donc $\\ln\\!\\left(\\dfrac{29}{36}\\right)<0$ : en passant au logarithme népérien (fonction croissante, mais on divise par un nombre négatif, ce qui inverse le sens de l'inégalité) :\\n\\n$n\\ln\\!\\left(\\dfrac{29}{36}\\right)\\leqslant\\ln(0{,}02)\\Leftrightarrow n\\geqslant\\dfrac{\\ln(0{,}02)}{\\ln\\!\\left(\\frac{29}{36}\\right)}$ (l'inégalité change de sens car on divise par $\\ln(29/36)<0$).\\n\\nCalculons : $\\ln(0{,}02)=\\ln(2\\times10^{-2})=\\ln2-2\\ln10\\approx0{,}6931-4{,}6052=-3{,}9120$.\\n\\n$\\ln\\!\\left(\\dfrac{29}{36}\\right)=\\ln29-\\ln36\\approx3{,}3673-3{,}5835=-0{,}2163$.\\n\\n$\\dfrac{-3{,}9120}{-0{,}2163}\\approx18{,}08$.\\n\\nDonc $n\\geqslant18{,}08$, soit $n\\geqslant19$ ($n$ entier). Vérification directe : $\\left(\\frac{29}{36}\\right)^{18}\\approx0{,}0207>0{,}02$ (insuffisant) tandis que $\\left(\\frac{29}{36}\\right)^{19}\\approx0{,}0164\\leqslant0{,}02$ (convient).\\n\\n**Il faut répéter l'expérience au minimum $19$ fois.**",
+      "themes": [
+        "répétition d'expériences indépendantes",
+        "inéquation exponentielle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-e1-2",
+          "competence": "Recherche du plus petit n verifiant l'inequation",
+          "contenu_markdown": "La probabilite d'avoir deux solutions non reelles (complexes conjuguees) a chaque experience est 1-29/36=7/36 ; en repetant n fois de facon independante, P(au moins une fois)=1-(29/36)^n, a rendre >=0,98, ce qui se resout par recherche du plus petit entier n convenable.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probabilités",
+    "équation différentielle",
+    "discriminant"
+  ],
+  "incertitudes": [],
+  "figures": [],
+  "statut": "brouillon"
+}

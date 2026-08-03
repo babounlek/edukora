@@ -1,0 +1,120 @@
+{
+  "epreuve_source": "bac-c-e-maths-2008-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2008",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "2",
+  "points": null,
+  "enonce_intro_markdown": "**Exercice 2 (série E uniquement)**\n\nOn considère deux suites numériques $(u_n)$ et $(v_n)$ définies pour tout entier naturel non nul $n$ par $u_n=\\displaystyle\\sum_{i=1}^n\\sin\\left(\\dfrac i{n^2}\\right)$, $v_n=\\displaystyle\\sum_{i=1}^n\\dfrac i{n^2}$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Montrer que la suite $(v_n)$ converge vers $\\dfrac12$.",
+      "corrige_markdown": "### Rappel de methode\nUne somme de termes d'une suite arithmétique u0=... se calcule via Gauss (somme i=1..n de i = n(n+1)/2) ; ici v_n=Σi/n² = (1/n²)·Σi, ce qui donne une expression rationnelle simple dont on peut calculer la limite.\n\n### Corrige\n$$v_n=\\sum_{i=1}^n\\dfrac i{n^2}=\\dfrac1{n^2}\\sum_{i=1}^ni=\\dfrac1{n^2}\\times\\dfrac{n(n+1)}2=\\dfrac{n+1}{2n}$$\n\n$$\\lim_{n\\to+\\infty}v_n=\\lim_{n\\to+\\infty}\\dfrac{n+1}{2n}=\\lim_{n\\to+\\infty}\\dfrac12\\left(1+\\dfrac1n\\right)=\\dfrac12$$\n\n**La suite $(v_n)$ converge vers $\\dfrac12$.**",
+      "themes": [
+        "somme de Gauss",
+        "limite d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex2-0",
+          "competence": "Somme de Gauss pour calculer v_n puis sa limite",
+          "contenu_markdown": "Une somme de termes d'une suite arithmétique u0=... se calcule via Gauss (somme i=1..n de i = n(n+1)/2) ; ici v_n=Σi/n² = (1/n²)·Σi, ce qui donne une expression rationnelle simple dont on peut calculer la limite.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Soient les fonctions numériques $f$, $g$ et $h$ définies par $f(x)=x-\\sin x$ ; $g(x)=-1+\\dfrac{x^2}2+\\cos x$ et $h(x)=-x+\\dfrac{x^3}2+\\sin x$. Montrer que pour tout $x$ positif, $f(x)\\geq0$ ; $g(x)\\geq0$ et $h(x)\\geq0$.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer qu'une fonction est positive sur un intervalle, on étudie sa dérivée (souvent une fonction déjà connue positive) pour établir sa monotonie à partir d'une valeur nulle en un point de l'intervalle.\n\n### Corrige\nSoit $f(x)=x-\\sin x$, $g(x)=-1+\\dfrac{x^2}2+\\cos x$, $h(x)=-x+\\dfrac{x^3}6+\\sin x$ (le terme cubique se simplifie à $\\dfrac{x^3}6$, seule valeur rendant la chaîne de dérivation ci-dessous cohérente — voir Piège à éviter).\n\n**$f(x)\\geq0$ pour $x\\geq0$** : $f'(x)=1-\\cos x\\geq0$ toujours (car $\\cos x\\leq1$). $f$ est donc croissante sur $[0;+\\infty[$, et $f(0)=0$, donc $f(x)\\geq f(0)=0$ pour $x\\geq0$.\n\n**$g(x)\\geq0$ pour $x\\geq0$** : $g'(x)=x-\\sin x=f(x)\\geq0$ (résultat précédent) sur $[0;+\\infty[$. $g$ est donc croissante, et $g(0)=-1+0+1=0$, donc $g(x)\\geq g(0)=0$.\n\n**$h(x)\\geq0$ pour $x\\geq0$** : $h'(x)=-1+\\dfrac{x^2}2+\\cos x=g(x)\\geq0$ (résultat précédent). $h$ est donc croissante, et $h(0)=0+0+0=0$, donc $h(x)\\geq h(0)=0$.\n\n**Conclusion** : pour tout $x\\geq0$, $f(x)\\geq0$, $g(x)\\geq0$ et $h(x)\\geq0$, c'est-à-dire $\\sin x\\leq x$, $\\cos x\\geq1-\\dfrac{x^2}2$ et $\\sin x\\geq x-\\dfrac{x^3}6$.\n\n### Piège à éviter\nLa source de cet énoncé indique $h(x)=-x+\\dfrac{x^3}2+\\sin x$ (dénominateur $2$). Or $\\dfrac{d}{dx}\\left[-x+\\dfrac{x^3}2+\\sin x\\right]=-1+\\dfrac{3x^2}2+\\cos x\\neq g(x)$ : cette version brise la chaîne de dérivation $f'=$ rien, $g'=f$, $h'=g$ qui est la méthode naturelle (et quasi obligatoire) pour cet exercice, et qui correspond exactement à l'inégalité classique $\\sin x\\geq x-\\dfrac{x^3}{3!}=x-\\dfrac{x^3}6$ (developpement de Taylor du sinus). Le dénominateur correct est donc $6$, très probablement mal transcrit en $2$ dans la source (confusion $6\\leftrightarrow2$). Cette correction est également confirmée a posteriori par la question 4, où l'encadrement final $v_n-\\frac1{6n^2}\\leq u_n\\leq v_n$ ne s'obtient exactement qu'avec le coefficient $\\frac16$.",
+      "themes": [
+        "chaîne de dérivées",
+        "inégalités de Taylor",
+        "cohérence des données de l'énoncé"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex2-1",
+          "competence": "Établir une chaîne d'inégalités via des dérivées successives",
+          "contenu_markdown": "Pour montrer qu'une fonction est positive sur un intervalle, on étudie sa dérivée (souvent une fonction déjà connue positive) pour établir sa monotonie à partir d'une valeur nulle en un point de l'intervalle.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Démontrer par récurrence que pour tout entier naturel non nul $n$, $\\displaystyle\\sum_{i=1}^ni^3\\leq n^4$.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer par récurrence que Σi³ (i=1 à n) ≤ n⁴, on peut aussi utiliser directement la formule fermée Σi³=[n(n+1)/2]² et comparer à n⁴, ou procéder par récurrence classique en ajoutant (n+1)³ aux deux membres.\n\n### Corrige\nNotons $S_n=\\displaystyle\\sum_{i=1}^ni^3$. On sait que $S_n=\\left[\\dfrac{n(n+1)}2\\right]^2$ (formule classique). Montrons $S_n\\leq n^4$ par récurrence.\n\n**Initialisation** ($n=1$) : $S_1=1\\leq1^4=1$. Vrai (égalité).\n\n**Hérédité** : supposons $S_n\\leq n^4$. Alors :\n$$S_{n+1}=S_n+(n+1)^3\\leq n^4+(n+1)^3$$\n\nIl suffit de montrer $n^4+(n+1)^3\\leq(n+1)^4$. Or $(n+1)^4-(n+1)^3=(n+1)^3\\big[(n+1)-1\\big]=n(n+1)^3\\geq n\\times n^3=n^4$ pour $n\\geq1$ (car $(n+1)^3\\geq n^3$). Donc $n^4\\leq(n+1)^4-(n+1)^3$, soit $n^4+(n+1)^3\\leq(n+1)^4$.\n\nEn combinant : $S_{n+1}\\leq n^4+(n+1)^3\\leq(n+1)^4$.\n\n**Conclusion** : par récurrence, $\\displaystyle\\sum_{i=1}^ni^3\\leq n^4$ pour tout entier naturel non nul $n$ (cette inégalité, notée $S_n$ ici pour éviter la confusion avec la suite $u_n=\\sum\\sin(i/n^2)$ définie plus haut, servira d'outil de majoration à la question suivante).",
+      "themes": [
+        "récurrence",
+        "somme de cubes",
+        "majoration"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex2-2",
+          "competence": "Récurrence pour majorer une somme de cubes par n⁴",
+          "contenu_markdown": "Pour montrer par récurrence que Σi³ (i=1 à n) ≤ n⁴, on peut aussi utiliser directement la formule fermée Σi³=[n(n+1)/2]² et comparer à n⁴, ou procéder par récurrence classique en ajoutant (n+1)³ aux deux membres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. En déduire que pour tout entier naturel non nul $n$, $v_n-\\dfrac1{6n^2}\\leq u_n\\leq v_n$, et calculer la limite de la suite $(u_n)$.",
+      "corrige_markdown": "### Rappel de methode\nEn sommant l'encadrement t-t³/6 ≤ sin t ≤ t (valable pour t≥0) appliqué à t=i/n² (i=1..n, tous positifs), on obtient un encadrement de u_n en fonction de v_n et d'une somme de cubes, que l'on majore ensuite via le résultat de la question précédente.\n\n### Corrige\nD'après la question 2, pour tout $t\\geq0$ : $t-\\dfrac{t^3}6\\leq\\sin t\\leq t$. Pour $i\\in\\{1,\\dots,n\\}$, $t=\\dfrac i{n^2}\\geq0$, donc :\n$$\\dfrac i{n^2}-\\dfrac16\\left(\\dfrac i{n^2}\\right)^3\\leq\\sin\\left(\\dfrac i{n^2}\\right)\\leq\\dfrac i{n^2}$$\n\nEn sommant pour $i=1$ à $n$ :\n$$v_n-\\dfrac1{6n^6}\\sum_{i=1}^ni^3\\leq u_n\\leq v_n$$\n\nD'après la question 3, $\\displaystyle\\sum_{i=1}^ni^3\\leq n^4$, donc $\\dfrac1{6n^6}\\displaystyle\\sum_{i=1}^ni^3\\leq\\dfrac{n^4}{6n^6}=\\dfrac1{6n^2}$, d'où $v_n-\\dfrac1{6n^6}\\displaystyle\\sum i^3\\geq v_n-\\dfrac1{6n^2}$. En combinant :\n$$\\boxed{v_n-\\dfrac1{6n^2}\\leq u_n\\leq v_n}$$\n\n**Limite de $(u_n)$** : $v_n\\to\\dfrac12$ (question 1) et $\\dfrac1{6n^2}\\to0$, donc $v_n-\\dfrac1{6n^2}\\to\\dfrac12$ également. Par le théorème des gendarmes :\n$$\\lim_{n\\to+\\infty}u_n=\\dfrac12$$",
+      "themes": [
+        "théorème des gendarmes",
+        "encadrement d'une somme"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex2-3",
+          "competence": "Sommer un encadrement trigonométrique pour conclure par les gendarmes",
+          "contenu_markdown": "En sommant l'encadrement t-t³/6 ≤ sin t ≤ t (valable pour t≥0) appliqué à t=i/n² (i=1..n, tous positifs), on obtient un encadrement de u_n en fonction de v_n et d'une somme de cubes, que l'on majore ensuite via le résultat de la question précédente.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "suite d'inégalités trigonométriques",
+    "théorème des gendarmes",
+    "série E uniquement",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "barème non précisé",
+      "description": "Le PDF source (Douala Mathematical Society, dvipdfm/TeX) n'indique aucun barème par exercice ni par question. Le champ 'points' est donc laissé à null plutôt que d'inventer une pondération."
+    },
+    {
+      "type": "incohérence énoncé",
+      "description": "Q2 : la source imprime h(x)=-x+x³/2+sinx, mais seul h(x)=-x+x³/6+sinx rend la chaîne de dérivation f'→rien, g'=f, h'=g cohérente (et correspond au développement de Taylor standard sinx≥x-x³/6) ; confirmé a posteriori par le coefficient 1/(6n²) exact requis en Q4. Voir le Piège à éviter dans le corrigé de Q2."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

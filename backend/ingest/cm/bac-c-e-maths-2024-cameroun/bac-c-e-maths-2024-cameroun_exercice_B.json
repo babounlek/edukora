@@ -1,0 +1,97 @@
+{
+  "epreuve_source": "bac-c-e-maths-2024-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2024",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "numero_exercice": "B",
+  "points": 5,
+  "enonce_intro_markdown": "**Partie B : Évaluation des compétences (5 points)**\\n\\n**Situation :** Deux étangs d'un pisciculteur comprennent respectivement $250$ maquereaux et $450$ carpes. Les maquereaux ont un taux de multiplication de $20\\%$ par mois tandis que la vitesse d'accroissement de la population des carpes à l'instant $t$ ($t$ en mois), constitue le cinquantième de la population des carpes à cet instant $t$.\\n\\nUn produit doit être administré à chacune des deux espèces de poissons pour accélérer leur maturité. Le produit ne peut être administré à une espèce que lorsque sa population a au moins doublé.\\n\\nÀ la fin du $37^{\\text{ème}}$ mois, ce pisciculteur, également propriétaire d'un restaurant créé à proximité de celui-ci, crée un troisième étang dans lequel il remet des poissons déjà consommables et de même gabarit. Lorsqu'un client passe sa commande, on pêche son poisson et on le fait cuire : si le poisson pêché n'est pas de l'espèce commandée, on le remet dans l'étang et on continue la prise. On ne peut pêcher qu'un seul poisson à la fois. La consigne principale dans ce restaurant est de servir les clients dans l'ordre de passage de leurs commandes. Le gestionnaire fait remarquer au cuisinier que cet étang dispose de $45$ carpes et de $55$ maquereaux, lorsque deux clients arrivent et passent, dans l'ordre, la commande d'un maquereau et d'une carpe.",
+  "questions": [
+    {
+      "numero": "B1",
+      "enonce_markdown": "1) Après combien de temps minimum doit-on administrer ce produit aux maquereaux ? (1,5 pt)",
+      "corrige_markdown": "### Rappel de methode\\nCroissance multiplicative discrete : population(n)=250*(1,2)^n ; doubler signifie atteindre 500, soit (1,2)^n>=2 ; n etant un nombre entier de mois, on cherche le plus petit entier verifiant l'inegalite.\\n\\n### Corrige\\nAvec un taux de multiplication de $20\\%$ par mois, la population de maquereaux après $n$ mois est $250\\times(1{,}2)^n$. Elle a doublé lorsque $250\\times(1{,}2)^n\\geqslant500$, soit $(1{,}2)^n\\geqslant2$.\\n\\n$(1{,}2)^3=1{,}728<2$ et $(1{,}2)^4=2{,}0736\\geqslant2$.\\n\\n**Il faut attendre au minimum $4$ mois** pour administrer le produit aux maquereaux *(vérifié par calcul formel)*.",
+      "themes": [
+        "suite géométrique",
+        "croissance multiplicative"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-eb-1",
+          "competence": "Plus petit entier n avec 1.2^n>=2",
+          "contenu_markdown": "Croissance multiplicative discrete : population(n)=250*(1,2)^n ; doubler signifie atteindre 500, soit (1,2)^n>=2 ; n etant un nombre entier de mois, on cherche le plus petit entier verifiant l'inegalite.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "2) Après combien de temps minimum doit-on administrer ce produit aux carpes ? (1,5 pt)",
+      "corrige_markdown": "### Rappel de methode\\nVitesse d'accroissement = N/50 signifie l'equation differentielle N'(t)=N(t)/50, de solution N(t)=N(0)e^(t/50) ; population doublee quand e^(t/50)>=2, soit t>=50 ln2.\\n\\n### Corrige\\nLa vitesse d'accroissement à l'instant $t$ valant $\\dfrac{N(t)}{50}$, on a l'équation différentielle $N'(t)=\\dfrac1{50}N(t)$, de solution $N(t)=450\\,e^{t/50}$.\\n\\nPopulation doublée : $450\\,e^{t/50}\\geqslant900\\Leftrightarrow e^{t/50}\\geqslant2\\Leftrightarrow t\\geqslant50\\ln2$.\\n\\n**Il faut attendre au minimum $50\\ln2\\approx34{,}66$ mois** (soit un peu plus de $34$ mois et $20$ jours) pour administrer le produit aux carpes.",
+      "themes": [
+        "équation différentielle",
+        "croissance exponentielle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-eb-2",
+          "competence": "Resolution de l'EDO et seuil de doublement",
+          "contenu_markdown": "Vitesse d'accroissement = N/50 signifie l'equation differentielle N'(t)=N(t)/50, de solution N(t)=N(0)e^(t/50) ; population doublee quand e^(t/50)>=2, soit t>=50 ln2.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3",
+      "enonce_markdown": "3) Le restaurateur a-t-il au moins une chance sur deux, de servir les deux clients dans l'ordre des commandes passées ? (1,5 pt)",
+      "corrige_markdown": "### Rappel de methode\\nLe service se fait dans l'ordre des commandes si et seulement si le tout premier poisson peche dans l'etang (schema sans remise sur les 100 poissons) est un maquereau (espece demandee par le premier client) ; cette probabilite vaut directement 55/100.\\n\\n### Corrige\\nLe service respecte l'ordre des commandes (maquereau pour le client 1, carpe pour le client 2) si et seulement si, dans la suite des poissons pêchés dans l'étang, un maquereau apparaît avant toute carpe — ce qui équivaut exactement à ce que le tout premier poisson pêché soit un maquereau.\\n\\nL'étang comptant $55$ maquereaux et $45$ carpes ($100$ poissons au total) :\\n\\n$$P(\\text{1er poisson pêché est un maquereau})=\\dfrac{55}{100}=0{,}55$$\\n\\n**$0{,}55\\geqslant0{,}5$ : le restaurateur a bien au moins une chance sur deux (exactement $55\\%$) de servir les deux clients dans l'ordre des commandes passées**.",
+      "themes": [
+        "probabilités",
+        "dénombrement"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2024-eb-3",
+          "competence": "Probabilite via premier poisson peche",
+          "contenu_markdown": "Le service se fait dans l'ordre des commandes si et seulement si le tout premier poisson peche dans l'etang (schema sans remise sur les 100 poissons) est un maquereau (espece demandee par le premier client) ; cette probabilite vaut directement 55/100.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "croissance exponentielle",
+    "suite géométrique",
+    "équation différentielle",
+    "probabilités"
+  ],
+  "incertitudes": [
+    {
+      "type": "modélisation - interprétation du dispositif aléatoire",
+      "description": "L'enonce decrit un processus de peche 'avec remise' propre a chaque commande (on remet le poisson si ce n'est pas l'espece voulue), ce qui, applique strictement dans l'ordre impose (servir le client 1 avant le client 2), rendrait le service dans l'ordre certain (probabilite 1), rendant la question sans interet et n'exploitant pas les effectifs 45/55 donnes. L'interpretation retenue ici, standard pour ce type d'exercice, est que la question porte sur l'espece du tout premier poisson peche dans l'etang (schema sans remise global sur les 100 poissons) : le service se fait dans l'ordre des commandes si et seulement si ce premier poisson est un maquereau (l'espece demandee par le client arrive en premier). Cette lecture exploite pleinement les effectifs 45 carpes / 55 maquereaux et conduit a une probabilite non triviale et pedagogiquement coherente."
+    },
+    {
+      "type": "barème - ligne non rattachée à une question",
+      "description": "Le barème officiel de la Partie B attribue 1,5 pt a chacune des 3 taches (total 4,5) plus 0,5 pt a une ligne 'Presentation generale' non rattachee a une question precise. Pour respecter le total officiel de 5 points, ces 0,5 pt sont inclus dans le 'points' de cet exercice (5 au total) sans etre associes a une question specifique."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

@@ -1,23 +1,111 @@
 {
   "epreuve_source": "bac-a-maths-2001-benin.pdf",
   "numero_exercice": "2",
-  "enonce_markdown": "### Exercice 2 (6 points)\n\nUne urne contient une boule blanche et $n$ boules rouges ($n \\geqslant 2$).\n\n1. Calculer la probabilité $P_1(n)$ de tirer une boule rouge dans un tirage d'une boule au hasard (1 pt). La suite $(P_1(n))_{n\\geqslant 2}$ est-elle monotone ? (0,5 pt)\n\n2. On tire au hasard deux boules de l'urne.\n   a. Calculer la probabilité $P_2(n)$ de tirer deux boules rouges (1 pt), et la probabilité $P_2'(n)$ d'avoir une boule de chaque couleur (1 pt).\n   b. Calculer, lorsque $n$ tend vers $+\\infty$, la limite de $P_2(n)$ et de $P_2'(n)$ (1 pt). Pouvait-on prévoir ces résultats ? (0,5 pt)\n\n3. Comparer $P_1(n)$ et $P_2(n)$ (0,5 pt). Déterminer les valeurs de $n$ pour lesquelles $P_1(n) - P_2(n) < \\dfrac{1}{8}$ (0,5 pt).",
   "matiere": "Mathématiques",
-  "niveau": "Terminale",
   "serie": "A",
-  "examen": "BAC",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
   "annee": "2001",
   "duree_epreuve": "2h",
   "coefficient": "1",
   "points": "6",
   "figures": [],
-  "themes": [
-    "probabilités - tirages sans remise",
-    "coefficients binomiaux",
-    "limite d'une suite",
-    "monotonie d'une suite"
+  "enonce_intro_markdown": "### Exercice 2 (6 points)\n\nUne urne contient une boule blanche et $n$ boules rouges ($n \\geqslant 2$).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Calculer la probabilité $P_1(n)$ de tirer une boule rouge dans un tirage d'une boule au hasard (1 pt). La suite $(P_1(n))_{n\\geqslant 2}$ est-elle monotone ? (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nDans un tirage d'une boule au hasard dans une urne équiprobable, la probabilité d'un événement est le rapport du nombre de cas favorables sur le nombre total de boules. Pour étudier la monotonie d'une suite $(a_n)$, on calcule le signe de $a_{n+1}-a_n$ (ou, quand c'est plus simple, on réécrit $a_n$ sous une forme qui rend la variation évidente).\n\nL'urne contient $1$ boule blanche et $n$ boules rouges, soit $n+1$ boules au total. Tirer une boule rouge au hasard a pour probabilité :\n$$P_1(n) = \\frac{n}{n+1}$$\n\nMonotonie : on réécrit $P_1(n)$ sous une forme qui isole la dépendance en $n$ :\n$$P_1(n) = \\frac{n}{n+1} = \\frac{(n+1)-1}{n+1} = 1 - \\frac{1}{n+1}$$\nQuand $n$ augmente, $n+1$ augmente, donc $\\dfrac{1}{n+1}$ diminue, donc $1-\\dfrac{1}{n+1}$ augmente. On peut le vérifier directement par la différence :\n$$P_1(n+1)-P_1(n) = \\frac{n+1}{n+2}-\\frac{n}{n+1} = \\frac{(n+1)^2-n(n+2)}{(n+2)(n+1)} = \\frac{n^2+2n+1-n^2-2n}{(n+1)(n+2)} = \\frac{1}{(n+1)(n+2)}$$\nPour tout $n\\geqslant 2$, $(n+1)(n+2)>0$, donc $P_1(n+1)-P_1(n)>0$.\n\nLa suite $(P_1(n))_{n\\geqslant 2}$ est strictement croissante, donc monotone.\n\n### Conseil\nQuand une suite se présente comme un quotient en $n$, essaie toujours de la réécrire sous la forme $1 - \\dfrac{c}{n+k}$ avant de te lancer dans le calcul de $a_{n+1}-a_n$ : la monotonie devient souvent visible immédiatement, et le calcul de différence te sert alors uniquement de confirmation rigoureuse.",
+      "themes": [
+        "probabilités - tirages sans remise",
+        "coefficients binomiaux",
+        "limite d'une suite",
+        "monotonie d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2001-benin-ex2-0",
+          "competence": "Probabilité dans un tirage simple et étude de monotonie d'une suite",
+          "contenu_markdown": "Dans un tirage d'une boule au hasard dans une urne équiprobable, la probabilité d'un événement est le rapport du nombre de cas favorables sur le nombre total de boules. Pour étudier la monotonie d'une suite $(a_n)$, on calcule le signe de $a_{n+1}-a_n$ (ou, quand c'est plus simple, on réécrit $a_n$ sous une forme qui rend la variation évidente).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "On tire au hasard deux boules de l'urne.\nCalculer la probabilité $P_2(n)$ de tirer deux boules rouges (1 pt), et la probabilité $P_2'(n)$ d'avoir une boule de chaque couleur (1 pt).",
+      "corrige_markdown": "### Rappel de méthode\nPour un tirage simultané de $2$ boules parmi $n+1$ boules indiscernables au toucher, le nombre total de tirages possibles est $\\binom{n+1}{2}$. La probabilité d'un événement est alors le nombre de tirages favorables (choisis avec $\\binom{\\cdot}{\\cdot}$ parmi les catégories concernées) divisé par $\\binom{n+1}{2}$.\n\nLe nombre total de façons de tirer $2$ boules parmi les $n+1$ boules de l'urne est :\n$$\\binom{n+1}{2} = \\frac{(n+1)n}{2}$$\n\n**Probabilité de tirer deux boules rouges.** Il faut choisir $2$ boules parmi les $n$ boules rouges (aucune boule blanche) :\n$$\\binom{n}{2} = \\frac{n(n-1)}{2}$$\nD'où :\n$$P_2(n) = \\frac{\\binom{n}{2}}{\\binom{n+1}{2}} = \\frac{\\dfrac{n(n-1)}{2}}{\\dfrac{(n+1)n}{2}} = \\frac{n-1}{n+1}$$\n\n**Probabilité d'avoir une boule de chaque couleur.** Il faut choisir la boule blanche unique ($\\binom{1}{1}=1$ façon) et $1$ boule rouge parmi les $n$ ($\\binom{n}{1}=n$ façons) :\n$$P_2'(n) = \\frac{\\binom{1}{1}\\binom{n}{1}}{\\binom{n+1}{2}} = \\frac{n}{\\dfrac{(n+1)n}{2}} = \\frac{2}{n+1}$$\n\n### Conseil\nVérifie ton résultat en additionnant toutes les probabilités des issues possibles : ici, tirer $2$ boules blanches est impossible (il n'y en a qu'une), donc $P_2(n)+P_2'(n)$ doit valoir $1$. On a bien $\\dfrac{n-1}{n+1}+\\dfrac{2}{n+1}=\\dfrac{n+1}{n+1}=1$ : ce contrôle rapide permet de repérer immédiatement une erreur de calcul le jour de l'examen.",
+      "themes": [
+        "probabilités - tirages sans remise",
+        "coefficients binomiaux",
+        "limite d'une suite",
+        "monotonie d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2001-benin-ex2-1",
+          "competence": "Probabilités avec combinaisons pour un tirage simultané",
+          "contenu_markdown": "Pour un tirage simultané de $2$ boules parmi $n+1$ boules indiscernables au toucher, le nombre total de tirages possibles est $\\binom{n+1}{2}$. La probabilité d'un événement est alors le nombre de tirages favorables (choisis avec $\\binom{\\cdot}{\\cdot}$ parmi les catégories concernées) divisé par $\\binom{n+1}{2}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "Calculer, lorsque $n$ tend vers $+\\infty$, la limite de $P_2(n)$ et de $P_2'(n)$ (1 pt). Pouvait-on prévoir ces résultats ? (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour une fraction rationnelle en $n$ où le numérateur et le dénominateur sont de même degré, la limite en $+\\infty$ s'obtient en factorisant par le terme de plus haut degré au numérateur et au dénominateur, ou en réécrivant la fraction pour isoler un terme constant.\n\n$$P_2(n) = \\frac{n-1}{n+1} = \\frac{n+1-2}{n+1} = 1 - \\frac{2}{n+1}$$\nQuand $n\\to+\\infty$, $\\dfrac{2}{n+1}\\to 0$, donc :\n$$\\lim_{n\\to+\\infty} P_2(n) = 1$$\n\n$$P_2'(n) = \\frac{2}{n+1}$$\nQuand $n\\to+\\infty$, $n+1\\to+\\infty$, donc :\n$$\\lim_{n\\to+\\infty} P_2'(n) = 0$$\n\nCes résultats étaient prévisibles : quand $n$ devient très grand, l'urne est presque entièrement composée de boules rouges (une seule boule blanche face à $n$ boules rouges). Tirer deux boules au hasard donne alors une quasi-certitude de tirer deux boules rouges (probabilité qui tend vers $1$), et une probabilité quasi nulle de tomber sur l'unique boule blanche parmi les deux boules tirées.\n\n### Conseil\nAvant de calculer une limite de probabilité, demande-toi toujours ce que la situation physique suggère intuitivement (ici : \"plus il y a de boules rouges, plus il est presque sûr d'en tirer deux\") - si ton calcul contredit cette intuition, cherche l'erreur avant de rendre ta copie.",
+      "themes": [
+        "probabilités - tirages sans remise",
+        "coefficients binomiaux",
+        "limite d'une suite",
+        "monotonie d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2001-benin-ex2-2",
+          "competence": "Limite en +infini d'une fraction rationnelle en n",
+          "contenu_markdown": "Pour une fraction rationnelle en $n$ où le numérateur et le dénominateur sont de même degré, la limite en $+\\infty$ s'obtient en factorisant par le terme de plus haut degré au numérateur et au dénominateur, ou en réécrivant la fraction pour isoler un terme constant.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Comparer $P_1(n)$ et $P_2(n)$ (0,5 pt). Déterminer les valeurs de $n$ pour lesquelles $P_1(n) - P_2(n) < \\dfrac{1}{8}$ (0,5 pt).",
+      "corrige_markdown": "### Rappel de méthode\nComparer deux quantités revient à étudier le signe de leur différence. Résoudre une inéquation du type $\\dfrac{a}{n+b}<\\dfrac{1}{c}$ (avec $a,c>0$ et $n+b>0$) se ramène, en passant à l'inverse, à comparer $n+b$ et $\\dfrac{ac}{1}$ - attention au sens de l'inégalité qui s'inverse par passage à l'inverse de deux quantités strictement positives.\n\n$$P_1(n)-P_2(n) = \\frac{n}{n+1}-\\frac{n-1}{n+1} = \\frac{n-(n-1)}{n+1} = \\frac{1}{n+1}$$\nComme $n\\geqslant 2$, on a $n+1>0$, donc $P_1(n)-P_2(n)=\\dfrac{1}{n+1}>0$ pour tout $n\\geqslant 2$ : on a donc $P_1(n)>P_2(n)$ pour tout $n\\geqslant 2$.\n\nRésolution de $P_1(n)-P_2(n)<\\dfrac18$ :\n$$\\frac{1}{n+1} < \\frac{1}{8}$$\nLes deux membres sont strictement positifs ($n+1>0$ et $8>0$), donc l'inégalité entre inverses s'inverse en comparant les dénominateurs :\n$$n+1 > 8$$\n$$n > 7$$\nComme $n$ est un entier naturel avec $n\\geqslant 2$, l'ensemble des valeurs solutions est :\n$$n \\geqslant 8$$\n\n### Piège à éviter\nPasser de $\\dfrac{1}{n+1}<\\dfrac18$ à $n+1>8$ nécessite de justifier que les deux membres sont positifs avant d'inverser l'inégalité - une inversion appliquée sans cette précaution (ou appliquée à des quantités de signe différent) donnerait un résultat faux. Ici $n+1>0$ pour tout $n\\geqslant 2$, donc l'inversion est licite, mais ce point doit apparaître dans la rédaction plutôt qu'être sous-entendu.",
+      "themes": [
+        "probabilités - tirages sans remise",
+        "coefficients binomiaux",
+        "limite d'une suite",
+        "monotonie d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-2001-benin-ex2-3",
+          "competence": "Résolution d'une inéquation par passage à l'inverse",
+          "contenu_markdown": "Comparer deux quantités revient à étudier le signe de leur différence. Résoudre une inéquation du type $\\dfrac{a}{n+b}<\\dfrac{1}{c}$ (avec $a,c>0$ et $n+b>0$) se ramène, en passant à l'inverse, à comparer $n+b$ et $\\dfrac{ac}{1}$ - attention au sens de l'inégalité qui s'inverse par passage à l'inverse de deux quantités strictement positives.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
   ],
-  "difficulte_estimee": "moyenne",
   "mots_cles_recherche": [
     "probabilité tirage urne",
     "boules blanches et rouges",
@@ -27,36 +115,5 @@
     "BAC série A Bénin"
   ],
   "incertitudes": [],
-  "statut": "brouillon",
-  "corrige_markdown": "## Question 1 — Probabilité $P_1(n)$ et monotonie\n\n### Rappel de méthode\nDans un tirage d'une boule au hasard dans une urne équiprobable, la probabilité d'un événement est le rapport du nombre de cas favorables sur le nombre total de boules. Pour étudier la monotonie d'une suite $(a_n)$, on calcule le signe de $a_{n+1}-a_n$ (ou, quand c'est plus simple, on réécrit $a_n$ sous une forme qui rend la variation évidente).\n\nL'urne contient $1$ boule blanche et $n$ boules rouges, soit $n+1$ boules au total. Tirer une boule rouge au hasard a pour probabilité :\n$$P_1(n) = \\frac{n}{n+1}$$\n\nMonotonie : on réécrit $P_1(n)$ sous une forme qui isole la dépendance en $n$ :\n$$P_1(n) = \\frac{n}{n+1} = \\frac{(n+1)-1}{n+1} = 1 - \\frac{1}{n+1}$$\nQuand $n$ augmente, $n+1$ augmente, donc $\\dfrac{1}{n+1}$ diminue, donc $1-\\dfrac{1}{n+1}$ augmente. On peut le vérifier directement par la différence :\n$$P_1(n+1)-P_1(n) = \\frac{n+1}{n+2}-\\frac{n}{n+1} = \\frac{(n+1)^2-n(n+2)}{(n+2)(n+1)} = \\frac{n^2+2n+1-n^2-2n}{(n+1)(n+2)} = \\frac{1}{(n+1)(n+2)}$$\nPour tout $n\\geqslant 2$, $(n+1)(n+2)>0$, donc $P_1(n+1)-P_1(n)>0$.\n\nLa suite $(P_1(n))_{n\\geqslant 2}$ est strictement croissante, donc monotone.\n\n### Conseil\nQuand une suite se présente comme un quotient en $n$, essaie toujours de la réécrire sous la forme $1 - \\dfrac{c}{n+k}$ avant de te lancer dans le calcul de $a_{n+1}-a_n$ : la monotonie devient souvent visible immédiatement, et le calcul de différence te sert alors uniquement de confirmation rigoureuse.\n\n## Question 2.a — Probabilités $P_2(n)$ et $P_2'(n)$\n\n### Rappel de méthode\nPour un tirage simultané de $2$ boules parmi $n+1$ boules indiscernables au toucher, le nombre total de tirages possibles est $\\binom{n+1}{2}$. La probabilité d'un événement est alors le nombre de tirages favorables (choisis avec $\\binom{\\cdot}{\\cdot}$ parmi les catégories concernées) divisé par $\\binom{n+1}{2}$.\n\nLe nombre total de façons de tirer $2$ boules parmi les $n+1$ boules de l'urne est :\n$$\\binom{n+1}{2} = \\frac{(n+1)n}{2}$$\n\n**Probabilité de tirer deux boules rouges.** Il faut choisir $2$ boules parmi les $n$ boules rouges (aucune boule blanche) :\n$$\\binom{n}{2} = \\frac{n(n-1)}{2}$$\nD'où :\n$$P_2(n) = \\frac{\\binom{n}{2}}{\\binom{n+1}{2}} = \\frac{\\dfrac{n(n-1)}{2}}{\\dfrac{(n+1)n}{2}} = \\frac{n-1}{n+1}$$\n\n**Probabilité d'avoir une boule de chaque couleur.** Il faut choisir la boule blanche unique ($\\binom{1}{1}=1$ façon) et $1$ boule rouge parmi les $n$ ($\\binom{n}{1}=n$ façons) :\n$$P_2'(n) = \\frac{\\binom{1}{1}\\binom{n}{1}}{\\binom{n+1}{2}} = \\frac{n}{\\dfrac{(n+1)n}{2}} = \\frac{2}{n+1}$$\n\n### Conseil\nVérifie ton résultat en additionnant toutes les probabilités des issues possibles : ici, tirer $2$ boules blanches est impossible (il n'y en a qu'une), donc $P_2(n)+P_2'(n)$ doit valoir $1$. On a bien $\\dfrac{n-1}{n+1}+\\dfrac{2}{n+1}=\\dfrac{n+1}{n+1}=1$ : ce contrôle rapide permet de repérer immédiatement une erreur de calcul le jour de l'examen.\n\n## Question 2.b — Limites de $P_2(n)$ et $P_2'(n)$ quand $n\\to+\\infty$\n\n### Rappel de méthode\nPour une fraction rationnelle en $n$ où le numérateur et le dénominateur sont de même degré, la limite en $+\\infty$ s'obtient en factorisant par le terme de plus haut degré au numérateur et au dénominateur, ou en réécrivant la fraction pour isoler un terme constant.\n\n$$P_2(n) = \\frac{n-1}{n+1} = \\frac{n+1-2}{n+1} = 1 - \\frac{2}{n+1}$$\nQuand $n\\to+\\infty$, $\\dfrac{2}{n+1}\\to 0$, donc :\n$$\\lim_{n\\to+\\infty} P_2(n) = 1$$\n\n$$P_2'(n) = \\frac{2}{n+1}$$\nQuand $n\\to+\\infty$, $n+1\\to+\\infty$, donc :\n$$\\lim_{n\\to+\\infty} P_2'(n) = 0$$\n\nCes résultats étaient prévisibles : quand $n$ devient très grand, l'urne est presque entièrement composée de boules rouges (une seule boule blanche face à $n$ boules rouges). Tirer deux boules au hasard donne alors une quasi-certitude de tirer deux boules rouges (probabilité qui tend vers $1$), et une probabilité quasi nulle de tomber sur l'unique boule blanche parmi les deux boules tirées.\n\n### Conseil\nAvant de calculer une limite de probabilité, demande-toi toujours ce que la situation physique suggère intuitivement (ici : \"plus il y a de boules rouges, plus il est presque sûr d'en tirer deux\") - si ton calcul contredit cette intuition, cherche l'erreur avant de rendre ta copie.\n\n## Question 3 — Comparaison de $P_1(n)$ et $P_2(n)$, résolution de $P_1(n)-P_2(n)<\\frac18$\n\n### Rappel de méthode\nComparer deux quantités revient à étudier le signe de leur différence. Résoudre une inéquation du type $\\dfrac{a}{n+b}<\\dfrac{1}{c}$ (avec $a,c>0$ et $n+b>0$) se ramène, en passant à l'inverse, à comparer $n+b$ et $\\dfrac{ac}{1}$ - attention au sens de l'inégalité qui s'inverse par passage à l'inverse de deux quantités strictement positives.\n\n$$P_1(n)-P_2(n) = \\frac{n}{n+1}-\\frac{n-1}{n+1} = \\frac{n-(n-1)}{n+1} = \\frac{1}{n+1}$$\nComme $n\\geqslant 2$, on a $n+1>0$, donc $P_1(n)-P_2(n)=\\dfrac{1}{n+1}>0$ pour tout $n\\geqslant 2$ : on a donc $P_1(n)>P_2(n)$ pour tout $n\\geqslant 2$.\n\nRésolution de $P_1(n)-P_2(n)<\\dfrac18$ :\n$$\\frac{1}{n+1} < \\frac{1}{8}$$\nLes deux membres sont strictement positifs ($n+1>0$ et $8>0$), donc l'inégalité entre inverses s'inverse en comparant les dénominateurs :\n$$n+1 > 8$$\n$$n > 7$$\nComme $n$ est un entier naturel avec $n\\geqslant 2$, l'ensemble des valeurs solutions est :\n$$n \\geqslant 8$$\n\n### Piège à éviter\nPasser de $\\dfrac{1}{n+1}<\\dfrac18$ à $n+1>8$ nécessite de justifier que les deux membres sont positifs avant d'inverser l'inégalité - une inversion appliquée sans cette précaution (ou appliquée à des quantités de signe différent) donnerait un résultat faux. Ici $n+1>0$ pour tout $n\\geqslant 2$, donc l'inversion est licite, mais ce point doit apparaître dans la rédaction plutôt qu'être sous-entendu.",
-  "rappels_de_methode": [
-    {
-      "id": "rdm-bac-a-maths-2001-benin-ex2-0",
-      "competence": "Probabilité dans un tirage simple et étude de monotonie d'une suite",
-      "contenu_markdown": "Dans un tirage d'une boule au hasard dans une urne équiprobable, la probabilité d'un événement est le rapport du nombre de cas favorables sur le nombre total de boules. Pour étudier la monotonie d'une suite $(a_n)$, on calcule le signe de $a_{n+1}-a_n$ (ou, quand c'est plus simple, on réécrit $a_n$ sous une forme qui rend la variation évidente).",
-      "cours_genere": false,
-      "cours_id": null
-    },
-    {
-      "id": "rdm-bac-a-maths-2001-benin-ex2-1",
-      "competence": "Probabilités avec combinaisons pour un tirage simultané",
-      "contenu_markdown": "Pour un tirage simultané de $2$ boules parmi $n+1$ boules indiscernables au toucher, le nombre total de tirages possibles est $\\binom{n+1}{2}$. La probabilité d'un événement est alors le nombre de tirages favorables (choisis avec $\\binom{\\cdot}{\\cdot}$ parmi les catégories concernées) divisé par $\\binom{n+1}{2}$.",
-      "cours_genere": false,
-      "cours_id": null
-    },
-    {
-      "id": "rdm-bac-a-maths-2001-benin-ex2-2",
-      "competence": "Limite en +infini d'une fraction rationnelle en n",
-      "contenu_markdown": "Pour une fraction rationnelle en $n$ où le numérateur et le dénominateur sont de même degré, la limite en $+\\infty$ s'obtient en factorisant par le terme de plus haut degré au numérateur et au dénominateur, ou en réécrivant la fraction pour isoler un terme constant.",
-      "cours_genere": false,
-      "cours_id": null
-    },
-    {
-      "id": "rdm-bac-a-maths-2001-benin-ex2-3",
-      "competence": "Résolution d'une inéquation par passage à l'inverse",
-      "contenu_markdown": "Comparer deux quantités revient à étudier le signe de leur différence. Résoudre une inéquation du type $\\dfrac{a}{n+b}<\\dfrac{1}{c}$ (avec $a,c>0$ et $n+b>0$) se ramène, en passant à l'inverse, à comparer $n+b$ et $\\dfrac{ac}{1}$ - attention au sens de l'inégalité qui s'inverse par passage à l'inverse de deux quantités strictement positives.",
-      "cours_genere": false,
-      "cours_id": null
-    }
-  ]
+  "statut": "brouillon"
 }

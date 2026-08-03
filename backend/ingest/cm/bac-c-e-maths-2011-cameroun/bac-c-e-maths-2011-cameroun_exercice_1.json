@@ -1,0 +1,80 @@
+{
+  "epreuve_source": "bac-c-e-maths-2011-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2011",
+  "duree_epreuve": "4h",
+  "coefficient": "5(C) / 4(E)",
+  "numero_exercice": "1",
+  "points": 3,
+  "enonce_intro_markdown": "**Exercice 1 (3 points)**\n\nPour tout entier naturel $n$, on considère $I_n=\\displaystyle\\int_0^{\\pi/2}e^{-nx/2}\\sin x\\,dx$ et $J_n=\\displaystyle\\int_0^{\\pi/2}e^{-nx/2}\\cos x\\,dx$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. En utilisant une intégration par parties, montrer que $2I_n+nJ_n=2$ et $nI_n-2J_n=-2e^{-n\\pi/4}$.",
+      "corrige_markdown": "### Rappel de methode\nPour intégrer par parties $\\int u\\,dv=[uv]-\\int v\\,du$ ; en posant $u=e^{-nx/2}$ (dont la dérivée fait réapparaître un facteur $e^{-nx/2}$), on relie $I_n$ à $J_n$ et réciproquement.\n\n### Corrige\n**Calcul de $2I_n+nJ_n$.** Dans $I_n=\\displaystyle\\int_0^{\\pi/2}e^{-nx/2}\\sin x\\,dx$, on pose $u=e^{-nx/2}$, $dv=\\sin x\\,dx$, donc $du=-\\dfrac n2e^{-nx/2}dx$ et $v=-\\cos x$ :\n\n$$I_n=\\Big[-e^{-nx/2}\\cos x\\Big]_0^{\\pi/2}-\\int_0^{\\pi/2}\\dfrac n2e^{-nx/2}\\cos x\\,dx=\\big(0-(-1)\\big)-\\dfrac n2J_n=1-\\dfrac n2J_n$$\n\nd'où $I_n+\\dfrac n2J_n=1$, soit, en multipliant par $2$ :\n$$2I_n+nJ_n=2$$\n\n**Calcul de $nI_n-2J_n$.** Dans $J_n=\\displaystyle\\int_0^{\\pi/2}e^{-nx/2}\\cos x\\,dx$, on pose $u=e^{-nx/2}$, $dv=\\cos x\\,dx$, donc $du=-\\dfrac n2e^{-nx/2}dx$ et $v=\\sin x$ :\n\n$$J_n=\\Big[e^{-nx/2}\\sin x\\Big]_0^{\\pi/2}+\\int_0^{\\pi/2}\\dfrac n2e^{-nx/2}\\sin x\\,dx=\\big(e^{-n\\pi/4}-0\\big)+\\dfrac n2I_n=e^{-n\\pi/4}+\\dfrac n2I_n$$\n\nd'où $J_n-\\dfrac n2I_n=e^{-n\\pi/4}$, soit, en multipliant par $-2$ :\n$$nI_n-2J_n=-2e^{-n\\pi/4}$$",
+      "themes": [
+        "intégration par parties",
+        "système d'équations liant deux intégrales"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2011-ex1-0",
+          "competence": "Intégration par parties pour relier deux intégrales",
+          "contenu_markdown": "Pour intégrer par parties $\\int u\\,dv=[uv]-\\int v\\,du$ ; en posant $u=e^{-nx/2}$ (dont la dérivée fait réapparaître un facteur $e^{-nx/2}$), on relie $I_n$ à $J_n$ et réciproquement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Déduire de 1. les expressions de $I_n$ et $J_n$ en fonction de $n$, pour tout entier naturel $n$.",
+      "corrige_markdown": "### Rappel de methode\nOn résout le système linéaire formé par les deux relations obtenues à la question précédente, d'inconnues $I_n$ et $J_n$.\n\n### Corrige\nOn part de $2I_n+nJ_n=2$ (i) et $nI_n-2J_n=-2e^{-n\\pi/4}$ (ii).\n\nDe (i) : $J_n=\\dfrac{2-2I_n}{n}$ (pour $n\\neq0$). En reportant dans (ii) puis en multipliant par $n$ :\n$$n^2I_n-2(2-2I_n)=-2ne^{-n\\pi/4}\\ \\Longrightarrow\\ I_n(n^2+4)=4-2ne^{-n\\pi/4}$$\n\n$$\\boxed{I_n=\\dfrac{4-2ne^{-n\\pi/4}}{n^2+4}}$$\n\nEn reportant dans (i) : $nJ_n=2-2I_n=\\dfrac{2(n^2+4)-2(4-2ne^{-n\\pi/4})}{n^2+4}=\\dfrac{2n^2+4ne^{-n\\pi/4}}{n^2+4}=\\dfrac{n(2n+4e^{-n\\pi/4})}{n^2+4}$, d'où :\n\n$$\\boxed{J_n=\\dfrac{2n+4e^{-n\\pi/4}}{n^2+4}}$$\n\n*Vérification en $n=0$* (cas exclu dans la résolution) : $I_0=\\frac{4-0}{4}=1$ et $J_0=\\frac{0+4}{4}=1$, conformes à $I_0=\\int_0^{\\pi/2}\\sin x\\,dx=1$ et $J_0=\\int_0^{\\pi/2}\\cos x\\,dx=1$ : les formules restent valables en $n=0$.",
+      "themes": [
+        "résolution d'un système linéaire",
+        "expression explicite d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2011-ex1-1",
+          "competence": "Résoudre le système linéaire en I_n, J_n",
+          "contenu_markdown": "On résout le système linéaire formé par les deux relations obtenues à la question précédente, d'inconnues $I_n$ et $J_n$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Les suites $(I_n)$ et $(J_n)$ sont-elles convergentes ?",
+      "corrige_markdown": "### Rappel de methode\nOn étudie la limite de chaque expression quand $n\\to+\\infty$, en comparant la croissance de $n$ (ou $ne^{-n\\pi/4}$) à celle de $n^2$.\n\n### Corrige\n$$I_n=\\dfrac{4-2ne^{-n\\pi/4}}{n^2+4}\\qquad;\\qquad J_n=\\dfrac{2n+4e^{-n\\pi/4}}{n^2+4}$$\n\nQuand $n\\to+\\infty$ : $ne^{-n\\pi/4}\\to0$ (croissance comparée, l'exponentielle décroissante l'emporte sur $n$), donc le numérateur de $I_n$ tend vers $4$ tandis que le dénominateur $n^2+4\\to+\\infty$ : $I_n\\to0$.\n\nDe même, le numérateur de $J_n$ est équivalent à $2n$, négligeable devant $n^2$ au dénominateur : $J_n\\to0$.\n\n**Les suites $(I_n)$ et $(J_n)$ sont convergentes, toutes deux de limite $0$.**",
+      "themes": [
+        "convergence d'une suite",
+        "croissances comparées"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "intégration par parties",
+    "suite d'intégrales",
+    "convergence de suite",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [],
+  "figures": [],
+  "statut": "brouillon"
+}

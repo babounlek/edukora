@@ -1,0 +1,94 @@
+{
+  "epreuve_source": "bac-d-maths-1998-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 1998,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": 1,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "Une urne contient 3 boules noires, 4 boules rouges et 5 boules blanches. On tire simultanément et avec équiprobabilité 2 boules de cette urne.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. a) Calculer la probabilité de tirer 2 boules rouges. b) Quelle est la probabilité de tirer 2 boules de couleurs différentes ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour un tirage simultané de $k$ boules parmi $n$, le nombre de tirages possibles est $\\binom{n}{k}$ ; la probabilité d'un événement est le nombre de tirages favorables divisé par ce total.\\n\\n### Corrigé\\nL'urne contient $3+4+5=12$ boules. Le nombre de tirages simultanés de $2$ boules parmi $12$ est :\\n$$\\binom{12}{2}=\\frac{12\\times11}{2}=66.$$\\n\\n**a) Probabilité de tirer 2 boules rouges.** Il y a $\\binom{4}{2}=\\dfrac{4\\times3}{2}=6$ façons de choisir $2$ boules rouges parmi les $4$. Donc :\\n$$P(\\text{2 rouges})=\\frac{6}{66}=\\frac{1}{11}.$$\\n\\n**b) Probabilité de tirer 2 boules de couleurs différentes.** On calcule d'abord la probabilité de tirer $2$ boules de la **même** couleur, en sommant sur les trois couleurs :\\n$$\\binom{3}{2}+\\binom{4}{2}+\\binom{5}{2}=3+6+10=19.$$\\n$$P(\\text{même couleur})=\\frac{19}{66}.$$\\nL'événement « couleurs différentes » est le contraire de « même couleur », donc :\\n$$P(\\text{couleurs différentes})=1-\\frac{19}{66}=\\frac{66-19}{66}=\\frac{47}{66}.$$\\n\\n### Conseil\\nOn peut vérifier le résultat de b) directement, en sommant les tirages « bicolores » : $\\binom{3}{1}\\binom{4}{1}+\\binom{3}{1}\\binom{5}{1}+\\binom{4}{1}\\binom{5}{1}=12+15+20=47$, ce qui confirme $\\dfrac{47}{66}$ sans passer par l'événement contraire.",
+      "themes": [
+        "probabilité",
+        "tirage simultané",
+        "combinaisons",
+        "événement contraire"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1998d-ex1-1",
+          "competence": "Calcul de probabilite par denombrement sur un tirage simultane",
+          "contenu_markdown": "Pour un tirage simultané de $k$ boules parmi $n$, le nombre de tirages possibles est $\\binom{n}{k}$ ; la probabilité d'un événement est le nombre de tirages favorables divisé par ce total.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. On inscrit sur chaque boule noire le nombre 0, sur chaque boule rouge le nombre 1 et sur chaque boule blanche le nombre −1. On considère la variable aléatoire réelle $X$ qui, à chaque paire de boules tirée, fait correspondre la somme des nombres inscrits sur les 2 boules. a) Déterminer la loi de probabilité de $X$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour déterminer la loi d'une variable aléatoire définie comme somme de deux valeurs tirées, on énumère toutes les combinaisons de couleurs possibles, on calcule la valeur de la somme pour chacune, puis on regroupe et on dénombre les tirages donnant chaque valeur.\\n\\n### Corrigé\\nOn note $0$ le nombre inscrit sur une boule noire, $1$ sur une boule rouge, $-1$ sur une boule blanche, et $X$ la somme des deux nombres tirés. Les six combinaisons de couleurs possibles pour un tirage de $2$ boules donnent :\\n\\n- 2 blanches : $X=-1+(-1)=-2$, nombre de tirages $\\binom{5}{2}=10$ ;\\n- 1 noire + 1 blanche : $X=0+(-1)=-1$, nombre de tirages $\\binom{3}{1}\\binom{5}{1}=15$ ;\\n- 2 noires : $X=0+0=0$, nombre de tirages $\\binom{3}{2}=3$ ;\\n- 1 rouge + 1 blanche : $X=1+(-1)=0$, nombre de tirages $\\binom{4}{1}\\binom{5}{1}=20$ ;\\n- 1 noire + 1 rouge : $X=0+1=1$, nombre de tirages $\\binom{3}{1}\\binom{4}{1}=12$ ;\\n- 2 rouges : $X=1+1=2$, nombre de tirages $\\binom{4}{2}=6$.\\n\\nOn regroupe les deux cas donnant $X=0$ : $3+20=23$ tirages. On obtient la répartition (sur un total de $66$ tirages, vérifié par $10+15+23+12+6=66$) :\\n\\n$$\\begin{array}{|c|c|c|c|c|c|}\\hline k & -2 & -1 & 0 & 1 & 2\\\\\\hline P(X=k) & \\frac{10}{66}=\\frac{5}{33} & \\frac{15}{66}=\\frac{5}{22} & \\frac{23}{66} & \\frac{12}{66}=\\frac{2}{11} & \\frac{6}{66}=\\frac{1}{11}\\\\\\hline\\end{array}$$\\n\\n### Piège à éviter\\nOublier que la valeur $X=0$ peut être obtenue de deux façons différentes (2 boules noires, ou 1 rouge + 1 blanche) : il faut additionner les deux effectifs correspondants avant de diviser par $66$, sinon la somme des probabilités ne vaut pas $1$.",
+      "themes": [
+        "loi de probabilité",
+        "dénombrement",
+        "variable aléatoire somme"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1998d-ex1-2a",
+          "competence": "Determination de la loi d'une variable aleatoire somme de deux tirages colores",
+          "contenu_markdown": "Pour déterminer la loi d'une variable aléatoire définie comme somme de deux valeurs tirées, on énumère toutes les combinaisons de couleurs possibles, on calcule la valeur de la somme pour chacune, puis on regroupe et on dénombre les tirages donnant chaque valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "b) Calculer l'espérance mathématique de $X$. (On donnera tous les résultats sous forme de fraction irréductible.)",
+      "corrige_markdown": "### Rappel de méthode\\nL'espérance mathématique d'une variable aléatoire discrète est $E(X)=\\sum k\\,P(X=k)$.\\n\\n### Corrigé\\nOn calcule $E(X)=\\displaystyle\\sum_{k}k\\,P(X=k)$ en mettant toutes les probabilités au dénominateur commun $66$ :\\n$$66\\,E(X)=(-2)\\times10+(-1)\\times15+0\\times23+1\\times12+2\\times6.$$\\n$$=-20-15+0+12+12=-11.$$\\n$$E(X)=\\frac{-11}{66}=-\\frac{1}{6}\\quad\\text{(fraction irréductible, car }\\gcd(11,66)=11\\text{, donc }-\\frac{11}{66}=-\\frac{1}{6}\\text{).}$$\\n\\nL'espérance mathématique de $X$ est donc $E(X)=-\\dfrac16$.",
+      "themes": [
+        "espérance mathématique",
+        "fraction irréductible"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1998d-ex1-2b",
+          "competence": "Calcul de l'esperance mathematique d'une variable aleatoire discrete",
+          "contenu_markdown": "L'espérance mathématique d'une variable aléatoire discrète est $E(X)=\\sum k\\,P(X=k)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probabilité",
+    "tirage simultané",
+    "combinaisons",
+    "loi de probabilité",
+    "espérance mathématique",
+    "fraction irréductible",
+    "bac D Cameroun 1998"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

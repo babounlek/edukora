@@ -1,0 +1,75 @@
+{
+  "epreuve_source": "bac-d-maths-1993-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1993",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**\\n\\nUne urne contient $10$ boules dont $4$ blanches et $6$ noires. On tire simultanément deux boules de l'urne. Le tirage d'une boule blanche donne droit à $10$ points et celui d'une boule noire donne droit à $5$ points. On désigne par $X$ la somme des points marqués.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Déterminer la loi de probabilité de X. Calculer l'espérance mathématique de X.",
+      "corrige_markdown": "### Rappel de méthode\\nPour un tirage simultané de deux objets répartis en deux catégories, on dénombre séparément les tirages réalisant chaque valeur possible de la variable étudiée (ici, selon le nombre de boules blanches obtenues), on divise par le nombre total de tirages ($\\binom{10}2$), puis on calcule l'espérance par $E(X)=\\sum x_iP(X=x_i)$.\\n\\n### Corrigé\\nLe nombre total de tirages de $2$ boules parmi les $10$ est $\\binom{10}2=\\dfrac{10\\times9}2=45$.\\n\\n$X$ prend ses valeurs selon la composition du tirage :\\n- $2$ boules blanches : $X=10+10=20$ ;\\n- $1$ boule blanche et $1$ boule noire : $X=10+5=15$ ;\\n- $2$ boules noires : $X=5+5=10$.\\n\\n**Dénombrement.**\\n$$P(X=20)=\\frac{\\binom42}{\\binom{10}2}=\\frac6{45}=\\frac2{15}$$\\n$$P(X=15)=\\frac{\\binom41\\binom61}{\\binom{10}2}=\\frac{24}{45}=\\frac8{15}$$\\n$$P(X=10)=\\frac{\\binom62}{\\binom{10}2}=\\frac{15}{45}=\\frac13=\\frac5{15}$$\\n\\nVérification : $\\dfrac2{15}+\\dfrac8{15}+\\dfrac5{15}=\\dfrac{15}{15}=1$. ✓\\n\\n**Loi de probabilité de $X$ :**\\n\\n$$\\begin{array}{|c|c|c|c|}\\hline x_i&10&15&20\\\\\\hline P(X=x_i)&\\dfrac5{15}=\\dfrac13&\\dfrac8{15}&\\dfrac2{15}\\\\\\hline\\end{array}$$\\n\\n**Espérance mathématique.**\\n$$E(X)=10\\times\\frac5{15}+15\\times\\frac8{15}+20\\times\\frac2{15}=\\frac{50+120+40}{15}=\\frac{210}{15}=14$$\\n\\n$$\\boxed{E(X)=14}$$\\n\\n### Piège à éviter\\nL'énoncé demande « l'espérance mathématique » de $X$ (et non son « espace », terme sans sens ici — probable coquille de transcription) : $E(X)$ se calcule bien comme la moyenne des valeurs pondérées par leurs probabilités, jamais comme un ensemble de valeurs.",
+      "themes": [
+        "probabilités",
+        "loi de probabilité",
+        "espérance mathématique",
+        "dénombrement"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-e1-1",
+          "competence": "Determination d'une loi de probabilite et de l'esperance d'une variable aleatoire liee a un tirage",
+          "contenu_markdown": "Pour un tirage simultané de deux objets répartis en deux catégories, on dénombre séparément les tirages réalisant chaque valeur possible de la variable étudiée (ici, selon le nombre de boules blanches obtenues), on divise par le nombre total de tirages ($\\binom{10}2$), puis on calcule l'espérance par $E(X)=\\sum x_iP(X=x_i)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. On suppose maintenant que sur les dix boules de l'urne, a boules sont noires. Calculer E(X) en fonction de a. Pour quelle valeur de a a-t-on E(X)=a² ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour généraliser un calcul de probabilité à un paramètre $a$, on refait le même dénombrement qu'avec les valeurs numériques initiales, mais en gardant $a$ et $10-a$ comme effectifs des deux catégories.\\n\\n### Corrigé\\nSupposons maintenant que, sur les $10$ boules, $a$ soient noires (donc $10-a$ blanches, avec $0\\le a\\le10$). Le nombre total de tirages reste $\\binom{10}2=45$.\\n\\n**Calcul de $E(X)$ en fonction de $a$.**\\n$$P(X=20)=\\frac{\\binom{10-a}2}{45}\\qquad P(X=15)=\\frac{a(10-a)}{45}\\qquad P(X=10)=\\frac{\\binom a2}{45}$$\\n\\n$$E(X)=\\frac{20\\binom{10-a}2+15\\,a(10-a)+10\\binom a2}{45}$$\\n\\nDéveloppons chaque terme : $\\binom{10-a}2=\\dfrac{(10-a)(9-a)}2$ et $\\binom a2=\\dfrac{a(a-1)}2$. Le numérateur devient :\\n$$10(10-a)(9-a)+15a(10-a)+5a(a-1)$$\\n$$=10(90-19a+a^2)+15(10a-a^2)+5(a^2-a)$$\\n$$=900-190a+10a^2+150a-15a^2+5a^2-5a$$\\n$$=900+(-190+150-5)a+(10-15+5)a^2=900-45a+0\\times a^2=900-45a$$\\n\\nDonc :\\n$$E(X)=\\frac{900-45a}{45}=20-a$$\\n\\n$$\\boxed{E(X)=20-a}$$\\n\\n**Vérification.** Pour $a=6$ (cas de la question 1), $E(X)=20-6=14$ : cohérent avec le résultat déjà trouvé. ✓\\n\\n**Recherche de $a$ tel que $E(X)=a^2$.**\\n$$20-a=a^2\\iff a^2+a-20=0$$\\nDiscriminant : $\\Delta=1+80=81=9^2$. Racines : $a=\\dfrac{-1\\pm9}2$, soit $a=4$ ou $a=-5$.\\n\\nComme $a$ désigne un nombre de boules, $a$ doit être un entier compris entre $0$ et $10$ : seule $a=4$ convient (on rejette $a=-5$, négatif).\\n\\n$$\\boxed{a=4}$$\\n\\n### Piège à éviter\\nLa valeur $a=-5$, mathématiquement solution de l'équation du second degré, doit être rejetée car $a$ représente un effectif de boules noires, nécessairement un entier compris entre $0$ et $10$ : ne jamais oublier de revenir au contexte du problème pour filtrer les solutions algébriques.",
+      "themes": [
+        "espérance mathématique",
+        "paramètre",
+        "résolution d'équation du second degré"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1993d-e1-2",
+          "competence": "Calcul d'une esperance en fonction d'un parametre et resolution associee",
+          "contenu_markdown": "Pour généraliser un calcul de probabilité à un paramètre $a$, on refait le même dénombrement qu'avec les valeurs numériques initiales, mais en gardant $a$ et $10-a$ comme effectifs des deux catégories.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "incertitudes": [
+    "L'énoncé source demande de « calculer l'espace mathématique de X », terme sans signification en probabilités ; lecture retenue : « l'espérance mathématique de X » (coquille de transcription probable, « espace » pour « espérance »)."
+  ],
+  "mots_cles_recherche": [
+    "probabilités",
+    "loi de probabilité",
+    "espérance mathématique",
+    "paramètre",
+    "équation du second degré",
+    "bac D 1993",
+    "Cameroun"
+  ],
+  "statut": "corrige"
+}

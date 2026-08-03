@@ -3,6 +3,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 # correction-experte ouvre CHAQUE corrigé d'exercice par une "fiche d'identité"
 # (matière/série/examen/année) - pertinent quand un exercice est traité seul, mais
@@ -28,6 +29,32 @@ _RAPPEL_BLOCK_RE = re.compile(r"###\s*Rappel de méthode\s*\n+.*?(?=\n#{1,6}[ \t
 # commentaires HTML.
 _RAPPEL_ORPHELIN_RE = re.compile(r"<!--\s*RAPPEL_NON_APPARIE\s*:.*?-->\n*", re.IGNORECASE | re.DOTALL)
 
+# "La courbe ci-contre...", "le tableau ci-dessous..." : renvoi explicite à une figure
+# supposée visible - voir Question.references_missing_figure.
+_MISSING_FIGURE_REFERENCE_RE = re.compile(r"\bci[- ]contre\b|\bci[- ]dessous\b|\bci[- ]apr[eè]s\b", re.IGNORECASE)
+_IMAGE_PLACEHOLDER_RE = re.compile(r"!\[[^\]]*\]\([^)]+\)")
+
+# Une sous-question transcrit souvent déjà son propre repère visible telle qu'elle
+# apparaît sur l'épreuve source - un titre en gras ("**Partie A**"), sa numérotation
+# d'origine ("1. ", "2) "), ou une lettre suivie de ":"/"." ("A : «...»") - voir
+# Exercise._render_question_enonce, qui ne préfixe le `numero` interne que si le texte
+# n'affiche déjà aucun repère de ce genre, pour ne jamais doubler l'information.
+_ENONCE_ALREADY_LABELED_RE = re.compile(r"^\s*(\*\*|\d+\s*[.)]\s|[A-Za-z]\s*[.):])")
+
+
+def _strip_redundant_local_marker(text, numero):
+    """
+    Retire un marqueur local du type "(b)" en tête du texte quand il redouble
+    exactement le dernier segment du `numero` complet déjà affiché en préfixe (ex.
+    numero="A.3.b", texte="(b) Étudier...") - correction-experte ne recopie que la
+    lettre/le chiffre local hérité de l'énoncé source, jamais le chemin complet de la
+    partie, donc sans ceci le lecteur voit le même repère deux fois : une fois dans le
+    préfixe compilé ("**A.3.b.**"), une fois dans le texte d'origine ("(b)").
+    """
+    last_segment = numero.rsplit(".", 1)[-1]
+    marker_re = re.compile(rf"^\(\s*{re.escape(last_segment)}\s*\)[.:]?\s*", re.IGNORECASE)
+    return marker_re.sub("", text, count=1)
+
 
 def _join_fr(items):
     """Joint des éléments à la française : "C", "C et E", "C, D et E" - pour ne pas
@@ -37,6 +64,33 @@ def _join_fr(items):
     if len(items) == 2:
         return " et ".join(items)
     return f"{', '.join(items[:-1])} et {items[-1]}"
+
+
+def _exercice_application_enonce(item):
+    """
+    Énoncé d'un exercice de la section 6 (mode cours) : soit un bloc unique
+    (`enonce_markdown`), soit - pour un exercice à sous-questions - un préambule
+    partagé (`enonce_intro_markdown`) suivi de l'énoncé de chaque `questions[]`, même
+    convention que Exercise.compile_from_questions() côté corrigé d'épreuve.
+    """
+    questions = item.get("questions")
+    if not questions:
+        return item.get("enonce_markdown", "")
+    intro = item.get("enonce_intro_markdown") or ""
+    corps = "\n\n".join(q.get("enonce_markdown", "") for q in questions)
+    return f"{intro}\n\n{corps}" if intro else corps
+
+
+def _exercice_application_solution(item):
+    """
+    Solution d'un exercice de la section 6 : soit `solution_markdown` unique, soit la
+    concaténation de la solution de chaque `questions[]` - `solution_markdown` et
+    `corrige_markdown` acceptés au niveau sous-question (la compétence peut nommer le
+    champ selon l'un ou l'autre de ses deux modes, corrigé d'épreuve vs cours)."""
+    questions = item.get("questions")
+    if not questions:
+        return item.get("solution_markdown", "")
+    return "\n\n".join(q.get("solution_markdown") or q.get("corrige_markdown", "") for q in questions)
 
 
 class Examen(models.TextChoices):
@@ -146,6 +200,16 @@ class Country(models.Model):
         help_text=(
             "Code devise ISO 4217 (ex : XAF). Donnée seule pour l'instant - aucun code "
             "ne s'en sert encore : le paiement (Campay) ne gère que le Cameroun."
+        ),
+    )
+    actif = models.BooleanField(
+        default=True,
+        help_text=(
+            "Décoche pour retirer entièrement ce pays du frontend (catalogue, cours, "
+            "quiz, sitemap) sans supprimer ses données ni bloquer son ingestion - "
+            "utile pour préparer un pays avant son lancement public, ou le retirer "
+            "temporairement. L'ingestion (catalog.ingestion) ne consulte jamais ce "
+            "champ : elle continue d'accepter du contenu pour un pays désactivé."
         ),
     )
 
@@ -276,11 +340,57 @@ class Tag(models.Model):
         return self.name
 
 
+class VisibleQuerySet(models.QuerySet):
+    """QuerySet partagé par Lesson et Cours : `.visibles()` filtre à la fois le statut
+    de validation et le pays d'origine, via `subject.country` - le seul chemin
+    toujours renseigné et non-ambigu vers Country (contrairement à `cursus.country`,
+    vide pour un Cours "toutes séries" et jamais garanti identique à celui du sujet).
+    Point d'entrée unique à utiliser dans toute vue publique (catalogue, détail, quiz,
+    sitemap) : un pays désactivé (`Country.actif=False`) doit disparaître de la
+    plateforme sans que son contenu soit supprimé ni bloqué à l'ingestion, qui ne
+    consulte jamais ce champ.
+    """
+
+    def visibles(self):
+        return self.filter(statut=StatutContenu.VALIDE, subject__country__actif=True)
+
+    def par_slug_ou_id(self, value):
+        """
+        Accepte soit le slug (URL publique, "/epreuves/<slug>/lire"), soit l'id
+        numérique - compat historique pour le seul lien pas encore migré vers un slug
+        (QuizSessionPage.tsx, construit depuis Question.lesson_id sur d'anciennes
+        sessions de quiz pré-bascule vers CompetenceItem, qui n'a pas de lesson_id).
+        """
+        return self.filter(pk=value) if str(value).isdigit() else self.filter(slug=value)
+
+
+def _generate_unique_slug(model_cls, title, existing_pk=None):
+    """
+    Slug lisible (SEO, partage) dérivé du titre, unique dans `model_cls` - un simple
+    id numérique dans l'URL ("/epreuves/723/lire") ne dit rien du contenu et n'incite
+    pas au partage. `existing_pk` exclut l'objet en cours d'enregistrement de la
+    vérification d'unicité (mise à jour) ; None (objet pas encore créé) ne fausse rien
+    ici, exclude(pk=None) équivaut à "pk IS NOT NULL", donc à aucune exclusion réelle.
+    """
+    base = slugify(title) or "contenu"
+    slug = base
+    counter = 2
+    while model_cls.objects.filter(slug=slug).exclude(pk=existing_pk).exists():
+        slug = f"{base}-{counter}"
+        counter += 1
+    return slug
+
+
 class Lesson(models.Model):
     """Le produit vendable : une ligne = un contenu lu en ligne par les abonnés."""
 
     title = models.CharField(max_length=255)
+    slug = models.SlugField(
+        max_length=255, unique=True, blank=True,
+        help_text="Généré automatiquement depuis le titre à la création - ne pas modifier après publication.",
+    )
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT, related_name="lessons")
+    objects = VisibleQuerySet.as_manager()
     cursus = models.ManyToManyField(
         Cursus, related_name="lessons",
         help_text="Plusieurs cursus si l'épreuve est commune à plusieurs séries (ex: Maths BAC C/E).",
@@ -344,6 +454,14 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = _generate_unique_slug(Lesson, self.title, existing_pk=self.pk)
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                kwargs["update_fields"] = [*update_fields, "slug"]
+        super().save(*args, **kwargs)
+
     def header_info(self):
         """
         Métadonnées d'identification (matière/série/examen/année/durée/coefficient)
@@ -367,6 +485,10 @@ class Lesson(models.Model):
             "coefficient": self.coefficient or None,
             "origine": self.get_origine_display() if self.origine != Origine.OFFICIEL else None,
             "etablissement": self.etablissement or None,
+            # Depuis Subject.country plutôt que cursus_list : toujours renseigné (FK
+            # obligatoire), contrairement à cursus qui peut être vide pour un Cours
+            # "toutes séries" - source fiable unique pour indiquer le pays au visiteur.
+            "pays": {"code": self.subject.country.code, "label": self.subject.country.label},
         }
 
     @staticmethod
@@ -551,6 +673,60 @@ class Exercise(models.Model):
     def __str__(self):
         return f"{self.lesson.epreuve_source or self.lesson.title} - Ex. {self.numero_exercice}"
 
+    @staticmethod
+    def _render_question_enonce(question, numbered):
+        """
+        Reconstruit le texte affiché d'une sous-question à partir des champs
+        structurés qu'elle porte déjà (numero, choix) - correction-experte les
+        fournit systématiquement à part (voir Question.choix) plutôt que de les
+        recopier en prose dans enonce_markdown, pour éviter la duplication qu'on
+        obtiendrait sinon entre texte libre et champ structuré. Sans cette
+        reconstruction, le numero et les options d'un QCM ne seraient jamais visibles
+        en dehors du Quiz (qui les lit directement depuis l'API, pas depuis ce texte
+        compilé) : le lecteur d'une épreuve verrait un énoncé nu suivi d'un corrigé
+        qui référence "la bonne réponse c)" sans qu'aucune option n'ait été montrée.
+
+        `numbered` ne préfixe le numero que si l'exercice a plusieurs sous-questions -
+        inutile d'afficher "1." pour l'unique question d'un exercice simple. Le
+        préfixe est aussi sauté quand `enonce_markdown` affiche déjà son propre repère
+        (numérotation d'origine, lettre, titre de Partie...) - voir
+        _ENONCE_ALREADY_LABELED_RE : sans ce garde-fou, un exercice dont chaque
+        sous-question transcrit fidèlement sa numérotation source afficherait un
+        repère en double ("**2.** 2. Déduire...", "**A.1.** **Partie A**"). Quand le
+        préfixe est bien ajouté, un marqueur local redondant en tête de texte ("(b)"
+        pour un numero "A.3.b") est retiré - voir _strip_redundant_local_marker :
+        sinon le lecteur voit "**A.3.b.** (b) ..." plutôt que "**A.3.b.** ...".
+        """
+        already_labeled = bool(_ENONCE_ALREADY_LABELED_RE.match(question.enonce_markdown))
+        texte = (
+            f"**{question.numero}.** {_strip_redundant_local_marker(question.enonce_markdown, question.numero)}"
+            if numbered and not already_labeled
+            else question.enonce_markdown
+        )
+        if question.type_reponse == TypeReponse.QCM and question.choix:
+            options = "\n".join(f"{choix['lettre']}) {choix['texte']}" for choix in question.choix)
+            texte = f"{texte}\n\n{options}"
+        return texte
+
+    @staticmethod
+    def _render_question_corrige(question, numbered):
+        """
+        Miroir de _render_question_enonce côté corrigé : sans réafficher la question
+        posée, un exercice à plusieurs sous-questions affiche une série de "### Rappel
+        de méthode" à la suite sans aucun moyen de savoir à quelle question chacun
+        répond - l'élève doit remonter au sujet, parfois des dizaines de lignes plus
+        haut, pour retrouver l'énoncé correspondant. On réutilise donc
+        _render_question_enonce (numero + son garde-fou "already_labeled", déjà
+        éprouvé côté énoncé) comme préambule de chaque bloc corrigé, avant
+        corrige_markdown lui-même - qui ne recopie jamais son propre repère : il
+        commence toujours par un des titres de niveau 3 imposés par SKILL.md ("###
+        Rappel de méthode", "### Piège à éviter", "### Conseil" ou directement "###
+        Corrige").
+        """
+        if not numbered:
+            return question.corrige_markdown
+        return f"{Exercise._render_question_enonce(question, numbered)}\n\n{question.corrige_markdown}"
+
     def compile_from_questions(self):
         """
         Concatène les Question rattachées (dans l'ordre) pour peupler enonce_markdown/
@@ -567,8 +743,13 @@ class Exercise(models.Model):
         """
         questions = list(self.questions.prefetch_related("themes").order_by("ordre"))
         intro = f"{self.enonce_intro_markdown}\n\n" if self.enonce_intro_markdown else ""
-        self.enonce_markdown = intro + "\n\n".join(q.enonce_markdown for q in questions)
-        self.corrige_markdown = "\n\n".join(q.corrige_markdown for q in questions)
+        numbered = len(questions) > 1
+        self.enonce_markdown = intro + "\n\n".join(
+            self._render_question_enonce(q, numbered) for q in questions
+        )
+        self.corrige_markdown = "\n\n".join(
+            self._render_question_corrige(q, numbered) for q in questions
+        )
         self.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
 
         themes = set()
@@ -622,6 +803,24 @@ class Question(models.Model):
 
     def __str__(self):
         return f"{self.exercise} - Q{self.numero}"
+
+    @property
+    def references_missing_figure(self):
+        """
+        True si l'énoncé renvoie explicitement à une figure ("la courbe ci-contre",
+        "le tableau ci-dessous"...) sans qu'aucune image ne soit réellement attachée -
+        ni dans son propre enonce_markdown, ni dans enonce_intro_markdown de son
+        Exercise (où une figure partagée par plusieurs sous-questions peut vivre).
+        Repéré en production : une sous-question ainsi mal formée pose une question de
+        lecture de graphique littéralement insoluble, faute d'extraction de la figure
+        source par correction-experte - à exclure du Quiz (voir
+        quiz.services._questions_eligibles), où elle serait servie seule, hors du
+        contexte de l'exercice complet où elle reste au moins visible dans la Lesson.
+        """
+        text = f"{self.exercise.enonce_intro_markdown}\n\n{self.enonce_markdown}"
+        if not _MISSING_FIGURE_REFERENCE_RE.search(text):
+            return False
+        return not _IMAGE_PLACEHOLDER_RE.search(text)
 
 
 class OrigineFigure(models.TextChoices):
@@ -681,6 +880,8 @@ class Cours(models.Model):
         max_length=255, unique=True,
         help_text="cours_id fourni par correction-experte (ex. cours-resolution-equations-second-degre-...) - sert de clé d'idempotence.",
     )
+    objects = VisibleQuerySet.as_manager()
+
     titre = models.CharField(max_length=255)
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT, related_name="cours")
     cursus = models.ManyToManyField(
@@ -720,6 +921,7 @@ class Cours(models.Model):
             "serie": _join_fr(series_codes) or None,
             "sous_theme": self.sous_theme or None,
             "duree_estimee_min": self.duree_estimee_min,
+            "pays": {"code": self.subject.country.code, "label": self.subject.country.label},
         }
 
     def _render_section(self, section):
@@ -792,8 +994,11 @@ class Cours(models.Model):
             # avant de voir la réponse - c'est le principe même de l'auto-évaluation.
             parts = ["## Exercices d'application"]
             for item in section.get("items") or []:
-                parts.append(f"### Exercice {item.get('numero', '')} ({item.get('difficulte', '')})\n\n{item.get('enonce_markdown', '')}")
-                parts.append(f"### Solution\n\n{item.get('solution_markdown', '')}")
+                parts.append(
+                    f"### Exercice {item.get('numero', '')} ({item.get('difficulte', '')})\n\n"
+                    f"{_exercice_application_enonce(item)}",
+                )
+                parts.append(f"### Solution\n\n{_exercice_application_solution(item)}")
             return "\n\n".join(parts)
 
         if section_type == "synthese":

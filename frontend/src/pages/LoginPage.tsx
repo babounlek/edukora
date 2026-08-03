@@ -19,7 +19,7 @@ import {
 import { useSeo } from "@/lib/seo"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
-import { countryFlagEmoji } from "@/lib/countryFlag"
+import { countryFlagClassName } from "@/lib/countryFlag"
 
 type Step = "phone" | "code"
 
@@ -110,13 +110,19 @@ export function LoginPage() {
                             du numéro). Liste ouverte : + le nom du pays - avec 14 pays,
                             l'indicatif seul ("+221") ne dit rien à personne. */}
                         <SelectValue>
-                          {countryFlagEmoji(dialCountry)} +{selectedCountry?.dial_code || "?"}
+                          <span className="flex items-center gap-1.5">
+                            <span aria-hidden className={countryFlagClassName(dialCountry)} />
+                            +{selectedCountry?.dial_code || "?"}
+                          </span>
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((c) => (
                           <SelectItem key={c.id} value={c.code.toLowerCase()}>
-                            {countryFlagEmoji(c.code)} +{c.dial_code || "?"} · {c.label}
+                            <span className="flex items-center gap-1.5">
+                              <span aria-hidden className={countryFlagClassName(c.code)} />
+                              +{c.dial_code || "?"} · {c.label}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>

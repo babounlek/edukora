@@ -1,0 +1,123 @@
+{
+  "epreuve_source": "bac-c-e-maths-2001-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2001",
+  "duree_epreuve": "4h",
+  "coefficient": "5(C)/4(E)",
+  "numero_exercice": "2",
+  "points": "3,25",
+  "enonce_intro_markdown": "**Exercice 2 (3,25 points)**\n\n$E$ désigne un espace vectoriel de dimension 3 muni d'une base $(\\vec i,\\vec j,\\vec k)$ et $f$ l'endomorphisme de $E$ défini par $f(\\vec i)=\\vec i$ ; $f(\\vec j)=f(\\vec k)=\\dfrac12(\\vec j+\\vec k)$. On note $\\ker f$ le noyau de $f$, et $\\mathrm{Im}\\,f$ l'image de $f$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Déterminer une base de $\\ker f$ (où $f$ est l'endomorphisme de $E$, espace vectoriel de dimension 3 de base $(\\vec i,\\vec j,\\vec k)$, tel que $f(\\vec i)=\\vec i$ et $f(\\vec j)=f(\\vec k)=\\dfrac12(\\vec j+\\vec k)$).",
+      "corrige_markdown": "### Rappel de methode\nLe noyau de f est l'ensemble des vecteurs u=xi+yj+zk tels que f(u)=0 ; on exprime f(u) par linéarité à partir des images des vecteurs de base, puis on résout le système obtenu.\n\n### Corrige\nSoit $u=x\\vec i+y\\vec j+z\\vec k\\in E$. Par linéarité de $f$ :\n$$f(u)=xf(\\vec i)+yf(\\vec j)+zf(\\vec k)=x\\vec i+y\\times\\dfrac12(\\vec j+\\vec k)+z\\times\\dfrac12(\\vec j+\\vec k)=x\\vec i+\\dfrac{y+z}{2}(\\vec j+\\vec k)$$\n\n$$u\\in\\ker f\\iff f(u)=\\vec 0\\iff x=0 \\text{ et } y+z=0\\iff x=0 \\text{ et } z=-y$$\n\nDonc $\\ker f=\\{y\\vec j-y\\vec k\\,:\\,y\\in\\mathbb{R}\\}=\\mathrm{Vect}(\\vec j-\\vec k)$.\n\n**Une base de $\\ker f$ est $(\\vec j-\\vec k)$** ($\\ker f$ est une droite vectorielle).",
+      "themes": [
+        "noyau d'un endomorphisme",
+        "résolution de système linéaire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2001-ex2-0",
+          "competence": "Détermination du noyau par résolution de f(u)=0",
+          "contenu_markdown": "Le noyau de f est l'ensemble des vecteurs u=xi+yj+zk tels que f(u)=0 ; on exprime f(u) par linéarité à partir des images des vecteurs de base, puis on résout le système obtenu.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Déterminer une base de $\\mathrm{Im}\\,f$.",
+      "corrige_markdown": "### Rappel de methode\nIm f est engendré par les images des vecteurs d'une base de E ; on en extrait une famille génératrice libre (une base) en éliminant les vecteurs proportionnels ou combinaisons des autres.\n\n### Corrige\n$\\mathrm{Im}\\,f=\\mathrm{Vect}\\big(f(\\vec i),f(\\vec j),f(\\vec k)\\big)=\\mathrm{Vect}\\Big(\\vec i\\,,\\,\\dfrac12(\\vec j+\\vec k)\\,,\\,\\dfrac12(\\vec j+\\vec k)\\Big)$\n\nLes deux derniers générateurs sont colinéaires (tous deux proportionnels à $\\vec j+\\vec k$), donc :\n$$\\mathrm{Im}\\,f=\\mathrm{Vect}(\\vec i\\,,\\,\\vec j+\\vec k)$$\n\n$\\vec i$ et $\\vec j+\\vec k$ ne sont pas colinéaires (l'un a une composante non nulle en $\\vec i$ seule, l'autre en $\\vec j,\\vec k$ seulement) : ils forment une famille libre. **Une base de $\\mathrm{Im}\\,f$ est $(\\vec i\\,,\\,\\vec j+\\vec k)$** ($\\mathrm{Im}\\,f$ est un plan vectoriel).",
+      "themes": [
+        "image d'un endomorphisme",
+        "famille génératrice"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2001-ex2-1",
+          "competence": "Détermination de l'image comme Vect des images des vecteurs de base",
+          "contenu_markdown": "Im f est engendré par les images des vecteurs d'une base de E ; on en extrait une famille génératrice libre (une base) en éliminant les vecteurs proportionnels ou combinaisons des autres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Démontrer que tout vecteur de $E$ s'écrit de manière unique comme somme d'un vecteur de $\\ker f$ et d'un vecteur de $\\mathrm{Im}\\,f$.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer que E = Kerf ⊕ Imf (somme directe), il suffit de vérifier que la réunion d'une base de Kerf et d'une base de Imf forme une base de E (même nombre de vecteurs que dim E, et famille libre).\n\n### Corrige\nD'après les questions 1 et 2, $(\\vec j-\\vec k)$ est une base de $\\ker f$ (dimension 1) et $(\\vec i,\\vec j+\\vec k)$ est une base de $\\mathrm{Im}\\,f$ (dimension 2). Montrons que la famille $(\\vec i,\\vec j+\\vec k,\\vec j-\\vec k)$ est une base de $E$.\n\nDans la base $(\\vec i,\\vec j,\\vec k)$, ces trois vecteurs ont pour coordonnées $(1,0,0)$, $(0,1,1)$, $(0,1,-1)$. Le déterminant :\n$$\\begin{vmatrix}1&0&0\\\\0&1&1\\\\0&1&-1\\end{vmatrix}=1\\times\\begin{vmatrix}1&1\\\\1&-1\\end{vmatrix}=1\\times(-1-1)=-2\\neq0$$\n\nLa famille est donc libre ; comme elle a $3=\\dim E$ vecteurs, c'est une **base de $E$**.\n\nPuisque $(\\vec i,\\vec j+\\vec k)$ engendre $\\mathrm{Im}\\,f$ et $(\\vec j-\\vec k)$ engendre $\\ker f$, et que leur réunion est une base de $E$, on a $E=\\ker f\\oplus\\mathrm{Im}\\,f$ (somme directe). Par définition de la somme directe, **tout vecteur de $E$ s'écrit de manière unique comme somme d'un vecteur de $\\ker f$ et d'un vecteur de $\\mathrm{Im}\\,f$**.",
+      "themes": [
+        "somme directe",
+        "base",
+        "déterminant"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2001-ex2-2",
+          "competence": "Preuve d'une somme directe par réunion de bases",
+          "contenu_markdown": "Pour montrer que E = Kerf ⊕ Imf (somme directe), il suffit de vérifier que la réunion d'une base de Kerf et d'une base de Imf forme une base de E (même nombre de vecteurs que dim E, et famille libre).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4.a",
+      "enonce_markdown": "4. a) Vérifier que $f\\circ f=f$.",
+      "corrige_markdown": "### Corrige\nIl suffit de vérifier l'égalité sur les vecteurs de la base $(\\vec i,\\vec j,\\vec k)$ (par linéarité, cela suffit à conclure sur tout $E$).\n\n$$(f\\circ f)(\\vec i)=f(f(\\vec i))=f(\\vec i)=\\vec i$$\n\n$$(f\\circ f)(\\vec j)=f\\left(\\dfrac12(\\vec j+\\vec k)\\right)=\\dfrac12\\big[f(\\vec j)+f(\\vec k)\\big]=\\dfrac12\\left[\\dfrac12(\\vec j+\\vec k)+\\dfrac12(\\vec j+\\vec k)\\right]=\\dfrac12(\\vec j+\\vec k)=f(\\vec j)$$\n\n$$(f\\circ f)(\\vec k)=f\\left(\\dfrac12(\\vec j+\\vec k)\\right)=\\dfrac12(\\vec j+\\vec k)=f(\\vec k) \\quad(\\text{même calcul, car } f(\\vec k)=f(\\vec j))$$\n\n$f\\circ f$ et $f$ coïncident sur les trois vecteurs d'une base de $E$ : par linéarité, **$f\\circ f=f$** sur tout $E$.",
+      "themes": [
+        "projecteur",
+        "composition d'endomorphismes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "4.b",
+      "enonce_markdown": "b) Démontrer que $u\\in\\mathrm{Im}\\,f\\iff f(u)=u$ (on utilisera 4.a).",
+      "corrige_markdown": "### Rappel de methode\nSi f∘f=f (f est un projecteur), alors u∈Imf équivaut à f(u)=u : le sens direct utilise f∘f=f appliqué à un antécédent de u, le sens réciproque est la définition de l'image.\n\n### Corrige\n**($\\Leftarrow$)** Si $f(u)=u$, alors $u=f(u)\\in\\mathrm{Im}\\,f$ (par définition de l'image, $f(u)$ est toujours dans $\\mathrm{Im}\\,f$).\n\n**($\\Rightarrow$)** Si $u\\in\\mathrm{Im}\\,f$, il existe $v\\in E$ tel que $u=f(v)$. Alors, en utilisant $f\\circ f=f$ (question 4.a) :\n$$f(u)=f(f(v))=(f\\circ f)(v)=f(v)=u$$\n\nLes deux implications étant établies : $$u\\in\\mathrm{Im}\\,f\\iff f(u)=u$$",
+      "themes": [
+        "caractérisation de l'image d'un projecteur"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2001-ex2-3",
+          "competence": "Utilisation de f∘f=f pour caractériser Imf",
+          "contenu_markdown": "Si f∘f=f (f est un projecteur), alors u∈Imf équivaut à f(u)=u : le sens direct utilise f∘f=f appliqué à un antécédent de u, le sens réciproque est la définition de l'image.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algèbre linéaire",
+    "noyau et image",
+    "somme directe",
+    "projecteur",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [],
+  "figures": [],
+  "statut": "brouillon"
+}

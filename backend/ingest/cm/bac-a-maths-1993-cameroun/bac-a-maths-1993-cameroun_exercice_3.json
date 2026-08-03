@@ -1,0 +1,165 @@
+{
+  "epreuve_source": "bac-a-maths-1993-cameroun.pdf",
+  "numero_exercice": "3",
+  "points": "10",
+  "figures": [],
+  "incertitudes": [
+    "Serie de l'epreuve indiquee comme 'A4' sur le document source : il s'agit d'une ancienne sous-serie litteraire du Cameroun (variante linguistique de la serie A, nomenclature d'avant-reforme). Faute de code confirme pour cette sous-serie dans le referentiel actuel, elle a ete rattachee a la serie 'A' - a valider avant publication si une distinction plus fine est necessaire.",
+    "La notation 'log' de l'enonce (question 6) est interpretee comme le logarithme neperien (note aujourd'hui ln), conformement a l'usage de ce programme en 1993 et a la nature du calcul (primitive en 1/x) - a confirmer si une autre convention etait en vigueur pour cette session."
+  ],
+  "enonce_intro_markdown": "Soit $f$ la fonction de $\\mathbb{R}$ dans $\\mathbb{R}$, definie par :\n\n$$f(x) = \\frac{4x^2+4x-9}{x^2-1}$$\n\net $(C)$ sa courbe representative dans le plan rapporte a un repere orthogonal (unites : 2 cm sur l'axe des abscisses et 1 cm sur l'axe des ordonnees).",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "Preciser l'ensemble de definition de $f$.",
+      "corrige_markdown": "### Rappel de methode\nUne fraction rationnelle est definie partout ou son denominateur ne s'annule pas.\n\n### Corrige\n$f(x)$ est definie si et seulement si $x^2-1 \\neq 0$, c'est-a-dire $x\\neq1$ et $x\\neq-1$.\n\n$$D_f = \\mathbb{R}\\setminus\\{-1\\,;\\,1\\} = \\left]-\\infty\\,;\\,-1\\right[ \\cup \\left]-1\\,;\\,1\\right[ \\cup \\left]1\\,;\\,+\\infty\\right[$$",
+      "themes": [
+        "ensemble de definition",
+        "fraction rationnelle"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "Demontrer que $f(x) = a + \\dfrac{b}{x-1} + \\dfrac{c}{x+1}$, ou $a$, $b$ et $c$ sont des reels a determiner.",
+      "corrige_markdown": "### Rappel de methode\nLe numerateur et le denominateur de $f$ ont le meme degre (2) : on effectue d'abord la division euclidienne du numerateur par le denominateur pour faire apparaitre la partie entiere $a$, puis on decompose le reste en elements simples sur $x-1$ et $x+1$.\n\n### Corrige\n**Division euclidienne.** On ecrit $4x^2+4x-9 = 4(x^2-1) + R(x)$ :\n\n$$4(x^2-1) = 4x^2-4$$\n\n$$R(x) = (4x^2+4x-9) - (4x^2-4) = 4x-5$$\n\nDonc :\n\n$$f(x) = 4 + \\frac{4x-5}{x^2-1} = 4 + \\frac{4x-5}{(x-1)(x+1)}$$\n\n**Decomposition en elements simples.** On cherche $b,c$ reels tels que $\\dfrac{4x-5}{(x-1)(x+1)} = \\dfrac{b}{x-1}+\\dfrac{c}{x+1}$, soit, apres reduction au meme denominateur :\n\n$$4x-5 = b(x+1) + c(x-1)$$\n\nPour $x=1$ : $4-5=-1 = b\\times2$, donc $b = -\\dfrac12$.\n\nPour $x=-1$ : $-4-5=-9 = c\\times(-2)$, donc $c = \\dfrac92$.\n\nD'ou :\n\n$$f(x) = 4 - \\frac{1}{2(x-1)} + \\frac{9}{2(x+1)}$$\n\nSoit $a=4$, $b=-\\dfrac12$, $c=\\dfrac92$.\n\n**Verification** : en remettant $4 + \\dfrac{-1/2}{x-1}+\\dfrac{9/2}{x+1}$ au meme denominateur $(x-1)(x+1)$, on retrouve bien $4x^2+4x-9$ au numerateur, ce qui confirme la decomposition.\n\n### Piege a eviter\nOublier la partie entiere $a$ est l'erreur la plus frequente : comme le numerateur et le denominateur ont le meme degre, une decomposition uniquement en $\\dfrac{b}{x-1}+\\dfrac{c}{x+1}$ (sans le terme constant $a$) ne peut pas redonner le degre 2 du numerateur d'origine.",
+      "themes": [
+        "decomposition en elements simples",
+        "division euclidienne de polynomes"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Dans la suite du probleme, on pourra utiliser l'une ou l'autre des expressions de $f(x)$. Etudier la fonction $f$ : variations, asymptotes.",
+      "corrige_markdown": "### Rappel de methode\nOn derive $f$ a partir de sa forme decomposee $f(x)=4-\\dfrac{1}{2(x-1)}+\\dfrac{9}{2(x+1)}$ (plus simple a deriver terme a terme qu'une seule fraction), on etudie le signe de $f'$, puis on determine les asymptotes a partir des limites aux bornes du domaine.\n\n### Corrige\n**Derivee.** \n\n$$f'(x) = \\frac{1}{2(x-1)^2} - \\frac{9}{2(x+1)^2} = \\frac{(x+1)^2 - 9(x-1)^2}{2(x-1)^2(x+1)^2}$$\n\nOn developpe le numerateur :\n\n$$(x+1)^2-9(x-1)^2 = (x^2+2x+1) - 9(x^2-2x+1) = x^2+2x+1-9x^2+18x-9 = -8x^2+20x-8$$\n\nOn factorise $-8x^2+20x-8 = -4(2x^2-5x+2) = -4(2x-1)(x-2)$ (racines $x=\\tfrac12$ et $x=2$ du trinome $2x^2-5x+2$).\n\n$$f'(x) = \\frac{-4(2x-1)(x-2)}{2(x-1)^2(x+1)^2} = \\frac{-2(2x-1)(x-2)}{(x-1)^2(x+1)^2}$$\n\n**Signe de $f'$.** Le denominateur $(x-1)^2(x+1)^2$ est strictement positif sur $D_f$. Le signe de $f'(x)$ est donc l'oppose du signe de $(2x-1)(x-2)$, trinome du second degre a racines $\\tfrac12$ et $2$, positif a l'exterieur de $\\left[\\tfrac12\\,;\\,2\\right]$ et negatif a l'interieur :\n\n- pour $x<\\tfrac12$ : $(2x-1)(x-2)>0$, donc $f'(x)<0$ ;\n- pour $\\tfrac12<x<2$ : $(2x-1)(x-2)<0$, donc $f'(x)>0$ ;\n- pour $x>2$ : $(2x-1)(x-2)>0$, donc $f'(x)<0$.\n\n$f'\\left(\\tfrac12\\right)=0$ et $f'(2)=0$.\n\n**Valeurs remarquables.** $f\\left(\\tfrac12\\right) = \\dfrac{4\\times\\frac14+4\\times\\frac12-9}{\\frac14-1} = \\dfrac{1+2-9}{-\\frac34} = \\dfrac{-6}{-\\frac34}=8$ ; $f(2) = \\dfrac{16+8-9}{3}=\\dfrac{15}{3}=5$.\n\n**Variations.** Sur la branche $\\left]-\\infty\\,;\\,-1\\right[$, $f$ est strictement decroissante (car $x<\\tfrac12$ partout sur cette branche). Sur la branche $\\left]-1\\,;\\,1\\right[$, $f$ est strictement decroissante sur $\\left]-1\\,;\\,\\tfrac12\\right]$ puis strictement croissante sur $\\left[\\tfrac12\\,;\\,1\\right[$, avec un minimum local $f\\left(\\tfrac12\\right)=8$. Sur la branche $\\left]1\\,;\\,+\\infty\\right[$, $f$ est strictement croissante sur $\\left]1\\,;\\,2\\right]$ puis strictement decroissante sur $\\left[2\\,;\\,+\\infty\\right[$, avec un maximum local $f(2)=5$.\n\n**Asymptotes verticales.** En $x=1$ et $x=-1$, le denominateur s'annule alors que le numerateur ne s'annule pas ($4+4-9=-1\\neq0$ et $4-4-9=-9\\neq0$) : ce sont des asymptotes verticales.\n\n$$\\lim_{x\\to1^-} f(x) = +\\infty, \\qquad \\lim_{x\\to1^+} f(x) = -\\infty$$\n\n(car $x-1\\to0^-$ puis $0^+$, avec un coefficient $b=-\\tfrac12$ negatif devant $\\tfrac{1}{x-1}$)\n\n$$\\lim_{x\\to-1^-} f(x) = -\\infty, \\qquad \\lim_{x\\to-1^+} f(x) = +\\infty$$\n\n(car $x+1\\to0^-$ puis $0^+$, avec un coefficient $c=\\tfrac92$ positif devant $\\tfrac{1}{x+1}$)\n\n**Asymptote horizontale.** Quand $x\\to\\pm\\infty$, $\\dfrac{1}{x-1}\\to0$ et $\\dfrac{1}{x+1}\\to0$, donc $f(x)\\to4$ : la droite d'equation $y=4$ est asymptote horizontale a $(C)$ en $-\\infty$ et en $+\\infty$.\n\n**Position par rapport a l'asymptote.** Le signe de $f(x)-4 = \\dfrac{4x-5}{x^2-1}$ donne la position de $(C)$ par rapport a $y=4$ : $(C)$ est en dessous de $y=4$ sur $\\left]-\\infty\\,;\\,-1\\right[\\cup\\left]1\\,;\\,\\tfrac54\\right[$, au-dessus sur $\\left]-1\\,;\\,1\\right[\\cup\\left]\\tfrac54\\,;\\,+\\infty\\right[$, et les deux se coupent au point d'abscisse $\\tfrac54$ (voir question 3.b).\n\n### Piege a eviter\nNe pas confondre les extrema locaux $f\\left(\\tfrac12\\right)=8$ et $f(2)=5$ avec des extrema globaux : la fonction n'est pas bornee sur $\\mathbb{R}$ tout entier, a cause des asymptotes verticales en $x=\\pm1$ qui font tendre $f$ vers $\\pm\\infty$.",
+      "themes": [
+        "etude de fonction",
+        "asymptotes",
+        "variations",
+        "fonction rationnelle"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "3.a",
+      "enonce_markdown": "Quelles sont les coordonnees du point $A$ ou $(C)$ coupe l'axe des ordonnees ? Ecrire l'equation de la tangente a $(C)$ en ce point.",
+      "corrige_markdown": "### Rappel de methode\n$(C)$ coupe l'axe des ordonnees au point d'abscisse $0$. L'equation de la tangente en un point d'abscisse $a$ est $y=f'(a)(x-a)+f(a)$.\n\n### Corrige\n$$f(0) = \\frac{4\\times0+4\\times0-9}{0-1} = \\frac{-9}{-1} = 9$$\n\nDonc $A(0\\,;\\,9)$.\n\nCalcul de $f'(0)$ a partir de l'expression trouvee a la question 2 :\n\n$$f'(0) = \\frac{-2(2\\times0-1)(0-2)}{(0-1)^2(0+1)^2} = \\frac{-2\\times(-1)\\times(-2)}{1\\times1} = \\frac{-4}{1} = -4$$\n\nL'equation de la tangente en $A$ est donc :\n\n$$y = f'(0)(x-0)+f(0) = -4x+9$$",
+      "themes": [
+        "tangente",
+        "nombre derive",
+        "coordonnees"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "3.b",
+      "enonce_markdown": "Quelles sont les coordonnees du point $B$ ou $(C)$ coupe la droite d'equation $y=4$ ?",
+      "corrige_markdown": "### Rappel de methode\nLe point $B$ verifie $f(x)=4$, ce qui equivaut a $f(x)-4=0$ : on utilise la forme decomposee de $f$ pour resoudre facilement cette equation.\n\n### Corrige\n$$f(x)=4 \\iff f(x)-4=0 \\iff -\\frac{1}{2(x-1)}+\\frac{9}{2(x+1)} = 0$$\n\nOn reduit au meme denominateur $2(x-1)(x+1)$ :\n\n$$\\frac{-(x+1)+9(x-1)}{2(x-1)(x+1)} = 0 \\iff -(x+1)+9(x-1) = 0 \\quad (\\text{car } x\\neq\\pm1)$$\n\n$$-x-1+9x-9=0 \\iff 8x-10=0 \\iff x=\\frac{10}{8}=\\frac54$$\n\nCalcul de l'ordonnee : $f\\left(\\tfrac54\\right)=4$ par construction.\n\n$$B\\left(\\frac54\\,;\\,4\\right)$$",
+      "themes": [
+        "intersection de courbes",
+        "equation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "4.a",
+      "enonce_markdown": "Calculer $f(-3)$, $f(-2)$, $f(-1/2)$, $f(3/4)$, $f(3)$ et $f(4)$.",
+      "corrige_markdown": "### Rappel de methode\nIl suffit de substituer chaque valeur dans $f(x) = \\dfrac{4x^2+4x-9}{x^2-1}$ et de simplifier la fraction obtenue.\n\n### Corrige\n$$f(-3) = \\frac{4\\times9+4\\times(-3)-9}{9-1} = \\frac{36-12-9}{8} = \\frac{15}{8} = 1{,}875$$\n\n$$f(-2) = \\frac{4\\times4+4\\times(-2)-9}{4-1} = \\frac{16-8-9}{3} = \\frac{-1}{3} \\approx -0{,}333$$\n\n$$f\\left(-\\frac12\\right) = \\frac{4\\times\\frac14+4\\times\\left(-\\frac12\\right)-9}{\\frac14-1} = \\frac{1-2-9}{-\\frac34} = \\frac{-10}{-\\frac34} = \\frac{40}{3} \\approx 13{,}333$$\n\n$$f\\left(\\frac34\\right) = \\frac{4\\times\\frac{9}{16}+4\\times\\frac34-9}{\\frac{9}{16}-1} = \\frac{\\frac94+3-9}{-\\frac{7}{16}} = \\frac{-\\frac{15}{4}}{-\\frac{7}{16}} = \\frac{15}{4}\\times\\frac{16}{7} = \\frac{60}{7} \\approx 8{,}571$$\n\n$$f(3) = \\frac{4\\times9+4\\times3-9}{9-1} = \\frac{36+12-9}{8} = \\frac{39}{8} = 4{,}875$$\n\n$$f(4) = \\frac{4\\times16+4\\times4-9}{16-1} = \\frac{64+16-9}{15} = \\frac{71}{15} \\approx 4{,}733$$\n\n### Conseil\nCes six valeurs se repartissent naturellement autour des elements deja etablis (minimum local en $x=\\tfrac12$, valeur $8$ ; maximum local en $x=2$, valeur $5$ ; asymptote $y=4$) : les utiliser comme points de controle en verifiant qu'elles sont coherentes avec le sens de variation trouve a la question 2 permet de detecter une erreur de calcul avant de tracer la courbe.",
+      "themes": [
+        "calcul de valeurs",
+        "fonction rationnelle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "4.b",
+      "enonce_markdown": "Tracer avec soin la courbe $(C)$.",
+      "corrige_markdown": "### Rappel de methode\nOn construit $(C)$ branche par branche (les trois intervalles de $D_f$ separes par les asymptotes verticales $x=-1$ et $x=1$), en s'appuyant sur le tableau de variations, les asymptotes, les points remarquables $A$, $B$ et les valeurs de la question 4.a).\n\n### Corrige\nDans le repere orthogonal (2 cm par unite en abscisse, 1 cm par unite en ordonnee) :\n\n1. Tracer les deux asymptotes verticales en pointilles : $x=-1$ et $x=1$.\n2. Tracer l'asymptote horizontale en pointilles : $y=4$.\n3. **Branche $\\left]-\\infty\\,;\\,-1\\right[$** : strictement decroissante, passant par $(-3\\,;\\,1{,}875)$ et $(-2\\,;\\,-0{,}333)$, provenant de $y=4$ (par valeurs superieures, cf. question 2) en $-\\infty$ et plongeant vers $-\\infty$ quand $x\\to-1^-$.\n4. **Branche $\\left]-1\\,;\\,1\\right[$** : provient de $+\\infty$ quand $x\\to-1^+$, decroit jusqu'au minimum local $\\left(\\tfrac12\\,;\\,8\\right)$ en passant par $\\left(-\\tfrac12\\,;\\,13{,}33\\right)$ et $A(0\\,;\\,9)$ (avec la tangente $y=-4x+9$), puis croit jusqu'a $+\\infty$ quand $x\\to1^-$, en passant par $\\left(\\tfrac34\\,;\\,8{,}57\\right)$.\n5. **Branche $\\left]1\\,;\\,+\\infty\\right[$** : provient de $-\\infty$ quand $x\\to1^+$, croit jusqu'au maximum local $(2\\,;\\,5)$ en passant par $B\\left(\\tfrac54\\,;\\,4\\right)$, puis decroit vers l'asymptote $y=4$ (par valeurs superieures) en passant par $(3\\,;\\,4{,}875)$ et $(4\\,;\\,4{,}733)$.\n\n### Piege a eviter\nNe jamais relier les trois branches entre elles au passage des asymptotes verticales : $(C)$ est constituee de trois morceaux disjoints et non connectes, chacun propre a un intervalle de $D_f$.",
+      "themes": [
+        "construction graphique",
+        "asymptotes",
+        "tableau de variations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Calculer l'aire, en cm$^2$, du domaine limite par la courbe $(C)$ et les droites d'equations $y=4$, $x=5/4$ et $x=2$.",
+      "corrige_markdown": "### Rappel de methode\nL'aire, en unites d'aire, entre $(C)$ et la droite $y=4$ sur un intervalle ou $f(x)-4$ garde un signe constant est $\\displaystyle\\int \\big|f(x)-4\\big|\\,dx$. Comme le repere n'est pas orthonorme (2 cm en abscisse, 1 cm en ordonnee), il faut ensuite convertir cette aire en cm$^2$ en multipliant par l'aire du rectangle-unite : $2\\ \\text{cm}\\times1\\ \\text{cm} = 2\\ \\text{cm}^2$.\n\n### Corrige\nD'apres l'etude de la question 2, pour $x>\\tfrac54$, $f(x)-4>0$ : sur $\\left[\\tfrac54\\,;\\,2\\right]$, $(C)$ est au-dessus de la droite $y=4$ (avec egalite au point $B$ d'abscisse $\\tfrac54$). L'aire, en unites d'aire, est donc :\n\n$$\\mathscr{A} = \\int_{5/4}^{2} \\big[f(x)-4\\big]\\,dx = \\int_{5/4}^{2} \\left(-\\frac{1}{2(x-1)}+\\frac{9}{2(x+1)}\\right)dx$$\n\nUne primitive de $-\\dfrac{1}{2(x-1)}+\\dfrac{9}{2(x+1)}$ sur $\\left[\\tfrac54\\,;\\,2\\right]$ (intervalle ou $x-1>0$ et $x+1>0$) est :\n\n$$G(x) = -\\frac12\\ln(x-1) + \\frac92\\ln(x+1)$$\n\nCalcul de $G(2)$ :\n\n$$G(2) = -\\frac12\\ln(1) + \\frac92\\ln(3) = 0 + \\frac92\\ln3 = \\frac92\\ln3$$\n\nCalcul de $G\\left(\\tfrac54\\right)$ : $x-1=\\tfrac14$ et $x+1=\\tfrac94$.\n\n$$G\\left(\\frac54\\right) = -\\frac12\\ln\\left(\\frac14\\right) + \\frac92\\ln\\left(\\frac94\\right)$$\n\nAvec $\\ln\\left(\\dfrac14\\right) = -2\\ln2$ et $\\ln\\left(\\dfrac94\\right) = 2\\ln3-2\\ln2$ :\n\n$$G\\left(\\frac54\\right) = -\\frac12\\times(-2\\ln2) + \\frac92\\times(2\\ln3-2\\ln2) = \\ln2 + 9\\ln3-9\\ln2 = 9\\ln3-8\\ln2$$\n\nD'ou :\n\n$$\\mathscr{A} = G(2)-G\\left(\\frac54\\right) = \\frac92\\ln3 - \\big(9\\ln3-8\\ln2\\big) = 8\\ln2 - \\frac92\\ln3 \\ \\ \\text{u.a.}$$\n\n**Conversion en cm$^2$.** Le repere n'etant pas orthonorme (unites : 2 cm en abscisse, 1 cm en ordonnee), une unite d'aire vaut $2\\ \\text{cm}\\times1\\ \\text{cm} = 2\\ \\text{cm}^2$ :\n\n$$\\mathscr{A}_{\\text{cm}^2} = 2\\left(8\\ln2-\\frac92\\ln3\\right) = 16\\ln2 - 9\\ln3 \\ \\ \\text{cm}^2$$\n\nNumeriquement : $16\\ln2 \\approx 11{,}090$ et $9\\ln3\\approx9{,}887$, d'ou $\\mathscr{A}\\approx1{,}20\\ \\text{cm}^2$.\n\n### Piege a eviter\nOublier de multiplier par $2$ pour tenir compte des unites du repere (2 cm en abscisse contre 1 cm en ordonnee) est l'erreur la plus frequente sur ce type de question : l'aire calculee par l'integrale seule (en u.a.) n'est pas directement l'aire en cm$^2$ des lors que le repere n'est pas orthonorme.",
+      "themes": [
+        "calcul integral",
+        "aire",
+        "primitive logarithmique",
+        "unites d'un repere"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-maths-1993-cameroun-ex3-q5-0",
+          "competence": "Aire dans un repere non orthonorme",
+          "contenu_markdown": "L'aire, en unites d'aire, entre $(C)$ et la droite $y=4$ sur un intervalle ou $f(x)-4$ garde un signe constant est $\\displaystyle\\int \\big|f(x)-4\\big|\\,dx$. Comme le repere n'est pas orthonorme (2 cm en abscisse, 1 cm en ordonnee), il faut ensuite convertir cette aire en cm$^2$ en multipliant par l'aire du rectangle-unite : $2\\ \\text{cm}\\times1\\ \\text{cm} = 2\\ \\text{cm}^2$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Exprimer le resultat en fonction de $\\log 2$ et $\\log 3$.",
+      "corrige_markdown": "### Rappel de methode\nDans ce programme, la notation $\\log$ utilisee pour ce resultat designe le logarithme neperien (note aujourd'hui $\\ln$), celui-la meme qui apparait naturellement dans le calcul d'une primitive de $\\dfrac{1}{x}$.\n\n### Corrige\nD'apres la question 5, l'aire en cm$^2$ est :\n\n$$\\mathscr{A} = 16\\ln2 - 9\\ln3$$\n\nEn notant $\\log2 = \\ln2$ et $\\log3=\\ln3$ (logarithme neperien, conforme a la notation attendue par l'enonce) :\n\n$$\\mathscr{A} = 16\\log2 - 9\\log3 \\ \\ \\text{cm}^2 \\approx 1{,}20\\ \\text{cm}^2$$",
+      "themes": [
+        "logarithme neperien",
+        "aire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "fonction rationnelle",
+    "asymptotes",
+    "variations",
+    "decomposition en elements simples",
+    "tangente",
+    "calcul integral",
+    "logarithme neperien",
+    "aire",
+    "BAC A4 Cameroun"
+  ],
+  "matiere": "Mathematiques",
+  "serie": "A",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1993",
+  "duree_epreuve": "3h",
+  "coefficient": "2",
+  "niveau": "Terminale",
+  "statut": "brouillon"
+}

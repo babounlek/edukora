@@ -1,0 +1,149 @@
+{
+  "epreuve_source": "bac-d-maths-1994-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 1994,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": "Probleme",
+  "points": 12,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème (12 points)**\\n\\nSoit $f$ la fonction numérique de la variable réelle $x$ définie par : $f(x)=(x-1)\\ln|x-1|-x\\ln x$ si $x\\notin\\{0,1\\}$, et $f(0)=f(1)=0$.\\n\\n**Partie A.** On appelle $(C)$ sa courbe représentative dans le plan rapporté à un repère orthonormé $(O,\\vec{i},\\vec{j})$, unité : $4\\,\\text{cm}$.",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "A.1. Quel est l'ensemble de définition de $f$ ? Étudier la continuité et la dérivabilité de $f$ en $1$. Étudier la continuité et la dérivabilité de $f$ à droite de $0$.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une expression contenant un logarithme $\\ln(u(x))$ impose $u(x)>0$ ; une fonction définie par une formule sur un domaine privé de certains points, complétée par des valeurs particulières en ces points, est continue en ces points si et seulement si la formule admet une limite finie égale à la valeur imposée ; elle y est dérivable si le taux d'accroissement admet une limite finie.\\n\\n### Corrigé\\n**Domaine de définition.** Le terme $(x-1)\\ln|x-1|$ est défini pour tout $x\\neq1$ (car $|x-1|>0$ dès que $x\\neq1$). Le terme $x\\ln x$ exige $x>0$. L'intersection de ces conditions est $x>0$ et $x\\neq1$, c'est-à-dire $x\\in\\,]0,1[\\,\\cup\\,]1,+\\infty[$. On ajoute les deux points $x=0$ et $x=1$ où $f$ est définie par convention ($f(0)=f(1)=0$). Le domaine de définition de $f$ est donc :\\n$$D_f=[0,+\\infty[.$$\\n\\n**Continuité en $1$.** On calcule la limite de la formule $(x-1)\\ln|x-1|-x\\ln x$ quand $x\\to1$. On pose $u=x-1\\to0$ : le terme $(x-1)\\ln|x-1|=u\\ln|u|\\to0$ (limite usuelle $u\\ln|u|\\to0$ quand $u\\to0$). Le terme $x\\ln x\\to1\\times\\ln1=1\\times0=0$. Donc :\\n$$\\lim_{x\\to1}\\big[(x-1)\\ln|x-1|-x\\ln x\\big]=0-0=0=f(1).$$\\n$f$ est donc continue en $1$.\\n\\n**Dérivabilité en $1$.** Pour $x\\neq0,1$, on calcule $f'(x)$ en dérivant chaque terme séparément :\\n$$\\frac{d}{dx}\\big[(x-1)\\ln|x-1|\\big]=1\\times\\ln|x-1|+(x-1)\\times\\frac{1}{x-1}=\\ln|x-1|+1,$$\\n$$\\frac{d}{dx}\\big[x\\ln x\\big]=1\\times\\ln x+x\\times\\frac{1}{x}=\\ln x+1.$$\\nD'où, pour $x>0$, $x\\neq1$ :\\n$$f'(x)=\\big(\\ln|x-1|+1\\big)-\\big(\\ln x+1\\big)=\\ln|x-1|-\\ln x=\\ln\\left|\\frac{x-1}{x}\\right|.$$\\nQuand $x\\to1$ (à gauche comme à droite), $|x-1|\\to0^+$ donc $\\ln|x-1|\\to-\\infty$, tandis que $\\ln x\\to\\ln1=0$ (fini). Donc :\\n$$\\lim_{x\\to1}f'(x)=\\lim_{x\\to1}\\left[\\ln|x-1|-\\ln x\\right]=-\\infty-0=-\\infty.$$\\nLe taux d'accroissement de $f$ en $1$ n'a donc pas de limite finie : $f$ n'est **pas dérivable** en $1$. Comme la limite $-\\infty$ est la même à gauche et à droite, la courbe $(C)$ admet néanmoins au point d'abscisse $1$ une **tangente verticale** (la droite $x=1$).\\n\\n**Continuité et dérivabilité à droite de $0$.** Quand $x\\to0^+$ : $(x-1)\\ln|x-1|\\to(-1)\\times\\ln1=(-1)\\times0=0$, et $x\\ln x\\to0$ (limite usuelle). Donc $\\lim_{x\\to0^+}f(x)=0-0=0=f(0)$ : $f$ est continue à droite en $0$.\\nPour la dérivabilité à droite, on utilise $f'(x)=\\ln|x-1|-\\ln x$ pour $x\\in\\,]0,1[$ (où $|x-1|=1-x$), soit $f'(x)=\\ln(1-x)-\\ln x$. Quand $x\\to0^+$ : $\\ln(1-x)\\to\\ln1=0$ (fini), tandis que $\\ln x\\to-\\infty$. Donc :\\n$$\\lim_{x\\to0^+}f'(x)=\\lim_{x\\to0^+}\\big[\\ln(1-x)-\\ln x\\big]=0-(-\\infty)=+\\infty.$$\\n$f$ n'est donc **pas dérivable à droite** en $0$ : la courbe $(C)$ admet au point d'abscisse $0$ une **tangente verticale** (la droite $x=0$).\\n\\n### Piège à éviter\\nConfondre « $f$ n'est pas dérivable en un point » avec « $f$ n'est pas continue en ce point » : ici $f$ est parfaitement continue en $0$ et en $1$, seule la dérivabilité fait défaut, avec une tangente verticale dans les deux cas.",
+      "themes": [
+        "domaine de définition",
+        "continuité",
+        "dérivabilité",
+        "tangente verticale",
+        "logarithme"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-pb-A1",
+          "competence": "Etude de la continuite et de la derivabilite d'une fonction en un point sensible (logarithme)",
+          "contenu_markdown": "Le domaine de définition d'une expression contenant un logarithme $\\ln(u(x))$ impose $u(x)>0$ ; une fonction définie par une formule sur un domaine privé de certains points, complétée par des valeurs particulières en ces points, est continue en ces points si et seulement si la formule admet une limite finie égale à la valeur imposée ; elle y est dérivable si le taux d'accroissement admet une limite finie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2",
+      "enonce_markdown": "A.2. Étudier les variations de $f$ et dresser son tableau de variation. Montrer que $f(x)=x\\ln\\left(1-\\frac1x\\right)-\\ln(x-1)$ pour $x>1$. En déduire la limite de $f(x)$ quand $x$ tend vers $+\\infty$ et préciser la nature de la branche infinie correspondante. Calculer $f(2),f(3),f(4),f(1/4)$ et $f(3/4)$.",
+      "corrige_markdown": "### Rappel de méthode\\nLe signe de $f'(x)$ se lit sur celui de l'expression obtenue après factorisation/simplification ; pour comparer une expression logarithmique à $0$, on la ramène à la forme $\\ln(\\cdots)$ et on compare l'argument à $1$. La nature d'une branche infinie ($x\\to+\\infty$, $f(x)\\to\\pm\\infty$) se détermine en étudiant $\\dfrac{f(x)}{x}$ : si cette limite est $0$, la branche est parabolique de direction $(Ox)$.\\n\\n### Corrigé\\n**Signe de $f'(x)=\\ln\\left|\\dfrac{x-1}{x}\\right|$ pour $x>0$, $x\\neq1$.** On a $f'(x)>0\\iff\\left|\\dfrac{x-1}{x}\\right|>1\\iff|x-1|>x$ (car $x>0$).\\n- Sur $]0,1[$ : $|x-1|=1-x$, la condition devient $1-x>x$, soit $x<\\dfrac12$. Donc $f'(x)>0$ sur $\\left]0,\\dfrac12\\right[$ et $f'(x)<0$ sur $\\left]\\dfrac12,1\\right[$, avec $f'\\left(\\dfrac12\\right)=\\ln\\left|\\dfrac{-1/2}{1/2}\\right|=\\ln1=0$.\\n- Sur $]1,+\\infty[$ : $|x-1|=x-1$, la condition devient $x-1>x$, soit $-1>0$, ce qui est **toujours faux**. Donc $f'(x)<0$ sur tout $]1,+\\infty[$.\\n\\n**Valeurs aux bornes :** $f(0)=0$, $f\\left(\\dfrac12\\right)=\\left(-\\dfrac12\\right)\\ln\\dfrac12-\\dfrac12\\ln\\dfrac12=-\\ln\\dfrac12\\left(\\dfrac12+\\dfrac12\\right)=-\\ln\\dfrac12=\\ln2$, $f(1)=0$, et $\\displaystyle\\lim_{x\\to+\\infty}f(x)=-\\infty$ (établi ci-dessous).\\n\\n**Tableau de variations :**\\n$$\\begin{array}{|c|ccccccc|}\\hline x & 0 & & \\frac12 & & 1 & & +\\infty \\\\\\hline f'(x) & \\| & + & 0 & - & \\| & - & \\\\\\hline f(x) & 0 & \\nearrow & \\ln2 & \\searrow & 0 & \\searrow & -\\infty \\\\\\hline\\end{array}$$\\n(le symbole $\\|$ signale une tangente verticale, $f$ n'étant pas dérivable en $0$ à droite ni en $1$).\\n\\n**Forme alternative pour $x>1$.** Pour $x>1$, on a $|x-1|=x-1$, donc $f(x)=(x-1)\\ln(x-1)-x\\ln x$. On développe $x\\ln\\left(1-\\dfrac1x\\right)$ en écrivant $1-\\dfrac1x=\\dfrac{x-1}{x}$ :\\n$$x\\ln\\left(1-\\frac1x\\right)=x\\ln\\left(\\frac{x-1}{x}\\right)=x\\big[\\ln(x-1)-\\ln x\\big]=x\\ln(x-1)-x\\ln x.$$\\nOn soustrait $\\ln(x-1)$ :\\n$$x\\ln\\left(1-\\frac1x\\right)-\\ln(x-1)=x\\ln(x-1)-x\\ln x-\\ln(x-1)=(x-1)\\ln(x-1)-x\\ln x=f(x).$$\\nOn a donc bien montré, pour $x>1$ :\\n$$f(x)=x\\ln\\left(1-\\frac1x\\right)-\\ln(x-1).$$\\n\\n**Limite en $+\\infty$ et nature de la branche infinie.** Quand $x\\to+\\infty$, $\\dfrac1x\\to0$, et on sait que $\\displaystyle\\lim_{h\\to0}\\frac{\\ln(1+h)}{h}=1$ (nombre dérivé de $\\ln$ en $1$), donc avec $h=-\\dfrac1x$ :\\n$$x\\ln\\left(1-\\frac1x\\right)=-\\frac{\\ln\\left(1-\\frac1x\\right)}{-\\frac1x}\\xrightarrow[x\\to+\\infty]{}-1.$$\\nPar ailleurs $\\ln(x-1)\\to+\\infty$. Donc :\\n$$\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to+\\infty}\\left[x\\ln\\left(1-\\frac1x\\right)-\\ln(x-1)\\right]=-1-\\infty=-\\infty.$$\\nPour préciser la nature de la branche infinie, on étudie $\\dfrac{f(x)}{x}$ :\\n$$\\frac{f(x)}{x}=\\ln\\left(1-\\frac1x\\right)-\\frac{\\ln(x-1)}{x}.$$\\nLe premier terme tend vers $\\ln1=0$. Le second tend vers $0$ par croissances comparées ($\\ln(x-1)$ est négligeable devant $x$). Donc $\\dfrac{f(x)}{x}\\to0$ quand $x\\to+\\infty$. Comme $f(x)\\to-\\infty$ et $\\dfrac{f(x)}{x}\\to0$, la courbe $(C)$ admet en $+\\infty$ une **branche parabolique de direction $(Ox)$**.\\n\\n**Calcul de $f(2),f(3),f(4),f\\left(\\frac14\\right),f\\left(\\frac34\\right)$ :**\\n$$f(2)=(2-1)\\ln|2-1|-2\\ln2=1\\times\\ln1-2\\ln2=0-2\\ln2=-2\\ln2=-\\ln4.$$\\n$$f(3)=(3-1)\\ln|3-1|-3\\ln3=2\\ln2-3\\ln3=\\ln4-\\ln27=\\ln\\frac{4}{27}=-\\ln\\frac{27}{4}.$$\\n$$f(4)=(4-1)\\ln|4-1|-4\\ln4=3\\ln3-4\\ln4=3\\ln3-8\\ln2=\\ln\\frac{27}{256}=-\\ln\\frac{256}{27}.$$\\n$$f\\left(\\frac14\\right)=\\left(\\frac14-1\\right)\\ln\\left|\\frac14-1\\right|-\\frac14\\ln\\frac14=-\\frac34\\ln\\frac34-\\frac14\\ln\\frac14.$$\\nOn développe : $-\\dfrac34\\ln\\dfrac34=-\\dfrac34(\\ln3-\\ln4)=-\\dfrac34\\ln3+\\dfrac34\\ln4$, et $-\\dfrac14\\ln\\dfrac14=-\\dfrac14\\times(-\\ln4)=\\dfrac14\\ln4$. Donc :\\n$$f\\left(\\frac14\\right)=-\\frac34\\ln3+\\frac34\\ln4+\\frac14\\ln4=-\\frac34\\ln3+\\ln4=\\ln4-\\frac34\\ln3=\\ln\\frac{4}{3^{3/4}}=\\ln\\frac{4\\sqrt[4]{3}}{3}.$$\\n$$f\\left(\\frac34\\right)=\\left(\\frac34-1\\right)\\ln\\left|\\frac34-1\\right|-\\frac34\\ln\\frac34=-\\frac14\\ln\\frac14-\\frac34\\ln\\frac34.$$\\nCe calcul est exactement le même que celui de $f\\left(\\dfrac14\\right)$ ci-dessus (les deux termes sont identiques, seul l'ordre change) : $f\\left(\\dfrac34\\right)=\\ln4-\\dfrac34\\ln3=\\ln\\dfrac{4\\sqrt[4]{3}}{3}$. On retrouve $f\\left(\\dfrac14\\right)=f\\left(\\dfrac34\\right)$, ce qui annonce la symétrie étudiée en question A.3.\\n\\n### Piège à éviter\\nConfondre « $f(x)\\to-\\infty$ » avec l'existence d'une asymptote oblique : ici $f(x)/x\\to0$, donc il n'y a pas d'asymptote oblique mais une branche parabolique de direction $(Ox)$ (l'axe des abscisses).\\n\\n### Conseil\\nLe fait que $f\\left(\\dfrac14\\right)=f\\left(\\dfrac34\\right)$ obtenu par calcul direct est un excellent moyen de vérifier, avant même de la démontrer en A.3, l'existence de la symétrie par rapport à la droite $x=\\dfrac12$ sur $]0,1[$.",
+      "themes": [
+        "étude de fonction",
+        "tableau de variation",
+        "branche infinie",
+        "croissances comparées",
+        "logarithme"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-pb-A2",
+          "competence": "Etude des variations d'une fonction logarithmique et nature d'une branche infinie",
+          "contenu_markdown": "Le signe de $f'(x)$ se lit sur celui de l'expression obtenue après factorisation/simplification ; pour comparer une expression logarithmique à $0$, on la ramène à la forme $\\ln(\\cdots)$ et on compare l'argument à $1$. La nature d'une branche infinie ($x\\to+\\infty$, $f(x)\\to\\pm\\infty$) se détermine en étudiant $\\dfrac{f(x)}{x}$ : si cette limite est $0$, la branche est parabolique de direction $(Ox)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A3",
+      "enonce_markdown": "A.3. Tracer la courbe $(C)$, préciser les tangentes aux points d'abscisse $0$ et $1$. Justifier que la partie de la courbe $(C)$ située au-dessus de l'axe des abscisses admet un axe de symétrie.",
+      "corrige_markdown": "### Rappel de méthode\\nPour justifier qu'une portion de courbe admet un axe de symétrie vertical $x=a$, on démontre l'identité $f(2a-x)=f(x)$ pour tout $x$ de l'intervalle considéré (avec $2a-x$ également dans cet intervalle).\\n\\n### Corrigé\\n**Construction de $(C)$.** Avec l'unité $4\\,\\text{cm}$, on place les points remarquables obtenus en A.1 et A.2 : $(0,0)$ et $(1,0)$ (tangentes verticales), $\\left(\\dfrac12,\\ln2\\right)$ (maximum local), et les points calculés $\\left(\\dfrac14,\\ln\\frac{4\\sqrt[4]3}{3}\\right)\\approx(0{,}25\\,;\\,0{,}56)$, $\\left(\\dfrac34,\\ln\\frac{4\\sqrt[4]3}{3}\\right)\\approx(0{,}75\\,;\\,0{,}56)$, $(2,-\\ln4)\\approx(2\\,;\\,-1{,}39)$, $(3,-\\ln\\frac{27}{4})\\approx(3\\,;\\,-1{,}91)$, $(4,-\\ln\\frac{256}{27})\\approx(4\\,;\\,-2{,}25)$. On relie ces points en respectant le tableau de variation : la branche sur $[0,1/2]$ monte de $(0,0)$ à $\\left(\\frac12,\\ln2\\right)$, la branche sur $[1/2,1]$ redescend jusqu'à $(1,0)$, puis la branche sur $[1,+\\infty[$ descend indéfiniment en s'aplatissant progressivement contre l'axe des abscisses (branche parabolique de direction $(Ox)$).\\n\\n**Tangentes verticales.** D'après A.1, $f$ n'est pas dérivable à droite en $0$ (limite du taux d'accroissement $+\\infty$) ni en $1$ (limite $-\\infty$ des deux côtés). La courbe $(C)$ admet donc au point $(0,0)$ la tangente verticale d'équation $x=0$, et au point $(1,0)$ la tangente verticale d'équation $x=1$.\\n\\n**Axe de symétrie de la partie de $(C)$ au-dessus de l'axe des abscisses.** D'après le tableau de variation, $f(x)>0$ exactement sur $]0,1[$ (croissant de $0$ à $\\ln2$ puis décroissant de $\\ln2$ à $0$), et $f(x)\\leqslant0$ ailleurs sur $D_f$ ($f(0)=f(1)=0$, et $f<0$ sur $]1,+\\infty[$ d'après le tableau). La partie de $(C)$ strictement au-dessus de l'axe des abscisses correspond donc exactement à $x\\in\\,]0,1[$.\\nOn démontre que la droite $x=\\dfrac12$ est axe de symétrie de cette portion, c'est-à-dire que $f(1-x)=f(x)$ pour tout $x\\in\\,]0,1[$. Pour $x\\in\\,]0,1[$, on a $|x-1|=1-x$, donc $f(x)=(x-1)\\ln(1-x)-x\\ln x$. On calcule $f(1-x)$ en remplaçant $x$ par $1-x$ dans cette même formule (valable aussi pour $1-x\\in\\,]0,1[$) :\\n$$f(1-x)=\\big[(1-x)-1\\big]\\ln\\big[1-(1-x)\\big]-(1-x)\\ln(1-x)=(-x)\\ln(x)-(1-x)\\ln(1-x).$$\\nOn réorganise :\\n$$f(1-x)=-x\\ln x-(1-x)\\ln(1-x)=-(1-x)\\ln(1-x)-x\\ln x.$$\\nOr $-(1-x)\\ln(1-x)=(x-1)\\ln(1-x)$ (car $-(1-x)=x-1$), donc :\\n$$f(1-x)=(x-1)\\ln(1-x)-x\\ln x=f(x).$$\\nL'identité $f(1-x)=f(x)$ est vérifiée pour tout $x\\in\\,]0,1[$ : la droite $x=\\dfrac12$ est donc bien axe de symétrie de la partie de $(C)$ située au-dessus de l'axe des abscisses (elle échange les points d'abscisses $x$ et $1-x$, qui ont la même ordonnée).\\n\\n### Piège à éviter\\nAffirmer que $x=\\dfrac12$ est axe de symétrie de **toute** la courbe $(C)$ : l'identité $f(1-x)=f(x)$ n'a été démontrée (et n'est vraie) que pour $x\\in\\,]0,1[$, c'est-à-dire uniquement pour la portion de courbe au-dessus de l'axe des abscisses.",
+      "themes": [
+        "représentation graphique",
+        "tangente verticale",
+        "axe de symétrie"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-pb-A3",
+          "competence": "Demonstration d'un axe de symetrie vertical par l'identite f(2a-x)=f(x)",
+          "contenu_markdown": "Pour justifier qu'une portion de courbe admet un axe de symétrie vertical $x=a$, on démontre l'identité $f(2a-x)=f(x)$ pour tout $x$ de l'intervalle considéré (avec $2a-x$ également dans cet intervalle).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1",
+      "enonce_markdown": "B.1. Justifier l'existence de la primitive de $f$ sur $\\mathbb{R}_+$. Soit $F$ celle qui s'annule en $\\frac12$ ; à l'aide d'une intégration par parties, donner l'expression de $F(x)$ lorsque $x\\in\\,]0,1[$.",
+      "corrige_markdown": "### Rappel de méthode\\nToute fonction continue sur un intervalle admet des primitives sur cet intervalle (théorème d'existence des primitives) ; parmi elles, une seule s'annule en un point donné. Pour calculer une primitive de $t\\ln t$ ou $t\\ln|1-t|$, on utilise l'intégration par parties avec $u=\\ln(\\cdots)$ et $dv=t\\,dt$.\\n\\n### Corrigé\\n**Existence de la primitive.** D'après A.1, $f$ est continue en tout point de $D_f=[0,+\\infty[$ (continue en $0$ à droite, en $1$, et clairement continue ailleurs par opérations usuelles sur les fonctions continues). Or toute fonction continue sur un intervalle admet des primitives sur cet intervalle. Donc $f$ admet des primitives sur $\\mathbb{R}_+$.\\n\\n**Expression de $F(x)$ pour $x\\in\\,]0,1[$.** Sur cet intervalle, $f(t)=(t-1)\\ln(1-t)-t\\ln t$ (car $|t-1|=1-t$). On cherche une primitive $G$ de $f$ par intégration par parties, terme par terme.\\n\\n*Primitive de $t\\ln t$ :* on pose $u=\\ln t$ (donc $du=\\dfrac{dt}{t}$) et $dv=t\\,dt$ (donc $v=\\dfrac{t^2}{2}$). La formule d'intégration par parties $\\int u\\,dv=uv-\\int v\\,du$ donne :\\n$$\\int t\\ln t\\,dt=\\frac{t^2}{2}\\ln t-\\int\\frac{t^2}{2}\\times\\frac{1}{t}\\,dt=\\frac{t^2}{2}\\ln t-\\int\\frac{t}{2}\\,dt=\\frac{t^2}{2}\\ln t-\\frac{t^2}{4}+C_1.$$\\n\\n*Primitive de $(t-1)\\ln(1-t)$ :* on pose $w=1-t$ (donc $t-1=-w$ et $dt=-dw$) :\\n$$\\int(t-1)\\ln(1-t)\\,dt=\\int(-w)\\ln(w)\\times(-dw)=\\int w\\ln w\\,dw.$$\\nOn retrouve exactement la même primitive que ci-dessus (avec $w$ à la place de $t$) :\\n$$\\int w\\ln w\\,dw=\\frac{w^2}{2}\\ln w-\\frac{w^2}{4}+C_2=\\frac{(1-t)^2}{2}\\ln(1-t)-\\frac{(1-t)^2}{4}+C_2.$$\\n\\n*Primitive de $f$ :* en combinant, une primitive de $f(t)=(t-1)\\ln(1-t)-t\\ln t$ sur $]0,1[$ est :\\n$$G(t)=\\frac{(1-t)^2}{2}\\ln(1-t)-\\frac{(1-t)^2}{4}-\\frac{t^2}{2}\\ln t+\\frac{t^2}{4}+C.$$\\nOn simplifie les termes sans logarithme : $-\\dfrac{(1-t)^2}{4}+\\dfrac{t^2}{4}=\\dfrac{t^2-(1-t)^2}{4}$. Or $t^2-(1-t)^2=t^2-(1-2t+t^2)=2t-1$, donc ce groupe vaut $\\dfrac{2t-1}{4}$. D'où :\\n$$G(t)=\\frac{(1-t)^2}{2}\\ln(1-t)-\\frac{t^2}{2}\\ln t+\\frac{2t-1}{4}+C.$$\\n\\n**Détermination de la constante par la condition $F\\left(\\dfrac12\\right)=0$.** On évalue $G$ en $t=\\dfrac12$ :\\n$$G\\left(\\frac12\\right)=\\frac{(1/2)^2}{2}\\ln\\frac12-\\frac{(1/2)^2}{2}\\ln\\frac12+\\frac{2\\times\\frac12-1}{4}+C=0-0+0+C=C$$\\n(les deux premiers termes s'annulent car ils sont identiques et opposés, et $2\\times\\frac12-1=0$). Comme $F(x)=G(x)-G\\left(\\dfrac12\\right)$ doit vérifier $F\\left(\\dfrac12\\right)=0$, on prend $C=0$ dans l'écriture de $F$, c'est-à-dire :\\n$$F(x)=\\frac{(1-x)^2}{2}\\ln(1-x)-\\frac{x^2}{2}\\ln x+\\frac{2x-1}{4}\\qquad\\text{pour }x\\in\\,]0,1[.$$\\n\\n### Conseil\\nAvant de conclure, vérifier rapidement que $F\\left(\\dfrac12\\right)=0$ en réinjectant $x=\\dfrac12$ dans l'expression finale : c'est un contrôle immédiat qui confirme qu'aucune erreur de constante ne s'est glissée dans le calcul.",
+      "themes": [
+        "existence de primitives",
+        "intégration par parties",
+        "primitive de t ln t"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-pb-B1",
+          "competence": "Calcul d'une primitive par integration par parties avec determination de constante",
+          "contenu_markdown": "Toute fonction continue sur un intervalle admet des primitives sur cet intervalle (théorème d'existence des primitives) ; parmi elles, une seule s'annule en un point donné. Pour calculer une primitive de $t\\ln t$ ou $t\\ln|1-t|$, on utilise l'intégration par parties avec $u=\\ln(\\cdots)$ et $dv=t\\,dt$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "B.2. Montrer que $\\displaystyle\\lim_{x\\to1^-}F(x)=\\frac14$. En déduire l'aire, en cm², du domaine plan compris entre la courbe $(C)$ et l'axe des abscisses.",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire entre une courbe et l'axe des abscisses sur un intervalle où la fonction garde un signe constant est $\\left|\\int f\\right|$ ; quand la fonction est positive sur tout l'intervalle, cette aire vaut simplement $\\int f$. Une primitive impaire par rapport au centre de symétrie de $f$ vérifie $F(a+u)=-F(a-u)$, ce qui permet de déduire une valeur limite à une extrémité à partir de l'autre sans nouveau calcul.\\n\\n### Corrigé\\n**Calcul de $\\displaystyle\\lim_{x\\to1^-}F(x)$.** D'après B.1, pour $x\\in\\,]0,1[$ :\\n$$F(x)=\\frac{(1-x)^2}{2}\\ln(1-x)-\\frac{x^2}{2}\\ln x+\\frac{2x-1}{4}.$$\\nQuand $x\\to1^-$ : on pose $h=1-x\\to0^+$, et $(1-x)^2\\ln(1-x)=h^2\\ln h\\to0$ (limite usuelle $h^2\\ln h\\to0$ quand $h\\to0^+$). Le terme $-\\dfrac{x^2}{2}\\ln x\\to-\\dfrac12\\ln1=0$. Le dernier terme $\\dfrac{2x-1}{4}\\to\\dfrac{2-1}{4}=\\dfrac14$. Donc :\\n$$\\lim_{x\\to1^-}F(x)=0-0+\\frac14=\\frac14.$$\\n\\n**Déduction de l'aire.** D'après A.3, $f$ est strictement positive exactement sur $]0,1[$, et nulle en $0$ et en $1$. L'aire, en unités d'aire, du domaine plan compris entre $(C)$ et l'axe des abscisses est donc :\\n$$\\mathcal{A}_0=\\int_0^1f(t)\\,dt=\\lim_{x\\to1^-}F(x)-\\lim_{x\\to0^+}F(x).$$\\nIl reste à calculer $\\displaystyle\\lim_{x\\to0^+}F(x)$. D'après A.3, $f(1-t)=f(t)$ pour tout $t\\in\\,]0,1[$ : $f$ est symétrique par rapport à $t=\\dfrac12$. En intégrant cette identité entre $\\dfrac12$ et $x$ (changement de variable $t\\mapsto1-t$ dans l'intégrale de droite), on obtient que $F$ est « impaire » autour du point $\\left(\\dfrac12,0\\right)$ :\\n$$F(1-x)=-F(x)\\qquad\\text{pour tout }x\\in\\,]0,1[.$$\\nEn prenant la limite quand $x\\to1^-$ (donc $1-x\\to0^+$) :\\n$$\\lim_{x\\to0^+}F(x)=\\lim_{x\\to1^-}F(1-x)=\\lim_{x\\to1^-}\\big[-F(x)\\big]=-\\frac14.$$\\nOn en déduit :\\n$$\\mathcal{A}_0=\\frac14-\\left(-\\frac14\\right)=\\frac12\\ \\text{(unité d'aire)}.$$\\nChaque unité graphique valant $4\\,\\text{cm}$, une unité d'aire vaut $4\\times4=16\\,\\text{cm}^2$. L'aire cherchée, en cm², est donc :\\n$$\\mathcal{A}=\\frac12\\times16=8\\ \\text{cm}^2.$$\\n\\n### Piège à éviter\\nOublier de convertir l'aire calculée en unités graphiques (ici $\\frac12$) en cm² : avec une unité de $4\\,\\text{cm}$ sur chaque axe, le facteur de conversion est $4\\times4=16$, pas $4$.\\n\\n### Conseil\\nPlutôt que de recalculer $F(0^+)$ directement (ce qui redonnerait le même résultat mais avec un calcul de limite supplémentaire), exploiter la symétrie déjà démontrée en A.3 : c'est plus rapide et cela valorise une question précédente, ce qui est apprécié par les correcteurs.",
+      "themes": [
+        "limite d'une primitive",
+        "aire sous une courbe",
+        "symétrie",
+        "conversion d'unité"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-pb-B2",
+          "competence": "Calcul d'aire via une primitive et exploitation d'une symetrie",
+          "contenu_markdown": "L'aire entre une courbe et l'axe des abscisses sur un intervalle où la fonction garde un signe constant est $\\left|\\int f\\right|$ ; quand la fonction est positive sur tout l'intervalle, cette aire vaut simplement $\\int f$. Une primitive impaire par rapport au centre de symétrie de $f$ vérifie $F(a+u)=-F(a-u)$, ce qui permet de déduire une valeur limite à une extrémité à partir de l'autre sans nouveau calcul.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction logarithme",
+    "domaine de définition",
+    "tangente verticale",
+    "tableau de variations",
+    "branche parabolique",
+    "croissances comparées",
+    "axe de symétrie",
+    "primitive par intégration par parties",
+    "primitive de t ln t",
+    "aire sous une courbe",
+    "bac D Cameroun 1994"
+  ],
+  "incertitudes": [
+    "Le texte source du problème (rendu OCR dégradé, formules à polices mélangées) a été relu visuellement en zoom sur les deux pages du PDF ; la définition de $f$ par morceaux ($A(x)=(x-1)\\ln|x-1|-x\\ln x$, $A(0)=A(1)=0$, notée $f$ dans le reste de l'énoncé) a été interprétée comme $f(x)=(x-1)\\ln|x-1|-x\\ln x$ pour $x\\neq0,1$ et $f(0)=f(1)=0$ - lecture confirmée par la cohérence de tous les résultats numériques demandés par l'énoncé lui-même (forme alternative pour $x>1$, limite $\\lim_{x\\to1^-}F(x)=\\frac14$ donnée dans l'énoncé, $f(1/4)=f(3/4)$ retrouvé par calcul direct)."
+  ],
+  "statut": "corrige"
+}

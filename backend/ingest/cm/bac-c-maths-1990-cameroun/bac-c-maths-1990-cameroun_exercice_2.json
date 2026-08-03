@@ -1,0 +1,162 @@
+{
+  "epreuve_source": "bac-c-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**\\n\\nSoit $f$ la fonction numérique de la variable réelle $x$ définie par :\\n$$\\begin{cases}f(x)=(x-1)\\ln(x-1)+1 & \\text{si } x>1\\\\ f(x)=xe^{x-1} & \\text{si } x\\leqslant1\\end{cases}$$\\n($\\ln$ désigne la fonction logarithme népérien).\\n\\nOn pose $I=[-1,1]$. Soit $g$ la restriction de $f$ à l'intervalle $I$.",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "1. Déterminer l'ensemble de définition $D_f$ de $f$.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une fonction définie par morceaux s'obtient en réunissant les domaines de validité de chaque expression, en tenant compte des conditions d'existence propres à chaque morceau (ici l'argument du logarithme doit être strictement positif).\\n\\n### Corrigé\\n**Pour $x>1$** : $f(x)=(x-1)\\ln(x-1)+1$. Le logarithme $\\ln(x-1)$ exige $x-1>0$, c'est-à-dire $x>1$, ce qui est déjà la condition de définition de ce morceau : cette expression est donc valable pour tout $x>1$, sans restriction supplémentaire.\\n\\n**Pour $x\\leqslant1$** : $f(x)=xe^{x-1}$. L'exponentielle est définie sur $\\mathbb{R}$ tout entier, donc cette expression est valable pour tout $x\\leqslant1$, sans restriction.\\n\\n**Réunion des deux domaines** : $]1,+\\infty[\\,\\cup\\,]-\\infty,1]=\\mathbb{R}$.\\n\\n**$D_f=\\mathbb{R}$.**",
+      "themes": [
+        "domaine de définition",
+        "fonction définie par morceaux"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-1a",
+          "competence": "Domaine de definition d'une fonction definie par morceaux",
+          "contenu_markdown": "Le domaine de définition d'une fonction définie par morceaux s'obtient en réunissant les domaines de validité de chaque expression, en tenant compte des conditions d'existence propres à chaque morceau (ici l'argument du logarithme doit être strictement positif).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "Etudier la continuité puis la dérivabilité de $f$ au point $1$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour étudier la continuité en un point de raccordement $a$ d'une fonction définie par morceaux, on compare la limite à gauche, la limite à droite et la valeur $f(a)$ ; les trois doivent coïncider. Pour la dérivabilité, on compare de même les nombres dérivés à gauche et à droite (ou, à défaut d'existence finie, les limites des taux d'accroissement) ; ils doivent coïncider et être finis pour que $f$ soit dérivable en $a$. On rappelle la limite usuelle de croissances comparées $\\lim_{t\\to0^+}t\\ln t=0$.\\n\\n### Corrigé\\n**Continuité en $1$.**\\n\\nValeur en $1$ (donnée par le morceau $x\\leqslant1$) : $f(1)=1\\times e^{1-1}=1\\times e^0=1$.\\n\\nLimite à droite : posons $t=x-1\\to0^+$ quand $x\\to1^+$. Alors :\\n$$\\lim_{x\\to1^+}f(x)=\\lim_{t\\to0^+}\\big[t\\ln t+1\\big]=\\lim_{t\\to0^+}t\\ln t+1=0+1=1$$\\n(en utilisant la limite usuelle de croissances comparées $\\lim_{t\\to0^+}t\\ln t=0$).\\n\\nLimite à gauche (continuité de $x\\mapsto xe^{x-1}$, fonction usuelle) : $\\displaystyle\\lim_{x\\to1^-}f(x)=1\\times e^0=1$.\\n\\nLes trois valeurs $f(1)=1$, $\\displaystyle\\lim_{x\\to1^-}f(x)=1$ et $\\displaystyle\\lim_{x\\to1^+}f(x)=1$ coïncident : **$f$ est continue en $1$.**\\n\\n**Dérivabilité en $1$.**\\n\\nNombre dérivé à gauche : pour $x\\leqslant1$, $f(x)=xe^{x-1}$, donc $f'(x)=e^{x-1}+xe^{x-1}=(x+1)e^{x-1}$ (dérivée d'un produit). Ainsi :\\n$$f'_g(1)=\\lim_{x\\to1^-}f'(x)=(1+1)e^0=2$$\\n\\nNombre dérivé à droite : le taux d'accroissement pour $x>1$ est $\\dfrac{f(x)-f(1)}{x-1}=\\dfrac{(x-1)\\ln(x-1)+1-1}{x-1}=\\ln(x-1)$. Or :\\n$$\\lim_{x\\to1^+}\\ln(x-1)=\\lim_{t\\to0^+}\\ln t=-\\infty$$\\n\\nLe taux d'accroissement à droite tend vers $-\\infty$ : **$f$ n'est pas dérivable à droite en $1$** (pas de nombre dérivé fini), et donc **$f$ n'est pas dérivable en $1$**, bien qu'elle y soit continue. Géométriquement, $(C)$ admet au point d'abscisse $1$ une demi-tangente verticale (à droite), de direction celle de l'axe des ordonnées, orientée vers le bas.\\n\\n### Piège à éviter\\nNe pas confondre continuité et dérivabilité : $f$ est bien continue en $1$ (les limites à gauche et à droite valent toutes deux $1=f(1)$), mais elle n'y est pas dérivable, car le nombre dérivé à droite est infini alors que celui à gauche vaut $2$. La présence d'une demi-tangente verticale n'empêche pas la continuité.",
+      "themes": [
+        "continuité",
+        "dérivabilité",
+        "croissances comparées",
+        "demi-tangente"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-1b",
+          "competence": "Continuite et derivabilite en un point de raccordement",
+          "contenu_markdown": "Pour étudier la continuité en un point de raccordement $a$ d'une fonction définie par morceaux, on compare la limite à gauche, la limite à droite et la valeur $f(a)$ ; les trois doivent coïncider. Pour la dérivabilité, on compare de même les nombres dérivés à gauche et à droite (ou, à défaut d'existence finie, les limites des taux d'accroissement) ; ils doivent coïncider et être finis pour que $f$ soit dérivable en $a$. On rappelle la limite usuelle de croissances comparées $\\lim_{t\\to0^+}t\\ln t=0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Etudier la fonction $f$. Tracer sa courbe représentative $(C)$ dans le plan rapporté à un repère orthonormé $(o,\\vec i,\\vec j)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour étudier une fonction définie par morceaux, on étudie séparément chaque morceau (signe de la dérivée, limites aux bornes), puis on rassemble les résultats dans un unique tableau de variation en utilisant la continuité déjà établie au point de raccordement.\\n\\n### Corrigé\\n**Étude sur $]-\\infty,1]$ : $f(x)=xe^{x-1}$.**\\n\\n$f'(x)=e^{x-1}+xe^{x-1}=(x+1)e^{x-1}$ (dérivée d'un produit). Comme $e^{x-1}>0$ pour tout $x$, le signe de $f'(x)$ est celui de $(x+1)$ :\\n$$f'(x)<0 \\text{ pour } x<-1 \\qquad f'(-1)=0 \\qquad f'(x)>0 \\text{ pour } -1<x\\leqslant1$$\\n\\n$f$ est donc décroissante sur $]-\\infty,-1]$ et croissante sur $[-1,1]$, avec un minimum local en $x=-1$ :\\n$$f(-1)=-1\\times e^{-1-1}=-e^{-2}=-\\frac{1}{e^2}\\approx-0{,}135$$\\n\\n**Limite en $-\\infty$.** Par croissances comparées, $xe^{x-1}\\to0$ quand $x\\to-\\infty$ (l'exponentielle l'emporte sur $x$) :\\n$$\\lim_{x\\to-\\infty}f(x)=0$$\\n\\nLa droite d'équation $y=0$ (l'axe des abscisses) est donc **asymptote horizontale à $(C)$ en $-\\infty$.**\\n\\n**Étude sur $]1,+\\infty[$ : $f(x)=(x-1)\\ln(x-1)+1$.**\\n\\n$f'(x)=\\ln(x-1)+(x-1)\\times\\dfrac{1}{x-1}=\\ln(x-1)+1$ (dérivée d'un produit, avec $\\dfrac{d}{dx}\\ln(x-1)=\\dfrac{1}{x-1}$).\\n\\n$$f'(x)=0 \\iff \\ln(x-1)=-1 \\iff x-1=e^{-1} \\iff x=1+\\frac1e$$\\n\\nPour $1<x<1+\\frac1e$ : $x-1<e^{-1}$, donc $\\ln(x-1)<-1$, donc $f'(x)<0$ : $f$ décroissante.\\nPour $x>1+\\frac1e$ : $x-1>e^{-1}$, donc $\\ln(x-1)>-1$, donc $f'(x)>0$ : $f$ croissante.\\n\\nMinimum local en $x=1+\\dfrac1e$ :\\n$$f\\!\\left(1+\\frac1e\\right)=\\frac1e\\ln\\!\\left(\\frac1e\\right)+1=\\frac1e\\times(-1)+1=1-\\frac1e\\approx0{,}632$$\\n\\n**Limite en $1^+$** (déjà établie question 1.b) : $\\displaystyle\\lim_{x\\to1^+}f(x)=1=f(1)$, confirmant la continuité.\\n\\n**Limite en $+\\infty$.** $(x-1)\\to+\\infty$ et $\\ln(x-1)\\to+\\infty$, donc leur produit tend vers $+\\infty$ :\\n$$\\lim_{x\\to+\\infty}f(x)=+\\infty$$\\n\\n**Recherche d'asymptote en $+\\infty$.** Étudions $\\dfrac{f(x)}{x}=\\dfrac{(x-1)\\ln(x-1)+1}{x}$. Quand $x\\to+\\infty$, $\\dfrac{(x-1)}{x}\\to1$ et $\\ln(x-1)\\to+\\infty$, donc $\\dfrac{f(x)}{x}\\to+\\infty$ : il n'y a **pas d'asymptote oblique**, $(C)$ admet en $+\\infty$ une **branche parabolique de direction l'axe des ordonnées** (la courbe monte plus vite qu'une droite quelconque).\\n\\n**Tableau de variation complet.**\\n$$\\begin{array}{c|ccccccccc}\\nx & -\\infty & & -1 & & 1 & & 1+\\frac1e & & +\\infty\\\\\\n\\hline\\nf'(x) & & - & 0 & + & & - & 0 & + &\\\\\\n\\hline\\n& 0 & & & & 1 & & & & +\\infty\\\\\\nf(x) & & \\searrow & & \\nearrow & & \\searrow & & \\nearrow &\\\\\\n& & & -\\frac1{e^2} & & & & 1-\\frac1e &\\\\\\n\\end{array}$$\\n\\n**Tracé de $(C)$.** La courbe part au voisinage de l'axe des abscisses en $-\\infty$ (asymptote $y=0$), descend jusqu'au minimum $\\left(-1,-\\frac1{e^2}\\right)$, remonte jusqu'au point $(1,1)$ où elle présente un point anguleux avec demi-tangente verticale à droite (question 1.b), redescend jusqu'au minimum $\\left(1+\\frac1e,1-\\frac1e\\right)$, puis remonte indéfiniment avec une tangente de plus en plus verticale.\\n\\n### Piège à éviter\\nLe point $x=1$ est un maximum local de $f$ (la fonction croît juste avant, décroît juste après), mais ce n'est **pas** un point où la tangente est horizontale : $f$ n'y est pas dérivable (demi-tangente verticale à droite, dérivée à gauche égale à $2$). Un maximum local n'implique une tangente horizontale que si la fonction y est dérivable.",
+      "themes": [
+        "étude de fonction",
+        "tableau de variation",
+        "asymptotes",
+        "branche parabolique"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-2a",
+          "competence": "Etude complete d'une fonction definie par morceaux",
+          "contenu_markdown": "Pour étudier une fonction définie par morceaux, on étudie séparément chaque morceau (signe de la dérivée, limites aux bornes), puis on rassemble les résultats dans un unique tableau de variation en utilisant la continuité déjà établie au point de raccordement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "3. a) Montrer que $g$ est une bijection de $I$ sur un intervalle $J$ de $\\mathbb{R}$ que l'on précisera.",
+      "corrige_markdown": "### Rappel de méthode\\nUne fonction continue et strictement monotone sur un intervalle $I$ réalise une bijection de $I$ sur l'intervalle image $J=f(I)$, dont les bornes sont les images des bornes de $I$ (dans le même ordre si la fonction est croissante).\\n\\n### Corrigé\\nSur $I=[-1,1]$, on a $g(x)=f(x)=xe^{x-1}$ (l'intervalle $I$ est entièrement contenu dans $]-\\infty,1]$, domaine du premier morceau de $f$).\\n\\nD'après l'étude de la question 2, $f'(x)=(x+1)e^{x-1}\\geqslant0$ sur $[-1,1]$, avec égalité seulement au point isolé $x=-1$. Donc $g$ est **continue** (comme $f$ restreinte à $I$) et **strictement croissante** sur $I$ (une dérivée positive ou nulle en un seul point isolé n'empêche pas la stricte croissance globale).\\n\\nD'après le théorème de la bijection, $g$ réalise donc une bijection de $I=[-1,1]$ sur l'intervalle $J=g(I)=[g(-1),g(1)]$ (les bornes sont dans le même ordre car $g$ est croissante).\\n\\nCalculons les bornes : $g(-1)=f(-1)=-e^{-2}=-\\dfrac1{e^2}$ (question 2) et $g(1)=f(1)=1$ (question 1.b).\\n\\n**$g$ est une bijection de $I=[-1,1]$ sur $J=\\left[-\\dfrac1{e^2},\\,1\\right]$.**\\n\\n### Piège à éviter\\nUne dérivée qui s'annule en un point isolé (ici $x=-1$) ne remet pas en cause la stricte monotonie sur tout l'intervalle : il faut seulement qu'elle ne s'annule pas sur tout un sous-intervalle. Ici $f'(x)=0$ seulement en $x=-1$, donc $g$ reste strictement croissante sur $[-1,1]$.",
+      "themes": [
+        "bijection",
+        "théorème de la bijection monotone"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-3a",
+          "competence": "Theoreme de la bijection monotone",
+          "contenu_markdown": "Une fonction continue et strictement monotone sur un intervalle $I$ réalise une bijection de $I$ sur l'intervalle image $J=f(I)$, dont les bornes sont les images des bornes de $I$ (dans le même ordre si la fonction est croissante).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "b) Dresser le tableau de variation de $g^{-1}$ sur le dessin précédent. Déterminer une équation de la tangente à $(C')$ au point d'abscisse $0$.",
+      "corrige_markdown": "### Rappel de méthode\\nLa courbe de $g^{-1}$ est la symétrique de celle de $g$ par rapport à la droite $y=x$ : le tableau de variation de $g^{-1}$ a le même sens de variation que celui de $g$, en échangeant les rôles de $x$ et $y$. Pour la tangente à $(C')$ en un point d'abscisse $x_0$, on utilise $(g^{-1})'(x_0)=\\dfrac1{g'(g^{-1}(x_0))}$, valable dès que $g'(g^{-1}(x_0))\\neq0$.\\n\\n### Corrigé\\n**Tableau de variation de $g^{-1}$.** Puisque $g$ est une bijection strictement croissante de $I=[-1,1]$ sur $J=\\left[-\\frac1{e^2},1\\right]$ (question 3.a), sa réciproque $g^{-1}$ est également strictement croissante, de $J$ sur $I$ :\\n$$\\begin{array}{c|ccc}\\nx & -\\frac1{e^2} & & 1\\\\\\n\\hline\\ng^{-1}(x) & -1 & \\nearrow & 1\\n\\end{array}$$\\n\\nLa courbe $(C')$ de $g^{-1}$ est la symétrique de $(C)$ (restreinte à $I$) par rapport à la droite d'équation $y=x$.\\n\\n**Tangente à $(C')$ au point d'abscisse $0$.**\\n\\nCherchons d'abord $g^{-1}(0)$, c'est-à-dire l'unique $x_0\\in I$ tel que $g(x_0)=0$. Comme $g(x)=xe^{x-1}$ et $e^{x-1}\\neq0$ pour tout $x$, on a :\\n$$g(x_0)=0 \\iff x_0e^{x_0-1}=0 \\iff x_0=0$$\\n\\nDonc $g^{-1}(0)=0$ : le point de $(C')$ d'abscisse $0$ est le point $(0,0)$ (l'origine).\\n\\nCalculons $g'(0)$ : $g'(x)=(x+1)e^{x-1}$ (question 2), donc $g'(0)=(0+1)e^{-1}=\\dfrac1e$.\\n\\nComme $g'(0)=\\dfrac1e\\neq0$, la formule de dérivation de la réciproque s'applique :\\n$$(g^{-1})'(0)=\\frac{1}{g'\\big(g^{-1}(0)\\big)}=\\frac1{g'(0)}=\\frac1{1/e}=e$$\\n\\nL'équation de la tangente à $(C')$ au point $(0,0)$, de coefficient directeur $e$, est donc :\\n$$y=e\\,x$$\\n\\n### Conseil\\nPour obtenir la tangente à la courbe de la réciproque en un point, il est presque toujours plus rapide de repérer d'abord l'antécédent $x_0=g^{-1}(x_0')$ par lecture directe de l'équation $g(x_0)=x_0'$, puis d'appliquer la formule $(g^{-1})'(x_0')=1/g'(x_0)$, plutôt que de chercher à expliciter complètement $g^{-1}$.",
+      "themes": [
+        "fonction réciproque",
+        "dérivée de la réciproque",
+        "tangente"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-3b",
+          "competence": "Derivee de la fonction reciproque et tangente associee",
+          "contenu_markdown": "La courbe de $g^{-1}$ est la symétrique de celle de $g$ par rapport à la droite $y=x$ : le tableau de variation de $g^{-1}$ a le même sens de variation que celui de $g$, en échangeant les rôles de $x$ et $y$. Pour la tangente à $(C')$ en un point d'abscisse $x_0$, on utilise $(g^{-1})'(x_0)=\\dfrac1{g'(g^{-1}(x_0))}$, valable dès que $g'(g^{-1}(x_0))\\neq0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Déterminer l'aire géométrique de la partie du plan comprise entre la courbe $(C)$ et les droites d'équation $x=-1$, $x=1$ et $y=0$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire géométrique entre une courbe et l'axe des abscisses sur $[a,b]$ est $\\displaystyle\\int_a^b|f(x)|\\,dx$ : quand $f$ change de signe, on découpe l'intervalle aux points où $f$ s'annule, et on prend l'opposé de l'intégrale sur les portions où $f$ est négative. Pour intégrer $xe^{x-1}$, on utilise une intégration par parties avec $u=x$, $dv=e^{x-1}dx$.\\n\\n### Corrigé\\nOn cherche l'aire entre $(C)$ et les droites $x=-1$, $x=1$, $y=0$, c'est-à-dire entre $(C)$ et l'axe des abscisses sur $[-1,1]$. Sur cet intervalle, $f(x)=xe^{x-1}$ (question 2, premier morceau).\\n\\n**Signe de $f$ sur $[-1,1]$.** Comme $e^{x-1}>0$ toujours, le signe de $f(x)=xe^{x-1}$ est celui de $x$ : $f(x)<0$ sur $[-1,0[$, $f(0)=0$, $f(x)>0$ sur $]0,1]$.\\n\\nL'aire géométrique est donc :\\n$$\\mathcal{A}=\\int_{-1}^{0}\\big(-f(x)\\big)\\,dx+\\int_0^1 f(x)\\,dx=-\\int_{-1}^0 xe^{x-1}\\,dx+\\int_0^1 xe^{x-1}\\,dx$$\\n\\n**Calcul d'une primitive de $xe^{x-1}$ par parties.** Posons $u=x$, $dv=e^{x-1}dx$, donc $du=dx$, $v=e^{x-1}$ :\\n$$\\int xe^{x-1}\\,dx=xe^{x-1}-\\int e^{x-1}\\,dx=xe^{x-1}-e^{x-1}+C=(x-1)e^{x-1}+C$$\\n\\nNotons $F(x)=(x-1)e^{x-1}$ cette primitive.\\n\\n**Calcul de $\\displaystyle\\int_{-1}^0 xe^{x-1}\\,dx=F(0)-F(-1)$.**\\n$$F(0)=(0-1)e^{-1}=-e^{-1} \\qquad\\qquad F(-1)=(-1-1)e^{-2}=-2e^{-2}$$\\n$$\\int_{-1}^0 xe^{x-1}\\,dx=-e^{-1}-(-2e^{-2})=-e^{-1}+2e^{-2}=2e^{-2}-e^{-1}$$\\n\\n(cette intégrale est bien négative : $2e^{-2}-e^{-1}\\approx0{,}271-0{,}368=-0{,}097<0$, cohérent avec $f<0$ sur $[-1,0]$)\\n\\n**Calcul de $\\displaystyle\\int_0^1 xe^{x-1}\\,dx=F(1)-F(0)$.**\\n$$F(1)=(1-1)e^0=0$$\\n$$\\int_0^1 xe^{x-1}\\,dx=0-(-e^{-1})=e^{-1}$$\\n\\n**Aire totale.**\\n$$\\mathcal{A}=-\\big(2e^{-2}-e^{-1}\\big)+e^{-1}=e^{-1}-2e^{-2}+e^{-1}=2e^{-1}-2e^{-2}$$\\n\\n$$\\mathcal{A}=2e^{-2}(e-1)=\\frac{2(e-1)}{e^2}\\text{ unités d'aire}\\approx0{,}465\\text{ u.a.}$$\\n\\n### Piège à éviter\\nNe jamais intégrer directement $f(x)$ sans étudier son signe : ici l'intégrale $\\int_{-1}^1 xe^{x-1}dx$ (sans valeur absolue) donnerait un résultat plus petit, car les contributions négative et positive se compenseraient partiellement au lieu de s'additionner comme l'exige une aire géométrique.",
+      "themes": [
+        "calcul intégral",
+        "aire géométrique",
+        "intégration par parties"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e2-4",
+          "competence": "Aire geometrique par integration par parties avec etude de signe",
+          "contenu_markdown": "L'aire géométrique entre une courbe et l'axe des abscisses sur $[a,b]$ est $\\displaystyle\\int_a^b|f(x)|\\,dx$ : quand $f$ change de signe, on découpe l'intervalle aux points où $f$ s'annule, et on prend l'opposé de l'intégrale sur les portions où $f$ est négative. Pour intégrer $xe^{x-1}$, on utilise une intégration par parties avec $u=x$, $dv=e^{x-1}dx$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "fonction définie par morceaux",
+    "continuité",
+    "dérivabilité",
+    "croissances comparées",
+    "bijection",
+    "fonction réciproque",
+    "tangente",
+    "aire géométrique",
+    "intégration par parties"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

@@ -37,6 +37,12 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 # de la disponibilité réseau d'un tiers à chaque requête (timeouts constatés avec jsdelivr).
 _KATEX_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "katex"
 
+# Drapeaux SVG (paquet npm flag-icons, copiés depuis frontend/node_modules/flag-icons/flags/4x3
+# comme KaTeX ci-dessus) plutôt qu'un émoji drapeau : Chromium sous Windows ne rend pas les
+# regional indicator symbols par défaut (même raison que countryFlag.ts côté frontend), et le
+# rendu PDF ne doit pas dépendre de la police système de la machine qui génère.
+_FLAGS_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "flags" / "4x3"
+
 
 def _footer_template():
     # Fonction plutôt que constante de module : settings.SITE_NAME doit être lu au
@@ -116,9 +122,11 @@ def _render_html(lesson):
         extensions=["tables", "fenced_code", "nl2br"],
     )
     content_html = _restore_math(content_html, math_spans)
+    header = lesson.header_info()
+    flag_path = _FLAGS_DIR / f"{header['pays']['code'].lower()}.svg"
     return render_to_string("catalog/sujet_pdf_template.html", {
         "lesson": lesson,
-        "header": lesson.header_info(),
+        "header": header,
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
         "site_url": settings.FRONTEND_URL,
@@ -126,6 +134,7 @@ def _render_html(lesson):
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
         "katex_js_url": (_KATEX_DIR / "katex.min.js").as_uri(),
         "katex_auto_render_url": (_KATEX_DIR / "contrib" / "auto-render.min.js").as_uri(),
+        "flag_url": flag_path.as_uri() if flag_path.is_file() else None,
     })
 
 

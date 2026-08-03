@@ -31,6 +31,35 @@ services:
     volumes:
       - static_files:/app/staticfiles
       - ./media:/app/media
+      - ./backend/ingest:/app/ingest
+
+  backup:
+    build:
+      context: .
+      dockerfile: docker/backup/Dockerfile
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    # RCLONE_CONFIG_SPACES_* configure le remote "spaces" de rclone via variables
+    # d'environnement (convention imposee par rclone) - a partir des memes valeurs
+    # SPACES_* que backup.sh/restore.sh lisent directement pour le reste.
+    environment:
+      TZ: ${TZ:-UTC}
+      RCLONE_CONFIG_SPACES_TYPE: s3
+      RCLONE_CONFIG_SPACES_PROVIDER: DigitalOcean
+      RCLONE_CONFIG_SPACES_ACCESS_KEY_ID: ${SPACES_ACCESS_KEY_ID}
+      RCLONE_CONFIG_SPACES_SECRET_ACCESS_KEY: ${SPACES_SECRET_ACCESS_KEY}
+      RCLONE_CONFIG_SPACES_ENDPOINT: ${SPACES_ENDPOINT}
+      RCLONE_CONFIG_SPACES_REGION: ${SPACES_REGION}
+
+    depends_on:
+      - db
+
+    volumes:
+      - ./media:/media:ro
 
   frontend:
     build:

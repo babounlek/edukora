@@ -1,0 +1,94 @@
+{
+  "epreuve_source": "bac-d-maths-1994-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 1994,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": 1,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 1 (4 points)**\\n\\nUne urne contient 12 billes numérotées de 1 à 12, indiscernables au toucher.",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "1. On tire au hasard et simultanément 4 billes de l'urne ; tous les tirages sont équiprobables. On appelle $X$ la variable aléatoire indiquant le nombre de numéros pairs figurant parmi les 4 numéros d'un tirage. a) Donner la loi de probabilité de $X$. Calculer son espérance mathématique et sa variance.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une variable aléatoire hypergéométrique (tirage simultané sans remise dans une population à deux catégories), $P(X=k)=\\dfrac{\\binom{p}{k}\\binom{n-p}{r-k}}{\\binom{n}{r}}$ où $n$ est l'effectif total, $p$ l'effectif de la catégorie comptée, $r$ la taille du tirage.\\n\\n### Corrigé\\nParmi les 12 billes, il y a 6 numéros pairs $(2,4,6,8,10,12)$ et 6 numéros impairs $(1,3,5,7,9,11)$. On tire simultanément 4 billes parmi les 12, ce qui donne $\\binom{12}{4}$ tirages possibles :\\n$$\\binom{12}{4}=\\frac{12\\times11\\times10\\times9}{4\\times3\\times2\\times1}=495.$$\\nLa variable $X$ (nombre de numéros pairs parmi les 4 tirés) prend les valeurs $0,1,2,3,4$. Pour $X=k$, il faut choisir $k$ numéros pairs parmi les 6 et $4-k$ numéros impairs parmi les 6 :\\n$$P(X=k)=\\frac{\\binom{6}{k}\\binom{6}{4-k}}{\\binom{6}{4}}$$\\n— attention, le dénominateur correct est $\\binom{12}{4}=495$, pas $\\binom{6}{4}$. On calcule chaque terme :\\n$$P(X=0)=\\frac{\\binom{6}{0}\\binom{6}{4}}{495}=\\frac{1\\times15}{495}=\\frac{15}{495}=\\frac{1}{33}.$$\\n$$P(X=1)=\\frac{\\binom{6}{1}\\binom{6}{3}}{495}=\\frac{6\\times20}{495}=\\frac{120}{495}=\\frac{8}{33}.$$\\n$$P(X=2)=\\frac{\\binom{6}{2}\\binom{6}{2}}{495}=\\frac{15\\times15}{495}=\\frac{225}{495}=\\frac{5}{11}.$$\\n$$P(X=3)=\\frac{\\binom{6}{3}\\binom{6}{1}}{495}=\\frac{20\\times6}{495}=\\frac{120}{495}=\\frac{8}{33}.$$\\n$$P(X=4)=\\frac{\\binom{6}{4}\\binom{6}{0}}{495}=\\frac{15\\times1}{495}=\\frac{15}{495}=\\frac{1}{33}.$$\\nOn vérifie que la somme des probabilités vaut $1$ : $\\dfrac{1}{33}+\\dfrac{8}{33}+\\dfrac{15}{33}+\\dfrac{8}{33}+\\dfrac{1}{33}=\\dfrac{33}{33}=1$ (en écrivant $\\frac{5}{11}=\\frac{15}{33}$). ✓\\n\\n**Espérance mathématique :**\\n$$E(X)=\\sum_{k=0}^{4}k\\,P(X=k)=0\\times\\frac{1}{33}+1\\times\\frac{8}{33}+2\\times\\frac{5}{11}+3\\times\\frac{8}{33}+4\\times\\frac{1}{33}.$$\\nEn mettant tout au dénominateur $33$ (avec $\\frac{5}{11}=\\frac{15}{33}$) :\\n$$E(X)=\\frac{0+8+2\\times15+24+4}{33}=\\frac{0+8+30+24+4}{33}=\\frac{66}{33}=2.$$\\n\\n**Variance :** on calcule d'abord $E(X^2)=\\displaystyle\\sum_{k=0}^{4}k^2P(X=k)$ :\\n$$E(X^2)=0^2\\times\\frac{1}{33}+1^2\\times\\frac{8}{33}+2^2\\times\\frac{15}{33}+3^2\\times\\frac{8}{33}+4^2\\times\\frac{1}{33}=\\frac{0+8+60+72+16}{33}=\\frac{156}{33}.$$\\nOn simplifie $\\dfrac{156}{33}=\\dfrac{52}{11}$ (division par $3$). D'où :\\n$$V(X)=E(X^2)-\\big(E(X)\\big)^2=\\frac{52}{11}-2^2=\\frac{52}{11}-4=\\frac{52-44}{11}=\\frac{8}{11}.$$\\n\\n### Piège à éviter\\nUtiliser $\\binom{6}{4}$ comme dénominateur au lieu de $\\binom{12}{4}$ : le tirage se fait bien parmi les $12$ billes de l'urne, pas seulement parmi les $6$ billes paires.\\n\\n### Conseil\\nPour vérifier rapidement l'espérance d'une loi hypergéométrique, utiliser la formule directe $E(X)=r\\dfrac{p}{n}$ (ici $r=4$ tirages, $p=6$ pairs, $n=12$ total) : $E(X)=4\\times\\dfrac{6}{12}=2$, ce qui confirme le calcul détaillé.",
+      "themes": [
+        "loi hypergéométrique",
+        "espérance mathématique",
+        "variance"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-ex1-1a",
+          "competence": "Loi de probabilite hypergeometrique - calcul d'esperance et de variance",
+          "contenu_markdown": "Pour une variable aléatoire hypergéométrique (tirage simultané sans remise dans une population à deux catégories), $P(X=k)=\\dfrac{\\binom{p}{k}\\binom{n-p}{r-k}}{\\binom{n}{r}}$ où $n$ est l'effectif total, $p$ l'effectif de la catégorie comptée, $r$ la taille du tirage.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "b) Quelle est la probabilité pour que la somme des 4 numéros soit paire ?",
+      "corrige_markdown": "### Rappel de méthode\\nLa somme de $4$ nombres est paire si et seulement si le nombre de termes impairs parmi eux est pair (chaque terme pair ne change pas la parité de la somme, chaque terme impair la change).\\n\\n### Corrigé\\nParmi les 4 numéros tirés, il y a $X$ numéros pairs et $4-X$ numéros impairs. La somme des 4 numéros est paire si et seulement si le nombre de termes impairs, $4-X$, est pair. Comme $4$ est pair, $4-X$ est pair si et seulement si $X$ est pair. Donc :\\n$$\\{\\text{somme paire}\\}=\\{X=0\\}\\cup\\{X=2\\}\\cup\\{X=4\\}\\quad(\\text{événements incompatibles}).$$\\nD'après la loi de $X$ obtenue en 1a) :\\n$$P(\\text{somme paire})=P(X=0)+P(X=2)+P(X=4)=\\frac{1}{33}+\\frac{15}{33}+\\frac{1}{33}=\\frac{17}{33}.$$",
+      "themes": [
+        "probabilité",
+        "parité d'une somme",
+        "loi hypergéométrique"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-ex1-1b",
+          "competence": "Traduction d'un evenement de parite en termes de la variable aleatoire X",
+          "contenu_markdown": "La somme de $4$ nombres est paire si et seulement si le nombre de termes impairs parmi eux est pair (chaque terme pair ne change pas la parité de la somme, chaque terme impair la change).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. On répète 10 fois le tirage décrit précédemment, en remettant les billes dans l'urne après chaque tirage. Quelle est la probabilité d'obtenir exactement 6 fois une somme paire au cours de ces tirages successifs ?",
+      "corrige_markdown": "### Rappel de méthode\\nRépéter $n$ fois de façon indépendante une même épreuve à deux issues (succès de probabilité $p$, échec de probabilité $1-p$) - ici garanti par la remise des billes dans l'urne après chaque tirage - définit un schéma de Bernoulli : le nombre de succès suit une loi binomiale $\\mathcal{B}(n,p)$, avec $P(Y=k)=\\binom{n}{k}p^k(1-p)^{n-k}$.\\n\\n### Corrigé\\nLe tirage de 4 billes est répété $10$ fois, en remettant les billes dans l'urne après chaque tirage : les 10 tirages sont donc indépendants et identiques. Soit $Y$ le nombre de tirages, parmi les 10, où la somme des 4 numéros est paire. D'après la question 1b), chaque tirage donne une somme paire avec la probabilité $p=\\dfrac{17}{33}$, donc $Y$ suit la loi binomiale $\\mathcal{B}\\left(10,\\dfrac{17}{33}\\right)$. On cherche $P(Y=6)$ :\\n$$P(Y=6)=\\binom{10}{6}p^6(1-p)^4=\\binom{10}{6}\\left(\\frac{17}{33}\\right)^6\\left(\\frac{16}{33}\\right)^4.$$\\nAvec $\\binom{10}{6}=\\binom{10}{4}=\\dfrac{10\\times9\\times8\\times7}{4\\times3\\times2\\times1}=210$, on obtient :\\n$$P(Y=6)=210\\times\\frac{17^6\\times16^4}{33^{10}}=\\frac{110\\,731\\,580\\,538\\,880}{510\\,526\\,328\\,421\\,483}\\approx0{,}2169.$$\\n\\n### Conseil\\nBien identifier que c'est la remise des billes qui autorise le passage de la loi hypergéométrique (tirage sans remise, question 1) à la loi binomiale (répétitions indépendantes, question 2) : sans remise entre les 10 tirages, ce ne serait plus un schéma de Bernoulli.",
+      "themes": [
+        "loi binomiale",
+        "schéma de Bernoulli",
+        "répétition d'épreuves indépendantes"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1994d-ex1-2",
+          "competence": "Loi binomiale issue de la repetition independante d'un tirage avec remise",
+          "contenu_markdown": "Répéter $n$ fois de façon indépendante une même épreuve à deux issues (succès de probabilité $p$, échec de probabilité $1-p$) - ici garanti par la remise des billes dans l'urne après chaque tirage - définit un schéma de Bernoulli : le nombre de succès suit une loi binomiale $\\mathcal{B}(n,p)$, avec $P(Y=k)=\\binom{n}{k}p^k(1-p)^{n-k}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "loi hypergéométrique",
+    "espérance mathématique",
+    "variance",
+    "parité d'une somme",
+    "loi binomiale",
+    "schéma de Bernoulli",
+    "bac D Cameroun 1994"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

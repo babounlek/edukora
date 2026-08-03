@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse
 
-from .models import Cours, Country, Lesson, StatutContenu
+from .models import Cours, Country, Lesson
 
 # django.contrib.sitemaps résout le domaine via request.get_host() ou le framework
 # Sites - les deux donneraient le domaine de CETTE API, pas celui du frontend où les
@@ -52,17 +52,17 @@ def _all_entries():
         for path, priority, changefreq in _STATIC_PAGES
     ]
 
-    for country_code in Country.objects.values_list("code", flat=True):
+    for country_code in Country.objects.filter(actif=True).values_list("code", flat=True):
         code = country_code.lower()
         entries.extend(
             _url_entry(f"{base}/{code}{path}", priority=priority, changefreq=changefreq)
             for path, priority, changefreq in _PER_COUNTRY_PAGES
         )
 
-    for lesson in Lesson.objects.filter(statut=StatutContenu.VALIDE).only("id", "updated_at"):
-        entries.append(_url_entry(f"{base}/lecons/{lesson.id}", lastmod=lesson.updated_at, priority="0.7"))
+    for lesson in Lesson.objects.visibles().only("slug", "updated_at"):
+        entries.append(_url_entry(f"{base}/epreuves/{lesson.slug}", lastmod=lesson.updated_at, priority="0.7"))
 
-    for cours in Cours.objects.filter(statut=StatutContenu.VALIDE).only("id", "updated_at"):
+    for cours in Cours.objects.visibles().only("id", "updated_at"):
         entries.append(_url_entry(f"{base}/cours/{cours.id}", lastmod=cours.updated_at, priority="0.7"))
 
     return entries

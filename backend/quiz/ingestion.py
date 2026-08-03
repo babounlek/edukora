@@ -1,0 +1,348 @@
+"""
+Traduit la sortie JSON du skill concepteur-quiz-competence (items de quiz écrits pour
+être autonomes, jamais un extrait d'épreuve) vers quiz.CompetenceItem.
+
+Réutilise volontairement les résolveurs de catalog.ingestion (IngestionError,
+_resolve_subject, _resolve_cursus_list, _resolve_country, _normalize_qcm_choix,
+DIFFICULTE_MAP...) plutôt que de les dupliquer : un CompetenceItem et une
+catalog.Question partagent le même référentiel pays/matière/cursus/difficulté - toute
+évolution de ce référentiel doit se répercuter aux deux pipelines d'ingestion en même
+temps, jamais à un seul (voir la note "consistance correction-experte" côté mémoire
+projet).
+
+Convention de dossier : `ingest/_quiz/<code_pays>/...` - un sous-dossier de l'arbre
+`ingest/` déjà monté dans le conteneur (voir catalog.admin.INGEST_DIR), plutôt qu'un
+arbre séparé qui aurait exigé un nouveau bind mount Docker. `_quiz` (préfixe
+underscore, jamais un code pays valide) distingue ce sous-dossier des vrais dossiers
+pays de correction-experte ; catalog.ingestion.run_ingestion l'ignore explicitement
+(voir son garde-fou dédié) pour ne jamais tenter d'y lire un exercice ou un cours.
+"""
+
+import json
+from pathlib import Path
+
+from django.db import transaction
+from django.db.models import Count
+
+from catalog.ingestion import (
+    DIFFICULTE_MAP,
+    IngestionError,
+    _normalize,
+    _normalize_qcm_choix,
+    _repair_double_json_escaping,
+    _repair_missing_matrix_row_separators,
+    _resolve_country,
+    _resolve_cursus_list,
+    _resolve_subject,
+    _strip_em_dash,
+)
+from catalog.models import Exercise, Question, StatutContenu, Subject, Tag, TypeReponse
+
+from .models import CompetenceItem
+
+SELECTION_FLOOR = 6
+SELECTION_LIMIT = 5
+SELECTION_REPARTITION = {"FAIBLE": 2, "MOYENNE": 3, "ELEVEE": 1}
+SELECTION_MAX_REFERENCE_QUESTIONS = 4
+
+REQUIRED_KEYS = ["theme", "matiere", "cursus", "enonce_markdown", "corrige_markdown"]
+
+
+def _country_code_from_quiz_ingest_path(path):
+    """
+    Variante de catalog.ingestion._country_code_from_path, ancrée sur le segment
+    `_quiz` plutôt que `ingest` - voir la convention de dossier en tête de module.
+    """
+    parts = path.resolve().parts
+    lowered = [p.lower() for p in parts]
+    if "_quiz" not in lowered:
+        return None
+    idx = lowered.index("_quiz")
+    if idx + 1 >= len(parts):
+        return None
+    return parts[idx + 1]
+
+
+def _resolve_theme(theme_name):
+    """
+    Correspondance exacte d'abord (Tag.name est sensible à la casse en base), repli
+    insensible à la casse ensuite - le skill est censé recopier le nom exact d'un Tag
+    existant, mais une dérive mineure de casse est un risque réaliste à ne pas traiter
+    comme une erreur bloquante quand une correspondance non ambiguë existe.
+    """
+    name = _strip_em_dash(str(theme_name or "")).strip()
+    if not name:
+        raise IngestionError("theme manquant.")
+    try:
+        return Tag.objects.get(name=name)
+    except Tag.DoesNotExist:
+        pass
+    candidats = list(Tag.objects.filter(name__iexact=name))
+    if len(candidats) == 1:
+        return candidats[0]
+    if len(candidats) > 1:
+        raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
+    raise IngestionError(
+        f"Compétence (Tag) introuvable : {name!r} - doit déjà exister en base (créée via "
+        "correction-experte), jamais inventée par ce pipeline.",
+    )
+
+
+def _resolve_cursus_from_entries(cursus_data, country):
+    """
+    `cursus_data` : liste d'objets {"examen": "bac", "serie": "C"} (serie omise/vide
+    pour un examen sans série, ex. BEPC) - mêmes champs et mêmes valeurs que
+    correction-experte (examen/serie), résolus par les mêmes fonctions, pour ne jamais
+    diverger du référentiel pays/examen/série déjà utilisé côté catalog.
+    """
+    if not cursus_data:
+        raise IngestionError("cursus est requis et doit contenir au moins une entrée.")
+
+    cursus_list = []
+    seen = set()
+    for entry in cursus_data:
+        if not isinstance(entry, dict) or not entry.get("examen"):
+            raise IngestionError(f"Entrée cursus invalide (examen manquant) : {entry!r}")
+        for cursus in _resolve_cursus_list(entry["examen"], entry.get("serie"), country):
+            if cursus.pk not in seen:
+                seen.add(cursus.pk)
+                cursus_list.append(cursus)
+    return cursus_list
+
+
+def _find_undercovered_competencies(country, floor):
+    """
+    Groupe les Question validées de ce pays par (theme, matière) - une compétence est
+    traitée par matière, pas seulement par nom de Tag : le même intitulé pourrait en
+    théorie être réutilisé dans une autre matière, et le skill concepteur-quiz-
+    competence a de toute façon besoin d'une matière unique par requête.
+
+    Retourne une liste de (theme, subject, gap) triée par gap décroissant (la
+    compétence la plus sous-couverte d'abord), gap = floor - couverture actuelle,
+    uniquement pour gap > 0.
+    """
+    pairs = (
+        Question.objects.filter(
+            exercise__statut=StatutContenu.VALIDE,
+            exercise__lesson__statut=StatutContenu.VALIDE,
+            exercise__lesson__cursus__country=country,
+            themes__isnull=False,
+        )
+        .values("themes", "exercise__lesson__subject")
+        .annotate(n=Count("pk", distinct=True))
+    )
+
+    candidates = []
+    for pair in pairs:
+        theme = Tag.objects.get(pk=pair["themes"])
+        subject_id = pair["exercise__lesson__subject"]
+
+        covered = CompetenceItem.objects.filter(
+            theme_id=theme.pk, subject_id=subject_id, statut=StatutContenu.VALIDE,
+        ).count()
+        gap = floor - covered
+        if gap <= 0:
+            continue
+
+        candidates.append((theme, Subject.objects.get(pk=subject_id), gap))
+
+    candidates.sort(key=lambda c: c[2], reverse=True)
+    return candidates
+
+
+def _build_generation_request(country, theme, subject, gap):
+    questions = list(
+        Question.objects.filter(
+            themes=theme,
+            exercise__lesson__subject=subject,
+            exercise__statut=StatutContenu.VALIDE,
+            exercise__lesson__statut=StatutContenu.VALIDE,
+            exercise__lesson__cursus__country=country,
+        )
+        .select_related("exercise__lesson")
+        .order_by("exercise_id", "ordre")
+    )
+
+    materiel_reference = []
+    seen_exercises = set()
+    for question in questions:
+        if question.exercise_id in seen_exercises:
+            continue
+        seen_exercises.add(question.exercise_id)
+        materiel_reference.append({
+            "exercise_id": question.exercise_id,
+            "enonce_markdown": question.enonce_markdown,
+            "corrige_markdown": question.corrige_markdown,
+        })
+        if len(materiel_reference) >= SELECTION_MAX_REFERENCE_QUESTIONS:
+            break
+
+    # Union des cursus de TOUTES les Question de cette compétence/matière, pas
+    # seulement la première - une compétence couvre souvent plusieurs séries à la fois
+    # (ex. Maths BAC C et E) : voir catalog.models.Lesson.cursus (M2M).
+    cursus_entries = []
+    seen_cursus = set()
+    for question in questions:
+        for cursus in question.exercise.lesson.cursus.filter(country=country):
+            if cursus.pk in seen_cursus:
+                continue
+            seen_cursus.add(cursus.pk)
+            cursus_entries.append({
+                "examen": cursus.examen.lower(),
+                "serie": cursus.series.code if cursus.series else "",
+            })
+
+    nombre_items = min(gap, sum(SELECTION_REPARTITION.values()))
+
+    return {
+        "competence": theme.name,
+        "pays": country.code.lower(),
+        "matiere": subject.label,
+        "cursus": cursus_entries,
+        "cible": {
+            "nombre_items": nombre_items,
+            "repartition_difficulte": SELECTION_REPARTITION,
+        },
+        "materiel_reference": materiel_reference,
+    }
+
+
+def select_quiz_batch(country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR):
+    """
+    Sélectionne jusqu'à `limit` compétences sous-couvertes pour `country` et produit
+    une liste de requêtes de génération au format attendu par le skill concepteur-
+    quiz-competence (voir sa section "Entrée attendue") - pure sélection déterministe,
+    aucun jugement éditorial, jamais le contenu du quiz lui-même.
+
+    Fonction partagée par la commande `select_quiz_batch` (CLI) et
+    `quiz.admin.CompetenceItemAdmin.select_batch_view` (bouton admin) - un seul
+    endroit à faire évoluer si le critère de sélection change.
+    """
+    candidates = _find_undercovered_competencies(country, floor)[:limit]
+    return [_build_generation_request(country, theme, subject, gap) for theme, subject, gap in candidates]
+
+
+def ingest_competence_item(data, country):
+    """
+    Ingère un objet JSON (un CompetenceItem). Retourne (item, created).
+
+    Idempotent via `external_id` quand renseigné (voir la contrainte
+    unique_competenceitem_external_id_when_set) : un item déjà ingéré n'est jamais
+    modifié - un ré-import ne recouvre pas une correction manuelle faite depuis
+    l'admin. Sans `external_id` (item ad hoc, hors mode automatisation), toujours créé.
+
+    Créé directement avec statut=VALIDE (comme catalog.ingestion.ingest_exercise) :
+    publié et servable en Quiz dès l'ingestion, sans étape de relecture humaine
+    préalable - la rigueur exigée du skill concepteur-quiz-competence (auto-
+    vérification avant de finaliser chaque item, voir son SKILL.md) est la seule
+    garantie avant qu'un élève ne voie ce contenu. `quiz.admin.CompetenceItemAdmin`
+    reste disponible pour repasser un item en brouillon après coup si un problème est
+    repéré une fois publié.
+    """
+    missing = [key for key in REQUIRED_KEYS if not data.get(key)]
+    if missing:
+        raise IngestionError(f"Champs obligatoires manquants : {missing}")
+
+    external_id = str(data.get("external_id") or "").strip()
+    if external_id:
+        existing = CompetenceItem.objects.filter(external_id=external_id).first()
+        if existing:
+            return existing, False
+
+    theme = _resolve_theme(data["theme"])
+    subject = _resolve_subject(data["matiere"], country)
+    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+
+    type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
+    if type_reponse == TypeReponse.QCM:
+        choix, reponse_correcte = _normalize_qcm_choix(data.get("choix"), data.get("reponse_correcte"))
+    else:
+        choix, reponse_correcte = [], ""
+
+    difficulte = DIFFICULTE_MAP.get(_normalize(data.get("difficulte_estimee")), "")
+
+    with transaction.atomic():
+        item = CompetenceItem.objects.create(
+            external_id=external_id,
+            theme=theme,
+            subject=subject,
+            enonce_markdown=_strip_em_dash(data["enonce_markdown"]),
+            corrige_markdown=_strip_em_dash(data["corrige_markdown"]),
+            difficulte_estimee=difficulte,
+            type_reponse=type_reponse,
+            choix=choix,
+            reponse_correcte=reponse_correcte,
+            statut=StatutContenu.VALIDE,
+        )
+        item.cursus.set(cursus_list)
+
+        # Best-effort, jamais bloquant : source_exercises n'est que de la traçabilité
+        # d'audit (voir CompetenceItem.source_exercises), un id qui ne résout plus rien
+        # (exercice supprimé/mal recopié par le skill) ne doit pas faire échouer
+        # l'ingestion d'un item par ailleurs valide - même logique que
+        # catalog.ingestion._link_rappels_lies.
+        source_ids = [i for i in (data.get("source_exercises") or []) if isinstance(i, int)]
+        if source_ids:
+            item.source_exercises.set(Exercise.objects.filter(pk__in=source_ids))
+
+    return item, True
+
+
+def run_ingestion(path):
+    """
+    Ingère tous les fichiers .json sous `path` (fichier unique, ou dossier - recherche
+    récursive) : chaque fichier porte un tableau JSON de CompetenceItem (sortie brute
+    du skill concepteur-quiz-competence), jamais un objet unique.
+
+    Le pays se déduit du chemin sur disque, convention `ingest/_quiz/<code_pays>/...`
+    (même mécanisme que catalog.ingestion._country_code_from_path, ancré sur `_quiz`
+    plutôt que sur la racine `ingest` - voir la docstring de module).
+
+    Idempotent (voir ingest_competence_item) : relancer sur le même dossier sans le
+    vider entre-temps est sans risque pour les items déjà ingérés avec external_id.
+
+    Retourne {"files_found": int, "created": int, "skipped": int, "errors": [str, ...]}.
+    """
+    path = Path(path)
+    # select_quiz_batch écrit sa requête de sélection directement dans `_quiz/`
+    # (ex. `_quiz/_batch_cm.json`, pas encore rattachée à un pays précis puisque
+    # c'est une liste de requêtes, pas un lot ingérable) - jamais un CompetenceItem
+    # valide, donc exclu ici plutôt que de produire une "Pays inconnu" trompeuse à
+    # chaque scan complet de l'arbre `_quiz/`. Un vrai lot vit toujours au moins un
+    # niveau plus bas, sous `_quiz/<code_pays>/...`.
+    files = (
+        [path] if path.is_file()
+        else sorted(f for f in path.rglob("*.json") if f.parent.name.lower() != "_quiz")
+    )
+
+    created = 0
+    skipped = 0
+    errors = []
+
+    for file_path in files:
+        try:
+            country = _resolve_country(_country_code_from_quiz_ingest_path(file_path))
+        except IngestionError as exc:
+            errors.append(f"{file_path}: {exc}")
+            continue
+
+        try:
+            raw = json.loads(file_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            errors.append(f"{file_path}: JSON invalide ({exc})")
+            continue
+
+        items_data = raw if isinstance(raw, list) else [raw]
+
+        for index, data in enumerate(items_data):
+            try:
+                data, _ = _repair_double_json_escaping(data)
+                data, _ = _repair_missing_matrix_row_separators(data)
+                _, was_created = ingest_competence_item(data, country)
+                created += 1 if was_created else 0
+                skipped += 0 if was_created else 1
+            except Exception as exc:
+                theme = data.get("theme", "?") if isinstance(data, dict) else "?"
+                errors.append(f"{file_path} (item {index} - {theme!r}): {exc}")
+
+    return {"files_found": len(files), "created": created, "skipped": skipped, "errors": errors}

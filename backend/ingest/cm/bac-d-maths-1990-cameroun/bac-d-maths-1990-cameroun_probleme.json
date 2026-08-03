@@ -1,0 +1,164 @@
+{
+  "epreuve_source": "bac-d-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme",
+  "points": 8,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème**\\n\\nOn considère un réel non nul $\\alpha$ et la fonction $f_\\alpha$ de $\\mathbb R$ dans $\\mathbb R$ définie par :\\n$$f_\\alpha(x)=\\frac{2-\\alpha}{2e^{\\alpha x}-1}$$\\noù $e$ est la base du logarithme népérien.\\n\\n**II.** Dans cette partie, on pose $\\alpha=1$.",
+  "questions": [
+    {
+      "numero": "I1",
+      "enonce_markdown": "I.1. Donner l'ensemble de définition Dα de fα.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une fonction de la forme constante/dénominateur exclut les valeurs de x qui annulent le dénominateur ; ici, on résout $2e^{\\alpha x}-1=0$.\\n\\n### Corrigé\\n$f_\\alpha(x)$ est définie si et seulement si $2e^{\\alpha x}-1\\neq0$, c'est-à-dire $e^{\\alpha x}\\neq\\dfrac12$.\\n\\nOr $e^{\\alpha x}=\\dfrac12\\iff\\alpha x=\\ln\\dfrac12=-\\ln2\\iff x=-\\dfrac{\\ln2}\\alpha$ (division licite car $\\alpha\\neq0$).\\n\\n$$\\boxed{D_\\alpha=\\mathbb R\\setminus\\left\\{-\\frac{\\ln2}\\alpha\\right\\}}$$",
+      "themes": [
+        "domaine de définition",
+        "exponentielle",
+        "équation exponentielle"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-I1",
+          "competence": "Domaine de definition d'une fonction exponentielle parametree",
+          "contenu_markdown": "Le domaine de définition d'une fonction de la forme constante/dénominateur exclut les valeurs de x qui annulent le dénominateur ; ici, on résout $2e^{\\alpha x}-1=0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I2",
+      "enonce_markdown": "I.2. Calculer les limites aux bornes de Dα (on distinguera les cas α<0 et α>0).",
+      "corrige_markdown": "### Rappel de méthode\\nLe signe de $\\alpha x$ quand $x\\to\\pm\\infty$ dépend du signe de $\\alpha$ : si $\\alpha>0$, $\\alpha x\\to\\pm\\infty$ comme $x$ ; si $\\alpha<0$, $\\alpha x\\to\\mp\\infty$ (sens opposé à $x$). On en déduit le comportement de $e^{\\alpha x}$ à chaque borne, puis celui de $f_\\alpha$ par quotient.\\n\\n### Corrigé\\n**Cas $\\alpha>0$.** Quand $x\\to+\\infty$, $\\alpha x\\to+\\infty$ donc $e^{\\alpha x}\\to+\\infty$, et :\\n$$\\lim_{x\\to+\\infty}f_\\alpha(x)=\\lim_{x\\to+\\infty}\\frac{2-\\alpha}{2e^{\\alpha x}-1}=0$$\\nQuand $x\\to-\\infty$, $\\alpha x\\to-\\infty$ donc $e^{\\alpha x}\\to0$, et :\\n$$\\lim_{x\\to-\\infty}f_\\alpha(x)=\\frac{2-\\alpha}{2\\times0-1}=\\frac{2-\\alpha}{-1}=\\alpha-2$$\\nAu voisinage de $x_0=-\\dfrac{\\ln2}\\alpha$ (borne exclue), le dénominateur $2e^{\\alpha x}-1$ s'annule en changeant de signe : comme $\\alpha>0$, $x\\mapsto e^{\\alpha x}$ est croissante, donc $2e^{\\alpha x}-1<0$ pour $x<x_0$ et $>0$ pour $x>x_0$. Le numérateur $2-\\alpha$ étant une constante non nulle (pour $\\alpha\\neq2$), on obtient (si $\\alpha<2$, donc $2-\\alpha>0$) :\\n$$\\lim_{x\\to x_0^-}f_\\alpha(x)=-\\infty\\qquad\\lim_{x\\to x_0^+}f_\\alpha(x)=+\\infty$$\\n(et les signes s'inversent si $\\alpha>2$, où $2-\\alpha<0$ ; si $\\alpha=2$, $f_\\alpha$ est la fonction nulle sur $D_\\alpha$, sans asymptote).\\n\\n**Cas $\\alpha<0$.** Quand $x\\to+\\infty$, $\\alpha x\\to-\\infty$ donc $e^{\\alpha x}\\to0$, et :\\n$$\\lim_{x\\to+\\infty}f_\\alpha(x)=\\frac{2-\\alpha}{-1}=\\alpha-2$$\\nQuand $x\\to-\\infty$, $\\alpha x\\to+\\infty$ donc $e^{\\alpha x}\\to+\\infty$, et :\\n$$\\lim_{x\\to-\\infty}f_\\alpha(x)=0$$\\nComme $\\alpha<0$, $2-\\alpha>2>0$ toujours. Au voisinage de $x_0$, $x\\mapsto e^{\\alpha x}$ est cette fois **décroissante** (car $\\alpha<0$), donc $2e^{\\alpha x}-1>0$ pour $x<x_0$ et $<0$ pour $x>x_0$ :\\n$$\\lim_{x\\to x_0^-}f_\\alpha(x)=+\\infty\\qquad\\lim_{x\\to x_0^+}f_\\alpha(x)=-\\infty$$\\n\\n**Synthèse.** Dans les deux cas, $y=0$ ou $y=\\alpha-2$ (selon la borne) sont des valeurs limites finies (asymptotes horizontales), et $x=x_0=-\\dfrac{\\ln2}\\alpha$ est asymptote verticale.\\n\\n### Piège à éviter\\nLe sens de variation de $x\\mapsto e^{\\alpha x}$ (croissante si $\\alpha>0$, décroissante si $\\alpha<0$) inverse le signe du dénominateur de part et d'autre de $x_0$ selon le cas : c'est une erreur fréquente d'appliquer machinalement le même sens des deux côtés sans revérifier ce point pour $\\alpha<0$.",
+      "themes": [
+        "limites",
+        "exponentielle",
+        "asymptotes",
+        "étude par cas selon un paramètre"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-I2",
+          "competence": "Limites d'une fonction exponentielle parametree selon le signe du parametre",
+          "contenu_markdown": "Le signe de $\\alpha x$ quand $x\\to\\pm\\infty$ dépend du signe de $\\alpha$ : si $\\alpha>0$, $\\alpha x\\to\\pm\\infty$ comme $x$ ; si $\\alpha<0$, $\\alpha x\\to\\mp\\infty$ (sens opposé à $x$). On en déduit le comportement de $e^{\\alpha x}$ à chaque borne, puis celui de $f_\\alpha$ par quotient.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I3",
+      "enonce_markdown": "I.3. Calculer, pour tout réel x de Dα, le nombre dérivé f'α(x) ; en déduire le sens de variation de fα et dresser son tableau de variation (on distinguera les cas α<0 et α>0).",
+      "corrige_markdown": "### Rappel de méthode\\nPour une fonction de la forme $\\dfrac{k}{u(x)}$ avec $k$ constant, $f'(x)=-\\dfrac{k\\,u'(x)}{u(x)^2}$ : le signe de $f'$ est l'opposé du signe de $k\\,u'(x)$, le carré $u(x)^2$ étant toujours positif.\\n\\n### Corrigé\\nÉcrivons $f_\\alpha(x)=\\dfrac k{u(x)}$ avec $k=2-\\alpha$ (constante) et $u(x)=2e^{\\alpha x}-1$, de dérivée $u'(x)=2\\alpha e^{\\alpha x}$.\\n\\n$$f_\\alpha'(x)=-\\frac{k\\,u'(x)}{u(x)^2}=-\\frac{(2-\\alpha)\\times2\\alpha e^{\\alpha x}}{\\left(2e^{\\alpha x}-1\\right)^2}=\\frac{2\\alpha(\\alpha-2)e^{\\alpha x}}{\\left(2e^{\\alpha x}-1\\right)^2}$$\\n\\n**Signe de $f_\\alpha'(x)$.** Le dénominateur est un carré, donc strictement positif sur $D_\\alpha$. Le facteur $e^{\\alpha x}$ est toujours strictement positif. Le signe de $f_\\alpha'(x)$ est donc celui de la constante $2\\alpha(\\alpha-2)$, **indépendant de $x$** : $f_\\alpha$ est strictement monotone sur chacun des deux intervalles de $D_\\alpha$.\\n\\n**Cas $\\alpha<0$.** Alors $\\alpha<0$ et $\\alpha-2<0$ (puisque $\\alpha<0<2$), donc $\\alpha(\\alpha-2)>0$ : $f_\\alpha'(x)>0$. **$f_\\alpha$ est strictement croissante** sur chacun des deux intervalles de $D_\\alpha$.\\n\\n**Cas $\\alpha>0$.** Le signe de $\\alpha(\\alpha-2)$ dépend alors de la position de $\\alpha$ par rapport à $2$ :\\n- Si $0<\\alpha<2$ : $\\alpha>0$ et $\\alpha-2<0$, donc $\\alpha(\\alpha-2)<0$ : $f_\\alpha'(x)<0$, **$f_\\alpha$ est strictement décroissante**.\\n- Si $\\alpha>2$ : $\\alpha>0$ et $\\alpha-2>0$, donc $\\alpha(\\alpha-2)>0$ : $f_\\alpha'(x)>0$, **$f_\\alpha$ est strictement croissante**.\\n- Si $\\alpha=2$ : $f_\\alpha'(x)=0$ partout ; en effet $2-\\alpha=0$ donne $f_2\\equiv0$ sur $D_2$ (fonction constante nulle, cas dégénéré).\\n\\n**Tableau de variations (exemple $0<\\alpha<2$, cas décroissant, avec $x_0=-\\frac{\\ln2}\\alpha<0$) :**\\n$$\\begin{array}{|c|ccccc|}\\hline x&-\\infty&&x_0&&+\\infty\\\\\\hline f_\\alpha'(x)&&-&\\|&-&\\\\\\hline f_\\alpha(x)&\\alpha-2\\searrow&&-\\infty&&\\\\&&&\\|&&\\\\&&&+\\infty&\\searrow&0\\\\\\hline\\end{array}$$\\n(Les autres cas $\\alpha<0$ et $\\alpha>2$ se dressent de façon analogue, avec le sens de variation « croissant » et les valeurs limites de la question I.2 substituées.)\\n\\n### Piège à éviter\\nLa formule $f_\\alpha'(x)=\\dfrac{2\\alpha(\\alpha-2)e^{\\alpha x}}{(2e^{\\alpha x}-1)^2}$ montre que le signe de la dérivée ne dépend jamais de $x$ à $\\alpha$ fixé : il serait donc une erreur de chercher un extremum local en résolvant $f_\\alpha'(x)=0$ par rapport à $x$ (hors du cas dégénéré $\\alpha=2$) — $f_\\alpha$ est monotone sur chaque intervalle, sans extremum intérieur.",
+      "themes": [
+        "dérivation",
+        "sens de variation",
+        "tableau de variations",
+        "étude par cas selon un paramètre"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-I3",
+          "competence": "Sens de variation d'une fonction exponentielle parametree selon le signe du parametre",
+          "contenu_markdown": "Pour une fonction de la forme $\\dfrac{k}{u(x)}$ avec $k$ constant, $f'(x)=-\\dfrac{k\\,u'(x)}{u(x)^2}$ : le signe de $f'$ est l'opposé du signe de $k\\,u'(x)$, le carré $u(x)^2$ étant toujours positif.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I4",
+      "enonce_markdown": "I.4. Montrer que, pour tout réel x de Dα, fα(x) = a − be^(αx)/(2e^(αx)−1), où a et b sont des réels qu'on déterminera.",
+      "corrige_markdown": "### Rappel de méthode\\nPour écrire $\\dfrac{k}{u(x)}$ sous la forme $a-\\dfrac{b\\,w(x)}{u(x)}$ avec $u(x)=2w(x)-1$, on réduit le second membre au même dénominateur et on identifie les coefficients par égalité des numérateurs.\\n\\n### Corrigé\\nOn cherche $a,b\\in\\mathbb R$ tels que, pour tout $x\\in D_\\alpha$ :\\n$$f_\\alpha(x)=a-\\frac{be^{\\alpha x}}{2e^{\\alpha x}-1}$$\\n\\nRéduisons le second membre au même dénominateur $2e^{\\alpha x}-1$ :\\n$$a-\\frac{be^{\\alpha x}}{2e^{\\alpha x}-1}=\\frac{a\\left(2e^{\\alpha x}-1\\right)-be^{\\alpha x}}{2e^{\\alpha x}-1}=\\frac{(2a-b)e^{\\alpha x}-a}{2e^{\\alpha x}-1}$$\\n\\nEn identifiant avec $f_\\alpha(x)=\\dfrac{2-\\alpha}{2e^{\\alpha x}-1}$ (numérateur **constant**, sans terme en $e^{\\alpha x}$), il faut :\\n$$\\begin{cases}2a-b=0\\quad\\text{(coefficient de }e^{\\alpha x}\\text{ nul)}\\\\-a=2-\\alpha\\quad\\text{(terme constant)}\\end{cases}$$\\n\\nDe la seconde équation : $a=\\alpha-2$. En reportant dans la première : $b=2a=2(\\alpha-2)=2\\alpha-4$.\\n\\n$$\\boxed{a=\\alpha-2\\,,\\qquad b=2\\alpha-4}$$\\n\\n**Vérification.** $(2a-b)e^{\\alpha x}-a=(2(\\alpha-2)-(2\\alpha-4))e^{\\alpha x}-(\\alpha-2)=0\\times e^{\\alpha x}+(2-\\alpha)=2-\\alpha\\ \\checkmark$",
+      "themes": [
+        "identification de coefficients",
+        "réécriture d'une fraction exponentielle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-I4",
+          "competence": "Reecriture d'une fonction exponentielle en vue du calcul de primitive",
+          "contenu_markdown": "Pour écrire $\\dfrac{k}{u(x)}$ sous la forme $a-\\dfrac{b\\,w(x)}{u(x)}$ avec $u(x)=2w(x)-1$, on réduit le second membre au même dénominateur et on identifie les coefficients par égalité des numérateurs.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I4b",
+      "enonce_markdown": "I.4. b) En déduire les primitives de fα.",
+      "corrige_markdown": "### Rappel de méthode\\nUne primitive de $\\dfrac{u'(x)}{u(x)}$ est $\\ln|u(x)|$. Pour primitiver $\\dfrac{e^{\\alpha x}}{2e^{\\alpha x}-1}$, on reconnaît (à une constante multiplicative près) la dérivée du dénominateur au numérateur.\\n\\n### Corrigé\\nD'après la question I.4, $f_\\alpha(x)=a-\\dfrac{be^{\\alpha x}}{2e^{\\alpha x}-1}$ avec $a=\\alpha-2$, $b=2\\alpha-4$.\\n\\nUne primitive de la constante $a$ est $ax$. Pour le second terme, posons $u(x)=2e^{\\alpha x}-1$, de dérivée $u'(x)=2\\alpha e^{\\alpha x}$, donc $e^{\\alpha x}=\\dfrac{u'(x)}{2\\alpha}$ :\\n$$\\frac{be^{\\alpha x}}{2e^{\\alpha x}-1}=\\frac b{2\\alpha}\\times\\frac{u'(x)}{u(x)}$$\\ndont une primitive est $\\dfrac b{2\\alpha}\\ln|u(x)|=\\dfrac b{2\\alpha}\\ln\\left|2e^{\\alpha x}-1\\right|$.\\n\\nUne primitive de $f_\\alpha$ est donc :\\n$$F_\\alpha(x)=ax-\\frac b{2\\alpha}\\ln\\left|2e^{\\alpha x}-1\\right|+C$$\\n\\nEn remplaçant $a=\\alpha-2$ et $\\dfrac b{2\\alpha}=\\dfrac{2\\alpha-4}{2\\alpha}=\\dfrac{\\alpha-2}\\alpha$ :\\n$$\\boxed{F_\\alpha(x)=(\\alpha-2)\\,x-\\frac{\\alpha-2}\\alpha\\ln\\left|2e^{\\alpha x}-1\\right|+C=(\\alpha-2)\\left[x-\\frac1\\alpha\\ln\\left|2e^{\\alpha x}-1\\right|\\right]+C}$$\\n\\n$C$ désignant une constante réelle arbitraire.\\n\\n### Conseil\\nOn peut vérifier ce résultat en dérivant $F_\\alpha$ et en retrouvant exactement $f_\\alpha$ : la dérivée du terme logarithmique redonne $\\dfrac b{2\\alpha}\\times\\dfrac{2\\alpha e^{\\alpha x}}{2e^{\\alpha x}-1}=\\dfrac{be^{\\alpha x}}{2e^{\\alpha x}-1}$, ce qui confirme $F_\\alpha'=f_\\alpha$.",
+      "themes": [
+        "primitives",
+        "forme u'/u",
+        "logarithme"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-I4b",
+          "competence": "Calcul de primitives d'une fonction exponentielle de forme u'/u",
+          "contenu_markdown": "Une primitive de $\\dfrac{u'(x)}{u(x)}$ est $\\ln|u(x)|$. Pour primitiver $\\dfrac{e^{\\alpha x}}{2e^{\\alpha x}-1}$, on reconnaît (à une constante multiplicative près) la dérivée du dénominateur au numérateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II1",
+      "enonce_markdown": "II.1. Dresser le tableau de variation de f1 et tracer sa courbe (C) dans le plan P rapporté à un repère orthonormé (O,i,j) (unités sur les axes : 2 cm).",
+      "corrige_markdown": "### Rappel de méthode\\nPour une valeur particulière du paramètre, on spécialise directement les résultats généraux (domaine, limites, dérivée) obtenus dans la partie I, puis on construit le tableau et la courbe à partir de ces valeurs numériques.\\n\\n### Corrigé\\nPour $\\alpha=1$, $f_1(x)=\\dfrac{2-1}{2e^x-1}=\\dfrac1{2e^x-1}$, définie sur $D_1=\\mathbb R\\setminus\\{-\\ln2\\}$ (d'après I.1, $x_0=-\\dfrac{\\ln2}1=-\\ln2\\approx-0{,}693$).\\n\\nComme $0<\\alpha=1<2$, on est dans le cas « décroissant » de la question I.3 : $f_1$ est strictement décroissante sur chacun des deux intervalles de $D_1$.\\n\\n**Limites (cas $\\alpha>0$, question I.2) :** $\\displaystyle\\lim_{x\\to-\\infty}f_1(x)=\\alpha-2=-1$ ; $\\displaystyle\\lim_{x\\to-\\ln2^-}f_1(x)=-\\infty$ ; $\\displaystyle\\lim_{x\\to-\\ln2^+}f_1(x)=+\\infty$ ; $\\displaystyle\\lim_{x\\to+\\infty}f_1(x)=0$.\\n\\n**Tableau de variations.**\\n$$\\begin{array}{|c|ccc|}\\hline x&-\\infty&&-\\ln2&&+\\infty\\\\\\hline f_1'(x)&&-&\\|&-&\\\\\\hline f_1(x)&-1\\searrow&&-\\infty&&\\\\&&&\\|&&\\\\&&&+\\infty&\\searrow&0\\\\\\hline\\end{array}$$\\n\\n**Quelques valeurs pour le tracé** (avec $\\|\\vec i\\|=\\|\\vec j\\|=2\\,\\text{cm}$) : $f_1(-2)\\approx-1{,}37$ ; $f_1(-1)\\approx-3{,}78$ ; $f_1(0)=\\dfrac1{2-1}=1$ ; $f_1(0{,}5)\\approx0{,}44$ ; $f_1(1)\\approx0{,}23$.\\n\\n**Tracé de $(\\mathcal C)$.**\\n- Asymptote verticale $x=-\\ln2\\approx-0{,}69$ (en pointillés) ; asymptotes horizontales $y=-1$ (en $-\\infty$) et $y=0$ (en $+\\infty$).\\n- Branche gauche, sur $]-\\infty,-\\ln2[$ : partant de $y=-1$ en $-\\infty$, strictement décroissante, tendant vers $-\\infty$ le long de l'asymptote $x=-\\ln2$ (passant par exemple par les points $(-2,-1{,}37)$ et $(-1,-3{,}78)$).\\n- Branche droite, sur $]-\\ln2,+\\infty[$ : partant de $+\\infty$ le long de $x=-\\ln2$, strictement décroissante, tendant vers l'asymptote $y=0$ en $+\\infty$ sans jamais l'atteindre (passant par les points $(0,1)$, $(0{,}5\\,;\\,0{,}44)$, $(1\\,;\\,0{,}23)$).\\n\\n### Piège à éviter\\nLa branche gauche reste toujours **en-dessous** de l'asymptote $y=-1$ (valeurs $\\approx-1{,}37$ puis $-3{,}78$, de plus en plus négatives), tandis que la branche droite reste toujours **au-dessus** de l'asymptote $y=0$ (valeurs positives décroissant vers $0$) : les deux branches ne se comportent donc pas symétriquement par rapport à leurs asymptotes horizontales respectives, un point à visualiser correctement sur le tracé.",
+      "themes": [
+        "tableau de variations",
+        "représentation graphique",
+        "cas particulier d'une famille de fonctions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-pb-II1",
+          "competence": "Specialisation d'une etude parametree et construction de la courbe representative",
+          "contenu_markdown": "Pour une valeur particulière du paramètre, on spécialise directement les résultats généraux (domaine, limites, dérivée) obtenus dans la partie I, puis on construit le tableau et la courbe à partir de ces valeurs numériques.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "incertitudes": [
+    "L'énoncé source affiche littéralement la fonction sous la forme $f_\\alpha=\\dfrac{2-\\alpha}{2e^\\alpha-1}$, sans variable $x$ apparente dans l'exposant (perte systématique du « $x$ » à l'extraction/transcription du PDF, un phénomène déjà observé sur d'autres formules de cette même épreuve). La lecture retenue, $f_\\alpha(x)=\\dfrac{2-\\alpha}{2e^{\\alpha x}-1}$, restitue une fonction de $\\mathbb R$ dans $\\mathbb R$ cohérente avec l'énoncé (« fonction $f_\\alpha$ de $\\mathbb R$ dans $\\mathbb R$ ») et se vérifie être parfaitement cohérente avec la question I.4, où l'identité $f_\\alpha(x)=a-\\dfrac{be^{\\alpha x}}{2e^{\\alpha x}-1}$ (également rectifiée de la même façon) se résout exactement avec $a=\\alpha-2$, $b=2\\alpha-4$, sans reste — signe fort que cette lecture restitue la fonction originale."
+  ],
+  "mots_cles_recherche": [
+    "fonction exponentielle paramétrée",
+    "étude par cas selon un paramètre",
+    "asymptotes",
+    "primitives",
+    "tableau de variations",
+    "représentation graphique",
+    "bac D 1990",
+    "Cameroun"
+  ],
+  "statut": "corrige"
+}

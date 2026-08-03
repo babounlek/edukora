@@ -1,0 +1,138 @@
+{
+  "epreuve_source": "bac-d-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 7,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**\\n\\nOn considère la suite $(U_n)_{n\\in\\mathbb N}$ des nombres réels définie par la donnée de $U_0$, $U_1$ et par la relation :\\n$$U_n=\\frac34U_{n-1}+\\frac14U_{n-2}\\qquad\\text{pour tout entier naturel }n\\text{ supérieur ou égal à }2$$\\n\\nSoit $(v_n)_{n\\in\\mathbb N^*}$ la suite définie par $v_n=U_n-U_{n-1}$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Étudier le cas U0=U1. On suppose pour la suite U0≠U1.",
+      "corrige_markdown": "### Rappel de méthode\\nUne suite définie par une relation de récurrence linéaire à coefficients constants, où les coefficients somment à $1$ (ici $\\frac34+\\frac14=1$), est stationnaire (constante) dès que deux termes consécutifs initiaux sont égaux : le cas particulier $U_0=U_1$ se traite par récurrence directe.\\n\\n### Corrigé\\nSupposons $U_0=U_1$. Montrons par récurrence que $U_n=U_0$ pour tout $n\\in\\mathbb N$.\\n\\n**Initialisation.** $U_0=U_0$ et $U_1=U_0$ (par hypothèse) : la propriété est vraie aux rangs $0$ et $1$.\\n\\n**Hérédité.** Supposons $U_{n-2}=U_0$ et $U_{n-1}=U_0$ pour un certain $n\\ge2$. Alors :\\n$$U_n=\\frac34U_{n-1}+\\frac14U_{n-2}=\\frac34U_0+\\frac14U_0=\\left(\\frac34+\\frac14\\right)U_0=U_0$$\\n\\nPar récurrence (double, initialisée aux deux premiers rangs), $U_n=U_0$ pour tout $n\\in\\mathbb N$ : **la suite est constante**.\\n\\n$$\\boxed{\\text{Si }U_0=U_1,\\text{ alors }(U_n)\\text{ est la suite constante égale à }U_0}$$\\n\\nOn suppose désormais, pour la suite de l'exercice, que $U_0\\neq U_1$.",
+      "themes": [
+        "suites récurrentes",
+        "récurrence double",
+        "suite constante"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-e1-1",
+          "competence": "Etude d'un cas particulier d'une suite recurrente lineaire d'ordre 2",
+          "contenu_markdown": "Une suite définie par une relation de récurrence linéaire à coefficients constants, où les coefficients somment à $1$ (ici $\\frac34+\\frac14=1$), est stationnaire (constante) dès que deux termes consécutifs initiaux sont égaux : le cas particulier $U_0=U_1$ se traite par récurrence directe.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. a) Montrer que (vn) est une suite géométrique dont on déterminera la raison.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une suite $(v_n)$ définie à partir des différences d'une suite récurrente d'ordre 2 est géométrique, on exprime $v_{n+1}$ en fonction de $v_n$ à l'aide de la relation de récurrence vérifiée par $(U_n)$.\\n\\n### Corrigé\\nPour $n\\ge1$, $v_n=U_n-U_{n-1}$. Calculons $v_{n+1}=U_{n+1}-U_n$ pour $n\\ge1$ (de sorte que $n+1\\ge2$, la relation de récurrence s'applique à l'indice $n+1$) :\\n$$U_{n+1}=\\frac34U_n+\\frac14U_{n-1}$$\\nDonc :\\n$$v_{n+1}=U_{n+1}-U_n=\\left(\\frac34U_n+\\frac14U_{n-1}\\right)-U_n=-\\frac14U_n+\\frac14U_{n-1}=-\\frac14\\big(U_n-U_{n-1}\\big)=-\\frac14v_n$$\\n\\nCette relation $v_{n+1}=-\\dfrac14v_n$ étant valable pour tout $n\\ge1$, la suite $(v_n)_{n\\in\\mathbb N^*}$ est **géométrique de raison** $q=-\\dfrac14$ (premier terme $v_1=U_1-U_0$, non nul puisque $U_0\\neq U_1$).\\n\\n### Piège à éviter\\nComme la relation de récurrence de l'énoncé n'est valable qu'à partir de l'indice $2$, il faut appliquer cette relation à l'indice $n+1$ (ce qui exige $n+1\\ge2$, soit $n\\ge1$) : c'est exactement le domaine de définition de $(v_n)_{n\\in\\mathbb N^*}$, donc aucune perte de généralité.",
+      "themes": [
+        "suite auxiliaire géométrique",
+        "suites récurrentes d'ordre 2"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-e1-2a",
+          "competence": "Demonstration qu'une suite de differences est geometrique",
+          "contenu_markdown": "Pour montrer qu'une suite $(v_n)$ définie à partir des différences d'une suite récurrente d'ordre 2 est géométrique, on exprime $v_{n+1}$ en fonction de $v_n$ à l'aide de la relation de récurrence vérifiée par $(U_n)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "2. b) Exprimer Un en fonction de n, U0 et U1. (On pourra considérer la relation Vp=Up-Up-1 pour p variant de 1 à n).",
+      "corrige_markdown": "### Rappel de méthode\\nLa relation $V_p=U_p-U_{p-1}$ sommée pour $p$ variant de $1$ à $n$ est une somme télescopique : $\\sum_{p=1}^nV_p=U_n-U_0$. Combinée à l'expression explicite de $V_p=v_p$ comme terme d'une suite géométrique, elle donne $U_n$ par la formule de la somme géométrique.\\n\\n### Corrigé\\nD'après l'indication, sommons $V_p=U_p-U_{p-1}$ pour $p$ allant de $1$ à $n$ (avec $n\\ge1$) :\\n$$\\sum_{p=1}^nV_p=(U_1-U_0)+(U_2-U_1)+\\cdots+(U_n-U_{n-1})=U_n-U_0$$\\n(somme télescopique : chaque $U_p$ intermédiaire, $1\\le p\\le n-1$, apparaît une fois avec $+$ et une fois avec $-$).\\n\\nPar ailleurs, $(v_p)=(V_p)$ est géométrique de premier terme $v_1=U_1-U_0$ et de raison $-\\dfrac14$ (question 2.a), donc :\\n$$\\sum_{p=1}^nV_p=v_1\\times\\frac{1-\\left(-\\frac14\\right)^n}{1-\\left(-\\frac14\\right)}=(U_1-U_0)\\times\\frac{1-\\left(-\\frac14\\right)^n}{\\frac54}=\\frac45(U_1-U_0)\\left(1-\\left(-\\frac14\\right)^n\\right)$$\\n\\nEn identifiant les deux expressions de $\\sum_{p=1}^nV_p$ :\\n$$U_n-U_0=\\frac45(U_1-U_0)\\left(1-\\left(-\\frac14\\right)^n\\right)$$\\n\\n$$\\boxed{U_n=U_0+\\frac45(U_1-U_0)\\left(1-\\left(-\\frac14\\right)^n\\right)}$$\\n\\n(Formule valable pour $n\\ge1$ ; elle redonne bien $U_0$ pour $n=0$, puisqu'alors $1-\\left(-\\frac14\\right)^0=1-1=0$.)\\n\\n### Conseil\\nPour vérifier rapidement la formule, on peut la tester en $n=1$ : $U_1=U_0+\\frac45(U_1-U_0)\\left(1-\\left(-\\frac14\\right)\\right)=U_0+\\frac45(U_1-U_0)\\times\\frac54=U_0+(U_1-U_0)=U_1$ ✓ — un contrôle systématique à faire avant de poursuivre vers les questions suivantes.",
+      "themes": [
+        "somme télescopique",
+        "suite géométrique",
+        "suites récurrentes"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-e1-2b",
+          "competence": "Expression du terme general d'une suite via somme telescopique et suite geometrique",
+          "contenu_markdown": "La relation $V_p=U_p-U_{p-1}$ sommée pour $p$ variant de $1$ à $n$ est une somme télescopique : $\\sum_{p=1}^nV_p=U_n-U_0$. Combinée à l'expression explicite de $V_p=v_p$ comme terme d'une suite géométrique, elle donne $U_n$ par la formule de la somme géométrique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "2. c) Calculer la limite éventuelle de Un quand n tend vers l'infini.",
+      "corrige_markdown": "### Rappel de méthode\\nDans une formule $U_n=U_0+K\\left(1-q^n\\right)$ avec $|q|<1$, la limite quand $n\\to+\\infty$ s'obtient en remplaçant $q^n$ par $0$.\\n\\n### Corrigé\\nD'après la question 2.b, $U_n=U_0+\\dfrac45(U_1-U_0)\\left(1-\\left(-\\dfrac14\\right)^n\\right)$. Comme $\\left|-\\dfrac14\\right|=\\dfrac14<1$, on a $\\left(-\\dfrac14\\right)^n\\to0$ quand $n\\to+\\infty$ (limite classique d'une suite géométrique de raison de valeur absolue strictement inférieure à $1$). Donc :\\n$$\\lim_{n\\to+\\infty}U_n=U_0+\\frac45(U_1-U_0)(1-0)=U_0+\\frac45(U_1-U_0)$$\\nEn développant :\\n$$\\lim_{n\\to+\\infty}U_n=U_0+\\frac45U_1-\\frac45U_0=\\frac15U_0+\\frac45U_1$$\\n\\n$$\\boxed{\\lim_{n\\to+\\infty}U_n=\\frac{U_0+4U_1}5}$$",
+      "themes": [
+        "limite d'une suite",
+        "suite géométrique de raison < 1 en valeur absolue"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-e1-2c",
+          "competence": "Limite d'une suite recurrente exprimee via une suite geometrique",
+          "contenu_markdown": "Dans une formule $U_n=U_0+K\\left(1-q^n\\right)$ avec $|q|<1$, la limite quand $n\\to+\\infty$ s'obtient en remplaçant $q^n$ par $0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2d",
+      "enonce_markdown": "2. d) Déterminer U1 puis Un pour U0=1/4 et lim(n→+∞) Un = 1/5.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une application numérique, on injecte les valeurs données de $U_0$ et de la limite dans la formule générale de la question 2.c pour en tirer $U_1$, puis on reporte $U_0$ et $U_1$ dans la formule générale de $U_n$ (question 2.b).\\n\\n### Corrigé\\n**Détermination de $U_1$.** D'après la question 2.c, $\\displaystyle\\lim_{n\\to+\\infty}U_n=\\frac{U_0+4U_1}5$. Avec $U_0=\\dfrac14$ et $\\displaystyle\\lim_{n\\to+\\infty}U_n=\\frac15$ :\\n$$\\frac15=\\frac{\\frac14+4U_1}5\\iff1=\\frac14+4U_1\\iff4U_1=1-\\frac14=\\frac34\\iff U_1=\\frac3{16}$$\\n\\n$$\\boxed{U_1=\\frac3{16}}$$\\n\\n**Expression de $U_n$.** Reportons $U_0=\\dfrac14$ et $U_1=\\dfrac3{16}$ dans la formule de la question 2.b : $U_1-U_0=\\dfrac3{16}-\\dfrac4{16}=-\\dfrac1{16}$.\\n$$U_n=\\frac14+\\frac45\\times\\left(-\\frac1{16}\\right)\\times\\left(1-\\left(-\\frac14\\right)^n\\right)=\\frac14-\\frac1{20}\\left(1-\\left(-\\frac14\\right)^n\\right)$$\\n$$U_n=\\frac14-\\frac1{20}+\\frac1{20}\\left(-\\frac14\\right)^n=\\frac5{20}-\\frac1{20}+\\frac1{20}\\left(-\\frac14\\right)^n=\\frac4{20}+\\frac1{20}\\left(-\\frac14\\right)^n$$\\n\\n$$\\boxed{U_n=\\frac15+\\frac1{20}\\left(-\\frac14\\right)^n}$$\\n\\n**Vérification.** $U_0=\\dfrac15+\\dfrac1{20}=\\dfrac4{20}+\\dfrac1{20}=\\dfrac5{20}=\\dfrac14\\ \\checkmark$. $U_1=\\dfrac15+\\dfrac1{20}\\times\\left(-\\dfrac14\\right)=\\dfrac4{20}-\\dfrac1{80}=\\dfrac{16}{80}-\\dfrac1{80}=\\dfrac{15}{80}=\\dfrac3{16}\\ \\checkmark$. Et $\\left(-\\frac14\\right)^n\\to0$ donne bien $U_n\\to\\dfrac15\\ \\checkmark$.\\n\\n### Conseil\\nVérifier systématiquement la formule trouvée en $n=0$ et $n=1$ (retrouver $U_0$ et $U_1$ de départ) est le moyen le plus rapide de détecter une erreur de calcul avant de rendre la copie.",
+      "themes": [
+        "application numérique",
+        "suites récurrentes",
+        "résolution d'équation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990d-e1-2d",
+          "competence": "Application numerique d'une formule generale de suite recurrente",
+          "contenu_markdown": "Pour une application numérique, on injecte les valeurs données de $U_0$ et de la limite dans la formule générale de la question 2.c pour en tirer $U_1$, puis on reporte $U_0$ et $U_1$ dans la formule générale de $U_n$ (question 2.b).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "incertitudes": [
+    "L'énoncé source indique littéralement la relation $U_n=\\dfrac34U_{n+1}+\\dfrac14U_{n-2}$ (avec $U_{n+1}$, terme *futur*), ce qui ne définit pas correctement la suite à partir de $U_0$ et $U_1$ (le terme $U_2$ ne serait déterminé par aucune règle explicite) et rendrait tout l'exercice insoluble tel quel. La lecture cohérente, adoptée dans ce corrigé, est $U_n=\\dfrac34U_{n-1}+\\dfrac14U_{n-2}$ (probable coquille $n+1\\to n-1$ dans le document source) : cette version rend $v_n=U_n-U_{n-1}$ effectivement géométrique (question 2.a), ce que confirme le calcul, et conduit à des résultats numériques cohérents et exacts pour l'application de la question 2.d."
+  ],
+  "mots_cles_recherche": [
+    "suites récurrentes d'ordre 2",
+    "suite géométrique",
+    "somme télescopique",
+    "limite d'une suite",
+    "application numérique",
+    "bac D 1990",
+    "Cameroun"
+  ],
+  "statut": "corrige"
+}

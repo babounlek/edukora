@@ -1,0 +1,377 @@
+{
+  "epreuve_source": "bac-c-e-maths-2005-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2005",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "4",
+  "points": null,
+  "enonce_intro_markdown": "**PROBLÈME**\n\nLe problème comporte trois parties indépendantes ; le candidat doit traiter les trois parties.",
+  "questions": [
+    {
+      "numero": "A.1",
+      "enonce_markdown": "**Partie A**\n\n1. Soit $n$ un entier naturel supérieur ou égal à $1$ et $x$ un réel positif. Montrer par récurrence que : $(1+nx)\\leq(1+x)^n$.",
+      "corrige_markdown": "### Rappel de methode\nUne démonstration par récurrence comporte une initialisation (vérifier la propriété au premier rang) et une hérédité (supposer la propriété vraie à un rang n et la démontrer au rang n+1), en s'appuyant ici sur la positivité de x pour multiplier une inégalité par (1+x)>0 sans en changer le sens.\n\n### Corrige\nSoit $x\\geq0$ fixé. Montrons par récurrence sur $n\\geq1$ la propriété $\\mathcal{P}(n):(1+nx)\\leq(1+x)^n$.\n\n**Initialisation** ($n=1$) : $(1+1\\times x)=1+x$ et $(1+x)^1=1+x$ : l'inégalité est vérifiée (égalité).\n\n**Hérédité** : supposons $\\mathcal{P}(n)$ vraie pour un $n\\geq1$ fixé, soit $(1+nx)\\leq(1+x)^n$. Comme $1+x>0$ (car $x\\geq0$), on peut multiplier les deux membres par $(1+x)$ sans changer le sens de l'inégalité :\n$$(1+nx)(1+x)\\leq(1+x)^{n+1}$$\n\nDéveloppons le membre de gauche :\n$$(1+nx)(1+x)=1+x+nx+nx^2=1+(n+1)x+nx^2$$\n\nComme $x\\geq0$, on a $nx^2\\geq0$, donc $1+(n+1)x+nx^2\\geq1+(n+1)x$. En combinant :\n$$1+(n+1)x\\leq1+(n+1)x+nx^2=(1+nx)(1+x)\\leq(1+x)^{n+1}$$\n\nDonc $\\mathcal{P}(n+1)$ est vraie : $(1+(n+1)x)\\leq(1+x)^{n+1}$.\n\n**Conclusion** : par le principe de récurrence, $(1+nx)\\leq(1+x)^n$ pour tout entier $n\\geq1$ et tout réel $x\\geq0$.",
+      "themes": [
+        "récurrence",
+        "inégalité de Bernoulli"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probA-0",
+          "competence": "Démonstration par récurrence d'une inégalité (Bernoulli)",
+          "contenu_markdown": "Une démonstration par récurrence comporte une initialisation (vérifier la propriété au premier rang) et une hérédité (supposer la propriété vraie à un rang n et la démontrer au rang n+1), en s'appuyant ici sur la positivité de x pour multiplier une inégalité par (1+x)>0 sans en changer le sens.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A.2",
+      "enonce_markdown": "2. On dispose de $n$ boules numérotées de $1$ à $n$. On les place toutes au hasard dans $n$ boîtes numérotées de $1$ à $n$, chaque boîte pouvant contenir de zéro à $n$ boules. Calculer la probabilité $P_n$ pour que chaque boîte contienne exactement une boule.",
+      "corrige_markdown": "### Rappel de methode\nPour compter les répartitions favorables (une seule boule par boîte parmi n boules dans n boîtes numérotées), on compte les bijections entre boules et boîtes (n! façons), et on divise par le nombre total de répartitions possibles (chaque boule ayant n choix indépendants de boîte, soit n^n au total).\n\n### Corrige\n**Univers.** Chacune des $n$ boules numérotées est placée indépendamment dans l'une des $n$ boîtes : il y a $n$ choix pour chaque boule, soit $n^n$ répartitions possibles au total (équiprobables).\n\n**Cas favorable.** \"Chaque boîte contient exactement une boule\" signifie que la répartition réalise une bijection entre les $n$ boules et les $n$ boîtes : il y a $n!$ telles bijections.\n\n**Probabilité** :\n$$P_n=\\dfrac{n!}{n^n}$$",
+      "themes": [
+        "probabilité",
+        "dénombrement",
+        "bijection"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probA-1",
+          "competence": "Probabilité d'une bijection aléatoire (boules dans des boîtes)",
+          "contenu_markdown": "Pour compter les répartitions favorables (une seule boule par boîte parmi n boules dans n boîtes numérotées), on compte les bijections entre boules et boîtes (n! façons), et on divise par le nombre total de répartitions possibles (chaque boule ayant n choix indépendants de boîte, soit n^n au total).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A.3.a",
+      "enonce_markdown": "3. On pose $P_n=\\dfrac{n!}{n^n}$, où $n!$ désigne \"factoriel $n$\".\n\n(a) Montrer que, pour tout entier naturel $n$ supérieur ou égal à $1$, on a : $\\dfrac{P_n}{P_{n-1}}\\geq2$.",
+      "corrige_markdown": "### Rappel de methode\nPour comparer un rapport de deux termes consécutifs d'une suite définie par une factorielle, on l'exprime d'abord comme un produit/quotient de termes simples, puis on majore ou minore chaque facteur.\n\n### Corrige\n$P_n=\\dfrac{n!}{n^n}$. Calculons le rapport $\\dfrac{P_{n-1}}{P_n}$ pour $n\\geq1$ (avec la convention $P_0=1$) :\n$$\\dfrac{P_{n-1}}{P_n}=\\dfrac{(n-1)!}{(n-1)^{n-1}}\\times\\dfrac{n^n}{n!}=\\dfrac{n^n}{n\\times(n-1)^{n-1}}=\\dfrac{n^{n-1}}{(n-1)^{n-1}}=\\left(\\dfrac{n}{n-1}\\right)^{n-1}$$\n\nPour $n\\geq2$, $\\dfrac{n}{n-1}=1+\\dfrac{1}{n-1}\\geq2$ (car $n-1\\geq1$, donc $\\dfrac{1}{n-1}\\leq1$... plus précisément, en appliquant l'inégalité de Bernoulli de la question A.1 avec $x=\\dfrac1{n-1}$) :\n$$\\left(1+\\dfrac{1}{n-1}\\right)^{n-1}\\geq1+(n-1)\\times\\dfrac1{n-1}=1+1=2$$\n\nDonc $\\dfrac{P_{n-1}}{P_n}\\geq2$ pour tout entier $n\\geq2$ (le cas $n=1$ se traite à part : $P_0=1,P_1=1$, $\\dfrac{P_0}{P_1}=1$ — ce cas limite n'affecte pas l'hérédité utilisée en 3.(b), qui démarre effectivement à $n\\geq2$).\n\n### Piège à éviter\nL'énoncé source affiche l'inégalité sous la forme $\\dfrac{P_n}{P_{n-1}}\\geq2$ (fraction inversée). Un calcul direct montre que $\\dfrac{P_n}{P_{n-1}}=\\left(\\dfrac{n-1}{n}\\right)^{n-1}<1$ pour tout $n\\geq2$ : cette version ne peut jamais être $\\geq2$. C'est donc bien $\\dfrac{P_{n-1}}{P_n}\\geq2$ (et non l'inverse) qui est correcte — seule cette version est cohérente avec la conclusion demandée en 3.(b) ($P_n\\leq\\dfrac{1}{2^{n-1}}$). Il s'agit très probablement d'une inversion de fraction lors de la reproduction de l'énoncé.",
+      "themes": [
+        "suite factorielle",
+        "inégalité de Bernoulli",
+        "cohérence des données de l'énoncé"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probA-2",
+          "competence": "Encadrer un rapport de facteurs consécutifs via Bernoulli",
+          "contenu_markdown": "Pour comparer un rapport de deux termes consécutifs d'une suite définie par une factorielle, on l'exprime d'abord comme un produit/quotient de termes simples, puis on majore ou minore chaque facteur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A.3.b",
+      "enonce_markdown": "(b) En déduire l'inégalité : $P_n\\leq\\dfrac{1}{2^{n-1}}$ pour tout entier naturel $n$ supérieur ou égal à $1$.",
+      "corrige_markdown": "### Rappel de methode\nUne inégalité de la forme u_{n-1}/u_n ≥ 2 (donc u_n ≤ u_{n-1}/2) se propage par récurrence immédiate : u_n ≤ u_1/2^{n-1}.\n\n### Corrige\nD'après la question 3.(a) (version corrigée), $\\dfrac{P_{n-1}}{P_n}\\geq2$ pour $n\\geq2$, c'est-à-dire $P_n\\leq\\dfrac{P_{n-1}}{2}$.\n\nEn appliquant cette inégalité de proche en proche à partir de $P_1=\\dfrac{1!}{1^1}=1$ :\n$$P_2\\leq\\dfrac{P_1}{2}=\\dfrac12,\\quad P_3\\leq\\dfrac{P_2}{2}\\leq\\dfrac1{2^2},\\quad\\ldots,\\quad P_n\\leq\\dfrac{P_1}{2^{n-1}}=\\dfrac1{2^{n-1}}$$\n\n(Une récurrence immédiate confirme cette propagation.) Donc, pour tout entier $n\\geq1$ :\n$$P_n\\leq\\dfrac{1}{2^{n-1}}$$",
+      "themes": [
+        "propagation d'une inégalité par récurrence"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probA-3",
+          "competence": "Propager une inégalité de rapport par récurrence immédiate",
+          "contenu_markdown": "Une inégalité de la forme u_{n-1}/u_n ≥ 2 (donc u_n ≤ u_{n-1}/2) se propage par récurrence immédiate : u_n ≤ u_1/2^{n-1}.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A.3.c",
+      "enonce_markdown": "(c) Calculer la limite de la suite $(P_n)$ quand $n$ tend vers $+\\infty$.",
+      "corrige_markdown": "### Corrige\nD'après la question 3.(b), $0<P_n\\leq\\dfrac{1}{2^{n-1}}$ pour tout $n\\geq1$ (la positivité de $P_n=\\dfrac{n!}{n^n}$ est immédiate, quotient de deux quantités strictement positives).\n\nOr $\\dfrac{1}{2^{n-1}}\\to0$ quand $n\\to+\\infty$ (suite géométrique de raison $\\dfrac12\\in]0;1[$). Par le théorème des gendarmes appliqué à $0<P_n\\leq\\dfrac1{2^{n-1}}$ :\n$$\\lim_{n\\to+\\infty}P_n=0$$",
+      "themes": [
+        "limite de suite",
+        "théorème des gendarmes"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "B.1.a",
+      "enonce_markdown": "**Partie B**\n\nSoit $E_2$ un plan vectoriel rapporté à une base orthonormée $B=(\\vec\\imath,\\vec\\jmath)$, $g$ l'endomorphisme de $E_2$ qui à un vecteur $u=x\\vec\\imath+y\\vec\\jmath$ associe le vecteur $u'=\\left(x+\\dfrac12y\\right)\\vec\\imath+(-2x-y)\\vec\\jmath$.\n\n1. (a) Déterminer la matrice de $g$ dans la base $B$ et montrer que $g$ n'est pas bijective.",
+      "corrige_markdown": "### Rappel de methode\nLa matrice d'un endomorphisme dans une base B s'obtient en plaçant en colonnes les coordonnées des images des vecteurs de B ; l'endomorphisme n'est pas bijectif si et seulement si le déterminant de sa matrice est nul.\n\n### Corrige\n$g$ associe à $u=x\\vec\\imath+y\\vec\\jmath$ le vecteur $u'=\\left(x+\\dfrac12y\\right)\\vec\\imath+(-2x-y)\\vec\\jmath$.\n\nImages des vecteurs de base : $g(\\vec\\imath)=\\vec\\imath-2\\vec\\jmath$ (pour $x=1,y=0$) et $g(\\vec\\jmath)=\\dfrac12\\vec\\imath-\\vec\\jmath$ (pour $x=0,y=1$).\n\n**Matrice de $g$ dans $B$** :\n$$M=\\begin{pmatrix}1 & \\frac12\\\\ -2 & -1\\end{pmatrix}$$\n\n$$\\det M=1\\times(-1)-\\dfrac12\\times(-2)=-1+1=0$$\n\nLe déterminant est nul : **$g$ n'est pas bijective.**",
+      "themes": [
+        "matrice d'un endomorphisme",
+        "déterminant",
+        "bijectivité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probB-0",
+          "competence": "Matrice d'un endomorphisme et critère de bijectivité par le déterminant",
+          "contenu_markdown": "La matrice d'un endomorphisme dans une base B s'obtient en plaçant en colonnes les coordonnées des images des vecteurs de B ; l'endomorphisme n'est pas bijectif si et seulement si le déterminant de sa matrice est nul.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B.1.b",
+      "enonce_markdown": "(b) Déterminer le noyau $\\text{Ker}\\,g$ et l'image $\\text{Im}\\,g$ de $g$.",
+      "corrige_markdown": "### Rappel de methode\nLe noyau d'un endomorphisme de matrice M est l'ensemble des vecteurs (x,y) tels que M(x,y)=(0,0) ; l'image est l'ensemble des vecteurs atteints, engendré par les colonnes de M (ou par l'image de n'importe quelle base).\n\n### Corrige\n**Noyau.** $g(u)=\\vec0\\iff x+\\dfrac12y=0$ et $-2x-y=0$. Ces deux équations sont proportionnelles (la seconde est $-2$ fois la première) : elles définissent une seule condition, $y=-2x$. Donc :\n$$\\text{Ker}(g)=\\{x\\vec\\imath-2x\\vec\\jmath\\;:\\;x\\in\\mathbb{R}\\}=\\text{Vect}(\\vec\\imath-2\\vec\\jmath)$$\n\n**Image.** $\\text{Im}(g)$ est engendrée par $g(\\vec\\imath)=\\vec\\imath-2\\vec\\jmath$ et $g(\\vec\\jmath)=\\dfrac12\\vec\\imath-\\vec\\jmath=\\dfrac12(\\vec\\imath-2\\vec\\jmath)$ : ces deux vecteurs sont colinéaires (à $\\vec\\imath-2\\vec\\jmath$), donc :\n$$\\text{Im}(g)=\\text{Vect}(\\vec\\imath-2\\vec\\jmath)$$",
+      "themes": [
+        "noyau d'un endomorphisme",
+        "image d'un endomorphisme"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probB-1",
+          "competence": "Calcul du noyau et de l'image d'un endomorphisme du plan",
+          "contenu_markdown": "Le noyau d'un endomorphisme de matrice M est l'ensemble des vecteurs (x,y) tels que M(x,y)=(0,0) ; l'image est l'ensemble des vecteurs atteints, engendré par les colonnes de M (ou par l'image de n'importe quelle base).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B.1.c",
+      "enonce_markdown": "(c) En déduire que $\\text{Ker}\\,g=\\text{Im}\\,g$.",
+      "corrige_markdown": "### Corrige\nD'après la question 1.(b), $\\text{Ker}(g)=\\text{Vect}(\\vec\\imath-2\\vec\\jmath)$ et $\\text{Im}(g)=\\text{Vect}(\\vec\\imath-2\\vec\\jmath)$ : ce sont **la même droite vectorielle**. Donc $\\text{Ker}(g)=\\text{Im}(g)$.",
+      "themes": [
+        "noyau",
+        "image",
+        "endomorphisme non bijectif"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "B.2",
+      "enonce_markdown": "2. Soit $\\vec v$ un vecteur de $\\text{Ker}\\,g$. Montrer qu'il existe un vecteur $\\vec u$ de $E_2$ tel que $g(\\vec u)=\\vec v$.",
+      "corrige_markdown": "### Rappel de methode\nSi Ker(g)=Im(g), alors tout vecteur du noyau est, par définition même de l'image, atteint par g : il existe donc un antécédent pour chacun de ses éléments.\n\n### Corrige\nSoit $\\vec v\\in\\text{Ker}(g)$. D'après la question 1.(c), $\\text{Ker}(g)=\\text{Im}(g)$, donc $\\vec v\\in\\text{Im}(g)$ : par définition de l'image, il existe (au moins) un vecteur $\\vec u\\in E_2$ tel que $g(\\vec u)=\\vec v$.\n\n**Construction explicite.** $\\vec v\\in\\text{Ker}(g)=\\text{Vect}(\\vec\\imath-2\\vec\\jmath)$ s'écrit $\\vec v=t(\\vec\\imath-2\\vec\\jmath)$ pour un réel $t$. Comme $g(\\vec\\jmath)=\\dfrac12(\\vec\\imath-2\\vec\\jmath)$, on a $g\\big(2t\\,\\vec\\jmath\\big)=2t\\times\\dfrac12(\\vec\\imath-2\\vec\\jmath)=t(\\vec\\imath-2\\vec\\jmath)=\\vec v$. **Le vecteur $\\vec u=2t\\,\\vec\\jmath$ convient.**",
+      "themes": [
+        "noyau",
+        "image",
+        "existence d'un antécédent"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probB-2",
+          "competence": "Existence d'un antécédent quand Ker(g)=Im(g)",
+          "contenu_markdown": "Si Ker(g)=Im(g), alors tout vecteur du noyau est, par définition même de l'image, atteint par g : il existe donc un antécédent pour chacun de ses éléments.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B.3.a",
+      "enonce_markdown": "3. Soit $\\vec{e_1}$ et $\\vec{e_2}$ de coordonnées respectives $(-1;2)$ et $(-1;1)$. (a) Montrer que $B'=(\\vec{e_1},\\vec{e_2})$ est une base de $E_2$.",
+      "corrige_markdown": "### Rappel de methode\nDeux vecteurs du plan forment une base si et seulement s'ils sont non colinéaires, ce qui se vérifie en montrant que le déterminant de leurs coordonnées est non nul.\n\n### Corrige\n$\\vec{e_1}(-1;2)$ et $\\vec{e_2}(-1;1)$.\n\n$$\\det(\\vec{e_1},\\vec{e_2})=(-1)\\times1-(-1)\\times2=-1+2=1\\neq0$$\n\nLe déterminant est non nul : $\\vec{e_1}$ et $\\vec{e_2}$ ne sont pas colinéaires. **$B'=(\\vec{e_1},\\vec{e_2})$ est donc une base de $E_2$.**",
+      "themes": [
+        "base d'un plan vectoriel",
+        "déterminant de deux vecteurs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probB-3",
+          "competence": "Critère de base par le déterminant de deux vecteurs",
+          "contenu_markdown": "Deux vecteurs du plan forment une base si et seulement s'ils sont non colinéaires, ce qui se vérifie en montrant que le déterminant de leurs coordonnées est non nul.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B.3.b",
+      "enonce_markdown": "(b) Donner la matrice de $g$ dans la base $B'$.",
+      "corrige_markdown": "### Rappel de methode\nPour exprimer la matrice d'un endomorphisme dans une nouvelle base, on calcule l'image de chaque nouveau vecteur de base, puis on exprime ces images dans la nouvelle base elle-même.\n\n### Corrige\n$\\vec{e_1}=(-1;2)$ est colinéaire au vecteur directeur $(1;-2)$ de $\\text{Ker}(g)$ (question 1.b) : $\\vec{e_1}=-1\\times(1;-2)$. Donc $\\vec{e_1}\\in\\text{Ker}(g)$ : $$g(\\vec{e_1})=\\vec0=0\\,\\vec{e_1}+0\\,\\vec{e_2}$$\n\nCalculons $g(\\vec{e_2})$ avec $\\vec{e_2}=(-1;1)$, via la matrice $M$ dans la base $B$ : $$g(\\vec{e_2})=\\left(-1+\\dfrac12\\times1\\right)\\vec\\imath+(-2\\times(-1)-1)\\vec\\jmath=-\\dfrac12\\vec\\imath+1\\,\\vec\\jmath$$\n\nExprimons ce vecteur dans la base $B'=(\\vec{e_1},\\vec{e_2})$ : on cherche $\\alpha,\\beta$ tels que $\\alpha\\vec{e_1}+\\beta\\vec{e_2}=\\left(-\\dfrac12;1\\right)$, soit $-\\alpha-\\beta=-\\dfrac12$ et $2\\alpha+\\beta=1$. En additionnant : $\\alpha=\\dfrac12$, puis $\\beta=\\dfrac12-2\\times\\dfrac12$... reprenons : de la première, $\\beta=\\dfrac12-\\alpha$ ; en substituant dans la seconde : $2\\alpha+\\dfrac12-\\alpha=1\\iff\\alpha=\\dfrac12$, donc $\\beta=\\dfrac12-\\dfrac12=0$.\n\nDonc $g(\\vec{e_2})=\\dfrac12\\,\\vec{e_1}+0\\,\\vec{e_2}$.\n\n**Matrice de $g$ dans la base $B'$** :\n$$M'=\\begin{pmatrix}0 & \\frac12\\\\ 0 & 0\\end{pmatrix}$$",
+      "themes": [
+        "changement de base",
+        "matrice d'un endomorphisme"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probB-4",
+          "competence": "Calcul de la matrice de g dans une base adaptée au noyau",
+          "contenu_markdown": "Pour exprimer la matrice d'un endomorphisme dans une nouvelle base, on calcule l'image de chaque nouveau vecteur de base, puis on exprime ces images dans la nouvelle base elle-même.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.1.a",
+      "enonce_markdown": "**Partie C**\n\nDans le plan $P$ rapporté à un repère orthonormal $(O,\\vec\\imath,\\vec\\jmath)$, on définit les trois points $A(1;0)$, $B\\left(\\dfrac32;\\dfrac12\\right)$ et $C\\left(\\dfrac32;-\\dfrac12\\right)$, et la droite $(D)$ dont une équation est $x=1$.\n\n1. (a) Déterminer les coordonnées du point $G$ tel que $\\vec{CG}=\\vec{AB}$.",
+      "corrige_markdown": "### Rappel de methode\nPour trouver les coordonnées d'un point G défini par une relation vectorielle CG=AB, on écrit G = C + (B-A), où B-A est le vecteur des différences de coordonnées.\n\n### Corrige\n$A(1;0)$, $B\\left(\\dfrac32;\\dfrac12\\right)$, $C\\left(\\dfrac32;-\\dfrac12\\right)$.\n\n$\\vec{AB}=\\left(\\dfrac32-1;\\dfrac12-0\\right)=\\left(\\dfrac12;\\dfrac12\\right)$.\n\n$\\vec{CG}=\\vec{AB}\\iff G=C+\\vec{AB}=\\left(\\dfrac32+\\dfrac12;-\\dfrac12+\\dfrac12\\right)=(2;0)$.\n\n$$\\boxed{G(2;0)}$$",
+      "themes": [
+        "relation vectorielle",
+        "coordonnées d'un point"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probC-0",
+          "competence": "Trouver un point via une relation vectorielle",
+          "contenu_markdown": "Pour trouver les coordonnées d'un point G défini par une relation vectorielle CG=AB, on écrit G = C + (B-A), où B-A est le vecteur des différences de coordonnées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.1.b",
+      "enonce_markdown": "(b) Quelle est la nature du quadrilatère $ABGC$ ?",
+      "corrige_markdown": "### Rappel de methode\nUn quadrilatère ABGC est un parallélogramme si deux de ses côtés opposés sont représentés par des vecteurs égaux ; c'est un carré si, de plus, ces côtés adjacents sont de même longueur et perpendiculaires.\n\n### Corrige\n$\\vec{AB}=\\left(\\dfrac12;\\dfrac12\\right)$ et $\\vec{CG}=G-C=\\left(2-\\dfrac32;0-\\left(-\\dfrac12\\right)\\right)=\\left(\\dfrac12;\\dfrac12\\right)=\\vec{AB}$.\n\n**$\\vec{AB}=\\vec{CG}$** : le quadrilatère $ABGC$ (sommets dans cet ordre) est donc un **parallélogramme**.\n\nCalculons $\\vec{AC}=\\left(\\dfrac32-1;-\\dfrac12-0\\right)=\\left(\\dfrac12;-\\dfrac12\\right)$.\n\n$\\|\\vec{AB}\\|=\\sqrt{\\left(\\dfrac12\\right)^2+\\left(\\dfrac12\\right)^2}=\\dfrac{\\sqrt2}{2}$ et $\\|\\vec{AC}\\|=\\sqrt{\\left(\\dfrac12\\right)^2+\\left(-\\dfrac12\\right)^2}=\\dfrac{\\sqrt2}{2}$ : les côtés adjacents $AB$ et $AC$ ont la même longueur.\n\n$\\vec{AB}\\cdot\\vec{AC}=\\dfrac12\\times\\dfrac12+\\dfrac12\\times\\left(-\\dfrac12\\right)=\\dfrac14-\\dfrac14=0$ : les côtés adjacents $AB$ et $AC$ sont **perpendiculaires**.\n\nUn parallélogramme ayant deux côtés adjacents égaux et perpendiculaires est un carré : **$ABGC$ est un carré.**",
+      "themes": [
+        "parallélogramme",
+        "carré",
+        "produit scalaire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probC-1",
+          "competence": "Identifier un carré via vecteurs égaux, longueurs égales et orthogonalité",
+          "contenu_markdown": "Un quadrilatère ABGC est un parallélogramme si deux de ses côtés opposés sont représentés par des vecteurs égaux ; c'est un carré si, de plus, ces côtés adjacents sont de même longueur et perpendiculaires.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.2.a",
+      "enonce_markdown": "2. On note $(\\Gamma)$ l'ensemble des points $M$ de $P$, de coordonnées $(x;y)$, qui vérifient la relation : $-MA^2+MB^2+MC^2=2(x-1)^2$.\n\n(a) Montrer que $B$ et $C$ appartiennent à $(\\Gamma)$.",
+      "corrige_markdown": "### Rappel de methode\nPour vérifier qu'un point appartient à un ensemble défini par une équation, on substitue ses coordonnées dans l'équation et on vérifie l'égalité.\n\n### Corrige\n**Identité clé.** Pour tout point $M(x;y)$, on établit (calcul direct à partir des expressions de $MA^2,MB^2,MC^2$ en fonction de $x,y$) que :\n$$-MA^2+MB^2+MC^2=(x-2)^2+y^2=MG^2$$\npuisque $G(2;0)$ (question 1.a). C'est un résultat général, valable pour tout point $M$ du plan.\n\nLa relation définissant $(\\Gamma)$ s'écrit donc $MG^2=2(x-1)^2$, soit, en développant :\n$$(x-2)^2+y^2=2(x-1)^2\\iff x^2-4x+4+y^2=2x^2-4x+2\\iff y^2-x^2+2=0\\iff x^2-y^2=2$$\n\n**Vérification pour $B\\left(\\dfrac32;\\dfrac12\\right)$** : $\\left(\\dfrac32\\right)^2-\\left(\\dfrac12\\right)^2=\\dfrac94-\\dfrac14=2$. ✓\n\n**Vérification pour $C\\left(\\dfrac32;-\\dfrac12\\right)$** : même calcul (le terme en $y$ est au carré), $\\dfrac94-\\dfrac14=2$. ✓\n\n**$B$ et $C$ appartiennent donc à $(\\Gamma)$.**\n\n### Piège à éviter\nL'énoncé source imprime la relation sous la forme $-MA^2+MB^2+MC^2=2(x-1)$, **sans exposant carré** sur $(x-1)$. Avec cette version littérale, un calcul direct montre que ni $B$ ni $C$ ne vérifient la relation (on obtient $\\frac12$ à gauche contre $1$ à droite) : elle est incompatible avec la question 2.(b) qui exige une caractérisation de type foyer-directrice $MG=a\\sqrt2$ (laquelle impose une relation **quadratique** en $(x-1)$, pas linéaire). La version cohérente, utilisée ici et confirmée par la question 2.(c) (excentricité $\\sqrt2$, foyer $G$, directrice $(D):x=1$, tous trois donnés dans l'énoncé), est $-MA^2+MB^2+MC^2=2(x-1)^2$ : l'exposant a très probablement été perdu lors de la reproduction de l'énoncé.",
+      "themes": [
+        "identité vectorielle",
+        "lieu géométrique",
+        "cohérence des données de l'énoncé"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probC-2",
+          "competence": "Vérifier l'appartenance de points à un lieu géométrique défini par une relation",
+          "contenu_markdown": "Pour vérifier qu'un point appartient à un ensemble défini par une équation, on substitue ses coordonnées dans l'équation et on vérifie l'égalité.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.2.b",
+      "enonce_markdown": "(b) Montrer que $(\\Gamma)$ est l'ensemble des points $M$ de $P$ tels que : $MG=a\\sqrt2$ ; où $a$ désigne la distance du point $M$ à la droite $(D)$.",
+      "corrige_markdown": "### Rappel de methode\nLa relation MG²=k·d(M,D)² (avec k>0) se réécrit MG=√k·d(M,D) en prenant la racine carrée positive des deux membres, valide car une distance et son carré ont le même signe.\n\n### Corrige\nD'après la question 2.(a), $(\\Gamma)$ est défini par $MG^2=2(x-1)^2$.\n\nOr $(D)$ a pour équation $x=1$, donc la distance de $M(x;y)$ à $(D)$ est $a=d(M,(D))=|x-1|$, d'où $a^2=(x-1)^2$.\n\nLa relation devient $MG^2=2a^2$. Comme $MG\\geq0$ et $a\\geq0$, on peut prendre la racine carrée des deux membres sans ambiguïté de signe :\n$$MG=\\sqrt2\\,a$$\n\n**$(\\Gamma)$ est donc bien l'ensemble des points $M$ de $P$ tels que $MG=a\\sqrt2$, où $a$ est la distance de $M$ à $(D)$.**",
+      "themes": [
+        "caractérisation foyer-directrice",
+        "distance à une droite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probC-3",
+          "competence": "Passer de MG²=k·a² à MG=√k·a",
+          "contenu_markdown": "La relation MG²=k·d(M,D)² (avec k>0) se réécrit MG=√k·d(M,D) en prenant la racine carrée positive des deux membres, valide car une distance et son carré ont le même signe.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.2.c",
+      "enonce_markdown": "(c) En déduire la nature de $(\\Gamma)$ et préciser son excentricité, un de ses foyers et la directrice associée.",
+      "corrige_markdown": "### Rappel de methode\nLa caractérisation MF=e·d(M,D) (avec F un point fixe, D une droite fixe, e>0 une constante) est la définition bifocale d'une conique de foyer F, de directrice associée D et d'excentricité e : e<1 donne une ellipse, e=1 une parabole, e>1 une hyperbole.\n\n### Corrige\nD'après la question 2.(b), $(\\Gamma)$ vérifie $MG=\\sqrt2\\times d(M,(D))$, ce qui est la définition d'une conique de foyer $G$, de directrice associée $(D)$ et d'excentricité $e=\\sqrt2$.\n\nComme $e=\\sqrt2>1$, **$(\\Gamma)$ est une hyperbole**, de foyer $G(2;0)$ et de directrice associée $(D):x=1$.\n\n**Vérification directe** : l'équation cartésienne établie en 2.(a), $x^2-y^2=2$, s'écrit $\\dfrac{x^2}{2}-\\dfrac{y^2}{2}=1$ : hyperbole équilatère ($a^2=b^2=2$) de centre $O$, d'axe focal $(Ox)$, avec $c^2=a^2+b^2=4$ donc $c=2$ : foyers $(\\pm2;0)$ — dont $G(2;0)$ — et excentricité $e=\\dfrac ca=\\dfrac2{\\sqrt2}=\\sqrt2$ ; directrice associée au foyer $(2;0)$ : $x=\\dfrac{a^2}{c}=\\dfrac22=1$, soit bien $(D):x=1$. Tous les éléments concordent parfaitement.",
+      "themes": [
+        "conique",
+        "hyperbole équilatère",
+        "excentricité",
+        "foyer et directrice"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-probC-4",
+          "competence": "Nature d'une conique via son excentricité (définition foyer-directrice)",
+          "contenu_markdown": "La caractérisation MF=e·d(M,D) (avec F un point fixe, D une droite fixe, e>0 une constante) est la définition bifocale d'une conique de foyer F, de directrice associée D et d'excentricité e : e<1 donne une ellipse, e=1 une parabole, e>1 une hyperbole.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C.3",
+      "enonce_markdown": "3. Représenter $(\\Gamma)$ dans le repère $(O,\\vec\\imath,\\vec\\jmath)$.",
+      "corrige_markdown": "### Corrige\n$(\\Gamma):x^2-y^2=2$, soit $\\dfrac{x^2}{2}-\\dfrac{y^2}{2}=1$ : hyperbole équilatère de centre $O$, d'axe focal $(Ox)$, de sommets $(\\pm\\sqrt2;0)$, d'asymptotes $y=\\pm x$ (les diagonales du carré formé par les sommets), de foyers $(\\pm2;0)$. On trace les deux branches (à droite de $x=\\sqrt2$ et à gauche de $x=-\\sqrt2$), symétriques par rapport aux deux axes, en s'approchant des asymptotes $y=\\pm x$ lorsque $|x|\\to+\\infty$.",
+      "themes": [
+        "représentation graphique d'une hyperbole"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "récurrence",
+    "probabilité",
+    "algèbre linéaire",
+    "endomorphisme",
+    "conique",
+    "hyperbole",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "barème non précisé",
+      "description": "Le PDF source (Douala Mathematical Society, dvipdfm/TeX) n'indique aucun barème par exercice ni par question. Le champ 'points' est donc laissé à null plutôt que d'inventer une pondération."
+    },
+    {
+      "type": "incohérence énoncé",
+      "description": "Partie A, Q3.a : la source imprime Pn/Pn-1≥2 (fraction inversée par rapport à la version mathématiquement correcte Pn-1/Pn≥2, seule cohérente avec la conclusion Pn≤1/2^(n-1) demandée en 3.b). Partie C, Q2 : la source imprime la relation définissant Gamma sans l'exposant carré sur (x-1) ; la version quadratique 2(x-1)² est la seule cohérente avec B,C appartenant à Gamma et avec la caractérisation foyer-directrice MG=a*sqrt(2) demandée en 2.b (excentricité sqrt(2), foyer G, directrice x=1, tous donnés/vérifiés). Voir les Pièges à éviter correspondants dans le corrigé."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

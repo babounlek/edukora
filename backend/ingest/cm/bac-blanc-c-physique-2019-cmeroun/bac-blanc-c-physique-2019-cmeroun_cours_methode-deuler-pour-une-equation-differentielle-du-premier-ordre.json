@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-methode-deuler-pour-une-equation-differentielle-du-premier-ordre-terminale-C",
+  "meta": {
+    "titre": "Méthode d'Euler pour une équation différentielle du premier ordre",
+    "matiere": "Physique",
+    "serie": "C",
+    "sous_theme": "Méthodes numériques appliquées à la physique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "methode d'Euler",
+      "equation differentielle",
+      "resolution numerique",
+      "pas de calcul"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-BLANC-C-2019-PHYSIQUE-EXTREME-NORD",
+    "epreuve_titre": "Baccalauréat blanc C - Physique - Région de l'Extrême-Nord - Avril 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-blanc-c-physique-2019-cmeroun-ex4-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les equations differentielles ne se resolvent pas facilement avec une formule toute faite. Quand la solution exacte est difficile, voire impossible, a obtenir analytiquement, les physiciens et ingenieurs utilisent des methodes numeriques approchees. La plus simple d'entre elles, la methode d'Euler, ne demande qu'une seule idee : remplacer localement une courbe par sa tangente, un principe que meme une calculatrice programmable peut appliquer des milliers de fois par seconde."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une equation differentielle et une derivee",
+        "Comprendre la notion de tangente a une courbe en un point",
+        "Savoir utiliser une relation de recurrence (calcul d'un terme a partir du precedent)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe de la méthode d'Euler",
+      "contenu_markdown": "Pour une grandeur $x(t)$ verifiant une equation differentielle donnant $dx/dt$ en fonction de $x$ (et eventuellement $t$), la methode d'Euler approxime la valeur de $x$ a l'instant $t+\\Delta t$ en supposant que la derivee reste constante, egale a sa valeur en $t$, sur tout l'intervalle $[t\\,;\\,t+\\Delta t]$. Cela revient a remplacer la courbe exacte par sa tangente au point courant. Plus le pas $\\Delta t$ est petit, plus l'approximation est fidele a la solution exacte ; un pas trop grand accumule une erreur importante a chaque etape.",
+      "formule_principale": "x(t+\\Delta t) = x(t) + \\dfrac{dx}{dt}(t)\\,\\Delta t",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une grandeur $A(t)$ verifie l'equation differentielle $\\dfrac{dA}{dt}+\\lambda A(t)=0$, avec $\\lambda=3{,}40\\times10^{-2}\\,min^{-1}$ et $A(0)=3{,}00\\times10^{8}$. Calculer, par la methode d'Euler avec un pas $\\Delta t=5\\,min$, la valeur approchee $A(5)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler la dérivée dans l'équation différentielle",
+          "justification": "La methode d'Euler a besoin de l'expression explicite de $dA/dt$ en fonction de $A$.",
+          "resultat_markdown": "$\\dfrac{dA}{dt}=-\\lambda A(t)$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la relation de récurrence d'Euler",
+          "justification": "On remplace $dx/dt$ par $-\\lambda A(t)$ dans la formule generale de la methode d'Euler.",
+          "resultat_markdown": "$A(t+\\Delta t)=A(t)+(-\\lambda A(t))\\Delta t=A(t)[1-\\lambda\\Delta t]$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le facteur multiplicatif pour ce pas",
+          "justification": "Avec $\\lambda=3{,}40\\times10^{-2}\\,min^{-1}$ et $\\Delta t=5\\,min$, on calcule $\\lambda\\Delta t$ numeriquement.",
+          "resultat_markdown": "$\\lambda\\Delta t=3{,}40\\times10^{-2}\\times5=0{,}17 \\quad\\Longrightarrow\\quad [1-\\lambda\\Delta t]=0{,}83$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la relation de récurrence à partir de A(0)",
+          "justification": "On applique une seule fois la formule d'Euler, en partant de la valeur connue a $t=0$.",
+          "resultat_markdown": "$A(5)=A(0)\\times0{,}83=3{,}00\\times10^{8}\\times0{,}83=2{,}49\\times10^{8}$"
+        }
+      ],
+      "conclusion_markdown": "Pour obtenir $A(10)$, $A(15)$, etc., il suffit de repeter la meme relation de recurrence, en partant a chaque fois du resultat du pas precedent (jamais de la valeur theorique exacte, que la methode d'Euler ne connait pas)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer $A(t+\\Delta t)$ a partir de la valeur THEORIQUE exacte $A_{theo}(t)$ plutot qu'a partir de la valeur d'Euler du pas precedent $A_{Euler}(t)$.",
+          "pourquoi_faux": "La methode d'Euler est une methode ITERATIVE : chaque nouvelle estimation se construit sur l'estimation precedente (potentiellement deja un peu fausse), ce qui permet a l'erreur de s'accumuler au fil des pas. Repartir a chaque fois de la valeur exacte masquerait completement ce phenomene d'accumulation, qui est justement ce que l'on cherche a etudier.",
+          "correction_markdown": "Construis toujours ta colonne de valeurs d'Euler en chaine, chaque valeur decoulant strictement de la precedente via la relation de recurrence, jamais de la formule theorique exacte."
+        },
+        {
+          "erreur_markdown": "Choisir un pas $\\Delta t$ trop grand (tel que $\\lambda\\Delta t$ n'est plus petit devant 1) sans verifier que cela reste raisonnable.",
+          "pourquoi_faux": "Si $\\lambda\\Delta t$ approche ou depasse 1, le facteur $(1-\\lambda\\Delta t)$ peut devenir tres petit ou meme negatif, ce qui produirait des activites negatives, physiquement impossibles, et de toute facon tres eloignees de la solution exacte.",
+          "correction_markdown": "Avant de te lancer dans les calculs, verifie toujours que $\\lambda\\Delta t$ reste nettement inferieur a 1 (une valeur autour de 0,1 a 0,2 est un bon compromis usuel entre precision et nombre de calculs a effectuer)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une grandeur $x(t)$ verifie $dx/dt=-0{,}1\\,x(t)$ avec $x(0)=50$. Calculer $x(1)$ par la methode d'Euler avec un pas $\\Delta t=1$.",
+          "solution_markdown": "$x(t+\\Delta t)=x(t)[1-0{,}1\\times1]=0{,}9\\,x(t)$. Donc $x(1)=0{,}9\\times50=45$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice precedent et calculer $x(2)$ et $x(3)$ par la meme methode (pas $\\Delta t=1$).",
+          "solution_markdown": "On applique la meme relation de recurrence $x(t+1)=0{,}9\\,x(t)$ a partir de $x(1)=45$ : $x(2)=0{,}9\\times45=40{,}5$, puis $x(3)=0{,}9\\times40{,}5=36{,}45$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour l'equation $dx/dt=-\\lambda x(t)$, montrer que la methode d'Euler avec un pas $\\Delta t$ conduit a $x(n\\Delta t)=x(0)\\times(1-\\lambda\\Delta t)^n$ apres $n$ pas, et comparer cette expression a la solution exacte $x(t)=x(0)e^{-\\lambda t}$ lorsque $\\Delta t$ devient tres petit.",
+          "solution_markdown": "En appliquant $n$ fois de suite la relation de recurrence $x(t+\\Delta t)=x(t)(1-\\lambda\\Delta t)$, chaque application multipliant la valeur precedente par le meme facteur $(1-\\lambda\\Delta t)$, on obtient apres $n$ pas : $x(n\\Delta t)=x(0)\\times(1-\\lambda\\Delta t)^n$. En posant $t=n\\Delta t$ et en faisant tendre $\\Delta t$ vers 0 (donc $n\\to\\infty$ a $t$ fixe), on retrouve la limite classique $(1-\\lambda t/n)^n\\to e^{-\\lambda t}$ : la methode d'Euler converge bien vers la solution exacte $x(0)e^{-\\lambda t}$ quand le pas devient infiniment petit, ce qui justifie mathematiquement pourquoi reduire $\\Delta t$ ameliore toujours la precision de l'approximation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La methode d'Euler approxime $x(t+\\Delta t)$ par $x(t)+\\dfrac{dx}{dt}(t)\\Delta t$ : elle remplace localement la courbe par sa tangente.",
+        "Pour une decroissance radioactive $dA/dt=-\\lambda A$, la relation de recurrence devient $A(t+\\Delta t)=A(t)[1-\\lambda\\Delta t]$.",
+        "Chaque nouvelle valeur se calcule a partir de la valeur d'Euler du pas PRECEDENT, jamais a partir de la valeur theorique exacte : l'erreur s'accumule pas apres pas.",
+        "Un pas $\\Delta t$ trop grand (tel que $\\lambda\\Delta t$ n'est plus petit devant 1) degrade fortement la precision, voire produit des resultats physiquement absurdes (valeurs negatives).",
+        "Au BAC, cette methode est utilisee quand l'equation differentielle a certes une solution exacte connue (ce qui permet de comparer et de valider la methode), mais l'objectif pedagogique est de comprendre le principe, generalisable a des equations qui n'ont PAS de solution analytique simple."
+      ]
+    }
+  ]
+}

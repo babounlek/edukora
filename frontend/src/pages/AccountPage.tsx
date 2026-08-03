@@ -139,7 +139,7 @@ export function AccountPage() {
         <CardContent>
           {!progression || totalRead === 0 ? (
             <p className="text-sm text-muted-foreground">
-              Rien de lu pour l'instant - ouvre une leçon ou un cours pour commencer.
+              Rien de lu pour l'instant - ouvre une épreuve ou un cours pour commencer.
             </p>
           ) : (
             <div className="flex flex-col gap-4">
@@ -149,16 +149,16 @@ export function AccountPage() {
 
               {progression.lessons.length > 0 && (
                 <div>
-                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Leçons</p>
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Épreuves</p>
                   <ul className="flex flex-col gap-2">
-                    {progression.lessons.map((lesson) => (
-                      <li key={lesson.id}>
+                    {progression.lessons.map((epreuve) => (
+                      <li key={epreuve.id}>
                         <Link
-                          to={`/lecons/${lesson.id}/lire`}
+                          to={`/epreuves/${epreuve.slug}/lire`}
                           className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-accent/40"
                         >
                           <CheckCircle2 className="size-4 shrink-0 text-success" />
-                          {lesson.title}
+                          {epreuve.title}
                         </Link>
                       </li>
                     ))}

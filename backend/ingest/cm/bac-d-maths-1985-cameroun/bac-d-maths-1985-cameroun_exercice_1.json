@@ -1,0 +1,232 @@
+{
+  "epreuve_source": "bac-d-maths-1985-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1985",
+  "duree_epreuve": "3h15",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 7,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**\\n\\nUne urne contient $8$ boules : $3$ boules vertes numérotées $1,2,3$, $3$ boules rouges numérotées $2,3,4$ et $2$ boules blanches numérotées $3$ et $5$. On tire simultanément trois boules de l'urne. Tous les tirages sont supposés équiprobables.\\n\\nRépartition des boules par numéro : le numéro $1$ porte $1$ boule (verte), le numéro $2$ porte $2$ boules (verte et rouge), le numéro $3$ porte $3$ boules (verte, rouge et blanche), le numéro $4$ porte $1$ boule (rouge), le numéro $5$ porte $1$ boule (blanche).\\n\\n**Pour les questions 4.a à 4.c**, on retire les $2$ boules blanches : il reste $6$ boules : vertes $V_1,V_2,V_3$ et rouges $R_2,R_3,R_4$ (l'indice indique le numéro porté par la boule).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1°- Combien y a-t-il de tirages possibles ?",
+      "corrige_markdown": "### Rappel de méthode\\nLe nombre de tirages simultanés de $k$ objets parmi $n$ (sans ordre, sans remise) est donné par le coefficient binomial $\\binom{n}{k}$.\\n\\n### Corrigé\\nL'urne contient $8$ boules au total. Un tirage simultané de $3$ boules est un choix non ordonné de $3$ éléments parmi $8$ :\\n$$\\binom83=\\frac{8!}{3!\\times5!}=\\frac{8\\times7\\times6}{3\\times2\\times1}=\\frac{336}6=56$$\\n\\n**Il y a $56$ tirages possibles.**",
+      "themes": [
+        "dénombrement",
+        "combinaisons"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-1",
+          "competence": "Denombrement de tirages simultanes (combinaisons)",
+          "contenu_markdown": "Le nombre de tirages simultanés de $k$ objets parmi $n$ (sans ordre, sans remise) est donné par le coefficient binomial $\\binom{n}{k}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2°- Quelle est la probabilité pour qu'on ait les évènements suivants lors d'un tirage : a) 2 numéros sont identiques ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour compter les tirages où exactement deux boules portent le même numéro, on choisit d'abord le numéro concerné (parmi ceux portés par au moins deux boules), on choisit la paire de boules de ce numéro, puis on choisit la troisième boule parmi celles d'un numéro différent - en évitant de compter deux fois les tirages où les trois boules portent le même numéro.\\n\\n### Corrigé\\nSeuls les numéros $2$ (porté par $2$ boules) et $3$ (porté par $3$ boules) peuvent fournir une paire de boules de même numéro.\\n\\n**Paire de numéro $2$.** Il y a $\\binom22=1$ façon de choisir les $2$ boules numérotées $2$. La troisième boule doit porter un numéro différent : il reste $8-2=6$ boules possibles (tous les numéros autres que $2$). Nombre de tirages : $1\\times6=6$.\\n\\n**Paire de numéro $3$.** Il y a $\\binom32=3$ façons de choisir $2$ des $3$ boules numérotées $3$. La troisième boule doit porter un numéro différent de $3$ : il reste $8-3=5$ boules possibles (en excluant les $3$ boules numérotées $3$, pour ne pas retomber sur le cas « tous les numéros identiques »). Nombre de tirages : $3\\times5=15$.\\n\\n**Total.** $6+15=21$ tirages favorables sur $56$ tirages possibles (question 1) :\\n$$P(\\text{« 2 numéros identiques »})=\\frac{21}{56}=\\frac38$$\\n\\n### Piège à éviter\\nEn choisissant la troisième boule pour la paire de numéro $3$, il faut bien exclure les $3$ boules numérotées $3$ elles-mêmes (pas seulement les $2$ déjà choisies) : sinon on compterait aussi les tirages où les trois boules portent le numéro $3$, qui relèvent de la question 2.b et non 2.a.",
+      "themes": [
+        "probabilités",
+        "dénombrement",
+        "tirage simultané"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-2a",
+          "competence": "Denombrement d'un tirage avec exactement une paire de numeros identiques",
+          "contenu_markdown": "Pour compter les tirages où exactement deux boules portent le même numéro, on choisit d'abord le numéro concerné (parmi ceux portés par au moins deux boules), on choisit la paire de boules de ce numéro, puis on choisit la troisième boule parmi celles d'un numéro différent - en évitant de compter deux fois les tirages où les trois boules portent le même numéro.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "b) Tous les numéros sont identiques ?",
+      "corrige_markdown": "### Rappel de méthode\\nUn tirage où « tous les numéros sont identiques » n'est possible que pour un numéro porté par au moins 3 boules ; on le dénombre alors avec un unique coefficient binomial.\\n\\n### Corrigé\\nPour que les trois boules tirées portent toutes le même numéro, il faut que ce numéro soit porté par au moins $3$ boules. Seul le numéro $3$ est dans ce cas (boules verte, rouge et blanche numérotées $3$).\\n\\nNombre de tirages : $\\binom33=1$ (on prend les $3$ boules numérotées $3$, il n'y a pas d'autre choix possible).\\n\\n$$P(\\text{« tous les numéros identiques »})=\\frac{1}{56}$$",
+      "themes": [
+        "probabilités",
+        "dénombrement",
+        "tirage simultané"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-2b",
+          "competence": "Denombrement d'un tirage aux numeros tous identiques",
+          "contenu_markdown": "Un tirage où « tous les numéros sont identiques » n'est possible que pour un numéro porté par au moins 3 boules ; on le dénombre alors avec un unique coefficient binomial.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "c) Tous les numéros sont distincts ?",
+      "corrige_markdown": "### Rappel de méthode\\nL'évènement « tous les numéros sont distincts » est le complémentaire de « au moins deux numéros identiques » (qui regroupe « exactement 2 numéros identiques » et « tous identiques », deux évènements incompatibles) : on peut donc soustraire du total plutôt que dénombrer directement.\\n\\n### Corrigé\\nLes évènements « exactement $2$ numéros identiques » (question 2.a) et « tous les numéros identiques » (question 2.b) sont incompatibles, et leur réunion est le contraire de « tous les numéros distincts ». Donc :\\n\\n$$\\text{card(tous distincts)}=56-21-1=34$$\\n\\n$$P(\\text{« tous les numéros distincts »})=\\frac{34}{56}=\\frac{17}{28}$$\\n\\n### Conseil\\nPasser par le complémentaire évite de redénombrer directement les tirages à numéros distincts, ce qui serait plus long (il faudrait choisir 3 numéros parmi $\\{1,2,3,4,5\\}$ puis une boule pour chacun, en tenant compte du fait que chaque numéro n'a pas le même nombre de boules disponibles).",
+      "themes": [
+        "probabilités",
+        "dénombrement",
+        "évènement complémentaire"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-2c",
+          "competence": "Utilisation de l'evenement complementaire pour denombrer",
+          "contenu_markdown": "L'évènement « tous les numéros sont distincts » est le complémentaire de « au moins deux numéros identiques » (qui regroupe « exactement 2 numéros identiques » et « tous identiques », deux évènements incompatibles) : on peut donc soustraire du total plutôt que dénombrer directement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2d",
+      "enonce_markdown": "d) Les trois boules sont de couleurs différentes ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour un tirage composé d'exactement une boule de chaque couleur, on choisit indépendamment une boule dans chaque groupe de couleur, et on multiplie les nombres de choix (principe multiplicatif).\\n\\n### Corrigé\\nL'urne contient $3$ boules vertes, $3$ boules rouges et $2$ boules blanches. Un tirage avec les trois boules de couleurs différentes s'obtient en choisissant $1$ boule verte, $1$ boule rouge et $1$ boule blanche :\\n\\n$$\\binom31\\times\\binom31\\times\\binom21=3\\times3\\times2=18$$\\n\\n$$P(\\text{« 3 couleurs différentes »})=\\frac{18}{56}=\\frac9{28}$$",
+      "themes": [
+        "probabilités",
+        "dénombrement",
+        "principe multiplicatif"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-2d",
+          "competence": "Principe multiplicatif pour un tirage d'une boule par groupe",
+          "contenu_markdown": "Pour un tirage composé d'exactement une boule de chaque couleur, on choisit indépendamment une boule dans chaque groupe de couleur, et on multiplie les nombres de choix (principe multiplicatif).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3°- On tire maintenant deux boules simultanément, et on considère la variable aléatoire X qui à chaque tirage fait correspondre le numéro 1 si les boules sont de même couleur, et le nombre 0 si elles sont de couleurs différentes. Déterminer la loi de probabilité de X.",
+      "corrige_markdown": "### Rappel de méthode\\nPour déterminer la loi de probabilité d'une variable aléatoire discrète, on dénombre séparément le nombre de tirages réalisant chaque valeur possible, on divise par le nombre total de tirages, puis on vérifie que la somme des probabilités obtenues vaut $1$.\\n\\n### Corrigé\\nOn tire maintenant **deux** boules simultanément parmi les $8$ boules de l'urne. Le nombre de tirages possibles est :\\n$$\\binom82=\\frac{8\\times7}{2}=28$$\\n\\nLa variable $X$ vaut $1$ si les deux boules tirées sont de la même couleur, et $0$ sinon.\\n\\n**Tirages de même couleur.** On choisit $2$ boules parmi les boules d'une seule couleur :\\n- Vertes (3 boules) : $\\binom32=3$\\n- Rouges (3 boules) : $\\binom32=3$\\n- Blanches (2 boules) : $\\binom22=1$\\n\\nTotal : $3+3+1=7$ tirages où $X=1$.\\n\\n$$P(X=1)=\\frac7{28}=\\frac14$$\\n\\n**Tirages de couleurs différentes.** Ce sont tous les autres tirages :\\n$$P(X=0)=1-P(X=1)=1-\\frac14=\\frac34$$\\n\\n**Loi de probabilité de $X$ :**\\n\\n$$\\begin{array}{|c|c|c|}\\hline x_i & 0 & 1\\\\\\hline P(X=x_i) & \\dfrac34 & \\dfrac14\\\\\\hline\\end{array}$$\\n\\nVérification : $\\dfrac34+\\dfrac14=1$.\\n\\n### Piège à éviter\\nCe tirage de $2$ boules (question 3) est un nouveau tirage, indépendant de celui de $3$ boules des questions 1 et 2 : le nombre total de tirages possibles change ($\\binom82=28$ et non plus $\\binom83=56$).",
+      "themes": [
+        "probabilités",
+        "variable aléatoire discrète",
+        "loi de probabilité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-3",
+          "competence": "Determination de la loi de probabilite d'une variable aleatoire discrete",
+          "contenu_markdown": "Pour déterminer la loi de probabilité d'une variable aléatoire discrète, on dénombre séparément le nombre de tirages réalisant chaque valeur possible, on divise par le nombre total de tirages, puis on vérifie que la somme des probabilités obtenues vaut $1$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4a",
+      "enonce_markdown": "a) Déterminer la loi de probabilité de Y.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une variable définie par un cas de figure sur les numéros (distincts ou identiques), on liste systématiquement toutes les paires de boules possibles, on calcule la valeur de la variable pour chacune, puis on regroupe par valeur obtenue.\\n\\n### Corrigé\\nAprès retrait des boules blanches, il reste $6$ boules : $V_1,V_2,V_3,R_2,R_3,R_4$. Le nombre de tirages de $2$ boules parmi ces $6$ est :\\n$$\\binom62=\\frac{6\\times5}2=15$$\\n\\nPour chaque paire, $Y$ vaut le plus petit numéro si les numéros sont distincts, ou $\\dfrac{n+n}2+1=n+1$ si les deux boules portent le même numéro $n$. On énumère les $15$ paires :\\n\\n$$\\begin{array}{|l|c|}\\hline\\text{Paire}&Y\\\\\\hlineV_1V_2&1\\\\V_1V_3&1\\\\V_1R_2&1\\\\V_1R_3&1\\\\V_1R_4&1\\\\V_2V_3&2\\\\V_2R_2&3\\\\V_2R_3&2\\\\V_2R_4&2\\\\V_3R_2&2\\\\V_3R_3&4\\\\V_3R_4&3\\\\R_2R_3&2\\\\R_2R_4&2\\\\R_3R_4&3\\\\\\hline\\end{array}$$\\n\\n**Détail des cas à numéros identiques** : $V_2R_2$ (numéro $2$ commun) donne $Y=\\dfrac{2+2}2+1=2+1=3$ ; $V_3R_3$ (numéro $3$ commun) donne $Y=\\dfrac{3+3}2+1=3+1=4$. Toutes les autres paires ont des numéros distincts, donc $Y$ vaut le plus petit des deux numéros.\\n\\n**Comptage des valeurs de $Y$ :**\\n- $Y=1$ : les $5$ paires contenant $V_1$ (numéro $1$, toujours le plus petit face à $2,2,3,3,4$) → $5$ tirages\\n- $Y=2$ : $V_2V_3,\\,V_2R_3,\\,V_2R_4,\\,V_3R_2,\\,R_2R_3,\\,R_2R_4$ → $6$ tirages\\n- $Y=3$ : $V_2R_2,\\,V_3R_4,\\,R_3R_4$ → $3$ tirages\\n- $Y=4$ : $V_3R_3$ → $1$ tirage\\n\\nVérification : $5+6+3+1=15$. ✓\\n\\n**Loi de probabilité de $Y$ :**\\n\\n$$\\begin{array}{|c|c|c|c|c|}\\hline y_i&1&2&3&4\\\\\\hline P(Y=y_i)&\\dfrac5{15}=\\dfrac13&\\dfrac6{15}=\\dfrac25&\\dfrac3{15}=\\dfrac15&\\dfrac1{15}\\\\\\hline\\end{array}$$\\n\\nVérification : $\\dfrac13+\\dfrac25+\\dfrac15+\\dfrac1{15}=\\dfrac5{15}+\\dfrac6{15}+\\dfrac3{15}+\\dfrac1{15}=\\dfrac{15}{15}=1$.\\n\\n### Piège à éviter\\nNe pas oublier que « numéros identiques » ne concerne que les paires où les deux boules portent le même numéro (ici $V_2R_2$ et $V_3R_3$), pas les paires de même couleur : $V_1V_2$ par exemple est bien une paire « verte-verte » mais ses numéros ($1$ et $2$) sont distincts, donc $Y=\\min(1,2)=1$.",
+      "themes": [
+        "probabilités",
+        "variable aléatoire discrète",
+        "loi de probabilité",
+        "dénombrement exhaustif"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-4a",
+          "competence": "Construction d'une loi de probabilite par enumeration exhaustive",
+          "contenu_markdown": "Pour une variable définie par un cas de figure sur les numéros (distincts ou identiques), on liste systématiquement toutes les paires de boules possibles, on calcule la valeur de la variable pour chacune, puis on regroupe par valeur obtenue.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4b",
+      "enonce_markdown": "b) Représenter graphiquement la fonction de répartition de Y.",
+      "corrige_markdown": "### Rappel de méthode\\nLa fonction de répartition d'une variable aléatoire discrète $Y$, $F(y)=P(Y\\le y)$, est une fonction en escalier : constante entre deux valeurs prises consécutives par $Y$, et qui « saute » de $P(Y=y_i)$ à chaque valeur $y_i$ prise avec probabilité non nulle.\\n\\n### Corrigé\\nOn cumule les probabilités de la loi de $Y$ (question 4.a) dans l'ordre croissant des valeurs :\\n\\n$$F(y)=P(Y\\le y)=\\begin{cases}0 & \\text{si } y<1\\\\\\dfrac13 & \\text{si } 1\\le y<2\\\\\\dfrac13+\\dfrac25=\\dfrac{11}{15} & \\text{si } 2\\le y<3\\\\\\dfrac{11}{15}+\\dfrac15=\\dfrac{14}{15} & \\text{si } 3\\le y<4\\\\\\dfrac{14}{15}+\\dfrac1{15}=1 & \\text{si } y\\ge4\\end{cases}$$\\n\\n**Représentation graphique.** $F$ est une fonction en escalier, croissante, continue à droite en chaque point de saut :\\n- Pour $y<1$ : segment horizontal sur l'axe des abscisses, à la hauteur $0$.\\n- En $y=1$ : saut de hauteur $\\dfrac13$ (point plein en $\\left(1,\\dfrac13\\right)$, point vide en $\\left(1,0\\right)$) ; palier horizontal à $\\dfrac13$ jusqu'à $y=2$ (exclu).\\n- En $y=2$ : saut de hauteur $\\dfrac25$, palier horizontal à $\\dfrac{11}{15}$ jusqu'à $y=3$ (exclu).\\n- En $y=3$ : saut de hauteur $\\dfrac15$, palier horizontal à $\\dfrac{14}{15}$ jusqu'à $y=4$ (exclu).\\n- En $y=4$ : saut de hauteur $\\dfrac1{15}$, palier horizontal à $1$ pour tout $y\\ge4$.\\n\\nChaque palier commence par un point plein (valeur atteinte, continuité à droite) et se termine par un point vide (valeur non atteinte à cette abscisse).\\n\\n### Conseil\\nPour tracer rapidement une fonction de répartition discrète, il suffit de placer les points $(y_i, F(y_i))$ obtenus par cumul et de relier chaque point au suivant par un segment horizontal : la hauteur de chaque marche est exactement $P(Y=y_i)$, ce qui permet de vérifier visuellement la cohérence avec la loi de probabilité.",
+      "themes": [
+        "probabilités",
+        "fonction de répartition",
+        "variable aléatoire discrète"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-4b",
+          "competence": "Fonction de repartition d'une variable aleatoire discrete",
+          "contenu_markdown": "La fonction de répartition d'une variable aléatoire discrète $Y$, $F(y)=P(Y\\le y)$, est une fonction en escalier : constante entre deux valeurs prises consécutives par $Y$, et qui « saute » de $P(Y=y_i)$ à chaque valeur $y_i$ prise avec probabilité non nulle.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4c",
+      "enonce_markdown": "c) Calculer l'espérance mathématique et l'écart-type de Y.",
+      "corrige_markdown": "### Rappel de méthode\\nL'espérance mathématique d'une variable aléatoire discrète est $E(Y)=\\sum y_iP(Y=y_i)$ ; la variance se calcule par la formule de Kœnig-Huygens $V(Y)=E(Y^2)-[E(Y)]^2$, et l'écart-type est $\\sigma(Y)=\\sqrt{V(Y)}$.\\n\\n### Corrigé\\n**Espérance mathématique.**\\n$$E(Y)=1\\times\\frac13+2\\times\\frac25+3\\times\\frac15+4\\times\\frac1{15}$$\\nRéduction au même dénominateur $15$ :\\n$$E(Y)=\\frac5{15}+\\frac{12}{15}+\\frac9{15}+\\frac4{15}=\\frac{5+12+9+4}{15}=\\frac{30}{15}=2$$\\n\\n**Calcul de $E(Y^2)$.**\\n$$E(Y^2)=1^2\\times\\frac13+2^2\\times\\frac25+3^2\\times\\frac15+4^2\\times\\frac1{15}=\\frac13+\\frac85+\\frac95+\\frac{16}{15}$$\\nRéduction au même dénominateur $15$ :\\n$$E(Y^2)=\\frac5{15}+\\frac{24}{15}+\\frac{27}{15}+\\frac{16}{15}=\\frac{5+24+27+16}{15}=\\frac{72}{15}=\\frac{24}5$$\\n\\n**Variance.**\\n$$V(Y)=E(Y^2)-[E(Y)]^2=\\frac{24}5-2^2=\\frac{24}5-4=\\frac{24}5-\\frac{20}5=\\frac45$$\\n\\n**Écart-type.**\\n$$\\sigma(Y)=\\sqrt{V(Y)}=\\sqrt{\\frac45}=\\frac2{\\sqrt5}=\\frac{2\\sqrt5}5$$\\n\\n### Conseil\\nPour vérifier rapidement $E(Y)=2$ : la loi de $Y$ est fortement concentrée autour de $1$ et $2$ (probabilités $\\frac13$ et $\\frac25$, soit plus de $70\\%$ de la masse), donc une espérance proche de $2$ est cohérente ; un résultat très éloigné de $2$ signalerait une erreur de calcul.",
+      "themes": [
+        "probabilités",
+        "espérance mathématique",
+        "variance",
+        "écart-type"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e1-4c",
+          "competence": "Calcul de l'esperance, la variance et l'ecart-type d'une variable aleatoire discrete",
+          "contenu_markdown": "L'espérance mathématique d'une variable aléatoire discrète est $E(Y)=\\sum y_iP(Y=y_i)$ ; la variance se calcule par la formule de Kœnig-Huygens $V(Y)=E(Y^2)-[E(Y)]^2$, et l'écart-type est $\\sigma(Y)=\\sqrt{V(Y)}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probabilités",
+    "dénombrement",
+    "combinaisons",
+    "tirage simultané",
+    "variable aléatoire discrète",
+    "loi de probabilité",
+    "fonction de répartition",
+    "espérance mathématique",
+    "variance",
+    "écart-type",
+    "bac D 1985",
+    "Cameroun"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-mouvement-dun-projectile-dans-un-champ-de-pesanteur-uniforme-terminale-C",
+  "meta": {
+    "titre": "Mouvement d'un projectile dans un champ de pesanteur uniforme",
+    "matiere": "Physique",
+    "serie": "C",
+    "sous_theme": "Mécanique : chute libre et mouvement d'un projectile",
+    "duree_estimee_min": 30,
+    "tags": [
+      "equations horaires",
+      "trajectoire parabolique",
+      "integration",
+      "projectile"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-BLANC-C-2019-PHYSIQUE-EXTREME-NORD",
+    "epreuve_titre": "Baccalauréat blanc C - Physique - Région de l'Extrême-Nord - Avril 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-blanc-c-physique-2019-cmeroun-ex1-qP1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Savoir que l'acceleration d'un projectile vaut $\\vec{g}$ ne suffit pas a repondre a la vraie question du terrain : ou et quand la balle va-t-elle retomber ? Passer de l'acceleration a la position demande d'integrer deux fois, une methode systematique qui fonctionne pour n'importe quel angle de tir, n'importe quelle vitesse initiale, et qui debouche sur l'equation de la celebre trajectoire parabolique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un projectile en chute libre a pour acceleration $\\vec{a}_G=\\vec{g}$",
+        "Savoir integrer une fonction constante puis une fonction affine du temps",
+        "Decomposer un vecteur vitesse initiale incline d'un angle $\\alpha$ en composantes horizontale et verticale"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Des équations horaires à l'équation de la trajectoire",
+      "contenu_markdown": "Partant de l'acceleration $\\vec{a}_G(0,-g)$ dans un repere $(O,x,y)$ avec $Oy$ vertical vers le haut, deux integrations successives (avec les conditions initiales de vitesse $V_0,\\alpha$ et de position a l'origine) donnent les equations horaires $x(t)$ et $y(t)$. En eliminant le temps $t$ entre ces deux equations, on obtient l'equation cartesienne $y(x)$ de la trajectoire, qui est celle d'une parabole.",
+      "formule_principale": "x(t)=V_0\\cos\\alpha\\cdot t \\quad;\\quad y(t)=-\\dfrac{1}{2}gt^2+V_0\\sin\\alpha\\cdot t \\quad;\\quad y(x)=-\\dfrac{g}{2V_0^2\\cos^2\\alpha}x^2+x\\tan\\alpha",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une balle est lancee depuis l'origine $G$ d'un repere $(G,x,y)$ avec une vitesse initiale $V_0$ faisant un angle $\\alpha$ avec l'horizontale. Etablir les equations horaires de son mouvement puis l'equation de sa trajectoire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ecrire les composantes de la vitesse initiale",
+          "justification": "Le vecteur $\\vec{V_0}$ fait un angle $\\alpha$ avec l'axe $(Gx)$ horizontal : ses composantes se projettent avec cosinus et sinus.",
+          "resultat_markdown": "$v_x(0)=V_0\\cos\\alpha \\quad;\\quad v_y(0)=V_0\\sin\\alpha$"
+        },
+        {
+          "numero": 2,
+          "action": "Intégrer l'accélération pour obtenir la vitesse",
+          "justification": "$\\vec{a}_G(0,-g)$ est constante ; chaque composante de la vitesse s'obtient en integrant la composante correspondante de l'acceleration, la constante d'integration etant fixee par la vitesse initiale.",
+          "resultat_markdown": "$v_x(t)=V_0\\cos\\alpha$ (constante) $\\quad;\\quad v_y(t)=-gt+V_0\\sin\\alpha$"
+        },
+        {
+          "numero": 3,
+          "action": "Intégrer la vitesse pour obtenir la position",
+          "justification": "On integre a nouveau chaque composante, avec la condition initiale de position $x(0)=y(0)=0$ (la balle part de l'origine $G$).",
+          "resultat_markdown": "$x(t)=V_0\\cos\\alpha\\cdot t \\quad;\\quad y(t)=-\\dfrac{1}{2}gt^2+V_0\\sin\\alpha\\cdot t$"
+        },
+        {
+          "numero": 4,
+          "action": "Éliminer le temps entre les deux équations",
+          "justification": "On isole $t$ dans l'equation de $x(t)$, puis on le remplace dans $y(t)$ pour obtenir une relation directe entre $y$ et $x$.",
+          "resultat_markdown": "$t=\\dfrac{x}{V_0\\cos\\alpha} \\quad\\Longrightarrow\\quad y(x)=-\\dfrac{g}{2V_0^2\\cos^2\\alpha}x^2+x\\tan\\alpha$"
+        }
+      ],
+      "conclusion_markdown": "La trajectoire d'un projectile dans le champ de pesanteur uniforme, sans frottement, est une parabole d'axe vertical tournee vers le bas : c'est la signature caracteristique de ce type de mouvement, retrouvee dans tous les exercices de balistique (golf, tir, jet d'eau...)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe moins dans $a_y=-g$ parce que l'axe vertical n'est pas explicitement redonne dans l'enonce de la question.",
+          "pourquoi_faux": "Si l'axe $(Oy)$ est oriente vers le haut (convention la plus frequente, a verifier sur la figure), la pesanteur, dirigee vers le bas, a une composante negative. Un oubli de signe inverse completement la forme de la parabole obtenue.",
+          "correction_markdown": "Identifie toujours l'orientation des axes sur la figure avant de projeter $\\vec{g}$, et ecris explicitement $\\vec{a}_G(0,-g)$ ou $\\vec{a}_G(0,+g)$ selon le cas."
+        },
+        {
+          "erreur_markdown": "Confondre les constantes d'integration de la vitesse (fixees par la vitesse initiale) avec celles de la position (fixees par la position initiale), ou les oublier completement.",
+          "pourquoi_faux": "Sans les conditions initiales, l'integration ne donne qu'une famille de solutions a une constante pres ; le mouvement physique reel correspond a une seule valeur de cette constante, determinee par l'etat du systeme a $t=0$.",
+          "correction_markdown": "Ecris systematiquement \"a $t=0$, ...\" avant de determiner chaque constante d'integration, une a la fois."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un objet est lache sans vitesse initiale ($V_0=0$) depuis une hauteur $h$ au-dessus du sol, dans un repere $(O,x,y)$ avec $O$ au point de lachage et $(Oy)$ vertical vers le bas. Etablir l'equation horaire $y(t)$.",
+          "solution_markdown": "Avec $(Oy)$ oriente vers le bas, $a_y=+g$ (la pesanteur pointe dans le sens positif choisi). En integrant deux fois avec $v_y(0)=0$ (vitesse initiale nulle) et $y(0)=0$ : $v_y(t)=gt$, puis $y(t)=\\dfrac{1}{2}gt^2$. C'est la loi de la chute libre sans vitesse initiale, cas particulier du mouvement du projectile avec $\\alpha=90^{\\circ}$ et un axe oriente vers le bas."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un jet d'eau est lance depuis le sol avec $V_0=6\\,m/s$ et $\\alpha=45^{\\circ}$, avec $g=10\\,m/s^2$. Calculer la portee du jet, c'est-a-dire la distance horizontale a laquelle l'eau retombe au niveau du sol ($y=0$, autre que $x=0$).",
+          "solution_markdown": "L'equation de la trajectoire est $y(x)=-\\dfrac{g}{2V_0^2\\cos^2\\alpha}x^2+x\\tan\\alpha$. On cherche $x\\neq0$ tel que $y(x)=0$ : $x\\left(\\tan\\alpha-\\dfrac{g}{2V_0^2\\cos^2\\alpha}x\\right)=0$, donc $x=\\dfrac{2V_0^2\\cos^2\\alpha\\tan\\alpha}{g}=\\dfrac{2V_0^2\\sin\\alpha\\cos\\alpha}{g}=\\dfrac{V_0^2\\sin(2\\alpha)}{g}$. Avec $V_0=6$, $\\alpha=45^{\\circ}$ (donc $\\sin(2\\alpha)=\\sin(90^{\\circ})=1$) et $g=10$ : $x=\\dfrac{36\\times1}{10}=3{,}6\\,m$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, a partir de l'equation de la trajectoire $y(x)=-\\dfrac{g}{2V_0^2\\cos^2\\alpha}x^2+x\\tan\\alpha$, que la portee d'un tir (distance horizontale de retour au niveau de depart) est maximale pour un angle de tir $\\alpha=45^{\\circ}$, a $V_0$ fixee.",
+          "solution_markdown": "D'apres l'exercice precedent, la portee generale est $x_{max}=\\dfrac{V_0^2\\sin(2\\alpha)}{g}$. Pour une vitesse initiale $V_0$ fixee, cette portee est proportionnelle a $\\sin(2\\alpha)$, qui est maximal (egal a 1) lorsque $2\\alpha=90^{\\circ}$, c'est-a-dire $\\alpha=45^{\\circ}$. C'est pourquoi les lanceurs de poids ou les golfeurs cherchant la distance maximale visent un angle proche de $45^{\\circ}$ (en negligeant l'air, en pratique legerement inferieur a cause des frottements et de la hauteur de lacher non nulle)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver les equations horaires d'un projectile, integre deux fois l'acceleration $\\vec{a}_G=\\vec{g}$, une composante a la fois, en determinant a chaque etape la constante d'integration a partir des conditions initiales.",
+        "$x(t)=V_0\\cos\\alpha\\cdot t$ (mouvement horizontal uniforme) et $y(t)=-\\dfrac12gt^2+V_0\\sin\\alpha\\cdot t$ (mouvement vertical uniformement varie).",
+        "L'equation de la trajectoire s'obtient en eliminant le temps entre $x(t)$ et $y(t)$ : c'est toujours une parabole d'axe vertical.",
+        "La portee d'un tir est maximale pour un angle de $45^{\\circ}$, a vitesse initiale fixee.",
+        "Au BAC, cette methode s'applique a l'identique dans tous les exercices de balistique (golf, boulet, jet d'eau, saut) : seules les conditions initiales et le repere changent d'un exercice a l'autre."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "epreuve_source": "bac-c-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme-C",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème - Partie C**\\n\\nSoit $f$ la fonction numérique de la variable réelle $x$ telle que :\\n$$f(x)=\\frac{3x-3\\sqrt{x^2-5}}{10}$$",
+  "questions": [
+    {
+      "numero": "C1",
+      "enonce_markdown": "1. Etudier la fonction $f$, construire sa courbe représentative $(C)$ dans le plan rapporté au repère orthonormé $(o,\\vec i,\\vec j)$. Déterminer les asymptotes.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une fonction contenant $\\sqrt{x^2-a}$ (avec $a>0$) est $\\{x\\,:\\,x^2\\geqslant a\\}=\\,]-\\infty,-\\sqrt a]\\cup[\\sqrt a,+\\infty[$. Aux bornes de ce domaine, la dérivée d'une racine carrée s'annulant au numérateur explose en général, ce qui donne des demi-tangentes verticales.\\n\\n### Corrigé\\n**Domaine de définition.** $f(x)=\\dfrac{3x-3\\sqrt{x^2-5}}{10}$ exige $x^2-5\\geqslant0$, soit $x^2\\geqslant5$, c'est-à-dire :\\n$$D_f=\\,\\big]-\\infty,-\\sqrt5\\big]\\cup\\big[\\sqrt5,+\\infty\\big[$$\\n\\n**Dérivée.** $f(x)=\\dfrac{3}{10}\\big(x-\\sqrt{x^2-5}\\big)$, donc :\\n$$f'(x)=\\frac3{10}\\left(1-\\frac{x}{\\sqrt{x^2-5}}\\right)$$\\n\\n(en utilisant $\\dfrac{d}{dx}\\sqrt{x^2-5}=\\dfrac{2x}{2\\sqrt{x^2-5}}=\\dfrac{x}{\\sqrt{x^2-5}}$)\\n\\n**Signe de $f'$ sur $[\\sqrt5,+\\infty[$** ($x>0$ strictement, car $x\\geqslant\\sqrt5>0$). On a $\\sqrt{x^2-5}<\\sqrt{x^2}=x$ (car $x^2-5<x^2$ et $x>0$), donc $\\dfrac{x}{\\sqrt{x^2-5}}>1$, donc $1-\\dfrac{x}{\\sqrt{x^2-5}}<0$ : **$f'(x)<0$ sur $]\\sqrt5,+\\infty[$**, $f$ est décroissante sur $[\\sqrt5,+\\infty[$.\\n\\n**Signe de $f'$ sur $]-\\infty,-\\sqrt5]$** ($x<0$ strictement). Ici $\\dfrac{x}{\\sqrt{x^2-5}}$ est négatif (numérateur négatif, dénominateur positif), donc $1-\\dfrac{x}{\\sqrt{x^2-5}}=1+\\left|\\dfrac{x}{\\sqrt{x^2-5}}\\right|>0$ : **$f'(x)>0$ sur $]-\\infty,-\\sqrt5[$**, $f$ est croissante sur $]-\\infty,-\\sqrt5]$.\\n\\n**Valeurs aux bornes du domaine.**\\n$$f(\\sqrt5)=\\frac{3\\sqrt5-3\\times0}{10}=\\frac{3\\sqrt5}{10} \\qquad\\qquad f(-\\sqrt5)=\\frac{-3\\sqrt5-0}{10}=-\\frac{3\\sqrt5}{10}$$\\n\\n**Tangentes aux bornes.** Quand $x\\to\\sqrt5^+$, $\\sqrt{x^2-5}\\to0^+$ et $\\dfrac{x}{\\sqrt{x^2-5}}\\to+\\infty$, donc $f'(x)\\to-\\infty$ : demi-tangente verticale en $\\left(\\sqrt5,\\frac{3\\sqrt5}{10}\\right)$. De même, quand $x\\to-\\sqrt5^-$, $f'(x)\\to+\\infty$ : demi-tangente verticale en $\\left(-\\sqrt5,-\\frac{3\\sqrt5}{10}\\right)$.\\n\\n**Limites et asymptotes.**\\n\\nEn $+\\infty$ : en multipliant par la quantité conjuguée, $x-\\sqrt{x^2-5}=\\dfrac{(x-\\sqrt{x^2-5})(x+\\sqrt{x^2-5})}{x+\\sqrt{x^2-5}}=\\dfrac{5}{x+\\sqrt{x^2-5}}\\to0$ quand $x\\to+\\infty$. Donc :\\n$$\\lim_{x\\to+\\infty}f(x)=0$$\\nLa droite $y=0$ est **asymptote horizontale en $+\\infty$**.\\n\\nEn $-\\infty$ : $\\sqrt{x^2-5}=|x|\\sqrt{1-\\frac5{x^2}}=-x\\sqrt{1-\\frac5{x^2}}$ (car $x<0$, $|x|=-x$), donc :\\n$$f(x)=\\frac3{10}\\Big(x-\\big(-x\\big)\\sqrt{1-\\tfrac5{x^2}}\\Big)=\\frac3{10}\\,x\\Big(1+\\sqrt{1-\\tfrac5{x^2}}\\Big)$$\\nQuand $x\\to-\\infty$, $\\sqrt{1-\\frac5{x^2}}\\to1$, donc $f(x)-\\frac35x=\\frac3{10}x\\Big(\\sqrt{1-\\tfrac5{x^2}}-1\\Big)\\to0$ (produit d'un terme qui tend vers $-\\infty$ par un terme qui tend vers $0$ ; un développement limité de $\\sqrt{1-\\varepsilon}\\approx1-\\varepsilon/2$ montre que ce produit tend en fait vers $0$). Donc :\\n$$\\lim_{x\\to-\\infty}\\left[f(x)-\\frac35x\\right]=0$$\\nLa droite $y=\\dfrac35x$ est **asymptote oblique en $-\\infty$**. Et $\\displaystyle\\lim_{x\\to-\\infty}f(x)=-\\infty$.\\n\\n**Tableau de variation.**\\n$$\\begin{array}{c|ccc}\\nx & -\\infty & & -\\sqrt5 & & \\sqrt5 & & +\\infty\\\\\\n\\hline\\nf'(x) & & + & \\| & & \\| & - &\\\\\\n\\hline\\nf(x) & -\\infty & \\nearrow & -\\frac{3\\sqrt5}{10} & & \\frac{3\\sqrt5}{10} & \\searrow & 0\\n\\end{array}$$\\n\\n**Tracé de $(C)$.** Deux branches disjointes : sur $]-\\infty,-\\sqrt5]$, la courbe part de l'asymptote oblique $y=\\frac35x$ en $-\\infty$ et croît jusqu'au point $\\left(-\\sqrt5,-\\frac{3\\sqrt5}{10}\\right)$ où elle admet une demi-tangente verticale ; sur $[\\sqrt5,+\\infty[$, elle part du point $\\left(\\sqrt5,\\frac{3\\sqrt5}{10}\\right)$ (demi-tangente verticale) et décroît vers l'asymptote horizontale $y=0$.\\n\\n### Piège à éviter\\nPour la limite en $-\\infty$ d'une expression contenant $\\sqrt{x^2-a}$, écrire $\\sqrt{x^2-a}=x\\sqrt{1-a/x^2}$ est **faux** quand $x<0$ : il faut $\\sqrt{x^2-a}=|x|\\sqrt{1-a/x^2}=-x\\sqrt{1-a/x^2}$, faute de quoi on obtient un signe erroné pour l'asymptote.",
+      "themes": [
+        "étude de fonction",
+        "racine carrée",
+        "asymptote oblique",
+        "demi-tangente verticale"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pC-1",
+          "competence": "Etude de fonction avec racine carree, asymptotes et demi-tangentes",
+          "contenu_markdown": "Le domaine de définition d'une fonction contenant $\\sqrt{x^2-a}$ (avec $a>0$) est $\\{x\\,:\\,x^2\\geqslant a\\}=\\,]-\\infty,-\\sqrt a]\\cup[\\sqrt a,+\\infty[$. Aux bornes de ce domaine, la dérivée d'une racine carrée s'annulant au numérateur explose en général, ce qui donne des demi-tangentes verticales.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C2",
+      "enonce_markdown": "2. Soit $(\\Gamma)$ la courbe d'équation $20y^2-12xy+9=0$. Montrer que $(\\Gamma)$ est la réunion de $(C)$ et d'une courbe $(C')$, déduite de $(C)$ par une transformation affine simple que l'on précisera.",
+      "corrige_markdown": "### Rappel de méthode\\nUne équation du second degré en $y$, du type $\\alpha y^2+\\beta y+\\gamma=0$ (avec $\\alpha\\neq0$), définit une courbe qui est la réunion des graphes des deux fonctions obtenues en résolvant cette équation en $y$ (formule du second degré), à condition que le discriminant soit positif ou nul.\\n\\n### Corrigé\\nL'équation de $(\\Gamma)$ est $20y^2-12xy+9=0$, une équation du second degré en $y$ (à $x$ fixé), de discriminant :\\n$$\\Delta=(-12x)^2-4\\times20\\times9=144x^2-720=144(x^2-5)$$\\n\\nPour que $(\\Gamma)$ soit non vide au point d'abscisse $x$, il faut $\\Delta\\geqslant0$, soit $x^2\\geqslant5$ : **on retrouve exactement le domaine $D_f$ de la question C.1.**\\n\\nLes solutions en $y$ sont :\\n$$y=\\frac{12x\\pm\\sqrt{144(x^2-5)}}{40}=\\frac{12x\\pm12\\sqrt{x^2-5}}{40}=\\frac{3x\\pm3\\sqrt{x^2-5}}{10}$$\\n\\nLa solution avec le signe « $-$ » est exactement $f(x)=\\dfrac{3x-3\\sqrt{x^2-5}}{10}$ (fonction de la question C.1). Notons $g$ la solution avec le signe « $+$ » :\\n$$g(x)=\\frac{3x+3\\sqrt{x^2-5}}{10}$$\\n\\n**$(\\Gamma)$ est donc la réunion de $(C)$, graphe de $f$, et de $(C')$, graphe de $g$**, toutes deux définies sur le même domaine $D_f=\\,]-\\infty,-\\sqrt5]\\cup[\\sqrt5,+\\infty[$.\\n\\n**Lien entre $(C)$ et $(C')$.** Calculons $g(x)+f(-x)$ :\\n$$f(-x)=\\frac{3(-x)-3\\sqrt{(-x)^2-5}}{10}=\\frac{-3x-3\\sqrt{x^2-5}}{10}=-g(x)$$\\n\\nOn a donc exactement $g(x)=-f(-x)$ pour tout $x\\in D_f$. Interprétons géométriquement : soit $M(x,f(x))$ un point quelconque de $(C)$, et soit $M^*$ son symétrique par rapport à l'origine $O$, c'est-à-dire $M^*(-x,-f(x))$. Posons $X=-x$ ; alors $-f(x)=-f(-X)=g(X)$ (d'après la relation $g(X)=-f(-X)$ avec $X=-x$, i.e. $-X=x$), donc $M^*=(X,g(X))$ est un point de $(C')$.\\n\\n**$(C')$ est donc l'image de $(C)$ par la symétrie centrale de centre $O$** (l'origine du repère) : c'est la « transformation affine simple » cherchée.\\n\\n### Piège à éviter\\nNe pas confondre la relation $g(x)=-f(-x)$ (qui traduit une symétrie centrale de centre $O$) avec $g(x)=f(-x)$ (qui traduirait une symétrie d'axe $(Oy)$) ou $g(x)=-f(x)$ (symétrie d'axe $(Ox)$) : le signe négatif doit porter à la fois sur l'argument et sur l'image pour caractériser une symétrie centrale.",
+      "themes": [
+        "conique",
+        "équation du second degré",
+        "symétrie centrale"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pC-2",
+          "competence": "Decomposition d'une courbe d'equation quadratique en y en reunion de deux graphes",
+          "contenu_markdown": "Une équation du second degré en $y$, du type $\\alpha y^2+\\beta y+\\gamma=0$ (avec $\\alpha\\neq0$), définit une courbe qui est la réunion des graphes des deux fonctions obtenues en résolvant cette équation en $y$ (formule du second degré), à condition que le discriminant soit positif ou nul.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C3a",
+      "enonce_markdown": "3. a) Déterminer une équation de l'image $(\\Gamma')$ de $(\\Gamma)$ par l'application $F$. Quelle est la nature de $(\\Gamma')$ ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour déterminer l'image d'une courbe par une application $F$ inversible, on exprime les anciennes coordonnées $(x,y)$ en fonction des nouvelles $(x',y')$ à l'aide de la transformation réciproque $F^{-1}$, puis on substitue ces expressions dans l'équation de la courbe de départ.\\n\\n### Corrigé\\n**Application réciproque de $F$.** Partant de $\\begin{cases}2x'=3x-y\\\\2y'=-x+3y\\end{cases}$, calculons $3\\times(2x')+1\\times(2y')=3(3x-y)+(-x+3y)=9x-3y-x+3y=8x$, donc $6x'+2y'=8x$, soit :\\n$$x=\\frac{3x'+y'}{4}$$\\nDe même, $1\\times(2x')+3\\times(2y')=(3x-y)+3(-x+3y)=3x-y-3x+9y=8y$, donc $2x'+6y'=8y$, soit :\\n$$y=\\frac{x'+3y'}{4}$$\\n\\n**Substitution dans l'équation de $(\\Gamma)$.** On remplace $x$ et $y$ par ces expressions dans $20y^2-12xy+9=0$ :\\n$$20\\left(\\frac{x'+3y'}4\\right)^2-12\\left(\\frac{3x'+y'}4\\right)\\left(\\frac{x'+3y'}4\\right)+9=0$$\\n\\nMultiplions toute l'équation par $16$ pour éliminer les dénominateurs :\\n$$20(x'+3y')^2-12(3x'+y')(x'+3y')+144=0$$\\n\\nDéveloppons chaque terme :\\n$$20(x'+3y')^2=20\\big(x'^2+6x'y'+9y'^2\\big)=20x'^2+120x'y'+180y'^2$$\\n$$12(3x'+y')(x'+3y')=12\\big(3x'^2+9x'y'+x'y'+3y'^2\\big)=12\\big(3x'^2+10x'y'+3y'^2\\big)=36x'^2+120x'y'+36y'^2$$\\n\\nL'équation devient :\\n$$20x'^2+120x'y'+180y'^2-36x'^2-120x'y'-36y'^2+144=0$$\\n$$-16x'^2+144y'^2+144=0$$\\n\\nEn divisant par $-16$ :\\n$$x'^2-9y'^2-9=0 \\iff x'^2-9y'^2=9 \\iff \\frac{x'^2}{9}-y'^2=1$$\\n\\n**L'image $(\\Gamma')$ de $(\\Gamma)$ par $F$ a pour équation** $\\dfrac{x^2}{9}-y^2=1$ (en renommant $x',y'$ en $x,y$).\\n\\n**Nature de $(\\Gamma')$.** C'est l'équation réduite d'une **hyperbole** de centre $O$, d'axe focal l'axe $(Ox)$, de demi-axe transverse $a=3$ et de demi-axe non transverse $b=1$ (puisque $\\dfrac{x^2}{3^2}-\\dfrac{y^2}{1^2}=1$), d'asymptotes les droites $y=\\pm\\dfrac13x$, et de distance focale $c=\\sqrt{a^2+b^2}=\\sqrt{9+1}=\\sqrt{10}$ (foyers $(\\pm\\sqrt{10},0)$).\\n\\n### Piège à éviter\\nAprès avoir substitué $x$ et $y$ en fonction de $x',y'$, ne pas oublier de multiplier toute l'équation par le carré du dénominateur commun ($4^2=16$) avant de développer : travailler directement avec des quarts entraîne des erreurs de calcul évitables.",
+      "themes": [
+        "image d'une courbe par une application affine",
+        "conique",
+        "hyperbole"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pC-3a",
+          "competence": "Image d'une conique par une application affine inversible",
+          "contenu_markdown": "Pour déterminer l'image d'une courbe par une application $F$ inversible, on exprime les anciennes coordonnées $(x,y)$ en fonction des nouvelles $(x',y')$ à l'aide de la transformation réciproque $F^{-1}$, puis on substitue ces expressions dans l'équation de la courbe de départ.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C3b",
+      "enonce_markdown": "b) Construire $(\\Gamma)$ et $(\\Gamma')$ dans le repère $(o,\\vec i,\\vec j)$.",
+      "corrige_markdown": "### Rappel de méthode\\nLa construction d'une courbe et de son image par une transformation affine s'appuie sur les éléments caractéristiques déjà déterminés (branches, asymptotes, sommets pour la courbe de départ ; centre, axes, sommets, asymptotes pour la conique image).\\n\\n### Corrigé\\n**Construction de $(\\Gamma)=(C)\\cup(C')$.** On trace $(C)$ (question C.1) : branche croissante sur $]-\\infty,-\\sqrt5]$ avec asymptote oblique $y=\\frac35x$ en $-\\infty$ et demi-tangente verticale au point $\\left(-\\sqrt5,-\\frac{3\\sqrt5}{10}\\right)$ ; branche décroissante sur $[\\sqrt5,+\\infty[$ avec demi-tangente verticale au point $\\left(\\sqrt5,\\frac{3\\sqrt5}{10}\\right)$ et asymptote horizontale $y=0$ en $+\\infty$. On trace ensuite $(C')$ en appliquant à chaque point de $(C)$ la symétrie centrale de centre $O$ (question C.2) : $(C')$ est donc l'image de $(C)$ retournée à $180°$ autour de l'origine, avec asymptote oblique $y=\\frac35x$ en $+\\infty$ (symétrique de celle de $(C)$) et asymptote horizontale $y=0$ en $-\\infty$.\\n\\n**Construction de $(\\Gamma')$.** On trace l'hyperbole d'équation $\\dfrac{x^2}9-y^2=1$ (question C.3.a) : sommets $(\\pm3,0)$ sur l'axe $(Ox)$, asymptotes $y=\\pm\\frac13x$ (deux droites passant par $O$), deux branches symétriques par rapport à $(Oy)$ (et par rapport à $O$), l'une pour $x\\geqslant3$, l'autre pour $x\\leqslant-3$, chacune s'approchant asymptotiquement des deux droites $y=\\pm\\frac13x$ loin de l'origine.\\n\\n### Conseil\\nPour une hyperbole d'équation réduite $\\frac{x^2}{a^2}-\\frac{y^2}{b^2}=1$, tracer d'abord le rectangle de sommets $(\\pm a,\\pm b)$ : ses diagonales prolongées donnent directement les deux asymptotes $y=\\pm\\frac ba x$, ce qui guide immédiatement l'allure des deux branches.",
+      "themes": [
+        "construction géométrique",
+        "hyperbole",
+        "conique"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pC-3b",
+          "competence": "Construction d'une courbe et de son image par transformation affine",
+          "contenu_markdown": "La construction d'une courbe et de son image par une transformation affine s'appuie sur les éléments caractéristiques déjà déterminés (branches, asymptotes, sommets pour la courbe de départ ; centre, axes, sommets, asymptotes pour la conique image).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction",
+    "asymptote oblique",
+    "conique",
+    "hyperbole",
+    "symétrie centrale",
+    "image d'une courbe par une application affine"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

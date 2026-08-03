@@ -1,0 +1,94 @@
+{
+  "epreuve_source": "bac-c-e-maths-2025-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2025",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "numero_exercice": "B",
+  "points": 6.75,
+  "enonce_intro_markdown": "**Partie B : Évaluation des compétences (6,75 points)**\\n\\n**Situation :** Le nombre de personnes contaminées par une pandémie dans un pays qui comptait $20$ millions d'habitants était de $3000$ deux mois après l'apparition de la maladie et de $12000$ cas quatre mois après. Des experts ont indiqué que l'immunité collective est atteinte quand $60\\%$ de la population est infectée.\\n\\nPar ailleurs, des études révèlent que la vitesse de propagation de la maladie est proportionnelle au nombre de contaminés. Pour stopper la propagation rapide de la maladie dans sa localité, le Maire d'une ville qui compte déjà quelques personnes infectées décide d'aménager un espace pour isoler ces personnes malades. Sur cet espace, la ligne reliant $J$ à $K$ est une portion de la courbe $(\\Gamma)$ d'équation $y-(x+1)e^{\\frac1{12}x}=0$ dans le repère orthonormé $(O;I;J)$. On conseille de disposer chaque malade sur un espace d'au moins $4\\ m^2$ (sur la figure, $1$ unité $=100\\ m$, et la lecture du graphique place $J$ en $x=0$ et $K$ en $x=4$).\\n\\nEn outre un sérum a été mis sur pied par un groupe de chercheurs. $1\\ cm^3$ de ce sérum est injecté toutes les $12$ heures dans le sang d'un malade. Après élimination naturelle, la quantité restante de ce sérum (en $cm^3$) au bout d'un temps $t$ (exprimé en heure) est de $e^{-\\frac1{30}t}$ augmentée du cumul des restes des doses précédentes. Le sérum n'est efficace que si le sang en contient en permanence une quantité au moins égale à $2\\ cm^3$.\\n\\n**Tâches :**",
+  "questions": [
+    {
+      "numero": "B1",
+      "enonce_markdown": "1) Déterminer le nombre maximal de malades que peut accueillir l'espace aménagé par le Maire. (2,25 pts)",
+      "corrige_markdown": "### Rappel de methode\\nLe modele de croissance est exponentiel N(t)=N0*e^(kt) ; les deux valeurs connues (N(2)=3000, N(4)=12000) permettent de determiner k et N0 par le rapport N(4)/N(2)=e^(2k)=4.\\n\\n### Corrige\\n**Modèle du nombre de contaminés :** avec propagation proportionnelle au nombre de contaminés, $N(t)=N_0e^{kt}$ ($t$ en mois).\\n\\n$\\dfrac{N(4)}{N(2)}=e^{2k}=\\dfrac{12000}{3000}=4\\Rightarrow e^k=2$, donc $N(t)=N_0\\times2^t$.\\n\\n$N(2)=N_0\\times4=3000\\Rightarrow N_0=750$. **$N(t)=750\\times2^t$** (vérifié : $N(4)=750\\times16=12000$ ✓).\\n\\n**Aire de l'espace d'isolement :** avec $J$ en $x=0$ et $K$ en $x=4$ sur la courbe $y=(x+1)e^{x/12}$ (lecture graphique) :\\n\\nCalculons l'intégrale par parties, avec $u=x+1$ ($du=dx$) et $dv=e^{x/12}dx$ ($v=12e^{x/12}$) :\\n\\n$$\\int_0^4(x+1)e^{x/12}dx=\\Big[12(x+1)e^{x/12}\\Big]_0^4-\\int_0^412e^{x/12}dx=\\Big[12(x+1)e^{x/12}-144e^{x/12}\\Big]_0^4=\\Big[(12x-132)e^{x/12}\\Big]_0^4$$\\n\\nEn évaluant aux bornes : en $x=4$, $(12\\times4-132)e^{4/12}=(48-132)e^{1/3}=-84e^{1/3}$ ; en $x=0$, $(0-132)e^0=-132$.\\n\\n$$\\int_0^4(x+1)e^{x/12}dx=-84e^{1/3}-(-132)=132-84e^{1/3}$$\\n\\nNumériquement, $e^{1/3}\\approx1{,}39561$, donc $84e^{1/3}\\approx117{,}23$, et $132-117{,}23\\approx14{,}77$.\\n\\n$$\\text{Aire (en unités}^2)=132-84e^{1/3}\\approx14{,}77$$\\n\\nAvec $1$ unité $=100\\ m$, $1$ unité$^2=10\\,000\\ m^2$ : Aire $\\approx14{,}7686\\times10\\,000\\approx147\\,686\\ m^2$.\\n\\nNombre maximal de malades $=\\dfrac{147\\,686}4\\approx36\\,921{,}5$, soit **$36\\,921$ malades** (partie entière, un espace ne pouvant accueillir une fraction de personne).\\n\\n**L'espace aménagé peut accueillir au maximum environ $36\\,921$ malades.**",
+      "themes": [
+        "croissance exponentielle",
+        "intégrale",
+        "aire"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2025-eb-1",
+          "competence": "Modele exponentiel puis aire sous la courbe",
+          "contenu_markdown": "Le modele de croissance est exponentiel N(t)=N0*e^(kt) ; les deux valeurs connues (N(2)=3000, N(4)=12000) permettent de determiner k et N0 par le rapport N(4)/N(2)=e^(2k)=4.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "2) Déterminer dans ces conditions le temps au bout duquel l'immunité collective sera atteinte si on néglige le nombre de nouveau-nés durant cette période. (2,25 pts)",
+      "corrige_markdown": "### Rappel de methode\\nL'immunite collective est atteinte quand N(t)=60% de 20 millions=12 millions ; on resout 750*2^t=12 000 000 pour t.\\n\\n### Corrige\\nImmunité collective : $60\\%$ de $20$ millions $=12\\,000\\,000$ personnes.\\n\\n$$750\\times2^t=12\\,000\\,000\\Leftrightarrow2^t=\\dfrac{12\\,000\\,000}{750}=16\\,000$$\\n\\nEn passant au logarithme népérien (fonction strictement croissante) : $t\\ln2=\\ln(16\\,000)$, soit $t=\\dfrac{\\ln(16\\,000)}{\\ln2}$.\\n\\n$16\\,000=16\\times1000=2^4\\times10^3$, donc $\\ln(16\\,000)=4\\ln2+3\\ln10$.\\n\\nNumériquement : $\\ln2\\approx0{,}6931$, donc $4\\ln2\\approx2{,}7726$ ; $\\ln10\\approx2{,}3026$, donc $3\\ln10\\approx6{,}9078$. Somme : $\\ln(16\\,000)\\approx2{,}7726+6{,}9078=9{,}6804$.\\n\\n$$t\\approx\\dfrac{9{,}6804}{0{,}6931}\\approx13{,}97$$\\n\\n**L'immunité collective sera atteinte au bout d'environ $14$ mois** (le nombre de mois entiers écoulés étant $\\lceil13{,}97\\rceil=14$).",
+      "themes": [
+        "croissance exponentielle",
+        "résolution d'équation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2025-eb-2",
+          "competence": "Seuil d'immunite collective",
+          "contenu_markdown": "L'immunite collective est atteinte quand N(t)=60% de 20 millions=12 millions ; on resout 750*2^t=12 000 000 pour t.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3",
+      "enonce_markdown": "3) Déterminer l'instant à partir duquel le sérum sera efficace. (2,25 pts)",
+      "corrige_markdown": "### Rappel de methode\\nLe niveau de serum juste apres la n-ieme injection (dosage geometrique cumulatif) vaut Qn=(1-r^(n+1))/(1-r) avec r=e^(-12/30) ; le minimum de chaque cycle de 12h est atteint juste avant l'injection suivante, valant r*Qn ; on cherche le plus petit n tel que ce minimum soit >=2, garantissant l'efficacite permanente a partir de la n-ieme injection.\\n\\n### Corrige\\nNotons $r=e^{-12/30}=e^{-2/5}\\approx0{,}6703$ le facteur de décroissance sur $12$h. Juste après la $n$-ième injection (à $t=12n$, $n=0,1,2,\\ldots$), le niveau cumulé vaut :\\n\\n$$Q_n=\\sum_{j=0}^nr^j=\\dfrac{1-r^{n+1}}{1-r}$$\\n\\n(série géométrique de raison $r$). Entre deux injections, le niveau décroît continûment ; le minimum de chaque cycle est atteint juste avant l'injection suivante, valant $r\\times Q_n$.\\n\\nOn cherche le plus petit $n$ tel que $r\\times Q_n\\geqslant2$.\\n\\n$r=e^{-2/5}\\approx0{,}67032$, donc $1-r\\approx0{,}32968$ et $\\dfrac1{1-r}\\approx3{,}033$ (limite de $Q_n$ quand $n\\to\\infty$).\\n\\n**Pour $n=9$** : $r^{10}=e^{-4}\\approx0{,}018316$, donc $Q_9=\\dfrac{1-0{,}018316}{0{,}32968}=\\dfrac{0{,}981684}{0{,}32968}\\approx2{,}9777$.\\n\\nMinimum du cycle : $r\\times Q_9\\approx0{,}67032\\times2{,}9777\\approx1{,}996<2$ (insuffisant).\\n\\n**Pour $n=10$** : $r^{11}=e^{-4{,}4}\\approx0{,}012277$, donc $Q_{10}=\\dfrac{1-0{,}012277}{0{,}32968}=\\dfrac{0{,}987723}{0{,}32968}\\approx2{,}9960$.\\n\\nMinimum du cycle : $r\\times Q_{10}\\approx0{,}67032\\times2{,}9960\\approx2{,}008\\geqslant2$ (convient).\\n\\n**À partir de la 11ᵉ injection (soit $t=12\\times10=120$ heures, c'est-à-dire $5$ jours), le sérum reste efficace en permanence.**",
+      "themes": [
+        "série géométrique",
+        "cumul de doses"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2025-eb-3",
+          "competence": "Seuil d'efficacite via suite geometrique cumulative",
+          "contenu_markdown": "Le niveau de serum juste apres la n-ieme injection (dosage geometrique cumulatif) vaut Qn=(1-r^(n+1))/(1-r) avec r=e^(-12/30) ; le minimum de chaque cycle de 12h est atteint juste avant l'injection suivante, valant r*Qn ; on cherche le plus petit n tel que ce minimum soit >=2, garantissant l'efficacite permanente a partir de la n-ieme injection.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "croissance exponentielle",
+    "modélisation épidémiologique",
+    "intégrale",
+    "série géométrique"
+  ],
+  "incertitudes": [
+    {
+      "type": "lecture graphique - coordonnées inférées",
+      "description": "Les abscisses des points J et K ne sont pas donnees explicitement dans le texte de l'enonce ; elles doivent etre lues sur la figure quadrillee fournie (1 unite = 100m). Une analyse des positions des lignes du quadrillage sur le scan (analyse pixel des colonnes verticales) indique J en x=0 (directement au-dessus de O) et K en x=4 (a 4 unites de J). Ces valeurs sont utilisees pour la Tache 1 ; une erreur de lecture graphique d'une unite modifierait le resultat numerique mais pas la methode, qui reste : Aire = integrale de (x+1)e^(x/12) entre x_J et x_K, convertie en m^2 puis divisee par 4."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

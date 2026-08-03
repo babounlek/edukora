@@ -61,7 +61,7 @@ interface RequestOptions {
    * false : n'attache jamais le token, même s'il existe (endpoint strictement anonyme).
    * "optional" : attache le token s'il existe (pour bénéficier de has_access etc.), mais
    * si la session est invalide/expirée, retombe silencieusement en anonyme plutôt que
-   * de casser une page publique (catalogue, détail leçon...).
+   * de casser une page publique (catalogue, détail épreuve...).
    */
   auth?: boolean | "optional"
 }

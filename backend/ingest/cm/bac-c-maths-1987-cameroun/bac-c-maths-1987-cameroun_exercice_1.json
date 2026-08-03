@@ -1,0 +1,183 @@
+{
+  "epreuve_source": "bac-c-maths-1987-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1987",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 6,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**\\n\\nSoit $f$ la fonction de $\\mathbb{R}$ définie par :\\n$$f(x)=\\dfrac{e^x-e^{-x}}{e^x+e^{-x}} \\text{ si } x\\leqslant0 \\qquad\\qquad f(x)=x\\ln\\left(\\dfrac{1}{x}\\right)=-x\\ln x \\text{ si } x>0$$\\n\\noù $\\ln$ désigne le logarithme népérien, et soit $(C)$ sa courbe représentative dans un repère orthonormé du plan (unité sur les axes : 2 cm).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Étudier la continuité et la dérivabilité de $f$ sur $\\mathbb{R}$.",
+      "corrige_markdown": "### Rappel de méthode\\nUne fonction définie par deux expressions distinctes de part et d'autre d'un point $x_0$ est continue et dérivable sur chaque intervalle ouvert par opérations usuelles (quotient, produit de fonctions dérivables à dénominateur non nul). Au point de raccordement $x_0$, il faut étudier séparément : la continuité (limite à gauche = limite à droite = $f(x_0)$) puis la dérivabilité (taux d'accroissement à gauche et à droite, comparés).\\n\\n### Corrigé\\n**Sur $]-\\infty,0[$** : $f(x)=\\dfrac{e^x-e^{-x}}{e^x+e^{-x}}$ est le quotient de deux fonctions dérivables sur $\\mathbb{R}$ (sommes/différences d'exponentielles), et le dénominateur $e^x+e^{-x}$ ne s'annule jamais car $e^x>0$ et $e^{-x}>0$ pour tout $x$, donc $e^x+e^{-x}>0$. Ainsi $f$ est continue et dérivable sur $]-\\infty,0[$.\\n\\n**Sur $]0,+\\infty[$** : $f(x)=-x\\ln x$ est le produit de deux fonctions dérivables sur $]0,+\\infty[$ ($x\\mapsto x$ et $x\\mapsto\\ln x$), donc $f$ est continue et dérivable sur $]0,+\\infty[$.\\n\\n**Continuité en $0$** :\\n- $f(0)=\\dfrac{e^0-e^0}{e^0+e^0}=\\dfrac{1-1}{1+1}=\\dfrac{0}{2}=0$.\\n- Limite à gauche : $\\displaystyle\\lim_{x\\to0^-}\\dfrac{e^x-e^{-x}}{e^x+e^{-x}}=\\dfrac{e^0-e^0}{e^0+e^0}=0$ (fonction continue sur $]-\\infty,0]$, donc limite = valeur).\\n- Limite à droite : $\\displaystyle\\lim_{x\\to0^+}(-x\\ln x)$. Par croissances comparées, $\\displaystyle\\lim_{x\\to0^+}x\\ln x=0$, donc $\\displaystyle\\lim_{x\\to0^+}(-x\\ln x)=0$.\\n\\nLes deux limites latérales valent $0=f(0)$ : **$f$ est continue en $0$**, donc continue sur $\\mathbb{R}$.\\n\\n**Dérivabilité en $0$** :\\n\\n*Dérivée à gauche.* Pour $x<0$, en posant $A=e^x$, $B=e^{-x}$ :\\n$$f'(x)=\\frac{(e^x+e^{-x})(e^x+e^{-x})-(e^x-e^{-x})(e^x-e^{-x})}{(e^x+e^{-x})^2}=\\frac{(A+B)^2-(A-B)^2}{(A+B)^2}$$\\nOr $(A+B)^2-(A-B)^2=4AB$ (identité remarquable), et $AB=e^x\\times e^{-x}=e^0=1$, donc le numérateur vaut $4\\times1=4$. Ainsi $f'(x)=\\dfrac{4}{(e^x+e^{-x})^2}$ pour $x<0$, expression qui se prolonge continûment en $x=0$ :\\n$$f'(0^-)=\\frac{4}{(e^0+e^0)^2}=\\frac{4}{2^2}=\\frac{4}{4}=1$$\\n\\n*Dérivée à droite.* Le taux d'accroissement en $0$ à droite est, pour $x>0$ :\\n$$\\frac{f(x)-f(0)}{x-0}=\\frac{-x\\ln x-0}{x}=-\\ln x$$\\nOr $\\displaystyle\\lim_{x\\to0^+}(-\\ln x)=+\\infty$ (car $\\ln x\\to-\\infty$ quand $x\\to0^+$).\\n\\nLe taux d'accroissement à droite tend vers $+\\infty$ : **$f$ n'est pas dérivable à droite en $0$** (la limite du taux d'accroissement est infinie).\\n\\n**Conclusion.** $f$ est dérivable à gauche en $0$ (nombre dérivé à gauche $=1$) mais pas dérivable à droite en $0$ (taux d'accroissement $\\to+\\infty$) : $f$ n'est donc **pas dérivable en $0$**, bien qu'elle y soit continue. $f$ est dérivable sur $\\mathbb{R}^*$.\\n\\n### Piège à éviter\\nNe pas conclure trop vite que $f$ est dérivable sur $\\mathbb{R}$ simplement parce qu'elle est dérivable de part et d'autre de $0$ : le point de raccordement doit toujours être vérifié séparément, et ici les deux dérivées latérales sont différentes (l'une finie, l'autre infinie).\\n\\n### Conseil\\nQuand le taux d'accroissement à droite ou à gauche tend vers $\\pm\\infty$, cela annonce directement l'existence d'une **demi-tangente verticale** en ce point — un résultat qui sera redemandé explicitement à la question 4.b.",
+      "themes": [
+        "continuité",
+        "dérivabilité",
+        "raccordement de fonctions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-1",
+          "competence": "Continuité et dérivabilité en un point de raccordement",
+          "contenu_markdown": "Une fonction définie par deux expressions distinctes de part et d'autre d'un point $x_0$ est continue et dérivable sur chaque intervalle ouvert par opérations usuelles (quotient, produit de fonctions dérivables à dénominateur non nul). Au point de raccordement $x_0$, il faut étudier séparément : la continuité (limite à gauche = limite à droite = $f(x_0)$) puis la dérivabilité (taux d'accroissement à gauche et à droite, comparés).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Étudier les variations de $f$.",
+      "corrige_markdown": "### Rappel de méthode\\nÉtudier les variations d'une fonction définie par morceaux revient à étudier le signe de la dérivée sur chaque intervalle, puis à examiner comment les deux branches se raccordent (en comparant les limites et, si possible, en vérifiant que le sens de variation se prolonge cohéremment au point de jonction).\\n\\n### Corrigé\\n**Sur $]-\\infty,0]$** : on a établi à la question 1 que $f'(x)=\\dfrac{4}{(e^x+e^{-x})^2}$ pour $x\\leqslant0$. Comme $4>0$ et $(e^x+e^{-x})^2>0$ pour tout $x$, on a $f'(x)>0$ sur $]-\\infty,0]$ (au sens de la dérivée à gauche en $0$) : **$f$ est strictement croissante sur $]-\\infty,0]$**.\\n\\nLimite en $-\\infty$ : en multipliant numérateur et dénominateur par $e^x$,\\n$$f(x)=\\frac{e^x-e^{-x}}{e^x+e^{-x}}=\\frac{e^{2x}-1}{e^{2x}+1}$$\\nQuand $x\\to-\\infty$, $e^{2x}\\to0$, donc $\\displaystyle\\lim_{x\\to-\\infty}f(x)=\\frac{0-1}{0+1}=-1$.\\n\\n**Sur $]0,+\\infty[$** : $f(x)=-x\\ln x$, donc $f'(x)=-\\left(\\ln x+x\\times\\dfrac{1}{x}\\right)=-\\ln x-1$.\\n\\n$f'(x)=0 \\iff \\ln x=-1 \\iff x=e^{-1}$. Pour $0<x<e^{-1}$, $\\ln x<-1$ donc $-\\ln x-1>0$ : $f'(x)>0$. Pour $x>e^{-1}$, $\\ln x>-1$ donc $f'(x)<0$.\\n\\n**$f$ est donc strictement croissante sur $]0,e^{-1}]$ et strictement décroissante sur $[e^{-1},+\\infty[$**, avec un maximum en $x=e^{-1}$ valant\\n$$f(e^{-1})=-e^{-1}\\ln(e^{-1})=-e^{-1}\\times(-1)=e^{-1}$$\\n\\nLimite en $+\\infty$ : $\\displaystyle\\lim_{x\\to+\\infty}x\\ln x=+\\infty$ (croissances comparées, produit de deux termes tendant vers $+\\infty$), donc $\\displaystyle\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to+\\infty}(-x\\ln x)=-\\infty$.\\n\\n**Raccordement en $0$** : $f'(0^-)=1>0$ et le taux d'accroissement à droite tend vers $+\\infty>0$ : les deux morceaux sont croissants de part et d'autre de $0$, et $f(0)=0$ est bien compris entre la limite à $-\\infty$ ($-1$) et le maximum ($e^{-1}$). La croissance se prolonge donc **sans rupture de sens de variation** en $0$, malgré l'absence de dérivabilité en ce point.\\n\\n**Tableau de variations complet** :\\n$$\\begin{array}{c|ccccccc}\\nx & -\\infty & & 0 & & e^{-1} & & +\\infty \\\\\\n\\hline\\nf'(x) & & + & \\| & + & 0 & - & \\\\\\n\\hline\\n& & & & & e^{-1} & & \\\\\\nf(x) & & \\nearrow & & \\nearrow & & \\searrow & \\\\\\n-1 & & & 0 & & & & -\\infty\\n\\end{array}$$\\n(le symbole $\\|$ signale l'absence de dérivabilité en $0$, point où les deux morceaux se raccordent en restant croissants).\\n\\n### Piège à éviter\\nNe pas conclure que $f$ « n'est pas monotone » sur un voisinage de $0$ sous prétexte qu'elle n'y est pas dérivable : la monotonie (signe des variations) ne dépend que du signe du taux d'accroissement, qui reste positif des deux côtés, même si les deux valeurs limites ($1$ et $+\\infty$) diffèrent.",
+      "themes": [
+        "variations",
+        "dérivée",
+        "croissances comparées",
+        "limites"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-2",
+          "competence": "Etude des variations d'une fonction definie par morceaux",
+          "contenu_markdown": "Étudier les variations d'une fonction définie par morceaux revient à étudier le signe de la dérivée sur chaque intervalle, puis à examiner comment les deux branches se raccordent (en comparant les limites et, si possible, en vérifiant que le sens de variation se prolonge cohéremment au point de jonction).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) Montrer que l'équation $f(x)=-1$ admet dans $\\mathbb{R}$ une solution unique qui appartient à l'intervalle $\\left[\\dfrac{3}{2},2\\right]$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une équation $f(x)=k$ admet une solution unique sur un intervalle, on utilise le corollaire du théorème des valeurs intermédiaires (théorème de la bijection) : si $f$ est continue et strictement monotone sur un intervalle, et si $k$ est strictement compris entre les valeurs de $f$ aux bornes, alors l'équation $f(x)=k$ a une unique solution dans cet intervalle. Il faut aussi éliminer les autres portions du domaine où $f$ ne peut pas prendre la valeur $k$.\\n\\n### Corrigé\\n**Sur $]-\\infty,0]$** : on a vu à la question 2 que $f(x)=\\dfrac{e^{2x}-1}{e^{2x}+1}$. Étudions le signe de $f(x)+1$ :\\n$$f(x)+1=\\frac{e^{2x}-1}{e^{2x}+1}+1=\\frac{e^{2x}-1+e^{2x}+1}{e^{2x}+1}=\\frac{2e^{2x}}{e^{2x}+1}$$\\nOr $e^{2x}>0$ pour tout $x$ réel, donc $2e^{2x}>0$ et $e^{2x}+1>0$ : ainsi $f(x)+1>0$, c'est-à-dire **$f(x)>-1$ pour tout $x\\leqslant0$**. L'équation $f(x)=-1$ n'a donc **aucune solution** sur $]-\\infty,0]$.\\n\\n**Sur $]0,e^{-1}]$** : $f$ y est croissante de $f(0)=0$ à $f(e^{-1})=e^{-1}>0$, donc $f(x)\\geqslant0>-1$ sur cet intervalle : aucune solution non plus.\\n\\n**Sur $[e^{-1},+\\infty[$** : $f$ y est continue (question 1) et **strictement décroissante** (question 2), de $f(e^{-1})=e^{-1}$ à $\\displaystyle\\lim_{x\\to+\\infty}f(x)=-\\infty$. Comme $-1$ est strictement compris entre $e^{-1}$ (positif) et $-\\infty$, le théorème de la bijection assure que **l'équation $f(x)=-1$ admet une unique solution $\\alpha$ dans $[e^{-1},+\\infty[$**.\\n\\nEn combinant les trois cas, cette solution $\\alpha$ est bien **l'unique solution de $f(x)=-1$ sur $\\mathbb{R}$ tout entier**.\\n\\n**Encadrement de $\\alpha$ dans $\\left[\\dfrac{3}{2},2\\right]$.** On utilise les valeurs approchées données $\\ln2\\approx0,69$ et $\\ln3\\approx1,10$ :\\n$$f\\left(\\frac{3}{2}\\right)=-\\frac{3}{2}\\ln\\left(\\frac{3}{2}\\right)=-\\frac{3}{2}\\left(\\ln3-\\ln2\\right)\\approx-\\frac{3}{2}\\times(1,10-0,69)=-\\frac{3}{2}\\times0,41\\approx-0,615$$\\n$$f(2)=-2\\ln2\\approx-2\\times0,69=-1,38$$\\n\\nOn a donc $f\\left(\\dfrac{3}{2}\\right)\\approx-0,615>-1$ et $f(2)\\approx-1,38<-1$ : la valeur $-1$ est strictement comprise entre $f\\left(\\dfrac{3}{2}\\right)$ et $f(2)$. Comme $f$ est continue et strictement décroissante sur $\\left[\\dfrac{3}{2},2\\right]\\subset[e^{-1},+\\infty[$, le théorème de la bijection donne à nouveau l'existence et l'unicité d'une solution de $f(x)=-1$ dans $\\left[\\dfrac{3}{2},2\\right]$. Cette solution est nécessairement **la même** que la solution unique $\\alpha$ trouvée sur $[e^{-1},+\\infty[$ tout entier (unicité globale déjà établie) :\\n\\n$$\\alpha\\in\\left[\\frac{3}{2},2\\right]$$\\n\\n### Piège à éviter\\nNe pas se contenter de vérifier l'encadrement sur $\\left[\\frac{3}{2},2\\right]$ sans avoir d'abord éliminé les autres portions du domaine ($]-\\infty,0]$ et $]0,e^{-1}]$) : sans cette élimination, rien ne garantit que la solution trouvée dans $\\left[\\frac32,2\\right]$ soit la **seule** sur $\\mathbb{R}$.\\n\\n### Conseil\\nPour appliquer le théorème de la bijection sur un sous-intervalle précis (ici $\\left[\\frac32,2\\right]$), il suffit de calculer les images des deux bornes et de vérifier qu'elles encadrent strictement la valeur cherchée : c'est plus rapide que de ressortir toute l'étude de variations à chaque fois.",
+      "themes": [
+        "théorème de la bijection",
+        "valeurs intermédiaires",
+        "encadrement de solution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-3",
+          "competence": "Theoreme de la bijection (corollaire du TVI)",
+          "contenu_markdown": "Pour montrer qu'une équation $f(x)=k$ admet une solution unique sur un intervalle, on utilise le corollaire du théorème des valeurs intermédiaires (théorème de la bijection) : si $f$ est continue et strictement monotone sur un intervalle, et si $k$ est strictement compris entre les valeurs de $f$ aux bornes, alors l'équation $f(x)=k$ a une unique solution dans cet intervalle. Il faut aussi éliminer les autres portions du domaine où $f$ ne peut pas prendre la valeur $k$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4a",
+      "enonce_markdown": "4) a) Étudier les branches infinies de $(C)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une branche infinie en $+\\infty$ (ou $-\\infty$), on étudie d'abord $\\lim f(x)$. Si cette limite est finie, on a une asymptote horizontale. Si elle est infinie, on étudie $\\lim \\dfrac{f(x)}{x}$ : si cette limite est nulle, branche parabolique de direction $(Ox)$ ; si elle est infinie, branche parabolique de direction $(Oy)$ ; si elle est finie non nulle égale à $a$, on étudie ensuite $\\lim\\big(f(x)-ax\\big)$ pour conclure à une asymptote oblique ou une branche parabolique de direction $y=ax$.\\n\\n### Corrigé\\n**Branche en $-\\infty$.** On a établi (question 2) que $\\displaystyle\\lim_{x\\to-\\infty}f(x)=-1$ (limite finie). La droite d'équation $y=-1$ est donc **asymptote horizontale** à $(C)$ en $-\\infty$.\\n\\nPosition de $(C)$ par rapport à cette asymptote : pour $x<0$, on a montré à la question 3 que $f(x)+1=\\dfrac{2e^{2x}}{e^{2x}+1}>0$, donc $f(x)>-1$ : **la courbe reste au-dessus de son asymptote** sur $]-\\infty,0]$, sans jamais l'atteindre.\\n\\n**Branche en $+\\infty$.** On a $\\displaystyle\\lim_{x\\to+\\infty}f(x)=-\\infty$ (limite infinie, question 2). Étudions $\\dfrac{f(x)}{x}$ pour $x>0$ :\\n$$\\frac{f(x)}{x}=\\frac{-x\\ln x}{x}=-\\ln x$$\\nOr $\\displaystyle\\lim_{x\\to+\\infty}(-\\ln x)=-\\infty$ : la limite du rapport $\\dfrac{f(x)}{x}$ est infinie. **$(C)$ admet donc une branche parabolique de direction $(Oy)$ au voisinage de $+\\infty$** (la courbe descend plus vite que n'importe quelle droite, à mesure que $x$ augmente).",
+      "themes": [
+        "asymptote horizontale",
+        "branche parabolique",
+        "étude de fonction"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-4a",
+          "competence": "Classification des branches infinies",
+          "contenu_markdown": "Pour une branche infinie en $+\\infty$ (ou $-\\infty$), on étudie d'abord $\\lim f(x)$. Si cette limite est finie, on a une asymptote horizontale. Si elle est infinie, on étudie $\\lim \\dfrac{f(x)}{x}$ : si cette limite est nulle, branche parabolique de direction $(Ox)$ ; si elle est infinie, branche parabolique de direction $(Oy)$ ; si elle est finie non nulle égale à $a$, on étudie ensuite $\\lim\\big(f(x)-ax\\big)$ pour conclure à une asymptote oblique ou une branche parabolique de direction $y=ax$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4b",
+      "enonce_markdown": "4) b) Déterminer les demi-tangentes à $(C)$ au point d'abscisse $0$, et la tangente à $(C)$ au point d'abscisse $1$.",
+      "corrige_markdown": "### Rappel de méthode\\nQuand une fonction admet des dérivées à gauche et à droite distinctes en un point (ou une dérivée infinie d'un côté), la courbe admet en ce point deux demi-tangentes distinctes plutôt qu'une tangente unique : la demi-tangente à gauche a pour coefficient directeur le nombre dérivé à gauche, la demi-tangente à droite le nombre dérivé à droite (ou est verticale si ce nombre dérivé est infini). Ailleurs, en un point où $f$ est dérivable, l'équation de la tangente est $y=f'(x_0)(x-x_0)+f(x_0)$.\\n\\n### Corrigé\\n**Demi-tangentes au point d'abscisse $0$.** On a établi à la question 1 que $f'(0^-)=1$ (dérivée à gauche finie) et que le taux d'accroissement à droite tend vers $+\\infty$.\\n\\n- La **demi-tangente à gauche** au point $(0,f(0))=(0,0)$ a pour coefficient directeur $f'(0^-)=1$ : c'est la demi-droite d'équation $y=x$, restreinte à $x\\leqslant0$.\\n- La **demi-tangente à droite** au point $(0,0)$ est **verticale** (parallèle à l'axe des ordonnées), puisque le taux d'accroissement à droite tend vers $+\\infty$ : c'est la demi-droite d'équation $x=0$, restreinte à $y\\geqslant0$ (orientée vers le haut, puisque $f(x)>0$ au voisinage de $0$ à droite d'après le tableau de variations).\\n\\nLe point $(0,0)$ est donc un **point anguleux** de $(C)$.\\n\\n**Tangente au point d'abscisse $1$.** Ce point appartient à $]0,+\\infty[$ où $f$ est dérivable, avec $f'(x)=-\\ln x-1$ (question 2).\\n\\n$$f(1)=-1\\times\\ln(1)=-1\\times0=0 \\qquad\\qquad f'(1)=-\\ln(1)-1=-0-1=-1$$\\n\\nL'équation de la tangente au point d'abscisse $1$ est $y=f'(1)(x-1)+f(1)$, soit :\\n$$y=-1\\times(x-1)+0=-x+1$$\\n\\n**La tangente au point d'abscisse $1$ a pour équation $y=-x+1$.**\\n\\n### Piège à éviter\\nNe pas écrire une unique « tangente en $0$ » : puisque $f$ n'est pas dérivable en $0$ (question 1), il n'existe **pas** de tangente unique en ce point, seulement deux demi-tangentes distinctes.",
+      "themes": [
+        "demi-tangente",
+        "point anguleux",
+        "tangente",
+        "nombre dérivé"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-4b",
+          "competence": "Demi-tangentes et tangente en un point",
+          "contenu_markdown": "Quand une fonction admet des dérivées à gauche et à droite distinctes en un point (ou une dérivée infinie d'un côté), la courbe admet en ce point deux demi-tangentes distinctes plutôt qu'une tangente unique : la demi-tangente à gauche a pour coefficient directeur le nombre dérivé à gauche, la demi-tangente à droite le nombre dérivé à droite (ou est verticale si ce nombre dérivé est infini). Ailleurs, en un point où $f$ est dérivable, l'équation de la tangente est $y=f'(x_0)(x-x_0)+f(x_0)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4c",
+      "enonce_markdown": "4) c) Tracer avec soin la courbe $(C)$.",
+      "corrige_markdown": "### Rappel de méthode\\nTracer une courbe « avec soin » signifie reporter tous les éléments dégagés dans l'étude : asymptotes, tangentes/demi-tangentes, point(s) remarquable(s) (extremum, racine), et respecter le sens de variation entre ces éléments, avant de relier les points par un tracé cohérent avec la concavité qualitative de chaque branche.\\n\\n### Corrigé\\nÉléments à reporter, dans le repère orthonormé d'unité $2\\,\\text{cm}$ :\\n\\n1. **Asymptote horizontale** $y=-1$, tracée en pointillés ; la courbe s'en approche par au-dessus quand $x\\to-\\infty$, sans la toucher.\\n2. **Point $(0,0)$** : point anguleux, avec la demi-tangente $y=x$ tracée pour $x\\leqslant0$ (pente $1$) et la demi-tangente verticale $x=0$ tracée pour $y\\geqslant0$ à droite.\\n3. **Point maximum $\\left(e^{-1},\\,e^{-1}\\right)\\approx(0,37\\,;\\,0,37)$** : tangente horizontale en ce point (puisque $f'(e^{-1})=0$).\\n4. **Point d'abscisse $1$**, soit $(1,0)$ : tracer la tangente $y=-x+1$.\\n5. **Racine $\\alpha$ de $f(x)=-1$**, encadrée par $\\dfrac32\\leqslant\\alpha\\leqslant2$ (question 3) : le point $(\\alpha,-1)$ se situe donc juste en dessous du point $(2,f(2))\\approx(2\\,;\\,-1,38)$.\\n6. Entre $-\\infty$ et $0$ : arc croissant partant de l'asymptote $y=-1$ (sans la toucher) jusqu'au point $(0,0)$.\\n7. Entre $0$ et $e^{-1}$ : arc croissant du point anguleux $(0,0)$ jusqu'au maximum $\\left(e^{-1},e^{-1}\\right)$.\\n8. Entre $e^{-1}$ et $+\\infty$ : arc décroissant du maximum, passant par $(1,0)$ (tangente $y=-x+1$), par $\\alpha\\in\\left[\\frac32,2\\right]$ (où $f(\\alpha)=-1$), puis chutant verticalement (branche parabolique de direction $(Oy)$, question 4.a) : la courbe descend de plus en plus vite.",
+      "themes": [
+        "tracé de courbe",
+        "synthèse d'étude de fonction"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "5) Déterminer l'aire de la portion du plan définie par $a\\leqslant x\\leqslant1$, $0\\leqslant y\\leqslant f(x)$, où $a$ est réel tel que $0<a\\leqslant1$. Quelle est sa limite quand $a$ tend vers $0$ ?\\n\\nOn donne les valeurs approchées : $e^{-1}\\approx0,37$ ; $\\ln2\\approx0,69$ ; $\\ln3\\approx1,10$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire d'une portion de plan délimitée par $a\\leqslant x\\leqslant b$ et $0\\leqslant y\\leqslant f(x)$ (avec $f\\geqslant0$ sur $[a,b]$) est donnée par l'intégrale $\\displaystyle\\int_a^b f(x)\\,dx$. Quand $f(x)$ contient un produit d'un polynôme par un logarithme, on utilise une intégration par parties en posant $u=\\ln x$ (qui se dérive simplement) et $dv$ = le reste.\\n\\n### Corrigé\\nLa portion de plan considérée est $\\{(x,y)\\ :\\ a\\leqslant x\\leqslant1,\\ 0\\leqslant y\\leqslant f(x)\\}$ avec $0<a\\leqslant1$. Sur $]0,1]$, $\\ln x\\leqslant0$ donc $f(x)=-x\\ln x\\geqslant0$ : la condition $0\\leqslant y\\leqslant f(x)$ est cohérente, et l'aire cherchée est\\n$$\\mathcal{A}(a)=\\int_a^1 f(x)\\,dx=\\int_a^1(-x\\ln x)\\,dx$$\\n\\n**Calcul par parties.** On pose $u(x)=\\ln x$ et $v'(x)=-x$, d'où $u'(x)=\\dfrac{1}{x}$ et $v(x)=-\\dfrac{x^2}{2}$. La formule d'intégration par parties $\\displaystyle\\int u v' = [uv]-\\int u'v$ donne :\\n$$\\int_a^1(-x\\ln x)\\,dx=\\left[\\ln x\\times\\left(-\\frac{x^2}{2}\\right)\\right]_a^1-\\int_a^1\\frac{1}{x}\\times\\left(-\\frac{x^2}{2}\\right)dx=\\left[-\\frac{x^2\\ln x}{2}\\right]_a^1+\\int_a^1\\frac{x}{2}\\,dx$$\\n\\n$$=\\left[-\\frac{x^2\\ln x}{2}\\right]_a^1+\\left[\\frac{x^2}{4}\\right]_a^1$$\\n\\nÉvaluons chaque crochet séparément :\\n$$\\left[-\\frac{x^2\\ln x}{2}\\right]_a^1=\\left(-\\frac{1^2\\ln1}{2}\\right)-\\left(-\\frac{a^2\\ln a}{2}\\right)=\\left(-\\frac{1\\times0}{2}\\right)+\\frac{a^2\\ln a}{2}=\\frac{a^2\\ln a}{2}$$\\n$$\\left[\\frac{x^2}{4}\\right]_a^1=\\frac{1^2}{4}-\\frac{a^2}{4}=\\frac{1}{4}-\\frac{a^2}{4}$$\\n\\nEn additionnant :\\n$$\\mathcal{A}(a)=\\frac{a^2\\ln a}{2}+\\frac{1}{4}-\\frac{a^2}{4}=\\frac{1}{4}+\\frac{a^2\\ln a}{2}-\\frac{a^2}{4}\\ \\ (\\text{en unités d'aire, soit } 4\\,\\text{cm}^2 \\text{ ici puisque l'unité graphique vaut } 2\\,\\text{cm})$$\\n\\n**Limite quand $a\\to0^+$.** Par croissances comparées, $\\displaystyle\\lim_{a\\to0^+}a^2\\ln a=0$ (le terme polynomial $a^2$ l'emporte sur la divergence logarithmique). De plus $\\displaystyle\\lim_{a\\to0^+}\\frac{a^2}{4}=0$. Donc :\\n$$\\lim_{a\\to0^+}\\mathcal{A}(a)=\\frac{1}{4}+0-0=\\frac{1}{4}$$\\n\\n**L'aire $\\mathcal{A}(a)$ tend vers $\\dfrac{1}{4}$ (en unités d'aire) quand $a$ tend vers $0$**, ce qui signifie que l'aire sous la courbe entre $0$ (exclu, où $f$ n'est pourtant définie et vaut $0$) et $1$ est finie, malgré la branche de la courbe qui se prolonge jusqu'en $x=0$.\\n\\n### Piège à éviter\\nNe pas oublier de reconvertir le résultat numérique en unités d'aire réelles si l'énoncé précise une unité graphique différente de $1\\,\\text{cm}$ : ici l'unité vaut $2\\,\\text{cm}$ sur les deux axes, donc une unité d'aire du repère vaut $2\\times2=4\\,\\text{cm}^2$.\\n\\n### Conseil\\nPour vérifier rapidement le signe du résultat d'une intégration par parties, contrôler que la fonction intégrée est bien positive sur l'intervalle (ici $-x\\ln x\\geqslant0$ sur $]0,1]$) et que la primitive trouvée est croissante dans le bon sens : cela permet de détecter une erreur de signe avant même de finaliser le calcul.",
+      "themes": [
+        "intégration par parties",
+        "calcul d'aire",
+        "limite",
+        "croissances comparées"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-e1-5",
+          "competence": "Calcul d'aire par integration par parties",
+          "contenu_markdown": "L'aire d'une portion de plan délimitée par $a\\leqslant x\\leqslant b$ et $0\\leqslant y\\leqslant f(x)$ (avec $f\\geqslant0$ sur $[a,b]$) est donnée par l'intégrale $\\displaystyle\\int_a^b f(x)\\,dx$. Quand $f(x)$ contient un produit d'un polynôme par un logarithme, on utilise une intégration par parties en posant $u=\\ln x$ (qui se dérive simplement) et $dv$ = le reste.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "continuité",
+    "dérivabilité",
+    "demi-tangente",
+    "branche infinie",
+    "étude de fonction",
+    "tangente hyperbolique",
+    "croissances comparées",
+    "aire",
+    "intégration par parties"
+  ],
+  "incertitudes": [
+    {
+      "type": "donnée source ambiguë",
+      "description": "Le document source liste quatre valeurs approchées : $e^{-1}\\approx0,37$ ; une seconde valeur notée « $e^x\\approx0,72$ » sans exposant précisé (probablement un artefact de numérisation) ; $\\ln2\\approx0,69$ ; $\\ln3\\approx1,10$. Les trois valeurs $e^{-1}$, $\\ln2$ et $\\ln3$ suffisent à traiter rigoureusement toutes les questions (continuité, variations, encadrement de la solution de $f(x)=-1$, tangentes, aire et sa limite) ; la valeur « $e^x\\approx0,72 $» n'a pas d'usage identifiable dans la résolution et n'a donc pas été utilisée, plutôt que d'être exploitée sur la base d'une lecture incertaine du scan."
+    }
+  ],
+  "statut": "brouillon"
+}

@@ -63,7 +63,9 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
+    # Multiple de 3 (grille catalogue en lg:grid-cols-3) plutôt que la valeur par
+    # défaut de 20 - une page complète ne laisse jamais une rangée à moitié vide.
+    "PAGE_SIZE": 24,
 }
 
 SIMPLE_JWT = {
@@ -185,12 +187,50 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # PDF de sujet (public, jamais le corrigé - voir catalog/sujet_pdf.py) : généré hors
-# ligne par une commande dédiée, jamais dans le cycle de requête HTTP. Stockage local,
-# pas de protection d'accès nécessaire puisque le contenu est déjà public par nature.
+# ligne par une commande dédiée, jamais dans le cycle de requête HTTP. Pas de
+# protection d'accès nécessaire puisque le contenu est déjà public par nature.
 MEDIA_URL = "media/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Stockage des FileField (Figure.image, Lesson.sujet_pdf - voir catalog/models.py) :
+# DigitalOcean Spaces si SPACES_BUCKET est renseigné, sinon disque local (dev/tests
+# sans identifiants Spaces). Ne migre pas le contenu déjà présent sur MEDIA_ROOT : ce
+# contenu historique continue d'être servi tel quel par Caddy et reste résolu en
+# local par sujet_pdf._resolve_media_paths (qui a besoin d'un vrai fichier disque pour
+# Playwright) - seuls les NOUVEAUX fichiers partent vers Spaces à partir de ce
+# changement. Une copie offsite du contenu historique est gérée séparément par le
+# service "backup" (voir docker/backup/sync_media.sh), sans changer où il est servi.
+SPACES_BUCKET = config("SPACES_BUCKET", default="")
+
+if SPACES_BUCKET:
+    AWS_STORAGE_BUCKET_NAME = SPACES_BUCKET
+    AWS_ACCESS_KEY_ID = config("SPACES_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = config("SPACES_SECRET_ACCESS_KEY")
+    AWS_S3_REGION_NAME = config("SPACES_REGION")
+    AWS_S3_ENDPOINT_URL = f"https://{config('SPACES_ENDPOINT')}"
+    # Domaine utilisé pour construire les URLs publiques (figure.image.url, etc.) - le
+    # point de terminaison CDN Spaces si activé sur le bucket (mis en cache, plus
+    # rapide), sinon l'API Spaces brute du bucket.
+    AWS_S3_CUSTOM_DOMAIN = config(
+        "SPACES_CDN_DOMAIN",
+        default=f"{SPACES_BUCKET}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com",
+    )
+    # Ce contenu (figures d'exercice, PDF de sujet) est déjà public par nature (voir
+    # commentaire MEDIA_URL) : chaque objet public dès l'upload, pas besoin d'URLs
+    # signées à durée limitée.
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_QUERYSTRING_AUTH = False
+    STORAGES = {
+        "default": {"BACKEND": "storages.backends.s3.S3Storage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
+else:
+    STORAGES = {
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
 
 
 
@@ -215,3 +255,17 @@ CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
 SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=604800 if SECURE_SSL_REDIRECT else 0, cast=int)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_SSL_REDIRECT
 SECURE_HSTS_PRELOAD = False
+
+
+LOGGING = {
+    "version": 1,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+    },
+}

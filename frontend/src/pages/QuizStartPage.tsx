@@ -8,6 +8,7 @@ import type { ModeQuiz, Subject, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Select,
   SelectContent,
@@ -83,7 +84,15 @@ export function QuizStartPage() {
     }
   }
 
-  if (authLoading || !subscriptionsLoaded) return null
+  if (authLoading || !subscriptionsLoaded) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-10">
+        <Skeleton className="mb-3 h-8 w-32" />
+        <Skeleton className="mb-8 h-4 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-xl animate-fade-up px-4 py-10">

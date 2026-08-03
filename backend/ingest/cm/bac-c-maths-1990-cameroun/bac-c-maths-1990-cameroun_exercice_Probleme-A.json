@@ -1,0 +1,137 @@
+{
+  "epreuve_source": "bac-c-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme-A",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème - Partie A**\\n\\nSoit $E$ un espace vectoriel réel de dimension $2$, rapporté à une base $(\\vec i,\\vec j)$, et $\\mathcal{M}$ l'ensemble des endomorphismes de $E$ admettant dans la base $(\\vec i,\\vec j)$ une matrice de la forme $\\begin{pmatrix}a&b\\\\1-a&1-b\\end{pmatrix}$, où $a$ et $b$ sont deux réels tels que $a-b\\neq1$.",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "1. Soit $\\rho$ un élément de $\\mathcal{M}$. Montrer qu'il existe une droite vectorielle $D_1$ dont on exprimera une base $(e_1)$ en fonction de $a$ et $b$, tels que pour tout vecteur $u$ de $D_1$, $\\rho(u)=u$.",
+      "corrige_markdown": "### Rappel de méthode\\nUne droite vectorielle $D$ telle que $\\rho(u)=u$ pour tout $u$ de $D$ est une droite propre associée à la valeur propre $1$ : il suffit de résoudre le système $(M-I)v=0$, où $M$ est la matrice de $\\rho$, pour trouver un vecteur directeur de $D$.\\n\\n### Corrigé\\nSoit $\\rho\\in\\mathcal{M}$, de matrice $M=\\begin{pmatrix}a&b\\\\1-a&1-b\\end{pmatrix}$ dans $(\\vec i,\\vec j)$. On cherche un vecteur $u=x\\vec i+y\\vec j\\neq\\vec0$ tel que $\\rho(u)=u$, c'est-à-dire $Mv=v$ où $v=\\begin{pmatrix}x\\\\y\\end{pmatrix}$, soit $(M-I)v=\\vec0$ :\\n$$\\begin{pmatrix}a-1&b\\\\1-a&-b\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\end{pmatrix}$$\\n\\nCherchons une solution particulière non nulle en posant $x=b$ et $y=1-a$ (choix guidé par la structure de la matrice) :\\n\\n**Vérification par la première ligne** : $(a-1)b+b(1-a)=b(a-1)+b(1-a)=b(a-1-a+1)=b\\times0=0$ ✓.\\n\\n**Vérification par la seconde ligne** : $(1-a)b+(-b)(1-a)=(1-a)b-b(1-a)=0$ ✓.\\n\\nLe couple $(x,y)=(b,1-a)$ est donc bien solution du système, pour toute valeur de $a$ et $b$. Il reste à vérifier que ce vecteur n'est pas nul : si l'on avait simultanément $b=0$ et $1-a=0$ (c'est-à-dire $a=1$ et $b=0$), on aurait $a-b=1$, ce qui est exclu par l'hypothèse $a-b\\neq1$ faite sur $\\rho\\in\\mathcal{M}$. **Le vecteur $e_1=b\\vec i+(1-a)\\vec j$ est donc toujours non nul.**\\n\\nPosons $D_1=\\mathrm{Vect}(e_1)$ avec $e_1=b\\vec i+(1-a)\\vec j$. Pour tout vecteur $u=\\lambda e_1$ de $D_1$ ($\\lambda\\in\\mathbb{R}$), on a par linéarité de $\\rho$ :\\n$$\\rho(u)=\\rho(\\lambda e_1)=\\lambda\\,\\rho(e_1)=\\lambda\\, e_1=u$$\\n\\n**La droite vectorielle $D_1=\\mathrm{Vect}(e_1)$, avec $e_1=b\\vec i+(1-a)\\vec j$, vérifie donc $\\rho(u)=u$ pour tout $u\\in D_1$.**\\n\\n### Piège à éviter\\nIl faut impérativement vérifier que $e_1\\neq\\vec0$, faute de quoi $D_1$ ne serait pas une droite (mais le vecteur nul) : c'est précisément l'hypothèse $a-b\\neq1$ de l'énoncé qui garantit $e_1\\neq\\vec0$, ce qui montre qu'elle n'est pas une condition arbitraire mais bien nécessaire à la construction de $D_1$.",
+      "themes": [
+        "endomorphisme",
+        "vecteur propre",
+        "valeur propre 1"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pA-1",
+          "competence": "Recherche d'un vecteur propre associe a la valeur propre 1",
+          "contenu_markdown": "Une droite vectorielle $D$ telle que $\\rho(u)=u$ pour tout $u$ de $D$ est une droite propre associée à la valeur propre $1$ : il suffit de résoudre le système $(M-I)v=0$, où $M$ est la matrice de $\\rho$, pour trouver un vecteur directeur de $D$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2",
+      "enonce_markdown": "2. Montrer qu'il existe un unique nombre $k$, différent de $1$, que l'on exprimera en fonction de $a$ et $b$, tel que l'ensemble $\\{u\\in E\\,/\\,\\rho(u)=ku\\}$ soit une droite vectorielle $D$. Déterminer une base $(e_2)$ de $D$.",
+      "corrige_markdown": "### Rappel de méthode\\nChercher $k$ tel que $\\{u\\in E : \\rho(u)=ku\\}$ soit une droite vectorielle revient à chercher les valeurs propres de $\\rho$ autres que celle déjà trouvée, en étudiant le polynôme caractéristique de la matrice $M$.\\n\\n### Corrigé\\nLe polynôme caractéristique de $M=\\begin{pmatrix}a&b\\\\1-a&1-b\\end{pmatrix}$ est :\\n$$\\chi_M(\\lambda)=\\det(M-\\lambda I)=(a-\\lambda)(1-b-\\lambda)-b(1-a)$$\\n\\nDéveloppons :\\n$$(a-\\lambda)(1-b-\\lambda)=a(1-b)-a\\lambda-\\lambda(1-b)+\\lambda^2=a-ab-a\\lambda-\\lambda+b\\lambda+\\lambda^2$$\\n\\n$$\\chi_M(\\lambda)=a-ab-a\\lambda-\\lambda+b\\lambda+\\lambda^2-b+ab=\\lambda^2-(a-b+1)\\lambda+(a-b)$$\\n\\n(on a utilisé $\\mathrm{tr}(M)=a+(1-b)=a-b+1$ et $\\det(M)=a(1-b)-b(1-a)=a-ab-b+ab=a-b$, cohérent avec $\\chi_M(\\lambda)=\\lambda^2-\\mathrm{tr}(M)\\lambda+\\det(M)$)\\n\\n**On sait déjà, d'après la question A.1, que $\\lambda=1$ est racine** (puisque $\\rho(e_1)=e_1$ avec $e_1\\neq\\vec0$). Vérifions-le directement :\\n$$\\chi_M(1)=1-(a-b+1)+(a-b)=1-a+b-1+a-b=0 \\;\\checkmark$$\\n\\nLe produit des deux racines de $\\chi_M$ vaut $\\det(M)=a-b$ (relations coefficients-racines). Si l'on note $k$ la seconde racine, alors $1\\times k=a-b$, donc :\\n$$k=a-b$$\\n\\n**Unicité de $k$** : par hypothèse $a-b\\neq1$, donc $k\\neq1$ : les deux racines $1$ et $k=a-b$ du polynôme caractéristique (de degré $2$) sont **distinctes**. L'ensemble $\\{u\\in E\\,/\\,\\rho(u)=ku\\}$ est donc bien une droite vectorielle $D$ (l'espace propre associé à une valeur propre simple d'un endomorphisme d'un espace de dimension $2$ est une droite), et $k=a-b$ est l'unique réel, différent de $1$, pour lequel c'est le cas.\\n\\n**Base de $D$.** Cherchons $e_2=x\\vec i+y\\vec j\\neq\\vec0$ tel que $(M-kI)v=\\vec0$ avec $k=a-b$ :\\n$$\\begin{pmatrix}a-k&b\\\\1-a&1-b-k\\end{pmatrix}=\\begin{pmatrix}b&b\\\\1-a&1-a\\end{pmatrix}$$\\n(car $a-k=a-(a-b)=b$ et $1-b-k=1-b-(a-b)=1-a$)\\n\\nLe système devient $bx+by=0$ et $(1-a)x+(1-a)y=0$, soit dans les deux cas $x+y=0$ (dès que $b\\neq0$ ou $1-a\\neq0$ ; ces deux cas ne peuvent être simultanément faux, sinon $a=1,b=0$ donnerait $a-b=1$, exclu). Posons $x=1,y=-1$ :\\n\\n**Vérification** : $M\\begin{pmatrix}1\\\\-1\\end{pmatrix}=\\begin{pmatrix}a-b\\\\(1-a)-(1-b)\\end{pmatrix}=\\begin{pmatrix}a-b\\\\b-a\\end{pmatrix}=(a-b)\\begin{pmatrix}1\\\\-1\\end{pmatrix}$ ✓, ce qui est bien $k\\begin{pmatrix}1\\\\-1\\end{pmatrix}$.\\n\\n**$e_2=\\vec i-\\vec j$ est une base de $D$** (indépendante de $a$ et $b$), avec $k=a-b$.\\n\\n### Piège à éviter\\nBien que $e_2=\\vec i-\\vec j$ ne dépende pas de $a$ et $b$, cela ne signifie pas que $D$ est la même droite pour tous les $\\rho\\in\\mathcal{M}$ par coïncidence : c'est un résultat spécifique à la forme particulière de la matrice imposée dans $\\mathcal{M}$ (colonnes de somme $1$), pas une propriété générale des matrices $2\\times2$.",
+      "themes": [
+        "polynôme caractéristique",
+        "valeurs propres",
+        "espace propre"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pA-2",
+          "competence": "Polynome caracteristique et deuxieme valeur propre",
+          "contenu_markdown": "Chercher $k$ tel que $\\{u\\in E : \\rho(u)=ku\\}$ soit une droite vectorielle revient à chercher les valeurs propres de $\\rho$ autres que celle déjà trouvée, en étudiant le polynôme caractéristique de la matrice $M$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A3",
+      "enonce_markdown": "3. Montrer que $(e_1,e_2)$ est une base de $E$ et exprimer la matrice de $\\rho$ dans cette base.",
+      "corrige_markdown": "### Rappel de méthode\\nDeux vecteurs non colinéaires d'un espace vectoriel de dimension $2$ forment automatiquement une base de cet espace. Dans une base de vecteurs propres, la matrice d'un endomorphisme est diagonale, ses coefficients diagonaux étant les valeurs propres associées.\\n\\n### Corrigé\\n**$(e_1,e_2)$ est une base de $E$.** On a $e_1=b\\vec i+(1-a)\\vec j$ et $e_2=\\vec i-\\vec j$. Ces deux vecteurs sont colinéaires si et seulement si le déterminant de leurs coordonnées est nul :\\n$$\\det(e_1,e_2)=\\begin{vmatrix}b&1\\\\1-a&-1\\end{vmatrix}=b\\times(-1)-1\\times(1-a)=-b-1+a=a-b-1$$\\n\\nOr $a-b\\neq1$ par hypothèse, donc $a-b-1\\neq0$ : $\\det(e_1,e_2)\\neq0$, donc $e_1$ et $e_2$ ne sont **pas colinéaires**. Comme $E$ est de dimension $2$, deux vecteurs non colinéaires en forment une base : **$(e_1,e_2)$ est une base de $E$.**\\n\\n**Matrice de $\\rho$ dans $(e_1,e_2)$.** D'après les questions A.1 et A.2, $\\rho(e_1)=1\\times e_1=e_1$ et $\\rho(e_2)=k\\,e_2$ avec $k=a-b$. La matrice de $\\rho$ dans la base $(e_1,e_2)$ a donc pour colonnes les coordonnées de $\\rho(e_1)$ et $\\rho(e_2)$ dans cette même base, à savoir $\\begin{pmatrix}1\\\\0\\end{pmatrix}$ et $\\begin{pmatrix}0\\\\k\\end{pmatrix}$ :\\n$$\\mathrm{Mat}_{(e_1,e_2)}(\\rho)=\\begin{pmatrix}1&0\\\\0&a-b\\end{pmatrix}$$\\n\\n### Piège à éviter\\nLe fait que $a-b\\neq1$ ne sert pas seulement à garantir $k\\neq1$ (question A.2) : c'est exactement la même condition qui garantit que $(e_1,e_2)$ est une base, comme le montre le calcul du déterminant $a-b-1$ ci-dessus. Une seule hypothèse de l'énoncé sert ainsi à deux conclusions différentes.",
+      "themes": [
+        "changement de base",
+        "diagonalisation",
+        "matrice d'un endomorphisme"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pA-3",
+          "competence": "Base formee de deux vecteurs propres et matrice diagonale associee",
+          "contenu_markdown": "Deux vecteurs non colinéaires d'un espace vectoriel de dimension $2$ forment automatiquement une base de cet espace. Dans une base de vecteurs propres, la matrice d'un endomorphisme est diagonale, ses coefficients diagonaux étant les valeurs propres associées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A4a",
+      "enonce_markdown": "4. Donner une condition nécessaire et suffisante, portant sur $a$ et $b$, pour que $\\rho$ ne soit pas bijectif.",
+      "corrige_markdown": "### Rappel de méthode\\nUn endomorphisme n'est pas bijectif si et seulement si le déterminant de sa matrice (dans n'importe quelle base) est nul ; dans une base de vecteurs propres, ce déterminant est le produit des valeurs propres.\\n\\n### Corrigé\\nD'après la question A.3, la matrice de $\\rho$ dans la base $(e_1,e_2)$ est $\\begin{pmatrix}1&0\\\\0&a-b\\end{pmatrix}$, dont le déterminant est $1\\times(a-b)=a-b$ (ce déterminant est le même que celui calculé dans la base $(\\vec i,\\vec j)$, le déterminant d'un endomorphisme ne dépendant pas de la base choisie).\\n\\n$\\rho$ n'est pas bijectif si et seulement si ce déterminant est nul :\\n$$a-b=0 \\iff a=b$$\\n\\n**La condition nécessaire et suffisante cherchée est $a=b$** (ce qui correspond exactement à $k=a-b=0$).",
+      "themes": [
+        "bijectivité",
+        "déterminant",
+        "condition nécessaire et suffisante"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pA-4a",
+          "competence": "CNS de non-bijectivite via le determinant",
+          "contenu_markdown": "Un endomorphisme n'est pas bijectif si et seulement si le déterminant de sa matrice (dans n'importe quelle base) est nul ; dans une base de vecteurs propres, ce déterminant est le produit des valeurs propres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A4b",
+      "enonce_markdown": "Déterminer alors la nature et les éléments caractéristiques de $\\rho$.",
+      "corrige_markdown": "### Rappel de méthode\\nUn endomorphisme diagonalisable de valeurs propres $1$ et $0$ (dans une base $(e_1,e_2)$) est exactement une projection vectorielle : il fixe la droite propre associée à $1$ (base) et annule celle associée à $0$ (direction).\\n\\n### Corrigé\\nSupposons $a=b$ (condition de la question A.4.a). Alors $k=a-b=0$, et la matrice de $\\rho$ dans $(e_1,e_2)$ devient :\\n$$\\mathrm{Mat}_{(e_1,e_2)}(\\rho)=\\begin{pmatrix}1&0\\\\0&0\\end{pmatrix}$$\\n\\nCette matrice signifie que $\\rho(e_1)=e_1$ et $\\rho(e_2)=\\vec0$. Pour tout vecteur $u=\\alpha e_1+\\beta e_2$ de $E$, on a par linéarité :\\n$$\\rho(u)=\\alpha\\,\\rho(e_1)+\\beta\\,\\rho(e_2)=\\alpha\\,e_1$$\\n\\nC'est exactement la définition de la **projection vectorielle sur la droite $D_1=\\mathrm{Vect}(e_1)$, parallèlement à la droite $D=\\mathrm{Vect}(e_2)$** : $\\rho$ conserve la composante sur $D_1$ et annule celle sur $D$.\\n\\n**Éléments caractéristiques** (avec $a=b$, donc $e_1=a\\,\\vec i+(1-a)\\vec j$) : $\\rho$ est le **projecteur vectoriel** de base (image) la droite $D_1=\\mathrm{Vect}\\big(a\\vec i+(1-a)\\vec j\\big)$ et de direction (noyau) la droite $D=\\mathrm{Vect}(\\vec i-\\vec j)$.\\n\\n### Conseil\\nReconnaître une projection à partir de sa matrice diagonalisée est un réflexe à automatiser : les seules matrices diagonales de projecteurs (dans une base propre) sont $\\mathrm{diag}(1,0)$, $\\mathrm{diag}(0,1)$, $\\mathrm{diag}(1,1)=I$ (identité) ou $\\mathrm{diag}(0,0)$ (application nulle) - toute autre paire de valeurs propres correspond à un autre type de transformation (homothétie, affinité, etc.), pas à une projection.",
+      "themes": [
+        "projection vectorielle",
+        "éléments caractéristiques"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-pA-4b",
+          "competence": "Identification d'une projection vectorielle a partir de sa matrice diagonale",
+          "contenu_markdown": "Un endomorphisme diagonalisable de valeurs propres $1$ et $0$ (dans une base $(e_1,e_2)$) est exactement une projection vectorielle : il fixe la droite propre associée à $1$ (base) et annule celle associée à $0$ (direction).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "endomorphisme",
+    "valeurs propres",
+    "vecteurs propres",
+    "polynôme caractéristique",
+    "diagonalisation",
+    "projection vectorielle",
+    "matrice"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

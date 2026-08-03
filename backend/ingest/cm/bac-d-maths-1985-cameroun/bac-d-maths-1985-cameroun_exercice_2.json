@@ -1,0 +1,148 @@
+{
+  "epreuve_source": "bac-d-maths-1985-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1985",
+  "duree_epreuve": "3h15",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 8,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**\\n\\nA. Soit la fonction numérique $f$ de la variable réelle $x$ définie par :\\n$$f(x)=2x+1+\\ln\\left|\\frac{x-1}{x+1}\\right|$$\\noù $\\ln$ désigne le logarithme népérien. On appelle $(C)$ la courbe représentative de $f$ dans un repère orthonormé $(O,\\vec i,\\vec j)$.\\n\\nB. Un point mobile $M$ a pour coordonnées, dans le repère $(O,\\vec i,\\vec j)$ :\\n$$x(t)=1+e^t\\qquad y(t)=2e^t+3+t-\\ln(e^t+2)\\qquad t\\ge0$$\\noù $t$ désigne le temps.",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "1°- Etudier les variations de f. Etudier les limites de cette fonction aux bornes de son ensemble de définition. Dresser le tableau de variations.",
+      "corrige_markdown": "### Rappel de méthode\\nL'étude d'une fonction contenant $\\ln|u(x)|$ exige d'abord de déterminer l'ensemble de définition en excluant à la fois les valeurs qui annulent le dénominateur de l'argument et celles qui annulent l'argument lui-même (car $\\ln 0$ n'existe pas). La dérivée de $\\ln|u(x)|$ est $\\dfrac{u'(x)}{u(x)}$, valable sur tout intervalle où $u(x)\\neq0$, sans distinction de signe de $u(x)$.\\n\\n### Corrigé\\n**Ensemble de définition.** L'expression $\\dfrac{x-1}{x+1}$ doit être définie (donc $x\\neq-1$) et non nulle (donc $x\\neq1$, sinon $\\ln|0|$ n'existe pas). Donc :\\n$$D_f=\\mathbb R\\setminus\\{-1,1\\}=\\,]-\\infty,-1[\\,\\cup\\,]-1,1[\\,\\cup\\,]1,+\\infty[$$\\n\\n**Calcul de la dérivée.** Posons $u(x)=\\dfrac{x-1}{x+1}$. On a $\\ln|u(x)|$, dont la dérivée est $\\dfrac{u'(x)}{u(x)}$ pour $u(x)\\neq0$.\\n\\nCalcul de $u'(x)$ par la formule $\\left(\\dfrac ab\\right)'=\\dfrac{a'b-ab'}{b^2}$, avec $a=x-1$, $a'=1$, $b=x+1$, $b'=1$ :\\n$$u'(x)=\\frac{1\\times(x+1)-(x-1)\\times1}{(x+1)^2}=\\frac{x+1-x+1}{(x+1)^2}=\\frac2{(x+1)^2}$$\\n\\nDonc :\\n$$\\frac{u'(x)}{u(x)}=\\dfrac{\\dfrac2{(x+1)^2}}{\\dfrac{x-1}{x+1}}=\\frac2{(x+1)^2}\\times\\frac{x+1}{x-1}=\\frac2{(x+1)(x-1)}=\\frac2{x^2-1}$$\\n\\nIl vient :\\n$$f'(x)=2+\\frac2{x^2-1}=\\frac{2(x^2-1)+2}{x^2-1}=\\frac{2x^2-2+2}{x^2-1}=\\frac{2x^2}{x^2-1}$$\\n\\n**Signe de $f'(x)$.** Le numérateur $2x^2\\ge0$ pour tout $x$ (nul seulement en $x=0$). Le signe de $f'(x)$ est donc celui de $x^2-1=(x-1)(x+1)$ :\\n- Si $x<-1$ ou $x>1$ : $x^2-1>0$, donc $f'(x)>0$ ;\\n- Si $-1<x<1$ (et $x\\neq0$) : $x^2-1<0$, donc $f'(x)<0$ ;\\n- En $x=0$ : $f'(0)=0$, mais $f'$ garde le signe négatif de part et d'autre (ce n'est pas un extremum, $f$ reste strictement décroissante sur $]-1,1[$).\\n\\n**Limites aux bornes.**\\n$$\\lim_{x\\to1^-}f(x)=-\\infty\\qquad\\lim_{x\\to1^+}f(x)=-\\infty$$\\n(car $\\left|\\dfrac{x-1}{x+1}\\right|\\to0^+$ quand $x\\to1$, donc $\\ln\\to-\\infty$).\\n\\n$$\\lim_{x\\to-1^-}f(x)=+\\infty\\qquad\\lim_{x\\to-1^+}f(x)=+\\infty$$\\n(car $\\left|\\dfrac{x-1}{x+1}\\right|\\to+\\infty$ quand $x\\to-1$, donc $\\ln\\to+\\infty$).\\n\\n$$\\lim_{x\\to+\\infty}f(x)=+\\infty\\qquad\\lim_{x\\to-\\infty}f(x)=-\\infty$$\\n(car $\\left|\\dfrac{x-1}{x+1}\\right|\\to1$ donc $\\ln\\left|\\dfrac{x-1}{x+1}\\right|\\to0$, et $2x+1$ domine, avec le signe de $x$).\\n\\n**Tableau de variations.**\\n$$\\begin{array}{|c|ccccccc|}\\hlinex & -\\infty & & -1 & & 1 & & +\\infty\\\\\\hlinef'(x) & & + & \\| & - & \\| & + &\\\\\\hlinef(x) & -\\infty\\nearrow & & +\\infty & \\searrow & +\\infty & \\nearrow & +\\infty\\\\ & & & \\| & & \\| & & \\\\ & & & & & -\\infty & &\\\\\\hline\\end{array}$$\\n\\n(Sur $]-\\infty,-1[$, $f$ croît de $-\\infty$ à $+\\infty$ ; sur $]-1,1[$, $f$ décroît de $+\\infty$ à $-\\infty$ ; sur $]1,+\\infty[$, $f$ croît de $-\\infty$ à $+\\infty$.)\\n\\n### Piège à éviter\\nLa dérivée de $\\ln|u(x)|$ est $\\dfrac{u'(x)}{u(x)}$ et **non** $\\dfrac{u'(x)}{|u(x)|}$ : le passage par la valeur absolue n'introduit pas de valeur absolue au dénominateur de la dérivée, c'est un résultat général valable quel que soit le signe de $u(x)$.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "valeur absolue",
+        "dérivation",
+        "limites",
+        "tableau de variations"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e2-A1",
+          "competence": "Etude complete d'une fonction en ln de valeur absolue",
+          "contenu_markdown": "L'étude d'une fonction contenant $\\ln|u(x)|$ exige d'abord de déterminer l'ensemble de définition en excluant à la fois les valeurs qui annulent le dénominateur de l'argument et celles qui annulent l'argument lui-même (car $\\ln 0$ n'existe pas). La dérivée de $\\ln|u(x)|$ est $\\dfrac{u'(x)}{u(x)}$, valable sur tout intervalle où $u(x)\\neq0$, sans distinction de signe de $u(x)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2",
+      "enonce_markdown": "2°- Déterminer les asymptotes de (C), et préciser la position de la courbe (C) par rapport à son asymptote oblique. Pour tout x de son ensemble de définition.",
+      "corrige_markdown": "### Rappel de méthode\\nUne asymptote verticale $x=a$ apparaît quand $\\lim_{x\\to a}f(x)=\\pm\\infty$. Une asymptote oblique $y=ax+b$ en $+\\infty$ (ou $-\\infty$) apparaît quand $\\lim_{x\\to\\pm\\infty}[f(x)-(ax+b)]=0$ ; le signe de cette différence donne la position de la courbe par rapport à l'asymptote (positive : courbe au-dessus ; négative : courbe en-dessous).\\n\\n### Corrigé\\n**Asymptotes verticales.** D'après les limites de la question précédente :\\n$$\\lim_{x\\to1}f(x)=-\\infty\\qquad\\text{et}\\qquad\\lim_{x\\to-1}f(x)=+\\infty$$\\nDonc les droites d'équations $x=1$ et $x=-1$ sont asymptotes verticales à $(C)$.\\n\\n**Asymptote oblique.** Étudions $f(x)-(2x+1)$ :\\n$$f(x)-(2x+1)=\\ln\\left|\\frac{x-1}{x+1}\\right|$$\\nOr $\\left|\\dfrac{x-1}{x+1}\\right|\\to1$ quand $x\\to\\pm\\infty$ (quotient de deux termes équivalents à $x$), donc :\\n$$\\lim_{x\\to+\\infty}\\left[f(x)-(2x+1)\\right]=\\ln1=0\\qquad\\text{et}\\qquad\\lim_{x\\to-\\infty}\\left[f(x)-(2x+1)\\right]=\\ln1=0$$\\nDonc la droite $(\\Delta): y=2x+1$ est asymptote oblique à $(C)$ en $+\\infty$ et en $-\\infty$.\\n\\n**Position de $(C)$ par rapport à $(\\Delta)$.** Le signe de $f(x)-(2x+1)=\\ln\\left|\\dfrac{x-1}{x+1}\\right|$ est celui de $\\left|\\dfrac{x-1}{x+1}\\right|-1$ (car $\\ln$ est croissante et $\\ln1=0$) : le signe de $\\ln g(x)$, où $g(x)=\\left|\\dfrac{x-1}{x+1}\\right|$, est celui de $g(x)-1$.\\n\\nComparons $g(x)$ à $1$ en comparant $(x-1)^2$ à $(x+1)^2$ (élévation au carré légitime car les deux membres sont positifs) :\\n$$(x-1)^2-(x+1)^2=(x^2-2x+1)-(x^2+2x+1)=-4x$$\\nDonc $g(x)>1\\iff(x-1)^2>(x+1)^2\\iff-4x>0\\iff x<0$, et $g(x)<1\\iff x>0$, et $g(x)=1\\iff x=0$.\\n\\nOn en déduit, sur $D_f=\\mathbb R\\setminus\\{-1,1\\}$ :\\n- Pour $x<-1$ ou $-1<x<0$ (c'est-à-dire $x<0$, $x\\neq-1$) : $g(x)>1$, donc $f(x)-(2x+1)>0$ : **$(C)$ est au-dessus de $(\\Delta)$** ;\\n- Pour $0<x<1$ ou $x>1$ (c'est-à-dire $x>0$, $x\\neq1$) : $g(x)<1$, donc $f(x)-(2x+1)<0$ : **$(C)$ est en-dessous de $(\\Delta)$** ;\\n- En $x=0$ : $g(0)=1$, donc $f(0)-(2\\times0+1)=0$ : **$(C)$ coupe $(\\Delta)$ au point d'abscisse $0$** (point $(0,1)$, puisque $f(0)=1+\\ln1=1$).\\n\\n### Piège à éviter\\nComparer $g(x)$ à $1$ en raisonnant directement sur le signe de $x-1$ et $x+1$ obligerait à distinguer plusieurs cas selon la position de $x$ par rapport à $-1$, $0$ et $1$. Comparer les carrés $(x-1)^2$ et $(x+1)^2$ évite cette casuistique et donne le résultat en une seule inégalité.",
+      "themes": [
+        "asymptotes",
+        "position relative d'une courbe",
+        "étude de fonction"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e2-A2",
+          "competence": "Determination des asymptotes et position par rapport a l'asymptote oblique",
+          "contenu_markdown": "Une asymptote verticale $x=a$ apparaît quand $\\lim_{x\\to a}f(x)=\\pm\\infty$. Une asymptote oblique $y=ax+b$ en $+\\infty$ (ou $-\\infty$) apparaît quand $\\lim_{x\\to\\pm\\infty}[f(x)-(ax+b)]=0$ ; le signe de cette différence donne la position de la courbe par rapport à l'asymptote (positive : courbe au-dessus ; négative : courbe en-dessous).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1",
+      "enonce_markdown": "1°- Montrer que M décrit une partie de la courbe (C) que l'on précisera.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'un point mobile de coordonnées $(x(t),y(t))$ décrit une partie d'une courbe $(C):y=f(x)$, on exprime $t$ en fonction de $x$ à partir de $x(t)$ (si c'est possible, en tenant compte du domaine de $t$), puis on substitue dans $y(t)$ pour vérifier qu'on retrouve $f(x)$ ; le domaine de $t$ donné restreint alors la partie de $(C)$ effectivement décrite.\\n\\n### Corrigé\\nDe $x(t)=1+e^t$, on tire $e^t=x-1$. Comme $t\\ge0$, on a $e^t\\ge1$, donc $x-1\\ge1$, c'est-à-dire $x\\ge2$. De plus $t=\\ln(x-1)$.\\n\\nReportons $e^t=x-1$ dans $y(t)$ :\\n$$y=2(x-1)+3+\\ln(x-1)-\\ln\\big((x-1)+2\\big)=2x-2+3+\\ln(x-1)-\\ln(x+1)$$\\n$$y=2x+1+\\ln\\frac{x-1}{x+1}$$\\nOr pour $x\\ge2$, on a $x-1>0$ et $x+1>0$, donc $\\dfrac{x-1}{x+1}>0$, ce qui donne $\\left|\\dfrac{x-1}{x+1}\\right|=\\dfrac{x-1}{x+1}$. On retrouve donc exactement :\\n$$y=2x+1+\\ln\\left|\\frac{x-1}{x+1}\\right|=f(x)$$\\n\\n**Conclusion.** Le point $M(t)$ décrit, pour $t\\ge0$, la partie de $(C)$ correspondant à $x\\ge2$, c'est-à-dire la branche de $(C)$ sur $[2,+\\infty[$ (à $t=0$, $M$ est au point de $(C)$ d'abscisse $x=1+e^0=2$, et $x$ croît ensuite avec $t$ puisque $x'(t)=e^t>0$).\\n\\n### Piège à éviter\\nIl ne suffit pas de vérifier que $y=2x+1+\\ln\\left|\\dfrac{x-1}{x+1}\\right|$ : il faut aussi préciser la restriction sur $x$ (ici $x\\ge2$) induite par le domaine $t\\ge0$, sans quoi on affirmerait à tort que $M$ décrit la courbe $(C)$ tout entière.",
+      "themes": [
+        "courbes paramétrées",
+        "changement de variable",
+        "étude de fonction"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e2-B1",
+          "competence": "Identification de la trajectoire d'un point mobile a une portion de courbe donnee",
+          "contenu_markdown": "Pour montrer qu'un point mobile de coordonnées $(x(t),y(t))$ décrit une partie d'une courbe $(C):y=f(x)$, on exprime $t$ en fonction de $x$ à partir de $x(t)$ (si c'est possible, en tenant compte du domaine de $t$), puis on substitue dans $y(t)$ pour vérifier qu'on retrouve $f(x)$ ; le domaine de $t$ donné restreint alors la partie de $(C)$ effectivement décrite.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1a",
+      "enonce_markdown": "a) Indiquer à chaque instant les expressions des vecteurs vitesses et accélération du point M.",
+      "corrige_markdown": "### Rappel de méthode\\nPour un point mobile de coordonnées $(x(t),y(t))$, le vecteur vitesse est $\\vec V(t)=\\big(x'(t),y'(t)\\big)$ et le vecteur accélération est $\\vec a(t)=\\big(x''(t),y''(t)\\big)$ : on dérive chaque coordonnée séparément, une fois pour la vitesse, deux fois pour l'accélération.\\n\\n### Corrigé\\n**Vecteur vitesse.** $\\vec V(t)=\\big(x'(t)\\,;\\,y'(t)\\big)$.\\n\\n$$x'(t)=e^t$$\\n\\nPour $y'(t)$, dérivons $y(t)=2e^t+3+t-\\ln(e^t+2)$ terme à terme (la dérivée de $\\ln(e^t+2)$ est $\\dfrac{e^t}{e^t+2}$) :\\n$$y'(t)=2e^t+1-\\frac{e^t}{e^t+2}$$\\nMise au même dénominateur $(e^t+2)$ :\\n$$y'(t)=\\frac{(2e^t+1)(e^t+2)-e^t}{e^t+2}=\\frac{2e^{2t}+4e^t+e^t+2-e^t}{e^t+2}=\\frac{2e^{2t}+4e^t+2}{e^t+2}=\\frac{2(e^{2t}+2e^t+1)}{e^t+2}=\\frac{2(e^t+1)^2}{e^t+2}$$\\n\\n$$\\boxed{\\vec V(t)=\\left(e^t\\;;\\;\\frac{2(e^t+1)^2}{e^t+2}\\right)}$$\\n\\n**Vecteur accélération.** $\\vec a(t)=\\big(x''(t)\\,;\\,y''(t)\\big)$, en dérivant à nouveau $x'(t)$ et $y'(t)$.\\n\\n$$x''(t)=e^t$$\\n\\nPour $y''(t)$, dérivons $y'(t)=2e^t+1-\\dfrac{e^t}{e^t+2}$ (le dernier terme par la formule du quotient, $a=e^t$, $a'=e^t$, $b=e^t+2$, $b'=e^t$) :\\n$$\\left(\\frac{e^t}{e^t+2}\\right)'=\\frac{e^t(e^t+2)-e^t\\times e^t}{(e^t+2)^2}=\\frac{e^{2t}+2e^t-e^{2t}}{(e^t+2)^2}=\\frac{2e^t}{(e^t+2)^2}$$\\nDonc :\\n$$y''(t)=2e^t-\\frac{2e^t}{(e^t+2)^2}=2e^t\\left[1-\\frac1{(e^t+2)^2}\\right]=2e^t\\times\\frac{(e^t+2)^2-1}{(e^t+2)^2}$$\\nOr $(e^t+2)^2-1=(e^t+2-1)(e^t+2+1)=(e^t+1)(e^t+3)$ (identité $a^2-1=(a-1)(a+1)$ avec $a=e^t+2$), donc :\\n$$y''(t)=\\frac{2e^t(e^t+1)(e^t+3)}{(e^t+2)^2}$$\\n\\n$$\\boxed{\\vec a(t)=\\left(e^t\\;;\\;\\frac{2e^t(e^t+1)(e^t+3)}{(e^t+2)^2}\\right)}$$",
+      "themes": [
+        "cinématique",
+        "vecteur vitesse",
+        "vecteur accélération",
+        "dérivation"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e2-B1a",
+          "competence": "Calcul des vecteurs vitesse et acceleration d'un point mobile",
+          "contenu_markdown": "Pour un point mobile de coordonnées $(x(t),y(t))$, le vecteur vitesse est $\\vec V(t)=\\big(x'(t),y'(t)\\big)$ et le vecteur accélération est $\\vec a(t)=\\big(x''(t),y''(t)\\big)$ : on dérive chaque coordonnée séparément, une fois pour la vitesse, deux fois pour l'accélération.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1b",
+      "enonce_markdown": "b) Au cours du temps, le mouvement est-il accéléré ou retardé ?",
+      "corrige_markdown": "### Rappel de méthode\\nUn mouvement est dit accéléré à l'instant $t$ si la norme de la vitesse augmente, retardé si elle diminue. Comme $\\|\\vec V\\|^2=\\vec V\\cdot\\vec V$, le signe de $\\dfrac{d}{dt}\\|\\vec V\\|^2=2\\,\\vec V\\cdot\\vec a$ donne directement le sens de variation de $\\|\\vec V\\|$ : le mouvement est accéléré quand $\\vec V\\cdot\\vec a>0$, retardé quand $\\vec V\\cdot\\vec a<0$.\\n\\n### Corrigé\\nCalculons le produit scalaire $\\vec V(t)\\cdot\\vec a(t)=x'(t)x''(t)+y'(t)y''(t)$ :\\n\\n$$\\vec V\\cdot\\vec a=e^t\\times e^t+\\frac{2(e^t+1)^2}{e^t+2}\\times\\frac{2e^t(e^t+1)(e^t+3)}{(e^t+2)^2}$$\\n$$=e^{2t}+\\frac{4e^t(e^t+1)^3(e^t+3)}{(e^t+2)^3}$$\\n\\nPosons $u=e^t>0$ (pour $t\\ge0$, on a $u\\ge1$). Chaque terme de cette somme est un quotient de quantités strictement positives : $e^{2t}=u^2>0$, et $4u(u+1)^3(u+3)>0$ ainsi que $(u+2)^3>0$. La somme de deux quantités strictement positives est strictement positive :\\n$$\\vec V(t)\\cdot\\vec a(t)>0\\qquad\\text{pour tout }t\\ge0$$\\n\\n**Conclusion.** Le produit scalaire $\\vec V\\cdot\\vec a$ est strictement positif à tout instant $t\\ge0$ : le mouvement du point $M$ est **accéléré** tout au long du déplacement (la norme de la vitesse ne cesse de croître, ce qui est cohérent avec $x'(t)=e^t$ et le fait que $\\|y'(t)\\|$ croissent tous deux avec $t$).\\n\\n### Conseil\\nOn peut vérifier ce résultat sans calculer explicitement le produit scalaire complet : $x'(t)=e^t$ est strictement croissante et $y'(t)=\\dfrac{2(e^t+1)^2}{e^t+2}$ est également strictement croissante (composée de fonctions croissantes de $e^t$), donc les deux coordonnées de la vitesse croissent avec $t$, ce qui suggère fortement (et confirme ici) que la norme de la vitesse croît aussi.",
+      "themes": [
+        "cinématique",
+        "produit scalaire",
+        "mouvement accéléré ou retardé"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1985d-e2-B1b",
+          "competence": "Caracterisation d'un mouvement accelere ou retarde par le produit scalaire vitesse-acceleration",
+          "contenu_markdown": "Un mouvement est dit accéléré à l'instant $t$ si la norme de la vitesse augmente, retardé si elle diminue. Comme $\\|\\vec V\\|^2=\\vec V\\cdot\\vec V$, le signe de $\\dfrac{d}{dt}\\|\\vec V\\|^2=2\\,\\vec V\\cdot\\vec a$ donne directement le sens de variation de $\\|\\vec V\\|$ : le mouvement est accéléré quand $\\vec V\\cdot\\vec a>0$, retardé quand $\\vec V\\cdot\\vec a<0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction",
+    "logarithme népérien",
+    "valeur absolue",
+    "asymptotes",
+    "position relative",
+    "tableau de variations",
+    "courbe paramétrée",
+    "cinématique",
+    "vecteur vitesse",
+    "vecteur accélération",
+    "mouvement accéléré",
+    "bac D 1985",
+    "Cameroun"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

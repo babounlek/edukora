@@ -23,12 +23,32 @@
         margin: 0 -40px 28px -40px;
         padding: 22px 40px 18px 40px;
     }
+    .brand-header .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 10px 0;
+    }
     .brand-header .brand {
         font-size: 13px;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         opacity: 0.85;
-        margin: 0 0 6px 0;
+        margin: 0;
+    }
+    .brand-header .pays-line {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        opacity: 0.95;
+    }
+    .brand-header .pays-line .flag-icon {
+        width: 16px;
+        height: 12px;
+        margin-right: 6px;
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.35);
     }
     .brand-header h1 {
         font-size: 22px;
@@ -131,7 +151,10 @@
 </head>
 <body>
     <div class="brand-header">
-        <p class="brand">{{ site_name }} - Sujet gratuit</p>
+        <div class="brand-row">
+            <p class="brand">{{ site_name }} - Sujet gratuit</p>
+            <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays.label }}</span>
+        </div>
         <h1>{{ lesson.title }}</h1>
         <div class="meta-row">
             <span>{{ header.matiere }}</span>

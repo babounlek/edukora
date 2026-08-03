@@ -1,0 +1,206 @@
+{
+  "epreuve_source": "bac-rouge-2004-maths-congo.pdf",
+  "numero_exercice": "4",
+  "matiere": "Mathématiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2004",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "points": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-rouge-2004-maths-congo_exercice_4_fig_1.png",
+      "page_source": 3,
+      "type": "figure geometrique",
+      "legende": "Triangle ABC rectangle isocèle en C, cercle circonscrit, points K et K', droite (OC) et sa parallèle par K.",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "### Problème — Partie B\n\nSoit $P$ le polynôme défini sur $\\mathbb{C}$ par $P(z)=z^3-4(1+i)z^2+12iz+8-8i$.\n\nOn note $A$, $B$, $C$ les points d'affixes respectives $z_0$, $z_1$, $z_2$ (les trois racines de $P$ trouvées à la question 1).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Montrer que l'équation $P(z)=0$ admet une solution imaginaire pure $z_0$ et une solution réelle $z_1$ à déterminer. En déduire l'autre solution $z_2$.",
+      "corrige_markdown": "### Rappel de méthode\nPour trouver une racine imaginaire pure $z_0=ib$ ($b$ réel) d'un polynôme à coefficients complexes, on substitue $z=ib$, on développe, on sépare partie réelle et partie imaginaire, puis on résout le système formé par ces deux parties égalées à zéro simultanément (les deux équations doivent avoir une solution commune en $b$). On procède de façon symétrique pour une racine réelle $z=a$.\n\n**Recherche de la racine imaginaire pure $z_0=ib$.** On calcule $P(ib)$ en utilisant $i^2=-1$, $i^3=-i$ :\n$$(ib)^3 = -ib^3, \\qquad (ib)^2=-b^2$$\n$$P(ib) = -ib^3 -4(1+i)(-b^2) + 12i(ib) + 8-8i = -ib^3+4b^2(1+i)-12b+8-8i$$\n$$= -ib^3+4b^2+4ib^2-12b+8-8i$$\nOn regroupe partie réelle et partie imaginaire :\n$$\\mathrm{Re}\\big(P(ib)\\big) = 4b^2-12b+8, \\qquad \\mathrm{Im}\\big(P(ib)\\big) = -b^3+4b^2-8$$\nOn résout $\\mathrm{Re}=0$ : $4b^2-12b+8=0 \\Leftrightarrow b^2-3b+2=0$. Pour $b^2+pb+q=0$, le discriminant est $\\Delta=p^2-4q$ ; ici $p=-3$, $q=2$, donc $\\Delta=9-8=1>0$, et les racines sont $b=\\dfrac{3\\pm1}{2}$, soit $b=1$ ou $b=2$.\nOn teste ces deux valeurs dans $\\mathrm{Im}=0$, c'est-à-dire $b^3-4b^2+8=0$ : pour $b=1$, $1-4+8=5\\neq 0$ (rejeté) ; pour $b=2$, $8-16+8=0$ (convient).\n\nDonc $b=2$ annule à la fois la partie réelle et la partie imaginaire de $P(ib)$ : $z_0=2i$ est solution de $P(z)=0$.\n\n**Vérification directe** : $P(2i)=(2i)^3-4(1+i)(2i)^2+12i(2i)+8-8i = -8i-4(1+i)(-4)+24i^2+8-8i = -8i+16+16i-24+8-8i = 0$. Confirmé.\n\n**Recherche de la racine réelle $z_1=a$.** On calcule $P(a)$ pour $a$ réel :\n$$P(a) = a^3-4(1+i)a^2+12ia+8-8i = \\big(a^3-4a^2+8\\big) + i\\big(-4a^2+12a-8\\big)$$\nOn résout la partie imaginaire nulle : $-4a^2+12a-8=0 \\Leftrightarrow a^2-3a+2=0$, la même équation qu'au-dessus, de solutions $a=1$ ou $a=2$.\nOn teste dans la partie réelle $a^3-4a^2+8=0$ : pour $a=1$, $1-4+8=5\\neq 0$ (rejeté) ; pour $a=2$, $8-16+8=0$ (convient).\n\nDonc $z_1=2$ est solution réelle de $P(z)=0$.\n\n**Vérification directe** : $P(2)=8-4(1+i)(4)+24i+8-8i = 8-16-16i+24i+8-8i = 0$. Confirmé.\n\n**Détermination de $z_2$.** $P$ est un polynôme de degré $3$ à coefficients complexes, de la forme $z^3+pz^2+qz+r$ avec $p=-4(1+i)$. La somme des trois racines vaut $-p$ (relation coefficients-racines) :\n$$z_0+z_1+z_2 = 4(1+i)$$\n$$2i+2+z_2 = 4+4i \\quad\\Longrightarrow\\quad z_2 = 4+4i-2-2i = 2+2i$$\n\n**Vérification par le produit des racines** : pour un polynôme unitaire $z^3+pz^2+qz+r$, le produit des racines vaut $-r$. Ici $r=8-8i$, donc le produit attendu est $-(8-8i)=-8+8i$. On calcule $z_0z_1z_2=2i\\times2\\times(2+2i)=4i(2+2i)=8i+8i^2=-8+8i$. Le résultat coïncide, ce qui confirme $z_2=2+2i$.\n\nLes trois solutions de $P(z)=0$ sont : $z_0=2i$, $z_1=2$, $z_2=2+2i$.\n\n### Piège à éviter\nUne fois $b=2$ (ou $a=2$) trouvé comme solution commune aux deux parties, il est indispensable de vérifier par un calcul direct de $P(z_0)$ (ou $P(z_1)$) que le résultat est bien nul : deux équations de degré différent partageant une racine commune parmi plusieurs candidats est un point sensible où une erreur de signe passe facilement inaperçue sans cette vérification finale.",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-0",
+          "competence": "Recherche d'une racine imaginaire pure ou réelle d'un polynôme complexe",
+          "contenu_markdown": "Pour trouver une racine imaginaire pure $z_0=ib$ ($b$ réel) d'un polynôme à coefficients complexes, on substitue $z=ib$, on développe, on sépare partie réelle et partie imaginaire, puis on résout le système formé par ces deux parties égalées à zéro simultanément (les deux équations doivent avoir une solution commune en $b$). On procède de façon symétrique pour une racine réelle $z=a$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "On note $A$, $B$, $C$ les points d'affixes respectives $z_0=2i$, $z_1=2$, $z_2=2+2i$. Calculer le module et un argument du nombre complexe $\\dfrac{Z_B-Z_C}{Z_A-Z_C}$. En déduire la nature du triangle $ABC$.",
+      "corrige_markdown": "### Rappel de méthode\nPour un triangle $ABC$, le quotient $\\dfrac{Z_B-Z_C}{Z_A-Z_C}$ est le nombre complexe qui transforme le vecteur $\\overrightarrow{CA}$ en le vecteur $\\overrightarrow{CB}$ (c'est-à-dire $\\overrightarrow{CB}=\\dfrac{Z_B-Z_C}{Z_A-Z_C}\\times\\overrightarrow{CA}$, en identifiant vecteurs et affixes). Son module donne le rapport des longueurs $CB/CA$, et son argument donne l'angle orienté $\\big(\\overrightarrow{CA},\\overrightarrow{CB}\\big)$.\n\n$$Z_B-Z_C = 2-(2+2i) = -2i \\qquad\\qquad Z_A-Z_C = 2i-(2+2i) = -2$$\n$$\\frac{Z_B-Z_C}{Z_A-Z_C} = \\frac{-2i}{-2} = i$$\n\nLe nombre complexe $i$ a pour module $|i|=1$ et pour argument $\\arg(i)=\\dfrac{\\pi}{2}\\ [2\\pi]$.\n\n**Interprétation géométrique.** Le module vaut $1$ : $\\dfrac{CB}{CA}=1$, donc $CB=CA$ — le triangle est isocèle en $C$. L'argument vaut $\\dfrac{\\pi}{2}$ : l'angle orienté $\\big(\\overrightarrow{CA},\\overrightarrow{CB}\\big)=\\dfrac{\\pi}{2}\\ [2\\pi]$ — l'angle en $C$ est droit.\n\nLe triangle $ABC$ est rectangle et isocèle en $C$.\n\n### Conseil\nRetiens ce réflexe : dès qu'un quotient de différences d'affixes vaut $\\pm i$, cela signale toujours un angle droit avec des côtés de longueurs égales — inutile de recalculer séparément les longueurs $CA$, $CB$ et l'angle par des méthodes trigonométriques classiques, le quotient complexe donne les deux informations en un seul calcul.",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-1",
+          "competence": "Nature d'un triangle à partir d'un quotient d'affixes",
+          "contenu_markdown": "Pour un triangle $ABC$, le quotient $\\dfrac{Z_B-Z_C}{Z_A-Z_C}$ est le nombre complexe qui transforme le vecteur $\\overrightarrow{CA}$ en le vecteur $\\overrightarrow{CB}$ (c'est-à-dire $\\overrightarrow{CB}=\\dfrac{Z_B-Z_C}{Z_A-Z_C}\\times\\overrightarrow{CA}$, en identifiant vecteurs et affixes). Son module donne le rapport des longueurs $CB/CA$, et son argument donne l'angle orienté $\\big(\\overrightarrow{CA},\\overrightarrow{CB}\\big)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "Soit $N$ un point du cercle circonscrit au triangle $ABC$, distinct de $A$, $B$ et $C$. On note $A'$, $B'$, $C'$ les projetés orthogonaux de $N$ sur les droites $(BC)$, $(CA)$, $(AB)$ respectivement. Montrer que les points $A'$, $B'$, $C'$ sont alignés.",
+      "corrige_markdown": "### Rappel de méthode\nThéorème de la droite de Simson (ou droite de Wallace-Simson) : si $N$ est un point du cercle circonscrit à un triangle $ABC$, distinct de $A$, $B$, $C$, alors les projetés orthogonaux de $N$ sur les trois côtés (ou leurs prolongements) $(BC)$, $(CA)$, $(AB)$ sont alignés.\n\n$N$ appartient au cercle circonscrit $(\\mathcal C)$ du triangle $ABC$, distinct de $A$, $B$, $C$. D'après le théorème de la droite de Simson, les projetés orthogonaux $A'$, $B'$, $C'$ de $N$ sur les trois côtés du triangle sont alignés.\n\nLa droite $(A'B'C')$ est la **droite de Simson** de $N$ par rapport au triangle $ABC$.",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-2",
+          "competence": "Théorème de la droite de Simson",
+          "contenu_markdown": "Théorème de la droite de Simson (ou droite de Wallace-Simson) : si $N$ est un point du cercle circonscrit à un triangle $ABC$, distinct de $A$, $B$, $C$, alors les projetés orthogonaux de $N$ sur les trois côtés (ou leurs prolongements) $(BC)$, $(CA)$, $(AB)$ sont alignés.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Soit $S$ l'application du plan $(P)$ dans lui-même telle que $S(A)=A$ et $S(B)=C$. Donner la nature et les éléments caractéristiques de $S$.",
+      "corrige_markdown": "### Rappel de méthode\nUne application du plan dans lui-même entièrement déterminée par les images de deux points distincts, et qui conserve les distances à un facteur d'échelle près, est une similitude directe (ou indirecte) : en écriture complexe, une similitude directe s'écrit $z\\mapsto az+b$ ($a\\in\\mathbb{C}^*$). Connaissant les images de deux points, on détermine $a$ et $b$ en résolvant un système linéaire.\n\nOn cherche $S$ sous la forme $S(z)=az+b$, déterminée par les deux conditions $S(A)=A$ et $S(B)=C$ :\n$$a\\,Z_A+b = Z_A \\qquad\\Longrightarrow\\qquad 2ai+b = 2i \\qquad (1)$$\n$$a\\,Z_B+b = Z_C \\qquad\\Longrightarrow\\qquad 2a+b = 2+2i \\qquad (2)$$\nDe (1) : $b=2i-2ai$. On substitue dans (2) :\n$$2a + 2i-2ai = 2+2i \\quad\\Longrightarrow\\quad 2a-2ai = 2 \\quad\\Longrightarrow\\quad 2a(1-i)=2 \\quad\\Longrightarrow\\quad a(1-i)=1 \\quad\\Longrightarrow\\quad a=\\frac{1}{1-i}$$\nOn rend le dénominateur réel en multipliant par le conjugué :\n$$a = \\frac{1}{1-i}\\times\\frac{1+i}{1+i} = \\frac{1+i}{1^2+1^2} = \\frac{1+i}{2}$$\nOn en déduit $b$ : $b=2i-2\\times\\dfrac{1+i}{2}\\times i = 2i-i(1+i) = 2i-i-i^2 = 2i-i+1 = 1+i$.\n\nDonc $S(z) = \\dfrac{1+i}{2}\\,z + (1+i)$.\n\n**Nature.** $a=\\dfrac{1+i}{2}\\neq 0$ et $a\\notin\\mathbb{R}$ : $S$ est une similitude directe (écriture $z\\mapsto az+b$ sans conjugaison).\n\n**Rapport et angle.** $|a| = \\left|\\dfrac{1+i}{2}\\right| = \\dfrac{\\sqrt{1^2+1^2}}{2} = \\dfrac{\\sqrt2}{2}$. Comme $1+i$ a pour argument $\\dfrac{\\pi}{4}$ (partie réelle et partie imaginaire égales et positives) et que diviser par le réel positif $2$ ne change pas l'argument, $\\arg(a)=\\dfrac{\\pi}{4}$.\n\n**Centre.** Le centre $\\Omega$ est l'unique point fixe de $S$ : $\\Omega=a\\Omega+b \\Leftrightarrow \\Omega(1-a)=b \\Leftrightarrow \\Omega=\\dfrac{b}{1-a}$.\n$$1-a = 1-\\frac{1+i}{2} = \\frac{2-1-i}{2} = \\frac{1-i}{2}$$\n$$\\Omega = \\frac{1+i}{\\dfrac{1-i}{2}} = \\frac{2(1+i)}{1-i} = \\frac{2(1+i)(1+i)}{(1-i)(1+i)} = \\frac{2(1+i)^2}{2} = (1+i)^2 = 1+2i+i^2 = 2i$$\n\nOn trouve $\\Omega=2i=Z_A$ : le centre de $S$ est le point $A$ lui-même, ce qui est cohérent puisque $S(A)=A$ signifiait déjà que $A$ est un point fixe, et une similitude de rapport différent de $1$ n'a qu'un seul point fixe.\n\n$S$ est la **similitude directe de centre $A$, de rapport $\\dfrac{\\sqrt2}{2}$ et d'angle $\\dfrac{\\pi}{4}$**.\n\n### Piège à éviter\nNe pas confondre le rapport de la similitude ($|a|=\\sqrt2/2$, un facteur d'échelle sur les longueurs) avec le coefficient $a$ lui-même (un nombre complexe qui encode à la fois l'échelle et la rotation) : le rapport et l'angle sont respectivement le module et l'argument de $a$, jamais $a$ pris tel quel.",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-3",
+          "competence": "Détermination d'une similitude directe par les images de deux points",
+          "contenu_markdown": "Une application du plan dans lui-même entièrement déterminée par les images de deux points distincts, et qui conserve les distances à un facteur d'échelle près, est une similitude directe (ou indirecte) : en écriture complexe, une similitude directe s'écrit $z\\mapsto az+b$ ($a\\in\\mathbb{C}^*$). Connaissant les images de deux points, on détermine $a$ et $b$ en résolvant un système linéaire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4.a",
+      "enonce_markdown": "Soit $K$ le point tel que $\\overrightarrow{OK}=\\dfrac13\\overrightarrow{OA}$. Soit $K'$ le point d'intersection de la droite $(AC)$ et de la parallèle à $(OC)$ passant par $K$. Placer les points $K$ et $K'$.",
+      "corrige_markdown": "### Rappel de méthode\nUn vecteur $\\overrightarrow{OK}=k\\,\\overrightarrow{OA}$ (avec $k$ réel) place $K$ sur la droite $(OA)$, à une fraction $k$ de la distance $OA$. Le point d'intersection d'une droite parallèle à $(OC)$ passant par un point donné avec une autre droite se détermine en paramétrant la parallèle et en résolvant l'intersection.\n\n$A$ a pour coordonnées $(0,2)$ (affixe $2i$). $\\overrightarrow{OK}=\\dfrac13\\overrightarrow{OA}$ donne $K\\left(0\\,;\\,\\dfrac23\\right)$, soit d'affixe $\\dfrac23 i$.\n\nLa droite $(AC)$ : $A(0,2)$ et $C(2,2)$ (affixe $2+2i$) ont la même ordonnée $2$, donc $(AC)$ est la droite horizontale d'équation $y=2$.\n\nLa parallèle à $(OC)$ passant par $K$ : $\\overrightarrow{OC}=(2,2)$, de direction $(1,1)$. Cette parallèle se paramètre par $\\left(t\\,;\\,\\dfrac23+t\\right)$, $t\\in\\mathbb{R}$.\n\nIntersection avec $(AC)$ ($y=2$) : $\\dfrac23+t=2 \\Leftrightarrow t=\\dfrac43$. On reporte : $x=\\dfrac43$.\n\n$K'\\left(\\dfrac43\\,;\\,2\\right)$.\n\n![fig-1](bac-rouge-2004-maths-congo_exercice_4_fig_1.png)",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "4.b",
+      "enonce_markdown": "Montrer qu'il existe une homothétie $h$ transformant $O$ en $K$ et $C$ en $K'$, et préciser son rapport et son centre.",
+      "corrige_markdown": "### Rappel de méthode\nUne homothétie transforme tout couple de points $(M_1,M_2)$ en un couple $(M_1',M_2')$ tel que $\\overrightarrow{M_1'M_2'}=k\\,\\overrightarrow{M_1M_2}$, où $k$ est le rapport de l'homothétie. Une fois $k$ connu, le centre $\\Omega$ vérifie $\\Omega+k(M_1-\\Omega)=M_1'$ pour n'importe quel couple $(M_1,M_1')$ de la transformation.\n\nOn vérifie d'abord que $\\overrightarrow{KK'}$ est colinéaire à $\\overrightarrow{OC}$ (condition nécessaire pour qu'une homothétie envoie $O$ sur $K$ et $C$ sur $K'$) :\n$$\\overrightarrow{KK'} = K'-K = \\left(\\frac43-0\\,,\\,2-\\frac23\\right) = \\left(\\frac43,\\frac43\\right), \\qquad \\overrightarrow{OC} = (2,2)$$\nOn a bien $\\left(\\dfrac43,\\dfrac43\\right) = \\dfrac23\\times(2,2)$ : les deux vecteurs sont colinéaires, de rapport $k=\\dfrac23$. L'existence d'une homothétie de rapport $\\dfrac23$ envoyant $O$ sur $K$ et $C$ sur $K'$ est ainsi établie.\n\n**Détermination du centre.** Pour une homothétie de centre $\\Omega$ et de rapport $k$, l'image de $O$ est $\\Omega+k(O-\\Omega)$. Cette image doit être $K$ :\n$$\\Omega+k(O-\\Omega) = K \\quad\\Longrightarrow\\quad \\Omega(1-k) = K-kO = K \\ (\\text{car } O=0) \\quad\\Longrightarrow\\quad \\Omega = \\frac{K}{1-k}$$\nAvec $K=\\left(0,\\dfrac23\\right)$ et $k=\\dfrac23$, $1-k=\\dfrac13$ :\n$$\\Omega = \\frac{\\left(0,\\frac23\\right)}{\\frac13} = \\left(0,2\\right)$$\n\nOn trouve $\\Omega=(0,2)=A$. Vérification avec le second couple de points : $\\Omega+k(C-\\Omega) = (0,2)+\\dfrac23\\big[(2,2)-(0,2)\\big] = (0,2)+\\dfrac23(2,0) = \\left(\\dfrac43,2\\right) = K'$. Cohérent.\n\n$h$ est **l'homothétie de centre $A$ et de rapport $\\dfrac23$**.\n\n### Conseil\nPour vérifier rapidement l'existence d'une homothétie entre deux couples de points, contrôle d'abord la colinéarité de $\\overrightarrow{KK'}$ et $\\overrightarrow{OC}$ (calcul rapide) avant de te lancer dans la recherche du centre : si les deux vecteurs ne sont pas colinéaires, aucune homothétie ne peut convenir, et il est inutile de poursuivre le calcul.",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-4",
+          "competence": "Existence et détermination d'une homothétie entre deux couples de points",
+          "contenu_markdown": "Une homothétie transforme tout couple de points $(M_1,M_2)$ en un couple $(M_1',M_2')$ tel que $\\overrightarrow{M_1'M_2'}=k\\,\\overrightarrow{M_1M_2}$, où $k$ est le rapport de l'homothétie. Une fois $k$ connu, le centre $\\Omega$ vérifie $\\Omega+k(M_1-\\Omega)=M_1'$ pour n'importe quel couple $(M_1,M_1')$ de la transformation.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4.c",
+      "enonce_markdown": "Soit $g$ la symétrie orthogonale qui transforme $O$ en $C$. Déterminer la nature et les éléments caractéristiques de la transformation $\\varphi=g\\circ h$.",
+      "corrige_markdown": "### Rappel de méthode\nLa composée d'une homothétie (transformation directe, de rapport réel $k$) et d'une symétrie orthogonale (transformation indirecte) est une similitude indirecte de rapport $|k|$. En écriture complexe, une similitude indirecte s'écrit $z\\mapsto a\\bar z+b$ ; son centre (point fixe unique si $|a|\\neq 1$) s'obtient en résolvant $\\Omega=a\\bar\\Omega+b$ après avoir posé $\\Omega=p+iq$ et séparé parties réelle et imaginaire.\n\n**Remarque sur l'énoncé.** Le document source note \"$\\varphi=g\\circ f$\", où $f$ désignerait la fonction réelle de la Partie A — sans lien possible avec cette Partie B, consacrée aux nombres complexes. Le corrigé retient $\\varphi=g\\circ h$, où $h$ est l'homothétie définie à la question précédente, seule composition cohérente avec la progression de l'exercice.\n\n**Écriture complexe de $h$.** $h$ est l'homothétie de centre $A$ (affixe $2i$) et de rapport $\\dfrac23$ :\n$$h(z) = \\frac23(z-2i)+2i = \\frac23 z + \\frac13\\times 2i = \\frac23 z+\\frac23 i$$\n\n**Écriture complexe de $g$.** $g$ est la symétrie orthogonale (réflexion) qui transforme $O$ en $C$ : son axe est la médiatrice du segment $[OC]$, c'est-à-dire la droite passant par le milieu de $[OC]$ (le point d'affixe $1+i$) et orthogonale à $\\overrightarrow{OC}$ (de direction $(1,1)$, donc la médiatrice a pour direction $(1,-1)$, d'angle $-\\dfrac{\\pi}{4}$). L'écriture complexe d'une réflexion d'axe passant par $z_0$ avec un angle de direction $\\theta$ est $g(z)=e^{2i\\theta}\\overline{(z-z_0)}+z_0$ :\n$$g(z) = e^{-i\\pi/2}\\,\\overline{(z-(1+i))}+(1+i) = -i\\,\\overline{(z-1-i)}+1+i$$\n\nVérification : $g(0) = -i\\,\\overline{(-1-i)}+1+i = -i(-1+i)+1+i = (i-i^2)+1+i = (1+i)+1+i = 2+2i = Z_C$. Confirmé.\n\n**Composition $\\varphi=g\\circ h$.** On calcule $h(z)-1-i = \\dfrac23 z+\\dfrac23 i-1-i = \\dfrac23 z-1-\\dfrac13 i$, puis son conjugué : $\\overline{h(z)-1-i} = \\dfrac23\\bar z-1+\\dfrac13 i$. Donc :\n$$\\varphi(z) = -i\\left(\\frac23\\bar z-1+\\frac13 i\\right)+1+i = -\\frac23 i\\bar z+i-\\frac13 i^2+1+i = -\\frac23 i\\bar z+\\frac43+2i$$\n\n$\\varphi(z) = -\\dfrac23 i\\,\\bar z + \\left(\\dfrac43+2i\\right)$, une expression de la forme $a\\bar z+b$ avec $a=-\\dfrac23 i$ : $\\varphi$ est une **similitude indirecte** de rapport $|a|=\\dfrac23$.\n\n**Centre de $\\varphi$.** On pose $\\Omega=p+iq$ ($p,q$ réels) et on résout $\\Omega=a\\bar\\Omega+b$, soit $p+iq = -\\dfrac23 i(p-iq)+\\dfrac43+2i$. On développe $-\\dfrac23 i(p-iq)=-\\dfrac23 ip+\\dfrac23 i^2 q\\times(-1)$... en détaillant : $-\\dfrac23 i\\times p = -\\dfrac23 ip$ et $-\\dfrac23 i\\times(-iq)=\\dfrac23 i^2 q=-\\dfrac23 q$. Donc :\n$$-\\frac23 i(p-iq) = -\\frac23 q-\\frac23 ip$$\n$$p+iq = \\left(\\frac43-\\frac23 q\\right)+i\\left(2-\\frac23 p\\right)$$\nPar identification des parties réelle et imaginaire :\n$$p = \\frac43-\\frac23 q \\quad (I) \\qquad\\qquad q = 2-\\frac23 p \\quad (II)$$\nEn multipliant (I) par 3 : $3p+2q=4$. En multipliant (II) par 3 : $2p+3q=6$. On résout ce système : en multipliant la première par $3$ et la seconde par $2$, $9p+6q=12$ et $4p+6q=12$ ; par soustraction, $5p=0$, donc $p=0$, puis $q=2$ (d'après (II)).\n\n$\\Omega=(0,2)=2i=Z_A$ : le centre de $\\varphi$ est de nouveau le point $A$.\n\n**Axe de $\\varphi$.** En centrant sur $\\Omega=A$, $\\varphi(z)-\\Omega = a\\,\\overline{(z-\\Omega)}$ avec $a=-\\dfrac23 i=\\dfrac23 e^{-i\\pi/2}$ : l'axe de la similitude indirecte passe par $A$, avec une direction d'angle $\\dfrac{\\arg(a)}{2}=-\\dfrac{\\pi}{4}$, c'est-à-dire une droite parallèle à l'axe de $g$ (la médiatrice de $[OC]$, de direction $(1,-1)$).\n\n$\\varphi$ est la **similitude indirecte de centre $A$, de rapport $\\dfrac23$, dont l'axe est la droite passant par $A$ de direction $(1,-1)$** (parallèle à l'axe de $g$).\n\n### Piège à éviter\nUne similitude indirecte s'écrit toujours avec un $\\bar z$ (conjugué), jamais $z$ seul : oublier de conjuguer au moment de composer $g$ (qui contient $\\overline{(\\cdot)}$) avec $h(z)$ fait perdre le caractère indirect de $\\varphi$ et conduit à une similitude directe erronée. Vérifie systématiquement, avant de chercher le centre, que l'écriture obtenue contient bien un $\\bar z$ si l'une des deux transformations composées est indirecte (ici $g$) et l'autre directe (ici $h$).",
+      "themes": [
+        "nombres complexes - polynôme de degré 3",
+        "affixes et nature d'un triangle",
+        "droite de Simson",
+        "similitude directe",
+        "homothétie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-rouge-2004-maths-congo-ex4-5",
+          "competence": "Composition d'une homothétie et d'une symétrie orthogonale (similitude indirecte)",
+          "contenu_markdown": "La composée d'une homothétie (transformation directe, de rapport réel $k$) et d'une symétrie orthogonale (transformation indirecte) est une similitude indirecte de rapport $|k|$. En écriture complexe, une similitude indirecte s'écrit $z\\mapsto a\\bar z+b$ ; son centre (point fixe unique si $|a|\\neq 1$) s'obtient en résolvant $\\Omega=a\\bar\\Omega+b$ après avoir posé $\\Omega=p+iq$ et séparé parties réelle et imaginaire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "racine imaginaire pure polynôme complexe",
+    "relations coefficients-racines",
+    "quotient d'affixes triangle rectangle isocèle",
+    "droite de Simson",
+    "similitude directe centre rapport angle",
+    "homothétie centre et rapport",
+    "similitude indirecte",
+    "BAC série C Congo complexes"
+  ],
+  "incertitudes": [
+    "L'énoncé indique que S est une application « de (P) dans (O) » — lecture retenue : application de (P) dans (P) (transformation du plan sur lui-même), seule lecture cohérente puisqu'aucun ensemble (O) n'est défini dans le problème.",
+    "L'énoncé indique « S(A) = A et S(B) = G », alors qu'aucun point G n'est défini dans cette Partie B (seuls A, B, C, N, A', B', C', K, K' apparaissent). Lecture retenue : S(B) = C, seule interprétation compatible avec les points disponibles à ce stade de l'énoncé.",
+    "La question sur la droite de Simson mentionne les projetés de N sur (BC) et (AB) seulement, mais fait référence à « ces trois points » (A', B', C') : la troisième projection, sur (AC), a vraisemblablement été omise à la numérisation. Le corrigé applique le théorème complet, avec projection sur les trois côtés du triangle.",
+    "L'énoncé écrit « On pose φ = g°f », où f désignerait la fonction de la Partie A, sans lien avec cette Partie B consacrée aux complexes. Lecture retenue : φ = g∘h, où h est l'homothétie définie à la question 4.b — seule composition cohérente avec la progression de l'exercice (perte probable d'un caractère « h » lu comme « f » à la numérisation).",
+    "Les énoncés des questions 2.a, 2.b, 4.a, 4.b, 4.c de cet exercice ont été perdus lors d'une erreur du script de migration automatique (le motif de reconnaissance des sous-questions lettrées n'a pas reconnu leur format). Ils ont été reconstruits ci-dessus à partir du contenu du corrigé_markdown (qui restait intact et reformule implicitement chaque question) plutôt que recopiés du sujet original : le sens mathématique est fidèle, mais la formulation exacte et les points indiqués sur le sujet source ne peuvent plus être garantis."
+  ],
+  "statut": "brouillon"
+}

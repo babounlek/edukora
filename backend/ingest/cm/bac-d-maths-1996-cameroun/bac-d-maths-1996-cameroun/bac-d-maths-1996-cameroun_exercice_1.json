@@ -1,0 +1,135 @@
+{
+  "epreuve_source": "bac-d-maths-1996-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 1996,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": 1,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 1 (4 points)**\\n\\nSoit $(U_n)_{n\\in\\mathbb{N}}$ la suite définie par $U_0=1$, $U_1=2$ et, pour tout entier naturel $n$ : $U_{n+2}=3U_{n+1}-2U_n$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Calculer $U_2,U_3,U_4,U_5$. Peut-on prévoir l'expression de $U_n$ en fonction de $n$ ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour calculer les termes d'une suite récurrente d'ordre 2 (chaque terme dépend des deux précédents), on applique la relation pas à pas en décalant l'indice à chaque étape.\\n\\n### Corrigé\\nOn applique $U_{n+2}=3U_{n+1}-2U_n$ successivement avec $n=0,1,2,3$ :\\n$$U_2=3U_1-2U_0=3\\times2-2\\times1=6-2=4.$$\\n$$U_3=3U_2-2U_1=3\\times4-2\\times2=12-4=8.$$\\n$$U_4=3U_3-2U_2=3\\times8-2\\times4=24-8=16.$$\\n$$U_5=3U_4-2U_3=3\\times16-2\\times8=48-16=32.$$\\n\\n**Prévision.** On obtient la liste $U_0=1,\\ U_1=2,\\ U_2=4,\\ U_3=8,\\ U_4=16,\\ U_5=32$ : chaque terme est le double du précédent, et chaque terme est une puissance de $2$ dont l'exposant coïncide avec l'indice. On peut donc conjecturer :\\n$$U_n=2^n\\qquad\\text{pour tout }n\\in\\mathbb{N}$$\\n(conjecture à confirmer rigoureusement dans la suite de l'exercice, une simple observation numérique ne constituant pas une démonstration).\\n\\n### Conseil\\nUne conjecture obtenue par observation des premiers termes doit toujours être démontrée ensuite (ici, via l'étude de la suite auxiliaire $(V_n)$) : ne jamais présenter une simple observation numérique comme une preuve définitive.",
+      "themes": [
+        "suite récurrente d'ordre 2",
+        "conjecture"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1996d-ex1-1",
+          "competence": "Calcul des termes d'une suite recurrente d'ordre 2 et conjecture",
+          "contenu_markdown": "Pour calculer les termes d'une suite récurrente d'ordre 2 (chaque terme dépend des deux précédents), on applique la relation pas à pas en décalant l'indice à chaque étape.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. Soit $(V_n)_{n\\in\\mathbb{N}}$ la suite définie par $\\forall n\\in\\mathbb{N},\\ V_n=U_{n+1}-U_n$. a) Calculer $V_0$. Montrer que $(V_n)$ est une suite géométrique.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une suite récurrente d'ordre 2, la suite des différences successives $V_n=U_{n+1}-U_n$ est souvent géométrique : on calcule $V_{n+1}$ à l'aide de la relation vérifiée par $(U_n)$ pour faire apparaître une relation $V_{n+1}=qV_n$.\\n\\n### Corrigé\\n**Calcul de $V_0$ :**\\n$$V_0=U_1-U_0=2-1=1.$$\\n\\n**$(V_n)$ est géométrique.** Pour tout entier naturel $n$ :\\n$$V_{n+1}=U_{n+2}-U_{n+1}.$$\\nOn remplace $U_{n+2}$ par $3U_{n+1}-2U_n$ (relation de récurrence donnée) :\\n$$V_{n+1}=\\big(3U_{n+1}-2U_n\\big)-U_{n+1}=2U_{n+1}-2U_n=2\\big(U_{n+1}-U_n\\big)=2V_n.$$\\nLa relation $V_{n+1}=2V_n$ est vérifiée pour tout entier naturel $n$, avec un coefficient $2$ indépendant de $n$ : $(V_n)_{n\\in\\mathbb{N}}$ est donc une suite géométrique de raison $q=2$ (et de premier terme $V_0=1$).",
+      "themes": [
+        "suite des différences",
+        "suite géométrique",
+        "démonstration"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1996d-ex1-2a",
+          "competence": "Demonstration qu'une suite de differences est geometrique",
+          "contenu_markdown": "Pour une suite récurrente d'ordre 2, la suite des différences successives $V_n=U_{n+1}-U_n$ est souvent géométrique : on calcule $V_{n+1}$ à l'aide de la relation vérifiée par $(U_n)$ pour faire apparaître une relation $V_{n+1}=qV_n$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "b) Exprimer $V_n$ en fonction de $n$.",
+      "corrige_markdown": "### Rappel de méthode\\nUne suite géométrique de premier terme $V_0$ et de raison $q$ vérifie $V_n=V_0q^n$ pour tout $n$.\\n\\n### Corrigé\\n$(V_n)$ étant géométrique de premier terme $V_0=1$ et de raison $q=2$ (question 2a), on a, pour tout $n\\in\\mathbb{N}$ :\\n$$V_n=V_0\\,q^n=1\\times2^n=2^n.$$",
+      "themes": [
+        "suite géométrique",
+        "expression du terme général"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1996d-ex1-2b",
+          "competence": "Expression du terme general d'une suite geometrique",
+          "contenu_markdown": "Une suite géométrique de premier terme $V_0$ et de raison $q$ vérifie $V_n=V_0q^n$ pour tout $n$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "c) En déduire l'expression de $U_n$ en fonction de $n$.",
+      "corrige_markdown": "### Rappel de méthode\\nQuand $V_n=U_{n+1}-U_n$ est connu explicitement, on retrouve $U_n$ en sommant ces différences par télescopage : $U_n=U_0+\\displaystyle\\sum_{k=0}^{n-1}V_k$.\\n\\n### Corrigé\\nPour $n\\geqslant1$, on écrit $U_n$ comme une somme télescopique de différences :\\n$$U_n=U_0+\\sum_{k=0}^{n-1}\\big(U_{k+1}-U_k\\big)=U_0+\\sum_{k=0}^{n-1}V_k.$$\\nD'après la question 2b), $V_k=2^k$, donc :\\n$$\\sum_{k=0}^{n-1}V_k=\\sum_{k=0}^{n-1}2^k=\\frac{2^n-1}{2-1}=2^n-1$$\\n(somme des $n$ premiers termes d'une suite géométrique de raison $2$ et de premier terme $1$). D'où :\\n$$U_n=U_0+\\big(2^n-1\\big)=1+2^n-1=2^n.$$\\nCette expression, établie pour $n\\geqslant1$, est aussi valable pour $n=0$ (on vérifie $2^0=1=U_0$). Donc, pour tout $n\\in\\mathbb{N}$ :\\n$$U_n=2^n.$$",
+      "themes": [
+        "somme télescopique",
+        "somme géométrique",
+        "expression du terme général"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1996d-ex1-2c",
+          "competence": "Reconstruction du terme general par telescopage a partir des differences",
+          "contenu_markdown": "Quand $V_n=U_{n+1}-U_n$ est connu explicitement, on retrouve $U_n$ en sommant ces différences par télescopage : $U_n=U_0+\\displaystyle\\sum_{k=0}^{n-1}V_k$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. La prévision faite en 1) est-elle confirmée ?",
+      "corrige_markdown": "### Rappel de méthode\\nConfirmer une conjecture consiste à vérifier qu'elle coïncide exactement avec le résultat obtenu par une démonstration rigoureuse indépendante.\\n\\n### Corrigé\\nLa prévision faite à la question 1 était $U_n=2^n$, obtenue par simple observation des premiers termes calculés. Le calcul rigoureux mené à la question 2 (suite auxiliaire $(V_n)$ géométrique, puis télescopage) aboutit exactement à :\\n$$U_n=2^n.$$\\nLa prévision faite en question 1 est donc **confirmée** par la démonstration.",
+      "themes": [
+        "confirmation d'une conjecture"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1996d-ex1-3",
+          "competence": "Confirmation d'une conjecture par un resultat demontre",
+          "contenu_markdown": "Confirmer une conjecture consiste à vérifier qu'elle coïncide exactement avec le résultat obtenu par une démonstration rigoureuse indépendante.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "suite récurrente d'ordre 2",
+    "suite des différences",
+    "suite géométrique",
+    "somme télescopique",
+    "conjecture",
+    "bac D Cameroun 1996"
+  ],
+  "incertitudes": [
+    "La relation de récurrence de l'énoncé source (rendu OCR dégradé) apparaît littéralement comme « U_{n+1} = 3U_{n+1} - 2U_n », ce qui est autoréférentiel et incohérent. Lecture retenue : « U_{n+2} = 3U_{n+1} - 2U_n » (décalage d'indice perdu à l'OCR, erreur récurrente sur ce type de document) - cette lecture est cohérente avec la définition de $(V_n)=U_{n+1}-U_n$ qui suit et avec le résultat final propre $U_n=2^n$."
+  ],
+  "statut": "corrige"
+}

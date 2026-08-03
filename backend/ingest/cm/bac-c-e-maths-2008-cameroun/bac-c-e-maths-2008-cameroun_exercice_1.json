@@ -1,0 +1,94 @@
+{
+  "epreuve_source": "bac-c-e-maths-2008-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2008",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "1",
+  "points": null,
+  "enonce_intro_markdown": "**Exercice 1**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Résoudre dans $\\mathbb{Z}^2$ l'équation : $12x-5y=3$.",
+      "corrige_markdown": "### Rappel de methode\nPour résoudre ax+by=c avec pgcd(a,b)=1, on cherche un couple particulier (souvent par tâtonnement raisonné ou Bézout), puis la solution générale est x=x0+bk, y=y0+ak, k entier relatif.\n\n### Corrige\n$(E):12x-5y=3$. $\\text{pgcd}(12,5)=1$ (divise $3$) : solutions existent.\n\n**Solution particulière** : $x_0=4,y_0=9$ convient ($12\\times4-5\\times9=48-45=3$).\n\n**Solution générale** : $12x-5y=3$ et $12x_0-5y_0=3\\Rightarrow12(x-x_0)=5(y-y_0)$. Comme $\\text{pgcd}(12,5)=1$, Gauss donne $5\\mid(x-x_0)$, soit $x-x_0=5k$, puis $y-y_0=12k$ :\n$$\\boxed{x=4+5k,\\quad y=9+12k,\\quad k\\in\\mathbb{Z}}$$",
+      "themes": [
+        "équation diophantienne",
+        "théorème de Gauss"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex1-0",
+          "competence": "Résolution générale d'une équation diophantienne",
+          "contenu_markdown": "Pour résoudre ax+by=c avec pgcd(a,b)=1, on cherche un couple particulier (souvent par tâtonnement raisonné ou Bézout), puis la solution générale est x=x0+bk, y=y0+ak, k entier relatif.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "2. On considère la suite de nombres complexes $Z_n$ définie par $Z_0=i$ et $Z_{n+1}=\\left(-\\dfrac{\\sqrt3}2+\\dfrac i2\\right)Z_n$ pour tout $n\\geq0$. On désigne par $M_n$ le point image de $Z_n$. (a) Démontrer par récurrence que pour tout entier naturel $n$, $Z_n=e^{i\\left(\\frac\\pi2+\\frac{5n\\pi}6\\right)}$.",
+      "corrige_markdown": "### Rappel de methode\nPour démontrer par récurrence qu'une suite complexe géométrique Z_{n+1}=r·Z_n vérifie Z_n=Z_0·r^n (écrit ici sous forme exponentielle), on vérifie l'initialisation puis on multiplie l'hypothèse de récurrence par r à l'étape n+1, en utilisant les règles d'addition des arguments des exponentielles complexes.\n\n### Corrige\n$Z_0=i=e^{i\\pi/2}$ et $Z_{n+1}=\\left(-\\dfrac{\\sqrt3}2+\\dfrac i2\\right)Z_n$. Le facteur $-\\dfrac{\\sqrt3}2+\\dfrac i2$ a pour module $1$ et pour argument $\\dfrac{5\\pi}6$ (car $\\cos\\frac{5\\pi}6=-\\frac{\\sqrt3}2,\\sin\\frac{5\\pi}6=\\frac12$), soit $e^{i5\\pi/6}$.\n\n**Initialisation** ($n=0$) : $Z_0=i=e^{i\\pi/2}=e^{i(\\pi/2+0)}$. Conforme à la formule pour $n=0$.\n\n**Hérédité** : supposons $Z_n=e^{i(\\pi/2+5n\\pi/6)}$. Alors :\n$$Z_{n+1}=e^{i5\\pi/6}\\times Z_n=e^{i5\\pi/6}\\times e^{i(\\pi/2+5n\\pi/6)}=e^{i\\left(\\pi/2+5n\\pi/6+5\\pi/6\\right)}=e^{i\\left(\\pi/2+5(n+1)\\pi/6\\right)}$$\n\nLa propriété est vraie au rang $n+1$. **Par récurrence, pour tout entier naturel $n$** :\n$$\\boxed{Z_n=e^{i\\left(\\frac\\pi2+\\frac{5n\\pi}6\\right)}}$$",
+      "themes": [
+        "récurrence",
+        "suite géométrique complexe",
+        "écriture exponentielle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex1-1",
+          "competence": "Récurrence sur une suite géométrique complexe en écriture exponentielle",
+          "contenu_markdown": "Pour démontrer par récurrence qu'une suite complexe géométrique Z_{n+1}=r·Z_n vérifie Z_n=Z_0·r^n (écrit ici sous forme exponentielle), on vérifie l'initialisation puis on multiplie l'hypothèse de récurrence par r à l'étape n+1, en utilisant les règles d'addition des arguments des exponentielles complexes.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "(b) Déterminer l'ensemble des entiers naturels $n$ pour lesquels $M_n$ appartient à la demi-droite $[Ox)$.",
+      "corrige_markdown": "### Rappel de methode\nUn point d'affixe e^{iθ} appartient à la demi-droite [Ox) si et seulement si θ≡0 (mod 2π).\n\n### Corrige\n$M_n\\in[Ox)\\iff\\arg(Z_n)\\equiv0\\,[2\\pi]\\iff\\dfrac\\pi2+\\dfrac{5n\\pi}6\\equiv0\\,[2\\pi]$.\n\nEn divisant par $\\pi$ : $\\dfrac12+\\dfrac{5n}6\\equiv0\\,[2]$. En multipliant par $6$ : $3+5n\\equiv0\\,[12]\\iff5n\\equiv-3\\,[12]\\iff5n\\equiv9\\,[12]$.\n\nComme $5\\times5=25\\equiv1\\,[12]$, $5$ est son propre inverse modulo $12$ : en multipliant par $5$ : $n\\equiv45\\equiv9\\,[12]$.\n\n**Conclusion** : $M_n\\in[Ox)$ si et seulement si $n\\equiv9\\,[12]$, c'est-à-dire :\n$$\\boxed{n=9+12p,\\quad p\\in\\mathbb{N}}$$",
+      "themes": [
+        "argument d'un nombre complexe",
+        "congruences"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2008-ex1-2",
+          "competence": "Condition d'appartenance à une demi-droite via l'argument modulo 2π",
+          "contenu_markdown": "Un point d'affixe e^{iθ} appartient à la demi-droite [Ox) si et seulement si θ≡0 (mod 2π).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "équation diophantienne",
+    "suite complexe géométrique",
+    "récurrence",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "barème non précisé",
+      "description": "Le PDF source (Douala Mathematical Society, dvipdfm/TeX) n'indique aucun barème par exercice ni par question. Le champ 'points' est donc laissé à null plutôt que d'inventer une pondération."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

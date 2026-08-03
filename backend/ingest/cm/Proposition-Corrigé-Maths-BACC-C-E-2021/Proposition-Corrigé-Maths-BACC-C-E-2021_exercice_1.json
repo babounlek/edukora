@@ -1,0 +1,163 @@
+{
+  "epreuve_source": "Proposition-Corrigé-Maths-BACC-C-E-2021",
+  "numero_exercice": "1",
+  "matiere": "Mathématiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2021",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "points": "5,25 (estimation d'après les annotations manuscrites du barème)",
+  "figures": [],
+  "enonce_intro_markdown": "## Exercice 1\n\nCet exercice comporte trois parties indépendantes : arithmétique dans $\\mathbb{Z}$ (Partie I), géométrie dans l'espace (Partie II) et nombres complexes (Partie III).",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "Démontrer que $(D)$ passe par au moins un point $M$ dont les coordonnées sont des entiers relatifs.",
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une droite d'équation $y = \\dfrac{c}{b}x - \\dfrac{d}{b}$ passe par un point à coordonnées entières, on la réécrit sous forme d'une équation diophantienne $ax - by = d$ (avec $a,b,d$ entiers). Une telle équation admet des solutions entières si et seulement si $\\mathrm{pgcd}(a,b)$ divise $d$ (théorème de Bézout). On détermine ensuite l'ensemble complet des solutions grâce au théorème de Gauss : si $a$ et $b$ sont premiers entre eux, $b$ divise $a(x-x_0)$ entraîne $b$ divise $x-x_0$.\n\n**1. Existence d'un point de $(D)$ à coordonnées entières**\n\nSoit $M(x,y)$ un point du plan.\n$$M \\in (D) \\iff y = \\frac{65}{16}x - \\frac{5}{16} \\iff 65x - 16y = 5.$$\n\nOn calcule $\\mathrm{pgcd}(65,16)$ par l'algorithme d'Euclide : $65 = 16 \\times 4 + 1$, donc $65 - 16\\times 4 = 1$, c'est-à-dire\n$$65 \\times 1 + 16 \\times (-4) = 1.$$\nD'après le théorème de Bézout, cette relation prouve que $\\mathrm{pgcd}(65,16) = 1$ : $65$ et $16$ sont premiers entre eux.\n\nComme $\\mathrm{pgcd}(65,16) = 1$ divise $5$, l'équation $65x - 16y = 5$ admet au moins une solution dans $\\mathbb{Z}^2$ (conséquence directe de Bézout). En multipliant la relation ci-dessus par $5$ :\n$$65 \\times 5 + 16 \\times (-20) = 5 \\iff 65\\times 5 - 16 \\times 20 = 5,$$\ndonc $M_0(5\\,;20)$ est un point de $(D)$ à coordonnées entières. Ainsi, $(D)$ passe par au moins un point à coordonnées entières relatives.\n\n### Piège à éviter\nBeaucoup d'élèves cherchent une solution particulière par tâtonnement direct sur $65x-16y=5$, ce qui fait perdre du temps. La méthode rapide consiste à repartir de l'identité de Bézout obtenue à l'étape de l'algorithme d'Euclide ($65\\times 1 - 16\\times 4 = 1$) et à la multiplier par le second membre de l'équation cible.",
+      "themes": [
+        "arithmétique dans Z",
+        "Bézout"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-Proposition-Corrigé-Maths-BACC-C-E-2021-ex1-0",
+          "competence": "Arithmétique dans Z (Bézout, Gauss, équations diophantiennes)",
+          "contenu_markdown": "Pour montrer qu'une droite d'équation $y = \\dfrac{c}{b}x - \\dfrac{d}{b}$ passe par un point à coordonnées entières, on la réécrit sous forme d'une équation diophantienne $ax - by = d$ (avec $a,b,d$ entiers). Une telle équation admet des solutions entières si et seulement si $\\mathrm{pgcd}(a,b)$ divise $d$ (théorème de Bézout). On détermine ensuite l'ensemble complet des solutions grâce au théorème de Gauss : si $a$ et $b$ sont premiers entre eux, $b$ divise $a(x-x_0)$ entraîne $b$ divise $x-x_0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.2",
+      "enonce_markdown": "Déterminer l'ensemble $E$ des points de $(D)$ à coordonnées entières.",
+      "corrige_markdown": "**2. Ensemble $E$ des points de $(D)$ à coordonnées entières**\n\nSoit $M(x,y) \\in E$, donc $65x - 16y = 5$. Comme $65\\times 5 - 16\\times 20 = 5$, on obtient par soustraction :\n$$65x - 16y = 65\\times 5 - 16 \\times 20 \\iff 65(x-5) = 16(y-20).$$\n\nAinsi $16$ divise $65(x-5)$. Or $16$ et $65$ sont premiers entre eux (question 1), donc d'après le théorème de Gauss, $16$ divise $x - 5$ : il existe $k \\in \\mathbb{Z}$ tel que\n$$x - 5 = 16k, \\quad \\text{c'est-à-dire } x = 5 + 16k.$$\n\nEn reportant dans $65(x-5) = 16(y-20)$ : $65 \\times 16k = 16(y-20)$, donc $y - 20 = 65k$, soit $y = 20 + 65k$.\n\nRéciproquement, pour tout $k \\in \\mathbb{Z}$, le point $M_k(5+16k\\,;\\,20+65k)$ vérifie $65(5+16k) - 16(20+65k) = 5 - 320+1040k... $ (vérification directe) $= 65\\times 5 - 16\\times 20 = 5$, donc $M_k \\in (D)$.\n\n$$\\boxed{E = \\{\\,M_k(5+16k\\,;\\,20+65k)\\ \\mid\\ k \\in \\mathbb{Z}\\,\\}}$$\n\n### Conseil\nRetiens la structure : dès qu'un théorème de Gauss te donne $x = x_0 + bk$, la seconde coordonnée s'obtient toujours en reportant dans l'équation de départ, jamais en la redéterminant indépendamment - cela évite une erreur de signe sur le coefficient devant $k$.",
+      "themes": [
+        "arithmétique dans Z",
+        "Gauss"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "I.3",
+      "enonce_markdown": "Déterminer, parmi les points de $E$, ceux dont les coordonnées sont des entiers compris entre $-126$ et $134$.",
+      "corrige_markdown": "**3. Points de $E$ à coordonnées comprises entre $-126$ et $134$**\n\nOn cherche les entiers $k$ tels que\n$$\\begin{cases} -126 \\le 5+16k \\le 134 \\\\ -126 \\le 20+65k \\le 134 \\end{cases}.$$\n\nPremière inégalité : $-126-5 \\le 16k \\le 134-5$, soit $-131 \\le 16k \\le 129$, c'est-à-dire $-\\dfrac{131}{16} \\le k \\le \\dfrac{129}{16}$, soit approximativement $-8{,}19 \\le k \\le 8{,}06$.\n\nDeuxième inégalité : $-126-20 \\le 65k \\le 134-20$, soit $-146 \\le 65k \\le 114$, c'est-à-dire $-\\dfrac{146}{65} \\le k \\le \\dfrac{114}{65}$, soit approximativement $-2{,}25 \\le k \\le 1{,}75$.\n\nL'intersection des deux conditions impose $-2{,}25 \\le k \\le 1{,}75$ (la deuxième inégalité est la plus restrictive), donc, $k$ étant entier :\n$$k \\in \\{-2\\,;-1\\,;0\\,;1\\}.$$\n\nLes points cherchés sont donc :\n- $k=-2$ : $M_{-2}(5-32\\,;\\,20-130) = M_{-2}(-27\\,;-110)$\n- $k=-1$ : $M_{-1}(5-16\\,;\\,20-65) = M_{-1}(-11\\,;-45)$\n- $k=0$ : $M_0(5\\,;20)$\n- $k=1$ : $M_1(21\\,;85)$\n\n### Piège à éviter\nIl faut bien combiner les **deux** systèmes d'inégalités (celui sur $x$ et celui sur $y$) et garder l'intersection, pas seulement l'un des deux : ici, c'est la contrainte sur $y$ qui est la plus restrictive et qui fixe l'intervalle final des valeurs de $k$.",
+      "themes": [
+        "arithmétique dans Z",
+        "inéquations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.1",
+      "enonce_markdown": "Déterminer une équation cartésienne du plan $(P)$ passant par $A$ et de vecteur normal $\\vec{n}$.",
+      "corrige_markdown": "### Rappel de méthode\nUn plan $(P)$ passant par un point $A$ et de vecteur normal $\\vec n$ est caractérisé par : $M \\in (P) \\iff \\overrightarrow{AM}\\cdot\\vec n = 0$. Pour la réflexion (symétrie orthogonale) par rapport à $(P)$, le principe est toujours le même : $M'$ est l'image de $M$ si et seulement si $\\overrightarrow{MM'}$ est colinéaire à $\\vec n$ (la droite $(MM')$ est perpendiculaire à $(P)$) et le milieu de $[MM']$ appartient à $(P)$.\n\n**1. Équation cartésienne de $(P)$**\n\nSoit $M(x,y,z)$ un point de l'espace. Avec $A(-2\\,;1\\,;1)$ et $\\vec n(1\\,;-2\\,;3)$ :\n$$\\overrightarrow{AM}\\begin{pmatrix} x+2\\\\ y-1\\\\ z-1\\end{pmatrix}.$$\n$$M \\in (P) \\iff \\overrightarrow{AM}\\cdot \\vec n = 0 \\iff 1(x+2) - 2(y-1) + 3(z-1) = 0 \\iff x - 2y + 3z + 1 = 0.$$\n\n$$\\boxed{(P) : x - 2y + 3z + 1 = 0}$$",
+      "themes": [
+        "géométrie dans l'espace",
+        "plan"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-Proposition-Corrigé-Maths-BACC-C-E-2021-ex1-1",
+          "competence": "Géométrie dans l'espace : plan défini par point et vecteur normal, réflexion",
+          "contenu_markdown": "Un plan $(P)$ passant par un point $A$ et de vecteur normal $\\vec n$ est caractérisé par : $M \\in (P) \\iff \\overrightarrow{AM}\\cdot\\vec n = 0$. Pour la réflexion (symétrie orthogonale) par rapport à $(P)$, le principe est toujours le même : $M'$ est l'image de $M$ si et seulement si $\\overrightarrow{MM'}$ est colinéaire à $\\vec n$ (la droite $(MM')$ est perpendiculaire à $(P)$) et le milieu de $[MM']$ appartient à $(P)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.2",
+      "enonce_markdown": "Donner une expression analytique de la réflexion $S_{(P)}$ (symétrie orthogonale par rapport au plan $(P)$).",
+      "corrige_markdown": "**2. Expression analytique de $S_{(P)}$**\n\nSoit $M(x,y,z)$ un point de l'espace et $M'(x',y',z')$ son image par $S_{(P)}$. Par définition de la réflexion :\n$$S_{(P)}(M) = M' \\iff \\begin{cases} \\overrightarrow{MM'} \\text{ et } \\vec n \\text{ colinéaires} \\\\ I \\in (P), \\text{ où } I \\text{ est le milieu de } [MM']\\end{cases}.$$\n\n**Colinéarité.** Il existe $\\lambda \\in \\mathbb{R}$ tel que $\\overrightarrow{MM'} = \\lambda \\vec n$, c'est-à-dire\n$$\\begin{cases} x' - x = \\lambda \\\\ y'-y = -2\\lambda \\\\ z'-z = 3\\lambda\\end{cases} \\iff \\begin{cases} x' = x+\\lambda \\\\ y'=y-2\\lambda \\\\ z'=z+3\\lambda\\end{cases}.$$\n\n**Milieu dans $(P)$.** $I\\left(\\dfrac{x+x'}{2}\\,;\\dfrac{y+y'}{2}\\,;\\dfrac{z+z'}{2}\\right)$, et $I \\in (P)$ s'écrit\n$$\\frac{x+x'}{2} - 2\\times\\frac{y+y'}{2} + 3\\times \\frac{z+z'}{2} + 1 = 0 \\iff (x+x') - 2(y+y') + 3(z+z') + 2 = 0.$$\n\nEn substituant $x' = x+\\lambda$, $y'=y-2\\lambda$, $z'=z+3\\lambda$ :\n$$(2x+\\lambda) - 2(2y-2\\lambda) + 3(2z+3\\lambda) + 2 = 0$$\n$$2x+\\lambda - 4y+4\\lambda + 6z+9\\lambda + 2 = 0$$\n$$2x - 4y + 6z + 2 + 14\\lambda = 0 \\implies \\lambda = -\\frac{1}{7}(2x-4y+6z+2) = \\frac{1}{7}(-2x+4y-6z-2).$$\n\nOn simplifie : $\\lambda = \\dfrac{-x+2y-3z-1}{7}$ (en divisant par $2$, cohérent avec $x-2y+3z+1=0$ étant l'équation de $(P)$).\n\nOn en déduit, en reportant $\\lambda$ dans les expressions de $x',y',z'$ :\n$$x' = x + \\lambda = x + \\frac{-x+2y-3z-1}{7} = \\frac{7x-x+2y-3z-1}{7} = \\frac{6x+2y-3z-1}{7}$$\n$$y' = y-2\\lambda = y - \\frac{2(-x+2y-3z-1)}{7} = \\frac{7y+2x-4y+6z+2}{7} = \\frac{2x+3y+6z+2}{7}$$\n$$z' = z+3\\lambda = z + \\frac{3(-x+2y-3z-1)}{7} = \\frac{7z-3x+6y-9z-3}{7} = \\frac{-3x+6y-2z-3}{7}$$\n\n$$\\boxed{S_{(P)} : \\begin{cases} x' = \\dfrac{1}{7}(6x+2y-3z-1) \\\\ y' = \\dfrac{1}{7}(2x+3y+6z+2) \\\\ z' = \\dfrac{1}{7}(-3x+6y-2z-3)\\end{cases}}$$\n\n### Conseil\nPour vérifier rapidement ce type de résultat le jour de l'épreuve : le point $A(-2,1,1)$, qui appartient à $(P)$, doit être invariant par $S_{(P)}$. En substituant $x=-2,y=1,z=1$ dans les formules ci-dessus, on doit retrouver $x'=-2,y'=1,z'=1$ - c'est un test de cohérence rapide, pas une démonstration, mais il permet de détecter une erreur de signe avant de rendre la copie.",
+      "themes": [
+        "géométrie dans l'espace",
+        "réflexion"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "III.1",
+      "enonce_markdown": "Déterminer la nature et les éléments caractéristiques de $g$.",
+      "corrige_markdown": "### Rappel de méthode\nUne transformation d'écriture complexe $z' = az+b$ (avec $a \\in \\mathbb{C}^*\\setminus\\{1\\}$) est une similitude directe de rapport $|a|$, d'angle $\\arg(a)$ et de centre $\\Omega$ d'affixe $\\omega$, où $\\omega$ est l'unique point invariant, solution de $\\omega = a\\omega+b$.\n\n**1. Nature et éléments caractéristiques de $g$**\n\nIci $a = \\dfrac{1+i}{2}$ et $b=1$, donc $g$ est une similitude directe.\n\n**Rapport et angle.** On écrit $a$ sous forme trigonométrique :\n$$a = \\frac{1+i}{2} = \\frac{1}{2}\\times \\sqrt2\\left(\\frac{\\sqrt2}{2} + i\\frac{\\sqrt2}{2}\\right) = \\frac{\\sqrt2}{2}\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right).$$\nDonc $|a| = \\dfrac{\\sqrt2}{2}$ et $\\arg(a) = \\dfrac{\\pi}{4}\\,[2\\pi]$.\n\n**Centre.** Le centre $\\Omega$, d'affixe $\\omega$, est le point invariant : $\\omega = a\\omega + b$, donc\n$$\\omega(1-a) = b \\iff \\omega = \\frac{1}{1-a} = \\frac{1}{1-\\frac{1+i}{2}} = \\frac{2}{2-(1+i)} = \\frac{2}{1-i} = \\frac{2(1+i)}{(1-i)(1+i)} = \\frac{2(1+i)}{2} = 1+i.$$\n\n$$\\boxed{g \\text{ est la similitude directe de centre } \\Omega(1+i),\\ \\text{de rapport } \\frac{\\sqrt2}{2}\\ \\text{et d'angle } \\frac{\\pi}{4}.}$$",
+      "themes": [
+        "nombres complexes",
+        "similitude directe"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-Proposition-Corrigé-Maths-BACC-C-E-2021-ex1-2",
+          "competence": "Nombres complexes : similitude directe (centre, rapport, angle)",
+          "contenu_markdown": "Une transformation d'écriture complexe $z' = az+b$ (avec $a \\in \\mathbb{C}^*\\setminus\\{1\\}$) est une similitude directe de rapport $|a|$, d'angle $\\arg(a)$ et de centre $\\Omega$ d'affixe $\\omega$, où $\\omega$ est l'unique point invariant, solution de $\\omega = a\\omega+b$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "III.2.a",
+      "enonce_markdown": "On note $\\Omega$ le point invariant de $g$, et $(A_n)$ la suite de points définie par un point $A_0$ et, pour tout entier naturel $n$, $A_{n+1} = g(A_n)$.\n\nMontrer que, pour tout entier naturel $n$, les points $\\Omega$, $A_n$ et $A_{n+4}$ sont alignés.",
+      "corrige_markdown": "**2.a. Alignement de $\\Omega$, $A_n$ et $A_{n+4}$**\n\nUne similitude directe conserve les angles orientés de vecteurs et $\\Omega$, son centre, est invariant par $g$. Comme $A_{n+1}=g(A_n)$ pour tout $n$, l'angle $(\\overrightarrow{\\Omega A_n},\\overrightarrow{\\Omega A_{n+1}})$ est constant et égal à l'angle de la similitude, $\\dfrac{\\pi}{4}\\,[2\\pi]$, pour tout $n$ (l'image par $g$ de $\\Omega A_n$ est $\\Omega A_{n+1}$, avec une rotation d'angle $\\pi/4$ autour de $\\Omega$).\n\nEn découpant l'angle $(\\overrightarrow{\\Omega A_n},\\overrightarrow{\\Omega A_{n+4}})$ en quatre angles consécutifs (relation de Chasles pour les angles orientés) :\n$$(\\overrightarrow{\\Omega A_n},\\overrightarrow{\\Omega A_{n+4}}) = (\\overrightarrow{\\Omega A_n},\\overrightarrow{\\Omega A_{n+1}}) + (\\overrightarrow{\\Omega A_{n+1}},\\overrightarrow{\\Omega A_{n+2}}) + (\\overrightarrow{\\Omega A_{n+2}},\\overrightarrow{\\Omega A_{n+3}}) + (\\overrightarrow{\\Omega A_{n+3}},\\overrightarrow{\\Omega A_{n+4}})$$\n$$= \\frac{\\pi}{4}+\\frac{\\pi}{4}+\\frac{\\pi}{4}+\\frac{\\pi}{4}\\ [2\\pi] = \\pi\\ [2\\pi].$$\n\nUn angle orienté égal à $\\pi\\,[2\\pi]$ signifie que les vecteurs $\\overrightarrow{\\Omega A_n}$ et $\\overrightarrow{\\Omega A_{n+4}}$ sont colinéaires de sens opposés : les points $\\Omega$, $A_n$ et $A_{n+4}$ sont donc alignés, pour tout entier naturel $n$.",
+      "themes": [
+        "nombres complexes",
+        "alignement"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "III.2.b",
+      "enonce_markdown": "On note $\\Omega$ le point invariant de $g$, et $(A_n)$ la suite de points définie par un point $A_0$ et, pour tout entier naturel $n$, $A_{n+1} = g(A_n)$.\n\nMontrer que, pour tout entier naturel $n$, le triangle $\\Omega A_n A_{n+1}$ est rectangle et isocèle en $\\Omega$.",
+      "corrige_markdown": "**2.b. Le triangle $\\Omega A_n A_{n+1}$ est rectangle et isocèle en $\\Omega$**\n\n*Première méthode (angles).* $\\Omega$ est invariant par $g$, qui envoie $A_{n-1}$ sur $A_n$ et $A_n$ sur $A_{n+1}$. Une similitude directe conservant les angles orientés, l'image par $g$ du couple $(A_{n-1},A_n)$ étant $(A_n,A_{n+1})$, on a pour tout $n\\ge 1$ :\n$$(\\overrightarrow{\\Omega A_{n+1}},\\overrightarrow{A_n A_{n+1}}) = (\\overrightarrow{\\Omega A_n},\\overrightarrow{A_{n-1}A_n}) = \\cdots = (\\overrightarrow{\\Omega A_1},\\overrightarrow{A_0A_1}).$$\nUn calcul sur les affixes (identique dans son principe à celui de la seconde méthode ci-dessous, appliqué à $n=0$) donne\n$$(\\overrightarrow{\\Omega A_1},\\overrightarrow{A_0A_1}) = \\arg\\left(\\frac{z_1-z_0}{z_1-\\omega}\\right) = \\arg\\left(\\frac1{-i}\\right) = \\arg(i) = \\frac{\\pi}{2}\\,[2\\pi].$$\nDonc, pour tout $n$, l'angle du triangle $\\Omega A_nA_{n+1}$ en $A_{n+1}$ vaut $\\dfrac{\\pi}{2}\\,[2\\pi]$ : le triangle est rectangle en $A_{n+1}$.\n\nDe plus, l'angle de la similitude $g$ donne, pour tout $n$, $(\\overrightarrow{\\Omega A_n},\\overrightarrow{\\Omega A_{n+1}}) = \\dfrac{\\pi}{4}\\,[2\\pi]$ : l'angle du triangle en $\\Omega$ vaut $\\dfrac{\\pi}{4}$. La somme des angles d'un triangle valant $\\pi$, l'angle restant, en $A_n$, vaut $\\pi - \\dfrac{\\pi}{2} - \\dfrac{\\pi}{4} = \\dfrac{\\pi}{4}$. Le triangle $\\Omega A_nA_{n+1}$ a donc deux angles égaux ($\\dfrac{\\pi}{4}$ en $\\Omega$ et en $A_n$) : il est isocèle, les côtés opposés à ces angles égaux ($A_nA_{n+1}$ et $\\Omega A_{n+1}$) étant de même longueur. Il est donc bien rectangle et isocèle en $A_{n+1}$.\n\n*Seconde méthode (calcul direct sur les affixes).* Pour tout $n$, en notant $z_n$ l'affixe de $A_n$ :\n$$\\frac{z_{n+1}-z_n}{z_{n+1}-\\omega} = \\frac{\\left(1+\\frac{1+i}{2}z_n\\right)-z_n}{\\left(1+\\frac{1+i}{2}z_n\\right)-(1+i)} = \\frac{1+\\frac{-1+i}{2}z_n}{\\frac{1+i}{2}z_n - i} = \\frac{i\\left(-i+\\frac{1+i}{2}z_n\\right)}{\\frac{1+i}{2}z_n-i} = i.$$\n\nOr $\\dfrac{z_{n+1}-z_n}{z_{n+1}-\\omega} = i = e^{i\\pi/2}$ signifie exactement que\n$$\\left|\\frac{z_{n+1}-z_n}{z_{n+1}-\\omega}\\right| = 1 \\iff \\Omega A_{n+1} = A_nA_{n+1}$$\n$$\\arg\\left(\\frac{z_{n+1}-z_n}{z_{n+1}-\\omega}\\right) = \\frac{\\pi}{2}\\,[2\\pi] \\iff (\\overrightarrow{\\Omega A_{n+1}},\\overrightarrow{A_nA_{n+1}}) = \\frac{\\pi}{2}\\,[2\\pi].$$\n\nLe triangle $\\Omega A_n A_{n+1}$ a donc un angle droit en $A_{n+1}$ et deux côtés adjacents à cet angle droit ($\\Omega A_{n+1}$ et $A_nA_{n+1}$) de même longueur : il est rectangle et isocèle en $A_{n+1}$, et ce pour tout entier naturel $n$.\n\n### Piège à éviter\nIl ne faut pas chercher l'angle droit au même sommet que l'angle de la similitude. L'angle de la similitude ($\\dfrac{\\pi}{4}$) se lit entre $\\overrightarrow{\\Omega A_n}$ et $\\overrightarrow{\\Omega A_{n+1}}$, donc **au sommet $\\Omega$**. L'angle droit, lui, se lit **au sommet $A_{n+1}$**, via l'argument du quotient $\\dfrac{z_{n+1}-z_n}{z_{n+1}-\\omega}$. Confondre les deux sommets conduit à annoncer un triangle rectangle en $\\Omega$, ce qui est faux.",
+      "themes": [
+        "nombres complexes",
+        "triangle rectangle isocèle"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "Bézout",
+    "Gauss",
+    "équation diophantienne",
+    "plan de l'espace",
+    "vecteur normal",
+    "réflexion plane",
+    "similitude directe",
+    "points alignés",
+    "triangle rectangle isocèle",
+    "BAC C E 2021"
+  ],
+  "incertitudes": [
+    "Le document source est une proposition de corrigé manuscrite et ne contient pas l'énoncé original sous forme séparée : enonce_markdown a été reconstruit à partir des données explicitement utilisées dans les calculs du corrigé (coordonnées de A, composantes de n, expression de g) ; aucune donnée n'a été inventée, mais la formulation exacte des consignes officielles peut différer légèrement de l'original.",
+    "Le calcul intermédiaire du corrigé source pour la question I.3 comportait une erreur d'arithmétique (borne -129 au lieu de -131 pour 16k), sans incidence sur le résultat final : elle a été corrigée silencieusement dans ce corrigé.",
+    "Le total de points (5,25) est une estimation obtenue en additionnant les annotations manuscrites au crayon rouge visibles sur la copie source ; ce n'est pas un barème officiel publié."
+  ],
+  "statut": "brouillon"
+}

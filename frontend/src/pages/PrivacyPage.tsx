@@ -36,7 +36,7 @@ export function PrivacyPage() {
         <ul>
           <li><strong>Numéro de téléphone</strong> : identifiant de compte, utilisé pour l'authentification par code à usage unique (aucun mot de passe n'est stocké).</li>
           <li><strong>Nom</strong> (optionnel) : si renseigné lors de l'inscription.</li>
-          <li><strong>Historique de lecture</strong> : quelles leçons/cours tu as consultés, pour afficher ta progression.</li>
+          <li><strong>Historique de lecture</strong> : quelles épreuves/cours tu as consultés, pour afficher ta progression.</li>
           <li><strong>Données de transaction</strong> : montant, statut et référence de chaque paiement d'abonnement, transmises par notre prestataire de paiement Mobile Money (CamPay). Nous ne recevons jamais tes identifiants Mobile Money eux-mêmes.</li>
         </ul>
         <p>Nous ne collectons pas d'adresse email et n'utilisons aujourd'hui aucun outil d'analyse ou de suivi publicitaire tiers.</p>
@@ -45,7 +45,7 @@ export function PrivacyPage() {
         <ul>
           <li>Te permettre de te connecter et de conserver ton accès aux contenus souscrits.</li>
           <li>Gérer ton abonnement (durée, cursus concerné, renouvellement).</li>
-          <li>T'afficher ta progression personnelle (leçons/cours déjà lus).</li>
+          <li>T'afficher ta progression personnelle (épreuves/cours déjà lus).</li>
           <li>Te répondre si tu contactes le support.</li>
         </ul>
 

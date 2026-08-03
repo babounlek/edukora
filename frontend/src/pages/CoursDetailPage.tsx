@@ -9,13 +9,12 @@ import { useSeo } from "@/lib/seo"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { LessonMarkdown } from "@/components/LessonMarkdown"
-import { useCountry } from "@/context/CountryContext"
+import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { CountryBadge } from "@/components/CountryBadge"
 import { coursListPath } from "@/lib/countryPath"
 
 export function CoursDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { country } = useCountry()
 
   const [cours, setCours] = useState<Cours | null>(null)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
@@ -52,7 +51,7 @@ export function CoursDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to={coursListPath(country)}
+        to={coursListPath(cours.subject.country.code.toLowerCase())}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
@@ -63,6 +62,7 @@ export function CoursDetailPage() {
         <div>
           <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{cours.titre}</h1>
           <div className="mt-3 flex flex-wrap gap-1.5">
+            <CountryBadge code={cours.subject.country.code} label={cours.subject.country.label} />
             <Badge variant="secondary">{cours.subject.label}</Badge>
             {cours.cursus.length > 0 ? (
               formatCursusGroups(cours.cursus).map((group) => (
@@ -102,8 +102,8 @@ export function CoursDetailPage() {
                     <Lock className="size-3.5 shrink-0" />
                     Aperçu - la méthode seulement
                   </div>
-                  <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display">
-                    <LessonMarkdown markdown={preview.preview_markdown} />
+                  <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                    <EpreuveMarkdown markdown={preview.preview_markdown} />
                   </article>
                 </>
               )}

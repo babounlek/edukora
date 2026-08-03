@@ -1,0 +1,180 @@
+[
+ {
+  "external_id": "cqc-projecteur-faible-0",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "On travaille dans $\\mathbb{R}^3$ muni de sa base canonique $(e_1,e_2,e_3)$.\n\nOn rappelle qu'un endomorphisme $u$ de $\\mathbb{R}^3$ est appelé **projecteur** lorsqu'il vérifie $u\\circ u=u$.\n\nLaquelle des quatre applications linéaires proposées est un projecteur de $\\mathbb{R}^3$ ?",
+  "corrige_markdown": "### Méthode\n\nPour chacune des applications, on calcule $u\\big(u(x\\,;\\,y\\,;\\,z)\\big)$ et on le compare à $u(x\\,;\\,y\\,;\\,z)$ — et non au triplet de départ $(x\\,;\\,y\\,;\\,z)$, ce qui reviendrait à tester $u\\circ u=\\mathrm{Id}$. Une seule des quatre applications vérifie $u\\circ u=u$.\n\n### Examen des quatre applications\n\n**$f(x\\,;\\,y\\,;\\,z)=(2x\\;;\\;0\\;;\\;z)$**\n\n$$(f\\circ f)(x\\,;\\,y\\,;\\,z)=f(2x\\,;\\,0\\,;\\,z)=(4x\\;;\\;0\\;;\\;z)$$\n\nOn a $4x\\neq 2x$ dès que $x\\neq 0$ : $f\\circ f\\neq f$. **$f$ n'est pas un projecteur.**\n\n**$g(x\\,;\\,y\\,;\\,z)=(x\\;;\\;-y\\;;\\;z)$**\n\n$$(g\\circ g)(x\\,;\\,y\\,;\\,z)=g(x\\,;\\,-y\\,;\\,z)=(x\\;;\\;y\\;;\\;z)$$\n\nDonc $g\\circ g=\\mathrm{Id}$ : $g$ est une **symétrie**, pas un projecteur (on aurait $g\\circ g=g$ seulement si $g=\\mathrm{Id}$, ce qui est faux car $g(e_2)=-e_2$).\n\n**$h(x\\,;\\,y\\,;\\,z)=(x+2y\\;;\\;0\\;;\\;z)$**\n\nPosons $X=x+2y$, $Y=0$, $Z=z$. Alors\n\n$$(h\\circ h)(x\\,;\\,y\\,;\\,z)=h(X\\,;\\,Y\\,;\\,Z)=(X+2Y\\;;\\;0\\;;\\;Z)=(x+2y+2\\times 0\\;;\\;0\\;;\\;z)=(x+2y\\;;\\;0\\;;\\;z)$$\n\nC'est exactement $h(x\\,;\\,y\\,;\\,z)$ : **$h\\circ h=h$, donc $h$ est un projecteur.**\n\n**$k(x\\,;\\,y\\,;\\,z)=(x+y\\;;\\;x+y\\;;\\;0)$**\n\n$$(k\\circ k)(x\\,;\\,y\\,;\\,z)=k(x+y\\,;\\,x+y\\,;\\,0)=\\big(2(x+y)\\;;\\;2(x+y)\\;;\\;0\\big)$$\n\nOn a $2(x+y)\\neq x+y$ dès que $x+y\\neq 0$ : **$k$ n'est pas un projecteur.**\n\n### Réponse\n\nLa bonne réponse est **C**.\n\n### Pour aller plus loin\n\nOn peut préciser la projection $h$ : son image est $\\mathrm{Im}\\,h=\\mathrm{Vect}(e_1,e_3)$, c'est-à-dire le plan d'équation $y=0$ (base de la projection) ; son noyau est donné par $x+2y=0$ et $z=0$, soit $\\ker h=\\mathrm{Vect}(-2e_1+e_2)$ (direction de la projection). On retrouve bien $\\dim\\mathrm{Im}\\,h+\\dim\\ker h=2+1=3$.\n\n### Piège à éviter\n\nConfondre $u\\circ u=u$ (projecteur) et $u\\circ u=\\mathrm{Id}$ (symétrie, ou involution) : la seconde relation caractérise une tout autre nature d'endomorphisme, et elle entraîne que $u$ est bijectif, alors qu'un projecteur autre que l'identité ne l'est jamais.",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "A",
+    "texte": "$f(x\\,;\\,y\\,;\\,z)=(2x\\;;\\;0\\;;\\;z)$"
+   },
+   {
+    "lettre": "B",
+    "texte": "$g(x\\,;\\,y\\,;\\,z)=(x\\;;\\;-y\\;;\\;z)$"
+   },
+   {
+    "lettre": "C",
+    "texte": "$h(x\\,;\\,y\\,;\\,z)=(x+2y\\;;\\;0\\;;\\;z)$"
+   },
+   {
+    "lettre": "D",
+    "texte": "$k(x\\,;\\,y\\,;\\,z)=(x+y\\;;\\;x+y\\;;\\;0)$"
+   }
+  ],
+  "reponse_correcte": "C",
+  "source_exercises": [
+   6517
+  ]
+ },
+ {
+  "external_id": "cqc-projecteur-faible-1",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "Le triplet $\\mathcal{B}=(e_1,e_2,e_3)$ est une base d'un espace vectoriel réel $E$ de dimension $3$. On note $p$ l'endomorphisme de $E$ dont la matrice dans $\\mathcal{B}$ s'écrit\n\n$$P=\\begin{pmatrix}2 & -1 & 0\\\\ 2 & -1 & 0\\\\ 6 & -3 & 0\\end{pmatrix}.$$\n\n1. Calculer $P^2$.\n2. En déduire que $p$ est un projecteur de $E$.\n3. Déterminer une base de $\\mathrm{Im}\\,p$ et une base de $\\ker p$, puis donner le rang de $p$.\n4. Comparer le rang de $p$ et la trace de $P$.",
+  "corrige_markdown": "### 1. Calcul de $P^2$\n\n$$P^2=\\begin{pmatrix}2 & -1 & 0\\\\ 2 & -1 & 0\\\\ 6 & -3 & 0\\end{pmatrix}\\times\\begin{pmatrix}2 & -1 & 0\\\\ 2 & -1 & 0\\\\ 6 & -3 & 0\\end{pmatrix}$$\n\nCoefficients de la première ligne :\n\n$$2\\times 2+(-1)\\times 2+0\\times 6=4-2=2,\\qquad 2\\times(-1)+(-1)\\times(-1)+0\\times(-3)=-2+1=-1,\\qquad 0$$\n\nDeuxième ligne (identique à la première dans $P$, donc même résultat) :\n\n$$2\\times 2+(-1)\\times 2=2,\\qquad 2\\times(-1)+(-1)\\times(-1)=-1,\\qquad 0$$\n\nTroisième ligne :\n\n$$6\\times 2+(-3)\\times 2+0\\times 6=12-6=6,\\qquad 6\\times(-1)+(-3)\\times(-1)+0\\times(-3)=-6+3=-3,\\qquad 0$$\n\nD'où\n\n$$P^2=\\begin{pmatrix}2 & -1 & 0\\\\ 2 & -1 & 0\\\\ 6 & -3 & 0\\end{pmatrix}=P.$$\n\n### 2. Nature de $p$\n\nLa matrice de $p\\circ p$ dans la base $\\mathcal{B}$ est $P^2$, et celle de $p$ est $P$. Comme $P^2=P$ et que l'application « endomorphisme $\\mapsto$ matrice dans $\\mathcal{B}$ » est injective, on en déduit\n\n$$p\\circ p=p.$$\n\n**$p$ est donc un projecteur de $E$.**\n\n### 3. Image et noyau\n\n**Image.** Les colonnes de $P$ donnent les images des vecteurs de base :\n\n$$p(e_1)=2e_1+2e_2+6e_3,\\qquad p(e_2)=-e_1-e_2-3e_3,\\qquad p(e_3)=\\vec 0.$$\n\nOn remarque que $p(e_1)=-2\\,p(e_2)$. Dans la famille génératrice $\\big(p(e_1),p(e_2),p(e_3)\\big)$, le troisième vecteur est nul et les deux premiers sont colinéaires entre eux : elle se réduit donc à un seul vecteur directeur, que l'on choisit de façon plus commode égal à\n\n$$w=e_1+e_2+3e_3\\qquad(\\text{car } p(e_1)=2w).$$\n\nAinsi $\\mathrm{Im}\\,p=\\mathrm{Vect}(w)$ : c'est une **droite vectorielle**, de base $(w)$ avec $w=e_1+e_2+3e_3$. Le **rang de $p$ vaut $1$**.\n\n*Contrôle* : $p(w)=p(e_1)+p(e_2)+3p(e_3)=(2e_1+2e_2+6e_3)+(-e_1-e_2-3e_3)+\\vec 0=e_1+e_2+3e_3=w$. Le vecteur $w$ est bien invariant par $p$, ce qui est attendu pour un vecteur de l'image d'un projecteur.\n\n**Noyau.** Soit $u=xe_1+ye_2+ze_3$. Alors $p(u)=\\vec 0$ équivaut au système\n\n$$\\begin{cases}2x-y=0\\\\ 2x-y=0\\\\ 6x-3y=0\\end{cases}$$\n\nLes trois équations se ramènent à la seule condition $y=2x$, la variable $z$ restant libre. Donc\n\n$$u=xe_1+2xe_2+ze_3=x(e_1+2e_2)+z\\,e_3.$$\n\n$$\\ker p=\\mathrm{Vect}(e_1+2e_2,\\;e_3),$$\n\nplan vectoriel de dimension $2$, de base $(e_1+2e_2,\\;e_3)$.\n\n*Contrôle par le théorème du rang* : $\\dim\\ker p+\\mathrm{rg}\\,p=2+1=3=\\dim E$. ✔\n\n### 4. Rang et trace\n\n$$\\mathrm{tr}(P)=2+(-1)+0=1=\\mathrm{rg}\\,p.$$\n\nOn retrouve la propriété générale : **pour un projecteur, la trace de la matrice est égale au rang**. Cela vient de ce que, dans une base adaptée à la décomposition $E=\\mathrm{Im}\\,p\\oplus\\ker p$, la matrice de $p$ est diagonale avec $\\mathrm{rg}\\,p$ coefficients égaux à $1$ et le reste nul, et que la trace ne dépend pas de la base choisie.\n\n### Piège à éviter\n\nNe pas conclure du fait que la troisième colonne de $P$ est nulle que $e_3$ « ne compte pas » : $e_3$ appartient au noyau, et c'est précisément ce qui fait que $p$ n'est pas bijectif. Un projecteur est bijectif si et seulement si c'est l'identité.",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6517
+  ]
+ },
+ {
+  "external_id": "cqc-projecteur-moyenne-0",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "On désigne par $E$ un espace vectoriel réel de dimension $3$, muni d'une base $\\mathcal{B}=(e_1,e_2,e_3)$.\n\nL'endomorphisme $p$ de $E$ est entièrement défini par les images des vecteurs de $\\mathcal{B}$ :\n\n$$p(e_1)=-e_1-e_2+e_3,\\qquad p(e_2)=2e_1+2e_2-e_3,\\qquad p(e_3)=e_3.$$\n\n1. Écrire la matrice $P$ de $p$ dans la base $\\mathcal{B}$, puis vérifier que $P^2=P$. Que peut-on en conclure sur $p$ ?\n2. Déterminer $\\ker p$ : en donner une base et la dimension.\n3. Déterminer $\\mathrm{Im}\\,p$ : en donner une base et une équation cartésienne dans la base $\\mathcal{B}$.\n4. Démontrer que $E=\\mathrm{Im}\\,p\\oplus\\ker p$, puis préciser la base et la direction de la projection $p$.",
+  "corrige_markdown": "### 1. Matrice de $p$ et idempotence\n\nLes coordonnées des images des vecteurs de base forment les colonnes :\n\n$$P=\\begin{pmatrix}-1 & 2 & 0\\\\ -1 & 2 & 0\\\\ 1 & -1 & 1\\end{pmatrix}.$$\n\nNotons $L_1=(-1\\;\\;2\\;\\;0)$, $L_2=(-1\\;\\;2\\;\\;0)$, $L_3=(1\\;\\;-1\\;\\;1)$ les lignes de $P$. La $i$-ième ligne de $P^2$ s'obtient comme combinaison linéaire des lignes de $P$ affectées des coefficients de la $i$-ième ligne de $P$.\n\n$$\\text{Ligne }1\\text{ de }P^2=(-1)L_1+2L_2+0\\,L_3=(1\\;\\;-2\\;\\;0)+(-2\\;\\;4\\;\\;0)=(-1\\;\\;2\\;\\;0)=L_1$$\n\n$$\\text{Ligne }2\\text{ de }P^2=(-1)L_1+2L_2+0\\,L_3=(-1\\;\\;2\\;\\;0)=L_2$$\n\n$$\\text{Ligne }3\\text{ de }P^2=1\\cdot L_1+(-1)L_2+1\\cdot L_3=(-1\\;\\;2\\;\\;0)+(1\\;\\;-2\\;\\;0)+(1\\;\\;-1\\;\\;1)=(1\\;\\;-1\\;\\;1)=L_3$$\n\nDonc $P^2=P$, et par conséquent $p\\circ p=p$ : **$p$ est un projecteur de $E$.**\n\n### 2. Noyau de $p$\n\nSoit $u=xe_1+ye_2+ze_3$. L'égalité $p(u)=\\vec 0$ s'écrit\n\n$$\\begin{cases}-x+2y=0\\\\ -x+2y=0\\\\ x-y+z=0\\end{cases}$$\n\nLa première équation donne $x=2y$ ; en reportant dans la troisième : $2y-y+z=0$, soit $z=-y$.\n\nAinsi $u=2y\\,e_1+y\\,e_2-y\\,e_3=y(2e_1+e_2-e_3)$ et\n\n$$\\ker p=\\mathrm{Vect}(v),\\qquad v=2e_1+e_2-e_3.$$\n\nC'est une **droite vectorielle**, de dimension $1$, de base $(v)$.\n\n*Vérification* : $p(v)=2p(e_1)+p(e_2)-p(e_3)=2(-e_1-e_2+e_3)+(2e_1+2e_2-e_3)-e_3=(-2+2)e_1+(-2+2)e_2+(2-1-1)e_3=\\vec 0$. ✔\n\n### 3. Image de $p$\n\nLe théorème du rang donne immédiatement $\\mathrm{rg}\\,p=3-1=2$ : $\\mathrm{Im}\\,p$ est un **plan vectoriel**.\n\nLa famille $\\big(p(e_1),p(e_2),p(e_3)\\big)$ engendre $\\mathrm{Im}\\,p$. On observe que\n\n$$p(e_1)+p(e_2)=(-e_1-e_2+e_3)+(2e_1+2e_2-e_3)=e_1+e_2.$$\n\nPosons $a=e_1+e_2$ et $b=e_3=p(e_3)$. Les vecteurs $a$ et $b$ appartiennent à $\\mathrm{Im}\\,p$ et sont manifestement non colinéaires ; comme $\\dim\\mathrm{Im}\\,p=2$, ils en forment une base :\n\n$$\\mathrm{Im}\\,p=\\mathrm{Vect}(e_1+e_2,\\;e_3).$$\n\n**Équation cartésienne.** Un vecteur $xe_1+ye_2+ze_3$ appartient à $\\mathrm{Vect}(e_1+e_2,e_3)$ si et seulement si $x=y$. Donc\n\n$$\\mathrm{Im}\\,p:\\;x-y=0.$$\n\n*Contrôle* : les trois colonnes de $P$ vérifient bien cette équation, puisque leurs deux premiers coefficients coïncident ($-1$ et $-1$ ; $2$ et $2$ ; $0$ et $0$). ✔\n\n*Second contrôle* : $p(a)=p(e_1)+p(e_2)=e_1+e_2=a$ et $p(b)=p(e_3)=e_3=b$. Les vecteurs de $\\mathrm{Im}\\,p$ sont invariants par $p$, propriété caractéristique des projecteurs. ✔\n\n### 4. Somme directe, base et direction\n\n**Intersection réduite au vecteur nul.** Le vecteur $v=2e_1+e_2-e_3$ ne vérifie pas $x-y=0$ (on a $x=2$ et $y=1$), donc $v\\notin\\mathrm{Im}\\,p$. Comme $\\ker p=\\mathrm{Vect}(v)$ est une droite, tout vecteur non nul de $\\ker p$ est un multiple non nul de $v$ et n'appartient donc pas non plus à $\\mathrm{Im}\\,p$. D'où\n\n$$\\mathrm{Im}\\,p\\cap\\ker p=\\{\\vec 0\\}.$$\n\n**Dimensions.** $\\dim\\mathrm{Im}\\,p+\\dim\\ker p=2+1=3=\\dim E$.\n\nLes deux conditions étant réunies, **$E=\\mathrm{Im}\\,p\\oplus\\ker p$.**\n\n**Conclusion géométrique.** $p$ est la **projection sur le plan vectoriel $\\mathrm{Im}\\,p$ d'équation $x-y=0$** (la base de la projection), **parallèlement à la droite vectorielle $\\ker p=\\mathrm{Vect}(2e_1+e_2-e_3)$** (la direction de la projection).\n\n### Piège à éviter\n\nIntervertir base et direction : la base d'une projection est son **image** (les vecteurs qu'elle laisse fixes), la direction est son **noyau** (les vecteurs qu'elle écrase). Une fois $\\ker p$ obtenu, il ne suffit pas d'affirmer la somme directe : il faut vérifier les deux points, intersection nulle **et** somme des dimensions égale à $\\dim E$.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6517
+  ]
+ },
+ {
+  "external_id": "cqc-projecteur-moyenne-1",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "$E$ désigne un espace vectoriel réel de dimension $3$ et $\\mathcal{B}=(e_1,e_2,e_3)$ une base de $E$. L'endomorphisme $p$ de $E$ a pour matrice dans $\\mathcal{B}$ :\n\n$$P=\\begin{pmatrix}0 & -1 & 1\\\\ -1 & 0 & 1\\\\ -1 & -1 & 2\\end{pmatrix}.$$\n\nOn admet que $P^2=P$, de sorte que $p$ est un projecteur de $E$.\n\nOn pose $q=\\mathrm{Id}_E-p$. On sait alors que $q$ est également un projecteur de $E$.\n\nLes équations proposées ci-après sont écrites dans les coordonnées relatives à la base $\\mathcal{B}$. Quel est le sous-espace vectoriel $\\mathrm{Im}\\,q$ ?",
+  "corrige_markdown": "### Étape 1 : $q$ est bien un projecteur\n\n$$q\\circ q=(\\mathrm{Id}-p)\\circ(\\mathrm{Id}-p)=\\mathrm{Id}-2p+p\\circ p=\\mathrm{Id}-2p+p=\\mathrm{Id}-p=q.$$\n\n(La simplification utilise $p\\circ p=p$ ; noter que $p$ commute avec $\\mathrm{Id}$, ce qui autorise le développement.)\n\n### Étape 2 : $\\mathrm{Im}\\,q=\\ker p$\n\n**Inclusion $\\mathrm{Im}\\,q\\subset\\ker p$.** Soit $w\\in\\mathrm{Im}\\,q$ : il existe $u\\in E$ tel que $w=q(u)=u-p(u)$. Alors\n\n$$p(w)=p(u)-p\\big(p(u)\\big)=p(u)-p(u)=\\vec 0,$$\n\ndonc $w\\in\\ker p$.\n\n**Inclusion $\\ker p\\subset\\mathrm{Im}\\,q$.** Soit $u\\in\\ker p$. Alors $q(u)=u-p(u)=u-\\vec 0=u$, donc $u$ est bien l'image d'un vecteur par $q$, c'est-à-dire $u\\in\\mathrm{Im}\\,q$.\n\nD'où l'égalité $\\mathrm{Im}\\,q=\\ker p$.\n\n### Étape 3 : calcul de $\\ker p$\n\nSoit $u=xe_1+ye_2+ze_3$. L'équation $p(u)=\\vec 0$ s'écrit\n\n$$\\begin{cases}-y+z=0\\\\ -x+z=0\\\\ -x-y+2z=0\\end{cases}$$\n\nLes deux premières équations donnent $y=z$ et $x=z$. La troisième est alors automatiquement satisfaite : $-z-z+2z=0$.\n\nDonc $u=z(e_1+e_2+e_3)$ et\n\n$$\\ker p=\\mathrm{Vect}(e_1+e_2+e_3).$$\n\n*Vérification directe* : la somme des trois colonnes de $P$ vaut $(0-1+1\\;;\\;-1+0+1\\;;\\;-1-1+2)=(0\\;;\\;0\\;;\\;0)$, ce qui confirme $p(e_1+e_2+e_3)=\\vec 0$. ✔\n\n### Réponse\n\n$$\\mathrm{Im}\\,q=\\ker p=\\mathrm{Vect}(e_1+e_2+e_3).$$\n\nLa bonne réponse est **D**.\n\n### Contrôle de cohérence\n\n$\\mathrm{tr}(P)=0+0+2=2$, donc $\\mathrm{rg}\\,p=2$ et $\\dim\\ker p=3-2=1$ : on attendait bien une droite vectorielle. Par ailleurs $\\mathrm{Im}\\,p$ est le plan d'équation $x+y-z=0$ : chacune des trois colonnes de $P$ satisfait cette équation. En notant $C_1=(0\\,;\\,-1\\,;\\,-1)$, $C_2=(-1\\,;\\,0\\,;\\,-1)$ et $C_3=(1\\,;\\,1\\,;\\,2)$, on obtient en effet $0-1+1=0$, puis $-1+0+1=0$, puis $1+1-2=0$. On a donc symétriquement $\\ker q=\\mathrm{Im}\\,p$.\n\n### Piège à éviter\n\nRépondre « le plan d'équation $x+y-z=0$ » revient à donner $\\mathrm{Im}\\,p$ au lieu de $\\mathrm{Im}\\,q$ : passer de $p$ à $\\mathrm{Id}-p$ **échange** exactement l'image et le noyau. Répondre « $E$ tout entier » suppose $q$ bijectif, ce qui est impossible pour un projecteur différent de l'identité.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "A",
+    "texte": "La droite vectorielle engendrée par $e_1+e_2-e_3$"
+   },
+   {
+    "lettre": "B",
+    "texte": "Le plan vectoriel d'équation $x+y-z=0$"
+   },
+   {
+    "lettre": "C",
+    "texte": "$E$ tout entier"
+   },
+   {
+    "lettre": "D",
+    "texte": "La droite vectorielle engendrée par $e_1+e_2+e_3$"
+   }
+  ],
+  "reponse_correcte": "D",
+  "source_exercises": [
+   6653
+  ]
+ },
+ {
+  "external_id": "cqc-projecteur-moyenne-2",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "On munit $\\mathbb{R}^3$ de sa base canonique et on considère l'application $p$ définie, pour tout triplet $(x\\,;\\,y\\,;\\,z)$ de $\\mathbb{R}^3$, par\n\n$$p(x\\,;\\,y\\,;\\,z)=(y-z\\;;\\;-2x+3y-2z\\;;\\;-2x+2y-z).$$\n\nOn admet que $p$ est un endomorphisme de $\\mathbb{R}^3$.\n\n1. Vérifier que $p\\circ p=p$.\n2. On pose $s=2p-\\mathrm{Id}$. Donner l'expression de $s(x\\,;\\,y\\,;\\,z)$, puis démontrer que $s\\circ s=\\mathrm{Id}$.\n3. Déterminer l'ensemble $F$ des vecteurs invariants par $s$, puis l'ensemble $G$ des vecteurs $u$ tels que $s(u)=-u$.\n4. En déduire la nature géométrique de $s$.",
+  "corrige_markdown": "### 1. $p$ est un projecteur\n\nPosons $X=y-z$, $Y=-2x+3y-2z$, $Z=-2x+2y-z$, de sorte que $p(x\\,;\\,y\\,;\\,z)=(X\\,;\\,Y\\,;\\,Z)$. Alors\n\n$$(p\\circ p)(x\\,;\\,y\\,;\\,z)=p(X\\,;\\,Y\\,;\\,Z)=(Y-Z\\;;\\;-2X+3Y-2Z\\;;\\;-2X+2Y-Z).$$\n\n**Première composante :**\n$$Y-Z=(-2x+3y-2z)-(-2x+2y-z)=y-z=X.$$\n\n**Deuxième composante :**\n$$-2X+3Y-2Z=-2(y-z)+3(-2x+3y-2z)-2(-2x+2y-z)$$\n$$=(-2y+2z)+(-6x+9y-6z)+(4x-4y+2z)$$\n$$=(-6+4)x+(-2+9-4)y+(2-6+2)z=-2x+3y-2z=Y.$$\n\n**Troisième composante :**\n$$-2X+2Y-Z=-2(y-z)+2(-2x+3y-2z)-(-2x+2y-z)$$\n$$=(-2y+2z)+(-4x+6y-4z)+(2x-2y+z)$$\n$$=(-4+2)x+(-2+6-2)y+(2-4+1)z=-2x+2y-z=Z.$$\n\nOn obtient donc $(p\\circ p)(x\\,;\\,y\\,;\\,z)=(X\\,;\\,Y\\,;\\,Z)=p(x\\,;\\,y\\,;\\,z)$ pour tout triplet, c'est-à-dire\n\n$$\\boxed{p\\circ p=p}$$\n\n**$p$ est un projecteur de $\\mathbb{R}^3$.**\n\n### 2. L'endomorphisme $s=2p-\\mathrm{Id}$\n\n$$s(x\\,;\\,y\\,;\\,z)=2\\,p(x\\,;\\,y\\,;\\,z)-(x\\,;\\,y\\,;\\,z)=\\big(2(y-z)-x\\;;\\;2(-2x+3y-2z)-y\\;;\\;2(-2x+2y-z)-z\\big)$$\n\n$$s(x\\,;\\,y\\,;\\,z)=(-x+2y-2z\\;;\\;-4x+5y-4z\\;;\\;-4x+4y-3z).$$\n\n**Calcul de $s\\circ s$.** On travaille directement sur les endomorphismes, en utilisant que $p$ et $\\mathrm{Id}$ commutent :\n\n$$s\\circ s=(2p-\\mathrm{Id})\\circ(2p-\\mathrm{Id})=4\\,p\\circ p-2p-2p+\\mathrm{Id}=4p-4p+\\mathrm{Id}=\\mathrm{Id},$$\n\nla simplification $p\\circ p=p$ étant celle établie à la question 1.\n\n$$\\boxed{s\\circ s=\\mathrm{Id}}$$\n\n$s$ est donc une **involution** : $s$ est bijectif et $s^{-1}=s$.\n\n### 3. Vecteurs invariants et vecteurs changés en leur opposé\n\n**Ensemble $F$ : $s(u)=u$.** Comme $s=2p-\\mathrm{Id}$,\n\n$$s(u)=u\\iff 2p(u)-u=u\\iff 2p(u)=2u\\iff p(u)=u.$$\n\nAvec $u=(x\\,;\\,y\\,;\\,z)$, la condition $p(u)=u$ s'écrit\n\n$$\\begin{cases}y-z=x\\\\ -2x+3y-2z=y\\\\ -2x+2y-z=z\\end{cases}\\iff\\begin{cases}x-y+z=0\\\\ -2x+2y-2z=0\\\\ -2x+2y-2z=0\\end{cases}$$\n\nLes trois équations se réduisent à la seule condition $x-y+z=0$. Donc\n\n$$F=\\{(x\\,;\\,y\\,;\\,z)\\in\\mathbb{R}^3\\;:\\;x-y+z=0\\},$$\n\nplan vectoriel dont une base est $\\big((1\\,;\\,1\\,;\\,0),(0\\,;\\,1\\,;\\,1)\\big)$.\n\nPuisque $F=\\{u\\;:\\;p(u)=u\\}$, on a aussi $F=\\mathrm{Im}\\,p$ : pour un projecteur, l'ensemble des vecteurs invariants est exactement l'image.\n\n**Ensemble $G$ : $s(u)=-u$.**\n\n$$s(u)=-u\\iff 2p(u)-u=-u\\iff 2p(u)=\\vec 0\\iff p(u)=\\vec 0.$$\n\nDonc $G=\\ker p$. Le système $p(u)=\\vec 0$ s'écrit\n\n$$\\begin{cases}y-z=0\\\\ -2x+3y-2z=0\\\\ -2x+2y-z=0\\end{cases}$$\n\nLa première équation donne $y=z$. En reportant dans la deuxième : $-2x+3y-2y=0$, soit $y=2x$. La troisième est alors vérifiée : $-2x+2(2x)-2x=0$. ✔\n\nAinsi $u=(x\\,;\\,2x\\,;\\,2x)=x(1\\,;\\,2\\,;\\,2)$ et\n\n$$G=\\ker p=\\mathrm{Vect}\\big((1\\,;\\,2\\,;\\,2)\\big),$$\n\ndroite vectorielle.\n\n*Vérification* : $p(1\\,;\\,2\\,;\\,2)=(2-2\\;;\\;-2+6-4\\;;\\;-2+4-2)=(0\\,;\\,0\\,;\\,0)$. ✔\n\n### 4. Nature géométrique de $s$\n\nLe vecteur $(1\\,;\\,2\\,;\\,2)$ ne vérifie pas $x-y+z=0$ (on trouve $1-2+2=1\\neq 0$), donc $F\\cap G=\\{\\vec 0\\}$ ; de plus $\\dim F+\\dim G=2+1=3$. Par conséquent\n\n$$\\mathbb{R}^3=F\\oplus G.$$\n\nTout vecteur $u$ s'écrit de façon unique $u=u_F+u_G$ avec $u_F\\in F$, $u_G\\in G$, et alors $s(u)=u_F-u_G$.\n\n**$s$ est la symétrie vectorielle par rapport au plan $F$ d'équation $x-y+z=0$, parallèlement à la droite $G=\\mathrm{Vect}\\big((1\\,;\\,2\\,;\\,2)\\big)$.**\n\n### Piège à éviter\n\nLa relation $s\\circ s=\\mathrm{Id}$ à elle seule ne suffit pas à décrire $s$ : elle dit que $s$ est une involution, mais pas *par rapport à quoi* ni *parallèlement à quoi*. Ce sont les ensembles $F$ et $G$ qui fournissent ces deux données. Enfin, ne pas écrire $s\\circ s=4p\\circ p-\\mathrm{Id}$ : le double produit $-2p-2p$ ne disparaît pas, c'est justement lui qui, avec $p\\circ p=p$, produit la simplification.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6653
+  ]
+ },
+ {
+  "external_id": "cqc-projecteur-elevee-0",
+  "theme": "projecteur",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   },
+   {
+    "examen": "bac",
+    "serie": "E"
+   }
+  ],
+  "enonce_markdown": "On note $E$ un espace vectoriel réel de dimension $3$ et $\\mathcal{B}=(e_1,e_2,e_3)$ l'une de ses bases. Deux endomorphismes $p$ et $q$ de $E$ sont donnés par leurs matrices dans $\\mathcal{B}$ :\n\n$$A=\\begin{pmatrix}1 & -1 & 1\\\\ 0 & 0 & 0\\\\ 0 & 0 & 0\\end{pmatrix}\\qquad\\text{et}\\qquad B=\\begin{pmatrix}0 & 1 & 1\\\\ 0 & 1 & 1\\\\ 0 & 0 & 0\\end{pmatrix}.$$\n\n1. Calculer $A^2$ et $B^2$. Qu'en conclut-on sur la nature de $p$ et de $q$ ?\n2. Calculer $AB$ et $BA$. Traduire ces deux résultats en termes de $p\\circ q$ et $q\\circ p$.\n3. On note $r=p+q$. Démontrer que $r$ est un projecteur de $E$, puis donner la trace et le rang de sa matrice.\n4. Déterminer $\\mathrm{Im}\\,p$, $\\mathrm{Im}\\,q$ et $\\mathrm{Im}\\,r$, puis établir que $\\mathrm{Im}\\,r=\\mathrm{Im}\\,p\\oplus\\mathrm{Im}\\,q$.\n5. Déterminer $\\ker r$ et vérifier que $E=\\mathrm{Im}\\,r\\oplus\\ker r$.",
+  "corrige_markdown": "### 1. $p$ et $q$ sont des projecteurs\n\n**Calcul de $A^2$.** Les deux dernières lignes de $A$ étant nulles, les deux dernières lignes de $A^2$ le sont aussi. Pour la première ligne, on combine les lignes $L_1=(1\\;\\;-1\\;\\;1)$, $L_2=L_3=(0\\;\\;0\\;\\;0)$ de $A$ avec les coefficients $1,-1,1$ :\n\n$$1\\cdot L_1+(-1)L_2+1\\cdot L_3=(1\\;\\;-1\\;\\;1).$$\n\n$$A^2=\\begin{pmatrix}1 & -1 & 1\\\\ 0 & 0 & 0\\\\ 0 & 0 & 0\\end{pmatrix}=A.$$\n\n**Calcul de $B^2$.** Notons $M_1=M_2=(0\\;\\;1\\;\\;1)$ et $M_3=(0\\;\\;0\\;\\;0)$ les lignes de $B$. La première ligne de $B^2$ vaut $0\\cdot M_1+1\\cdot M_2+1\\cdot M_3=(0\\;\\;1\\;\\;1)$ ; la deuxième, obtenue avec les mêmes coefficients, vaut également $(0\\;\\;1\\;\\;1)$ ; la troisième est nulle.\n\n$$B^2=\\begin{pmatrix}0 & 1 & 1\\\\ 0 & 1 & 1\\\\ 0 & 0 & 0\\end{pmatrix}=B.$$\n\nOn a donc $p\\circ p=p$ et $q\\circ q=q$ : **$p$ et $q$ sont deux projecteurs de $E$.**\n\n### 2. Produits croisés\n\n**Calcul de $AB$.** Seule la première ligne de $A$ est non nulle ; elle vaut $(1\\;\\;-1\\;\\;1)$, donc la première ligne de $AB$ est $1\\cdot M_1+(-1)M_2+1\\cdot M_3=(0\\;\\;1\\;\\;1)-(0\\;\\;1\\;\\;1)+(0\\;\\;0\\;\\;0)=(0\\;\\;0\\;\\;0)$. Les deux autres lignes sont nulles :\n\n$$AB=\\begin{pmatrix}0&0&0\\\\0&0&0\\\\0&0&0\\end{pmatrix}.$$\n\n**Calcul de $BA$.** Les lignes $1$ et $2$ de $B$ valent $(0\\;\\;1\\;\\;1)$ ; la ligne correspondante de $BA$ est $0\\cdot L_1+1\\cdot L_2+1\\cdot L_3=(0\\;\\;0\\;\\;0)$ puisque $L_2$ et $L_3$ sont nulles. La troisième ligne est nulle :\n\n$$BA=\\begin{pmatrix}0&0&0\\\\0&0&0\\\\0&0&0\\end{pmatrix}.$$\n\nOn en déduit\n\n$$p\\circ q=0_{\\mathcal{L}(E)}\\qquad\\text{et}\\qquad q\\circ p=0_{\\mathcal{L}(E)},$$\n\nc'est-à-dire que les deux composées sont l'endomorphisme nul. (Géométriquement : $\\mathrm{Im}\\,q\\subset\\ker p$ et $\\mathrm{Im}\\,p\\subset\\ker q$.)\n\n### 3. $r=p+q$ est un projecteur\n\nCalculons $r\\circ r$ en développant, ce qui est licite car la composition est distributive sur l'addition d'endomorphismes :\n\n$$r\\circ r=(p+q)\\circ(p+q)=p\\circ p+p\\circ q+q\\circ p+q\\circ q.$$\n\nD'après la question 1, $p\\circ p=p$ et $q\\circ q=q$ ; d'après la question 2, $p\\circ q=q\\circ p=0$. Donc\n\n$$r\\circ r=p+0+0+q=p+q=r.$$\n\n**$r$ est un projecteur de $E$.** Sa matrice dans $\\mathcal{B}$ est\n\n$$C=A+B=\\begin{pmatrix}1 & 0 & 2\\\\ 0 & 1 & 1\\\\ 0 & 0 & 0\\end{pmatrix}.$$\n\n*Vérification directe* : la première ligne de $C^2$ vaut $1\\cdot(1\\;\\;0\\;\\;2)+0\\cdot(0\\;\\;1\\;\\;1)+2\\cdot(0\\;\\;0\\;\\;0)=(1\\;\\;0\\;\\;2)$ ; la deuxième vaut $0\\cdot(1\\;\\;0\\;\\;2)+1\\cdot(0\\;\\;1\\;\\;1)+1\\cdot(0\\;\\;0\\;\\;0)=(0\\;\\;1\\;\\;1)$ ; la troisième est nulle. On retrouve $C^2=C$. ✔\n\n**Trace et rang.** $\\mathrm{tr}(C)=1+1+0=2$. Les deux premières colonnes de $C$ sont $e_1$ et $e_2$, non colinéaires, et la troisième vaut $2e_1+e_2$ : le rang est donc $2$.\n\n$$\\mathrm{tr}(C)=\\mathrm{rg}\\,r=2,$$\n\nconformément à la propriété générale « trace $=$ rang » pour un projecteur.\n\n### 4. Images\n\n**$\\mathrm{Im}\\,p$.** Les colonnes de $A$ sont $e_1$, $-e_1$, $e_1$ : elles engendrent la droite\n\n$$\\mathrm{Im}\\,p=\\mathrm{Vect}(e_1),\\qquad \\mathrm{rg}\\,p=1=\\mathrm{tr}(A).$$\n\n**$\\mathrm{Im}\\,q$.** Les colonnes de $B$ sont $\\vec 0$, $e_1+e_2$, $e_1+e_2$ :\n\n$$\\mathrm{Im}\\,q=\\mathrm{Vect}(e_1+e_2),\\qquad \\mathrm{rg}\\,q=1=\\mathrm{tr}(B).$$\n\n**$\\mathrm{Im}\\,r$.** Les colonnes de $C$ sont $e_1$, $e_2$, $2e_1+e_2$ ; les deux premières suffisent :\n\n$$\\mathrm{Im}\\,r=\\mathrm{Vect}(e_1,e_2),$$\n\nplan vectoriel d'équation $z=0$ dans la base $\\mathcal{B}$, conformément au rang $2$ trouvé à la question 3.\n\n**Somme directe.** Les vecteurs $e_1$ et $e_1+e_2$ ne sont pas colinéaires : une égalité $\\lambda e_1=e_1+e_2$ donnerait, en comparant les coordonnées sur $e_2$, $0=1$, ce qui est absurde. La famille $(e_1,\\;e_1+e_2)$ est donc libre, d'où $\\mathrm{Im}\\,p\\cap\\mathrm{Im}\\,q=\\{\\vec 0\\}$ et\n\n$$\\dim\\big(\\mathrm{Im}\\,p\\oplus\\mathrm{Im}\\,q\\big)=1+1=2.$$\n\nPar ailleurs $\\mathrm{Im}\\,p\\oplus\\mathrm{Im}\\,q=\\mathrm{Vect}(e_1,\\;e_1+e_2)=\\mathrm{Vect}(e_1,e_2)=\\mathrm{Im}\\,r$.\n\n$$\\mathrm{Im}\\,r=\\mathrm{Im}\\,p\\oplus\\mathrm{Im}\\,q.$$\n\n### 5. Noyau de $r$ et décomposition de $E$\n\nSoit $u=xe_1+ye_2+ze_3$. L'équation $r(u)=\\vec 0$ s'écrit\n\n$$\\begin{cases}x+2z=0\\\\ y+z=0\\\\ 0=0\\end{cases}\\iff\\begin{cases}x=-2z\\\\ y=-z\\end{cases}$$\n\nD'où $u=z(-2e_1-e_2+e_3)$ et\n\n$$\\ker r=\\mathrm{Vect}(2e_1+e_2-e_3),$$\n\ndroite vectorielle de dimension $1$ (on a changé le vecteur directeur de signe, ce qui est sans effet sur la droite engendrée).\n\n*Vérification* : $r(2e_1+e_2-e_3)$ a pour colonne de coordonnées $2\\begin{pmatrix}1\\\\0\\\\0\\end{pmatrix}+1\\begin{pmatrix}0\\\\1\\\\0\\end{pmatrix}-1\\begin{pmatrix}2\\\\1\\\\0\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\\\0\\end{pmatrix}$. ✔\n\n**Somme directe.** Le vecteur $2e_1+e_2-e_3$ a une troisième coordonnée égale à $-1\\neq 0$ : il n'appartient donc pas au plan $\\mathrm{Im}\\,r$ d'équation $z=0$. Comme $\\ker r$ est une droite, $\\mathrm{Im}\\,r\\cap\\ker r=\\{\\vec 0\\}$. De plus $\\dim\\mathrm{Im}\\,r+\\dim\\ker r=2+1=3=\\dim E$. Donc\n\n$$E=\\mathrm{Im}\\,r\\oplus\\ker r,$$\n\net $r$ est la projection sur le plan $\\mathrm{Vect}(e_1,e_2)$ parallèlement à la droite $\\mathrm{Vect}(2e_1+e_2-e_3)$.\n\n### Piège à éviter\n\nLa somme de deux projecteurs n'est **pas** un projecteur en général : le calcul de $(p+q)\\circ(p+q)$ fait apparaître les deux termes croisés $p\\circ q$ et $q\\circ p$, et c'est uniquement leur nullité simultanée qui permet de conclure. Prendre par exemple $p$ et $q$ tous deux égaux à un même projecteur non nul : $p+q=2p$ vérifie $(2p)\\circ(2p)=4p\\neq 2p$. La question 2 n'est donc pas une étape décorative, elle est l'hypothèse décisive de la question 3.",
+  "difficulte_estimee": "ELEVEE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6653
+  ]
+ }
+]

@@ -1,0 +1,125 @@
+{
+  "epreuve_source": "bac-c-maths-1987-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1987",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme-B",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème — Partie B**\\n\\nSoit $E$ un plan affine euclidien, d'espace vectoriel associé $V$. On munit $E$ du repère $(O,\\vec i,\\vec j)$. Soit $f$ l'application affine de $E$ qui, à tout point $M$ de coordonnées $(x,y)$, associe le point $M'$ de coordonnées $(x',y')$ telles que :\\n\\n$$x'=-\\frac35x+\\frac45y+\\frac45 \\qquad\\qquad y'=\\frac45x+\\frac35y-\\frac25$$\\n\\nOn considère l'ensemble $(H)$ des points du plan dont les coordonnées vérifient la relation $6x^2+4y^2-11xy-11x+8y-1=0$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "B.1) Déterminer la nature de $f$ et ses éléments caractéristiques.",
+      "corrige_markdown": "### Rappel de méthode\\nPour une application affine $f$ de partie linéaire de matrice $M$, on calcule $\\det M$ et $\\text{tr}\\,M$ : si $M^tM=I$ (matrice orthogonale) et $\\det M=-1$, la partie linéaire est une symétrie vectorielle orthogonale. On cherche ensuite les points fixes de $f$ (résolution de $f(M)=M$) : une droite entière de points fixes signale une symétrie orthogonale affine d'axe cette droite ; l'absence de point fixe signale une symétrie glissée.\\n\\n### Corrigé\\nLa partie linéaire de $f$ a pour matrice $M=\\begin{pmatrix}-\\frac35&\\frac45\\\\\\frac45&\\frac35\\end{pmatrix}$.\\n\\n**Caractère orthogonal.** Calculons $M^tM$ : $M^t=\\begin{pmatrix}-\\frac35&\\frac45\\\\\\frac45&\\frac35\\end{pmatrix}=M$ (la matrice est ici symétrique). Donc :\\n$$M^tM=M^2=\\begin{pmatrix}-\\frac35&\\frac45\\\\\\frac45&\\frac35\\end{pmatrix}\\begin{pmatrix}-\\frac35&\\frac45\\\\\\frac45&\\frac35\\end{pmatrix}=\\begin{pmatrix}\\frac9{25}+\\frac{16}{25} & -\\frac{12}{25}+\\frac{12}{25}\\\\ -\\frac{12}{25}+\\frac{12}{25} & \\frac{16}{25}+\\frac9{25}\\end{pmatrix}=\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}=I$$\\n\\n$M$ est donc **orthogonale**. Son déterminant vaut $\\det M=-\\dfrac35\\times\\dfrac35-\\dfrac45\\times\\dfrac45=-\\dfrac9{25}-\\dfrac{16}{25}=-\\dfrac{25}{25}=-1$, et sa trace vaut $\\text{tr}\\,M=-\\dfrac35+\\dfrac35=0$.\\n\\nUne matrice orthogonale de déterminant $-1$ et de trace $0$ a pour valeurs propres $1$ et $-1$ (car $M^2=I$ d'après le calcul ci-dessus, ses valeurs propres $\\lambda$ vérifient $\\lambda^2=1$ donc $\\lambda=\\pm1$, et $\\det M=-1$ impose que les deux valeurs propres soient de signes opposés, donc $\\{1,-1\\}$) : **la partie linéaire de $f$ est une symétrie vectorielle orthogonale** (réflexion).\\n\\n**Recherche des points fixes.** On résout $f(M)=M$, c'est-à-dire $x'=x$ et $y'=y$ :\\n$$\\begin{cases}x=-\\frac35x+\\frac45y+\\frac45\\\\ y=\\frac45x+\\frac35y-\\frac25\\end{cases} \\iff \\begin{cases}\\frac85x-\\frac45y=\\frac45\\\\ -\\frac45x+\\frac25y=-\\frac25\\end{cases}$$\\nEn multipliant la première équation par $5$ : $8x-4y=4$, soit $2x-y=1$. La seconde équation, multipliée par $5$ puis par $-2$, redonne : $-4x+2y=-2 \\iff 2x-y=1$ : **les deux équations sont équivalentes**, elles définissent une seule et même droite :\\n$$\\Delta : \\quad 2x-y-1=0 \\quad\\text{soit}\\quad y=2x-1$$\\n\\nL'ensemble des points fixes de $f$ est donc **toute la droite $\\Delta$** (et non un point isolé), ce qui signifie que $f$ est une **symétrie orthogonale affine d'axe $\\Delta$** (et non une symétrie glissée, qui elle n'aurait aucun point fixe).\\n\\n**Vérification que $\\Delta$ est bien dirigée par le vecteur propre associé à la valeur propre $1$.** Résolvons $M\\binom{x}{y}=\\binom{x}{y}$ : $-\\frac35x+\\frac45y=x \\iff -\\frac85x+\\frac45y=0 \\iff -8x+4y=0 \\iff y=2x$ : la direction propre associée à la valeur propre $1$ est $(1,2)$, exactement la direction de $\\Delta$ (droite $y=2x-1$, de pente $2$) : c'est cohérent, la droite des points fixes doit être dirigée par le sous-espace propre associé à la valeur propre $1$.\\n\\n**Conclusion : $f$ est la symétrie orthogonale (réflexion) d'axe $\\Delta\\ :\\ y=2x-1$.**\\n\\n### Piège à éviter\\nUn système de deux équations à deux inconnues qui semble sous-déterminé (donnant une droite au lieu d'un point unique) n'est pas une erreur de calcul : c'est le signe caractéristique d'une symétrie affine (par opposition à une symétrie glissée, qui n'a aucun point fixe, ou à une rotation d'angle non nul, qui n'a qu'un seul point fixe).",
+      "themes": [
+        "application affine",
+        "matrice orthogonale",
+        "points fixes",
+        "symétrie orthogonale"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-pB-1",
+          "competence": "Nature d'une application affine (symetrie orthogonale)",
+          "contenu_markdown": "Pour une application affine $f$ de partie linéaire de matrice $M$, on calcule $\\det M$ et $\\text{tr}\\,M$ : si $M^tM=I$ (matrice orthogonale) et $\\det M=-1$, la partie linéaire est une symétrie vectorielle orthogonale. On cherche ensuite les points fixes de $f$ (résolution de $f(M)=M$) : une droite entière de points fixes signale une symétrie orthogonale affine d'axe cette droite ; l'absence de point fixe signale une symétrie glissée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "B.2) Soit $z$ et $z'$ les affixes respectives des points $M$ et $M'$. Montrer qu'il existe deux complexes $p$ et $q$ tels que $z'=p\\bar z+q$, $p$ et $q$ indépendants de $z$ et $z'$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour trouver la forme complexe d'une transformation affine donnée par ses formules cartésiennes $x'=\\alpha x+\\beta y+\\gamma$, $y'=\\alpha' x+\\beta' y+\\gamma'$, on exprime $x$ et $y$ en fonction de $z=x+iy$ et $\\bar z=x-iy$ via $x=\\dfrac{z+\\bar z}{2}$ et $y=\\dfrac{z-\\bar z}{2i}$, puis on regroupe $z'=x'+iy'$ sous la forme $pz+q$ (similitude directe) ou $p\\bar z+q$ (similitude indirecte, ce qui est le cas ici puisque $\\det M=-1<0$).\\n\\n### Corrigé\\nPosons $z=x+iy$, de sorte que $x=\\dfrac{z+\\bar z}{2}$ et $y=\\dfrac{z-\\bar z}{2i}$.\\n\\nCalculons $z'=x'+iy'$ à partir des formules données :\\n$$z'=\\left(-\\frac35x+\\frac45y+\\frac45\\right)+i\\left(\\frac45x+\\frac35y-\\frac25\\right)$$\\n\\nRegroupons les termes en $x$ et en $y$ :\\n$$z'=\\left(-\\frac35+\\frac45i\\right)x+\\left(\\frac45+\\frac35i\\right)y+\\left(\\frac45-\\frac25i\\right)$$\\n\\nSubstituons $x=\\dfrac{z+\\bar z}{2}$ et $y=\\dfrac{z-\\bar z}{2i}$. Remarquons d'abord que $\\dfrac1{2i}=-\\dfrac{i}{2}$ (puisque $\\dfrac1i=-i$), donc $y=-\\dfrac{i}{2}(z-\\bar z)=-\\dfrac i2 z+\\dfrac i2\\bar z$.\\n\\n$$z'=\\left(-\\frac35+\\frac45i\\right)\\times\\frac{z+\\bar z}{2}+\\left(\\frac45+\\frac35i\\right)\\times\\left(-\\frac i2 z+\\frac i2\\bar z\\right)+\\left(\\frac45-\\frac25i\\right)$$\\n\\n**Coefficient de $z$** : $\\dfrac12\\left(-\\dfrac35+\\dfrac45i\\right)+\\left(-\\dfrac i2\\right)\\left(\\dfrac45+\\dfrac35i\\right)$\\n$$=\\left(-\\frac{3}{10}+\\frac{2}{5}i\\right)+\\left(-\\frac{4}{10}i-\\frac{3}{10}i^2\\right)=\\left(-\\frac{3}{10}+\\frac{2}{5}i\\right)+\\left(\\frac{3}{10}-\\frac{2}{5}i\\right)=0$$\\n(on a utilisé $i^2=-1$, donc $-\\frac{3}{10}i^2=\\frac{3}{10}$, et $-\\frac{4}{10}i=-\\frac25i$). **Le coefficient de $z$ est nul**, ce qui confirme que la formule ne peut pas s'écrire sous la forme $pz+q$ seule : il faut le terme en $\\bar z$.\\n\\n**Coefficient de $\\bar z$** : $\\dfrac12\\left(-\\dfrac35+\\dfrac45i\\right)+\\dfrac i2\\left(\\dfrac45+\\dfrac35i\\right)$\\n$$=\\left(-\\frac{3}{10}+\\frac{2}{5}i\\right)+\\left(\\frac{4}{10}i+\\frac{3}{10}i^2\\right)=\\left(-\\frac{3}{10}+\\frac{2}{5}i\\right)+\\left(-\\frac{3}{10}+\\frac25i\\right)=-\\frac{6}{10}+\\frac45i=-\\frac35+\\frac45i$$\\n\\nDonc $p=-\\dfrac35+\\dfrac45i$, et le terme constant est $q=\\dfrac45-\\dfrac25i$ (inchangé, il ne dépend pas de $z$).\\n\\n$$\\boxed{z'=\\left(-\\frac35+\\frac45i\\right)\\bar z+\\left(\\frac45-\\frac25i\\right)}$$\\n\\n**Vérification que $p,q$ sont bien indépendants de $z$ et $z'$** : $p$ et $q$ sont des constantes complexes fixes, obtenues uniquement à partir des coefficients numériques de $f$ ; elles ne dépendent ni de $z$ ni de $z'$, comme demandé.\\n\\n**Vérification numérique (contrôle indépendant) du module de $p$** : $|p|^2=\\left(-\\dfrac35\\right)^2+\\left(\\dfrac45\\right)^2=\\dfrac9{25}+\\dfrac{16}{25}=1$, donc $|p|=1$ : ceci confirme que $f$ est une **isométrie** (transformation du plan qui conserve les distances), cohérent avec le caractère orthogonal de sa partie linéaire établi à la question B.1.\\n\\n### Piège à éviter\\nOublier le conjugué $\\bar z$ est l'erreur la plus fréquente : une application de la forme $z'=pz+q$ (sans conjugaison) est toujours une **similitude directe** (qui conserve les angles orientés), alors qu'une réflexion — qui inverse l'orientation — s'écrit nécessairement avec $\\bar z$, jamais avec $z$ seul.",
+      "themes": [
+        "forme complexe d'une transformation",
+        "similitude indirecte",
+        "isométrie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-pB-2",
+          "competence": "Forme complexe d'une transformation affine du plan",
+          "contenu_markdown": "Pour trouver la forme complexe d'une transformation affine donnée par ses formules cartésiennes $x'=\\alpha x+\\beta y+\\gamma$, $y'=\\alpha' x+\\beta' y+\\gamma'$, on exprime $x$ et $y$ en fonction de $z=x+iy$ et $\\bar z=x-iy$ via $x=\\dfrac{z+\\bar z}{2}$ et $y=\\dfrac{z-\\bar z}{2i}$, puis on regroupe $z'=x'+iy'$ sous la forme $pz+q$ (similitude directe) ou $p\\bar z+q$ (similitude indirecte, ce qui est le cas ici puisque $\\det M=-1<0$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "B.3) a) Déterminer l'image $(H')$ de $(H)$ par $f$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour déterminer l'image $(H')$ d'une courbe $(H)$ par une transformation $f$ dont on connaît les formules $x'=\\varphi(x,y)$, $y'=\\psi(x,y)$, il faut exprimer $(x,y)$ en fonction de $(x',y')$ (c'est-à-dire inverser $f$), puis substituer dans l'équation de $(H)$. Lorsque $f$ est involutive ($f\\circ f=\\text{id}$, ce qui est le cas ici puisque $f$ est une symétrie orthogonale), $f^{-1}=f$ : on peut alors substituer directement les mêmes formules $x=\\varphi(x',y')$, $y=\\psi(x',y')$.\\n\\n### Corrigé\\n**$f$ est involutive.** Puisque $f$ est la symétrie orthogonale d'axe $\\Delta$ (question B.1), on a $f\\circ f=\\text{id}$ : appliquer $f$ deux fois de suite ramène tout point à sa position initiale. Ainsi $f^{-1}=f$, et les formules qui expriment $(x,y)$ en fonction de $(x',y')$ sont **les mêmes** que celles qui expriment $(x',y')$ en fonction de $(x,y)$ :\\n$$x=-\\frac35x'+\\frac45y'+\\frac45 \\qquad\\qquad y=\\frac45x'+\\frac35y'-\\frac25$$\\n\\n**Substitution dans l'équation de $(H)$.** Un point $M(x,y)\\in(H)$ a pour image $M'(x',y')=f(M)$. Comme $f$ est involutive, $M=f(M')$, donc les coordonnées $(x,y)$ de $M$ s'expriment en fonction de celles de $M'$ par les formules ci-dessus. En substituant dans $6x^2+4y^2-11xy-11x+8y-1=0$, on obtient l'équation vérifiée par $(x',y')$, c'est-à-dire l'équation de $(H')$.\\n\\nNotons, pour alléger l'écriture pendant le calcul, $X=x'$, $Y=y'$, de sorte que $x=-\\frac35X+\\frac45Y+\\frac45$ et $y=\\frac45X+\\frac35Y-\\frac25$.\\n\\n**Calcul de $x^2$** :\\n$$x^2=\\left(-\\frac35X+\\frac45Y+\\frac45\\right)^2$$\\nEn développant ce carré de trinôme (avec $u=-\\frac35X$, $v=\\frac45Y$, $w=\\frac45$, et $(u+v+w)^2=u^2+v^2+w^2+2uv+2uw+2vw$) :\\n$$x^2=\\frac9{25}X^2+\\frac{16}{25}Y^2+\\frac{16}{25}-\\frac{24}{25}XY-\\frac{24}{25}X+\\frac{32}{25}Y$$\\n\\n**Calcul de $y^2$** :\\n$$y^2=\\left(\\frac45X+\\frac35Y-\\frac25\\right)^2=\\frac{16}{25}X^2+\\frac9{25}Y^2+\\frac4{25}+\\frac{24}{25}XY-\\frac{16}{25}X-\\frac{12}{25}Y$$\\n\\n**Calcul de $xy$** :\\n$$xy=\\left(-\\frac35X+\\frac45Y+\\frac45\\right)\\left(\\frac45X+\\frac35Y-\\frac25\\right)$$\\n$$=-\\frac{12}{25}X^2-\\frac9{25}XY+\\frac6{25}X+\\frac{16}{25}XY+\\frac{12}{25}Y^2-\\frac8{25}Y+\\frac{16}{25}X+\\frac{12}{25}Y-\\frac8{25}$$\\n$$=-\\frac{12}{25}X^2+\\frac{12}{25}Y^2+\\frac7{25}XY+\\frac{22}{25}X+\\frac4{25}Y-\\frac8{25}$$\\n\\nOn forme maintenant $6x^2+4y^2-11xy-11x+8y-1$ en combinant ces trois expressions avec les coefficients $6$, $4$, $-11$, puis en ajoutant $-11x+8y-1$ où $x,y$ sont remplacés par leurs expressions en $X,Y$. Ce calcul, mené terme à terme (coefficients de $X^2$, $Y^2$, $XY$, $X$, $Y$, terme constant), donne après réduction complète :\\n$$6x^2+4y^2-11xy-11x+8y-1=10X^2-5XY-5X-5$$\\n\\n**Vérification indépendante par un point particulier.** Prenons un point de $(H)$ facile à tester : cherchons si $(x,y)=(0,0)$ appartient à $(H)$ : $6(0)+4(0)-11(0)-11(0)+8(0)-1=-1\\neq0$, donc $O\\notin(H)$ ; ce point ne sert donc pas de test direct. Prenons plutôt un point de la droite $\\Delta$ (axe de la symétrie, donc fixe par $f$) : le point $\\Omega'=(0,-1)$ vérifie $2\\times0-(-1)-1=0$, donc $\\Omega'\\in\\Delta$, et $f(\\Omega')=\\Omega'$. Si $\\Omega'\\in(H)$, alors on doit avoir $\\Omega'\\in(H')$ également (un point fixe de $f$ appartenant à $(H)$ doit appartenir à son image $(H')$). Test sur $(H)$ : $6(0)^2+4(-1)^2-11(0)(-1)-11(0)+8(-1)-1=0+4-0-0-8-1=-5\\neq0$ : $\\Omega'\\notin(H)$, ce test ne s'applique donc pas ici, mais la méthode de substitution reste valable et indépendante de ce point particulier.\\n\\n**Équation de $(H')$** (en remplaçant $X=x'$, $Y=y'$, puis en renommant $x'\\to x$, $y'\\to y$ pour l'écriture finale, et en divisant par $5$ le facteur commun) :\\n$$10x^2-5xy-5x-5=0 \\iff 2x^2-xy-x-1=0$$\\n\\n$$\\boxed{(H')\\ :\\quad 2x^2-xy-x-1=0}$$\\n\\n### Piège à éviter\\nNe pas chercher à inverser explicitement le système $x'=\\ldots$, $y'=\\ldots$ par la méthode générale (calcul de matrice inverse) : puisque $f$ est une symétrie ($f\\circ f=\\text{id}$), $f$ est sa propre réciproque, ce qui **économise tout le travail d'inversion**.",
+      "themes": [
+        "image d'une courbe par une transformation",
+        "involution",
+        "substitution"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-pB-3a",
+          "competence": "Image d'une courbe par une transformation involutive",
+          "contenu_markdown": "Pour déterminer l'image $(H')$ d'une courbe $(H)$ par une transformation $f$ dont on connaît les formules $x'=\\varphi(x,y)$, $y'=\\psi(x,y)$, il faut exprimer $(x,y)$ en fonction de $(x',y')$ (c'est-à-dire inverser $f$), puis substituer dans l'équation de $(H)$. Lorsque $f$ est involutive ($f\\circ f=\\text{id}$, ce qui est le cas ici puisque $f$ est une symétrie orthogonale), $f^{-1}=f$ : on peut alors substituer directement les mêmes formules $x=\\varphi(x',y')$, $y=\\psi(x',y')$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "B.3) b) Montrer qu'une équation de $(H')$ peut s'écrire sous la forme $y=g(x)$. Construire $(H')$. Quelle est la nature de $(H)$ ?",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une conique $Ax^2+Bxy+Cy^2+Dx+Ey+F=0$ (avec $C=0$ ici) peut s'écrire $y=g(x)$, il suffit d'isoler $y$ algébriquement. La nature d'une conique (ellipse/parabole/hyperbole) est invariante par isométrie : deux courbes isométriques ont la même nature ; on peut donc la lire indifféremment sur $(H)$ ou sur $(H')$, via le signe du discriminant $B^2-4AC$ de la partie quadratique ($>0$ : hyperbole, $=0$ : parabole, $<0$ : ellipse), à condition de vérifier que la conique n'est pas dégénérée.\\n\\n### Corrigé\\n**Forme $y=g(x)$.** Reprenons l'équation de $(H')$ trouvée en B.3.a : $2x^2-xy-x-1=0$. Isolons le terme en $y$ :\\n$$-xy=-2x^2+x+1 \\iff xy=2x^2-x-1$$\\n\\nSi $x=0$, l'équation $2x^2-xy-x-1=0$ donne $-1=0$, ce qui est faux : **aucun point de $(H')$ n'a pour abscisse $0$**. On peut donc diviser par $x$ sans restriction supplémentaire sur $(H')$ :\\n$$y=\\frac{2x^2-x-1}{x}=\\frac{2x^2}{x}-\\frac{x}{x}-\\frac1x=2x-1-\\frac1x$$\\n\\n$$\\boxed{(H')\\ :\\quad y=g(x)=2x-1-\\frac1x \\qquad (x\\neq0)}$$\\n\\n**Construction de $(H')$.**\\n- *Asymptote verticale* : $x=0$, car $\\displaystyle\\lim_{x\\to0^-}g(x)=+\\infty$ et $\\displaystyle\\lim_{x\\to0^+}g(x)=-\\infty$ (le terme $-\\frac1x$ domine près de $0$).\\n- *Asymptote oblique* : en écrivant $g(x)-(2x-1)=-\\dfrac1x$, on a $\\displaystyle\\lim_{x\\to\\pm\\infty}\\left[g(x)-(2x-1)\\right]=\\lim_{x\\to\\pm\\infty}\\left(-\\frac1x\\right)=0$ : la droite $y=2x-1$ est **asymptote oblique** en $+\\infty$ et en $-\\infty$.\\n- *Position par rapport à l'asymptote oblique* : pour $x<0$, $-\\dfrac1x>0$ donc $(H')$ est au-dessus de $y=2x-1$ ; pour $x>0$, $-\\dfrac1x<0$ donc $(H')$ est en dessous.\\n- *Variations* : $g'(x)=2+\\dfrac1{x^2}$. Comme $\\dfrac1{x^2}>0$ pour tout $x\\neq0$, on a $g'(x)>2>0$ : **$g$ est strictement croissante sur $]-\\infty,0[$ et sur $]0,+\\infty[$** (séparément, car $x=0$ n'appartient pas au domaine).\\n- *Point remarquable* : le centre de symétrie de $(H')$ est le point d'intersection des deux asymptotes $x=0$ et $y=2x-1$, soit le point $(0,-1)$.\\n\\nOn trace donc : l'asymptote verticale $x=0$, l'asymptote oblique $y=2x-1$, puis les deux branches de $(H')$ (croissantes, l'une dans le \"cadran\" au-dessus-à-gauche des asymptotes pour $x<0$, l'autre en dessous-à-droite pour $x>0$), chacune se rapprochant des deux asymptotes sans les atteindre.\\n\\n**Nature de $(H)$.** L'équation de $(H')$, $2x^2-xy-x-1=0$, est de la forme $Ax^2+Bxy+Cy^2+Dx+Ey+F=0$ avec $A=2$, $B=-1$, $C=0$, $D=-1$, $E=0$, $F=-1$. Le discriminant de sa partie quadratique vaut :\\n$$B^2-4AC=(-1)^2-4\\times2\\times0=1>0$$\\nUn discriminant strictement positif caractérise une conique de **type hyperbole** (à condition qu'elle ne soit pas dégénérée, ce qui est bien le cas ici puisque $(H')$ admet deux asymptotes distinctes et sécantes, comme on vient de le voir).\\n\\nOr $f$ est une **isométrie** (établi à la question B.2, $|p|=1$) : une isométrie conserve la nature d'une conique (elle transforme une hyperbole en hyperbole, une ellipse en ellipse, une parabole en parabole), car elle conserve les distances et donc la définition métrique de chaque type de conique. Puisque $(H')=f\\big((H)\\big)$ est une hyperbole, **$(H)$ est donc également une hyperbole**.\\n\\n**Vérification indépendante directement sur $(H)$.** L'équation de $(H)$, $6x^2-11xy+4y^2-11x+8y-1=0$, a pour discriminant quadratique $B^2-4AC=(-11)^2-4\\times6\\times4=121-96=25>0$ : ceci confirme, **indépendamment** du passage par $(H')$, que $(H)$ est bien de type hyperbole.\\n\\n### Piège à éviter\\nNe pas conclure à une conique dégénérée (paire de droites) uniquement à partir du signe du discriminant $B^2-4AC$ : ce signe donne le **type** (hyperbole si $>0$), mais il faut en plus vérifier que la conique ne se factorise pas en produit de deux équations de droites (ici, l'existence de deux asymptotes distinctes et sécantes suffit à l'écarter).\\n\\n### Conseil\\nLorsqu'une transformation est une isométrie, il est presque toujours plus rapide de déterminer la nature d'une conique sur la version « la plus simple » des deux courbes isométriques (ici $(H')$, sans terme en $y^2$) plutôt que sur l'équation complète d'origine.",
+      "themes": [
+        "conique",
+        "hyperbole",
+        "asymptotes",
+        "nature d'une conique",
+        "isométrie"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1987-pB-3b",
+          "competence": "Forme y=g(x) d'une conique et determination de sa nature",
+          "contenu_markdown": "Pour montrer qu'une conique $Ax^2+Bxy+Cy^2+Dx+Ey+F=0$ (avec $C=0$ ici) peut s'écrire $y=g(x)$, il suffit d'isoler $y$ algébriquement. La nature d'une conique (ellipse/parabole/hyperbole) est invariante par isométrie : deux courbes isométriques ont la même nature ; on peut donc la lire indifféremment sur $(H)$ ou sur $(H')$, via le signe du discriminant $B^2-4AC$ de la partie quadratique ($>0$ : hyperbole, $=0$ : parabole, $<0$ : ellipse), à condition de vérifier que la conique n'est pas dégénérée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "application affine",
+    "isométrie",
+    "symétrie orthogonale",
+    "forme complexe",
+    "conique",
+    "hyperbole",
+    "transformation d'une courbe",
+    "involution"
+  ],
+  "incertitudes": [
+    {
+      "type": "correction de transcription mineure",
+      "description": "Le scan source affiche « $z'=pz+q$ » sans indiquer explicitement la conjugaison (le symbole de conjugaison sur $z$, illisible sur la numérisation, a été rétabli en $z'=p\\bar z+q$) : c'est la seule forme cohérente avec une application $f$ dont la partie linéaire est une matrice orthogonale de déterminant $-1$ (une similitude directe donnerait $z'=pz+q$ sans conjugaison, mais son déterminant serait $|p|^2>0$, incompatible avec le déterminant $-1$ trouvé à la question B.1)."
+    }
+  ],
+  "statut": "brouillon"
+}

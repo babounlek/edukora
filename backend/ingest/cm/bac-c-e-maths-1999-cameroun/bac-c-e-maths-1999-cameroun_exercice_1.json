@@ -1,0 +1,81 @@
+{
+  "epreuve_source": "bac-c-e-maths-1999-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1999",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C)/6(E)",
+  "figures": [],
+  "numero_exercice": "1",
+  "points": "3",
+  "enonce_intro_markdown": "**Exercice 1 (3 points)**\n\nPour tout entier naturel non nul $n$, on pose $A_n=3^{2n}-2^n$ et $B_n=3^{2n+1}+2^{n+2}$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "1. Démontrer par récurrence que : (a) $A_n$ est multiple de 7, où $A_n=3^{2n}-2^n$ pour tout entier naturel non nul $n$.",
+      "corrige_markdown": "### Rappel de methode\nPour démontrer par récurrence qu'une propriété $P(n)$ est vraie pour tout entier $n\\geq n_0$, on établit l'initialisation ($P(n_0)$ vraie), puis l'hérédité (si $P(k)$ est vraie, alors $P(k+1)$ l'est aussi), en général en faisant apparaître le terme de rang $k$ dans l'expression du terme de rang $k+1$ par une combinaison linéaire bien choisie.\n\n### Corrige\nSoit $P(n)$ : « $A_n=3^{2n}-2^n$ est multiple de $7$ ».\n\n**Initialisation.** Pour $n=1$ : $A_1=3^2-2^1=9-2=7=7\\times1$, multiple de $7$. $P(1)$ est vraie.\n\n**Hérédité.** Supposons $P(k)$ vraie pour un entier $k\\geq1$, c'est-à-dire qu'il existe un entier $q$ tel que $A_k=3^{2k}-2^k=7q$. Montrons que $P(k+1)$ est vraie.\n\n$$A_{k+1}=3^{2k+2}-2^{k+1}=9\\times3^{2k}-2\\times2^k$$\n\nOn fait apparaître $A_k$ :\n$$A_{k+1}=9\\times3^{2k}-9\\times2^k+9\\times2^k-2\\times2^k=9(3^{2k}-2^k)+7\\times2^k=9A_k+7\\times2^k$$\n\n$$A_{k+1}=9\\times7q+7\\times2^k=7(9q+2^k)$$\n\nComme $9q+2^k$ est un entier, $A_{k+1}$ est multiple de $7$ : $P(k+1)$ est vraie.\n\n**Conclusion.** $P(1)$ est vraie et $P(k)\\Rightarrow P(k+1)$ pour tout $k\\geq1$ : par le principe de récurrence, $A_n=3^{2n}-2^n$ est multiple de $7$ pour tout entier naturel non nul $n$.",
+      "themes": [
+        "récurrence",
+        "divisibilité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac1999-ex1-0",
+          "competence": "Principe de démonstration par récurrence",
+          "contenu_markdown": "Pour démontrer par récurrence qu'une propriété $P(n)$ est vraie pour tout entier $n\\geq n_0$, on établit l'initialisation ($P(n_0)$ vraie), puis l'hérédité (si $P(k)$ est vraie, alors $P(k+1)$ l'est aussi), en général en faisant apparaître le terme de rang $k$ dans l'expression du terme de rang $k+1$ par une combinaison linéaire bien choisie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "(b) $B_n$ est multiple de 7, où $B_n=3^{2n+1}+2^{n+2}$.",
+      "corrige_markdown": "### Corrige\nSoit $P'(n)$ : « $B_n=3^{2n+1}+2^{n+2}$ est multiple de $7$ ».\n\n**Initialisation.** Pour $n=1$ : $B_1=3^3+2^3=27+8=35=7\\times5$, multiple de $7$. $P'(1)$ est vraie.\n\n**Hérédité.** Supposons $P'(k)$ vraie, c'est-à-dire $B_k=3^{2k+1}+2^{k+2}=7m$ pour un entier $m$. Montrons que $P'(k+1)$ est vraie.\n\n$$B_{k+1}=3^{2k+3}+2^{k+3}=9\\times3^{2k+1}+2\\times2^{k+2}$$\n\nOn fait apparaître $B_k$ :\n$$B_{k+1}=9\\times3^{2k+1}+9\\times2^{k+2}-9\\times2^{k+2}+2\\times2^{k+2}=9(3^{2k+1}+2^{k+2})-7\\times2^{k+2}=9B_k-7\\times2^{k+2}$$\n\n$$B_{k+1}=9\\times7m-7\\times2^{k+2}=7(9m-2^{k+2})$$\n\nComme $9m-2^{k+2}$ est un entier, $B_{k+1}$ est multiple de $7$ : $P'(k+1)$ est vraie.\n\n**Conclusion.** $P'(1)$ est vraie et $P'(k)\\Rightarrow P'(k+1)$ pour tout $k\\geq1$ : par récurrence, $B_n=3^{2n+1}+2^{n+2}$ est multiple de $7$ pour tout entier naturel non nul $n$.",
+      "themes": [
+        "récurrence",
+        "divisibilité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. En déduire que les nombres $3^{28}-2^{14}$ et $3^{83}+2^{43}$ ne sont pas premiers entre eux.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer que deux entiers ne sont pas premiers entre eux, il suffit d'exhiber un diviseur commun strictement supérieur à 1 : s'ils sont tous deux multiples d'un même entier $d>1$, alors $\\mathrm{pgcd}$ est au moins $d$, donc différent de $1$.\n\n### Corrige\nOn remarque que $3^{28}-2^{14}=3^{2\\times14}-2^{14}=A_{14}$ (en prenant $n=14$ dans l'expression de $A_n$), et que $3^{83}+2^{43}=3^{2\\times41+1}+2^{41+2}=B_{41}$ (en prenant $n=41$ dans l'expression de $B_n$, puisque $2\\times41+1=83$ et $41+2=43$).\n\nD'après la question 1.(a), $A_{14}=3^{28}-2^{14}$ est multiple de $7$. D'après la question 1.(b), $B_{41}=3^{83}+2^{43}$ est multiple de $7$.\n\nLes deux nombres $3^{28}-2^{14}$ et $3^{83}+2^{43}$ admettent donc $7$ comme diviseur commun, donc $\\mathrm{pgcd}(3^{28}-2^{14}\\,;\\,3^{83}+2^{43})\\geq7>1$ : ces deux nombres **ne sont pas premiers entre eux**.",
+      "themes": [
+        "PGCD",
+        "nombres premiers entre eux",
+        "divisibilité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac1999-ex1-1",
+          "competence": "Critère pour montrer que deux entiers ne sont pas premiers entre eux",
+          "contenu_markdown": "Pour montrer que deux entiers ne sont pas premiers entre eux, il suffit d'exhiber un diviseur commun strictement supérieur à 1 : s'ils sont tous deux multiples d'un même entier $d>1$, alors $\\mathrm{pgcd}$ est au moins $d$, donc différent de $1$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "récurrence",
+    "divisibilité par 7",
+    "PGCD",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

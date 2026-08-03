@@ -23,12 +23,12 @@ export function Footer() {
             </span>
           </Link>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-            Corrigés d'annales, sujets et cours pour le BEPC, le Probatoire et le BAC.
+            Cours, corrigés d'annales et quiz pour le BEPC, le Probatoire et le BAC.
           </p>
         </div>
 
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-          <Link to={catalogueHomePath(country)} className="transition-colors hover:text-foreground">Leçons</Link>
+          <Link to={catalogueHomePath(country)} className="transition-colors hover:text-foreground">Épreuves</Link>
           <Link to={coursListPath(country)} className="transition-colors hover:text-foreground">Cours</Link>
           <Link to="/tarifs" className="transition-colors hover:text-foreground">Tarifs</Link>
           <Link to="/compte" className="transition-colors hover:text-foreground">Mon compte</Link>

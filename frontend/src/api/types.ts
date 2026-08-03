@@ -59,6 +59,7 @@ export type Origine = "OFFICIEL" | "BLANC" | "ETABLISSEMENT" | "AUTRE"
 
 export interface Epreuve {
   id: number
+  slug: string
   title: string
   subject: Subject
   cursus: Cursus[]

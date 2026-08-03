@@ -1,0 +1,113 @@
+{
+  "epreuve_source": "bac-d-maths-2000-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2000,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": 1,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "Dans le plan complexe $(P)$ rapporté au repère orthonormé $(O,\\vec u,\\vec v)$, on considère les points $A$ d'affixe $1$, $B$ d'affixe $z$ et $C$ d'affixe $z^2$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Déterminer $z$ pour que $O$ soit le barycentre des points $A$, $B$ et $C$ affectés des coefficients respectifs $4$ ; $-2$ et $1$. (Le point $B$ a une ordonnée strictement positive.)",
+      "corrige_markdown": "### Rappel de méthode\\nL'affixe du barycentre de points pondérés $(A,m_A),(B,m_B),(C,m_C)$ (somme des coefficients non nulle) est $z_G=\\dfrac{m_Az_A+m_Bz_B+m_Cz_C}{m_A+m_B+m_C}$.\\n\\n### Corrigé\\nLa somme des coefficients est $4+(-2)+1=3\\neq0$ : le barycentre $G$ des points $A,B,C$ affectés des coefficients $4,-2,1$ existe, et son affixe est :\\n$$z_G=\\frac{4\\times1+(-2)\\times z+1\\times z^2}{3}=\\frac{4-2z+z^2}{3}.$$\\nOn cherche $z$ tel que $G=O$, c'est-à-dire $z_G=0$ :\\n$$z^2-2z+4=0.$$\\nLe discriminant est $\\Delta=(-2)^2-4\\times1\\times4=4-16=-12<0$. On cherche une racine carrée imaginaire de $\\Delta$ : $\\left(2i\\sqrt3\\right)^2=4i^2\\times3=-12=\\Delta$, donc $\\sqrt\\Delta=2i\\sqrt3$ convient. Les solutions sont :\\n$$z=\\frac{2\\pm2i\\sqrt3}{2}=1\\pm i\\sqrt3.$$\\nComme le point $B$ (d'affixe $z$) doit avoir une ordonnée strictement positive, on retient la solution dont la partie imaginaire est positive :\\n$$z=1+i\\sqrt3.$$",
+      "themes": [
+        "barycentre",
+        "affixe",
+        "équation du second degré complexe"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-ex1-1",
+          "competence": "Determination d'un parametre pour qu'un point donne soit le barycentre",
+          "contenu_markdown": "L'affixe du barycentre de points pondérés $(A,m_A),(B,m_B),(C,m_C)$ (somme des coefficients non nulle) est $z_G=\\dfrac{m_Az_A+m_Bz_B+m_Cz_C}{m_A+m_B+m_C}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. $Z$ ayant la valeur trouvée précédemment, déterminer l'ensemble des points $M$ du plan tels que : $4AM^2-2BM^2+CM^2=k$, où $k$ est un réel donné (discuter suivant les valeurs de $k$).",
+      "corrige_markdown": "### Rappel de méthode\\nPour une somme pondérée de carrés de distances $\\sum m_iMP_i^2$, on utilise la réduction $\\sum m_iMP_i^2=\\left(\\sum m_i\\right)MG^2+\\sum m_iGP_i^2$, où $G$ est le barycentre des points pondérés : l'ensemble cherché est alors un cercle, un point, ou l'ensemble vide selon le signe de $MG^2$ obtenu.\\n\\n### Corrigé\\nAvec $z=1+i\\sqrt3$ (question 1), on a $A(1)$, $B(1+i\\sqrt3)$, et $C$ d'affixe $z^2=(1+i\\sqrt3)^2=1+2i\\sqrt3+i^2\\times3=1+2i\\sqrt3-3=-2+2i\\sqrt3$.\\n\\nD'après la question 1, $O$ est le barycentre de $(A,4),(B,-2),(C,1)$, de somme des coefficients $4-2+1=3$. On utilise la formule de réduction des sommes pondérées de carrés de distances, avec $G=O$ :\\n$$4AM^2-2BM^2+CM^2=(4-2+1)\\,MO^2+\\big(4\\,OA^2-2\\,OB^2+OC^2\\big)=3\\,OM^2+K,$$\\noù $K=4OA^2-2OB^2+OC^2$. On calcule chaque terme :\\n$$OA^2=|1|^2=1,\\qquad OB^2=|1+i\\sqrt3|^2=1^2+(\\sqrt3)^2=1+3=4,\\qquad OC^2=|-2+2i\\sqrt3|^2=(-2)^2+(2\\sqrt3)^2=4+12=16.$$\\n$$K=4\\times1-2\\times4+16=4-8+16=12.$$\\nL'équation $4AM^2-2BM^2+CM^2=k$ devient donc :\\n$$3\\,OM^2+12=k\\iff OM^2=\\frac{k-12}{3}.$$\\n\\n**Discussion suivant les valeurs de $k$ :**\\n- Si $k<12$ : $\\dfrac{k-12}{3}<0$, or $OM^2\\geqslant0$ toujours : l'ensemble cherché est **vide**.\\n- Si $k=12$ : $OM^2=0$, donc $M=O$ : l'ensemble cherché est le **singleton $\\{O\\}$**.\\n- Si $k>12$ : $OM^2=\\dfrac{k-12}{3}>0$, donc $M$ décrit le **cercle de centre $O$ et de rayon** $\\sqrt{\\dfrac{k-12}{3}}$.\\n\\n### Piège à éviter\\nOublier de traiter séparément les trois cas ($k<12$, $k=12$, $k>12$) : une somme pondérée de carrés de distances n'aboutit à un vrai cercle que si le membre de droite obtenu pour $OM^2$ est strictement positif.",
+      "themes": [
+        "lieu géométrique",
+        "réduction d'une somme pondérée de carrés de distances",
+        "discussion selon un paramètre"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-ex1-2",
+          "competence": "Determination d'un lieu geometrique par reduction d'une somme ponderee de carres de distances",
+          "contenu_markdown": "Pour une somme pondérée de carrés de distances $\\sum m_iMP_i^2$, on utilise la réduction $\\sum m_iMP_i^2=\\left(\\sum m_i\\right)MG^2+\\sum m_iGP_i^2$, où $G$ est le barycentre des points pondérés : l'ensemble cherché est alors un cercle, un point, ou l'ensemble vide selon le signe de $MG^2$ obtenu.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "3. On considère $F$ l'application de $(P)$ dans $(P)$ qui à tout point $M$ d'affixe $z=x+iy$ associe le point $M'$ d'affixe $z'=(1+i\\sqrt3)z$. a) Déterminer les images par $F$ des points d'affixe $1$ et $(1+i\\sqrt3)$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'image d'un point d'affixe $z$ par $F:z\\mapsto z'=\\omega z$ s'obtient en substituant $z$ dans l'expression de $z'$.\\n\\n### Corrigé\\n**Image du point d'affixe $1$ :**\\n$$z'=(1+i\\sqrt3)\\times1=1+i\\sqrt3.$$\\n\\n**Image du point d'affixe $1+i\\sqrt3$ :**\\n$$z'=(1+i\\sqrt3)\\times(1+i\\sqrt3)=(1+i\\sqrt3)^2=1+2i\\sqrt3+i^2\\times3=1+2i\\sqrt3-3=-2+2i\\sqrt3.$$",
+      "themes": [
+        "image par une application affine complexe"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-ex1-3a",
+          "competence": "Calcul de l'image d'un point par une application complexe lineaire",
+          "contenu_markdown": "L'image d'un point d'affixe $z$ par $F:z\\mapsto z'=\\omega z$ s'obtient en substituant $z$ dans l'expression de $z'$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "b) Quelle est la nature de $F$ ? Donner les éléments caractéristiques.",
+      "corrige_markdown": "### Rappel de méthode\\nUne application $z\\mapsto z'=\\omega z$ (avec $\\omega\\neq0,1$) est une similitude directe de centre $O$ (seul point fixe : $\\omega z=z\\Rightarrow z=0$ car $\\omega\\neq1$), de rapport $|\\omega|$ et d'angle $\\arg(\\omega)$.\\n\\n### Corrigé\\n**Point fixe.** $z'=z\\iff(1+i\\sqrt3)z=z\\iff i\\sqrt3\\,z=0\\iff z=0$ (car $i\\sqrt3\\neq0$). Le seul point fixe de $F$ est donc $O$.\\n\\n**Module et argument de $\\omega=1+i\\sqrt3$.** Le module est :\\n$$|\\omega|=\\sqrt{1^2+(\\sqrt3)^2}=\\sqrt{1+3}=\\sqrt4=2.$$\\nOn écrit $\\omega=2\\left(\\dfrac12+i\\dfrac{\\sqrt3}{2}\\right)$ ; on reconnaît $\\cos\\dfrac\\pi3=\\dfrac12$ et $\\sin\\dfrac\\pi3=\\dfrac{\\sqrt3}{2}$, donc $\\arg(\\omega)=\\dfrac\\pi3\\ (2\\pi)$.\\n\\n**Nature de $F$.** L'application $z\\mapsto\\omega z$ avec $\\omega=2e^{i\\pi/3}$ (module $2\\neq1$, argument non nul modulo $2\\pi$) est une **similitude directe** de centre $O$, de rapport $k=2$ et d'angle $\\theta=\\dfrac\\pi3$.",
+      "themes": [
+        "similitude directe",
+        "module et argument",
+        "point fixe"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-ex1-3b",
+          "competence": "Identification de la nature d'une transformation complexe lineaire (similitude directe)",
+          "contenu_markdown": "Une application $z\\mapsto z'=\\omega z$ (avec $\\omega\\neq0,1$) est une similitude directe de centre $O$ (seul point fixe : $\\omega z=z\\Rightarrow z=0$ car $\\omega\\neq1$), de rapport $|\\omega|$ et d'angle $\\arg(\\omega)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "barycentre",
+    "lieu géométrique",
+    "somme pondérée de carrés de distances",
+    "similitude directe",
+    "module et argument",
+    "bac D Cameroun 2000"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

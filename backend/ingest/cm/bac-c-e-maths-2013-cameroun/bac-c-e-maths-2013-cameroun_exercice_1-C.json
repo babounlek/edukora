@@ -1,0 +1,81 @@
+{
+  "epreuve_source": "bac-c-e-maths-2013-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2013",
+  "duree_epreuve": "4h",
+  "coefficient": "5(C) / 4(E)",
+  "numero_exercice": "1-C",
+  "points": 2.5,
+  "enonce_intro_markdown": "**Exercice 1 (série C uniquement, 2,5 points)**\n\n$N$ désigne un entier naturel dont l'écriture en base $10$ est $N=\\overline{a_na_{n-1}\\cdots a_1a_0}$.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Démontrer que le reste de la division de $N$ par $100$ est l'entier $r$ dont l'écriture en base $10$ est $r=\\overline{a_1a_0}$.",
+      "corrige_markdown": "### Rappel de methode\nUn entier N s'écrit en base 10 comme N = a_n...a_1a_0 = 100*Q + (10a_1+a_0), où Q = a_n...a_2 est l'entier formé par les chiffres restants ; comme 0 <= 10a_1+a_0 <= 99 < 100, ce nombre est exactement le reste de la division euclidienne de N par 100.\n\n### Corrige\nÉcrivons $N=a_na_{n-1}\\cdots a_1a_0$ en base $10$ :\n$$N=\\sum_{k=0}^na_k10^k=a_0+10a_1+100\\sum_{k=2}^na_k10^{k-2}=(10a_1+a_0)+100\\underbrace{\\left(\\sum_{k=2}^na_k10^{k-2}\\right)}_{Q\\in\\mathbb N}$$\n\nPosons $r=10a_1+a_0$. Comme $0\\leq a_0\\leq9$ et $0\\leq a_1\\leq9$, on a $0\\leq r\\leq10\\times9+9=99<100$.\n\nOn a donc $N=100Q+r$ avec $0\\leq r<100$ : par unicité de la division euclidienne, **$r$ est exactement le reste de la division de $N$ par $100$, et $r=\\overline{a_1a_0}$ (le nombre formé par les deux derniers chiffres de $N$).**",
+      "themes": [
+        "numération en base 10",
+        "division euclidienne",
+        "reste modulo 100"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2013-ex1C-0",
+          "competence": "Écriture N=100Q+r et unicité de la division euclidienne",
+          "contenu_markdown": "Un entier N s'écrit en base 10 comme N = a_n...a_1a_0 = 100*Q + (10a_1+a_0), où Q = a_n...a_2 est l'entier formé par les chiffres restants ; comme 0 <= 10a_1+a_0 <= 99 < 100, ce nombre est exactement le reste de la division euclidienne de N par 100.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Application : Démontrer que le chiffre des unités et le chiffre des dizaines du nombre $N=7^{7^7}$ sont respectivement $3$ et $4$.",
+      "corrige_markdown": "### Rappel de methode\nD'après la question 1, les deux derniers chiffres d'un entier N sont exactement N mod 100 ; on calcule donc N mod 100 en réduisant l'exposant grâce au théorème d'Euler (l'ordre multiplicatif de la base modulo 100).\n\n### Corrige\nOn cherche les deux derniers chiffres de $N=7^{7^7}$ *(remarque : la base est $7$, non $77$ ; la question s'appuie sur le résultat de la question 1 appliqué à $N\\ \\mathrm{mod}\\ 100$)*, c'est-à-dire $N\\bmod100$.\n\n**Ordre de $7$ modulo $100$.** Calculons les puissances successives de $7$ modulo $100$ :\n$$7^1\\equiv7,\\quad7^2\\equiv49,\\quad7^3\\equiv343\\equiv43,\\quad7^4\\equiv7\\times43=301\\equiv1\\ [100]$$\n\nL'ordre de $7$ modulo $100$ est donc $4$ : $7^{4k}\\equiv1\\ [100]$ pour tout entier $k$.\n\n**Réduction de l'exposant $7^7$ modulo $4$.** $7\\equiv-1\\ [4]$, donc $7^7\\equiv(-1)^7\\equiv-1\\equiv3\\ [4]$.\n\n**Conclusion.** $N=7^{7^7}\\equiv7^{7^7\\bmod4}\\equiv7^3\\equiv43\\ [100]$ (en utilisant que $7^{7^7}=7^{4q+3}=(7^4)^q\\times7^3\\equiv1^q\\times43\\equiv43\\ [100]$).\n\nD'après la question 1, les deux derniers chiffres de $N$ sont donc ceux de $43$ : **le chiffre des dizaines est $4$ et le chiffre des unités est $3$.**",
+      "themes": [
+        "théorème d'Euler",
+        "ordre multiplicatif",
+        "réduction d'exposant",
+        "puissance itérée"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2013-ex1C-1",
+          "competence": "Ordre de 7 modulo 100 puis réduction de l'exposant 7^7 mod 4",
+          "contenu_markdown": "D'après la question 1, les deux derniers chiffres d'un entier N sont exactement N mod 100 ; on calcule donc N mod 100 en réduisant l'exposant grâce au théorème d'Euler (l'ordre multiplicatif de la base modulo 100).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "numération en base 10",
+    "congruences",
+    "ordre multiplicatif",
+    "puissance itérée",
+    "série C",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "restriction de série",
+      "description": "Cet exercice est réservé aux candidats de la série C ; les candidats de la série E traitent l'exercice 1 alternatif (analyse), voir bac-c-e-maths-2013-cameroun_exercice_1-E.json."
+    },
+    {
+      "type": "OCR ambigu résolu par cohérence mathématique",
+      "description": "La question 2 de l'énoncé source affiche « N = 77 77 » (deux occurrences du groupe « 77 »), rendu ambigu par l'extraction automatique du texte (probable duplication d'un chiffre lors de la restitution d'un exposant en tour de puissances). Le calcul montre que ni N=77^77 ni N=77^(77^77) ne donnent 43 modulo 100 (tous deux valent 97), alors que N=7^(7^7) (tour de puissances de trois 7, un exercice classique) donne exactement 43 mod 100 — conforme au résultat annoncé (chiffre des dizaines 4, chiffre des unités 3). Le corrigé retient donc N=7^(7^7)."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

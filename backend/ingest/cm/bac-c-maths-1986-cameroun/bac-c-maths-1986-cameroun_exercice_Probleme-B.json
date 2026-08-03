@@ -1,0 +1,173 @@
+{
+  "epreuve_source": "bac-c-maths-1986-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1986",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme-B",
+  "points": 6,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème (suite)**\n\n**Partie B.** Dans cette partie, on suppose $n\\geqslant2$.",
+  "questions": [
+    {
+      "numero": "B1a",
+      "enonce_markdown": "Étudier, en distinguant les cas $n$ pair et $n$ impair, la limite à droite de $f_n$ en $0$.",
+      "corrige_markdown": "### Rappel de méthode\\nLe signe de (1+ln x)^n pres de x=0 depend de la parite de n : quand x tend vers 0+, (1+ln x) tend vers -infini ; une puissance paire d'un nombre tendant vers -infini tend vers +infini, tandis qu'une puissance impaire tend vers -infini (le signe est conserve).\\n\\n### Corrigé\\n\\nQuand $x\\to0^+$, $\\ln x\\to-\\infty$, donc $1+\\ln x\\to-\\infty$.\\n\\n**Cas $n$ pair** : une puissance paire d'une quantité tendant vers $-\\infty$ tend vers $+\\infty$ (le signe négatif est « absorbé » par l'exposant pair). Donc $(1+\\ln x)^n\\to+\\infty$. Comme $x\\to0^+$ (positif, tendant vers $0$), $f_n(x)=\\dfrac{(1+\\ln x)^n}x\\to+\\infty$ (quotient d'une quantité tendant vers $+\\infty$ par une quantité positive tendant vers $0$).\\n\\n**$n$ pair : $f_n(x)\\xrightarrow[x\\to0^+]{}+\\infty$.**\\n\\n**Cas $n$ impair** : une puissance impaire conserve le signe de la base : $(1+\\ln x)^n\\to-\\infty$ (reste négatif, comme $1+\\ln x$). Donc $f_n(x)=\\dfrac{(1+\\ln x)^n}x\\to-\\infty$ (quotient d'une quantité tendant vers $-\\infty$ par une quantité positive tendant vers $0$).\\n\\n**$n$ impair : $f_n(x)\\xrightarrow[x\\to0^+]{}-\\infty$.**\\n\\n### Piège à éviter\\n\\nNe pas confondre cette limite à droite en $0$ (qui dépend de la parité de $n$) avec un éventuel comportement en $-\\infty$ ou $+\\infty$ : ici $x\\to0^+$ reste dans le domaine $]0,+\\infty[$ de $f_n$, il n'y a pas de branche pour $x\\leqslant0$.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b1a-0",
+          "competence": "Limite en 0 selon la parité de l'exposant",
+          "contenu_markdown": "Le signe de (1+ln x)^n pres de x=0 depend de la parite de n : quand x tend vers 0+, (1+ln x) tend vers -infini ; une puissance paire d'un nombre tendant vers -infini tend vers +infini, tandis qu'une puissance impaire tend vers -infini (le signe est conserve).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1b",
+      "enonce_markdown": "Démontrer que $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{(\\ln x)^n}x=0$ (on pourra poser $t=\\ln x$). En déduire la limite de $f_n$ quand $x\\to+\\infty$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une expression du type (ln x)^n/x tend vers 0 en +infini, poser t=ln x (donc x=e^t, t tend vers +infini quand x tend vers +infini) : l'expression devient t^n/e^t, forme relevant directement du resultat classique de croissance comparee (l'exponentielle l'emporte sur toute puissance).\\n\\n### Corrigé\\n\\n**Démonstration de $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{(\\ln x)^n}x=0$** : posons $t=\\ln x$, donc $x=e^t$. Quand $x\\to+\\infty$, $t\\to+\\infty$ également (le logarithme tend vers $+\\infty$ avec son argument). L'expression devient :\\n\\n$$\\dfrac{(\\ln x)^n}x=\\dfrac{t^n}{e^t}$$\\n\\nOr, par croissances comparées, $\\displaystyle\\lim_{t\\to+\\infty}\\dfrac{t^n}{e^t}=0$ pour tout entier $n$ (l'exponentielle l'emporte sur n'importe quelle puissance de $t$, résultat usuel du programme). Donc **$\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{(\\ln x)^n}x=0$**.\\n\\n**Déduction de la limite de $f_n$ en $+\\infty$** : développons $(1+\\ln x)^n$ par la formule du binôme de Newton :\\n\\n$$(1+\\ln x)^n=\\sum_{k=0}^n\\binom nk(\\ln x)^k$$\\n\\nDonc $f_n(x)=\\dfrac{(1+\\ln x)^n}x=\\displaystyle\\sum_{k=0}^n\\binom nk\\dfrac{(\\ln x)^k}x$.\\n\\nPour chaque $k$ fixé ($0\\leqslant k\\leqslant n$), le même argument que ci-dessus (avec $t=\\ln x$) donne $\\dfrac{(\\ln x)^k}x=\\dfrac{t^k}{e^t}\\to0$ quand $x\\to+\\infty$ (croissances comparées, valable pour tout exposant fixé $k$, y compris $k=0$ où le terme vaut simplement $\\frac1x\\to0$).\\n\\n$f_n(x)$ est donc une **somme finie** (à $n+1$ termes, les coefficients binomiaux $\\binom nk$ étant des constantes) de termes tendant chacun vers $0$ : **$f_n(x)\\xrightarrow[x\\to+\\infty]{}0$**.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées",
+        "croissances comparées",
+        "binôme de Newton"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b1b-0",
+          "competence": "Croissance comparée par changement de variable t=ln x",
+          "contenu_markdown": "Pour montrer qu'une expression du type (ln x)^n/x tend vers 0 en +infini, poser t=ln x (donc x=e^t, t tend vers +infini quand x tend vers +infini) : l'expression devient t^n/e^t, forme relevant directement du resultat classique de croissance comparee (l'exponentielle l'emporte sur toute puissance).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "Étudier les variations de $f_n$ (on distinguera les cas $n$ pair et $n$ impair).",
+      "corrige_markdown": "### Rappel de méthode\\nDeriver fn=(1+ln x)^n/x par la formule du quotient, factoriser par (1+ln x)^{n-1} (le facteur commun de plus bas degre), puis etudier separement le signe de ce facteur (qui depend de la parite de n-1, donc de n) et celui du second facteur (n-1-ln x), pour en deduire le signe global de fn' selon les deux cas.\\n\\n### Corrigé\\n\\n**Calcul de $f_n'$** : avec $u=(1+\\ln x)^n$ ($u'=n(1+\\ln x)^{n-1}\\times\\frac1x$, dérivée d'une puissance composée) et $v=x$ ($v'=1$) :\\n\\n$$f_n'(x)=\\dfrac{u'v-uv'}{v^2}=\\dfrac{\\frac nx(1+\\ln x)^{n-1}\\times x-(1+\\ln x)^n}{x^2}=\\dfrac{n(1+\\ln x)^{n-1}-(1+\\ln x)^n}{x^2}$$\\n\\nFactorisons le numérateur par $(1+\\ln x)^{n-1}$ (facteur commun) : $n(1+\\ln x)^{n-1}-(1+\\ln x)^n=(1+\\ln x)^{n-1}\\big[n-(1+\\ln x)\\big]=(1+\\ln x)^{n-1}(n-1-\\ln x)$.\\n\\n**$f_n'(x)=\\dfrac{(1+\\ln x)^{n-1}(n-1-\\ln x)}{x^2}$.**\\n\\nComme $x^2>0$, le signe de $f_n'$ est celui du produit $(1+\\ln x)^{n-1}(n-1-\\ln x)$. Les valeurs critiques sont $x=\\frac1e$ (où $1+\\ln x=0$) et $x=e^{n-1}$ (où $n-1-\\ln x=0$) ; comme $n\\geqslant2$, $e^{n-1}\\geqslant e^1=e>\\frac1e$, donc **$\\frac1e<e^{n-1}$** dans tous les cas.\\n\\n**Cas $n$ pair (donc $n-1$ impair)** : une puissance impaire conserve le signe de la base, donc $(1+\\ln x)^{n-1}$ a le même signe que $(1+\\ln x)$ : négatif sur $\\left]0,\\frac1e\\right[$, nul en $\\frac1e$, positif sur $\\left]\\frac1e,+\\infty\\right[$.\\n\\n- Sur $\\left]0,\\frac1e\\right[$ : $(1+\\ln x)^{n-1}<0$ et $(n-1-\\ln x)>0$ (car $\\ln x<-1<n-1$) : produit **négatif**, $f_n'<0$.\\n- Sur $\\left]\\frac1e,e^{n-1}\\right[$ : $(1+\\ln x)^{n-1}>0$ et $(n-1-\\ln x)>0$ : produit **positif**, $f_n'>0$.\\n- Sur $\\left]e^{n-1},+\\infty\\right[$ : $(1+\\ln x)^{n-1}>0$ et $(n-1-\\ln x)<0$ : produit **négatif**, $f_n'<0$.\\n\\n**Pour $n$ pair : $f_n$ est décroissante sur $\\left]0,\\frac1e\\right]$ (minimum local en $\\frac1e$), croissante sur $\\left[\\frac1e,e^{n-1}\\right]$, décroissante sur $\\left[e^{n-1},+\\infty\\right[$ (maximum local en $e^{n-1}$).**\\n\\n**Cas $n$ impair (donc $n-1$ pair)** : une puissance paire est toujours positive ou nulle, donc $(1+\\ln x)^{n-1}\\geqslant0$ pour tout $x>0$, avec égalité seulement en $x=\\frac1e$ (point isolé, qui ne change pas le signe global autour de lui). Le signe de $f_n'$ est donc, presque partout, celui de $(n-1-\\ln x)$ seul :\\n\\n- Sur $\\left]0,e^{n-1}\\right[$ (y compris en $\\frac1e$ où $f_n'=0$ ponctuellement) : $(n-1-\\ln x)>0$, donc $f_n'\\geqslant0$.\\n- Sur $\\left]e^{n-1},+\\infty\\right[$ : $(n-1-\\ln x)<0$, donc $f_n'<0$.\\n\\n**Pour $n$ impair : $f_n$ est croissante sur $\\left]0,e^{n-1}\\right]$ (avec un point stationnaire, non extremal, en $x=\\frac1e$, où la tangente est horizontale mais le sens de variation ne change pas), puis décroissante sur $\\left[e^{n-1},+\\infty\\right[$ (maximum local en $e^{n-1}$).**\\n\\n### Piège à éviter\\n\\nPour $n$ impair, ne pas conclure à tort que $x=\\frac1e$ est un extremum local sous prétexte que $f_n'\\left(\\frac1e\\right)=0$ : comme $(1+\\ln x)^{n-1}\\geqslant0$ ne change pas de signe autour de $\\frac1e$ (puissance paire), $f_n'$ garde le même signe des deux côtés — c'est un simple point stationnaire (tangente horizontale sans changement de monotonie), pas un maximum ni un minimum.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées",
+        "dérivée d'une puissance composée"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b2-0",
+          "competence": "Variations de fn selon la parité de n",
+          "contenu_markdown": "Deriver fn=(1+ln x)^n/x par la formule du quotient, factoriser par (1+ln x)^{n-1} (le facteur commun de plus bas degre), puis etudier separement le signe de ce facteur (qui depend de la parite de n-1, donc de n) et celui du second facteur (n-1-ln x), pour en deduire le signe global de fn' selon les deux cas.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3a",
+      "enonce_markdown": "Montrer que les courbes $(C_n)$ sont toutes tangentes en un même point $A$ à l'axe des abscisses, et passent toutes par un autre point $B$ dont on déterminera les coordonnées.",
+      "corrige_markdown": "### Rappel de méthode\\nUn point commun a toutes les courbes (Cn), independant de n, s'obtient en cherchant une valeur de x pour laquelle fn(x) ne depend pas de n ; ici x=1 rend (1+ln x) egal a 1, dont toute puissance vaut 1. La tangence a l'axe des abscisses en un point s'etablit en verifiant a la fois fn(x)=0 et fn'(x)=0 en ce point.\\n\\n### Corrigé\\n\\n**Point $A$, commun et tangence** : $f_n(x)=0\\iff(1+\\ln x)^n=0\\iff1+\\ln x=0$ (une puissance $n$-ième, pour $n\\geqslant1$, ne s'annule que si sa base s'annule) $\\iff x=e^{-1}=\\dfrac1e$. **Ce point $\\left(\\frac1e,0\\right)$ ne dépend pas de $n$** : toutes les courbes $(C_n)$ passent par $A=\\left(\\dfrac1e,0\\right)$.\\n\\nD'après la question B.2, $f_n'(x)=\\dfrac{(1+\\ln x)^{n-1}(n-1-\\ln x)}{x^2}$. En $x=\\frac1e$ : $1+\\ln\\frac1e=1-1=0$. Comme $n\\geqslant2$, l'exposant $n-1\\geqslant1$, donc $(1+\\ln x)^{n-1}=0^{n-1}=0$. Donc **$f_n'\\left(\\frac1e\\right)=0$ pour tout $n\\geqslant2$** : la tangente à $(C_n)$ en $A$ est horizontale, confondue avec l'axe des abscisses (puisque $f_n\\left(\\frac1e\\right)=0$ également) : **toutes les courbes $(C_n)$ ($n\\geqslant2$) sont tangentes à l'axe des abscisses en $A=\\left(\\dfrac1e,0\\right)$.**\\n\\n**Point $B$, commun** : cherchons une valeur de $x$ où $f_n(x)$ ne dépend pas de $n$. Essayons $x=1$ : $f_n(1)=\\dfrac{(1+\\ln1)^n}1=(1+0)^n=1^n=1$, **pour tout $n$**. Donc **toutes les courbes $(C_n)$ passent par le point $B(1,1)$**, indépendamment de $n$.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées",
+        "point fixe indépendant du paramètre"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b3a-0",
+          "competence": "Points communs à une famille de courbes",
+          "contenu_markdown": "Un point commun a toutes les courbes (Cn), independant de n, s'obtient en cherchant une valeur de x pour laquelle fn(x) ne depend pas de n ; ici x=1 rend (1+ln x) egal a 1, dont toute puissance vaut 1. La tangence a l'axe des abscisses en un point s'etablit en verifiant a la fois fn(x)=0 et fn'(x)=0 en ce point.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3b",
+      "enonce_markdown": "En utilisant les résultats de B.2, dresser les tableaux de variation de $f_2$ et $f_3$. Préciser les positions relatives de $(C_2)$ et $(C_3)$, puis tracer, sur un autre graphique que $(C_1)$, les arcs de $(C_2)$ et $(C_3)$ correspondant à $x\\in\\,]0,4[$. On déterminera les tangentes à $(C_2)$ et $(C_3)$ en $B$, et les points de ces courbes d'abscisse $x=e$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour comparer deux courbes (Cn) et (Cp), etudier le signe de fp(x)-fn(x) en factorisant par le terme commun (1+ln x) eleve a la plus petite des deux puissances ; les tangentes en un point commun s'obtiennent en evaluant fn'(x) (formule generale de B.2) a l'abscisse de ce point pour chaque valeur de n.\\n\\n### Corrigé\\n\\n**Tableaux de variation** (d'après B.2, avec $n=2$ pair et $n=3$ impair) :\\n\\n- **$f_2$** : décroissante sur $\\left]0,\\frac1e\\right]$ (de $+\\infty$ à $f_2\\left(\\frac1e\\right)=0$), croissante sur $\\left[\\frac1e,e\\right]$ (de $0$ à $f_2(e)=\\dfrac{(1+1)^2}e=\\dfrac4e$, maximum local), décroissante sur $[e,+\\infty[$ (de $\\frac4e$ à $0$).\\n- **$f_3$** : croissante sur $\\left]0,e^2\\right]$ (de $-\\infty$ à $f_3(e^2)=\\dfrac{(1+2)^3}{e^2}=\\dfrac{27}{e^2}$, maximum local, avec un point stationnaire non extremal en $\\frac1e$ où $f_3\\left(\\frac1e\\right)=0$), décroissante sur $[e^2,+\\infty[$ (de $\\frac{27}{e^2}$ à $0$).\\n\\n**Position relative de $(C_2)$ et $(C_3)$** : étudions le signe de $f_3(x)-f_2(x)=\\dfrac{(1+\\ln x)^3-(1+\\ln x)^2}x$. Factorisons par $(1+\\ln x)^2$ (facteur commun, exposant le plus petit) :\\n\\n$$f_3(x)-f_2(x)=\\dfrac{(1+\\ln x)^2\\big[(1+\\ln x)-1\\big]}x=\\dfrac{(1+\\ln x)^2\\ln x}x$$\\n\\nComme $(1+\\ln x)^2\\geqslant0$ et $x>0$, le signe de $f_3(x)-f_2(x)$ est celui de $\\ln x$ (sauf en $x=\\frac1e$ où l'expression s'annule quel que soit le signe de $\\ln x$, car $(1+\\ln x)^2=0$ à cet endroit).\\n\\nDonc, pour $x\\in\\,]0,1[$ : $\\ln x<0$, donc $f_3(x)<f_2(x)$ : **$(C_2)$ est au-dessus de $(C_3)$**. Pour $x\\in\\,]1,+\\infty[$ : $\\ln x>0$, donc $f_3(x)>f_2(x)$ : **$(C_3)$ est au-dessus de $(C_2)$**. Les deux courbes se croisent en $x=\\frac1e$ (point $A$, les deux valant $0$) et en $x=1$ (point $B$, les deux valant $1$).\\n\\n**Tangente à $(C_2)$ au point $B(1,1)$** : $f_2'(x)=\\dfrac{(1+\\ln x)(1-\\ln x)}{x^2}$ (formule de B.2 avec $n=2$). En $x=1$ : $f_2'(1)=\\dfrac{(1+0)(1-0)}1=1$. Tangente : $y=f_2(1)+f_2'(1)(x-1)=1+1\\times(x-1)=x$.\\n\\n**Tangente à $(C_3)$ au point $B(1,1)$** : $f_3'(x)=\\dfrac{(1+\\ln x)^2(2-\\ln x)}{x^2}$ (formule de B.2 avec $n=3$). En $x=1$ : $f_3'(1)=\\dfrac{(1+0)^2(2-0)}1=2$. Tangente : $y=f_3(1)+f_3'(1)(x-1)=1+2(x-1)=2x-1$.\\n\\n**Points d'abscisse $x=e$** : $f_2(e)=\\dfrac{(1+\\ln e)^2}e=\\dfrac{(1+1)^2}e=\\dfrac4e$ (soit environ $1{,}47$, avec $\\frac4e\\approx1{,}47$ ; c'est d'ailleurs le maximum local de $f_2$, atteint précisément en $x=e^{n-1}=e^1=e$). $f_3(e)=\\dfrac{(1+\\ln e)^3}e=\\dfrac{2^3}e=\\dfrac8e$ (soit environ $2{,}94$ ; ce n'est pas un extremum de $f_3$, dont le maximum local est en $x=e^2$).\\n\\n**Tracé** : sur $]0,4[$, on place $A\\left(\\frac1e,0\\right)\\approx(0{,}37\\,;\\,0)$ (tangence à l'axe pour les deux courbes), $B(1,1)$ (avec les tangentes $y=x$ pour $(C_2)$ et $y=2x-1$ pour $(C_3)$, cette dernière plus pentue), le maximum local de $(C_2)$ en $\\left(e,\\frac4e\\right)\\approx(2{,}72\\,;\\,1{,}47)$, et les points d'abscisse $e$ : $\\left(e,\\frac4e\\right)$ sur $(C_2)$ et $\\left(e,\\frac8e\\right)\\approx(2{,}72\\,;\\,2{,}94)$ sur $(C_3)$ (ce dernier bien au-dessus, cohérent avec $(C_3)$ au-dessus de $(C_2)$ pour $x>1$). Entre $A$ et $B$, $(C_2)$ reste au-dessus de $(C_3)$ ; après $B$, $(C_3)$ passe au-dessus et s'envole plus vite (maximum local à $e^2\\approx7{,}39$, hors de la fenêtre $]0,4[$, donc $(C_3)$ y est encore strictement croissante sur tout l'intervalle affiché).\\n\\n### Conseil\\n\\nRetiens le principe général illustré ici : pour comparer deux membres $f_p$ et $f_q$ ($p<q$) d'une même famille de la forme $(1+\\ln x)^n/x$, factoriser toujours par la plus petite puissance commune $(1+\\ln x)^p$ — le signe de la différence se ramène alors à celui de $(1+\\ln x)^{q-p}-1$, souvent bien plus simple à étudier que l'expression de départ.",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées",
+        "comparaison de courbes"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b3b-0",
+          "competence": "Comparaison de deux membres d'une famille de fonctions",
+          "contenu_markdown": "Pour comparer deux courbes (Cn) et (Cp), etudier le signe de fp(x)-fn(x) en factorisant par le terme commun (1+ln x) eleve a la plus petite des deux puissances ; les tangentes en un point commun s'obtiennent en evaluant fn'(x) (formule generale de B.2) a l'abscisse de ce point pour chaque valeur de n.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B4",
+      "enonce_markdown": "Calculer l'aire du domaine plan défini par $\\dfrac16\\leqslant x\\leqslant1$ et $0\\leqslant y\\leqslant f_n(x)$. Quelle est la limite de cette aire quand $n\\to+\\infty$ ?",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire sous une courbe y=fn(x) entre deux bornes s'obtient par une integrale ; ici, le changement de variable u=1+ln x (avec du=dx/x) transforme l'integrale de fn en une integrale de u^n, immediate a calculer. Pour la limite quand n tend vers l'infini, comparer la base d'une puissance (ici |1-ln 6|) a 1 pour savoir si elle tend vers 0.\\n\\n### Corrigé\\n\\n**Aire** $\\mathcal A_n=\\displaystyle\\int_{1/6}^1f_n(x)\\,dx=\\displaystyle\\int_{1/6}^1\\dfrac{(1+\\ln x)^n}x\\,dx$ (l'aire est bien donnée par cette intégrale car $\\frac16\\leqslant x\\leqslant1<e$ donc $1+\\ln x\\leqslant1+\\ln1=1$, mais le signe de $f_n$ sur cet intervalle importe peu ici : on calcule directement l'intégrale demandée).\\n\\n**Changement de variable** : posons $u=1+\\ln x$, donc $du=\\dfrac{dx}x$. Quand $x=\\dfrac16$, $u=1+\\ln\\dfrac16=1-\\ln6$. Quand $x=1$, $u=1+\\ln1=1$.\\n\\n$$\\mathcal A_n=\\int_{1-\\ln6}^1u^n\\,du=\\left[\\dfrac{u^{n+1}}{n+1}\\right]_{1-\\ln6}^1=\\dfrac{1^{n+1}-(1-\\ln6)^{n+1}}{n+1}$$\\n\\n**$\\mathcal A_n=\\dfrac{1-(1-\\ln6)^{n+1}}{n+1}$** (en unités d'aire, soit en $(4\\,\\text{cm})^2=16\\,\\text{cm}^2$ compte tenu de l'unité du repère).\\n\\n**Limite quand $n\\to+\\infty$** : numériquement, $\\ln6\\approx1{,}79$ (car $\\ln6=\\ln2+\\ln3\\approx0{,}70+1{,}10=1{,}79$, en utilisant $\\ln2\\approx0{,}70$ donné dans l'énoncé et $\\ln3\\approx1{,}10$), donc $1-\\ln6\\approx-0{,}79$, et **$|1-\\ln6|\\approx0{,}79<1$**.\\n\\nComme $|1-\\ln6|<1$, la suite géométrique $(1-\\ln6)^{n+1}$ tend vers $0$ quand $n\\to+\\infty$ (toute puissance d'un nombre de valeur absolue strictement inférieure à $1$ tend vers $0$). Donc le numérateur $1-(1-\\ln6)^{n+1}\\to1-0=1$ (limite finie), tandis que le dénominateur $n+1\\to+\\infty$.\\n\\nUn quotient dont le numérateur tend vers une limite finie ($1$) et le dénominateur vers $+\\infty$ tend vers $0$ : **$\\displaystyle\\lim_{n\\to+\\infty}\\mathcal A_n=0$**.\\n\\n### Piège à éviter\\n\\nNe pas se laisser impressionner par la puissance $(1-\\ln6)^{n+1}$ au numérateur : comme sa base est de valeur absolue inférieure à $1$, ce terme s'efface rapidement, et c'est en réalité le dénominateur $n+1$ qui pilote entièrement la limite (numérateur borné, dénominateur infini).",
+      "themes": [
+        "étude de fonction",
+        "logarithme",
+        "parité",
+        "croissances comparées",
+        "calcul intégral",
+        "changement de variable",
+        "suite géométrique"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probB-b4-0",
+          "competence": "Calcul d'aire par changement de variable et limite associée",
+          "contenu_markdown": "L'aire sous une courbe y=fn(x) entre deux bornes s'obtient par une integrale ; ici, le changement de variable u=1+ln x (avec du=dx/x) transforme l'integrale de fn en une integrale de u^n, immediate a calculer. Pour la limite quand n tend vers l'infini, comparer la base d'une puissance (ici |1-ln 6|) a 1 pour savoir si elle tend vers 0.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "parité",
+    "croissances comparées",
+    "variations",
+    "point fixe",
+    "aire",
+    "changement de variable"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

@@ -6,9 +6,18 @@ from .models import Cours, Country, Cursus, Lesson, Series, StatutContenu, Subje
 
 
 class CountrySerializer(serializers.ModelSerializer):
+    # Un Country peut exister en base (référentiel Subject/Series/Cursus) avant que du
+    # contenu réel n'y soit ingéré - le sélecteur de pays parcouru (CountrySwitcher) ne
+    # doit proposer que les pays où il y a effectivement quelque chose à lire, pas
+    # laisser un visiteur atterrir sur un catalogue vide.
+    has_lessons = serializers.SerializerMethodField()
+
     class Meta:
         model = Country
-        fields = ["id", "code", "label", "dial_code", "currency"]
+        fields = ["id", "code", "label", "dial_code", "currency", "has_lessons"]
+
+    def get_has_lessons(self, obj):
+        return obj.subjects.filter(lessons__statut=StatutContenu.VALIDE).exists()
 
 
 class SeriesSerializer(serializers.ModelSerializer):
@@ -18,9 +27,11 @@ class SeriesSerializer(serializers.ModelSerializer):
 
 
 class SubjectSerializer(serializers.ModelSerializer):
+    country = CountrySerializer(read_only=True)
+
     class Meta:
         model = Subject
-        fields = ["id", "code", "label"]
+        fields = ["id", "code", "label", "country"]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -87,7 +98,7 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = [
-            "id", "title", "subject", "cursus", "lesson_type", "lesson_type_display",
+            "id", "slug", "title", "subject", "cursus", "lesson_type", "lesson_type_display",
             "year", "duree_epreuve", "coefficient", "origine", "origine_display",
             "etablissement", "themes", "has_access", "is_read",
             "exercises_count", "related_cours", "sujet_pdf_url",

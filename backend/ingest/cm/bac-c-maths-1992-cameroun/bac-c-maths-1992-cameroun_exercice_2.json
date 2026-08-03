@@ -1,0 +1,137 @@
+{
+  "epreuve_source": "bac-c-maths-1992-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1992",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Soit $f$ la fonction de $\\mathbb{R}$ dans $\\mathbb{R}$ définie par $f(x)=\\dfrac1x-\\ln(x+1)+\\ln x$ ($\\ln$ désigne la fonction logarithme népérien). Etudier les variations de $f$ et en déduire le signe de $f(x)$ selon les valeurs de $x$.",
+      "corrige_markdown": "### Rappel de méthode\\nLe domaine de définition d'une somme de fonctions est l'intersection des domaines de chaque terme ; pour l'étude du signe d'une fonction, on étudie ses variations (signe de la dérivée) puis ses limites aux bornes du domaine, ce qui permet souvent de conclure sur le signe sans résoudre explicitement $f(x)=0$.\\n\\n### Corrigé\\n**Domaine.** $f(x)=\\dfrac1x-\\ln(x+1)+\\ln x$ exige $x\\neq0$ (pour $1/x$), $x+1>0$ (pour $\\ln(x+1)$) et $x>0$ (pour $\\ln x$). La condition la plus restrictive est $x>0$ : $D_f=\\,]0,+\\infty[$.\\n\\n**Dérivée.** Réécrivons $f(x)=\\dfrac1x+\\ln x-\\ln(x+1)$ :\\n$$f'(x)=-\\frac1{x^2}+\\frac1x-\\frac1{x+1}$$\\n\\nRéduisons $\\dfrac1x-\\dfrac1{x+1}$ au même dénominateur :\\n$$\\frac1x-\\frac1{x+1}=\\frac{(x+1)-x}{x(x+1)}=\\frac1{x(x+1)}$$\\n\\nDonc :\\n$$f'(x)=-\\frac1{x^2}+\\frac1{x(x+1)}=\\frac{-(x+1)+x}{x^2(x+1)}=\\frac{-1}{x^2(x+1)}$$\\n\\nPour $x>0$, $x^2(x+1)>0$, donc **$f'(x)<0$ pour tout $x>0$** : **$f$ est strictement décroissante sur $]0,+\\infty[$.**\\n\\n**Limite en $0^+$.** $\\dfrac1x\\to+\\infty$, $\\ln(x+1)\\to\\ln1=0$, et $\\ln x\\to-\\infty$. Comparons les vitesses : posons $x=1/n$, $n\\to+\\infty$ : $\\dfrac1x+\\ln x=n+\\ln(1/n)=n-\\ln n\\to+\\infty$ (par croissances comparées, $n$ l'emporte sur $\\ln n$). Donc :\\n$$\\lim_{x\\to0^+}f(x)=+\\infty$$\\n\\n**Limite en $+\\infty$.** $\\dfrac1x\\to0$, et $\\ln x-\\ln(x+1)=-\\ln\\dfrac{x+1}x=-\\ln\\left(1+\\dfrac1x\\right)\\to-\\ln1=0$. Donc :\\n$$\\lim_{x\\to+\\infty}f(x)=0$$\\n\\n**Tableau de variation.**\\n$$\\begin{array}{c|ccc}\\nx & 0 & & +\\infty\\\\\\n\\hline\\nf'(x) & & - &\\\\\\n\\hline\\nf(x) & +\\infty & \\searrow & 0\\n\\end{array}$$\\n\\n**Signe de $f(x)$.** $f$ est strictement décroissante sur $]0,+\\infty[$ et tend vers $0$ en $+\\infty$ **sans jamais atteindre cette valeur** (c'est une limite, pas une valeur prise) : $f$ reste donc strictement au-dessus de sa limite. **$f(x)>0$ pour tout $x>0$.**\\n\\n### Piège à éviter\\nLa limite $0$ en $+\\infty$ ne signifie pas que $f$ s'annule : une fonction strictement décroissante qui tend vers $0$ sans jamais l'atteindre reste strictement positive sur tout son domaine, ce qui est précisément le résultat central de cette question (réutilisé à la question 2).",
+      "themes": [
+        "étude de fonction",
+        "logarithme népérien",
+        "signe d'une fonction"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992-e2-1",
+          "competence": "Etude de fonction et signe via variations et limites",
+          "contenu_markdown": "Le domaine de définition d'une somme de fonctions est l'intersection des domaines de chaque terme ; pour l'étude du signe d'une fonction, on étudie ses variations (signe de la dérivée) puis ses limites aux bornes du domaine, ce qui permet souvent de conclure sur le signe sans résoudre explicitement $f(x)=0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Soit $(U_n)_{n\\in\\mathbb{N}^*}$ la suite numérique de terme général $U_n$ défini par $U_n=1+\\dfrac12+\\cdots+\\dfrac1n-\\ln(n+1)$. Montrer que la suite $(U_n)_{n\\in\\mathbb{N}^*}$ est strictement croissante.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer qu'une suite est strictement croissante, on étudie le signe de $U_{n+1}-U_n$ ; si cette différence coïncide avec l'expression d'une fonction déjà étudiée (évaluée en un point bien choisi), le signe de $f$ déjà établi donne directement la conclusion, sans nouveau calcul.\\n\\n### Corrigé\\nCalculons $U_{n+1}-U_n$ :\\n$$U_{n+1}-U_n=\\left(1+\\frac12+\\cdots+\\frac1n+\\frac1{n+1}-\\ln(n+2)\\right)-\\left(1+\\frac12+\\cdots+\\frac1n-\\ln(n+1)\\right)$$\\n$$=\\frac1{n+1}-\\ln(n+2)+\\ln(n+1)=\\frac1{n+1}-\\big[\\ln(n+2)-\\ln(n+1)\\big]$$\\n\\nReconnaissons l'expression de $f$ (question 1) évaluée en $x=n+1$ : $f(n+1)=\\dfrac1{n+1}-\\ln\\big((n+1)+1\\big)+\\ln(n+1)=\\dfrac1{n+1}-\\ln(n+2)+\\ln(n+1)$.\\n\\n**On a donc exactement $U_{n+1}-U_n=f(n+1)$.**\\n\\nOr $n\\in\\mathbb{N}^*$, donc $n+1\\geqslant2>0$ : $n+1$ appartient au domaine $]0,+\\infty[$ de $f$, et d'après la question 1, $f(x)>0$ pour tout $x>0$, donc en particulier :\\n$$U_{n+1}-U_n=f(n+1)>0$$\\n\\n**La suite $(U_n)_{n\\in\\mathbb{N}^*}$ est donc strictement croissante.**",
+      "themes": [
+        "suite numérique",
+        "monotonie",
+        "réutilisation d'un résultat précédent"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992-e2-2",
+          "competence": "Monotonie d'une suite via une fonction auxiliaire deja etudiee",
+          "contenu_markdown": "Pour montrer qu'une suite est strictement croissante, on étudie le signe de $U_{n+1}-U_n$ ; si cette différence coïncide avec l'expression d'une fonction déjà étudiée (évaluée en un point bien choisi), le signe de $f$ déjà établi donne directement la conclusion, sans nouveau calcul.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "3. a) Montrer pour tout élément $k$ de $\\mathbb{N}^*$ : $\\dfrac1{k+1}\\leqslant\\displaystyle\\int_k^{k+1}\\dfrac{dx}t\\leqslant\\dfrac1k$.",
+      "corrige_markdown": "### Rappel de méthode\\nSi une fonction $\\varphi$ est décroissante sur $[k,k+1]$, alors pour tout $t\\in[k,k+1]$, $\\varphi(k+1)\\leqslant\\varphi(t)\\leqslant\\varphi(k)$ ; en intégrant ces inégalités sur un intervalle de longueur $1$, on obtient un encadrement de $\\int_k^{k+1}\\varphi(t)\\,dt$ par les valeurs de $\\varphi$ aux bornes, multipliées par la longueur de l'intervalle.\\n\\n### Corrigé\\nSoit $k\\in\\mathbb{N}^*$. La fonction $t\\mapsto\\dfrac1t$ est strictement décroissante sur $[k,k+1]$ (comme sur tout intervalle de réels strictement positifs).\\n\\nPour tout $t\\in[k,k+1]$, la décroissance donne :\\n$$\\frac1{k+1}\\leqslant\\frac1t\\leqslant\\frac1k$$\\n\\n(la borne de droite $t=k$ donne la plus grande valeur $\\frac1k$, la borne de gauche $t=k+1$ donne la plus petite valeur $\\frac1{k+1}$)\\n\\nEn intégrant ces trois membres sur $[k,k+1]$ (intervalle de longueur $1$, et l'intégration conserve les inégalités larges) :\\n$$\\int_k^{k+1}\\frac1{k+1}\\,dx\\leqslant\\int_k^{k+1}\\frac1t\\,dt\\leqslant\\int_k^{k+1}\\frac1k\\,dx$$\\n\\nLes intégrales de gauche et de droite portent sur des constantes (par rapport à la variable d'intégration), et l'intervalle a pour longueur $(k+1)-k=1$ :\\n$$\\frac1{k+1}\\times1\\leqslant\\int_k^{k+1}\\frac{dx}t\\leqslant\\frac1k\\times1$$\\n\\n**$\\dfrac1{k+1}\\leqslant\\displaystyle\\int_k^{k+1}\\dfrac{dx}t\\leqslant\\dfrac1k$**, pour tout $k\\in\\mathbb{N}^*$.",
+      "themes": [
+        "encadrement d'intégrale",
+        "monotonie",
+        "fonction inverse"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992-e2-3a",
+          "competence": "Encadrement d'une integrale via la monotonie de la fonction integree",
+          "contenu_markdown": "Si une fonction $\\varphi$ est décroissante sur $[k,k+1]$, alors pour tout $t\\in[k,k+1]$, $\\varphi(k+1)\\leqslant\\varphi(t)\\leqslant\\varphi(k)$ ; en intégrant ces inégalités sur un intervalle de longueur $1$, on obtient un encadrement de $\\int_k^{k+1}\\varphi(t)\\,dt$ par les valeurs de $\\varphi$ aux bornes, multipliées par la longueur de l'intervalle.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "b) En déduire que $\\dfrac12+\\dfrac13+\\cdots+\\dfrac1{n+1}\\leqslant\\ln(n+1)\\leqslant1+\\dfrac12+\\cdots+\\dfrac1n$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour déduire un encadrement d'une somme de $n$ termes à partir d'un encadrement valable pour chaque indice $k$, on somme membre à membre les trois inégalités pour $k=1$ jusqu'à $n$ ; l'intégrale se télescope alors en une seule intégrale sur $[1,n+1]$ grâce à la relation de Chasles pour les intégrales.\\n\\n### Corrigé\\nSommons l'encadrement de la question 3.a pour $k=1,2,\\ldots,n$ :\\n$$\\sum_{k=1}^n\\frac1{k+1}\\leqslant\\sum_{k=1}^n\\int_k^{k+1}\\frac{dt}t\\leqslant\\sum_{k=1}^n\\frac1k$$\\n\\n**Membre de gauche** : $\\displaystyle\\sum_{k=1}^n\\frac1{k+1}=\\frac12+\\frac13+\\cdots+\\frac1{n+1}$.\\n\\n**Membre du milieu** : par la relation de Chasles pour les intégrales, la somme des intégrales sur les intervalles consécutifs $[1,2],[2,3],\\ldots,[n,n+1]$ reconstitue l'intégrale sur l'intervalle global $[1,n+1]$ :\\n$$\\sum_{k=1}^n\\int_k^{k+1}\\frac{dt}t=\\int_1^{n+1}\\frac{dt}t=\\big[\\ln t\\big]_1^{n+1}=\\ln(n+1)-\\ln1=\\ln(n+1)$$\\n\\n**Membre de droite** : $\\displaystyle\\sum_{k=1}^n\\frac1k=1+\\frac12+\\cdots+\\frac1n$.\\n\\n**On obtient donc :**\\n$$\\frac12+\\frac13+\\cdots+\\frac1{n+1}\\leqslant\\ln(n+1)\\leqslant1+\\frac12+\\cdots+\\frac1n$$",
+      "themes": [
+        "encadrement de somme",
+        "relation de Chasles pour les intégrales",
+        "logarithme"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992-e2-3b",
+          "competence": "Sommation d'un encadrement et relation de Chasles pour les integrales",
+          "contenu_markdown": "Pour déduire un encadrement d'une somme de $n$ termes à partir d'un encadrement valable pour chaque indice $k$, on somme membre à membre les trois inégalités pour $k=1$ jusqu'à $n$ ; l'intégrale se télescope alors en une seule intégrale sur $[1,n+1]$ grâce à la relation de Chasles pour les intégrales.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Montrer que $\\forall n\\in\\mathbb{N}^*,\\;U_n<1$, et que $(U_n)_{n\\in\\mathbb{N}^*}$ est une suite convergente (on ne demande pas de déterminer sa limite).",
+      "corrige_markdown": "### Rappel de méthode\\nUne suite croissante et majorée converge (théorème de la limite monotone) : il suffit donc, la croissance étant déjà acquise, de trouver un majorant, éventuellement en réutilisant un encadrement déjà établi pour une expression proche.\\n\\n### Corrigé\\n**Majoration de $U_n$ par $1$.** D'après la question 3.b (inégalité de gauche) :\\n$$\\frac12+\\frac13+\\cdots+\\frac1{n+1}\\leqslant\\ln(n+1)$$\\n\\nc'est-à-dire, en isolant le dernier terme $\\dfrac1{n+1}$ du membre de gauche :\\n$$\\left(\\frac12+\\cdots+\\frac1n\\right)+\\frac1{n+1}\\leqslant\\ln(n+1)$$\\n\\nDonc :\\n$$\\ln(n+1)\\geqslant\\left(\\frac12+\\cdots+\\frac1n\\right)+\\frac1{n+1}$$\\n\\nEn reportant dans l'expression de $U_n$ :\\n$$U_n=1+\\left(\\frac12+\\cdots+\\frac1n\\right)-\\ln(n+1)\\leqslant1+\\left(\\frac12+\\cdots+\\frac1n\\right)-\\left(\\frac12+\\cdots+\\frac1n\\right)-\\frac1{n+1}$$\\n$$U_n\\leqslant1-\\frac1{n+1}$$\\n\\nOr $\\dfrac1{n+1}>0$ pour tout $n\\in\\mathbb{N}^*$, donc $1-\\dfrac1{n+1}<1$. **On obtient $U_n\\leqslant1-\\dfrac1{n+1}<1$, donc $U_n<1$ pour tout $n\\in\\mathbb{N}^*$.**\\n\\n**Convergence de $(U_n)$.** D'après la question 2, $(U_n)_{n\\in\\mathbb{N}^*}$ est strictement croissante ; d'après ce qui précède, elle est majorée par $1$. **Toute suite croissante et majorée est convergente** (théorème de la limite monotone) : **$(U_n)_{n\\in\\mathbb{N}^*}$ est donc une suite convergente** (on ne cherche pas sa limite, conformément à l'énoncé).\\n\\n### Conseil\\nCe résultat prépare la reconnaissance d'une constante classique : la suite $(U_n)$ ainsi construite converge en réalité vers la constante d'Euler-Mascheroni $\\gamma\\approx0{,}577$, bien que sa détermination ne soit pas demandée ici - seul le théorème de la limite monotone (croissance + majoration) est exigé.",
+      "themes": [
+        "suite convergente",
+        "théorème de la limite monotone",
+        "majoration"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992-e2-4",
+          "competence": "Convergence d'une suite croissante majoree",
+          "contenu_markdown": "Une suite croissante et majorée converge (théorème de la limite monotone) : il suffit donc, la croissance étant déjà acquise, de trouver un majorant, éventuellement en réutilisant un encadrement déjà établi pour une expression proche.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction",
+    "logarithme",
+    "suite numérique",
+    "encadrement d'intégrale",
+    "théorème de la limite monotone",
+    "constante d'Euler"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

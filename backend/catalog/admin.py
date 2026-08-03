@@ -1,13 +1,14 @@
+import json
 from pathlib import Path
 
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
 from django.shortcuts import render
 from django.urls import path
 
-from .ingestion import run_ingestion
+from .ingestion import IngestionError, ingest_exercise, run_ingestion
 from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag
 from .sujet_pdf import queue_sujet_pdf_generation
 
@@ -22,7 +23,8 @@ INGEST_DIR = Path(settings.BASE_DIR) / "ingest"
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ["code", "label", "dial_code", "currency"]
+    list_display = ["code", "label", "dial_code", "currency", "actif"]
+    list_filter = ["actif"]
     search_fields = ["code", "label"]
 
 
@@ -88,10 +90,14 @@ class RappelDeMethodeInline(admin.TabularInline):
 class LessonAdmin(admin.ModelAdmin):
     list_display = ["title", "subject", "cursus_list", "lesson_type", "origine", "year", "statut", "updated_at"]
     list_filter = ["statut", "lesson_type", "origine", "subject", "cursus"]
-    search_fields = ["title", "epreuve_source"]
+    search_fields = ["title", "epreuve_source", "slug"]
     filter_horizontal = ["cursus", "themes", "mots_cles_recherche"]
     inlines = [ExerciseInline]
     actions = ["compiler_depuis_exercices", "generer_pdf_sujet"]
+    # Auto-rempli en JS depuis le titre (comportement natif de l'admin) - reste
+    # modifiable manuellement si besoin avant la première sauvegarde ; Lesson.save()
+    # ne régénère jamais un slug déjà renseigné (voir _generate_unique_slug).
+    prepopulated_fields = {"slug": ("title",)}
 
     def get_urls(self):
         custom_urls = [
@@ -259,13 +265,66 @@ class ExerciseAdmin(admin.ModelAdmin):
     filter_horizontal = ["themes", "mots_cles_recherche"]
     autocomplete_fields = ["lesson"]
     inlines = [QuestionInline, RappelDeMethodeInline, FigureInline]
-    actions = ["recompiler_depuis_questions"]
+    actions = ["recompiler_depuis_questions", "reingerer_depuis_fichier"]
 
     @admin.action(description="Recompiler enonce/corrige/themes depuis les Question")
     def recompiler_depuis_questions(self, request, queryset):
         for exercise in queryset:
             exercise.compile_from_questions()
         self.message_user(request, f"{queryset.count()} exercice(s) recompilé(s).")
+
+    @admin.action(description="Réingérer depuis le fichier JSON source (écrase le contenu actuel)")
+    def reingerer_depuis_fichier(self, request, queryset):
+        """
+        Une épreuve peut avoir été corrigée après sa première ingestion (le fichier
+        JSON sous INGEST_DIR a été modifié) - cette action relit ce fichier et
+        remplace le contenu de l'Exercise sélectionné (voir ingest_exercise,
+        force=True), plutôt que d'être ignorée comme le fait une ingestion normale
+        (idempotente par défaut, précisément pour ne jamais écraser une correction
+        manuelle faite depuis l'admin sans qu'on l'ait explicitement demandé).
+
+        Le chemin du fichier n'est pas stocké en base - il est reconstruit depuis
+        `lesson.epreuve_source` (nom du fichier PDF d'origine) et le code pays du
+        sujet, en suivant la convention de nommage de l'ingestion
+        (`ingest/<pays>/<epreuve>/<epreuve>_exercice_<numero>.json`). Cette
+        convention n'est pas imposée par une contrainte en base : si `epreuve_source`
+        a été modifié à la main depuis l'admin sans que le fichier corresponde
+        encore, l'action échoue proprement (message d'erreur par exercice) plutôt que
+        de deviner un autre chemin.
+        """
+        reussis = 0
+        for exercise in queryset.select_related("lesson__subject__country"):
+            lesson = exercise.lesson
+            if not lesson.epreuve_source:
+                self.message_user(
+                    request,
+                    f"{exercise} : epreuve_source vide sur la leçon, impossible de retrouver le fichier source.",
+                    level=messages.ERROR,
+                )
+                continue
+
+            nom_epreuve = lesson.epreuve_source.removesuffix(".pdf")
+            country_code = lesson.subject.country.code.lower()
+            source_dir = INGEST_DIR / country_code / nom_epreuve
+            json_path = source_dir / f"{nom_epreuve}_exercice_{exercise.numero_exercice}.json"
+
+            if not json_path.exists():
+                self.message_user(
+                    request,
+                    f"{exercise} : fichier introuvable ({json_path.relative_to(INGEST_DIR)}).",
+                    level=messages.ERROR,
+                )
+                continue
+
+            try:
+                data = json.loads(json_path.read_text(encoding="utf-8"))
+                ingest_exercise(data, source_dir=source_dir, force=True)
+                reussis += 1
+            except (IngestionError, OSError, ValueError) as exc:
+                self.message_user(request, f"{exercise} : {exc}", level=messages.ERROR)
+
+        if reussis:
+            self.message_user(request, f"{reussis} exercice(s) réingéré(s) depuis leur fichier source.")
 
 
 @admin.register(Question)

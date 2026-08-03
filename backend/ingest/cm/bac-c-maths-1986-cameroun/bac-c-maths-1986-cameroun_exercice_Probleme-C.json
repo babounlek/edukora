@@ -1,0 +1,104 @@
+{
+  "epreuve_source": "bac-c-maths-1986-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1986",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "Probleme-C",
+  "points": 2,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème (suite et fin)**\n\n**Partie C.** Soit $(U_n)$ et $(V_n)$ les suites définies respectivement par $U_0=e$, $\\forall n\\in\\mathbb N,\\,U_{n+1}=f_9(U_n)$, et $V_0=4$, $\\forall n\\in\\mathbb N,\\,V_{n+1}=f_9(V_n)$.\n\n**Avertissement méthodologique** : une vérification indépendante (calcul direct de $f_9(e)=\\dfrac{2^9}e$ et de $f_9'(x)$ à l'aide de la formule générale établie en Partie B, question B.2) donne des valeurs numériques incompatibles avec la stabilité de l'intervalle $[e,e^2]$ énoncée ci-dessous, et avec le majorant $4e^{-2}$ annoncé pour $f_9'$ sur cet intervalle (voir le détail dans les incertitudes signalées en fin de fichier). Ce désaccord n'a pas pu être résolu à partir du seul scan disponible : il est probable qu'une donnée numérique de cette partie C (l'indice « 9 », les bornes de l'intervalle, ou les valeurs initiales $U_0,V_0$) ait été altérée lors de la transcription de cette épreuve de 1986. La démarche et les techniques de démonstration présentées ci-dessous sont en revanche celles, standards et correctes, attendues pour ce type d'exercice (suites adjacentes construites par itération d'une fonction stable sur un intervalle) : c'est cette méthode qu'il faut retenir, indépendamment de la question de la cohérence numérique exacte de cet exemple particulier.",
+  "questions": [
+    {
+      "numero": "C1",
+      "enonce_markdown": "En utilisant l'étude des variations de $f_9$, montrer par récurrence que, pour tout entier $n$, $U_n$ et $V_n$ appartiennent à $[e,e^2]$. Montrer que $(U_n)$ est une suite croissante et $(V_n)$ une suite décroissante. Montrer que, pour tout entier $n$, $V_n>U_n$. En déduire que les suites $(U_n)$ et $(V_n)$ sont convergentes, dont on donnera les limites respectives $l$ et $l'$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour montrer par recurrence qu'une suite definie par recurrence Un+1=f(Un) reste dans un intervalle [a,b], il suffit de verifier que a et b sont dans l'intervalle et que f envoie [a,b] dans [a,b] (stabilite), en utilisant la monotonie de f etablie precedemment. Pour comparer Un et Vn, la monotonie de f permet de transporter une inegalite initiale (U0<V0) en une inegalite entre les termes suivants ; pour montrer qu'une suite est croissante ou decroissante, comparer U1 a U0 (ou V1 a V0) puis utiliser la monotonie de f pour propager l'inegalite par recurrence a tous les rangs.\\n\\n### Corrigé\\n\\n**Méthode générale (indépendante des valeurs numériques précises)** : $f_9$ étant, par hypothèse de cette partie, strictement monotone (croissante) sur $[e,e^2]$ et stable sur cet intervalle (c'est-à-dire $f_9([e,e^2])\\subset[e,e^2]$), on procède par récurrence forte à trois niveaux.\\n\\n**a) Stabilité de l'intervalle ($U_n,V_n\\in[e,e^2]$)** : *Initialisation* : $U_0=e\\in[e,e^2]$ et $V_0=4\\in[e,e^2]$ (par hypothèse de l'énoncé). *Hérédité* : si $U_n\\in[e,e^2]$, alors, $f_9$ envoyant $[e,e^2]$ dans lui-même, $U_{n+1}=f_9(U_n)\\in[e,e^2]$ ; de même pour $V_n$. Par récurrence, **$U_n\\in[e,e^2]$ et $V_n\\in[e,e^2]$ pour tout entier $n$**.\\n\\n**b) Monotonie de $(U_n)$ et $(V_n)$** : $f_9$ étant croissante sur $[e,e^2]$, elle conserve l'ordre. Si l'on établit $U_1\\geqslant U_0$ (c'est-à-dire $f_9(e)\\geqslant e$), alors, $f_9$ étant croissante et $U_1\\in[e,e^2]$, $U_2=f_9(U_1)\\geqslant f_9(U_0)=U_1$, et ainsi de suite par récurrence : **$(U_n)$ est croissante**. De même, si $V_1\\leqslant V_0$ (c'est-à-dire $f_9(4)\\leqslant4$), la croissance de $f_9$ propage cette inégalité de proche en proche : **$(V_n)$ est décroissante**.\\n\\n**c) $V_n>U_n$ pour tout $n$** : à l'initialisation, $V_0=4>e=U_0$ ($e\\approx2{,}72<4$). En supposant $V_n>U_n$ (avec les deux termes dans $[e,e^2]$), la stricte croissance de $f_9$ donne $f_9(V_n)>f_9(U_n)$, soit $V_{n+1}>U_{n+1}$. Par récurrence, **$V_n>U_n$ pour tout entier $n$**.\\n\\n**Convergence** : $(U_n)$ est croissante et majorée (par $e^2$, d'après a), donc **convergente** vers une limite $l$ (théorème de la limite monotone). $(V_n)$ est décroissante et minorée (par $e$), donc **convergente** vers une limite $l'$. De plus, $U_n<V_n\\leqslant V_0$ et $U_n\\geqslant U_0$ pour tout $n$, ce qui place $l$ et $l'$ dans $[e,e^2]$ également (passage à la limite dans les inégalités larges).",
+      "themes": [
+        "suites récurrentes",
+        "récurrence",
+        "suites monotones",
+        "théorème des accroissements finis",
+        "convergence"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probC-c1-0",
+          "competence": "Stabilité d'intervalle et monotonie par récurrence pour une suite itérative",
+          "contenu_markdown": "Pour montrer par recurrence qu'une suite definie par recurrence Un+1=f(Un) reste dans un intervalle [a,b], il suffit de verifier que a et b sont dans l'intervalle et que f envoie [a,b] dans [a,b] (stabilite), en utilisant la monotonie de f etablie precedemment. Pour comparer Un et Vn, la monotonie de f permet de transporter une inegalite initiale (U0<V0) en une inegalite entre les termes suivants ; pour montrer qu'une suite est croissante ou decroissante, comparer U1 a U0 (ou V1 a V0) puis utiliser la monotonie de f pour propager l'inegalite par recurrence a tous les rangs.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C2a",
+      "enonce_markdown": "Montrer que, sur $[e,e^2]$, $f_9'$ est une fonction strictement décroissante. En déduire que $\\forall x\\in[e,e^2],\\ 0\\leqslant f_9'(x)\\leqslant4e^{-2}$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour majorer f9' sur un intervalle, etudier d'abord sa propre monotonie (ici en montrant que f9' est strictement decroissante), ce qui permet d'affirmer que le maximum de f9' sur l'intervalle est atteint a l'une des bornes ; il suffit alors d'evaluer f9' a cette borne pour obtenir le majorant annonce.\\n\\n### Corrigé\\n\\n**Méthode générale** : pour montrer que $f_9'$ est strictement décroissante sur $[e,e^2]$, on étudierait le signe de sa dérivée $f_9''$ sur cet intervalle (ou on invoquerait la décroissance d'une composition de fonctions monotones adaptées).\\n\\n$f_9'$ étant strictement décroissante sur $[e,e^2]$ (admis ici conformément à l'énoncé), elle atteint son **maximum à la borne gauche** $x=e$ : $\\forall x\\in[e,e^2],\\ f_9'(x)\\leqslant f_9'(e)$. Le majorant annoncé par l'énoncé est $f_9'(e)=4e^{-2}$.\\n\\n$f_9'$ étant également positive sur cet intervalle (borne inférieure $0$ annoncée par l'énoncé), on obtient l'encadrement demandé : **$\\forall x\\in[e,e^2],\\ 0\\leqslant f_9'(x)\\leqslant4e^{-2}$.**\\n\\n**Incertitude signalée** : un calcul indépendant, à partir de la formule générale $f_n'(x)=\\dfrac{(1+\\ln x)^{n-1}(n-1-\\ln x)}{x^2}$ établie en Partie B (question B.2) appliquée à $n=9$, donne $f_9'(e)=\\dfrac{2^8\\times7}{e^2}\\approx242{,}5$ et $f_9'(e^2)=\\dfrac{3^8\\times6}{e^4}\\approx721{,}0$ — des valeurs très largement supérieures au majorant $4e^{-2}\\approx0{,}54$ annoncé par l'énoncé. Cette question ne peut donc pas être vérifiée de façon autonome avec la fonction $f_9(x)=\\frac{(1+\\ln x)^9}x$ telle que transcrite ; elle est présentée ici selon la structure logique attendue, en admettant les données numériques de l'énoncé source.",
+      "themes": [
+        "suites récurrentes",
+        "récurrence",
+        "suites monotones",
+        "théorème des accroissements finis",
+        "convergence",
+        "encadrement de dérivée"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probC-c2a-0",
+          "competence": "Majoration d'une dérivée par étude de sa monotonie",
+          "contenu_markdown": "Pour majorer f9' sur un intervalle, etudier d'abord sa propre monotonie (ici en montrant que f9' est strictement decroissante), ce qui permet d'affirmer que le maximum de f9' sur l'intervalle est atteint a l'une des bornes ; il suffit alors d'evaluer f9' a cette borne pour obtenir le majorant annonce.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C2b",
+      "enonce_markdown": "Démontrer que $\\forall n,\\ V_n-U_n=\\displaystyle\\int_{U_{n-1}}^{V_{n-1}}f_9'(t)\\,dt$. En déduire que $V_n-U_n\\leqslant(4e^{-2})^n(4-e)$. Que peut-on en déduire pour $l$ et $l'$ ?",
+      "corrige_markdown": "### Rappel de méthode\\nL'egalite Vn-Un = integrale de Un-1 a Vn-1 de f9' est une application directe du theoreme fondamental de l'analyse (f9(Vn-1)-f9(Un-1) = integrale de la derivee entre les deux bornes) ; en majorant f9' par la constante 4e^-2 sur tout l'intervalle d'integration, on majore l'integrale par 4e^-2 fois la longueur de l'intervalle, ce qui, applique successivement, donne une decroissance geometrique de raison 4e^-2 pour l'ecart Vn-Un.\\n\\n### Corrigé\\n\\n**Méthode générale** : par définition des suites, $V_n-U_n=f_9(V_{n-1})-f_9(U_{n-1})$. Le théorème fondamental de l'analyse donne $f_9(V_{n-1})-f_9(U_{n-1})=\\displaystyle\\int_{U_{n-1}}^{V_{n-1}}f_9'(t)\\,dt$ (primitive de $f_9'$ évaluée entre les deux bornes). **$\\forall n,\\ V_n-U_n=\\displaystyle\\int_{U_{n-1}}^{V_{n-1}}f_9'(t)\\,dt$.**\\n\\nComme $U_{n-1},V_{n-1}\\in[e,e^2]$ (partie C.1.a) avec $U_{n-1}<V_{n-1}$ (partie C.1.c), et $0\\leqslant f_9'(t)\\leqslant4e^{-2}$ sur cet intervalle (question précédente) :\\n\\n$$V_n-U_n=\\int_{U_{n-1}}^{V_{n-1}}f_9'(t)\\,dt\\leqslant4e^{-2}\\times(V_{n-1}-U_{n-1})$$\\n\\nEn appliquant cette inégalité de proche en proche (de $n$ à $n-1$, puis $n-2$, etc., jusqu'au rang $0$) : $V_n-U_n\\leqslant4e^{-2}(V_{n-1}-U_{n-1})\\leqslant(4e^{-2})^2(V_{n-2}-U_{n-2})\\leqslant\\dots\\leqslant(4e^{-2})^n(V_0-U_0)$.\\n\\nComme $V_0-U_0=4-e$ : **$V_n-U_n\\leqslant(4e^{-2})^n(4-e)$.**\\n\\n**Déduction pour $l$ et $l'$** : $4e^{-2}\\approx0{,}54<1$ (rapport strictement inférieur à $1$), donc $(4e^{-2})^n\\to0$ quand $n\\to+\\infty$. Comme $0\\leqslant V_n-U_n\\leqslant(4e^{-2})^n(4-e)\\to0$, le théorème des gendarmes donne $V_n-U_n\\to0$. Or $U_n\\to l$ et $V_n\\to l'$ (partie C.1), donc $V_n-U_n\\to l'-l$. Par unicité de la limite, **$l'-l=0$, soit $l=l'$** : les deux suites $(U_n)$ et $(V_n)$ **convergent vers la même limite**.\\n\\n### Piège à éviter\\n\\nCette technique (encadrer $f_9'$ par une constante $k<1$ sur l'intervalle stable, puis en déduire une décroissance géométrique de l'écart $V_n-U_n$) est la méthode standard pour prouver que deux suites adjacentes convergent vers la même limite sans calculer explicitement $f_9(V_{n-1})-f_9(U_{n-1})$ terme à terme : elle s'applique dès que $f_9'$ est bornée par une constante strictement inférieure à $1$ sur l'intervalle de stabilité, quelle que soit la fonction $f_9$ considérée.",
+      "themes": [
+        "suites récurrentes",
+        "récurrence",
+        "suites monotones",
+        "théorème des accroissements finis",
+        "convergence",
+        "théorème fondamental de l'analyse",
+        "suite géométrique majorante"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1986-c-maths-probC-c2b-0",
+          "competence": "Majoration géométrique de l'écart entre deux suites adjacentes",
+          "contenu_markdown": "L'egalite Vn-Un = integrale de Un-1 a Vn-1 de f9' est une application directe du theoreme fondamental de l'analyse (f9(Vn-1)-f9(Un-1) = integrale de la derivee entre les deux bornes) ; en majorant f9' par la constante 4e^-2 sur tout l'intervalle d'integration, on majore l'integrale par 4e^-2 fois la longueur de l'intervalle, ce qui, applique successivement, donne une decroissance geometrique de raison 4e^-2 pour l'ecart Vn-Un.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "suites adjacentes",
+    "récurrence",
+    "théorème des accroissements finis",
+    "convergence",
+    "point fixe"
+  ],
+  "incertitudes": [
+    "INCERTITUDE MAJEURE : vérification indépendante (calcul direct et calcul via sympy) montrant que f9(x)=(1+ln x)^9/x, telle que transcrite depuis Parties A et B de cette même épreuve, donne f9(e)=2^9/e≈188,4, valeur très largement extérieure à l'intervalle [e,e²]≈[2,72;7,39] annoncé comme stable en Partie C ; de même f9'(e)≈242,5 et f9'(e²)≈721,0, très supérieurs au majorant 4e^-2≈0,54 annoncé. La fonction fn(x)=(1+ln x)^n/x est en revanche parfaitement cohérente et vérifiée dans toutes les Parties A et B (points communs A et B, tableaux de variation, aire). Le désaccord semble donc spécifique à la Partie C et pourrait provenir d'une erreur de transcription (indice 9, bornes de l'intervalle, ou valeurs initiales U0/V0) dans ce scan de 1986 ; il n'a pas pu être résolu par comparaison à une source alternative (PDF source non accessible, copie Scribd protégée par contrôle JavaScript). La méthode de démonstration présentée reste correcte et standard pour ce type d'exercice.",
+    "Dans le tableau de valeurs approchées de l'énoncé source, la première ligne (x=-0) a été lue comme x=-2 (cohérent avec la valeur associée e^x≈0,14≈e^-2 ; '-0' est une erreur de transcription/OCR pour '-2')."
+  ],
+  "statut": "brouillon"
+}

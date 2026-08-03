@@ -1,0 +1,204 @@
+{
+  "epreuve_source": "bac-d-maths-2000-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2000,
+  "duree_epreuve": "4 heures",
+  "coefficient": 4,
+  "numero_exercice": "Probleme",
+  "points": 12,
+  "figures": [],
+  "enonce_intro_markdown": "Le problème comporte deux parties A et B.\\n\\n**Partie A.** Une urne contient $n$ boules noires et une boule blanche, indiscernables au toucher. Un jeu consiste à tirer de cette urne une boule, à noter sa couleur, puis à la remettre dans l'urne. Cette épreuve s'effectue deux fois. Si l'on obtient deux boules noires, on gagne $1\\,\\text{F}$ ; si l'on obtient deux boules blanches, on gagne $10\\,\\text{F}$ ; si l'on obtient deux boules de couleurs différentes, on perd $3{,}5\\,\\text{F}$. Soit $X$ la variable aléatoire qui, au résultat, associe le gain (positif ou négatif).\\n\\n**Partie B.** Soit $f$ la fonction numérique d'une variable réelle définie par $f(x)=\\dfrac{x^2-7x+10}{(x+1)^2}$.",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "1. Déterminer la loi de probabilité de la variable aléatoire $X$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour un tirage avec remise répété deux fois de façon indépendante, la probabilité de chaque issue s'obtient en multipliant les probabilités de chaque tirage élémentaire ; pour une issue réalisable de deux façons (ordre différent), on double le produit.\\n\\n### Corrigé\\nL'urne contient $n+1$ boules au total ($n$ noires, $1$ blanche). Comme la boule est remise après chaque tirage, les deux tirages sont indépendants, avec à chaque tirage :\\n$$P(\\text{noire})=\\frac{n}{n+1},\\qquad P(\\text{blanche})=\\frac{1}{n+1}.$$\\n\\n**Deux boules noires (gain $+1$F) :** les deux tirages sont noirs, indépendants :\\n$$P(X=1)=\\left(\\frac{n}{n+1}\\right)^2=\\frac{n^2}{(n+1)^2}.$$\\n\\n**Deux boules blanches (gain $+10$F) :**\\n$$P(X=10)=\\left(\\frac{1}{n+1}\\right)^2=\\frac{1}{(n+1)^2}.$$\\n\\n**Deux couleurs différentes (perte $3{,}5$F, soit $X=-3{,}5$) :** cet événement se réalise de deux façons (noire puis blanche, ou blanche puis noire) :\\n$$P(X=-3{,}5)=2\\times\\frac{n}{n+1}\\times\\frac{1}{n+1}=\\frac{2n}{(n+1)^2}.$$\\n\\nOn vérifie que la somme des probabilités vaut $1$ : $\\dfrac{n^2+1+2n}{(n+1)^2}=\\dfrac{(n+1)^2}{(n+1)^2}=1$ ✓.\\n\\nLa loi de probabilité de $X$ est donc :\\n$$\\begin{array}{|c|c|c|c|}\\hline x_i & -3{,}5 & 1 & 10\\\\\\hline P(X=x_i) & \\dfrac{2n}{(n+1)^2} & \\dfrac{n^2}{(n+1)^2} & \\dfrac{1}{(n+1)^2}\\\\\\hline\\end{array}$$",
+      "themes": [
+        "tirage avec remise",
+        "loi de probabilité",
+        "événements indépendants"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-A1",
+          "competence": "Loi de probabilite d'un tirage avec remise repete deux fois",
+          "contenu_markdown": "Pour un tirage avec remise répété deux fois de façon indépendante, la probabilité de chaque issue s'obtient en multipliant les probabilités de chaque tirage élémentaire ; pour une issue réalisable de deux façons (ordre différent), on double le produit.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2",
+      "enonce_markdown": "2. Calculer l'espérance mathématique $E(X)$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'espérance mathématique est $E(X)=\\sum x_iP(X=x_i)$ ; on simplifie l'expression obtenue en réduisant au même dénominateur et en développant le numérateur.\\n\\n### Corrigé\\nD'après la loi trouvée en A.1 :\\n$$E(X)=1\\times\\frac{n^2}{(n+1)^2}+10\\times\\frac{1}{(n+1)^2}+(-3{,}5)\\times\\frac{2n}{(n+1)^2}=\\frac{n^2+10-7n}{(n+1)^2}.$$\\nSoit, en réordonnant le numérateur :\\n$$E(X)=\\frac{n^2-7n+10}{(n+1)^2}.$$\\nOn remarque que cette expression est exactement celle de $f(n)$, où $f$ est la fonction étudiée dans la partie B : $E(X)=f(n)$.\\n\\n### Conseil\\nCette identification $E(X)=f(n)$ est la clé de la partie B.3 : elle permettra de lire directement sur la courbe de $f$ les valeurs de $n$ pour lesquelles le jeu est équitable ou avantageux, sans refaire de calcul de probabilité.",
+      "themes": [
+        "espérance mathématique"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-A2",
+          "competence": "Calcul de l'esperance mathematique et identification avec une fonction de reference",
+          "contenu_markdown": "L'espérance mathématique est $E(X)=\\sum x_iP(X=x_i)$ ; on simplifie l'expression obtenue en réduisant au même dénominateur et en développant le numérateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1",
+      "enonce_markdown": "B.1. Étudier les variations de $f$ et dresser son tableau de variation.",
+      "corrige_markdown": "### Rappel de méthode\\nPour dériver un quotient $u/v$, on applique $(u/v)'=(u'v-uv')/v^2$ ; le signe de la dérivée se lit ensuite sur le signe du numérateur obtenu (le dénominateur, un carré, étant toujours positif).\\n\\n### Corrigé\\n**Domaine.** $f$ est définie sur $\\mathbb{R}\\setminus\\{-1\\}$ (le dénominateur $(x+1)^2$ s'annule uniquement en $x=-1$).\\n\\n**Calcul de $f'(x)$.** Avec $u(x)=x^2-7x+10$ (donc $u'(x)=2x-7$) et $v(x)=(x+1)^2$ (donc $v'(x)=2(x+1)$) :\\n$$f'(x)=\\frac{u'v-uv'}{v^2}=\\frac{(2x-7)(x+1)^2-(x^2-7x+10)\\times2(x+1)}{(x+1)^4}.$$\\nOn factorise le numérateur par $(x+1)$ :\\n$$=\\frac{(x+1)\\big[(2x-7)(x+1)-2(x^2-7x+10)\\big]}{(x+1)^4}=\\frac{(2x-7)(x+1)-2(x^2-7x+10)}{(x+1)^3}.$$\\nOn développe le numérateur : $(2x-7)(x+1)=2x^2+2x-7x-7=2x^2-5x-7$, et $2(x^2-7x+10)=2x^2-14x+20$. Donc :\\n$$(2x^2-5x-7)-(2x^2-14x+20)=-5x-7+14x-20=9x-27=9(x-3).$$\\nD'où :\\n$$f'(x)=\\frac{9(x-3)}{(x+1)^3}.$$\\n\\n**Signe de $f'(x)$.** Le signe de $(x+1)^3$ est celui de $(x+1)$ (une puissance impaire conserve le signe de la base) :\\n- pour $x<-1$ : $(x+1)^3<0$ et $(x-3)<0$ (car $x<-1<3$), donc $f'(x)>0$ : $f$ croissante ;\\n- pour $-1<x<3$ : $(x+1)^3>0$ et $(x-3)<0$, donc $f'(x)<0$ : $f$ décroissante ;\\n- pour $x>3$ : $(x+1)^3>0$ et $(x-3)>0$, donc $f'(x)>0$ : $f$ croissante.\\n\\n**Limites.** En $x=-1$ (des deux côtés), $(x+1)^2\\to0^+$ et le numérateur $x^2-7x+10\\to1+7+10=18>0$, donc $f(x)\\to+\\infty$ des deux côtés. En $\\pm\\infty$, $f(x)=\\dfrac{x^2(1-7/x+10/x^2)}{x^2(1+1/x)^2}\\to1$.\\n\\n**Valeur en $x=3$ :** $f(3)=\\dfrac{9-21+10}{16}=\\dfrac{-2}{16}=-\\dfrac18$.\\n\\n**Tableau de variation :**\\n$$\\begin{array}{|c|ccccccc|}\\hline x & -\\infty & & -1 & & 3 & & +\\infty \\\\\\hline f'(x) & & + & \\| & - & 0 & + & \\\\\\hline f(x) & 1 & \\nearrow & +\\infty\\ \\| & \\searrow & -\\dfrac18 & \\nearrow & 1 \\\\\\hline\\end{array}$$\\n(la limite $1$ est approchée par valeurs supérieures en $-\\infty$ et par valeurs inférieures en $+\\infty$, la droite $y=1$ étant asymptote horizontale ; le symbole $\\|$ signale l'asymptote verticale $x=-1$, où $f$ tend vers $+\\infty$ des deux côtés).",
+      "themes": [
+        "dérivation d'un quotient",
+        "tableau de variation",
+        "asymptote verticale et horizontale"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B1",
+          "competence": "Etude complete d'une fonction rationnelle (derivee, signe, asymptotes, tableau)",
+          "contenu_markdown": "Pour dériver un quotient $u/v$, on applique $(u/v)'=(u'v-uv')/v^2$ ; le signe de la dérivée se lit ensuite sur le signe du numérateur obtenu (le dénominateur, un carré, étant toujours positif).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "B.2. Tracer soigneusement la courbe représentative $(\\mathcal{C})$ de $f$ dans un plan rapporté à un repère orthogonal $(O,\\vec i,\\vec j)$ (unités sur les axes : $\\|\\vec i\\|=2\\,\\text{cm}$ ; $\\|\\vec j\\|=1\\,\\text{cm}$).",
+      "corrige_markdown": "### Rappel de méthode\\nOn trace une courbe rationnelle en plaçant d'abord ses asymptotes (verticale et horizontale), puis les points remarquables (zéros, extremum), avant de relier le tout en respectant le tableau de variation.\\n\\n### Corrigé\\nAvec $\\|\\vec i\\|=2\\,\\text{cm}$ (axe des $x$) et $\\|\\vec j\\|=1\\,\\text{cm}$ (axe des $y$), on trace :\\n- L'asymptote verticale $x=-1$ ;\\n- L'asymptote horizontale $y=1$ ;\\n- Les zéros de $f$, $x=2$ et $x=5$ (racines de $x^2-7x+10=(x-2)(x-5)$) ;\\n- Le minimum local $\\left(3,-\\dfrac18\\right)$ ;\\n- La branche sur $]-\\infty,-1[$ : croissante depuis $y=1$ (asymptote, par valeurs supérieures) jusqu'à $+\\infty$ ;\\n- La branche sur $]-1,+\\infty[$ : décroissante depuis $+\\infty$ jusqu'au minimum $\\left(3,-\\dfrac18\\right)$ (en traversant l'axe des abscisses en $x=2$), puis croissante depuis ce minimum vers $y=1$ (asymptote, par valeurs inférieures, en traversant l'axe des abscisses en $x=5$).",
+      "themes": [
+        "représentation graphique",
+        "asymptotes",
+        "repère orthogonal"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B2",
+          "competence": "Construction d'une courbe rationnelle a partir de son tableau de variation",
+          "contenu_markdown": "On trace une courbe rationnelle en plaçant d'abord ses asymptotes (verticale et horizontale), puis les points remarquables (zéros, extremum), avant de relier le tout en respectant le tableau de variation.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3",
+      "enonce_markdown": "B.3. Utiliser la courbe représentative $(\\mathcal{C})$ de la fonction $f$ pour donner les valeurs de $n$ pour lesquelles : a) le jeu de la partie A est équitable ; b) le jeu est avantageux.",
+      "corrige_markdown": "### Rappel de méthode\\nD'après la partie A, $E(X)=f(n)$ : un jeu équitable correspond à $E(X)=0$, c'est-à-dire aux abscisses où $(\\mathcal{C})$ coupe l'axe des abscisses ; un jeu avantageux pour le joueur correspond à $E(X)>0$, c'est-à-dire aux abscisses où $(\\mathcal{C})$ est strictement au-dessus de l'axe des abscisses.\\n\\n### Corrigé\\nD'après la question A.2, $E(X)=f(n)$, où $n$ (entier naturel non nul, nombre de boules noires) joue le rôle de la variable $x$ de la fonction $f$.\\n\\n**a) Jeu équitable ($E(X)=0$).** Sur la courbe $(\\mathcal{C})$, cela correspond aux points où $f$ s'annule, c'est-à-dire aux abscisses $x=2$ et $x=5$ (lues directement sur le graphique comme les points où $(\\mathcal{C})$ coupe l'axe des abscisses, confirmées par le calcul $f(2)=f(5)=0$ puisque $x^2-7x+10=(x-2)(x-5)$). Le jeu est donc équitable pour :\\n$$n=2\\qquad\\text{ou}\\qquad n=5.$$\\n\\n**b) Jeu avantageux ($E(X)>0$).** Sur la courbe, cela correspond aux abscisses où $(\\mathcal{C})$ est strictement au-dessus de l'axe des abscisses, c'est-à-dire là où $f(x)>0$. D'après le tableau de variation (B.1) et les zéros trouvés (en $2$ et $5$), $f(x)>0$ pour $x<2$ ou $x>5$ (en excluant $x=-1$, hors du domaine des valeurs de $n$ pertinentes). Comme $n$ est un entier naturel non nul, le jeu est avantageux pour :\\n$$n=1\\qquad\\text{ou}\\qquad n\\geqslant6.$$\\n\\n### Conseil\\nCette question illustre l'intérêt de l'identification $E(X)=f(n)$ faite en A.2 : elle transforme un problème de probabilité (comparer une espérance à $0$) en une simple lecture graphique du signe de $f$, sans nouveau calcul.",
+      "themes": [
+        "lecture graphique",
+        "espérance mathématique",
+        "signe d'une fonction"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B3",
+          "competence": "Lecture graphique du signe d'une fonction pour interpreter une esperance",
+          "contenu_markdown": "D'après la partie A, $E(X)=f(n)$ : un jeu équitable correspond à $E(X)=0$, c'est-à-dire aux abscisses où $(\\mathcal{C})$ coupe l'axe des abscisses ; un jeu avantageux pour le joueur correspond à $E(X)>0$, c'est-à-dire aux abscisses où $(\\mathcal{C})$ est strictement au-dessus de l'axe des abscisses.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B4a",
+      "enonce_markdown": "B.4. Soit $F$ la fonction numérique d'une variable réelle définie par $F(x)=\\displaystyle\\int_0^xf(t)\\,dt$, $x\\geqslant0$. a) Justifier l'existence de $F$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'existence d'une primitive $F(x)=\\int_0^x f(t)\\,dt$ est garantie dès que $f$ est continue sur l'intervalle considéré (théorème d'existence des primitives).\\n\\n### Corrigé\\n$f$ est une fraction rationnelle dont le dénominateur $(x+1)^2$ ne s'annule qu'en $x=-1$. Sur l'intervalle $[0,+\\infty[$, on a toujours $x\\geqslant0>-1$, donc $x+1\\geqslant1\\neq0$ : $f$ est donc définie et continue sur $[0,+\\infty[$ (quotient de deux fonctions polynomiales continues, dont le dénominateur ne s'annule pas).\\nComme $f$ est continue sur $[0,+\\infty[$, elle admet des primitives sur cet intervalle (théorème d'existence des primitives pour une fonction continue sur un intervalle). En particulier, pour tout $x\\geqslant0$, l'intégrale $F(x)=\\displaystyle\\int_0^xf(t)\\,dt$ est bien définie : $F$ existe sur $[0,+\\infty[$.",
+      "themes": [
+        "existence d'une primitive",
+        "continuité"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B4a",
+          "competence": "Justification de l'existence d'une primitive par continuite",
+          "contenu_markdown": "L'existence d'une primitive $F(x)=\\int_0^x f(t)\\,dt$ est garantie dès que $f$ est continue sur l'intervalle considéré (théorème d'existence des primitives).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B4b",
+      "enonce_markdown": "b) Démontrer qu'il existe trois nombres réels $a$, $b$, $c$ tels que, pour tout $x$ différent de $-1$, $f(x)=a+\\dfrac{b}{x+1}+\\dfrac{c}{(x+1)^2}$. En déduire l'expression de $F(x)$ et calculer $F(0)$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour décomposer une fraction rationnelle $\\dfrac{P(x)}{(x+1)^2}$ (degré du numérateur = degré du dénominateur) en éléments simples $a+\\dfrac{b}{x+1}+\\dfrac{c}{(x+1)^2}$, on réduit au même dénominateur et on identifie les coefficients par la méthode des coefficients indéterminés.\\n\\n### Corrigé\\n**Recherche de $a,b,c$.** On réduit $a+\\dfrac{b}{x+1}+\\dfrac{c}{(x+1)^2}$ au même dénominateur $(x+1)^2$ :\\n$$a+\\frac{b}{x+1}+\\frac{c}{(x+1)^2}=\\frac{a(x+1)^2+b(x+1)+c}{(x+1)^2}.$$\\nOn développe le numérateur : $a(x+1)^2+b(x+1)+c=a(x^2+2x+1)+bx+b+c=ax^2+(2a+b)x+(a+b+c)$.\\nEn identifiant avec le numérateur de $f$, $x^2-7x+10$, coefficient par coefficient :\\n$$a=1\\ (\\text{coeff. de }x^2),\\qquad2a+b=-7\\ (\\text{coeff. de }x),\\qquad a+b+c=10\\ (\\text{terme constant}).$$\\nDe $a=1$ et $2a+b=-7$, on tire $b=-7-2=-9$. De $a+b+c=10$, on tire $c=10-a-b=10-1-(-9)=10-1+9=18$.\\n\\nOn a donc, pour tout $x\\neq-1$ :\\n$$f(x)=1-\\frac{9}{x+1}+\\frac{18}{(x+1)^2}.$$\\n(On peut vérifier rapidement : en $x=0$, $f(0)=\\dfrac{10}{1}=10$, et $1-9+18=10$ ✓.)\\n\\n**Expression de $F(x)$.** Pour $x\\geqslant0$, on intègre terme à terme (chaque terme étant continu sur $[0,+\\infty[$, avec $\\int\\frac{dt}{t+1}=\\ln(t+1)$ et $\\int\\frac{dt}{(t+1)^2}=-\\dfrac{1}{t+1}$) :\\n$$F(x)=\\int_0^x\\left[1-\\frac{9}{t+1}+\\frac{18}{(t+1)^2}\\right]dt=\\Big[t-9\\ln(t+1)-\\frac{18}{t+1}\\Big]_0^x.$$\\n$$=\\left[x-9\\ln(x+1)-\\frac{18}{x+1}\\right]-\\left[0-9\\ln(1)-\\frac{18}{1}\\right]=x-9\\ln(x+1)-\\frac{18}{x+1}-(0-0-18).$$\\n$$F(x)=x-9\\ln(x+1)-\\frac{18}{x+1}+18.$$\\n\\n**Calcul de $F(0)$ :**\\n$$F(0)=0-9\\ln(1)-\\frac{18}{1}+18=0-0-18+18=0.$$\\n(Résultat cohérent avec la définition $F(x)=\\int_0^xf(t)dt$, qui donne toujours $F(0)=0$.)\\n\\n### Conseil\\nToujours vérifier $F(0)=0$ à la fin du calcul : comme $F$ est définie comme une intégrale de $0$ à $x$, cette valeur est connue à l'avance et sa vérification permet de détecter une erreur de constante dans la primitive.",
+      "themes": [
+        "décomposition en éléments simples",
+        "primitive",
+        "calcul intégral"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B4b",
+          "competence": "Decomposition en elements simples et calcul de primitive",
+          "contenu_markdown": "Pour décomposer une fraction rationnelle $\\dfrac{P(x)}{(x+1)^2}$ (degré du numérateur = degré du dénominateur) en éléments simples $a+\\dfrac{b}{x+1}+\\dfrac{c}{(x+1)^2}$, on réduit au même dénominateur et on identifie les coefficients par la méthode des coefficients indéterminés.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B4c",
+      "enonce_markdown": "c) Calculer l'aire du domaine plan limité par les droites d'équations $x=2$ ; $x=5$ ; $y=0$ et $(\\mathcal{C})$.",
+      "corrige_markdown": "### Rappel de méthode\\nL'aire entre une courbe et l'axe des abscisses sur un intervalle où la fonction garde un signe constant est $\\left|\\int f\\right|=|F(x_2)-F(x_1)|$ ; l'unité d'aire se convertit en cm² en multipliant par le produit des deux unités d'axe.\\n\\n### Corrigé\\nD'après le tableau de variation (B.1), $f$ atteint son minimum $f(3)=-\\dfrac18<0$ entre ses deux zéros $x=2$ et $x=5$ : $f$ est donc négative sur tout l'intervalle $[2,5]$ (car $f(2)=f(5)=0$ et $f$ n'a pas d'autre zéro entre les deux, le minimum de l'intervalle $]-1,+\\infty[$ étant précisément en $x=3\\in\\,]2,5[$).\\n\\nL'aire (en unités d'aire) du domaine limité par $x=2$, $x=5$, $y=0$ et $(\\mathcal{C})$ vaut donc :\\n$$\\mathcal{A}_0=\\int_2^5\\big|f(x)\\big|\\,dx=-\\int_2^5f(x)\\,dx=-\\big[F(5)-F(2)\\big]=F(2)-F(5).$$\\nOn utilise $F(x)=x-9\\ln(x+1)-\\dfrac{18}{x+1}+18$ (question B.4b) :\\n$$F(2)=2-9\\ln3-\\frac{18}{3}+18=2-9\\ln3-6+18=14-9\\ln3.$$\\n$$F(5)=5-9\\ln6-\\frac{18}{6}+18=5-9\\ln6-3+18=20-9\\ln6.$$\\nD'où :\\n$$\\mathcal{A}_0=F(2)-F(5)=(14-9\\ln3)-(20-9\\ln6)=14-9\\ln3-20+9\\ln6=-6+9(\\ln6-\\ln3).$$\\nComme $\\ln6-\\ln3=\\ln\\dfrac63=\\ln2$ :\\n$$\\mathcal{A}_0=9\\ln2-6\\ \\text{unités d'aire}\\approx9\\times0{,}693-6\\approx0{,}238.$$\\n\\n**Conversion en cm².** Une unité d'aire vaut $\\|\\vec i\\|\\times\\|\\vec j\\|=2\\,\\text{cm}\\times1\\,\\text{cm}=2\\,\\text{cm}^2$. L'aire cherchée, en cm², est donc :\\n$$\\mathcal{A}=2\\times(9\\ln2-6)=18\\ln2-12\\ \\text{cm}^2\\approx0{,}48\\ \\text{cm}^2.$$\\n\\n### Piège à éviter\\nAppliquer un facteur de conversion $\\|\\vec i\\|^2$ ou $\\|\\vec j\\|^2$ au lieu de $\\|\\vec i\\|\\times\\|\\vec j\\|$ : les deux axes n'ayant pas la même unité graphique ici ($2\\,\\text{cm}$ contre $1\\,\\text{cm}$), c'est bien le produit des deux qui donne l'aire réelle d'une unité d'aire du repère.",
+      "themes": [
+        "aire sous une courbe",
+        "primitive",
+        "conversion d'unité"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2000d-pb-B4c",
+          "competence": "Calcul d'aire sous une courbe via une primitive et conversion d'unites differentes par axe",
+          "contenu_markdown": "L'aire entre une courbe et l'axe des abscisses sur un intervalle où la fonction garde un signe constant est $\\left|\\int f\\right|=|F(x_2)-F(x_1)|$ ; l'unité d'aire se convertit en cm² en multipliant par le produit des deux unités d'axe.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "loi de probabilité",
+    "espérance mathématique",
+    "fonction rationnelle",
+    "tableau de variation",
+    "asymptote verticale",
+    "asymptote horizontale",
+    "décomposition en éléments simples",
+    "primitive",
+    "aire sous une courbe",
+    "bac D Cameroun 2000"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

@@ -1,0 +1,117 @@
+{
+  "epreuve_source": "bac-c-e-maths-2005-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2005",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "1",
+  "points": null,
+  "enonce_intro_markdown": "**Exercice 1**",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "1. (a) Résoudre dans $\\mathbb{Z}\\times\\mathbb{Z}$, l'équation $(E):13x-84y=7$.",
+      "corrige_markdown": "### Rappel de methode\nPour résoudre une équation diophantienne ax+by=c avec pgcd(a,b)=d divisant c, on trouve d'abord un couple particulier (x0,y0) par l'algorithme d'Euclide étendu (identité de Bézout), puis la solution générale s'écrit x=x0+(b/d)k, y=y0+(a/d)k pour k entier relatif.\n\n### Corrige\n**Existence.** $\\text{pgcd}(13,84)$ : $84=6\\times13+6$ ; $13=2\\times6+1$ ; $6=6\\times1+0$. Donc $\\text{pgcd}(13,84)=1$, qui divise $7$ : l'équation $(E)$ admet des solutions dans $\\mathbb{Z}\\times\\mathbb{Z}$.\n\n**Solution particulière (Bézout).** En remontant l'algorithme d'Euclide :\n$$1=13-2\\times6=13-2\\times(84-6\\times13)=13\\times13-2\\times84$$\n\nEn multipliant par $7$ : $13\\times91-84\\times14=7$. On peut réduire modulo $84$ et $13$ pour obtenir un couple plus simple : $91=84+7$ et $14=13+1$, donc $13\\times7-84\\times1=91-84=7$. **Un couple particulier est $(x_0;y_0)=(7;1)$.**\n\n**Solution générale.** $(E):13x-84y=7$. Avec le couple particulier : $13x_0-84y_0=7$. En soustrayant : $13(x-x_0)=84(y-y_0)$. Comme $\\text{pgcd}(13,84)=1$, le théorème de Gauss donne $13\\mid(y-y_0)$, donc $y-y_0=13k$ ($k\\in\\mathbb{Z}$), puis $x-x_0=84k$.\n\n$$\\boxed{x=7+84k,\\quad y=1+13k,\\quad k\\in\\mathbb{Z}}$$\n\n**Vérification** : $13(7+84k)-84(1+13k)=91+1092k-84-1092k=7$. ✓",
+      "themes": [
+        "équation diophantienne",
+        "algorithme d'Euclide",
+        "identité de Bézout"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-ex1-0",
+          "competence": "Résolution générale d'une équation diophantienne ax+by=c",
+          "contenu_markdown": "Pour résoudre une équation diophantienne ax+by=c avec pgcd(a,b)=d divisant c, on trouve d'abord un couple particulier (x0,y0) par l'algorithme d'Euclide étendu (identité de Bézout), puis la solution générale s'écrit x=x0+(b/d)k, y=y0+(a/d)k pour k entier relatif.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "(b) Montrer que pour tout couple solution $(a;b)$ de $(E)$, on a : $\\text{pgcd}(a;b)=1$ ou $\\text{pgcd}(a;b)=7$.",
+      "corrige_markdown": "### Rappel de methode\nPour montrer qu'un diviseur commun d de deux entiers a et b divise nécessairement une combinaison linéaire donnée pa+qb, il suffit de calculer cette combinaison et de constater qu'elle est une constante indépendante des paramètres : d divise alors cette constante.\n\n### Corrige\nSoit $(a;b)=(7+84k;1+13k)$ un couple solution de $(E)$, et $d=\\text{pgcd}(a,b)$.\n\n$d$ divise $a$ et $b$, donc $d$ divise toute combinaison linéaire entière de $a$ et $b$, en particulier :\n$$13a-84b=13(7+84k)-84(1+13k)=91+1092k-84-1092k=7$$\n\nDonc $d\\mid7$. Comme $7$ est premier, ses seuls diviseurs positifs sont $1$ et $7$ : **$\\text{pgcd}(a,b)=1$ ou $\\text{pgcd}(a,b)=7$.**",
+      "themes": [
+        "pgcd",
+        "combinaison linéaire",
+        "diviseurs de 7"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-ex1-1",
+          "competence": "Un diviseur commun divise toute combinaison linéaire entière",
+          "contenu_markdown": "Pour montrer qu'un diviseur commun d de deux entiers a et b divise nécessairement une combinaison linéaire donnée pa+qb, il suffit de calculer cette combinaison et de constater qu'elle est une constante indépendante des paramètres : d divise alors cette constante.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Déterminer les solutions $(a;b)$ de $(E)$ telles que $a$ et $b$ soient premiers entre eux.",
+      "corrige_markdown": "### Rappel de methode\nD'après le résultat précédent, pgcd(a,b) vaut 1 ou 7 ; il suffit de déterminer pour quelles valeurs du paramètre k la valeur 7 est exclue, c'est-à-dire pour quelles valeurs de k le nombre b n'est pas multiple de 7 (sachant que a est toujours multiple de 7 dans cette famille).\n\n### Corrige\n$a=7+84k=7(1+12k)$ : **$a$ est toujours multiple de $7$**, quel que soit $k$.\n\nDonc $\\text{pgcd}(a,b)=7$ si et seulement si $7\\mid b$ ; sinon, d'après la question 1.(b), $\\text{pgcd}(a,b)=1$.\n\n$b=1+13k$. Or $13\\equiv-1\\,[7]$, donc $b\\equiv1-k\\,[7]$. Ainsi $7\\mid b\\iff k\\equiv1\\,[7]$.\n\n**Conclusion** : les couples $(a;b)=(7+84k;1+13k)$ avec $a$ et $b$ premiers entre eux sont exactement ceux obtenus pour :\n$$k\\in\\mathbb{Z},\\quad k\\not\\equiv1\\,[7]$$",
+      "themes": [
+        "nombres premiers entre eux",
+        "congruences"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-ex1-2",
+          "competence": "Exclure le cas pgcd=7 via une congruence modulo 7",
+          "contenu_markdown": "D'après le résultat précédent, pgcd(a,b) vaut 1 ou 7 ; il suffit de déterminer pour quelles valeurs du paramètre k la valeur 7 est exclue, c'est-à-dire pour quelles valeurs de k le nombre b n'est pas multiple de 7 (sachant que a est toujours multiple de 7 dans cette famille).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Déterminer les solutions $(a;b)$ de $(E)$ telles que : $\\text{pgcd}(a;b)=7$.",
+      "corrige_markdown": "### Rappel de methode\nLorsque pgcd(a,b)=d, on peut écrire a=d·a' et b=d·b' avec pgcd(a',b')=1 ; substituer cette forme dans les expressions de a et b permet de retrouver la condition exacte sur le paramètre.\n\n### Corrige\nD'après la question 2, $\\text{pgcd}(a,b)=7\\iff k\\equiv1\\,[7]$, soit $k=1+7m$, $m\\in\\mathbb{Z}$.\n\nAlors :\n$$a=7+84(1+7m)=91+588m=7(13+84m) \\qquad b=1+13(1+7m)=14+91m=7(2+13m)$$\n\n**Vérification que le pgcd est exactement $7$ (et non un multiple supérieur)** : il faut $\\text{pgcd}(13+84m,\\,2+13m)=1$. Or $13(13+84m)-84(2+13m)=169+1092m-168-1092m=1$, donc ce pgcd divise $1$ : il vaut $1$. Le pgcd de $(a,b)$ est donc bien exactement $7$.\n\n**Conclusion** : les couples $(a;b)$ tels que $\\text{pgcd}(a;b)=7$ sont :\n$$\\big(7(13+84m)\\,;\\,7(2+13m)\\big),\\quad m\\in\\mathbb{Z}$$",
+      "themes": [
+        "pgcd",
+        "factorisation",
+        "identité de Bézout"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2005-ex1-3",
+          "competence": "Isoler le paramètre du cas pgcd=7 puis vérifier l'exactitude via Bézout",
+          "contenu_markdown": "Lorsque pgcd(a,b)=d, on peut écrire a=d·a' et b=d·b' avec pgcd(a',b')=1 ; substituer cette forme dans les expressions de a et b permet de retrouver la condition exacte sur le paramètre.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "équation diophantienne",
+    "pgcd",
+    "identité de Bézout",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "barème non précisé",
+      "description": "Le PDF source (Douala Mathematical Society, dvipdfm/TeX) n'indique aucun barème par exercice ni par question. Le champ 'points' est donc laissé à null plutôt que d'inventer une pondération."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon"
+}

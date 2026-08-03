@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-resonance-dintensite-dans-un-circuit-rlc-serie-terminale-C",
+  "meta": {
+    "titre": "Résonance d'intensité dans un circuit RLC série",
+    "matiere": "Physique",
+    "serie": "C",
+    "sous_theme": "Électricité : régime sinusoïdal forcé, résonance",
+    "duree_estimee_min": 30,
+    "tags": [
+      "resonance d'intensite",
+      "reactance capacitive",
+      "circuit RLC serie",
+      "pulsation propre"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-BLANC-C-2019-PHYSIQUE-EXTREME-NORD",
+    "epreuve_titre": "Baccalauréat blanc C - Physique - Région de l'Extrême-Nord - Avril 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-c-physique-2019-cmeroun-ex2-q3.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi un poste de radio, regle sur une frequence precise, ne capte-t-il que la station correspondant a cette frequence et pas toutes les autres emises en meme temps ? Le secret tient a un phenomene appele resonance d'intensite : a une frequence bien particuliere, un circuit RLC laisse passer un courant maximal, et cette frequence peut etre choisie en ajustant simplement la capacite d'un condensateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre l'impedance d'un circuit R,L serie et la notion de reactance inductive $L\\omega$",
+        "Savoir qu'un condensateur introduit une reactance capacitive $1/(C\\omega)$, de signe oppose a la reactance inductive",
+        "Manipuler les expressions de $Z$ et $\\tan\\varphi$ pour un circuit serie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ajout d'un condensateur : réactance totale et résonance",
+      "contenu_markdown": "Lorsqu'un condensateur de capacite $C$ est ajoute en serie a un circuit R,(L,r), la reactance totale du circuit devient la difference entre la reactance inductive et la reactance capacitive : $X=L\\omega-\\dfrac{1}{C\\omega}$. Le dephasage verifie alors $\\tan\\varphi=\\dfrac{X}{R+r}$. Lorsque $X=0$, c'est-a-dire lorsque $L\\omega=\\dfrac{1}{C\\omega}$, la tension et le courant sont en phase ($\\varphi=0$) et l'impedance est minimale, egale a $R+r$ : c'est la resonance d'intensite, pour laquelle l'intensite efficace est maximale a tension d'alimentation fixee.",
+      "formule_principale": "X = L\\omega - \\dfrac{1}{C\\omega} \\quad;\\quad \\text{Résonance : } L\\omega_0=\\dfrac{1}{C\\omega_0} \\Longleftrightarrow \\omega_0=\\dfrac{1}{\\sqrt{LC}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit R,(L,r) serie, avec $R+r=32\\,\\Omega$ et $L=76{,}4\\,mH$, fonctionne a la pulsation $\\omega=314\\,rad/s$ (reactance inductive initiale $L\\omega=24\\,\\Omega$). On ajoute en serie un condensateur $C=112\\,\\mu F$. Calculer le nouveau dephasage entre tension et courant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la réactance capacitive du condensateur ajouté",
+          "justification": "La reactance capacitive s'exprime par $1/(C\\omega)$, a la meme pulsation que le reste du circuit (le generateur n'a pas change de frequence).",
+          "resultat_markdown": "$\\dfrac{1}{C\\omega}=\\dfrac{1}{112\\times10^{-6}\\times314}\\approx28{,}4\\,\\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la nouvelle réactance totale",
+          "justification": "La reactance totale est la difference algebrique entre la reactance inductive (deja presente) et la reactance capacitive (nouvellement ajoutee).",
+          "resultat_markdown": "$X=L\\omega-\\dfrac{1}{C\\omega}=24-28{,}4=-4{,}4\\,\\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le nouveau déphasage",
+          "justification": "Le dephasage se calcule a partir de la reactance totale et de la resistance totale, via $\\tan\\varphi=X/(R+r)$.",
+          "resultat_markdown": "$\\tan\\varphi=\\dfrac{-4{,}4}{32}\\approx-0{,}138 \\quad\\Longrightarrow\\quad \\varphi\\approx-7{,}9^{\\circ}$"
+        }
+      ],
+      "conclusion_markdown": "Le dephasage, initialement d'environ $37^{\\circ}$ (circuit purement inductif R,L), chute a moins de $8^{\\circ}$ apres l'ajout du condensateur : le circuit se rapproche fortement de la resonance d'intensite, ou tension et courant seraient parfaitement en phase."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter les reactances inductive et capacitive au lieu de les soustraire : ecrire $X=L\\omega+\\dfrac{1}{C\\omega}$.",
+          "pourquoi_faux": "La bobine et le condensateur ont des effets opposes sur le dephasage (l'un retarde le courant, l'autre l'avance) : leurs reactances se combinent avec un signe oppose dans l'impedance complexe, d'ou la SOUSTRACTION $L\\omega-1/(C\\omega)$ et non une addition.",
+          "correction_markdown": "Retiens que la reactance capacitive est toujours affectee d'un signe moins par rapport a la reactance inductive dans l'expression de la reactance totale d'un circuit RLC serie."
+        },
+        {
+          "erreur_markdown": "Croire qu'ajouter un condensateur augmente toujours l'impedance du circuit.",
+          "pourquoi_faux": "Au contraire, si le circuit etait initialement plus inductif que capacitif (comme dans l'exemple ci-dessus), ajouter un condensateur RAPPROCHE le circuit de la resonance, ce qui DIMINUE son impedance (et donc AUGMENTE l'intensite du courant, a tension fixee).",
+          "correction_markdown": "Calcule toujours explicitement la nouvelle reactance totale $X$ avant de conclure sur le sens de variation de l'impedance : le resultat depend du signe et de l'ampleur de $L\\omega-1/(C\\omega)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC serie a une reactance inductive $L\\omega=15\\,\\Omega$ et une reactance capacitive $1/(C\\omega)=15\\,\\Omega$ a une certaine pulsation. Que peut-on dire du dephasage entre tension et courant a cette pulsation ?",
+          "solution_markdown": "La reactance totale est $X=L\\omega-1/(C\\omega)=15-15=0\\,\\Omega$. Le circuit est donc a la resonance d'intensite : le dephasage est nul, la tension et le courant sont en phase."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la pulsation de resonance $\\omega_0$ d'un circuit RLC serie avec $L=0{,}1\\,H$ et $C=100\\,\\mu F$.",
+          "solution_markdown": "A la resonance, $L\\omega_0=1/(C\\omega_0)$, soit $\\omega_0^2=1/(LC)$. Donc $\\omega_0=\\dfrac{1}{\\sqrt{LC}}=\\dfrac{1}{\\sqrt{0{,}1\\times100\\times10^{-6}}}=\\dfrac{1}{\\sqrt{10^{-5}}}=\\dfrac{1}{3{,}16\\times10^{-3}}\\approx316\\,rad/s$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC serie est alimente a une pulsation $\\omega$ fixe. On fait varier progressivement la capacite $C$ du condensateur, de tres petites valeurs a de tres grandes valeurs. Decrire qualitativement l'evolution du dephasage $\\varphi$ et de l'intensite efficace $I$ du courant.",
+          "solution_markdown": "Pour $C$ tres petit, $1/(C\\omega)$ est tres grand : la reactance totale $X=L\\omega-1/(C\\omega)$ est fortement negative, le circuit est tres capacitif, $\\varphi$ est proche de $-90^{\\circ}$ et l'impedance est grande (I faible). Quand $C$ augmente, $1/(C\\omega)$ diminue, $X$ augmente (devient moins negatif) : $\\varphi$ se rapproche de $0$ et l'intensite augmente. Il existe une valeur particuliere $C_0=1/(L\\omega^2)$ pour laquelle $X=0$ exactement : c'est la resonance, ou $\\varphi=0$ et $I$ est MAXIMALE (I=U/(R+r), l'impedance minimale possible). Au-dela de $C_0$, en continuant a augmenter $C$, $1/(C\\omega)$ continue de diminuer, $X$ devient positif (le circuit redevient inductif dominant en apparence inverse... en realite $X=L\\omega-1/(C\\omega)$ devient positif quand $1/(C\\omega)<L\\omega$, donc pour $C$ grand), $\\varphi$ redevient positif et $I$ redecroit progressivement. La courbe de $I$ en fonction de $C$ (ou de $\\omega$) presente donc un pic unique a la resonance, caracteristique de la selectivite d'un circuit RLC (utilisee par exemple dans l'accord d'un poste radio)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ajouter un condensateur en serie a un circuit R,L introduit une reactance capacitive $1/(C\\omega)$, qui se SOUSTRAIT a la reactance inductive $L\\omega$.",
+        "Reactance totale : $X=L\\omega-1/(C\\omega)$ ; dephasage : $\\tan\\varphi=X/(R+r)$.",
+        "A la resonance d'intensite ($X=0$, soit $\\omega_0=1/\\sqrt{LC}$), la tension et le courant sont en phase et l'impedance est minimale ($Z=R+r$) : l'intensite efficace est alors maximale.",
+        "Un circuit peut etre \"presque a resonance\" sans y etre exactement : un dephasage tres faible (quelques degres) est le signe d'un fonctionnement proche de $\\omega_0$.",
+        "Au BAC, ce type de question sert souvent a verifier la coherence entre un calcul theorique (a partir de L et C donnes) et une observation experimentale (oscillogramme montrant des courbes presque confondues)."
+      ]
+    }
+  ]
+}

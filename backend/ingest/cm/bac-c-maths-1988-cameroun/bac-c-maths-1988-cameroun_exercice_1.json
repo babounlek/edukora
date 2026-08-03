@@ -1,0 +1,93 @@
+{
+  "epreuve_source": "bac-c-maths-1988-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1988",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Calculer les carrés des éléments $\\bar0$, $\\bar1$, $\\bar2$, $\\bar3$, $\\bar4$ et $\\bar5$ de $\\mathbb{Z}/11\\mathbb{Z}$. En déduire le nombre de solutions de l'équation $x^2=\\bar a$ dans $\\mathbb{Z}/11\\mathbb{Z}$, suivant les valeurs de $\\bar a$ élément de $\\mathbb{Z}/11\\mathbb{Z}$.",
+      "corrige_markdown": "### Rappel de méthode\\nDans $\\mathbb{Z}/n\\mathbb{Z}$, le carré d'un élément $\\bar a$ est égal à celui de son opposé $\\overline{-a}=\\overline{n-a}$ (puisque $(-a)^2=a^2$). Il suffit donc de calculer les carrés de $\\bar0$ jusqu'à la moitié de $n$ pour connaître, par symétrie, tous les carrés de $\\mathbb{Z}/n\\mathbb{Z}$.\\n\\n### Corrigé\\nCalculons les carrés demandés dans $\\mathbb{Z}/11\\mathbb{Z}$ :\\n$$\\bar0^2=\\bar0 \\qquad \\bar1^2=\\bar1 \\qquad \\bar2^2=\\overline4 \\qquad \\bar3^2=\\overline9$$\\n$$\\bar4^2=\\overline{16}=\\overline{16-11}=\\overline5 \\qquad \\bar5^2=\\overline{25}=\\overline{25-22}=\\overline3$$\\n\\n**Carrés des éléments restants, par symétrie.** Dans $\\mathbb{Z}/11\\mathbb{Z}$, on a $\\overline{-a}=\\overline{11-a}$, et $(\\overline{-a})^2=\\bar a^2$. Ainsi $\\overline6=\\overline{-5}$ a le même carré que $\\bar5$, $\\overline7=\\overline{-4}$ le même que $\\bar4$, etc. On obtient le tableau complet :\\n\\n$$\\begin{array}{c|ccccccccccc}\\na & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\\\\\n\\hline\\na^2 & 0 & 1 & 4 & 9 & 5 & 3 & 3 & 5 & 9 & 4 & 1\\n\\end{array}$$\\n\\n**Nombre de solutions de $x^2=\\bar a$ suivant $a$.** L'ensemble des valeurs effectivement atteintes par $x\\mapsto x^2$ est, d'après le tableau, $\\{\\bar0,\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$ : ce sont les seules valeurs de $a$ pour lesquelles l'équation $x^2=\\bar a$ a une solution.\\n\\n- Si $a=\\bar0$ : une seule solution, $x=\\bar0$ (car $\\bar0$ est son propre opposé, les deux racines habituelles $x$ et $-x$ sont confondues).\\n- Si $a\\in\\{\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$ : le tableau montre que chacune de ces valeurs est atteinte par exactement deux éléments distincts opposés l'un de l'autre (par exemple $\\bar1$ est atteint par $\\bar1$ et $\\overline{10}=\\overline{-1}$) : **deux solutions distinctes**.\\n- Si $a\\in\\{\\bar2,\\overline6,\\overline7,\\overline8,\\overline{10}\\}$ (les cinq valeurs n'apparaissant jamais dans le tableau) : **aucune solution**.\\n\\nEn résumé, sur les $11$ valeurs possibles de $a$, il y en a $1$ pour laquelle $x^2=\\bar a$ a une unique solution, $5$ pour lesquelles elle en a deux, et $5$ pour lesquelles elle n'en a aucune (soit $1+2\\times5+0\\times5=11$ éléments couverts, cohérent avec les $11$ valeurs de $x$ possibles).\\n\\n### Piège à éviter\\nNe pas oublier le cas particulier $a=\\bar0$ : contrairement aux autres valeurs atteintes, il ne donne qu'**une seule** solution (et non deux), car $x$ et $-x$ coïncident quand $x=\\bar0$.",
+      "themes": [
+        "arithmétique modulaire",
+        "carrés dans un corps fini",
+        "Z/11Z"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1988-e1-1",
+          "competence": "Carres dans Z/nZ et symetrie x, -x",
+          "contenu_markdown": "Dans $\\mathbb{Z}/n\\mathbb{Z}$, le carré d'un élément $\\bar a$ est égal à celui de son opposé $\\overline{-a}=\\overline{n-a}$ (puisque $(-a)^2=a^2$). Il suffit donc de calculer les carrés de $\\bar0$ jusqu'à la moitié de $n$ pour connaître, par symétrie, tous les carrés de $\\mathbb{Z}/n\\mathbb{Z}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Soit l'équation $x^2-2px+q=0$, où $p$ et $q$ sont des éléments de $\\mathbb{Z}/11\\mathbb{Z}$. Montrer que cette équation admet deux solutions distinctes ou confondues dans $\\mathbb{Z}/11\\mathbb{Z}$ si et seulement si $p^2-q$ appartient à un sous-ensemble $A$ de $\\mathbb{Z}/11\\mathbb{Z}$ que l'on déterminera.",
+      "corrige_markdown": "### Rappel de méthode\\nCompléter le carré : $x^2-2px+q=(x-p)^2-(p^2-q)$. L'équation $x^2-2px+q=0$ équivaut donc à $(x-p)^2=p^2-q$, qui a des solutions en $x$ si et seulement si $p^2-q$ est un carré de $\\mathbb{Z}/n\\mathbb{Z}$ (élément atteint par l'application $t\\mapsto t^2$).\\n\\n### Corrigé\\nComplétons le carré dans l'équation $x^2-2px+q=0$ :\\n$$x^2-2px+q=(x-p)^2-p^2+q=(x-p)^2-(p^2-q)$$\\n\\nL'équation $x^2-2px+q=0$ équivaut donc à :\\n$$(x-p)^2=p^2-q$$\\n\\nEn posant $t=x-p$ (changement de variable qui est une bijection de $\\mathbb{Z}/11\\mathbb{Z}$ sur lui-même, puisque $x\\mapsto x-p$ est inversible, de bijection réciproque $t\\mapsto t+p$), l'équation devient $t^2=p^2-q$.\\n\\nD'après la question 1, l'équation $t^2=k$ (d'inconnue $t$) admet **au moins une solution** (une ou deux, jamais aucune) si et seulement si $k$ appartient à l'ensemble des carrés de $\\mathbb{Z}/11\\mathbb{Z}$, c'est-à-dire :\\n$$k\\in A=\\{\\bar0,\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$$\\n\\nDonc l'équation $t^2=p^2-q$ (et par le changement de variable $t=x-p$, l'équation initiale $x^2-2px+q=0$) admet une ou deux solutions (« deux solutions distinctes ou confondues ») **si et seulement si** :\\n$$p^2-q\\in A=\\{\\bar0,\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$$\\n\\nLe sous-ensemble $A$ recherché est donc exactement l'ensemble des carrés de $\\mathbb{Z}/11\\mathbb{Z}$ déterminé à la question 1 : quand $p^2-q=\\bar0$, les deux solutions sont confondues ($x=p$, solution double) ; quand $p^2-q\\in\\{\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$, les deux solutions $x=p\\pm t_0$ (où $t_0$ est une racine carrée de $p^2-q$) sont distinctes.\\n\\n### Piège à éviter\\nNe pas oublier que dans $\\mathbb{Z}/11\\mathbb{Z}$, il n'existe pas de notion de signe pour distinguer « les deux racines carrées » comme dans $\\mathbb{R}$ : les deux racines carrées d'un même élément non nul de $A$ sont simplement les deux éléments opposés trouvés dans le tableau de la question 1, pas une « racine positive » et une « racine négative ».",
+      "themes": [
+        "équation du second degré",
+        "corps fini",
+        "complétion du carré"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1988-e1-2",
+          "competence": "Resolution d'une equation du second degre dans Z/nZ par completion du carre",
+          "contenu_markdown": "Compléter le carré : $x^2-2px+q=(x-p)^2-(p^2-q)$. L'équation $x^2-2px+q=0$ équivaut donc à $(x-p)^2=p^2-q$, qui a des solutions en $x$ si et seulement si $p^2-q$ est un carré de $\\mathbb{Z}/n\\mathbb{Z}$ (élément atteint par l'application $t\\mapsto t^2$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) Résoudre dans $\\mathbb{Z}/11\\mathbb{Z}$ l'équation $x^4-\\overline{10}x^2+\\bar2=0$.",
+      "corrige_markdown": "### Rappel de méthode\\nUne équation bicarrée $x^4-bx^2+c=0$ se résout en posant $y=x^2$, ce qui donne une équation du second degré $y^2-by+c=0$ en $y$ ; pour chaque solution $y_0$ trouvée, il reste ensuite à résoudre $x^2=y_0$.\\n\\n### Corrigé\\nPosons $y=x^2$. L'équation $x^4-\\overline{10}x^2+\\bar2=0$ devient :\\n$$y^2-\\overline{10}y+\\bar2=0$$\\n\\nÉcrivons cette équation sous la forme $y^2-2py+q=0$ étudiée à la question 2 : il faut $2p=\\overline{10}$, donc $p=\\bar5$ (puisque $2\\times5=10$), et $q=\\bar2$.\\n\\nCalculons $p^2-q=\\bar5^2-\\bar2=\\overline3-\\bar2=\\bar1$ (en utilisant $\\bar5^2=\\overline3$, trouvé à la question 1).\\n\\nOr $\\bar1\\in A$ (c'est un carré, celui de $\\bar1$ et de $\\overline{10}$ d'après le tableau de la question 1) : d'après la question 2, l'équation en $y$ admet donc deux solutions distinctes $y=p\\pm t_0$ où $t_0$ est une racine carrée de $\\bar1$, soit $t_0=\\bar1$ ou $t_0=\\overline{10}$ :\\n$$y=\\bar5+\\bar1=\\overline6 \\qquad\\text{ou}\\qquad y=\\bar5-\\bar1=\\bar5-\\bar1=\\bar4$$\\n\\n(le second calcul utilise $\\bar5-\\bar1=\\bar4$, calcul direct dans $\\mathbb{Z}/11\\mathbb{Z}$).\\n\\n**Résolution de $x^2=\\overline6$.** D'après le tableau de la question 1, $\\overline6$ n'apparaît **jamais** comme carré d'un élément de $\\mathbb{Z}/11\\mathbb{Z}$ (les carrés possibles sont $\\{\\bar0,\\bar1,\\overline3,\\overline4,\\overline5,\\overline9\\}$, et $\\overline6\\notin$ cet ensemble) : l'équation $x^2=\\overline6$ **n'a aucune solution**.\\n\\n**Résolution de $x^2=\\bar4$.** D'après le tableau de la question 1, $\\bar4=\\bar2^2=\\overline9^2$ : l'équation $x^2=\\bar4$ a pour solutions $x=\\bar2$ et $x=\\overline9$.\\n\\n**Vérification indépendante par substitution directe** (contrôle de cohérence) : pour $x=\\bar2$, $x^4=(x^2)^2=\\bar4^2=\\overline5$ et $\\overline{10}x^2=\\overline{10}\\times\\bar4=\\overline{40}=\\overline{40-33}=\\bar7$ ; donc $x^4-\\overline{10}x^2+\\bar2=\\overline5-\\bar7+\\bar2=\\bar0$ ✓. Pour $x=\\overline9$, $x^2=\\bar4$ également (d'après le tableau), donc le même calcul s'applique et donne aussi $\\bar0$ ✓.\\n\\n**L'ensemble des solutions dans $\\mathbb{Z}/11\\mathbb{Z}$ est donc $S=\\{\\bar2,\\overline9\\}$.**\\n\\n### Piège à éviter\\nAprès avoir trouvé les deux valeurs de $y=x^2$, ne pas oublier de vérifier si **chacune** est bien un carré avant de conclure : ici seule $y=\\bar4$ en fournit, $y=\\overline6$ n'en fournissant aucune - l'équation bicarrée de degré $4$ n'a donc que $2$ solutions au total, et non $4$.\\n\\n### Conseil\\nRéutiliser systématiquement les résultats déjà établis dans les questions précédentes (ici le tableau des carrés de la question 1 et le critère de la question 2) : c'est le principe même d'un problème structuré en questions guidées, et cela évite de refaire des calculs de zéro.",
+      "themes": [
+        "équation bicarrée",
+        "corps fini",
+        "changement de variable"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1988-e1-3",
+          "competence": "Resolution d'une equation bicarree par changement de variable",
+          "contenu_markdown": "Une équation bicarrée $x^4-bx^2+c=0$ se résout en posant $y=x^2$, ce qui donne une équation du second degré $y^2-by+c=0$ en $y$ ; pour chaque solution $y_0$ trouvée, il reste ensuite à résoudre $x^2=y_0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "arithmétique modulaire",
+    "carrés dans Z/nZ",
+    "résidus quadratiques",
+    "équation du second degré",
+    "corps fini",
+    "Z/11Z"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

@@ -1,0 +1,115 @@
+{
+  "epreuve_source": "bac-c-maths-1990-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1990",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°1**\\n\\nSoit $M$ un entier naturel s'écrivant $\\overline{xyzzyx}$ dans le système décimal ($x\\in\\{1,\\ldots,9\\}$, $y,z\\in\\{0,\\ldots,9\\}$).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Soit $N$ un entier naturel s'écrivant $\\overline{xyyx}$ dans le système décimal. Déterminer $x$ et $y$ tels que $N$ soit un multiple de $105$.",
+      "corrige_markdown": "### Rappel de méthode\\nUn entier naturel dont l'écriture décimale a $n$ chiffres $d_1d_2\\ldots d_n$ s'exprime sous forme polynomiale : $\\overline{d_1d_2\\ldots d_n}=d_1\\times10^{n-1}+d_2\\times10^{n-2}+\\cdots+d_n\\times10^0$. Pour un problème de multiple, on remplace cette écriture par sa valeur numérique puis on teste la condition de divisibilité, en restreignant la recherche aux chiffres possibles ($x\\in\\{1,\\ldots,9\\}$ pour un premier chiffre, $y\\in\\{0,\\ldots,9\\}$).\\n\\n### Corrigé\\nLe nombre $N=\\overline{xyyx}$ a quatre chiffres : $x$ (chiffre des milliers), $y$ (chiffre des centaines), $y$ (chiffre des dizaines), $x$ (chiffre des unités), avec $x\\in\\{1,\\ldots,9\\}$ (premier chiffre non nul) et $y\\in\\{0,\\ldots,9\\}$. Sa valeur numérique est :\\n$$N=1000x+100y+10y+x=1001x+110y$$\\n\\nOn veut $N$ multiple de $105$. Décomposons $1001$ et $110$ en facteurs premiers :\\n$$1001=7\\times11\\times13 \\qquad\\qquad 110=2\\times5\\times11 \\qquad\\qquad 105=3\\times5\\times7$$\\n\\nOn remarque que $1001$ et $110$ ont en commun le facteur $11$, mais ni l'un ni l'autre n'est multiple de $105=3\\times5\\times7$ (à cause du facteur $3$, absent des deux). Il n'y a donc pas de simplification algébrique immédiate : on procède par balayage des valeurs possibles, en s'appuyant sur le fait que $x$ ne prend que $9$ valeurs et $y$ que $10$ valeurs, soit $90$ couples à tester au maximum.\\n\\n**Recherche systématique.** Pour chaque $x\\in\\{1,\\ldots,9\\}$, on cherche les valeurs de $y\\in\\{0,\\ldots,9\\}$ telles que $1001x+110y\\equiv0\\pmod{105}$. Réduisons d'abord les coefficients modulo $105$ :\\n$$1001=9\\times105+56 \\;\\Longrightarrow\\; 1001\\equiv56\\pmod{105}$$\\n$$110=1\\times105+5 \\;\\Longrightarrow\\; 110\\equiv5\\pmod{105}$$\\n\\nLa condition devient $56x+5y\\equiv0\\pmod{105}$. En testant $x=1,\\ldots,9$ et en cherchant, pour chacun, un $y\\in\\{0,\\ldots,9\\}$ tel que $5y\\equiv-56x\\pmod{105}$, on trouve qu'un seul couple convient : $x=5$, $y=7$, qui donne $56\\times5+5\\times7=280+35=315=3\\times105\\equiv0\\pmod{105}$.\\n\\n**Vérification directe.** Avec $x=5$ et $y=7$ : $N=1001\\times5+110\\times7=5005+770=5775$. Or $5775\\div105=55$, et $55\\times105=5775$ ✓ : $N=5775$ est bien multiple de $105$ (on a exactement $N=105\\times55$).\\n\\n**$N=5775$, obtenu avec $x=5$ et $y=7$, est l'unique solution.**\\n\\n### Piège à éviter\\nNe pas chercher à factoriser $1001x+110y$ pour faire apparaître directement $105$ : les décompositions en facteurs premiers de $1001$, $110$ et $105$ ne partagent pas assez de facteurs communs pour cela. La méthode rigoureuse ici reste le test des couples $(x,y)$ possibles, en un nombre fini et raisonnable ($90$ au plus, réduit encore par la réduction modulo $105$).",
+      "themes": [
+        "arithmétique",
+        "divisibilité",
+        "écriture décimale"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e1-1",
+          "competence": "Ecriture polynomiale d'un entier et recherche de chiffres par divisibilite",
+          "contenu_markdown": "Un entier naturel dont l'écriture décimale a $n$ chiffres $d_1d_2\\ldots d_n$ s'exprime sous forme polynomiale : $\\overline{d_1d_2\\ldots d_n}=d_1\\times10^{n-1}+d_2\\times10^{n-2}+\\cdots+d_n\\times10^0$. Pour un problème de multiple, on remplace cette écriture par sa valeur numérique puis on teste la condition de divisibilité, en restreignant la recherche aux chiffres possibles ($x\\in\\{1,\\ldots,9\\}$ pour un premier chiffre, $y\\in\\{0,\\ldots,9\\}$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. a) Montrer que $M$ est un multiple de $11$.",
+      "corrige_markdown": "### Rappel de méthode\\nUn entier naturel $n$ est multiple de $11$ si et seulement si l'entier lui-même, écrit sous forme polynomiale en puissances de $10$, est multiple de $11$ - il suffit pour cela que chacun des coefficients $10^k$ intervenant dans son écriture soit lui-même multiple de $11$, auquel cas $n$ l'est automatiquement quels que soient les chiffres utilisés.\\n\\n### Corrigé\\nLe nombre $M=\\overline{xyzzyx}$ a six chiffres : $x,y,z,z,y,x$. Sa valeur numérique est :\\n$$M=100000x+10000y+1000z+100z+10y+x=100001x+10010y+1100z$$\\n\\nDécomposons chacun des trois coefficients en facteurs premiers :\\n$$100001=11\\times9091 \\qquad\\qquad 10010=2\\times5\\times7\\times11\\times13 \\qquad\\qquad 1100=2^2\\times5^2\\times11$$\\n\\n**Les trois coefficients $100001$, $10010$ et $1100$ sont chacun multiples de $11$.** Donc, quels que soient les chiffres $x,y,z$ choisis :\\n$$M=\\underbrace{100001}_{=11\\times9091}x+\\underbrace{10010}_{=11\\times910}y+\\underbrace{1100}_{=11\\times100}z=11\\times(9091x+910y+100z)$$\\n\\n**$M$ est donc toujours un multiple de $11$**, quelles que soient les valeurs des chiffres $x$, $y$, $z$ (ce résultat ne dépend d'aucune condition supplémentaire sur $x,y,z$).\\n\\n### Piège à éviter\\nCe résultat n'est pas propre à ce nombre précis : c'est une propriété générale de tout nombre palindromique à six chiffres de la forme $\\overline{xyzzyx}$, car les poids $10^5,10^4,10^3,10^2,10^1,10^0$ associés respectivement à $x,y,z,z,y,x$ se regroupent toujours en coefficients multiples de $11$ pour cette structure symétrique paire.",
+      "themes": [
+        "arithmétique",
+        "divisibilité par 11",
+        "écriture décimale"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e1-2a",
+          "competence": "Divisibilite par 11 via decomposition polynomiale des coefficients",
+          "contenu_markdown": "Un entier naturel $n$ est multiple de $11$ si et seulement si l'entier lui-même, écrit sous forme polynomiale en puissances de $10$, est multiple de $11$ - il suffit pour cela que chacun des coefficients $10^k$ intervenant dans son écriture soit lui-même multiple de $11$, auquel cas $n$ l'est automatiquement quels que soient les chiffres utilisés.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "b) Déterminer $x$ et $z$ tels que $M$ soit un multiple de $35$.",
+      "corrige_markdown": "### Rappel de méthode\\nPour étudier la divisibilité de $M=100001x+10010y+1100z$ par $35$, on réduit d'abord chaque coefficient modulo $35$ ; si l'un des coefficients (ici celui de $y$) est déjà multiple de $35$, le terme correspondant disparaît de la condition et la divisibilité par $35$ ne dépend plus que des autres chiffres.\\n\\n### Corrigé\\nOn a $M=100001x+10010y+1100z$, avec $35=5\\times7$. Réduisons chaque coefficient modulo $35$ :\\n$$10010=35\\times286 \\;\\Longrightarrow\\; 10010\\equiv0\\pmod{35}$$\\n\\n**Le coefficient de $y$ est donc lui-même multiple de $35$** : le terme $10010y$ ne joue aucun rôle dans la divisibilité de $M$ par $35$, quel que soit $y$. Il reste à étudier $100001x+1100z$ :\\n$$100001=35\\times2857+6 \\;\\Longrightarrow\\; 100001\\equiv6\\pmod{35}$$\\n$$1100=35\\times31+15 \\;\\Longrightarrow\\; 1100\\equiv15\\pmod{35}$$\\n\\nLa condition « $M$ multiple de $35$ » équivaut donc à :\\n$$6x+15z\\equiv0\\pmod{35}$$\\n\\nOr $6x+15z=3(2x+5z)$, et $3$ est premier avec $35$ (aucun facteur commun). D'après le théorème de Gauss, $35\\mid3(2x+5z)$ équivaut donc à $35\\mid(2x+5z)$, c'est-à-dire :\\n$$2x+5z\\equiv0\\pmod{35}$$\\n\\n**Encadrement de $2x+5z$.** Puisque $x\\in\\{1,\\ldots,9\\}$ et $z\\in\\{0,\\ldots,9\\}$, on a $2x\\in\\{2,\\ldots,18\\}$ et $5z\\in\\{0,\\ldots,45\\}$, donc $2x+5z\\in\\{2,\\ldots,63\\}$. Dans cet intervalle, le seul multiple de $35$ strictement positif est $35$ lui-même (le multiple $0$ est exclu car $2x+5z\\geqslant2>0$, et $70>63$). La condition devient donc l'égalité (dans $\\mathbb{Z}$, pas seulement modulo $35$) :\\n$$2x+5z=35$$\\n\\n**Résolution.** De $2x=35-5z=5(7-z)$, on déduit que $2x$ est multiple de $5$. Comme $2$ et $5$ sont premiers entre eux, c'est $x$ qui doit être multiple de $5$ (théorème de Gauss à nouveau). Or $x\\in\\{1,\\ldots,9\\}$ : le seul multiple de $5$ dans cet ensemble est $x=5$.\\n\\nEn reportant $x=5$ dans $2x+5z=35$ : $10+5z=35$, donc $5z=25$, soit $z=5$.\\n\\n**Vérification.** $2\\times5+5\\times5=10+25=35$ ✓, multiple de $35$. Et pour $x=5,z=5$, quel que soit $y$ : $M=505505+10010y=35\\times(14443+286y)$, bien multiple de $35$.\\n\\n**$x=5$ et $z=5$ sont les seules valeurs possibles, et conviennent pour tout $y\\in\\{0,\\ldots,9\\}$.**\\n\\n### Piège à éviter\\nNe pas oublier d'exclure l'égalité $2x+5z=0$ (elle est impossible ici car $x\\geqslant1$) et de vérifier que $2x+5z=70$ est hors de portée (le maximum possible est $63$) avant de conclure que $35$ est l'unique valeur à considérer dans l'intervalle.",
+      "themes": [
+        "arithmétique",
+        "divisibilité par 35",
+        "théorème de Gauss"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e1-2b",
+          "competence": "Reduction modulaire des coefficients et theoreme de Gauss",
+          "contenu_markdown": "Pour étudier la divisibilité de $M=100001x+10010y+1100z$ par $35$, on réduit d'abord chaque coefficient modulo $35$ ; si l'un des coefficients (ici celui de $y$) est déjà multiple de $35$, le terme correspondant disparaît de la condition et la divisibilité par $35$ ne dépend plus que des autres chiffres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "c) Déterminer $y$ tel que $M$ soit également multiple de $3$.",
+      "corrige_markdown": "### Rappel de méthode\\nUn entier naturel est multiple de $3$ si et seulement si la somme de ses chiffres est multiple de $3$ (critère de divisibilité par $3$).\\n\\n### Corrigé\\nD'après la question précédente, $x=5$ et $z=5$. Le nombre $M=\\overline{xyzzyx}=\\overline{5\\,y\\,5\\,5\\,y\\,5}$ a pour somme des chiffres :\\n$$x+y+z+z+y+x=2x+2y+2z=2\\times5+2y+2\\times5=20+2y$$\\n\\nD'après le critère de divisibilité par $3$, $M$ est multiple de $3$ si et seulement si $20+2y$ est multiple de $3$.\\n\\nOr $20=18+2\\equiv2\\pmod3$, donc la condition devient :\\n$$2+2y\\equiv0\\pmod3 \\;\\Longleftrightarrow\\; 2(1+y)\\equiv0\\pmod3$$\\n\\nComme $2$ est premier avec $3$, cela équivaut (théorème de Gauss) à $1+y\\equiv0\\pmod3$, soit :\\n$$y\\equiv-1\\equiv2\\pmod3$$\\n\\n**Les valeurs de $y\\in\\{0,\\ldots,9\\}$ vérifiant $y\\equiv2\\pmod3$ sont $y=2$, $y=5$ et $y=8$.**\\n\\n**Vérification numérique.** Pour $y=2$ : $M=525525=3\\times175175$ ✓. Pour $y=5$ : $M=555555=3\\times185185$ ✓. Pour $y=8$ : $M=585585=3\\times195195$ ✓. Dans les trois cas, $M$ reste bien multiple de $35$ (question 2.b, valable pour tout $y$) et de $3$, donc multiple de $105=3\\times35$.\\n\\n### Conseil\\nLe critère de divisibilité par $3$ (somme des chiffres) est presque toujours la méthode la plus rapide dès qu'une divisibilité par $3$ est demandée sur un nombre défini par ses chiffres - inutile de repasser par une réduction modulo $3$ des puissances de $10$, qui donnerait le même résultat de façon plus lourde.",
+      "themes": [
+        "arithmétique",
+        "critère de divisibilité par 3"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1990-e1-2c",
+          "competence": "Critere de divisibilite par 3 (somme des chiffres)",
+          "contenu_markdown": "Un entier naturel est multiple de $3$ si et seulement si la somme de ses chiffres est multiple de $3$ (critère de divisibilité par $3$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "arithmétique",
+    "divisibilité",
+    "multiple de 11",
+    "multiple de 35",
+    "critère de divisibilité par 3",
+    "théorème de Gauss",
+    "écriture décimale"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

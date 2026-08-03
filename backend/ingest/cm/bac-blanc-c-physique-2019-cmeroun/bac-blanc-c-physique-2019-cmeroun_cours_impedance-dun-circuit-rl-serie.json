@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-impedance-dun-circuit-rl-serie-terminale-C",
+  "meta": {
+    "titre": "Impédance d'un circuit R,L série",
+    "matiere": "Physique",
+    "serie": "C",
+    "sous_theme": "Électricité : régime sinusoïdal forcé",
+    "duree_estimee_min": 25,
+    "tags": [
+      "impedance",
+      "reactance inductive",
+      "circuit RL serie",
+      "diagramme d'impedance"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-BLANC-C-2019-PHYSIQUE-EXTREME-NORD",
+    "epreuve_titre": "Baccalauréat blanc C - Physique - Région de l'Extrême-Nord - Avril 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-c-physique-2019-cmeroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bobine ne se comporte pas du tout comme une resistance : elle laisse passer le courant continu presque sans opposition, mais freine d'autant plus le courant alternatif que sa frequence est elevee. Cette opposition, appelee reactance, s'ajoute a la resistance ordinaire selon des regles geometriques precises, resumees dans la notion d'impedance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la loi d'Ohm en regime sinusoidal pour une resistance ($u=Ri$)",
+        "Savoir ce qu'est la valeur efficace d'une tension et d'une intensite sinusoidales",
+        "Manipuler le theoreme de Pythagore et les fonctions trigonometriques cosinus/sinus"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Impédance et diagramme d'impédance d'un circuit R, L série",
+      "contenu_markdown": "Pour un circuit serie associant une resistance totale $R_{tot}$ (ici $R+r$) et une bobine d'inductance $L$, l'impedance $Z$, definie par $Z=U/I$ (rapport des valeurs efficaces ou des valeurs maximales), se decompose en un terme resistif $R_{tot}$ et un terme reactif $L\\omega$ (reactance inductive), lies par un theoreme de Pythagore. Le dephasage $\\varphi$ entre tension et courant (courant en retard pour un circuit inductif) se lit sur ce meme \"triangle d'impedance\".",
+      "formule_principale": "Z^2=(R+r)^2+(L\\omega)^2 \\quad;\\quad \\cos\\varphi=\\dfrac{R+r}{Z} \\quad;\\quad \\sin\\varphi=\\dfrac{L\\omega}{Z}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit serie R,(L,r) est alimente sous une tension efficace $U=2{,}83\\,V$ a la pulsation $\\omega=314\\,rad/s$, parcouru par un courant efficace $I=70{,}7\\,mA$ en retard de $\\varphi=37^{\\circ}$ sur la tension. Sachant que $R=20\\,\\Omega$, determiner $r$ et $L$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'impédance totale",
+          "justification": "L'impedance est le rapport de la tension efficace a l'intensite efficace.",
+          "resultat_markdown": "$Z=\\dfrac{U}{I}=\\dfrac{2{,}83}{0{,}0707}=40\\,\\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la résistance totale via le cosinus",
+          "justification": "Dans le triangle d'impedance, la resistance totale est la projection de $Z$ sur l'axe reel : $R+r=Z\\cos\\varphi$.",
+          "resultat_markdown": "$R+r=40\\times\\cos(37^{\\circ})=40\\times0{,}80=32\\,\\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire r",
+          "justification": "On isole $r$ en soustrayant la resistance $R$ connue.",
+          "resultat_markdown": "$r=32-20=12\\,\\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la réactance inductive via le sinus",
+          "justification": "Dans le triangle d'impedance, la reactance est la projection de $Z$ sur l'axe imaginaire : $L\\omega=Z\\sin\\varphi$.",
+          "resultat_markdown": "$L\\omega=40\\times\\sin(37^{\\circ})=40\\times0{,}60=24\\,\\Omega$"
+        },
+        {
+          "numero": 5,
+          "action": "En déduire L",
+          "justification": "On isole $L$ en divisant par la pulsation $\\omega$.",
+          "resultat_markdown": "$L=\\dfrac{24}{314}\\approx0{,}0764\\,H\\approx76\\,mH$"
+        }
+      ],
+      "conclusion_markdown": "Le triangle d'impedance (Z, R+r, Lω) permet de remonter, a partir de trois grandeurs mesurables (U, I, φ), a la resistance interne et a l'inductance d'une bobine, deux grandeurs impossibles a mesurer directement avec un simple ohmmetre en regime alternatif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'ajouter la resistance interne $r$ de la bobine a la resistance $R$ du circuit, et n'utiliser que $R$ seule dans $Z^2=R^2+(L\\omega)^2$.",
+          "pourquoi_faux": "Une bobine reelle n'est jamais purement inductive : elle possede toujours une resistance interne $r$ due a la resistivite du fil qui la constitue. Le terme resistif complet du circuit est $R+r$, pas $R$ seul.",
+          "correction_markdown": "Ecris toujours le terme resistif total du circuit comme la somme de TOUTES les resistances presentes en serie, y compris la resistance interne de la bobine."
+        },
+        {
+          "erreur_markdown": "Utiliser indifferemment les valeurs maximales et les valeurs efficaces dans un meme calcul, en melangeant $U_{max}$ avec $I$ (efficace) par exemple.",
+          "pourquoi_faux": "$Z=U/I$ donne le meme resultat que l'on utilise les valeurs maximales ($U_{max}/I_{max}$) ou les valeurs efficaces ($U/I$), le facteur $\\sqrt2$ se simplifiant ; mais melanger les deux (par exemple $U_{max}/I$) fausse le resultat d'un facteur $\\sqrt2$.",
+          "correction_markdown": "Choisis une convention (maximales OU efficaces) et garde-la du debut a la fin du calcul d'impedance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit R,L serie a une impedance $Z=50\\,\\Omega$ et un dephasage $\\varphi=60^{\\circ}$ entre tension et courant. Calculer la resistance totale du circuit.",
+          "solution_markdown": "$R_{tot}=Z\\cos\\varphi=50\\times\\cos(60^{\\circ})=50\\times0{,}5=25\\,\\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit R,(L,r) serie, avec $R=15\\,\\Omega$, presente une impedance $Z=25\\,\\Omega$ a la pulsation $\\omega=500\\,rad/s$. Sachant que $r=5\\,\\Omega$, calculer la reactance inductive puis l'inductance $L$.",
+          "solution_markdown": "$Z^2=(R+r)^2+(L\\omega)^2$, donc $(L\\omega)^2=Z^2-(R+r)^2=25^2-20^2=625-400=225$, d'ou $L\\omega=15\\,\\Omega$. On en deduit $L=\\dfrac{15}{500}=0{,}030\\,H=30\\,mH$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour un circuit R,L serie (sans condensateur), le dephasage $\\varphi$ entre tension et courant est toujours compris entre $0$ et $90^{\\circ}$ (le courant est toujours en retard, jamais en avance). Expliquer pourquoi ce ne serait plus le cas si on ajoutait un condensateur en serie.",
+          "solution_markdown": "Dans un circuit R,L serie, $\\tan\\varphi=\\dfrac{L\\omega}{R+r}$. Comme $L$, $\\omega$, $R$ et $r$ sont tous des grandeurs strictement positives, $\\tan\\varphi$ est toujours strictement positive (sauf cas limite $L=0$), donc $\\varphi\\in\\,]0^{\\circ};90^{\\circ}[$ : le courant est toujours en retard sur la tension, jamais en avance, et jamais en phase. Si on ajoute un condensateur en serie, sa reactance capacitive $-1/(C\\omega)$ est negative et vient se retrancher a la reactance inductive : $\\tan\\varphi=\\dfrac{L\\omega-1/(C\\omega)}{R+r}$ peut alors devenir negative (courant en avance) si $1/(C\\omega)>L\\omega$, nulle (resonance, tension et courant en phase) si $1/(C\\omega)=L\\omega$, ou rester positive si $1/(C\\omega)<L\\omega$ : le condensateur elargit la plage des dephasages possibles a l'intervalle $]-90^{\\circ};90^{\\circ}[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'impedance d'un circuit se calcule toujours par $Z=U/I$, rapport de deux grandeurs de meme nature (deux valeurs efficaces, ou deux valeurs maximales, jamais un melange des deux).",
+        "Pour un circuit R,(L,r) serie : $Z^2=(R+r)^2+(L\\omega)^2$, avec $R+r$ le terme resistif total et $L\\omega$ la reactance inductive.",
+        "Le dephasage se lit dans le triangle d'impedance : $\\cos\\varphi=(R+r)/Z$, $\\sin\\varphi=L\\omega/Z$.",
+        "N'oublie jamais d'inclure la resistance interne $r$ de la bobine dans le terme resistif total : une bobine reelle n'est jamais purement inductive.",
+        "Pour un circuit R,L pur (sans condensateur), le courant est toujours en retard sur la tension : $\\varphi$ reste positif, entre 0 et 90 degres."
+      ]
+    }
+  ]
+}

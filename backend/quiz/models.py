@@ -30,6 +30,15 @@ class CompetenceItem(models.Model):
     technique testée) - jamais exposé à l'élève, jamais recopié verbatim.
     """
 
+    external_id = models.CharField(
+        max_length=255, blank=True,
+        help_text=(
+            "Identifiant déterministe fourni par le skill concepteur-quiz-competence en "
+            "mode automatisation - clé d'idempotence pour quiz.ingestion (voir la "
+            "contrainte unique_competenceitem_external_id_when_set). Vide pour un item "
+            "créé manuellement depuis l'admin."
+        ),
+    )
     theme = models.ForeignKey(
         "catalog.Tag", on_delete=models.PROTECT, related_name="competence_items",
         help_text=(
@@ -73,6 +82,12 @@ class CompetenceItem(models.Model):
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["statut"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["external_id"], condition=~models.Q(external_id=""),
+                name="unique_competenceitem_external_id_when_set",
+            ),
         ]
 
     def __str__(self):

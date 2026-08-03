@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-lecture-dun-oscillogramme-en-regime-sinusoidal-force-terminale-C",
+  "meta": {
+    "titre": "Lecture d'un oscillogramme en régime sinusoïdal forcé",
+    "matiere": "Physique",
+    "serie": "C",
+    "sous_theme": "Électricité : régime sinusoïdal forcé",
+    "duree_estimee_min": 25,
+    "tags": [
+      "oscilloscope",
+      "balayage",
+      "sensibilite",
+      "dephasage",
+      "periode"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-BLANC-C-2019-PHYSIQUE-EXTREME-NORD",
+    "epreuve_titre": "Baccalauréat blanc C - Physique - Région de l'Extrême-Nord - Avril 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-c-physique-2019-cmeroun-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un oscilloscope ne donne jamais directement une valeur numerique : il affiche une image, un dessin sur un ecran quadrille. Savoir traduire ce dessin en grandeurs physiques (periode, tension, dephasage) est une competence a part entiere, aussi importante que le calcul lui-meme, et c'est souvent la premiere question d'un exercice de circuit en regime sinusoidal."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la definition de la periode, de la pulsation ($\\omega=2\\pi/T$) et de la valeur efficace ($U=U_{max}/\\sqrt2$)",
+        "Savoir ce que representent le balayage (ms/cm ou ms/div) et la sensibilite (V/cm ou V/div) d'un oscilloscope",
+        "Connaitre la relation entre dephasage, decalage horaire et periode"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire un oscillogramme en grandeurs physiques",
+      "contenu_markdown": "Sur un oscillogramme, l'axe horizontal represente le temps (echelle fixee par le balayage, en ms/division) et l'axe vertical represente une tension (echelle fixee par la sensibilite, en V/division). La periode $T$ se lit en comptant le nombre de divisions correspondant a un motif complet, l'amplitude (valeur maximale) de chaque courbe se lit en divisions au-dessus de l'axe des temps, et le dephasage $\\varphi$ entre deux courbes de meme periode $T$ se deduit du decalage horaire $\\Delta t$ entre deux points homologues (par exemple deux maximums) par une simple regle de proportionnalite.",
+      "formule_principale": "\\varphi = \\omega\\,\\Delta t = \\dfrac{2\\pi}{T}\\,\\Delta t",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un oscillogramme, une periode complete de la tension $u_{AD}$ occupe 8 divisions horizontales avec un balayage de 2,5 ms/division ; son amplitude occupe 4 divisions verticales avec une sensibilite de 1 V/division. Determiner la pulsation $\\omega$ et la valeur efficace $U$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la période à partir du balayage",
+          "justification": "La periode correspond a la duree d'un motif complet, ici 8 divisions.",
+          "resultat_markdown": "$T=8\\times2{,}5=20\\,ms=20\\times10^{-3}\\,s$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la pulsation",
+          "justification": "La pulsation est reliee a la periode par $\\omega=2\\pi/T$.",
+          "resultat_markdown": "$\\omega=\\dfrac{2\\pi}{20\\times10^{-3}}=100\\pi\\approx314\\,rad.s^{-1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la tension maximale à partir de la sensibilité",
+          "justification": "L'amplitude en divisions se convertit en volts en multipliant par la sensibilite.",
+          "resultat_markdown": "$U_{max}=4\\times1=4\\,V$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire la valeur efficace",
+          "justification": "Pour une tension sinusoidale, la valeur efficace est la valeur maximale divisee par $\\sqrt2$.",
+          "resultat_markdown": "$U=\\dfrac{U_{max}}{\\sqrt2}=\\dfrac{4}{\\sqrt2}\\approx2{,}83\\,V$"
+        }
+      ],
+      "conclusion_markdown": "A partir d'un simple comptage de divisions et des deux echelles de l'oscilloscope (balayage, sensibilite), on retrouve toutes les grandeurs caracteristiques du signal : periode, pulsation, amplitude et valeur efficace."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire l'amplitude \"crete a crete\" (du minimum au maximum) au lieu de l'amplitude simple (de l'axe des temps au maximum), ce qui double la valeur de $U_{max}$.",
+          "pourquoi_faux": "$U_{max}$ dans $u(t)=U_{max}\\cos(\\omega t)$ designe la distance entre l'axe zero et le sommet de la courbe, pas la distance entre le sommet et le creux, qui vaut $2U_{max}$.",
+          "correction_markdown": "Compte toujours les divisions entre l'axe horizontal (zero) et le sommet de la courbe, jamais entre les deux extremums."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par $\\sqrt2$ pour passer de la valeur maximale (lue sur l'ecran) a la valeur efficace (qui est celle indiquee par un voltmetre ou demandee dans l'enonce sous la lettre $U$ sans indice).",
+          "pourquoi_faux": "L'oscilloscope affiche toujours la valeur instantanee du signal, dont le maximum est $U_{max}=U\\sqrt2$ ; confondre les deux conduit a une valeur efficace 41% trop grande.",
+          "correction_markdown": "Verifie systematiquement dans l'enonce si la grandeur demandee est la valeur maximale ou la valeur efficace, et applique le facteur $\\sqrt2$ dans le bon sens."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur un oscillogramme, une periode occupe 5 divisions avec un balayage de 4 ms/division. Calculer la frequence du signal.",
+          "solution_markdown": "$T=5\\times4=20\\,ms=20\\times10^{-3}\\,s$. La frequence est $f=1/T=1/(20\\times10^{-3})=50\\,Hz$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux courbes de meme periode $T=16\\,ms$ presentent un decalage horaire de 2 divisions, avec un balayage de 1 ms/division. Calculer le dephasage entre elles, en radians puis en degres.",
+          "solution_markdown": "Le decalage horaire est $\\Delta t=2\\times1=2\\,ms$. Le dephasage est $\\varphi=\\dfrac{2\\pi}{T}\\Delta t=\\dfrac{2\\pi}{16}\\times2=\\dfrac{\\pi}{4}\\,rad=45^{\\circ}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On observe deux tensions sinusoidales de meme frequence sur un oscilloscope. La courbe A atteint son maximum 1,5 division AVANT la courbe B (balayage 2 ms/division, periode commune de 24 ms). Sachant que $u_A(t)=U_{A}\\sqrt2\\cos(\\omega t)$, ecrire l'expression de $u_B(t)$ en precisant le signe du dephasage.",
+          "solution_markdown": "Le decalage horaire est $\\Delta t=1{,}5\\times2=3\\,ms$. Le dephasage correspondant est $\\varphi=\\dfrac{2\\pi}{T}\\Delta t=\\dfrac{2\\pi}{24}\\times3=\\dfrac{\\pi}{4}\\,rad$. Comme A atteint son maximum AVANT B, B est en RETARD sur A : $u_B(t)=U_B\\sqrt2\\cos\\left(\\omega t-\\dfrac{\\pi}{4}\\right)$, le signe moins traduisant le retard de phase de B par rapport a A."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Periode : compter le nombre de divisions d'un motif complet, multiplier par le balayage (ms/division).",
+        "Amplitude : compter les divisions entre l'axe zero et le sommet de la courbe (pas crete a crete), multiplier par la sensibilite (V/division).",
+        "Valeur efficace : diviser l'amplitude (valeur maximale) par $\\sqrt2$.",
+        "Dephasage : mesurer le decalage horaire entre deux points homologues des deux courbes (par exemple deux maximums), convertir en temps via le balayage, puis en angle via $\\varphi=\\dfrac{2\\pi}{T}\\Delta t$.",
+        "Au BAC, cette lecture graphique est presque toujours l'etape 1 d'un exercice de circuit RLC : elle fournit les donnees numeriques necessaires aux calculs d'impedance qui suivent."
+      ]
+    }
+  ]
+}

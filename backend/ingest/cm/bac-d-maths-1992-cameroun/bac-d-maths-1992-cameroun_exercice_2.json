@@ -1,0 +1,115 @@
+{
+  "epreuve_source": "bac-d-maths-1992-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1992",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**\\n\\nDans le plan affine euclidien $E$, on considère un triangle isocèle $ABC$ tel que $AB=AC=2a$ (avec $a\\in\\mathbb R_+^*$).\\n\\nSoit l'application $f:E\\to\\mathbb R$, $M\\mapsto f(M)$, telle que $f(M)=2MA^2-MB^2+MC^2$.",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "1. a) Déterminer le barycentre G des points A, B, C, affectés respectivement des coefficients 2, -1 et 1.",
+      "corrige_markdown": "### Rappel de méthode\\nLe barycentre $G$ de points pondérés $(A,\\alpha),(B,\\beta),(C,\\gamma)$ de somme non nulle a pour coordonnées (ou position vectorielle) $G=\\dfrac{\\alpha A+\\beta B+\\gamma C}{\\alpha+\\beta+\\gamma}$.\\n\\n### Corrigé\\nPlaçons-nous dans un repère adapté au triangle isocèle : soit $O$ le milieu de $[BC]$, l'axe $(Oy)$ la médiatrice de $[BC]$ (portant $A$), et $(Ox)$ la droite $(BC)$. Posons $B(-p,0)$, $C(p,0)$ (avec $BC=2p$, $p>0$) et $A(0,h)$, avec $h^2+p^2=(2a)^2=4a^2$ (théorème de Pythagore dans le triangle rectangle formé par $A$, $O$ et $B$, puisque $AB=2a$).\\n\\nSoit $G$ le barycentre de $(A,2),(B,-1),(C,1)$. La somme des coefficients vaut $2-1+1=2\\neq0$, donc $G$ existe et :\\n$$G=\\frac{2A-B+C}2$$\\n\\nCoordonnée par coordonnée : $x_G=\\dfrac{2\\times0-(-p)+p}2=\\dfrac{2p}2=p$ ; $y_G=\\dfrac{2h-0+0}2=h$.\\n\\n$$\\boxed{G(p\\,;\\,h)}$$\\n\\nAutrement dit, $G$ a la même abscisse que $C$ et la même ordonnée que $A$ : c'est le quatrième sommet du rectangle $OAGC$ construit sur $\\vec{OA}$ et $\\vec{OC}$ (puisque $\\vec{OG}=\\vec{OA}+\\vec{OC}$, comme on le vérifie directement : $\\vec{OA}+\\vec{OC}=(0,h)+(p,0)=(p,h)=\\vec{OG}$).",
+      "themes": [
+        "barycentre",
+        "triangle isocèle",
+        "coordonnées"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992d-e2-1a",
+          "competence": "Calcul d'un barycentre dans un triangle isocele via un repere adapte",
+          "contenu_markdown": "Le barycentre $G$ de points pondérés $(A,\\alpha),(B,\\beta),(C,\\gamma)$ de somme non nulle a pour coordonnées (ou position vectorielle) $G=\\dfrac{\\alpha A+\\beta B+\\gamma C}{\\alpha+\\beta+\\gamma}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "1. b) Construire ce point.",
+      "corrige_markdown": "### Rappel de méthode\\nLa construction d'un barycentre de trois points de coefficients non tous égaux se ramène en général à deux constructions successives de barycentres de deux points (associativité du barycentre).\\n\\n### Corrigé\\nPar associativité du barycentre, on peut construire $G$ en deux étapes : d'abord le barycentre partiel $G_1$ de $(B,-1)$ et $(C,1)$, puis $G$ comme barycentre de $(A,2)$ et $(G_1,-1+1)$... mais ici $-1+1=0$, ce qui empêche cette décomposition particulière (le sous-barycentre $(B,-1),(C,1)$ n'existe pas, sa somme étant nulle : $-B+C=\\vec{BC}$ est un **vecteur**, pas un point).\\n\\nOn regroupe donc plutôt $A$ avec l'un des deux autres points. Prenons $(A,2)$ et $(C,1)$, de barycentre $G_2=\\dfrac{2A+C}3$ (somme $3\\neq0$), puis $G$ est le barycentre de $(G_2,3)$ et $(B,-1)$ (somme $3-1=2$, cohérent) :\\n$$G=\\frac{3G_2-B}2=\\frac{3\\times\\frac{2A+C}3-B}2=\\frac{2A+C-B}2$$\\n\\nce qui redonne bien l'expression de la question 1.a.\\n\\n**Construction pratique.** 1) Construire $G_2$, barycentre de $(A,2)$ et $(C,1)$ : c'est le point de $[AC]$ tel que $\\vec{CG_2}=\\dfrac23\\vec{CA}$ (plus proche de $A$, au tiers du segment à partir de $C$... précisément à $\\dfrac13$ de $C$ vers $A$ en poids, soit $CG_2=\\dfrac23CA$). 2) Construire $G$ sur la droite $(BG_2)$, à l'extérieur du segment $[BG_2]$ du côté de $G_2$ (coefficients $-1$ et $3$ de signes opposés), tel que $\\vec{BG}=\\dfrac32\\vec{BG_2}$ (ou, de manière équivalente, $G$ est le symétrique de $B$ par rapport à un point à déterminer sur la droite, obtenu par la relation vectorielle $2\\vec{BG}=3\\vec{BG_2}$).\\n\\n### Piège à éviter\\nOn ne peut pas regrouper d'abord $B$ et $C$ (coefficients $-1$ et $1$) car leur somme est nulle : ce sous-système ne définit pas un barycentre (point) mais un vecteur $\\vec{BC}$. Il faut donc toujours regrouper $A$ avec l'un des deux autres points en premier.",
+      "themes": [
+        "construction de barycentre",
+        "associativité du barycentre"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992d-e2-1b",
+          "competence": "Construction geometrique d'un barycentre de trois points par associativite",
+          "contenu_markdown": "La construction d'un barycentre de trois points de coefficients non tous égaux se ramène en général à deux constructions successives de barycentres de deux points (associativité du barycentre).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. a) Déterminer l'ensemble des points M du plan tel que f(M)=0.",
+      "corrige_markdown": "### Rappel de méthode\\nQuand la somme des coefficients $\\alpha_1MA^2+\\alpha_2MB^2+\\alpha_3MC^2$ est non nulle, cette expression se réduit à $(\\alpha_1+\\alpha_2+\\alpha_3)MG^2+k$ où $G$ est le barycentre des points pondérés et $k$ une constante ; l'équation $f(M)=0$ devient alors $MG^2=-k/(\\alpha_1+\\alpha_2+\\alpha_3)$, équation d'un cercle si ce rapport est positif.\\n\\n### Corrigé\\nReprenons les coordonnées de la question 1.a : $A(0,h)$, $B(-p,0)$, $C(p,0)$, avec $h^2+p^2=4a^2$ et $G(p,h)$.\\n\\nPour $M(x,y)$ :\\n$$MA^2=x^2+(y-h)^2\\qquad MB^2=(x+p)^2+y^2\\qquad MC^2=(x-p)^2+y^2$$\\n\\n$$f(M)=2\\left[x^2+(y-h)^2\\right]-\\left[(x+p)^2+y^2\\right]+\\left[(x-p)^2+y^2\\right]$$\\n\\nDéveloppons et regroupons : les termes en $x^2$ donnent $2-1+1=2$, ceux en $y^2$ donnent $2-1+1=2$, ceux en $x$ donnent $-2px-2px=-4px$ (issus de $-(x+p)^2$ et $+(x-p)^2$), ceux en $y$ donnent $-4hy$ (issu de $2(y-h)^2$), et les constantes donnent $2h^2-p^2+p^2=2h^2$ :\\n$$f(M)=2x^2+2y^2-4px-4hy+2h^2$$\\n\\nL'équation $f(M)=0$ se simplifie en divisant par $2$ :\\n$$x^2+y^2-2px-2hy+h^2=0$$\\n\\nComplétons les carrés : $x^2-2px=(x-p)^2-p^2$ et $y^2-2hy+h^2=(y-h)^2$ :\\n$$(x-p)^2-p^2+(y-h)^2=0\\iff(x-p)^2+(y-h)^2=p^2$$\\n\\n$$\\boxed{f(M)=0\\iff(x-p)^2+(y-h)^2=p^2}$$\\n\\n**Nature.** C'est l'équation d'un **cercle de centre $G(p,h)$** (retrouvé à la question 1.a !) **et de rayon $p=\\dfrac{BC}2$** (puisque $BC=2p$). Ce rayon ne dépend pas de $a$ : seule la longueur $BC$ intervient.\\n\\n**Remarque.** Ce cercle passe par $A$ : en effet $GA=\\sqrt{(p-0)^2+(h-h)^2}=p$, exactement le rayon trouvé.\\n\\n### Conseil\\nOn peut retrouver ce résultat par la formule de réduction sans coordonnées : $f(M)=2MG^2+k$ avec $k=2GA^2-GB^2+GC^2$. Ici $GA=p$, $GB=\\sqrt{4p^2+h^2}$, $GC=h$, donnant $k=2p^2-(4p^2+h^2)+h^2=-2p^2$, donc $f(M)=0\\iff2MG^2=2p^2\\iff MG=p$ : même conclusion, sans recompter tous les carrés en coordonnées.",
+      "themes": [
+        "lieu géométrique",
+        "cercle",
+        "réduction vectorielle",
+        "barycentre"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992d-e2-2a",
+          "competence": "Reduction d'une somme ponderee de carres de distances en equation de cercle",
+          "contenu_markdown": "Quand la somme des coefficients $\\alpha_1MA^2+\\alpha_2MB^2+\\alpha_3MC^2$ est non nulle, cette expression se réduit à $(\\alpha_1+\\alpha_2+\\alpha_3)MG^2+k$ où $G$ est le barycentre des points pondérés et $k$ une constante ; l'équation $f(M)=0$ devient alors $MG^2=-k/(\\alpha_1+\\alpha_2+\\alpha_3)$, équation d'un cercle si ce rapport est positif.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "2. b) Représenter cet ensemble.",
+      "corrige_markdown": "### Rappel de méthode\\nUn cercle de centre et de rayon connus se représente en traçant d'abord le centre, puis le cercle au compas avec l'écartement égal au rayon.\\n\\n### Corrigé\\nD'après la question 2.a, l'ensemble cherché est le cercle de centre $G$ (déjà construit en 1.b) et de rayon $GA=\\dfrac{BC}2$.\\n\\n**Construction.** 1) Placer $G$ (question 1.b). 2) Ouvrir le compas sur l'écartement $GA$ (ou, de façon équivalente, la moitié de $BC$). 3) Tracer le cercle de centre $G$ passant par $A$.\\n\\nCe cercle passe par le sommet $A$ du triangle (vérifié à la question 2.a) ; il ne passe en général ni par $B$ ni par $C$ (sauf cas particulier du triangle équilatéral, où l'on peut vérifier que $GB=GC=GA$ également).",
+      "themes": [
+        "construction géométrique",
+        "cercle"
+      ],
+      "difficulte_estimee": "facile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-1992d-e2-2b",
+          "competence": "Construction d'un cercle de centre et rayon connus",
+          "contenu_markdown": "Un cercle de centre et de rayon connus se représente en traçant d'abord le centre, puis le cercle au compas avec l'écartement égal au rayon.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "barycentre",
+    "triangle isocèle",
+    "lieu géométrique",
+    "cercle",
+    "construction géométrique",
+    "bac D 1992",
+    "Cameroun"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}
