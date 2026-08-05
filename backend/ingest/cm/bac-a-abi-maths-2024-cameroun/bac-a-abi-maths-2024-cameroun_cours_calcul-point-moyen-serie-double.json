@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-calcul-point-moyen-serie-double-terminale-A-ABI",
+  "meta": {
+    "titre": "Calcul du point moyen d'une série statistique double",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Statistiques à deux variables",
+    "duree_estimee_min": 15,
+    "tags": ["point moyen", "moyenne arithmétique", "statistiques"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le point moyen résume en un seul point tout un nuage de données : c'est le \"centre de gravité\" de la série statistique. Il sert ensuite de point de passage obligé pour la droite d'ajustement, ce qui en fait un calcul incontournable avant toute régression."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Calcul d'une moyenne arithmétique", "Coordonnées d'un point dans un repère"]
+    },
+    {
+      "type": "regle",
+      "titre": "Coordonnées du point moyen",
+      "contenu_markdown": "Pour une série statistique double $(x_i,y_i)$ de $n$ individus, le point moyen $G$ a pour coordonnées $(\\bar x,\\bar y)$, où :\n$$\\bar x=\\dfrac{x_1+x_2+\\cdots+x_n}{n} \\qquad \\bar y=\\dfrac{y_1+y_2+\\cdots+y_n}{n}$$\nchacune des deux coordonnées de $G$ est simplement la moyenne arithmétique de la série correspondante, calculée indépendamment de l'autre.",
+      "formule_principale": "G(\\bar x,\\bar y) \\text{ avec } \\bar x=\\frac{\\sum x_i}{n}, \\ \\bar y=\\frac{\\sum y_i}{n}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer les coordonnées du point moyen $G$ de la série $x_i:1,2,3,4,5,6,7,8$ et $y_i:6,8,8,6,9,10,10,11$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Additionner les $x_i$",
+          "justification": "Numérateur de $\\bar x$",
+          "resultat_markdown": "$1+2+3+4+5+6+7+8=36$"
+        },
+        {
+          "numero": 2,
+          "action": "Diviser par le nombre d'individus",
+          "justification": "$n=8$ années dans la série",
+          "resultat_markdown": "$\\bar x=\\dfrac{36}{8}=4,5$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les $y_i$",
+          "justification": "Numérateur de $\\bar y$",
+          "resultat_markdown": "$6+8+8+6+9+10+10+11=68$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser par le nombre d'individus",
+          "justification": "Même effectif $n=8$",
+          "resultat_markdown": "$\\bar y=\\dfrac{68}{8}=8,5$"
+        }
+      ],
+      "conclusion_markdown": "$G(4,5\\,;\\,8,5)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser la somme des $x_i$ par un effectif différent de celui utilisé pour les $y_i$",
+          "pourquoi_faux": "Les deux moyennes portent sur la même série d'individus : le même effectif $n$ doit être utilisé pour les deux divisions.",
+          "correction_markdown": "Compter une seule fois le nombre total d'individus de la série et l'utiliser pour les deux moyennes."
+        },
+        {
+          "erreur_markdown": "Confondre le point moyen $G$ avec un point quelconque du nuage",
+          "pourquoi_faux": "$G$ n'est pas nécessairement un point observé de la série : c'est un point calculé, qui peut très bien ne coïncider avec aucune des données réelles.",
+          "correction_markdown": "Toujours calculer $G$ par la formule des moyennes, jamais en le lisant approximativement sur le nuage de points."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le point moyen de la série $(1;3),(2;5),(3;7)$.",
+          "solution_markdown": "$\\bar x=\\dfrac{1+2+3}{3}=2$. $\\bar y=\\dfrac{3+5+7}{3}=5$. $G(2;5)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer le point moyen de la série $x_i:2,4,6,8,10$ et $y_i:15,18,20,25,27$.",
+          "solution_markdown": "$\\bar x=\\dfrac{2+4+6+8+10}{5}=\\dfrac{30}{5}=6$. $\\bar y=\\dfrac{15+18+20+25+27}{5}=\\dfrac{105}{5}=21$. $G(6;21)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 10 individus a un point moyen $G(5;12)$. On ajoute un 11ème individu de coordonnées $(16;34)$. Calculer les nouvelles coordonnées du point moyen.",
+          "solution_markdown": "Pour les 10 premiers individus, $\\bar x_{10}=5$ donne une somme $\\sum x_i=5\\times10=50$, et $\\bar y_{10}=12$ donne $\\sum y_i=12\\times10=120$. En ajoutant le 11ème individu : nouvelle somme des $x$ : $50+16=66$, nouvelle somme des $y$ : $120+34=154$, sur un effectif de 11. Nouveau point moyen : $\\bar x=\\dfrac{66}{11}=6$, $\\bar y=\\dfrac{154}{11}=14$. $G'(6;14)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le point moyen $G(\\bar x,\\bar y)$ se calcule en deux moyennes indépendantes, une par variable.",
+        "Utilise le même effectif $n$ pour les deux moyennes : elles portent sur la même série d'individus.",
+        "$G$ n'est pas un point observé de la série, mais un point calculé qui résume l'ensemble du nuage.",
+        "Ce point sert de passage obligé pour la droite de régression ou la droite de Mayer calculées ensuite."
+      ]
+    }
+  ]
+}

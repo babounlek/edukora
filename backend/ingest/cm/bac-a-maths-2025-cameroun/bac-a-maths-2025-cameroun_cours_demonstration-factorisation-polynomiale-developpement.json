@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-demonstration-factorisation-polynomiale-developpement-terminale-a",
+  "meta": {
+    "titre": "Démonstration d'une factorisation polynomiale par développement",
+    "matiere": "Mathématiques",
+    "serie": "A",
+    "sous_theme": "Polynômes",
+    "duree_estimee_min": 15,
+    "tags": [
+      "polynômes",
+      "factorisation",
+      "développement"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2025-cameroun",
+    "epreuve_titre": "BAC A Mathematiques 2025 - Cameroun (MINEDUC - OBC, Session 2025)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2025-cameroun-ex1-qq2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un examinateur te demande parfois de « montrer que » un polynôme donné est égal à une expression factorisée, plutôt que de te demander de factoriser toi-même. Cette formulation change la méthode à employer : au lieu de chercher une racine évidente pour amorcer une division, il suffit de développer l'expression proposée et de vérifier qu'elle redonne le polynôme de départ. Cette compétence revient dans presque tous les exercices qui enchaînent ensuite une résolution d'équation polynomiale de degré 3 ou plus."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Développement d'un produit de deux polynômes (distributivité)",
+        "Réduction des termes de même degré",
+        "Repérer les coefficients d'un polynôme sous forme développée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vérifier une factorisation par développement",
+      "contenu_markdown": "Pour montrer qu'un polynôme $p(x)$ est égal à un produit de facteurs donné, comme $(x-a)(bx^2+cx+d)$, on développe entièrement ce produit à l'aide de la distributivité, puis on réduit les termes de même degré. Si l'expression obtenue coïncide terme à terme avec $p(x)$, l'égalité est démontrée. Cette méthode ne suppose aucune inspiration : elle consiste uniquement en un calcul systématique, ce qui la rend fiable même sous la pression d'un examen.\n\nUne vérification préalable utile, avant même de développer : si $(x-a)$ est annoncé comme facteur de $p(x)$, on doit avoir $p(a)=0$. Ce contrôle rapide ne remplace pas le développement complet exigé par la question, mais il permet de repérer une erreur d'énoncé ou de calcul avant de s'investir dans le développement.",
+      "formule_principale": "(x-a)(bx^2+cx+d)=bx^3+(c-ab)x^2+(d-ac)x-ad"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que, pour tout $x$ réel, $p(x)=2x^3-3x^2-17x+30$ vérifie $p(x)=(x-2)(2x^2+x-15)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Distribuer $(x-2)$ sur les trois termes de $2x^2+x-15$",
+          "justification": "On applique la distributivité du produit sur la somme.",
+          "resultat_markdown": "$(x-2)(2x^2+x-15)=x(2x^2+x-15)-2(2x^2+x-15)$"
+        },
+        {
+          "numero": 2,
+          "action": "Développer chacun des deux produits obtenus",
+          "justification": "On distribue $x$ puis $2$ sur chaque terme entre parenthèses.",
+          "resultat_markdown": "$x(2x^2+x-15)=2x^3+x^2-15x$ et $2(2x^2+x-15)=4x^2+2x-30$"
+        },
+        {
+          "numero": 3,
+          "action": "Soustraire les deux résultats en développant le signe moins",
+          "justification": "On revient à l'expression de l'étape 1 avec les deux développements.",
+          "resultat_markdown": "$(x-2)(2x^2+x-15)=2x^3+x^2-15x-4x^2-2x+30$"
+        },
+        {
+          "numero": 4,
+          "action": "Regrouper les termes de même degré",
+          "justification": "On additionne séparément les termes en $x^3$, $x^2$, $x$ et les constantes.",
+          "resultat_markdown": "$=2x^3+(x^2-4x^2)+(-15x-2x)+30=2x^3-3x^2-17x+30$"
+        }
+      ],
+      "conclusion_markdown": "On retrouve exactement $p(x)=2x^3-3x^2-17x+30$, ce qui démontre l'égalité $p(x)=(x-2)(2x^2+x-15)$ pour tout $x$ réel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Développer $-2(2x^2+x-15)$ en $-4x^2+2x-30$ (en oubliant de distribuer le signe moins au troisième terme)",
+          "pourquoi_faux": "Le signe moins doit se répartir sur les trois termes de la parenthèse, y compris la constante $-15$ : $-2\\times(-15)=+30$, pas $-30$. Une erreur sur ce seul signe change le terme constant du polynôme final et empêche de retrouver $p(x)$.",
+          "correction_markdown": "Distribue le signe moins terme à terme avant de simplifier : $-2(2x^2+x-15)=-4x^2-2x+30$."
+        },
+        {
+          "erreur_markdown": "S'arrêter après avoir développé, sans regrouper les termes de même degré, et conclure que l'égalité n'est « pas évidente »",
+          "pourquoi_faux": "Une expression développée mais non réduite contient les bons termes mais sous une forme qui ne ressemble pas encore à $p(x)$ : il manque l'étape de regroupement, indispensable pour comparer terme à terme.",
+          "correction_markdown": "Toujours regrouper explicitement les termes de même degré ($x^3$ avec $x^3$, $x^2$ avec $x^2$, etc.) avant de comparer au polynôme de départ."
+        },
+        {
+          "erreur_markdown": "Vérifier seulement que $2$ est racine de $p$ (par exemple $p(2)=0$) et considérer que cela suffit à démontrer la factorisation complète demandée",
+          "pourquoi_faux": "Que $2$ soit racine de $p$ prouve seulement que $(x-2)$ est un facteur de $p(x)$, pas que le second facteur est précisément $2x^2+x-15$ : il pourrait exister une erreur dans ce second facteur tout en ayant $p(2)=0$.",
+          "correction_markdown": "Utilise $p(2)=0$ uniquement comme vérification rapide avant de développer, jamais comme substitut à la démonstration complète par développement demandée par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Montrer que, pour tout $x$ réel, $x^3-6x^2+11x-6=(x-1)(x^2-5x+6)$.",
+          "solution_markdown": "On développe $(x-1)(x^2-5x+6)=x(x^2-5x+6)-1(x^2-5x+6)$. $x(x^2-5x+6)=x^3-5x^2+6x$. $1(x^2-5x+6)=x^2-5x+6$. On soustrait : $x^3-5x^2+6x-x^2+5x-6=x^3+(-5x^2-x^2)+(6x+5x)-6=x^3-6x^2+11x-6$. On retrouve le polynôme de départ, l'égalité est démontrée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que, pour tout $x$ réel, $2x^3+x^2-13x+6=(x+3)(2x^2-5x+2)$.",
+          "solution_markdown": "On développe $(x+3)(2x^2-5x+2)=x(2x^2-5x+2)+3(2x^2-5x+2)$. $x(2x^2-5x+2)=2x^3-5x^2+2x$. $3(2x^2-5x+2)=6x^2-15x+6$. On additionne : $2x^3-5x^2+2x+6x^2-15x+6=2x^3+(-5x^2+6x^2)+(2x-15x)+6=2x^3+x^2-13x+6$. On retrouve le polynôme de départ, l'égalité est démontrée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne $q(x)=3x^3-2x^2-19x-6$. Sachant que $-2$ est racine de $q$, déterminer les réels $a$, $b$, $c$ tels que $q(x)=(x+2)(ax^2+bx+c)$, puis vérifier l'égalité par développement.",
+          "solution_markdown": "On développe $(x+2)(ax^2+bx+c)=ax^3+(b+2a)x^2+(c+2b)x+2c$. En identifiant avec $q(x)=3x^3-2x^2-19x-6$ terme à terme : coefficient de $x^3$ : $a=3$. Constante : $2c=-6$ donc $c=-3$. Coefficient de $x^2$ : $b+2a=-2$ donc $b+6=-2$ donc $b=-8$. On vérifie avec le coefficient de $x$ : $c+2b=-3+2\\times(-8)=-3-16=-19$, qui correspond bien au coefficient $-19$ de $q(x)$. Donc $a=3$, $b=-8$, $c=-3$, soit $q(x)=(x+2)(3x^2-8x-3)$. Vérification par développement : $(x+2)(3x^2-8x-3)=x(3x^2-8x-3)+2(3x^2-8x-3)=3x^3-8x^2-3x+6x^2-16x-6=3x^3-2x^2-19x-6$, qui redonne exactement $q(x)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour montrer qu'un polynôme est égal à un produit de facteurs, développe entièrement ce produit : ne cherche jamais à « deviner » que l'égalité est vraie sans calcul complet.",
+        "Regroupe systématiquement les termes de même degré avant de comparer au polynôme de départ : un développement non réduit ne se compare pas terme à terme.",
+        "Une vérification rapide comme $p(a)=0$ te renseigne sur un facteur $(x-a)$, mais ne dispense jamais du développement complet demandé par l'énoncé.",
+        "Cette compétence sert quasi systématiquement de première étape à la résolution d'une équation polynomiale de degré 3 : une fois la factorisation démontrée, résoudre l'équation revient à annuler chaque facteur séparément.",
+        "Au BAC, ce type de question rapporte des points de méthode même si le calcul final d'une question suivante échoue : soigne chaque étape du développement, elle est notée pour elle-même."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-pourcentages-successifs-valeur-initiale-terminale-A-ABI",
+  "meta": {
+    "titre": "Retrouver une valeur initiale après des pourcentages successifs",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Pourcentages et évolutions",
+    "duree_estimee_min": 20,
+    "tags": ["pourcentages", "hausses successives", "coefficient multiplicateur"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un salaire a subi deux hausses de 5% et vaut aujourd'hui 41895F. Quel était-il au départ ? L'erreur la plus commune est de croire que deux hausses de 5% équivalent à une hausse de 10% - ce cours démontre pourquoi ce raisonnement est faux et donne la méthode correcte."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Notion de coefficient multiplicateur associé à un pourcentage", "Résolution d'une équation du premier degré"]
+    },
+    {
+      "type": "regle",
+      "titre": "Coefficient multiplicateur et évolutions successives",
+      "contenu_markdown": "Une augmentation de $t\\%$ correspond à une multiplication par le coefficient $1+\\dfrac{t}{100}$. Une diminution de $t\\%$ correspond à une multiplication par $1-\\dfrac{t}{100}$.\n\nLorsque plusieurs évolutions en pourcentage se succèdent, les coefficients multiplicateurs se MULTIPLIENT entre eux (et ne s'additionnent jamais) : après une hausse de $t_1\\%$ puis une hausse de $t_2\\%$, la valeur finale est $V_f = V_0\\times\\left(1+\\dfrac{t_1}{100}\\right)\\times\\left(1+\\dfrac{t_2}{100}\\right)$.\n\nPour retrouver la valeur initiale $V_0$ à partir de la valeur finale $V_f$, on divise par le produit de tous les coefficients multiplicateurs : $V_0=\\dfrac{V_f}{\\text{coefficient global}}$.",
+      "formule_principale": "V_f = V_0\\times(1+t_1/100)\\times(1+t_2/100) \\ \\Rightarrow\\ V_0=\\frac{V_f}{(1+t_1/100)(1+t_2/100)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un salaire a subi deux hausses successives de 5% et vaut maintenant 41895F. Quel était le salaire initial ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le coefficient multiplicateur d'une hausse de 5%",
+          "justification": "Une hausse de $t\\%$ correspond au coefficient $1+t/100$",
+          "resultat_markdown": "Coefficient d'une hausse de 5% : $1+\\dfrac{5}{100}=1,05$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le coefficient global des deux hausses successives",
+          "justification": "Les coefficients se multiplient entre eux, ils ne s'additionnent pas",
+          "resultat_markdown": "$1,05\\times1,05=1,1025$"
+        },
+        {
+          "numero": 3,
+          "action": "Poser l'équation reliant $S_0$ et le salaire final",
+          "justification": "Traduction directe de la règle du coefficient global",
+          "resultat_markdown": "$S_0\\times1,1025=41895$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre en divisant par le coefficient global",
+          "justification": "Isoler $S_0$",
+          "resultat_markdown": "$S_0=\\dfrac{41895}{1,1025}=38000$"
+        }
+      ],
+      "conclusion_markdown": "Le salaire initial était de 38000F."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les deux pourcentages : \"deux hausses de 5% = une hausse de 10%\"",
+          "pourquoi_faux": "La seconde hausse de 5% s'applique à une valeur déjà augmentée par la première, pas à la valeur initiale : le coefficient global est $1,05\\times1,05=1,1025$, ce qui correspond à une hausse réelle de $10,25\\%$, pas $10\\%$.",
+          "correction_markdown": "Multiplier les coefficients multiplicateurs entre eux pour toute succession d'évolutions en pourcentage, jamais additionner les taux directement."
+        },
+        {
+          "erreur_markdown": "Essayer de \"soustraire 5% deux fois\" à la valeur finale pour retrouver la valeur initiale",
+          "pourquoi_faux": "Retirer 5% d'une valeur n'est pas l'opération inverse d'ajouter 5% à une valeur différente : les deux pourcentages portent sur des bases différentes (la valeur initiale pour la hausse, la valeur finale si l'on tente une soustraction directe), ce qui ne redonne pas le bon résultat.",
+          "correction_markdown": "Toujours diviser par le coefficient multiplicateur global pour remonter à la valeur initiale, jamais soustraire un pourcentage de la valeur finale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un prix a subi une hausse unique de 8% et vaut maintenant 5400F. Quel était le prix initial ?",
+          "solution_markdown": "Coefficient : $1,08$. Prix initial $=\\dfrac{5400}{1,08}=5000$F."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un capital a subi deux hausses successives de 10% et vaut maintenant 60500F. Quel était le capital initial ?",
+          "solution_markdown": "Coefficient global : $1,10\\times1,10=1,21$. Capital initial $=\\dfrac{60500}{1,21}=50000$F."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un article subit une hausse de 20% puis une baisse de 10%. Son prix final est 6480F. Quel était son prix initial, et quelle est l'évolution globale en pourcentage par rapport au prix de départ ?",
+          "solution_markdown": "Coefficient de la hausse : $1,20$. Coefficient de la baisse : $1-\\dfrac{10}{100}=0,90$. Coefficient global : $1,20\\times0,90=1,08$. Prix initial $=\\dfrac{6480}{1,08}=6000$F. L'évolution globale correspond à un coefficient $1,08$, soit une hausse globale de $8\\%$ par rapport au prix de départ (et non $20\\%-10\\%=10\\%$, ce qui confirme que les taux ne s'additionnent pas, même quand ils sont de signes opposés)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une hausse de $t\\%$ correspond au coefficient multiplicateur $1+\\dfrac{t}{100}$, une baisse au coefficient $1-\\dfrac{t}{100}$.",
+        "Des évolutions successives se combinent par MULTIPLICATION des coefficients, jamais par addition des taux.",
+        "Pour remonter à la valeur initiale, divise la valeur finale par le coefficient multiplicateur global.",
+        "Deux hausses de $t\\%$ ne valent jamais une hausse de $2t\\%$ : elles valent toujours un peu plus, car la seconde hausse porte sur une base déjà augmentée."
+      ]
+    }
+  ]
+}

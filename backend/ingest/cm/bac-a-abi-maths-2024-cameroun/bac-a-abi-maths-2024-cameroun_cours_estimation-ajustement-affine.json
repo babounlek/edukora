@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-estimation-ajustement-affine-terminale-A-ABI",
+  "meta": {
+    "titre": "Estimation par ajustement affine (interpolation/extrapolation)",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Ajustement affine",
+    "duree_estimee_min": 15,
+    "tags": ["extrapolation", "interpolation", "ajustement affine", "estimation"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex3-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "À quoi sert une droite d'ajustement, une fois trouvée ? À prédire. Ce cours montre comment utiliser une équation de droite pour estimer une valeur non observée, et où s'arrête la fiabilité de cette prédiction."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Équation d'une droite d'ajustement déjà déterminée (Mayer ou moindres carrés)", "Substitution d'une valeur dans une expression affine"]
+    },
+    {
+      "type": "regle",
+      "titre": "Estimer par la droite d'ajustement",
+      "contenu_markdown": "Une fois l'équation de la droite d'ajustement $y=ax+b$ connue, on estime la valeur de $y$ correspondant à une valeur de $x$ non observée en substituant simplement cette valeur dans l'équation.\n\nOn distingue deux cas : l'interpolation, quand la valeur de $x$ demandée est comprise dans l'intervalle des valeurs observées (estimation généralement fiable), et l'extrapolation, quand elle est en dehors de cet intervalle (estimation d'autant moins fiable que l'on s'éloigne des données observées, car rien ne garantit que la tendance affine se prolonge au-delà de la plage étudiée).",
+      "formule_principale": "y_{\\text{estimé}} = a\\times x_{\\text{demandé}}+b"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Estimer la moyenne en Mathématiques à la 11ème année, sachant que la droite d'ajustement de la série (années 1 à 8) est $y=\\dfrac34x+5,125$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier qu'il s'agit d'une extrapolation",
+          "justification": "La série observée va de l'année 1 à l'année 8 ; l'année 11 est en dehors de cette plage",
+          "resultat_markdown": "$x=11 > 8$ : l'estimation demandée est une extrapolation"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer $x=11$ dans l'équation de la droite",
+          "justification": "Application directe de l'ajustement affine",
+          "resultat_markdown": "$y=\\dfrac34\\times11+5,125=8,25+5,125=13,375$"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter le résultat dans son contexte, en signalant les limites de l'extrapolation",
+          "justification": "Une estimation loin des données observées reste une approximation, pas une certitude",
+          "resultat_markdown": "Estimation : environ 13,4 sur 20 à la 11ème année, sous réserve que la tendance affine observée sur 8 ans se maintienne"
+        }
+      ],
+      "conclusion_markdown": "L'estimation de la moyenne à la 11ème année est d'environ $13,375$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Présenter une extrapolation comme une valeur certaine, sans aucune réserve",
+          "pourquoi_faux": "L'ajustement affine repose sur l'hypothèse que la tendance observée se prolonge, ce qui n'est jamais garanti au-delà des données réellement mesurées.",
+          "correction_markdown": "Formuler le résultat comme une \"estimation\" et non un résultat certain, surtout en cas d'extrapolation éloignée de la plage observée."
+        },
+        {
+          "erreur_markdown": "Confondre le rôle de $a$ et de $b$ lors de la substitution",
+          "pourquoi_faux": "Une inversion de $a$ et $b$ dans $y=ax+b$ produit un résultat numérique complètement différent.",
+          "correction_markdown": "Toujours réécrire l'équation complète avant de substituer, plutôt que de manipuler seulement les nombres de mémoire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une droite d'ajustement a pour équation $y=2x+3$. Estimer $y$ pour $x=5$.",
+          "solution_markdown": "$y=2\\times5+3=10+3=13$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de ventes mensuelles (mois 1 à 6) a pour droite d'ajustement $y=1,5x+20$ (en centaines d'unités). Estimer les ventes du mois 4 (interpolation) et du mois 10 (extrapolation), et préciser laquelle des deux estimations est la plus fiable.",
+          "solution_markdown": "Mois 4 : $y=1,5\\times4+20=6+20=26$ (interpolation, car $4$ est compris entre $1$ et $6$). Mois 10 : $y=1,5\\times10+20=15+20=35$ (extrapolation, car $10>6$). L'estimation du mois 4 est la plus fiable, car elle reste dans la plage des données observées ; celle du mois 10 suppose que la tendance se maintienne bien au-delà de la période étudiée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une droite d'ajustement $y=-2x+80$ modélise le nombre d'inscrits à un club en fonction du nombre d'années depuis sa création ($x$ de 1 à 5). Estimer à partir de quelle année le nombre d'inscrits estimé devient nul ou négatif, et commenter la validité de cette estimation.",
+          "solution_markdown": "On cherche $x$ tel que $-2x+80\\leq0$, soit $x\\geq40$. Mathématiquement, l'estimation devient nulle à $x=40$. Mais cette extrapolation est très éloignée de la plage observée (1 à 5 ans) : une tendance linéaire décroissante ne peut pas se prolonger indéfiniment dans un contexte réel (un nombre d'inscrits ne peut pas continuer à baisser du même rythme sur 40 ans sans que d'autres facteurs n'interviennent). Le résultat numérique est correct, mais son interprétation concrète est peu fiable au-delà de quelques années après la période observée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Estimer avec une droite d'ajustement, c'est simplement substituer la valeur de $x$ demandée dans l'équation $y=ax+b$.",
+        "Distingue toujours interpolation (dans la plage observée, plus fiable) et extrapolation (en dehors, moins fiable).",
+        "Plus l'extrapolation s'éloigne des données observées, plus l'hypothèse que la tendance se maintienne devient fragile.",
+        "Présente toujours le résultat comme une estimation, jamais comme une certitude, surtout en cas d'extrapolation."
+      ]
+    }
+  ]
+}

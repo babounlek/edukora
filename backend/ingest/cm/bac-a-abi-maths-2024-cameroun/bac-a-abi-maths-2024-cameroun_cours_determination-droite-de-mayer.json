@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-determination-droite-de-mayer-terminale-A-ABI",
+  "meta": {
+    "titre": "Détermination de la droite de Mayer",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Ajustement affine",
+    "duree_estimee_min": 25,
+    "tags": ["droite de Mayer", "ajustement affine", "statistiques à deux variables"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex3-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment résumer un nuage de points par une seule droite, sans recourir à des formules de covariance compliquées ? La méthode de Mayer répond à cette question avec un outil simple : couper la série en deux, et relier les deux points moyens obtenus."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Calcul du point moyen d'une série statistique", "Calcul du coefficient directeur d'une droite passant par deux points", "Détermination de l'ordonnée à l'origine à partir d'un point connu de la droite"]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de Mayer",
+      "contenu_markdown": "La droite de Mayer d'une série statistique double se construit en trois temps :\n\n1. On partage la série en deux sous-groupes de même effectif (ou d'effectifs les plus proches possibles si le total est impair), selon les $x_i$ croissants : le premier sous-groupe rassemble les plus petites valeurs de $x$, le second les plus grandes.\n2. On calcule le point moyen de chaque sous-groupe : $G_1(\\bar x_1,\\bar y_1)$ et $G_2(\\bar x_2,\\bar y_2)$.\n3. La droite de Mayer est la droite $(G_1G_2)$. Son coefficient directeur est $a=\\dfrac{\\bar y_2-\\bar y_1}{\\bar x_2-\\bar x_1}$, et son ordonnée à l'origine $b$ s'obtient en écrivant que $G_1$ (ou $G_2$) appartient à la droite : $\\bar y_1=a\\bar x_1+b$.",
+      "formule_principale": "a=\\frac{\\bar y_2-\\bar y_1}{\\bar x_2-\\bar x_1}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'équation de la droite de Mayer de la série $x_i:1,\\dots,8$ et $y_i:6,8,8,6,9,10,10,11$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Partager la série en deux groupes de 4 années, selon les $x_i$ croissants",
+          "justification": "8 individus au total, à répartir en deux groupes égaux",
+          "resultat_markdown": "Groupe 1 : années 1 à 4 ; Groupe 2 : années 5 à 8"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $G_1$",
+          "justification": "Point moyen du premier groupe",
+          "resultat_markdown": "$\\bar x_1=\\dfrac{1+2+3+4}{4}=2,5$ ; $\\bar y_1=\\dfrac{6+8+8+6}{4}=7$ ; $G_1(2,5;7)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $G_2$",
+          "justification": "Point moyen du second groupe",
+          "resultat_markdown": "$\\bar x_2=\\dfrac{5+6+7+8}{4}=6,5$ ; $\\bar y_2=\\dfrac{9+10+10+11}{4}=10$ ; $G_2(6,5;10)$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le coefficient directeur puis l'ordonnée à l'origine",
+          "justification": "Équation de la droite $(G_1G_2)$",
+          "resultat_markdown": "$a=\\dfrac{10-7}{6,5-2,5}=\\dfrac34$ ; avec $G_1$ : $7=\\dfrac34\\times2,5+b \\Rightarrow b=7-1,875=5,125$"
+        }
+      ],
+      "conclusion_markdown": "La droite de Mayer a pour équation $y=\\dfrac34x+5,125$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Partager la série au hasard, sans respecter l'ordre croissant des $x_i$",
+          "pourquoi_faux": "La méthode de Mayer suppose explicitement un partage selon les $x_i$ croissants ; un partage arbitraire donne une droite qui ne reflète plus correctement la tendance de la série.",
+          "correction_markdown": "Toujours trier mentalement (ou sur le tableau) les individus par $x_i$ croissant avant de couper la série en deux groupes."
+        },
+        {
+          "erreur_markdown": "Calculer $b$ sans vérifier avec le second point moyen $G_2$",
+          "pourquoi_faux": "Une erreur de calcul dans $a$ ou dans $G_1$ peut passer inaperçue si on ne recoupe pas le résultat avec $G_2$.",
+          "correction_markdown": "Toujours vérifier l'équation obtenue en substituant les coordonnées de $G_2$ : si l'égalité n'est pas vérifiée, il y a une erreur à corriger."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer la droite de Mayer de la série $x_i:1,2,3,4$ et $y_i:2,4,5,7$ (groupes de 2 individus chacun).",
+          "solution_markdown": "Groupe 1 (années 1-2) : $\\bar x_1=1,5$, $\\bar y_1=3$. Groupe 2 (années 3-4) : $\\bar x_2=3,5$, $\\bar y_2=6$. $a=\\dfrac{6-3}{3,5-1,5}=\\dfrac{3}{2}=1,5$. Avec $G_1$ : $3=1,5\\times1,5+b \\Rightarrow b=3-2,25=0,75$. Droite : $y=1,5x+0,75$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer la droite de Mayer de la série $x_i:10,20,30,40,50,60$ et $y_i:100,90,85,70,65,50$.",
+          "solution_markdown": "Groupe 1 (10,20,30) : $\\bar x_1=20$, $\\bar y_1=\\dfrac{100+90+85}{3}=\\dfrac{275}{3}\\approx91,67$. Groupe 2 (40,50,60) : $\\bar x_2=50$, $\\bar y_2=\\dfrac{70+65+50}{3}=\\dfrac{185}{3}\\approx61,67$. $a=\\dfrac{61,67-91,67}{50-20}=\\dfrac{-30}{30}=-1$. Avec $G_1$ : $91,67=-1\\times20+b \\Rightarrow b=111,67$. Droite : $y=-x+111,67$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série compte 9 individus (effectif impair). Comment adapter la méthode de Mayer, puis appliquer sur $x_i:1,\\dots,9$ et $y_i:5,6,8,9,10,12,13,15,16$ ?",
+          "solution_markdown": "Avec un effectif impair, on partage en deux groupes d'effectifs aussi proches que possible (souvent 4 et 5, en laissant l'individu central de côté ou en l'incluant dans un seul groupe selon la convention retenue). Ici, on choisit Groupe 1 = individus 1 à 4 et Groupe 2 = individus 6 à 9 (l'individu 5 est exclu des deux groupes). Groupe 1 : $\\bar x_1=2,5$, $\\bar y_1=\\dfrac{5+6+8+9}{4}=7$. Groupe 2 : $\\bar x_2=7,5$, $\\bar y_2=\\dfrac{12+13+15+16}{4}=14$. $a=\\dfrac{14-7}{7,5-2,5}=\\dfrac{7}{5}=1,4$. Avec $G_1$ : $7=1,4\\times2,5+b \\Rightarrow b=7-3,5=3,5$. Droite : $y=1,4x+3,5$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode de Mayer résume un nuage de points par la droite reliant les points moyens de deux sous-groupes, triés par $x_i$ croissant.",
+        "Le coefficient directeur s'obtient par la formule habituelle entre deux points : $\\dfrac{\\Delta y}{\\Delta x}$.",
+        "Vérifie toujours l'équation obtenue avec le second point moyen, pas seulement le premier.",
+        "Cette droite sert ensuite à faire des estimations (interpolation ou extrapolation) pour des valeurs de $x$ non observées."
+      ]
+    }
+  ]
+}

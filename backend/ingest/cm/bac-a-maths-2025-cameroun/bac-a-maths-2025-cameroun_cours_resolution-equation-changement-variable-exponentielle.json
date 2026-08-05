@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-resolution-equation-changement-variable-exponentielle-terminale-a",
+  "meta": {
+    "titre": "Résolution d'équation par changement de variable u = e^{2x}",
+    "matiere": "Mathématiques",
+    "serie": "A",
+    "sous_theme": "Équations et fonction exponentielle",
+    "duree_estimee_min": 18,
+    "tags": [
+      "changement de variable",
+      "équation exponentielle",
+      "fonction exponentielle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2025-cameroun",
+    "epreuve_titre": "BAC A Mathematiques 2025 - Cameroun (MINEDUC - OBC, Session 2025)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2025-cameroun-ex1-qq2d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation qui mêle $e^{6x}$, $e^{4x}$ et $e^{2x}$ ressemble à une équation polynomiale déguisée : ces trois termes sont en réalité les puissances 3, 2 et 1 d'une même expression, $e^{2x}$. Reconnaître cette structure permet de transformer une équation d'apparence complexe en une équation polynomiale déjà maîtrisée, à condition de respecter une contrainte de signe propre à l'exponentielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Propriétés des puissances de l'exponentielle : $e^{6x}=(e^{2x})^3$",
+        "Résolution d'une équation polynomiale par factorisation",
+        "Résolution de $e^{X}=k$ pour $k>0$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Changement de variable $u=e^{2x}$",
+      "contenu_markdown": "Quand une équation ne fait apparaître $x$ qu'à travers une même expression exponentielle $e^{kx}$ élevée à diverses puissances entières, on pose $u=e^{kx}$. L'équation devient une équation polynomiale en $u$. Contrairement au changement de variable $t=\\ln x$, la variable $u=e^{kx}$ est ici soumise à une contrainte : $u>0$ pour tout $x$ réel, car une exponentielle ne prend jamais de valeur négative ou nulle. Toute solution négative ou nulle de l'équation polynomiale en $u$ doit donc être rejetée avant de revenir à $x$. Pour chaque valeur de $u$ retenue (strictement positive), on résout ensuite $e^{kx}=u$, ce qui donne $x=\\dfrac{\\ln u}{k}$.",
+      "formule_principale": "e^{kx}=u \\ (u>0) \\iff x=\\dfrac{\\ln u}{k}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $2e^{6x}-3e^{4x}-17e^{2x}+30=0$, sachant que l'équation $2u^3-3u^2-17u+30=0$ a pour solutions $u\\in\\{-3\\,;\\,2\\,;\\,2,5\\}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la structure commune et poser le changement de variable",
+          "justification": "$e^{6x}=(e^{2x})^3$ et $e^{4x}=(e^{2x})^2$, donc tout s'exprime avec $e^{2x}$.",
+          "resultat_markdown": "On pose $u=e^{2x}$, avec $u>0$ pour tout $x$ réel"
+        },
+        {
+          "numero": 2,
+          "action": "Réécrire l'équation en $u$",
+          "justification": "Chaque puissance de $e^{2x}$ devient la puissance correspondante de $u$.",
+          "resultat_markdown": "$2u^3-3u^2-17u+30=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Reprendre les solutions connues et écarter celles incompatibles avec $u>0$",
+          "justification": "$u=-3$ ne peut correspondre à aucune exponentielle réelle.",
+          "resultat_markdown": "$u=-3$ rejetée ; il reste $u=2$ ou $u=2,5$"
+        },
+        {
+          "numero": 4,
+          "action": "Revenir à $x$ pour chaque valeur de $u$ retenue",
+          "justification": "$e^{2x}=u \\iff 2x=\\ln u \\iff x=\\dfrac{\\ln u}{2}$.",
+          "resultat_markdown": "$x=\\dfrac{\\ln2}{2}$ ou $x=\\dfrac{\\ln2,5}{2}$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $S=\\left\\{\\dfrac{\\ln2}{2}\\,;\\,\\dfrac{\\ln2,5}{2}\\right\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conserver la solution $u=-3$ et écrire $x=\\dfrac{\\ln(-3)}{2}$",
+          "pourquoi_faux": "$\\ln(-3)$ n'existe pas : le logarithme népérien n'est défini que pour des nombres strictement positifs. Une exponentielle réelle $e^{2x}$ ne peut jamais valoir $-3$.",
+          "correction_markdown": "Rejette systématiquement toute solution négative ou nulle de l'équation en $u$ avant même de chercher à revenir à $x$."
+        },
+        {
+          "erreur_markdown": "Confondre ce changement de variable avec celui en $t=\\ln x$ et accepter toutes les solutions sans vérifier leur signe",
+          "pourquoi_faux": "Les deux changements de variable ne se comportent pas de la même façon face au signe : $t=\\ln x$ peut être n'importe quel réel, alors que $u=e^{2x}$ doit rester strictement positif.",
+          "correction_markdown": "Avant de résoudre, identifie clairement quelle est la variable auxiliaire introduite et quelle contrainte de signe, s'il y en a une, s'applique à elle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $e^{2x}-3e^x+2=0$.",
+          "solution_markdown": "On pose $u=e^x$, avec $u>0$. L'équation devient $u^2-3u+2=0$. $\\Delta=9-8=1$, $\\sqrt\\Delta=1$, $u=\\dfrac{3-1}{2}=1$ ou $u=\\dfrac{3+1}{2}=2$. Les deux valeurs sont positives, aucune n'est à rejeter. On revient à $x$ : $e^x=1 \\iff x=\\ln1=0$ ; $e^x=2 \\iff x=\\ln2$. $S=\\{0\\,;\\,\\ln2\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $e^{2x}-e^x-6=0$.",
+          "solution_markdown": "On pose $u=e^x$, avec $u>0$. L'équation devient $u^2-u-6=0$. $\\Delta=1+24=25$, $\\sqrt\\Delta=5$, $u=\\dfrac{1-5}{2}=-2$ ou $u=\\dfrac{1+5}{2}=3$. La valeur $u=-2$ est rejetée car négative. Il reste $u=3$. On revient à $x$ : $e^x=3 \\iff x=\\ln3$. $S=\\{\\ln3\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $e^{4x}-5e^{2x}+4=0$.",
+          "solution_markdown": "On pose $u=e^{2x}$, avec $u>0$, sachant que $e^{4x}=(e^{2x})^2$. L'équation devient $u^2-5u+4=0$. $\\Delta=25-16=9$, $\\sqrt\\Delta=3$, $u=\\dfrac{5-3}{2}=1$ ou $u=\\dfrac{5+3}{2}=4$. Les deux valeurs sont positives. On revient à $x$ : $e^{2x}=1 \\iff 2x=\\ln1=0 \\iff x=0$ ; $e^{2x}=4 \\iff 2x=\\ln4 \\iff x=\\dfrac{\\ln4}{2}=\\ln2$ (en utilisant $\\ln4=2\\ln2$). $S=\\{0\\,;\\,\\ln2\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Repère la structure commune : plusieurs termes en $e^{kx}$, $e^{2kx}$, $e^{3kx}$ signalent un changement de variable $u=e^{kx}$.",
+        "L'équation en $u$ se résout comme une équation polynomiale classique, avec les mêmes outils (factorisation, discriminant).",
+        "Contrainte spécifique à ce changement de variable : $u>0$ toujours, donc toute racine négative ou nulle en $u$ est à rejeter avant de revenir à $x$.",
+        "Le retour à $x$ se fait par $x=\\dfrac{\\ln u}{k}$, jamais en gardant $u$ comme réponse finale.",
+        "Distingue bien ce changement de variable de celui en $t=\\ln x$ : la contrainte de signe ne s'applique pas de la même façon dans les deux cas."
+      ]
+    }
+  ]
+}

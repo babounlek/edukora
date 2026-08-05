@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-probabilites-equiprobabilite-denombrement-terminale-A-ABI",
+  "meta": {
+    "titre": "Calcul de probabilités par dénombrement en situation d'équiprobabilité",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Probabilités",
+    "duree_estimee_min": 20,
+    "tags": ["probabilités", "équiprobabilité", "dénombrement", "diviseurs"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex1-qI3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lancer un dé, tirer une carte, choisir une boule dans une urne : dans toutes ces situations où \"rien n'est favorisé\", calculer une probabilité revient à compter. Ce cours montre comment transformer une question de probabilité en un simple problème de comptage, à condition de bien identifier ce qu'on compte."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Notion d'univers d'une expérience aléatoire", "Notion de diviseur d'un entier"]
+    },
+    {
+      "type": "regle",
+      "titre": "Probabilité en situation d'équiprobabilité",
+      "contenu_markdown": "Quand toutes les issues d'une expérience aléatoire ont la même chance de se produire (situation d'équiprobabilité, comme un dé ou une pièce non truqués), la probabilité d'un événement $A$ est le rapport entre le nombre de cas favorables à $A$ et le nombre total de cas possibles :\n$$P(A)=\\dfrac{\\text{card}(A)}{\\text{card}(\\Omega)}$$\noù $\\Omega$ désigne l'univers (l'ensemble de toutes les issues possibles) et $\\text{card}$ le nombre d'éléments d'un ensemble.\n\nLa difficulté n'est presque jamais la formule, mais l'étape de dénombrement qui la précède : lister sans erreur ni oubli les éléments de $\\Omega$ et de $A$.",
+      "formule_principale": "P(A)=\\frac{\\text{card}(A)}{\\text{card}(\\Omega)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ramatou, âgée de 18 ans, lance un dé cubique équilibré numéroté de 1 à 6. Quelle est la probabilité que la face obtenue porte un nombre qui divise 18 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer l'univers $\\Omega$",
+          "justification": "Le dé porte les nombres de 1 à 6",
+          "resultat_markdown": "$\\Omega=\\{1,2,3,4,5,6\\}$, donc $\\text{card}(\\Omega)=6$"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les diviseurs de 18",
+          "justification": "L'événement porte sur les nombres qui divisent 18, pas sur les diviseurs limités au dé pour l'instant",
+          "resultat_markdown": "Les diviseurs de $18=2\\times3^2$ sont $1,2,3,6,9,18$"
+        },
+        {
+          "numero": 3,
+          "action": "Ne garder que les diviseurs présents sur le dé (entre 1 et 6)",
+          "justification": "L'événement favorable est limité aux faces réellement possibles du dé",
+          "resultat_markdown": "$A=\\{1,2,3,6\\}$, donc $\\text{card}(A)=4$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule de probabilité",
+          "justification": "Situation d'équiprobabilité (dé parfaitement équilibré)",
+          "resultat_markdown": "$P(A)=\\dfrac{4}{6}=\\dfrac23$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité que la face obtenue divise 18 est $\\dfrac23$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier un diviseur de 18 compris entre 1 et 6, par exemple s'arrêter à $\\{1,2,3\\}$",
+          "pourquoi_faux": "6 est bien un diviseur de 18 puisque $18=6\\times3$ ; l'oublier fait perdre un cas favorable et fausse tout le résultat.",
+          "correction_markdown": "Décomposer le nombre en facteurs premiers ($18=2\\times3^2$) pour lister systématiquement tous les diviseurs sans en oublier."
+        },
+        {
+          "erreur_markdown": "Compter les diviseurs de 18 sans les limiter à ceux réellement présents sur le dé (par exemple inclure 9 ou 18)",
+          "pourquoi_faux": "Le dé ne porte que les nombres de 1 à 6 : un diviseur de 18 supérieur à 6 ne peut jamais apparaître comme résultat du lancer.",
+          "correction_markdown": "Toujours croiser la liste des diviseurs avec l'univers réel de l'expérience avant de compter les cas favorables."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On lance un dé cubique équilibré numéroté de 1 à 6. Quelle est la probabilité d'obtenir un nombre pair ?",
+          "solution_markdown": "$\\Omega=\\{1,2,3,4,5,6\\}$, $\\text{card}(\\Omega)=6$. Les nombres pairs sont $\\{2,4,6\\}$, donc $\\text{card}(A)=3$. $P(A)=\\dfrac36=\\dfrac12$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un enfant a 24 ans... non, on lance un dé cubique équilibré. Quelle est la probabilité d'obtenir un diviseur de 24 ?",
+          "solution_markdown": "$\\Omega=\\{1,2,3,4,5,6\\}$. On décompose $24=2^3\\times3$ ; ses diviseurs sont $1,2,3,4,6,8,12,24$. Ceux compris entre 1 et 6 sont $1,2,3,4,6$, donc $\\text{card}(A)=5$. $P(A)=\\dfrac56$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une urne contient des jetons numérotés de 1 à 20, tirés au hasard un par un. Quelle est la probabilité de tirer un nombre qui divise à la fois 18 et 30 ?",
+          "solution_markdown": "$\\Omega=\\{1,2,\\dots,20\\}$, $\\text{card}(\\Omega)=20$. Diviseurs de $18=2\\times3^2$ : $1,2,3,6,9,18$. Diviseurs de $30=2\\times3\\times5$ : $1,2,3,5,6,10,15,30$. Les diviseurs communs (diviseurs du PGCD de 18 et 30, qui vaut 6) sont $1,2,3,6$. Tous sont compris entre 1 et 20, donc $\\text{card}(A)=4$. $P(A)=\\dfrac{4}{20}=\\dfrac15$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une probabilité en situation d'équiprobabilité, la formule est simple : cas favorables sur cas possibles.",
+        "Le travail réel se fait au dénombrement : décompose en facteurs premiers pour lister les diviseurs sans en oublier.",
+        "Toujours croiser l'ensemble théorique (ex. tous les diviseurs de 18) avec l'univers réel de l'expérience (ex. les faces du dé).",
+        "Ce type de question revient souvent en QCM au BAC : une réponse fausse par simple oubli d'un diviseur suffit à faire perdre le point."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+[
+ {
+  "external_id": "cqc-composition-de-transformations-faible-0",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan est rapporté à un repère orthonormé $(O\\,;\\vec\\imath\\,;\\vec\\jmath)$.\n\nOn note $s$ la symétrie centrale de centre $A(3\\,;-1)$ et $t$ la translation de vecteur $\\vec u(4\\,;6)$.\n\nQuelle est la nature de la transformation $t\\circ s$, définie par $(t\\circ s)(M)=t\\bigl(s(M)\\bigr)$ pour tout point $M$ du plan, et quels sont ses éléments caractéristiques ?",
+  "corrige_markdown": "### Rappel de méthode\n\nUne symétrie centrale de centre $A$ s'écrit $\\overrightarrow{OM'}=2\\overrightarrow{OA}-\\overrightarrow{OM}$ : sa partie linéaire est $-\\mathrm{Id}$. Composer avec une translation ne modifie pas la partie linéaire, qui reste $-\\mathrm{Id}$ : la composée est donc **encore une symétrie centrale**. Seul le centre se déplace. Le réflexe à acquérir est de chercher le point invariant de la composée : une symétrie centrale en possède exactement un, et c'est son centre.\n\n### Corrigé\n\n**1. Expression analytique de la composée.**\n\nSoit $M(x\\,;y)$ et $M_1=s(M)$. La symétrie centrale de centre $A(3\\,;-1)$ donne $M_1$ tel que $A$ soit le milieu de $[MM_1]$ :\n\n$$x_1=2\\times 3-x=6-x,\\qquad y_1=2\\times(-1)-y=-2-y.$$\n\nPuis $M'=t(M_1)$ :\n\n$$\\begin{cases}x'=x_1+4=10-x\\\\ y'=y_1+6=4-y\\end{cases}$$\n\n**2. Points invariants.**\n\n$$\\begin{cases}x=10-x\\\\ y=4-y\\end{cases}\\iff\\begin{cases}2x=10\\\\ 2y=4\\end{cases}\\iff\\begin{cases}x=5\\\\ y=2\\end{cases}$$\n\nLa composée admet un unique point invariant $\\Omega(5\\,;2)$.\n\n**3. Conclusion.**\n\nLe système se réécrit $x'=2\\times 5-x$ et $y'=2\\times 2-y$, c'est-à-dire $\\overrightarrow{OM'}=2\\overrightarrow{O\\Omega}-\\overrightarrow{OM}$ : $\\Omega$ est le milieu de $[MM']$ pour tout $M$.\n\n$$\\boxed{t\\circ s \\text{ est la symétrie centrale de centre } \\Omega(5\\,;2).}$$\n\nOn remarque que $\\overrightarrow{A\\Omega}=(2\\,;3)=\\tfrac12\\vec u$ : le centre est décalé de **la moitié** du vecteur de translation, pas du vecteur entier.\n\n**4. Contrôle numérique** (image par $s$ puis par $t$, comparée à $2\\Omega-M$) :\n\n| $M$ | $s(M)$ | $t(s(M))$ | $2\\Omega-M$ |\n|---|---|---|---|\n| $(0\\,;0)$ | $(6\\,;-2)$ | $(10\\,;4)$ | $(10\\,;4)$ |\n| $(1\\,;0)$ | $(5\\,;-2)$ | $(9\\,;4)$ | $(9\\,;4)$ |\n| $(0\\,;1)$ | $(6\\,;-3)$ | $(10\\,;3)$ | $(10\\,;3)$ |\n| $(2\\,;3)$ | $(4\\,;-5)$ | $(8\\,;1)$ | $(8\\,;1)$ |\n| $(-1\\,;2)$ | $(7\\,;-4)$ | $(11\\,;2)$ | $(11\\,;2)$ |\n| $(4\\,;-1)$ | $(2\\,;-1)$ | $(6\\,;5)$ | $(6\\,;5)$ |\n\nLes six images coïncident.\n\n**5. Remarque sur l'ordre.** En composant dans l'autre sens, $s\\circ t$ donne $x'=6-(x+4)=2-x$ et $y'=-2-(y+6)=-8-y$ : c'est la symétrie centrale de centre $(1\\,;-4)$, distincte de $\\Omega(5\\,;2)$. La composition de transformations **n'est pas commutative** ; le centre obtenu est alors $A-\\tfrac12\\vec u$.",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "A",
+    "texte": "la symétrie centrale de centre $(7\\,;5)$"
+   },
+   {
+    "lettre": "B",
+    "texte": "la translation de vecteur $\\vec w(10\\,;4)$"
+   },
+   {
+    "lettre": "C",
+    "texte": "la symétrie centrale de centre $(5\\,;2)$"
+   },
+   {
+    "lettre": "D",
+    "texte": "la symétrie centrale de centre $(1\\,;-4)$"
+   }
+  ],
+  "reponse_correcte": "C",
+  "source_exercises": [
+   6616
+  ]
+ },
+ {
+  "external_id": "cqc-composition-de-transformations-faible-1",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan est rapporté à un repère orthonormé $(O\\,;\\vec\\imath\\,;\\vec\\jmath)$.\n\nPour un vecteur $\\vec w$, on note $t_{\\vec w}$ la translation de vecteur $\\vec w$ ; pour un point $A$ et un réel $k\\neq 0$, on note $h_{A,k}$ l'homothétie de centre $A$ et de rapport $k$.\n\nSoit $A$ un point du plan et $\\vec u$ un vecteur **non nul**. On pose\n\n$$f=h_{A,5}\\circ t_{\\vec u},\\qquad\\text{c'est-à-dire}\\qquad f(M)=h_{A,5}\\bigl(t_{\\vec u}(M)\\bigr)\\ \\text{ pour tout point } M.$$\n\nLaquelle des quatre transformations suivantes est la réciproque $f^{-1}$ ?",
+  "corrige_markdown": "### Rappel de méthode\n\nPour deux bijections $\\varphi$ et $\\psi$, on a\n\n$$(\\varphi\\circ\\psi)^{-1}=\\psi^{-1}\\circ\\varphi^{-1}.$$\n\n**L'ordre s'inverse** : c'est l'erreur type de garder l'ordre initial. La justification tient en une ligne : $(\\psi^{-1}\\circ\\varphi^{-1})\\circ(\\varphi\\circ\\psi)=\\psi^{-1}\\circ(\\varphi^{-1}\\circ\\varphi)\\circ\\psi=\\psi^{-1}\\circ\\psi=\\mathrm{Id}$. Par ailleurs $\\bigl(h_{A,k}\\bigr)^{-1}=h_{A,1/k}$ (même centre, rapport inverse) et $\\bigl(t_{\\vec w}\\bigr)^{-1}=t_{-\\vec w}$.\n\n### Corrigé\n\nAvec $\\varphi=h_{A,5}$ et $\\psi=t_{\\vec u}$ :\n\n$$f^{-1}=\\bigl(h_{A,5}\\circ t_{\\vec u}\\bigr)^{-1}=\\bigl(t_{\\vec u}\\bigr)^{-1}\\circ\\bigl(h_{A,5}\\bigr)^{-1}=t_{-\\vec u}\\circ h_{A,1/5}.$$\n\n$$\\boxed{f^{-1}=t_{-\\vec u}\\circ h_{A,1/5}}$$\n\nConcrètement : pour revenir en arrière, on défait **en dernier** ce qu'on avait fait **en premier**. Comme $f$ translate d'abord puis dilate, $f^{-1}$ contracte d'abord puis translate en sens inverse.\n\n**Contrôle par le calcul.** Prenons $A$ d'affixe $a$ et $\\vec u$ d'affixe $u$. Alors\n\n$$t_{\\vec u}:z\\longmapsto z+u,\\qquad h_{A,5}:z\\longmapsto 5(z-a)+a,$$\n\ndonc $f:z\\longmapsto 5(z+u-a)+a$. En résolvant $z'=5(z+u-a)+a$ en $z$ :\n\n$$z=\\frac{z'-a}{5}+a-u=\\underbrace{\\frac15\\bigl(z'-a\\bigr)+a}_{h_{A,1/5}}\\;-\\;u,$$\n\nsoit exactement « appliquer $h_{A,1/5}$, puis translater de $-\\vec u$ » : $f^{-1}=t_{-\\vec u}\\circ h_{A,1/5}$.\n\n**Vérification numérique** avec $a=-2+i$ et $u=1+3i$ (donc $f:z\\mapsto 5z+13+11i$) : pour $z=0$, $f^{-1}(0)=\\tfrac15(0-a)+a-u=\\tfrac45(-2+i)-1-3i=-\\tfrac{13}{5}-\\tfrac{11}{5}i$, et l'on retrouve bien $f\\!\\left(-\\tfrac{13}{5}-\\tfrac{11}{5}i\\right)=-13-11i+13+11i=0$. Le même contrôle réussit pour $z=1$, $z=i$, $z=2+3i$, $z=-1+2i$ et $z=4-i$.\n\n**Pourquoi l'ordre compte.** La composée $h_{A,1/5}\\circ t_{-\\vec u}$ envoie $z$ sur $\\tfrac15(z-u-a)+a$, alors que $t_{-\\vec u}\\circ h_{A,1/5}$ envoie $z$ sur $\\tfrac15(z-a)+a-u$. Elles diffèrent de $\\tfrac45 u\\neq\\vec 0$ : ce sont bien deux homothéties de rapport $\\tfrac15$ **de centres différents**, et une seule est la réciproque de $f$.",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "A",
+    "texte": "$h_{A,1/5}\\circ t_{-\\vec u}$"
+   },
+   {
+    "lettre": "B",
+    "texte": "$t_{-\\vec u}\\circ h_{A,1/5}$"
+   },
+   {
+    "lettre": "C",
+    "texte": "$h_{A,1/5}\\circ t_{\\vec u}$"
+   },
+   {
+    "lettre": "D",
+    "texte": "$t_{-\\vec u}\\circ h_{A,-5}$"
+   }
+  ],
+  "reponse_correcte": "B",
+  "source_exercises": [
+   6616
+  ]
+ },
+ {
+  "external_id": "cqc-composition-de-transformations-moyenne-0",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan complexe est rapporté à un repère orthonormé direct $(O\\,;\\vec e_1\\,;\\vec e_2)$.\n\nOn note $r$ la rotation de centre $A$ d'affixe $2+i$ et d'angle $\\dfrac{\\pi}{2}$, et $t$ la translation de vecteur $\\vec w$ d'affixe $4+2i$.\n\n1. Déterminer l'écriture complexe de $r$.\n2. En déduire l'écriture complexe de $f=t\\circ r$, définie par $f(M)=t\\bigl(r(M)\\bigr)$. Démontrer que $f$ est une rotation dont on précisera l'angle et l'affixe du centre.\n3. Déterminer de même l'écriture complexe de $g=r\\circ t$ et l'affixe de son centre. Les transformations $f$ et $g$ sont-elles égales ? Commenter.\n4. Énoncer, en le justifiant à partir de l'écriture complexe, le résultat général : composée dans un ordre quelconque, une rotation d'angle $\\theta$ (avec $\\theta\\not\\equiv 0\\ [2\\pi]$) et une translation donnent une rotation de même angle $\\theta$. On traitera les deux ordres.",
+  "corrige_markdown": "### Rappel de méthode\n\nUne transformation d'écriture complexe $z'=az+b$ avec $a\\neq 1$ et $|a|=1$ est une rotation d'angle $\\arg(a)$ ; son centre est l'unique point invariant, d'affixe $\\omega=\\dfrac{b}{1-a}$. Une translation a pour écriture $z'=z+c$ : la composer avec une rotation **ne change pas le coefficient $a$**, donc ne change ni la nature ni l'angle — seul le terme constant, donc le centre, est modifié.\n\n### Corrigé\n\n**1. Écriture complexe de $r$.**\n\n$$z'=e^{i\\pi/2}\\bigl(z-(2+i)\\bigr)+2+i=i\\,z-i(2+i)+2+i=i\\,z-2i+1+2+i,$$\n\n$$\\boxed{r\\;:\\;z'=i\\,z+3-i}$$\n\n**2. Composée $f=t\\circ r$.**\n\nOn applique $r$ puis $t$ (ajout de $4+2i$) :\n\n$$f\\;:\\;z'=\\bigl(i\\,z+3-i\\bigr)+4+2i=i\\,z+7+i.$$\n\nLe coefficient de $z$ est $i$, de module $1$ et d'argument $\\dfrac{\\pi}{2}$, et $i\\neq 1$ : $f$ est une **rotation d'angle $\\dfrac{\\pi}{2}$**. Son centre $\\Omega$ vérifie $\\omega=i\\omega+7+i$, d'où\n\n$$\\omega(1-i)=7+i\\quad\\Longrightarrow\\quad \\omega=\\frac{7+i}{1-i}=\\frac{(7+i)(1+i)}{2}=\\frac{6+8i}{2}=3+4i.$$\n\n$$\\boxed{f \\text{ est la rotation de centre } \\Omega(3\\,;4) \\text{ et d'angle } \\tfrac{\\pi}{2}.}$$\n\n*Contrôle sur six points* (on calcule $r(z)$, puis $t(r(z))$, et on compare à $i(z-\\omega)+\\omega$) :\n\n| $z$ | $r(z)$ | $t(r(z))$ | $i(z-\\omega)+\\omega$ |\n|---|---|---|---|\n| $0$ | $3-i$ | $7+i$ | $7+i$ |\n| $1$ | $3$ | $7+2i$ | $7+2i$ |\n| $i$ | $2-i$ | $6+i$ | $6+i$ |\n| $2+i$ | $2+i$ | $6+3i$ | $6+3i$ |\n| $-2+3i$ | $-3i$ | $4-i$ | $4-i$ |\n| $5-2i$ | $5+4i$ | $9+6i$ | $9+6i$ |\n\n**3. Composée $g=r\\circ t$.**\n\nOn applique $t$ puis $r$ :\n\n$$g\\;:\\;z'=i\\bigl(z+4+2i\\bigr)+3-i=i\\,z+4i-2+3-i=i\\,z+1+3i.$$\n\nC'est encore une rotation d'angle $\\dfrac{\\pi}{2}$, de centre $\\Omega'$ d'affixe\n\n$$\\omega'=\\frac{1+3i}{1-i}=\\frac{(1+3i)(1+i)}{2}=\\frac{-2+4i}{2}=-1+2i.$$\n\n*Contrôle sur six points* :\n\n| $z$ | $t(z)$ | $r(t(z))$ | $i(z-\\omega')+\\omega'$ |\n|---|---|---|---|\n| $0$ | $4+2i$ | $1+3i$ | $1+3i$ |\n| $1$ | $5+2i$ | $1+4i$ | $1+4i$ |\n| $i$ | $4+3i$ | $3i$ | $3i$ |\n| $-1+2i$ | $3+4i$ | $-1+2i$ | $-1+2i$ |\n| $3-i$ | $7+i$ | $2+6i$ | $2+6i$ |\n| $-2$ | $2+2i$ | $1+i$ | $1+i$ |\n\nComme $7+i\\neq 1+3i$, les deux écritures diffèrent : $f\\neq g$. Les deux composées ont **le même angle** $\\dfrac{\\pi}{2}$ mais **des centres différents**, $\\Omega(3\\,;4)$ et $\\Omega'(-1\\,;2)$. La composition de transformations n'est donc pas commutative, même lorsque les deux composées sont de même nature.\n\n**4. Résultat général.**\n\nSoit $r_\\theta$ la rotation de centre $C$ d'affixe $c$ et d'angle $\\theta$, d'écriture $z'=e^{i\\theta}(z-c)+c$, et $t_{\\vec w}$ la translation d'écriture $z'=z+u$. Alors\n\n$$t_{\\vec w}\\circ r_\\theta\\;:\\;z'=e^{i\\theta}z+\\underbrace{c\\bigl(1-e^{i\\theta}\\bigr)+u}_{b}.$$\n\nLe coefficient $e^{i\\theta}$ est inchangé : si $\\theta\\not\\equiv 0\\ [2\\pi]$, alors $e^{i\\theta}\\neq 1$, l'équation $\\omega=e^{i\\theta}\\omega+b$ admet l'unique solution $\\omega=\\dfrac{b}{1-e^{i\\theta}}$, et la composée est **la rotation d'angle $\\theta$ de centre le point d'affixe $\\omega$**. Dans l'autre ordre, le calcul est le même à ceci près que la translation est appliquée en premier :\n\n$$r_\\theta\\circ t_{\\vec w}\\;:\\;z'=e^{i\\theta}\\bigl(z+u-c\\bigr)+c=e^{i\\theta}z+\\underbrace{e^{i\\theta}u+c\\bigl(1-e^{i\\theta}\\bigr)}_{b'}.$$\n\nLe coefficient $e^{i\\theta}$ est encore inchangé : c'est donc à nouveau une rotation d'angle $\\theta$, de centre le point d'affixe $\\dfrac{b'}{1-e^{i\\theta}}$ — un centre différent du précédent dès que $u\\neq 0$, comme la question 3 l'a montré sur l'exemple. Si au contraire $\\theta\\equiv 0\\ [2\\pi]$, la rotation est l'identité et la composée se réduit, dans les deux ordres, à la translation.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6616
+  ]
+ },
+ {
+  "external_id": "cqc-composition-de-transformations-moyenne-1",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan complexe est rapporté à un repère orthonormé direct $(O\\,;\\vec e_1\\,;\\vec e_2)$.\n\nOn note $A$ le point d'affixe $2$ et $B$ le point d'affixe $5+i$. Soit $r_1$ la rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$, et $r_2$ la rotation de centre $B$ et d'angle $-\\dfrac{\\pi}{2}$.\n\nQuelle est la nature exacte de la transformation $r_2\\circ r_1$, définie par $\\bigl(r_2\\circ r_1\\bigr)(M)=r_2\\bigl(r_1(M)\\bigr)$ pour tout point $M$ du plan ?",
+  "corrige_markdown": "### Rappel de méthode\n\nLa composée de deux rotations d'angles $\\theta_1$ et $\\theta_2$ est une rotation d'angle $\\theta_1+\\theta_2$ **sauf** dans le cas remarquable $\\theta_1+\\theta_2\\equiv 0\\ [2\\pi]$ : le coefficient de $z$ dans l'écriture complexe vaut alors $e^{i(\\theta_1+\\theta_2)}=1$, et la composée est une **translation**. Cette translation n'est l'identité que si les deux centres sont confondus.\n\n### Corrigé\n\n**1. Écritures complexes.**\n\n$$r_1\\;:\\;z'=i\\,(z-2)+2=i\\,z+2-2i,$$\n\n$$r_2\\;:\\;z'=-i\\,\\bigl(z-(5+i)\\bigr)+5+i=-i\\,z+5i-1+5+i=-i\\,z+4+6i.$$\n\n**2. Composée.**\n\n$$r_2\\circ r_1\\;:\\;z'=-i\\bigl(i\\,z+2-2i\\bigr)+4+6i=z-2i-2+4+6i=z+2+4i.$$\n\nLe coefficient de $z$ vaut $1$ et le terme constant $2+4i$ est non nul :\n\n$$\\boxed{r_2\\circ r_1 \\text{ est la translation de vecteur d'affixe } 2+4i.}$$\n\n**3. Contrôle sur six points** (image par $r_1$, puis par $r_2$, comparée à $z+2+4i$) :\n\n| $z$ | $r_1(z)$ | $r_2(r_1(z))$ | $z+2+4i$ |\n|---|---|---|---|\n| $0$ | $2-2i$ | $2+4i$ | $2+4i$ |\n| $1$ | $2-i$ | $3+4i$ | $3+4i$ |\n| $i$ | $1-2i$ | $2+5i$ | $2+5i$ |\n| $3+2i$ | $i$ | $5+6i$ | $5+6i$ |\n| $-1+4i$ | $-2-3i$ | $1+8i$ | $1+8i$ |\n| $5$ | $2+3i$ | $7+4i$ | $7+4i$ |\n\n**4. Pourquoi les autres réponses sont fausses.**\n\n- Ce n'est **pas l'identité** : les angles se compensent, mais les centres $A$ et $B$ sont distincts. Deux rotations d'angles opposés ne se « défont » mutuellement que si elles ont le même centre.\n- Le vecteur n'est **pas $\\overrightarrow{AB}$** (affixe $3+i$), ni $2\\overrightarrow{AB}$ (affixe $6+2i$). Le calcul général donne ici, avec $a=2$ et $b=5+i$ :\n\n$$r_2\\circ r_1\\;:\\;z'=z+(b-a)+i\\,(b-a)=z+(1+i)(b-a),$$\n\net $(1+i)(3+i)=2+4i$ : le vecteur de la translation s'obtient à partir de $\\overrightarrow{AB}$ par une similitude directe de rapport $\\sqrt2$ et d'angle $\\dfrac{\\pi}{4}$, il n'est donc ni colinéaire à $\\overrightarrow{AB}$ ni égal à un de ses multiples.\n\n**5. Non-commutativité.** Dans l'autre ordre, $r_1\\circ r_2\\;:\\;z'=i\\bigl(-i\\,z+4+6i\\bigr)+2-2i=z-4+2i$ : c'est encore une translation, mais de vecteur d'affixe $-4+2i$, différent de $2+4i$.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "A",
+    "texte": "l'identité du plan"
+   },
+   {
+    "lettre": "B",
+    "texte": "la translation de vecteur d'affixe $3+i$"
+   },
+   {
+    "lettre": "C",
+    "texte": "la translation de vecteur d'affixe $6+2i$"
+   },
+   {
+    "lettre": "D",
+    "texte": "la translation de vecteur d'affixe $2+4i$"
+   }
+  ],
+  "reponse_correcte": "D",
+  "source_exercises": [
+   6616
+  ]
+ },
+ {
+  "external_id": "cqc-composition-de-transformations-moyenne-2",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan est rapporté à un repère orthonormé $(O\\,;\\vec\\imath\\,;\\vec\\jmath)$.\n\nOn considère les points $A(1\\,;2)$ et $B(5\\,;0)$. On note $h_1$ l'homothétie de centre $A$ et de rapport $4$, et $h_2$ l'homothétie de centre $B$ et de rapport $\\dfrac12$.\n\n1. Déterminer les expressions analytiques de $h_1$ et de $h_2$.\n2. En déduire l'expression analytique de $h_2\\circ h_1$. Démontrer que cette composée est une homothétie dont on précisera le rapport et le centre $\\Omega$, puis vérifier que $\\Omega$ appartient à la droite $(AB)$.\n3. Déterminer l'expression analytique de $h_1\\circ h_2$ et son centre. Les deux composées sont-elles égales ?\n4. On note maintenant $h_3$ l'homothétie de centre $B$ et de rapport $\\dfrac14$. Déterminer la nature de $h_3\\circ h_1$ et ses éléments caractéristiques. Énoncer et justifier le résultat général concernant la composée de deux homothéties dont le produit des rapports vaut $1$.",
+  "corrige_markdown": "### Rappel de méthode\n\nL'homothétie de centre $\\Omega(\\alpha\\,;\\beta)$ et de rapport $k$ est caractérisée par $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$, soit analytiquement $x'=k(x-\\alpha)+\\alpha$ et $y'=k(y-\\beta)+\\beta$. En composant, les **rapports se multiplient** : la partie linéaire de $h_2\\circ h_1$ est la multiplication par $k_1k_2$. Deux cas seulement :\n\n- si $k_1k_2\\neq 1$, la composée est une homothétie de rapport $k_1k_2$, dont le centre est l'unique point invariant ; lorsque les deux centres $A$ et $B$ sont distincts, ce point est toujours situé sur la droite $(AB)$, et lorsque $A=B$ la composée est simplement l'homothétie de centre $A$ et de rapport $k_1k_2$ ;\n- si $k_1k_2=1$, la partie linéaire est l'identité : la composée est une **translation** (de vecteur colinéaire à $\\overrightarrow{AB}$).\n\n### Corrigé\n\n**1. Expressions analytiques.**\n\n$h_1$ (centre $A(1\\,;2)$, rapport $4$) :\n\n$$\\begin{cases}x'=4(x-1)+1=4x-3\\\\ y'=4(y-2)+2=4y-6\\end{cases}$$\n\n$h_2$ (centre $B(5\\,;0)$, rapport $\\tfrac12$) :\n\n$$\\begin{cases}x'=\\tfrac12(x-5)+5=\\tfrac12 x+\\tfrac52\\\\[1mm] y'=\\tfrac12 y\\end{cases}$$\n\n**2. Composée $h_2\\circ h_1$.**\n\nOn applique $h_1$, puis $h_2$ :\n\n$$\\begin{cases}x'=\\tfrac12(4x-3)+\\tfrac52=2x+1\\\\ y'=\\tfrac12(4y-6)=2y-3\\end{cases}$$\n\nLa partie linéaire est la multiplication par $2=4\\times\\tfrac12$. Points invariants :\n\n$$\\begin{cases}x=2x+1\\\\ y=2y-3\\end{cases}\\iff\\begin{cases}x=-1\\\\ y=3\\end{cases}$$\n\nUnique point invariant $\\Omega(-1\\,;3)$, et l'on vérifie que le système se réécrit\n\n$$x'-(-1)=2\\bigl(x-(-1)\\bigr),\\qquad y'-3=2(y-3),$$\n\nc'est-à-dire $\\overrightarrow{\\Omega M'}=2\\,\\overrightarrow{\\Omega M}$.\n\n$$\\boxed{h_2\\circ h_1 \\text{ est l'homothétie de centre } \\Omega(-1\\,;3) \\text{ et de rapport } 2.}$$\n\n*Alignement* : $\\overrightarrow{A\\Omega}=(-2\\,;1)$ et $\\overrightarrow{AB}=(4\\,;-2)$, donc $\\overrightarrow{A\\Omega}=-\\tfrac12\\,\\overrightarrow{AB}$ : les points $A$, $B$ et $\\Omega$ sont alignés.\n\n*Contrôle sur six points* :\n\n| $M$ | $h_1(M)$ | $h_2(h_1(M))$ | $\\Omega+2\\overrightarrow{\\Omega M}$ |\n|---|---|---|---|\n| $(0\\,;0)$ | $(-3\\,;-6)$ | $(1\\,;-3)$ | $(1\\,;-3)$ |\n| $(1\\,;1)$ | $(1\\,;-2)$ | $(3\\,;-1)$ | $(3\\,;-1)$ |\n| $(2\\,;5)$ | $(5\\,;14)$ | $(5\\,;7)$ | $(5\\,;7)$ |\n| $(-1\\,;3)$ | $(-7\\,;6)$ | $(-1\\,;3)$ | $(-1\\,;3)$ |\n| $(4\\,;-2)$ | $(13\\,;-14)$ | $(9\\,;-7)$ | $(9\\,;-7)$ |\n| $(-3\\,;0)$ | $(-15\\,;-6)$ | $(-5\\,;-3)$ | $(-5\\,;-3)$ |\n\n**3. Composée $h_1\\circ h_2$.**\n\nOn applique $h_2$, puis $h_1$ :\n\n$$\\begin{cases}x'=4\\left(\\tfrac12 x+\\tfrac52\\right)-3=2x+7\\\\ y'=4\\left(\\tfrac12 y\\right)-6=2y-6\\end{cases}$$\n\nPoint invariant : $x=2x+7\\Rightarrow x=-7$ et $y=2y-6\\Rightarrow y=6$. C'est l'homothétie de centre $\\Omega'(-7\\,;6)$ et de rapport $2$ (on vérifie aussi $\\overrightarrow{A\\Omega'}=(-8\\,;4)=-2\\,\\overrightarrow{AB}$ : $\\Omega'$ est bien sur $(AB)$).\n\nPuisque $\\Omega\\neq\\Omega'$, on a $h_1\\circ h_2\\neq h_2\\circ h_1$ : **le rapport de la composée ne dépend pas de l'ordre, le centre si**. Contrôle : $h_1\\bigl(h_2(0\\,;0)\\bigr)=h_1(2{,}5\\,;0)=(7\\,;-6)$, alors que $h_2\\bigl(h_1(0\\,;0)\\bigr)=(1\\,;-3)$.\n\n**4. Cas $h_3\\circ h_1$ avec $k_1k_3=4\\times\\tfrac14=1$.**\n\n$h_3$ (centre $B(5\\,;0)$, rapport $\\tfrac14$) : $x'=\\tfrac14 x+\\tfrac{15}{4}$ et $y'=\\tfrac14 y$. D'où\n\n$$h_3\\circ h_1\\;:\\;\\begin{cases}x'=\\tfrac14(4x-3)+\\tfrac{15}{4}=x+3\\\\[1mm] y'=\\tfrac14(4y-6)=y-\\tfrac32\\end{cases}$$\n\n$$\\boxed{h_3\\circ h_1 \\text{ est la translation de vecteur } \\vec v\\left(3\\,;-\\tfrac32\\right).}$$\n\nCe vecteur vérifie $\\vec v=\\tfrac34\\,\\overrightarrow{AB}$, il est donc bien colinéaire à $\\overrightarrow{AB}$. Contrôle : $h_1(0\\,;0)=(-3\\,;-6)$ puis $h_3(-3\\,;-6)=\\left(3\\,;-\\tfrac32\\right)$ ; $h_1(2\\,;5)=(5\\,;14)$ puis $h_3(5\\,;14)=\\left(5\\,;\\tfrac72\\right)=(2\\,;5)+\\vec v$ ; $h_1(-1\\,;3)=(-7\\,;6)$ puis $h_3(-7\\,;6)=\\left(2\\,;\\tfrac32\\right)=(-1\\,;3)+\\vec v$.\n\n**Résultat général.** Soient $h_{A,k_1}$ et $h_{B,k_2}$ deux homothéties de centres $A$ et $B$. En notant $a$, $b$ les affixes de $A$, $B$, la composée s'écrit\n\n$$h_{B,k_2}\\circ h_{A,k_1}\\;:\\;z'=k_2\\bigl(k_1z+(1-k_1)a\\bigr)+(1-k_2)b=k_1k_2\\,z+k_2(1-k_1)a+(1-k_2)b.$$\n\nSi $k_1k_2=1$, alors $k_2=\\tfrac1{k_1}$ et le terme constant se simplifie en $(1-k_2)(b-a)$ : la composée est la translation de vecteur $(1-k_2)\\,\\overrightarrow{AB}$, qui n'est l'identité que si $A=B$. Ici $1-k_3=\\tfrac34$, ce qui confirme $\\vec v=\\tfrac34\\,\\overrightarrow{AB}$.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6616
+  ]
+ },
+ {
+  "external_id": "cqc-composition-de-transformations-elevee-0",
+  "theme": "composition de transformations",
+  "matiere": "Mathématiques",
+  "cursus": [
+   {
+    "examen": "bac",
+    "serie": "C"
+   }
+  ],
+  "enonce_markdown": "Le plan complexe est rapporté à un repère orthonormé direct $(O\\,;\\vec e_1\\,;\\vec e_2)$.\n\nOn considère les trois transformations suivantes :\n\n- $r$, la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$ ;\n- $k$, l'homothétie de centre $O$ et de rapport $3$ ;\n- $\\tau$, la translation de vecteur d'affixe $4-2i$.\n\nOn pose $F=\\tau\\circ k\\circ r$, c'est-à-dire $F(M)=\\tau\\Bigl(k\\bigl(r(M)\\bigr)\\Bigr)$ pour tout point $M$ du plan.\n\n1. Donner les écritures complexes de $r$, $k$ et $\\tau$, puis en déduire celle de $F$.\n2. Démontrer que $F$ admet un unique point invariant $\\Omega$ dont on donnera l'affixe. En déduire que $F$ se décompose aussi sous la forme $F=k'\\circ r'$, où $r'$ est la rotation de centre $\\Omega$ et d'angle $\\dfrac{\\pi}{2}$ et $k'$ l'homothétie de centre $\\Omega$ et de rapport $3$. Vérifier que, cette fois, $k'\\circ r'=r'\\circ k'$.\n3. Déterminer l'écriture complexe de $G=r\\circ k\\circ\\tau$ et l'affixe de son point invariant. Comparer $F$ et $G$ : que conserve-t-on en changeant l'ordre des facteurs, que perd-on ?\n4. En utilisant la formule $\\bigl(\\tau\\circ k\\circ r\\bigr)^{-1}=r^{-1}\\circ k^{-1}\\circ\\tau^{-1}$, déterminer l'écriture complexe de $F^{-1}$. Contrôler le résultat en résolvant directement l'équation $z'=F(z)$ d'inconnue $z$.\n5. Écrire les matrices des parties linéaires de $r$, $k$ et $\\tau$ dans la base $(\\vec e_1\\,;\\vec e_2)$, calculer leurs déterminants, et vérifier que le déterminant de la partie linéaire de $F$ est le produit des trois. Qu'en déduit-on quant à la conservation de l'orientation et quant au coefficient par lequel $F$ multiplie les aires ?",
+  "corrige_markdown": "### Rappel de méthode\n\nUne écriture complexe $z'=az+b$ avec $a\\in\\mathbb{C}^*$ définit une similitude directe : de rapport $|a|$, d'angle $\\arg(a)$, et de centre l'unique point invariant lorsque $a\\neq 1$. Composer, c'est substituer les écritures les unes dans les autres **en respectant l'ordre de lecture de droite à gauche** : dans $\\tau\\circ k\\circ r$, c'est $r$ qui agit en premier. Deux transformations de **même centre** commutent lorsque leurs parties linéaires commutent (ici deux multiplications complexes) ; ce n'est plus vrai dès que les centres diffèrent.\n\n### Corrigé\n\n**1. Écritures complexes.**\n\n$$r\\;:\\;z'=i\\,z,\\qquad k\\;:\\;z'=3z,\\qquad \\tau\\;:\\;z'=z+4-2i.$$\n\nEn composant de la droite vers la gauche : $z\\overset{r}{\\longmapsto}iz\\overset{k}{\\longmapsto}3iz\\overset{\\tau}{\\longmapsto}3iz+4-2i$, d'où\n\n$$\\boxed{F\\;:\\;z'=3i\\,z+4-2i}$$\n\nComme $|3i|=3$ et $\\arg(3i)=\\dfrac{\\pi}{2}$, $F$ est une similitude directe de rapport $3$ et d'angle $\\dfrac{\\pi}{2}$.\n\n**2. Point invariant et décomposition centrée.**\n\n$$\\omega=3i\\,\\omega+4-2i\\iff\\omega(1-3i)=4-2i\\iff\\omega=\\frac{(4-2i)(1+3i)}{1+9}=\\frac{4+12i-2i+6}{10}=\\frac{10+10i}{10}=1+i.$$\n\nLe point invariant est unique (car $1-3i\\neq 0$) : $\\Omega(1\\,;1)$. On vérifie : $3i(1+i)+4-2i=3i-3+4-2i=1+i$.\n\nPour tout $z$, $F(z)-\\omega=3i(z-\\omega)$, c'est-à-dire\n\n$$F(z)=\\omega+3\\cdot i\\,(z-\\omega)=k'\\bigl(r'(z)\\bigr),$$\n\noù $r'(z)=\\omega+i(z-\\omega)$ est la rotation de centre $\\Omega$ et d'angle $\\dfrac{\\pi}{2}$, et $k'(z)=\\omega+3(z-\\omega)$ l'homothétie de centre $\\Omega$ et de rapport $3$. Réciproquement,\n\n$$r'\\bigl(k'(z)\\bigr)=\\omega+i\\bigl(3(z-\\omega)\\bigr)=\\omega+3i(z-\\omega)=k'\\bigl(r'(z)\\bigr).$$\n\nDonc $k'\\circ r'=r'\\circ k'=F$ : **deux transformations de même centre commutent ici**, car leurs parties linéaires sont les multiplications par $3$ et par $i$, et le produit de deux nombres complexes est commutatif.\n\n*Contrôle sur six points* ($z\\mapsto iz\\mapsto 3iz\\mapsto 3iz+4-2i$, comparé à $3i(z-\\Omega)+\\Omega$) :\n\n| $z$ | $r(z)$ | $k(r(z))$ | $F(z)$ | $3i(z-\\omega)+\\omega$ |\n|---|---|---|---|---|\n| $0$ | $0$ | $0$ | $4-2i$ | $4-2i$ |\n| $1$ | $i$ | $3i$ | $4+i$ | $4+i$ |\n| $i$ | $-1$ | $-3$ | $1-2i$ | $1-2i$ |\n| $2+3i$ | $-3+2i$ | $-9+6i$ | $-5+4i$ | $-5+4i$ |\n| $-1+2i$ | $-2-i$ | $-6-3i$ | $-2-5i$ | $-2-5i$ |\n| $4-i$ | $1+4i$ | $3+12i$ | $7+10i$ | $7+10i$ |\n\n**3. Changement d'ordre : $G=r\\circ k\\circ\\tau$.**\n\nIci c'est $\\tau$ qui agit en premier :\n\n$$z\\overset{\\tau}{\\longmapsto}z+4-2i\\overset{k}{\\longmapsto}3z+12-6i\\overset{r}{\\longmapsto}i\\bigl(3z+12-6i\\bigr)=3i\\,z+6+12i.$$\n\n$$G\\;:\\;z'=3i\\,z+6+12i.$$\n\nPoint invariant : $\\omega'(1-3i)=6+12i$, donc\n\n$$\\omega'=\\frac{(6+12i)(1+3i)}{10}=\\frac{6+18i+12i-36}{10}=\\frac{-30+30i}{10}=-3+3i.$$\n\n*Contrôle sur six points* :\n\n| $z$ | $\\tau(z)$ | $k(\\tau(z))$ | $G(z)$ | $3i(z-\\omega')+\\omega'$ |\n|---|---|---|---|---|\n| $0$ | $4-2i$ | $12-6i$ | $6+12i$ | $6+12i$ |\n| $1$ | $5-2i$ | $15-6i$ | $6+15i$ | $6+15i$ |\n| $i$ | $4-i$ | $12-3i$ | $3+12i$ | $3+12i$ |\n| $2+3i$ | $6+i$ | $18+3i$ | $-3+18i$ | $-3+18i$ |\n| $-1+2i$ | $3$ | $9$ | $9i$ | $9i$ |\n| $4-i$ | $8-3i$ | $24-9i$ | $9+24i$ | $9+24i$ |\n\nComme $F(0)=4-2i$ et $G(0)=6+12i$, on a $F\\neq G$. En permutant les facteurs, on **conserve la partie linéaire** — donc le rapport $3$, l'angle $\\dfrac{\\pi}{2}$, et le fait d'être une similitude directe — mais on **perd le centre** : $\\Omega(1\\,;1)$ devient $\\Omega'(-3\\,;3)$. La composition n'est pas commutative.\n\n**4. Réciproque.**\n\n$$F^{-1}=\\bigl(\\tau\\circ k\\circ r\\bigr)^{-1}=r^{-1}\\circ k^{-1}\\circ\\tau^{-1},$$\n\navec $\\tau^{-1}\\;:\\;z\\mapsto z-4+2i$ (translation de vecteur opposé), $k^{-1}\\;:\\;z\\mapsto\\dfrac13 z$ (même centre, rapport inverse) et $r^{-1}\\;:\\;z\\mapsto -i\\,z$ (même centre, angle opposé). En composant dans **cet ordre inversé** :\n\n$$z\\longmapsto z-4+2i\\longmapsto\\frac13 z-\\frac43+\\frac23 i\\longmapsto -i\\left(\\frac13 z-\\frac43+\\frac23 i\\right)=-\\frac{i}{3}z+\\frac{4i}{3}+\\frac23 .$$\n\n$$\\boxed{F^{-1}\\;:\\;z'=-\\frac{i}{3}\\,z+\\frac23+\\frac43 i}$$\n\n*Contrôle direct* : de $z'=3iz+4-2i$ on tire $z=\\dfrac{z'-4+2i}{3i}=-\\dfrac{i}{3}\\bigl(z'-4+2i\\bigr)=-\\dfrac{i}{3}z'+\\dfrac{4i}{3}+\\dfrac23$ — même résultat. On vérifie aussi que $F^{-1}$ est la similitude directe de rapport $\\dfrac13$, d'angle $-\\dfrac{\\pi}{2}$ et de **même centre** $\\Omega(1\\,;1)$ : $-\\dfrac{i}{3}(1+i)+\\dfrac23+\\dfrac43 i=-\\dfrac{i}{3}+\\dfrac13+\\dfrac23+\\dfrac43 i=1+i$.\n\nSi l'on avait conservé l'ordre, $\\tau^{-1}\\circ k^{-1}\\circ r^{-1}$ donnerait $z\\mapsto-\\dfrac{i}{3}z-4+2i$, qui n'est pas la réciproque de $F$ (son image de $\\Omega$ n'est pas $\\Omega$) : **l'inversion de l'ordre est indispensable**.\n\n**5. Parties linéaires, déterminants, orientation.**\n\nDans la base $(\\vec e_1\\,;\\vec e_2)$, la multiplication par $\\alpha+i\\beta$ a pour matrice $\\begin{pmatrix}\\alpha&-\\beta\\\\ \\beta&\\alpha\\end{pmatrix}$. Donc\n\n$$M_r=\\begin{pmatrix}0&-1\\\\ 1&0\\end{pmatrix},\\quad M_k=\\begin{pmatrix}3&0\\\\ 0&3\\end{pmatrix},\\quad M_\\tau=\\begin{pmatrix}1&0\\\\ 0&1\\end{pmatrix},$$\n\n$$\\det M_r=1,\\qquad \\det M_k=9,\\qquad \\det M_\\tau=1.$$\n\nLa partie linéaire de $F$ est la multiplication par $3i$, de matrice $M_F=\\begin{pmatrix}0&-3\\\\ 3&0\\end{pmatrix}$, et\n\n$$\\det M_F=9=1\\times 9\\times 1=\\det M_\\tau\\times\\det M_k\\times\\det M_r,$$\n\nconformément à $\\det(UV)=\\det U\\times\\det V$.\n\nConclusions :\n\n- $\\det M_F=9>0$ : $F$ **conserve l'orientation** (c'est une similitude directe). L'orientation est conservée si et seulement si le produit des déterminants est strictement positif, donc si et seulement si le nombre de facteurs indirects est pair.\n- $|\\det M_F|=9$ : $F$ multiplie **toutes les aires par $9$**, c'est-à-dire par le carré du rapport $3$, ce qui est cohérent avec la multiplication des rapports le long de la composée ($1\\times 3\\times 1=3$).\n- Enfin, $G$ a la même partie linéaire que $F$, donc le même rapport, le même angle et le même déterminant : seul le centre change. Attention à ne pas généraliser au-delà de ce cadre — cette indépendance vaut parce que tous les facteurs sont ici des similitudes **directes**, dont les parties linéaires sont des nombres complexes, et le produit de nombres complexes ne dépend pas de l'ordre. Dès qu'un facteur est indirect, l'ordre modifie aussi l'angle.",
+  "difficulte_estimee": "ELEVEE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   6616
+  ]
+ }
+]

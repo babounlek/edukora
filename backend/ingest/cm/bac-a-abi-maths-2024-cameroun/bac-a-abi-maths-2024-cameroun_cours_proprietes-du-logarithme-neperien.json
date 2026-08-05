@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-proprietes-du-logarithme-neperien-terminale-A-ABI",
+  "meta": {
+    "titre": "Propriétés algébriques du logarithme népérien",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Fonction logarithme népérien",
+    "duree_estimee_min": 20,
+    "tags": ["logarithme népérien", "propriétés", "simplification"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex1-qI2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une expression comme $\\ln(e+e^2)-\\ln\\left(1+\\dfrac{1}{e^{-1}}\\right)$ semble intimidante au premier regard. Elle se réduit pourtant à un nombre entier en trois lignes, à condition de connaître les bonnes propriétés du logarithme et de savoir factoriser avant de simplifier. C'est exactement le type de piège qui départage les candidats dans un QCM du BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Définition de $\\ln$ comme fonction réciproque de l'exponentielle", "Calcul avec les puissances de $e$", "Factorisation d'une expression algébrique"]
+    },
+    {
+      "type": "regle",
+      "titre": "Les propriétés du logarithme népérien",
+      "contenu_markdown": "Pour $a>0$ et $b>0$ : $\\ln(ab)=\\ln a+\\ln b$, $\\ln\\dfrac{a}{b}=\\ln a-\\ln b$, $\\ln\\dfrac1a=-\\ln a$, $\\ln(a^n)=n\\ln a$, et $\\ln e=1$, $\\ln 1=0$.\n\nCes propriétés ne s'appliquent qu'à un produit, un quotient ou une puissance déjà formés : $\\ln(a+b)$ ne se décompose JAMAIS en $\\ln a+\\ln b$. Le premier réflexe face à une expression logarithmique complexe est donc de factoriser les sommes en produits avant d'appliquer une propriété.",
+      "formule_principale": "\\ln(ab)=\\ln a+\\ln b \\quad\\text{et}\\quad \\ln\\frac1a=-\\ln a"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la valeur exacte de $\\ln(e+e^2)-\\ln\\left(1+\\dfrac{1}{e^{-1}}\\right)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Simplifier $\\dfrac{1}{e^{-1}}$",
+          "justification": "Diviser par $e^{-1}$ revient à multiplier par son inverse, $e^{1}$",
+          "resultat_markdown": "$\\dfrac{1}{e^{-1}}=e$, donc $1+\\dfrac{1}{e^{-1}}=1+e$"
+        },
+        {
+          "numero": 2,
+          "action": "Factoriser $e+e^2$ par $e$",
+          "justification": "Faire apparaître un facteur commun avec $1+e$, présent dans l'autre terme",
+          "resultat_markdown": "$e+e^2=e(1+e)$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer $\\ln(ab)=\\ln a+\\ln b$ à $\\ln(e(1+e))$",
+          "justification": "$e(1+e)$ est maintenant un produit de deux facteurs strictement positifs",
+          "resultat_markdown": "$\\ln(e+e^2)=\\ln e+\\ln(1+e)=1+\\ln(1+e)$ (car $\\ln e=1$)"
+        },
+        {
+          "numero": 4,
+          "action": "Regrouper les deux logarithmes de l'expression initiale",
+          "justification": "$\\ln(1+e)$ apparaît maintenant des deux côtés de la soustraction et s'annule",
+          "resultat_markdown": "$\\ln(e+e^2)-\\ln(1+e) = \\big(1+\\ln(1+e)\\big)-\\ln(1+e) = 1$"
+        }
+      ],
+      "conclusion_markdown": "L'expression vaut exactement $1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\ln(e+e^2)=\\ln e+\\ln(e^2)$ directement",
+          "pourquoi_faux": "$e+e^2$ est une somme, pas un produit : la propriété $\\ln(ab)=\\ln a+\\ln b$ ne s'applique qu'à un produit déjà formé.",
+          "correction_markdown": "Factoriser d'abord la somme en produit ($e+e^2=e(1+e)$), puis seulement appliquer la propriété du produit."
+        },
+        {
+          "erreur_markdown": "Confondre $\\dfrac{1}{e^{-1}}$ avec $e^{-1}$ et écrire $1+\\dfrac1{e^{-1}}=1+e^{-1}$",
+          "pourquoi_faux": "$\\dfrac{1}{e^{-1}}=e^{-(-1)}=e^1=e$, pas $e^{-1}$ : diviser par une puissance négative inverse le signe de l'exposant.",
+          "correction_markdown": "Réécrire systématiquement $\\dfrac{1}{a^{-n}}$ sous la forme $a^{n}$ avant de poursuivre le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la valeur exacte de $\\ln(6)-\\ln(2)$.",
+          "solution_markdown": "$\\ln(6)-\\ln(2)=\\ln\\dfrac62=\\ln3$ (propriété du quotient)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la valeur exacte de $\\ln(3+3e)-\\ln(1+e)$.",
+          "solution_markdown": "On factorise $3+3e=3(1+e)$. Donc $\\ln(3+3e)=\\ln3+\\ln(1+e)$. L'expression devient $\\ln3+\\ln(1+e)-\\ln(1+e)=\\ln3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer la valeur exacte de $\\ln(e^2+e^3)-\\ln\\left(1+\\dfrac{1}{e^{-2}}\\right)$.",
+          "solution_markdown": "On simplifie $\\dfrac{1}{e^{-2}}=e^2$, donc $1+\\dfrac{1}{e^{-2}}=1+e^2$. On factorise $e^2+e^3=e^2(1+e)$... mais $1+e\\neq1+e^2$ : les deux termes ne se simplifient pas directement l'un avec l'autre ici. On calcule séparément : $\\ln(e^2+e^3)=\\ln(e^2(1+e))=\\ln(e^2)+\\ln(1+e)=2+\\ln(1+e)$, et $\\ln(1+e^2)$ reste tel quel (ne se factorise pas simplement). L'expression vaut donc $2+\\ln(1+e)-\\ln(1+e^2)$, qui ne se simplifie pas davantage sans valeur numérique de $e$. Cet exercice illustre qu'une simplification totale n'est possible que si les deux termes obtenus après factorisation coïncident exactement - ce qui n'est pas toujours le cas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "N'applique jamais $\\ln(ab)=\\ln a+\\ln b$ à une somme non factorisée : factorise d'abord.",
+        "$\\dfrac{1}{a^{-n}}=a^n$ : une division par une puissance négative inverse le signe de l'exposant.",
+        "Cherche systématiquement un facteur commun entre les deux termes d'une différence de logarithmes : c'est souvent lui qui permet la simplification complète.",
+        "$\\ln e=1$ et $\\ln 1=0$ sont les deux valeurs remarquables à connaître par cœur pour ce type de calcul."
+      ]
+    }
+  ]
+}

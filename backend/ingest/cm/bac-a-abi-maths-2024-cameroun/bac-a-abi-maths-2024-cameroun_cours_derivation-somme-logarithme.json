@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-derivation-somme-logarithme-terminale-A-ABI",
+  "meta": {
+    "titre": "Dérivation d'une somme incluant un logarithme",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Dérivation",
+    "duree_estimee_min": 15,
+    "tags": ["dérivation", "logarithme népérien", "fonctions usuelles"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex2-q2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dériver $f(x)=x-1-2\\ln x$ demande seulement deux formules de dérivées usuelles et une addition. C'est la partie du travail où l'erreur est la moins pardonnable au BAC, car elle sert de base à toute l'étude de fonction qui suit."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Dérivée d'une fonction affine", "Dérivée de la fonction $\\ln$", "Linéarité de la dérivation (dérivée d'une somme, d'un produit par une constante)"]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérivées usuelles et somme",
+      "contenu_markdown": "La dérivée de $x\\mapsto x$ est $1$. La dérivée de $x\\mapsto\\ln x$ est $x\\mapsto\\dfrac1x$ (définie sur $]0;+\\infty[$). La dérivée d'une constante est $0$.\n\nPour dériver une somme de plusieurs termes, on dérive chaque terme séparément puis on additionne les résultats (linéarité) : $(u+v)'=u'+v'$ et $(ku)'=ku'$ pour une constante $k$.",
+      "formule_principale": "(\\ln x)' = \\frac1x \\quad \\text{sur } ]0;+\\infty["
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $f'(x)$ pour $f(x)=x-1-2\\ln x$ sur $]0;+\\infty[$, et écrire le résultat sous forme d'une seule fraction.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver chaque terme séparément",
+          "justification": "Linéarité de la dérivation",
+          "resultat_markdown": "$(x)'=1$ ; $(1)'=0$ ; $(2\\ln x)'=2\\times\\dfrac1x=\\dfrac2x$"
+        },
+        {
+          "numero": 2,
+          "action": "Additionner les dérivées obtenues avec les bons signes",
+          "justification": "$f=x-1-2\\ln x$, donc $f'=(x)'-(1)'-(2\\ln x)'$",
+          "resultat_markdown": "$f'(x)=1-0-\\dfrac2x=1-\\dfrac2x$"
+        },
+        {
+          "numero": 3,
+          "action": "Réduire au même dénominateur",
+          "justification": "Pour étudier le signe de $f'$ ensuite, une seule fraction est plus pratique qu'une différence de deux termes",
+          "resultat_markdown": "$f'(x)=\\dfrac{x}{x}-\\dfrac2x=\\dfrac{x-2}{x}$"
+        }
+      ],
+      "conclusion_markdown": "$f'(x)=\\dfrac{x-2}{x}$ pour tout $x\\in]0;+\\infty[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $(\\ln x)'=x$ ou confondre la fonction et sa dérivée",
+          "pourquoi_faux": "La dérivée de $\\ln x$ est $\\dfrac1x$, pas $x$ : c'est une confusion fréquente entre $\\ln$ et $\\exp$, dont les rôles de fonction et dérivée s'inversent.",
+          "correction_markdown": "Mémoriser séparément le couple $(\\ln x)'=\\dfrac1x$ et ne jamais le confondre avec $(e^x)'=e^x$."
+        },
+        {
+          "erreur_markdown": "Laisser le résultat sous la forme $1-\\dfrac2x$ sans le réduire au même dénominateur quand l'étude de signe qui suit l'exige",
+          "pourquoi_faux": "Étudier le signe d'une différence de deux termes est plus risqué que celui d'une fraction unique, où il suffit d'étudier le signe du numérateur (le dénominateur $x$ étant positif sur l'intervalle d'étude).",
+          "correction_markdown": "Toujours réduire au même dénominateur avant une étude de signe, même si l'énoncé ne le demande pas explicitement à cette étape."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $g'(x)$ pour $g(x)=3x+5-\\ln x$ sur $]0;+\\infty[$.",
+          "solution_markdown": "$g'(x)=3-\\dfrac1x$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $h'(x)$ pour $h(x)=2x-3\\ln x+7$ sur $]0;+\\infty[$, et l'écrire sous forme d'une seule fraction.",
+          "solution_markdown": "$h'(x)=2-\\dfrac3x=\\dfrac{2x}{x}-\\dfrac3x=\\dfrac{2x-3}{x}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $k'(x)$ pour $k(x)=x^2-2x\\ln x$ sur $]0;+\\infty[$ (on utilisera la formule de dérivation d'un produit pour le second terme).",
+          "solution_markdown": "Pour $2x\\ln x$, on pose $u(x)=2x$ et $v(x)=\\ln x$, avec $u'(x)=2$ et $v'(x)=\\dfrac1x$. La dérivée d'un produit est $(uv)'=u'v+uv'$, donc $(2x\\ln x)'=2\\ln x+2x\\times\\dfrac1x=2\\ln x+2$. Donc $k'(x)=(x^2)'-(2x\\ln x)'=2x-(2\\ln x+2)=2x-2\\ln x-2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$(\\ln x)'=\\dfrac1x$ : une formule à connaître sans hésitation, à ne jamais confondre avec la dérivée de $e^x$.",
+        "La dérivation d'une somme se fait terme à terme, en conservant les signes de chaque terme.",
+        "Réduire systématiquement le résultat au même dénominateur prépare directement l'étude de signe qui suit dans un tableau de variations.",
+        "Cette compétence est la porte d'entrée de presque toutes les études de fonctions du BAC : une erreur ici se propage à toutes les questions suivantes."
+      ]
+    }
+  ]
+}

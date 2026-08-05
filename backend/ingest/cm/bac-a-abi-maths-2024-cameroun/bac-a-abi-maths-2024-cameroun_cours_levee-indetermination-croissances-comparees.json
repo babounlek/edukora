@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-levee-indetermination-croissances-comparees-terminale-A-ABI",
+  "meta": {
+    "titre": "Levée d'indétermination par factorisation et croissances comparées",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Limites de fonctions",
+    "duree_estimee_min": 25,
+    "tags": ["limites", "forme indéterminée", "croissances comparées", "factorisation"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex2-q1a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "$x-1-2\\ln x$ quand $x\\to+\\infty$ : d'un côté $x\\to+\\infty$, de l'autre $-2\\ln x\\to-\\infty$. Impossible de conclure directement - c'est une forme indéterminée $+\\infty-\\infty$. Ce cours donne la technique standard pour la lever : factoriser par le terme le plus fort, puis s'appuyer sur les croissances comparées."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Limites usuelles de $\\ln x$ en $0^+$ et en $+\\infty$", "Notion de forme indéterminée"]
+    },
+    {
+      "type": "regle",
+      "titre": "Croissances comparées et factorisation",
+      "contenu_markdown": "Quand une limite du type $+\\infty-\\infty$ apparaît dans une expression mêlant $x$ et $\\ln x$, on factorise par le terme dominant (souvent $x$) pour faire apparaître le rapport $\\dfrac{\\ln x}{x}$. Le théorème des croissances comparées donne alors :\n$$\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x}=0$$\nCe résultat traduit le fait que $x$ \"l'emporte\" sur $\\ln x$ à l'infini, même si $\\ln x\\to+\\infty$ également. Une fois la factorisation faite, chaque terme entre parenthèses a une limite finie et connue, et il ne reste plus qu'à multiplier par la limite (infinie) du facteur mis en évidence.",
+      "formule_principale": "\\lim_{x\\to+\\infty}\\frac{\\ln x}{x}=0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}\\big(x-1-2\\ln x\\big)$ sachant que $x-1-2\\ln x = x\\left(1-\\dfrac1x-2\\dfrac{\\ln x}{x}\\right)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la forme indéterminée initiale",
+          "justification": "$x\\to+\\infty$ et $-2\\ln x\\to-\\infty$ : on ne peut pas conclure directement par somme de limites",
+          "resultat_markdown": "$x-1-2\\ln x$ est une forme $+\\infty-\\infty$"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser la factorisation donnée pour étudier chaque terme entre parenthèses",
+          "justification": "Le facteur $x$ mis en évidence permet d'isoler des rapports qui ont une limite connue",
+          "resultat_markdown": "$\\dfrac1x\\to0$ et, par croissances comparées, $\\dfrac{\\ln x}{x}\\to0$ quand $x\\to+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite du facteur entre parenthèses",
+          "justification": "Somme de limites finies, sans indétermination",
+          "resultat_markdown": "$1-\\dfrac1x-2\\dfrac{\\ln x}{x}\\to1-0-2\\times0=1$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par produit des deux limites",
+          "justification": "$x\\to+\\infty$ multiplié par un facteur qui tend vers $1>0$",
+          "resultat_markdown": "$x\\left(1-\\dfrac1x-2\\dfrac{\\ln x}{x}\\right)\\to+\\infty\\times1=+\\infty$"
+        }
+      ],
+      "conclusion_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}(x-1-2\\ln x)=+\\infty$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure directement \"$x\\to+\\infty$ et $-2\\ln x\\to-\\infty$, donc pas de limite\" ou une conclusion hâtive du même type",
+          "pourquoi_faux": "$+\\infty-\\infty$ n'est pas égal à \"pas de limite\" : c'est une forme indéterminée qui peut donner n'importe quel résultat (fini ou infini) selon les termes en présence - il faut la lever par un calcul, jamais l'ignorer.",
+          "correction_markdown": "Dès qu'une forme $+\\infty-\\infty$, $\\dfrac{\\infty}{\\infty}$ ou $0\\times\\infty$ apparaît, chercher systématiquement une factorisation ou une autre technique de levée avant de conclure."
+        },
+        {
+          "erreur_markdown": "Oublier que $\\dfrac{\\ln x}{x}\\to0$ n'est valable qu'en $+\\infty$, et l'utiliser à tort en $0^+$",
+          "pourquoi_faux": "En $0^+$, $\\ln x\\to-\\infty$ et $x\\to0$ : le comportement est totalement différent, il n'y a pas de croissances comparées à appliquer de la même façon.",
+          "correction_markdown": "Toujours vérifier en quel point la limite est demandée avant d'invoquer un résultat de croissances comparées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x^2}$.",
+          "solution_markdown": "On écrit $\\dfrac{\\ln x}{x^2}=\\dfrac{\\ln x}{x}\\times\\dfrac1x$. Par croissances comparées, $\\dfrac{\\ln x}{x}\\to0$, et $\\dfrac1x\\to0$. Par produit de deux limites nulles, $\\dfrac{\\ln x}{x^2}\\to0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}\\big(2x-3\\ln x\\big)$ en factorisant par $x$.",
+          "solution_markdown": "$2x-3\\ln x = x\\left(2-3\\dfrac{\\ln x}{x}\\right)$. Par croissances comparées, $\\dfrac{\\ln x}{x}\\to0$, donc le facteur entre parenthèses tend vers $2$. Comme $x\\to+\\infty$, le produit tend vers $+\\infty\\times2=+\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}\\big(\\ln x - x + x\\ln x\\big)$ (on pourra factoriser par $x$ après avoir isolé le terme dominant).",
+          "solution_markdown": "On factorise par $x\\ln x$, le terme dominant à l'infini : $\\ln x - x + x\\ln x = x\\ln x\\left(\\dfrac{1}{x}-\\dfrac{1}{\\ln x}+1\\right)$. Quand $x\\to+\\infty$ : $\\dfrac1x\\to0$ et $\\dfrac{1}{\\ln x}\\to0$, donc le facteur entre parenthèses tend vers $1$. Comme $x\\ln x\\to+\\infty$ (produit de deux termes tendant vers $+\\infty$), la limite du produit est $+\\infty\\times1=+\\infty$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une forme $+\\infty-\\infty$ ne se \"tranche\" jamais à l'instinct : elle se lève par un calcul, le plus souvent une factorisation.",
+        "Le résultat clé à retenir : $\\dfrac{\\ln x}{x}\\to0$ quand $x\\to+\\infty$ - $x$ l'emporte toujours sur $\\ln x$ à l'infini.",
+        "Après factorisation, calcule d'abord la limite du facteur entre parenthèses, puis combine-la avec la limite (souvent infinie) du facteur mis en évidence.",
+        "Ce type de limite revient très régulièrement dans les études de fonctions du BAC dès qu'un logarithme est combiné à un polynôme."
+      ]
+    }
+  ]
+}

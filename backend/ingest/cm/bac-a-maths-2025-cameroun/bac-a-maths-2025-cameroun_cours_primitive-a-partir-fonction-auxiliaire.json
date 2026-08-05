@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-primitive-a-partir-fonction-auxiliaire-terminale-a",
+  "meta": {
+    "titre": "Détermination d'une primitive à partir d'une fonction auxiliaire",
+    "matiere": "Mathématiques",
+    "serie": "A",
+    "sous_theme": "Primitives",
+    "duree_estimee_min": 15,
+    "tags": [
+      "primitives",
+      "fonction auxiliaire",
+      "logarithme"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2025-cameroun",
+    "epreuve_titre": "BAC A Mathematiques 2025 - Cameroun (MINEDUC - OBC, Session 2025)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2025-cameroun-ex3-qq6b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver une primitive « à la main » n'est pas toujours possible avec les seules formules usuelles. Beaucoup d'exercices du BAC guident l'élève vers la réponse en lui faisant d'abord dériver une fonction auxiliaire, dont la dérivée se révèle être exactement la fonction à intégrer. Reconnaître ce lien entre les deux questions est la compétence clé, plus que le calcul de dérivée lui-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une primitive : $H$ est une primitive de $f$ sur un intervalle si $H'=f$ sur cet intervalle",
+        "Calcul de la dérivée d'une fonction donnée",
+        "Deux primitives d'une même fonction sur un intervalle diffèrent d'une constante"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Primitive obtenue via une fonction auxiliaire",
+      "contenu_markdown": "Quand un exercice définit une fonction auxiliaire $h$ et demande de calculer $h'(x)$ avant de s'intéresser à une primitive de $f$, il faut comparer $h'(x)$ à $f(x)$. Si les deux expressions coïncident, alors $h$ est elle-même une primitive de $f$ sur l'intervalle considéré, et toutes les primitives de $f$ s'écrivent $H(x)=h(x)+k$, où $k$ est une constante réelle quelconque. Cette méthode permet de trouver une primitive de fonctions pour lesquelles aucune formule usuelle ne s'applique directement, comme un produit incluant un logarithme.",
+      "formule_principale": "h'(x)=f(x) \\ \\text{sur un intervalle} \\implies \\text{les primitives de } f \\text{ sont } H(x)=h(x)+k,\\ k\\in\\mathbb{R}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=\\dfrac1x+\\ln x$ et $h(x)=(x+1)\\ln x-x$ sur $]0;+\\infty[$, sachant que $h'(x)=\\ln x+\\dfrac1x$. En déduire les primitives de $f$ sur $]0;+\\infty[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Comparer $h'(x)$ et $f(x)$",
+          "justification": "$h'(x)=\\ln x+\\dfrac1x$ a été calculé précédemment ; $f(x)=\\dfrac1x+\\ln x$ est donné dans l'énoncé.",
+          "resultat_markdown": "$h'(x)=\\ln x+\\dfrac1x=\\dfrac1x+\\ln x=f(x)$"
+        },
+        {
+          "numero": 2,
+          "action": "Conclure que $h$ est une primitive de $f$",
+          "justification": "Par définition, $H$ est une primitive de $f$ sur un intervalle si $H'=f$ sur cet intervalle, ce qui vient d'être vérifié pour $h$.",
+          "resultat_markdown": "$h$ est une primitive de $f$ sur $]0;+\\infty[$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'ensemble de toutes les primitives",
+          "justification": "Deux primitives d'une même fonction sur un intervalle diffèrent d'une constante.",
+          "resultat_markdown": "Les primitives de $f$ sur $]0;+\\infty[$ sont $H(x)=(x+1)\\ln x-x+k$, $k\\in\\mathbb{R}$"
+        }
+      ],
+      "conclusion_markdown": "Toutes les primitives de $f$ sur $]0;+\\infty[$ s'écrivent $H(x)=(x+1)\\ln x-x+k$, où $k$ est une constante réelle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner uniquement $h(x)=(x+1)\\ln x-x$ comme « la » primitive de $f$, sans mentionner la constante",
+          "pourquoi_faux": "Une fonction admet une infinité de primitives sur un intervalle, qui diffèrent toutes d'une constante additive. Omettre le « $+k$ » revient à ne donner qu'une seule primitive parmi une infinité, sans le signaler.",
+          "correction_markdown": "Termine toujours la réponse par « $+k$, $k\\in\\mathbb{R}$ » (ou une autre lettre pour la constante), sauf si l'énoncé impose une condition supplémentaire qui fixe une valeur particulière de cette constante."
+        },
+        {
+          "erreur_markdown": "Chercher une primitive de $f$ directement avec des formules usuelles, sans utiliser le résultat de $h'(x)$ déjà calculé",
+          "pourquoi_faux": "$f(x)=\\dfrac1x+\\ln x$ n'a pas de primitive immédiate avec les seules formules du programme (la primitive de $\\ln x$ elle-même n'est pas une formule usuelle mémorisée) : c'est justement pour cette raison que l'énoncé fait calculer $h'(x)$ au préalable.",
+          "correction_markdown": "Quand une question précédente fait dériver une fonction auxiliaire juste avant de demander une primitive, compare systématiquement les deux résultats avant de te lancer dans une recherche à l'aveugle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=x\\ln x-x$ sur $]0;+\\infty[$. Sachant que $g'(x)=\\ln x$, donner les primitives de la fonction $\\ln$ sur $]0;+\\infty[$.",
+          "solution_markdown": "$g'(x)=\\ln x$ signifie que $g$ est une primitive de la fonction $\\ln$ sur $]0;+\\infty[$. Les primitives de $\\ln$ sur $]0;+\\infty[$ sont donc $H(x)=x\\ln x-x+k$, $k\\in\\mathbb{R}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $p(x)=(x-1)^2$ sur $\\mathbb{R}$, de dérivée $p'(x)=2x-2=2(x-1)$. En déduire les primitives de la fonction $q(x)=x-1$ sur $\\mathbb{R}$.",
+          "solution_markdown": "On a $p'(x)=2(x-1)=2q(x)$, donc $q(x)=\\dfrac{p'(x)}{2}=\\left(\\dfrac{p(x)}{2}\\right)'$ (une constante multiplicative se factorise devant la dérivée). Ainsi $\\dfrac{p(x)}{2}=\\dfrac{(x-1)^2}{2}$ est une primitive de $q$. Les primitives de $q$ sur $\\mathbb{R}$ sont $Q(x)=\\dfrac{(x-1)^2}{2}+k$, $k\\in\\mathbb{R}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{2}{x}+2\\ln x$ sur $]0;+\\infty[$ et $h(x)=(x+1)\\ln x-x$ (la fonction de l'exemple résolu). Calculer $2h'(x)$ et en déduire les primitives de $f$ sur $]0;+\\infty[$.",
+          "solution_markdown": "D'après l'exemple résolu, $h'(x)=\\ln x+\\dfrac1x$. Donc $2h'(x)=2\\ln x+\\dfrac2x=\\dfrac2x+2\\ln x=f(x)$. On a bien $(2h)'(x)=2h'(x)=f(x)$ (une constante multiplicative se factorise devant la dérivée), donc $2h$ est une primitive de $f$ sur $]0;+\\infty[$, soit $2h(x)=2(x+1)\\ln x-2x$. Les primitives de $f$ sur $]0;+\\infty[$ sont $F(x)=2(x+1)\\ln x-2x+k$, $k\\in\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une primitive $H$ de $f$ vérifie $H'=f$ sur l'intervalle considéré : c'est la seule condition à vérifier, rien de plus.",
+        "Quand une fonction auxiliaire $h$ est introduite juste avant une question sur les primitives, compare systématiquement $h'(x)$ à $f(x)$ : c'est presque toujours le chemin attendu vers la réponse.",
+        "N'oublie jamais la constante $+k$ : une fonction admet une infinité de primitives sur un intervalle donné.",
+        "Si $h'(x)$ ne coïncide pas exactement avec $f(x)$ mais seulement à un facteur multiplicatif près, factorise ce facteur devant la dérivée pour retrouver une primitive de $f$.",
+        "Au BAC, cette méthode guidée est très fréquente pour des fonctions (comme celles avec un logarithme) qui n'ont pas de primitive immédiate à partir des formules usuelles du programme."
+      ]
+    }
+  ]
+}

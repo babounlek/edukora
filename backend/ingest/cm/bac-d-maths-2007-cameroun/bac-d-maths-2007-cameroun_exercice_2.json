@@ -1,0 +1,114 @@
+{
+  "epreuve_source": "bac-d-maths-2007-cameroun",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2007,
+  "duree_epreuve": null,
+  "coefficient": 4,
+  "numero_exercice": "2",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Résoudre l'équation différentielle : $y''+y'\\ln2=0$.",
+      "corrige_markdown": "### Rappel de méthode\\n\\nUne équation différentielle de la forme $ay''+by'=0$ (sans terme en $y$) se résout via l'équation caractéristique $ar^2+br=0$, qui se factorise en $r(ar+b)=0$ : elle admet toujours $r=0$ comme racine, et l'autre racine est $r=-b/a$. La solution générale est alors $y(x)=C_1e^{r_1x}+C_2e^{r_2x}$, avec $C_1,C_2\\in\\mathbb{R}$.\\n\\n### Corrigé\\n\\nL'équation $y''+y'\\ln2=0$ est une équation différentielle linéaire du second ordre à coefficients constants, sans terme en $y$. Son équation caractéristique est :\\n$$r^2+r\\ln2=0.$$\\nOn factorise par $r$ :\\n$$r(r+\\ln2)=0.$$\\nUn produit de facteurs est nul si et seulement si l'un des facteurs est nul, donc :\\n$$r=0\\quad\\text{ou}\\quad r=-\\ln2.$$\\nCe sont deux racines réelles distinctes (car $\\ln2\\neq0$). La solution générale de l'équation différentielle est donc :\\n$$y(x)=C_1e^{0\\times x}+C_2e^{-x\\ln2}=C_1+C_2e^{-x\\ln2},\\qquad C_1,C_2\\in\\mathbb{R}.$$\\nOn peut aussi écrire $e^{-x\\ln2}=2^{-x}$, ce qui donne la forme équivalente $y(x)=C_1+C_2\\cdot2^{-x}$.",
+      "themes": [
+        "équation différentielle du second ordre",
+        "équation caractéristique"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2007d-ex2-1",
+          "competence": "Resolution d'une equation differentielle lineaire sans terme en y",
+          "contenu_markdown": "Une équation différentielle de la forme $ay''+by'=0$ (sans terme en $y$) se résout via l'équation caractéristique $ar^2+br=0$, qui se factorise en $r(ar+b)=0$ : elle admet toujours $r=0$ comme racine, et l'autre racine est $r=-b/a$. La solution générale est alors $y(x)=C_1e^{r_1x}+C_2e^{r_2x}$, avec $C_1,C_2\\in\\mathbb{R}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. On considère la fonction numérique $u$ définie par $u(t)=e^{-t\\ln2}$. Déterminer la primitive de $u$ qui prend la valeur $1$ en $0$.",
+      "corrige_markdown": "### Rappel de méthode\\n\\nPour trouver la primitive $U$ d'une fonction $u$ prenant une valeur donnée en un point, on calcule d'abord une primitive générale de $u$ (à une constante $K$ près), puis on détermine $K$ en imposant la condition donnée.\\n\\n### Corrigé\\n\\nOn a $u(t)=e^{-t\\ln2}$. Une primitive de $t\\mapsto e^{\\lambda t}$ (avec $\\lambda=-\\ln2\\neq0$) est $t\\mapsto\\dfrac{1}{\\lambda}e^{\\lambda t}$, donc une primitive générale de $u$ est :\\n$$U(t)=\\frac{1}{-\\ln2}e^{-t\\ln2}+K=-\\frac{1}{\\ln2}e^{-t\\ln2}+K,\\qquad K\\in\\mathbb{R}.$$\\nOn détermine $K$ en imposant $U(0)=1$ :\\n$$U(0)=-\\frac{1}{\\ln2}e^{0}+K=-\\frac{1}{\\ln2}+K=1\\quad\\Longrightarrow\\quad K=1+\\frac{1}{\\ln2}.$$\\nLa primitive cherchée est donc :\\n$$U(t)=-\\frac{1}{\\ln2}e^{-t\\ln2}+1+\\frac{1}{\\ln2}=1+\\frac{1-e^{-t\\ln2}}{\\ln2}.$$\\n**Vérification.** $U(0)=1+\\dfrac{1-e^0}{\\ln2}=1+\\dfrac{1-1}{\\ln2}=1+0=1$. Conforme à la condition imposée.",
+      "themes": [
+        "primitive d'une fonction exponentielle",
+        "condition initiale"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2007d-ex2-2",
+          "competence": "Determination d'une primitive verifiant une condition initiale",
+          "contenu_markdown": "Pour trouver la primitive $U$ d'une fonction $u$ prenant une valeur donnée en un point, on calcule d'abord une primitive générale de $u$ (à une constante $K$ près), puis on détermine $K$ en imposant la condition donnée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "3.a) Montrer que $(v_n)$ est une suite géométrique de raison $\\dfrac12$.",
+      "corrige_markdown": "### Rappel de méthode\\n\\nPour montrer qu'une suite $(v_n)$ définie par une intégrale sur un intervalle glissant $[n-1,n]$ est géométrique, on calcule $v_n$ explicitement à l'aide d'une primitive de l'intégrande, puis on forme le rapport $v_{n+1}/v_n$ et on vérifie qu'il est constant, indépendant de $n$.\\n\\n### Corrigé\\n\\nEn utilisant la primitive $t\\mapsto-\\dfrac{1}{\\ln2}e^{-t\\ln2}$ de $u$ trouvée à la question précédente :\\n$$v_n=\\int_{n-1}^{n}u(t)\\,dt=\\left[-\\frac{1}{\\ln2}e^{-t\\ln2}\\right]_{n-1}^{n}=-\\frac{1}{\\ln2}\\Big(e^{-n\\ln2}-e^{-(n-1)\\ln2}\\Big).$$\\nOn factorise par $e^{-(n-1)\\ln2}$ :\\n$$e^{-n\\ln2}-e^{-(n-1)\\ln2}=e^{-(n-1)\\ln2}\\Big(e^{-\\ln2}-1\\Big)=e^{-(n-1)\\ln2}\\left(\\frac12-1\\right)=-\\frac12\\,e^{-(n-1)\\ln2}$$\\n(car $e^{-\\ln2}=\\dfrac{1}{e^{\\ln2}}=\\dfrac12$). Donc :\\n$$v_n=-\\frac{1}{\\ln2}\\times\\left(-\\frac12\\,e^{-(n-1)\\ln2}\\right)=\\frac{1}{2\\ln2}\\,e^{-(n-1)\\ln2}=\\frac{1}{2\\ln2}\\times2^{-(n-1)}.$$\\nCalculons alors le rapport de deux termes consécutifs, en remplaçant $n$ par $n+1$ :\\n$$v_{n+1}=\\frac{1}{2\\ln2}\\times2^{-n},\\qquad\\frac{v_{n+1}}{v_n}=\\frac{2^{-n}}{2^{-(n-1)}}=2^{-n-(-(n-1))}=2^{-1}=\\frac12.$$\\n**Conclusion :** le rapport $v_{n+1}/v_n=\\dfrac12$ est une constante indépendante de $n$, donc $(v_n)_{n\\geqslant1}$ est une suite géométrique de raison $\\dfrac12$, de premier terme $v_1=\\dfrac{1}{2\\ln2}\\times2^0=\\dfrac{1}{2\\ln2}$.",
+      "themes": [
+        "suite géométrique définie par une intégrale",
+        "calcul intégral",
+        "suite géométrique"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2007d-ex2-3a",
+          "competence": "Demonstration qu'une suite integrale est geometrique",
+          "contenu_markdown": "Pour montrer qu'une suite $(v_n)$ définie par une intégrale sur un intervalle glissant $[n-1,n]$ est géométrique, on calcule $v_n$ explicitement à l'aide d'une primitive de l'intégrande, puis on forme le rapport $v_{n+1}/v_n$ et on vérifie qu'il est constant, indépendant de $n$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "3.b) Calculer $S_n=v_1+v_2+\\cdots+v_n$ et déterminer la limite de $S_n$ quand $n$ tend vers $+\\infty$.",
+      "corrige_markdown": "### Rappel de méthode\\n\\nLa somme des $n$ premiers termes ($k=1$ à $n$) d'une suite géométrique de premier terme $v_1$ et de raison $q\\neq1$ est $S_n=v_1\\dfrac{1-q^n}{1-q}$ ; si $|q|<1$, alors $q^n\\to0$ quand $n\\to+\\infty$, donc $S_n$ converge vers $\\dfrac{v_1}{1-q}$.\\n\\n### Corrigé\\n\\nD'après la question 3.a), $(v_n)_{n\\geqslant1}$ est géométrique de premier terme $v_1=\\dfrac{1}{2\\ln2}$ et de raison $q=\\dfrac12$. La somme des $n$ premiers termes est :\\n$$S_n=v_1+v_2+\\cdots+v_n=v_1\\times\\frac{1-q^n}{1-q}=\\frac{1}{2\\ln2}\\times\\frac{1-\\left(\\frac12\\right)^n}{1-\\frac12}=\\frac{1}{2\\ln2}\\times\\frac{1-\\left(\\frac12\\right)^n}{\\frac12}.$$\\nOn simplifie en multipliant par $2$ :\\n$$S_n=\\frac{1}{\\ln2}\\left(1-\\left(\\frac12\\right)^n\\right).$$\\nComme $\\left|\\dfrac12\\right|<1$, on a $\\left(\\dfrac12\\right)^n\\to0$ quand $n\\to+\\infty$. Donc :\\n$$\\lim_{n\\to+\\infty}S_n=\\frac{1}{\\ln2}\\big(1-0\\big)=\\frac{1}{\\ln2}.$$\\n\\n### Conseil\\n\\nRetenir la formule $S_n=v_1\\dfrac{1-q^n}{1-q}$ par cœur permet de traiter en une ligne toute somme de suite géométrique, sans repasser par le calcul terme à terme ; il suffit ensuite d'étudier le signe et la valeur de $q^n$ à l'infini pour conclure sur la limite.",
+      "themes": [
+        "somme des termes d'une suite géométrique",
+        "limite d'une suite géométrique"
+      ],
+      "difficulte_estimee": "moyen",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-2007d-ex2-3b",
+          "competence": "Calcul de la somme d'une suite geometrique et de sa limite",
+          "contenu_markdown": "La somme des $n$ premiers termes ($k=1$ à $n$) d'une suite géométrique de premier terme $v_1$ et de raison $q\\neq1$ est $S_n=v_1\\dfrac{1-q^n}{1-q}$ ; si $|q|<1$, alors $q^n\\to0$ quand $n\\to+\\infty$, donc $S_n$ converge vers $\\dfrac{v_1}{1-q}$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "équation différentielle",
+    "primitive",
+    "suite géométrique définie par une intégrale",
+    "somme de suite géométrique",
+    "limite d'une suite",
+    "bac D Cameroun 2007"
+  ],
+  "incertitudes": [
+    "Aucune valeur de points par exercice/problème n'est indiquée dans le document source (extraction texte native, sans en-tête de barème visible). Par convention observée sur d'autres épreuves de la même source (concourscameroon.com) pour la série D, le barème a été réparti 4+4+12=20 points (Exercice 1, Exercice 2, Problème)."
+  ],
+  "statut": "corrige"
+}

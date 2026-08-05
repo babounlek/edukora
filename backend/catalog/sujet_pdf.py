@@ -185,7 +185,19 @@ def generate_sujet_pdf(lesson):
 
 
 def sujet_pdf_filename(lesson):
-    return f"{slugify(lesson.title)}-sujet.pdf"
+    """
+    Préfixé par le code pays (même convention que `ingest/<code_pays>/...`, voir
+    catalog.ingestion._country_code_from_path) : sans lui, le nom de fichier ne
+    dépend que du titre de la leçon (slugify(lesson.title)), qui peut coïncider
+    entre deux pays pour une même épreuve (ex. "Mathématiques BAC A 2016") - le
+    second écraserait alors silencieusement le PDF du premier dans le dossier plat
+    sujets_pdf/. Décision utilisateur du 2026-08-03 : n'affecte que les PDF générés
+    à partir de maintenant, le contenu déjà généré (chemin plat historique) n'est
+    pas migré - voir le même choix déjà fait pour la bascule vers Spaces
+    (edtech_cm/settings.py, STORAGES).
+    """
+    country_code = lesson.subject.country.code.lower()
+    return f"{country_code}/{slugify(lesson.title)}-sujet.pdf"
 
 
 def save_sujet_pdf(lesson):

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-derivee-produit-fonctions-logarithme-terminale-a",
+  "meta": {
+    "titre": "Dérivée d'un produit de fonctions faisant intervenir un logarithme",
+    "matiere": "Mathématiques",
+    "serie": "A",
+    "sous_theme": "Dérivation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "dérivation",
+      "produit de fonctions",
+      "logarithme"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2025-cameroun",
+    "epreuve_titre": "BAC A Mathematiques 2025 - Cameroun (MINEDUC - OBC, Session 2025)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2025-cameroun-ex3-qq6a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'une fonction s'écrit comme le produit de deux expressions dérivables, comme $(x+1)\\ln x$, la dérivée ne s'obtient pas en dérivant chaque facteur séparément puis en les multipliant : il existe une formule spécifique, la dérivée d'un produit, qu'il faut appliquer avec rigueur pour ne perdre aucun terme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivées usuelles : $(\\ln x)'=\\dfrac1x$",
+        "Formule de dérivation d'un produit $(uv)'=u'v+uv'$",
+        "Réduction d'une expression au même dénominateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérivée d'un produit $u\\times v$",
+      "contenu_markdown": "Si $u$ et $v$ sont deux fonctions dérivables sur un intervalle, alors leur produit $uv$ est dérivable sur cet intervalle et $(uv)'=u'v+uv'$. Chaque facteur est dérivé à son tour, en laissant l'autre facteur inchangé, puis les deux résultats sont additionnés. Quand la fonction étudiée contient un terme supplémentaire non multiplié (comme $-x$ dans $h(x)=(x+1)\\ln x-x$), ce terme se dérive séparément et s'ajoute au résultat du produit, selon la règle de dérivation d'une somme.",
+      "formule_principale": "(uv)'=u'v+uv'"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $h$ la fonction définie sur $]0;+\\infty[$ par $h(x)=(x+1)\\ln x-x$. Calculer $h'(x)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux facteurs du produit et le terme isolé",
+          "justification": "$h(x)=u(x)v(x)-x$ avec $u(x)=x+1$, $v(x)=\\ln x$.",
+          "resultat_markdown": "$u(x)=x+1$, $v(x)=\\ln x$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver chaque facteur",
+          "justification": "$u$ est affine, $v$ est le logarithme népérien, dérivables sur $]0;+\\infty[$.",
+          "resultat_markdown": "$u'(x)=1$, $v'(x)=\\dfrac1x$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule $(uv)'=u'v+uv'$",
+          "justification": "Formule de dérivation d'un produit.",
+          "resultat_markdown": "$\\big[(x+1)\\ln x\\big]'=1\\times\\ln x+(x+1)\\times\\dfrac1x=\\ln x+\\dfrac{x+1}{x}$"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter la dérivée du terme isolé $-x$ et simplifier",
+          "justification": "$(-x)'=-1$, puis réduction au même dénominateur de $\\dfrac{x+1}{x}-1$.",
+          "resultat_markdown": "$h'(x)=\\ln x+\\dfrac{x+1}{x}-1=\\ln x+\\dfrac{x+1-x}{x}=\\ln x+\\dfrac1x$"
+        }
+      ],
+      "conclusion_markdown": "$h'(x)=\\ln x+\\dfrac1x$ pour tout $x\\in]0;+\\infty[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver $(x+1)\\ln x$ en $1\\times\\dfrac1x$, comme si on dérivait chaque facteur puis qu'on les multipliait",
+          "pourquoi_faux": "La dérivée d'un produit n'est pas le produit des dérivées : $(uv)'\\neq u'v'$. C'est une confusion très fréquente qui donne un résultat totalement faux.",
+          "correction_markdown": "Applique toujours la formule complète $(uv)'=u'v+uv'$, avec les deux termes additionnés, jamais un simple produit des dérivées."
+        },
+        {
+          "erreur_markdown": "Oublier de dériver le terme $-x$ situé après le produit, et donner $h'(x)=\\ln x+\\dfrac{x+1}{x}$ comme réponse finale",
+          "pourquoi_faux": "$h(x)$ est une somme du produit $(x+1)\\ln x$ et du terme $-x$ : chaque partie de la somme doit être dérivée, y compris ce terme isolé qui apporte un $-1$ supplémentaire à la dérivée totale.",
+          "correction_markdown": "Repère bien la structure globale de la fonction avant de dériver : ici, une somme dont l'un des termes est lui-même un produit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de $g(x)=x\\ln x$ sur $]0;+\\infty[$.",
+          "solution_markdown": "$g(x)=u(x)v(x)$ avec $u(x)=x$, $v(x)=\\ln x$. $u'(x)=1$, $v'(x)=\\dfrac1x$. $(uv)'=u'v+uv'=1\\times\\ln x+x\\times\\dfrac1x=\\ln x+1$. $g'(x)=\\ln x+1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la dérivée de $g(x)=(2x-3)\\ln x$ sur $]0;+\\infty[$.",
+          "solution_markdown": "$g(x)=u(x)v(x)$ avec $u(x)=2x-3$, $v(x)=\\ln x$. $u'(x)=2$, $v'(x)=\\dfrac1x$. $(uv)'=u'v+uv'=2\\ln x+(2x-3)\\times\\dfrac1x=2\\ln x+\\dfrac{2x-3}{x}$. On peut aussi écrire $\\dfrac{2x-3}{x}=2-\\dfrac3x$, donc $g'(x)=2\\ln x+2-\\dfrac3x$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=(x^2+1)\\ln x-\\dfrac{x^2}{2}$ sur $]0;+\\infty[$. Calculer $k'(x)$ et simplifier autant que possible.",
+          "solution_markdown": "On identifie $u(x)=x^2+1$, $v(x)=\\ln x$, et le terme isolé $-\\dfrac{x^2}{2}$. $u'(x)=2x$, $v'(x)=\\dfrac1x$. $\\big[(x^2+1)\\ln x\\big]'=u'v+uv'=2x\\ln x+(x^2+1)\\times\\dfrac1x=2x\\ln x+\\dfrac{x^2+1}{x}$. La dérivée du terme isolé est $\\left(-\\dfrac{x^2}{2}\\right)'=-x$. On additionne : $k'(x)=2x\\ln x+\\dfrac{x^2+1}{x}-x$. On réduit les deux derniers termes au même dénominateur $x$ : $\\dfrac{x^2+1}{x}-x=\\dfrac{x^2+1-x^2}{x}=\\dfrac1x$. Donc $k'(x)=2x\\ln x+\\dfrac1x$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un produit se dérive avec la formule $(uv)'=u'v+uv'$, jamais en multipliant les dérivées de chaque facteur.",
+        "Repère d'abord la structure globale de la fonction (somme, produit, terme isolé) avant de te lancer dans le calcul.",
+        "N'oublie aucun terme de la fonction, y compris ceux qui ne font pas partie du produit principal.",
+        "Simplifie toujours l'expression obtenue en réduisant au même dénominateur : une dérivée non simplifiée peut cacher un résultat remarquable, comme une primitive déjà connue.",
+        "Au BAC, ce type de calcul sert souvent d'étape intermédiaire vers la détermination d'une primitive : garde en tête la fonction de départ pendant que tu dérives, un résultat qui lui ressemble n'est pas un hasard."
+      ]
+    }
+  ]
+}

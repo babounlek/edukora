@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-resolution-equation-changement-variable-ln-x-terminale-a",
+  "meta": {
+    "titre": "Résolution d'équation par changement de variable t = ln x",
+    "matiere": "Mathématiques",
+    "serie": "A",
+    "sous_theme": "Équations et fonction logarithme",
+    "duree_estimee_min": 18,
+    "tags": [
+      "changement de variable",
+      "équation logarithmique",
+      "logarithme népérien"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-maths-2025-cameroun",
+    "epreuve_titre": "BAC A Mathematiques 2025 - Cameroun (MINEDUC - OBC, Session 2025)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2025-cameroun-ex1-qq2c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines équations contiennent une même expression, comme $\\ln x$, répétée à plusieurs puissances : $(\\ln x)^3$, $(\\ln x)^2$, $\\ln x$. Plutôt que d'affronter directement cette écriture, on la remplace par une lettre unique, ce qui transforme l'équation en une équation polynomiale déjà connue. La difficulté ne réside alors plus dans la résolution elle-même, mais dans le retour à l'inconnue de départ."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'une équation polynomiale de degré 3 par factorisation",
+        "Propriétés de la fonction logarithme népérien, en particulier $\\ln x=t \\iff x=e^t$",
+        "Domaine de définition de $\\ln x$ ($x>0$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Changement de variable $t=\\ln x$",
+      "contenu_markdown": "Quand une équation ne fait apparaître $x$ qu'à travers $\\ln x$ (élevé à diverses puissances entières), on pose $t=\\ln x$. L'équation devient alors une équation polynomiale en $t$, que l'on résout par les méthodes habituelles (factorisation, discriminant). Chaque solution $t_0$ trouvée doit ensuite être retraduite en une solution pour $x$, en résolvant $\\ln x=t_0$, ce qui donne $x=e^{t_0}$. Comme $\\ln x$ est défini pour tout réel quand on parcourt tous les $t$ possibles (la fonction exponentielle $t\\mapsto e^t$ prend toutes les valeurs strictement positives), aucune solution en $t$ n'est à rejeter pour cause de domaine : chaque valeur de $t$ redonne un unique $x=e^t>0$.",
+      "formule_principale": "\\ln x=t \\iff x=e^{t}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $2(\\ln x)^3-3(\\ln x)^2-17(\\ln x)+30=0$, sachant que l'équation $2t^3-3t^2-17t+30=0$ a pour solutions $t\\in\\{-3\\,;\\,2\\,;\\,2,5\\}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le changement de variable",
+          "justification": "L'équation ne fait intervenir $x$ qu'à travers $\\ln x$, sous les puissances 3, 2 et 1.",
+          "resultat_markdown": "On pose $t=\\ln x$, avec $x>0$"
+        },
+        {
+          "numero": 2,
+          "action": "Réécrire l'équation en $t$",
+          "justification": "Chaque occurrence de $\\ln x$ est remplacée par $t$.",
+          "resultat_markdown": "$2t^3-3t^2-17t+30=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Reprendre les solutions déjà connues de cette équation en $t$",
+          "justification": "Résultat admis dans l'énoncé de cet exemple.",
+          "resultat_markdown": "$t=-3$ ou $t=2$ ou $t=2,5$"
+        },
+        {
+          "numero": 4,
+          "action": "Revenir à $x$ pour chaque valeur de $t$",
+          "justification": "$\\ln x=t \\iff x=e^t$, valable pour tout $t$ réel.",
+          "resultat_markdown": "$x=e^{-3}$ ou $x=e^{2}$ ou $x=e^{2,5}$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $S=\\{e^{-3}\\,;\\,e^{2}\\,;\\,e^{2,5}\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner $x=-3$, $x=2$, $x=2,5$ comme solutions finales",
+          "pourquoi_faux": "Ces valeurs sont les solutions de l'équation en $t$, pas en $x$ : le changement de variable impose de revenir à $x$ via $x=e^t$ avant de conclure.",
+          "correction_markdown": "Toujours terminer la résolution par le retour explicite à l'inconnue de départ : $x=e^{t}$ pour chaque valeur de $t$ trouvée."
+        },
+        {
+          "erreur_markdown": "Rejeter la solution $t=-3$ en invoquant que $\\ln x$ ne peut pas être négatif",
+          "pourquoi_faux": "$\\ln x$ peut parfaitement être négatif : c'est le cas pour tout $x\\in]0;1[$. La seule contrainte est $x>0$, pas $\\ln x>0$.",
+          "correction_markdown": "Ne confonds pas le domaine de $x$ ($x>0$) avec le signe de $\\ln x$, qui peut être positif, négatif ou nul selon la position de $x$ par rapport à $1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $(\\ln x)^2-5\\ln x+6=0$.",
+          "solution_markdown": "On pose $t=\\ln x$. L'équation devient $t^2-5t+6=0$. $\\Delta=25-24=1$, $\\sqrt\\Delta=1$, $t=\\dfrac{5-1}{2}=2$ ou $t=\\dfrac{5+1}{2}=3$. On revient à $x$ : $\\ln x=2 \\iff x=e^2$ ; $\\ln x=3 \\iff x=e^3$. $S=\\{e^2\\,;\\,e^3\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $2(\\ln x)^2+3\\ln x-2=0$.",
+          "solution_markdown": "On pose $t=\\ln x$. L'équation devient $2t^2+3t-2=0$. $\\Delta=9-4\\times2\\times(-2)=9+16=25$, $\\sqrt\\Delta=5$, $t=\\dfrac{-3-5}{4}=-2$ ou $t=\\dfrac{-3+5}{4}=0,5$. On revient à $x$ : $\\ln x=-2 \\iff x=e^{-2}$ ; $\\ln x=0,5 \\iff x=e^{0,5}$. $S=\\{e^{-2}\\,;\\,e^{0,5}\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $(\\ln x)^3-4\\ln x=0$.",
+          "solution_markdown": "On pose $t=\\ln x$. L'équation devient $t^3-4t=0$, soit $t(t^2-4)=0$, soit $t(t-2)(t+2)=0$. D'après la propriété du produit nul : $t=0$ ou $t=2$ ou $t=-2$. On revient à $x$ : $\\ln x=0 \\iff x=e^0=1$ ; $\\ln x=2 \\iff x=e^2$ ; $\\ln x=-2 \\iff x=e^{-2}$. $S=\\{e^{-2}\\,;\\,1\\,;\\,e^{2}\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Repère le signal du changement de variable : une même expression ($\\ln x$ ici) répétée à plusieurs puissances dans l'équation.",
+        "Pose $t=\\ln x$ et résous l'équation en $t$ avec les méthodes déjà connues (factorisation, discriminant).",
+        "Ne t'arrête jamais à la valeur de $t$ : reviens systématiquement à $x$ par $x=e^t$.",
+        "Toutes les valeurs de $t$ sont acceptables ici, sans exception, contrairement à d'autres changements de variable (comme $u=e^{2x}$) où une contrainte de signe s'applique.",
+        "Ce type d'équation apparaît souvent au BAC comme prolongement direct d'une équation polynomiale déjà résolue dans une question précédente."
+      ]
+    }
+  ]
+}

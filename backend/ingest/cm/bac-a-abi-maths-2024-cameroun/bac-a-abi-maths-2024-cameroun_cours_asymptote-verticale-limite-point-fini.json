@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-asymptote-verticale-limite-point-fini-terminale-A-ABI",
+  "meta": {
+    "titre": "Asymptote verticale et limite en un point fini",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Limites et asymptotes",
+    "duree_estimee_min": 15,
+    "tags": ["limites", "asymptote verticale", "logarithme"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex2-q1b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une courbe qui \"grimpe à l'infini\" contre un axe vertical, sans jamais le toucher : c'est le comportement d'une asymptote verticale, et il se traduit toujours par une limite infinie en un point fini. Ce cours relie le calcul de limite à sa lecture graphique."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Limite de $\\ln x$ quand $x\\to0^+$", "Règle du signe pour la somme d'une limite finie et d'une limite infinie"]
+    },
+    {
+      "type": "regle",
+      "titre": "Limite infinie en un point et asymptote verticale",
+      "contenu_markdown": "Quand $x\\to0^+$, $\\ln x\\to-\\infty$ (le logarithme n'est pas défini en 0 et diverge vers $-\\infty$ à mesure qu'on s'en approche par la droite).\n\nSi $\\displaystyle\\lim_{x\\to a} f(x) = +\\infty$ ou $-\\infty$ (avec $a$ fini), alors la droite d'équation $x=a$ est asymptote verticale à la courbe représentative de $f$.\n\nPour une somme du type (limite finie) + (limite infinie), il n'y a jamais d'indétermination : la limite infinie impose sa valeur au résultat final.",
+      "formule_principale": "\\lim_{x\\to0^+}\\ln x=-\\infty"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $\\displaystyle\\lim_{x\\to0^+}(x-1-2\\ln x)=+\\infty$ et en donner une interprétation graphique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Étudier la limite du terme $x-1$",
+          "justification": "C'est une fonction affine, continue en 0",
+          "resultat_markdown": "Quand $x\\to0^+$, $x-1\\to-1$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier la limite du terme $-2\\ln x$",
+          "justification": "$\\ln x\\to-\\infty$ quand $x\\to0^+$, donc $-2\\ln x$ change de signe et diverge dans l'autre sens",
+          "resultat_markdown": "Quand $x\\to0^+$, $\\ln x\\to-\\infty$, donc $-2\\ln x\\to+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Combiner les deux limites par somme",
+          "justification": "Une limite finie ($-1$) additionnée à une limite infinie ($+\\infty$) n'est pas une forme indéterminée",
+          "resultat_markdown": "$f(x)=(x-1)+(-2\\ln x)\\to(-1)+(+\\infty)=+\\infty$"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire le résultat graphiquement",
+          "justification": "Une limite infinie en un point fini ($x=0$) est la définition d'une asymptote verticale",
+          "resultat_markdown": "La droite d'équation $x=0$ (l'axe des ordonnées) est asymptote verticale à la courbe $(C)$"
+        }
+      ],
+      "conclusion_markdown": "$\\displaystyle\\lim_{x\\to0^+}f(x)=+\\infty$ ; graphiquement, $(C)$ admet l'axe des ordonnées comme asymptote verticale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher une forme indéterminée dans $(-1)+(+\\infty)$",
+          "pourquoi_faux": "Seules les formes $+\\infty-\\infty$, $\\dfrac{\\infty}{\\infty}$, $\\dfrac00$ et $0\\times\\infty$ sont indéterminées : une limite finie additionnée à une limite infinie donne directement cette limite infinie.",
+          "correction_markdown": "Avant de chercher une technique de levée d'indétermination, vérifier si la situation en est réellement une."
+        },
+        {
+          "erreur_markdown": "Oublier de préciser \"asymptote verticale\" et se contenter d'annoncer la valeur de la limite",
+          "pourquoi_faux": "La question demande explicitement une interprétation graphique, qui est une compétence distincte du calcul de limite lui-même : elle rapporte des points au barème séparément.",
+          "correction_markdown": "Toujours traduire une limite infinie en un point fini par la phrase-type : \"la droite d'équation $x=a$ est asymptote verticale à la courbe\"."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to0^+}(3+\\ln x)$ et donner une interprétation graphique.",
+          "solution_markdown": "$\\ln x\\to-\\infty$ quand $x\\to0^+$, donc $3+\\ln x\\to3+(-\\infty)=-\\infty$. La droite d'équation $x=0$ est asymptote verticale à la courbe représentative de cette fonction."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to0^+}(2-3\\ln x)$ et donner une interprétation graphique.",
+          "solution_markdown": "$\\ln x\\to-\\infty$, donc $-3\\ln x\\to+\\infty$. Par somme, $2-3\\ln x\\to2+(+\\infty)=+\\infty$. La droite $x=0$ est asymptote verticale à la courbe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère $g(x)=x^2-4\\ln x$ sur $]0;+\\infty[$. Calculer $\\displaystyle\\lim_{x\\to0^+}g(x)$ et $\\displaystyle\\lim_{x\\to+\\infty}g(x)$, puis conclure sur les asymptotes de $g$.",
+          "solution_markdown": "En $0^+$ : $x^2\\to0$ et $-4\\ln x\\to+\\infty$ (car $\\ln x\\to-\\infty$), donc par somme $g(x)\\to0+(+\\infty)=+\\infty$ : la droite $x=0$ est asymptote verticale. En $+\\infty$ : on factorise $g(x)=x^2\\left(1-4\\dfrac{\\ln x}{x^2}\\right)$ ; par croissances comparées $\\dfrac{\\ln x}{x^2}\\to0$, donc le facteur entre parenthèses tend vers $1$, et $g(x)\\to+\\infty\\times1=+\\infty$ : il n'y a pas d'asymptote horizontale en $+\\infty$, seulement l'asymptote verticale $x=0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\ln x\\to-\\infty$ quand $x\\to0^+$ : c'est la limite de référence à connaître par cœur.",
+        "Une limite finie plus une limite infinie n'est jamais une forme indéterminée : le terme infini impose le résultat.",
+        "Une limite infinie en un point fini $a$ se traduit toujours par une asymptote verticale d'équation $x=a$.",
+        "N'oublie jamais l'interprétation graphique quand elle est demandée : c'est une compétence à part entière, distincte du simple calcul de limite."
+      ]
+    }
+  ]
+}

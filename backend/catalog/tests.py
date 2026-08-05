@@ -22,7 +22,7 @@ from users.models import User
 from .admin import ExerciseAdmin
 from .ingestion import IngestionError, _country_code_from_path, _dedupe_question_enonce, ingest_cours, ingest_exercise, run_ingestion
 from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Lesson, LessonType, Origine, Question, Series, StatutContenu, Subject, Tag, TypeReponse, resolve_examen_label
-from .sujet_pdf import _render_html
+from .sujet_pdf import _render_html, sujet_pdf_filename
 
 
 def _exercise_payload(epreuve_source, numero="1"):
@@ -363,6 +363,37 @@ class SubjectSeriesCountryScopingTests(TestCase):
         cursus = Cursus(country=self.bj, examen=Examen.BAC, series=cm_series_c)
         with self.assertRaises(ValidationError):
             cursus.full_clean()
+
+
+class SplitSeriesTests(TestCase):
+    """Reproduit un blocage d'ingestion réel (bac-blanc-d-ti-physique-2025-cameroun,
+    4 fichiers) : "D et TI" (conjonction française, pas un séparateur symbolique comme
+    "," ou "-") était splitté par _split_series en trois tokens ["D", "et", "TI"],
+    "et" étant ensuite rejeté comme code de série inconnu - voir
+    catalog.ingestion._split_series."""
+
+    def test_treats_et_as_a_separator_not_a_series_code(self):
+        from .ingestion import _split_series
+
+        self.assertEqual(_split_series("D et TI"), ["D", "TI"])
+
+    def test_still_handles_the_existing_separator_forms(self):
+        from .ingestion import _split_series
+
+        self.assertEqual(_split_series("C-E"), ["C", "E"])
+        self.assertEqual(_split_series("C, E"), ["C", "E"])
+        self.assertEqual(_split_series("C"), ["C"])
+        self.assertEqual(_split_series("A-ABI"), ["A"])
+
+    def test_ingest_exercise_resolves_both_cursus_for_a_et_b_series(self):
+        payload = _exercise_payload("bac-blanc-d-ti-physique-2025-cameroun")
+        payload["matiere"] = "Physique-Chimie"
+        payload["serie"] = "D et TI"
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-blanc-d-ti-physique-2025-cameroun"))
+
+        series_codes = sorted(c.series.code for c in exercise.lesson.cursus.all())
+        self.assertEqual(series_codes, ["D", "TI"])
 
 
 class SubjectCursusContentFilterTests(TestCase):
@@ -753,6 +784,39 @@ class SujetPdfTemplateTests(TestCase):
 
         self.assertIn("Sujet de test", html)
         self.assertIn("Contenu de test.", html)
+
+
+class SujetPdfFilenamePrefixTests(TestCase):
+    """sujet_pdf_filename() préfixe le nom de fichier par le code pays (même
+    convention que ingest/<code_pays>/...) - décision utilisateur du 2026-08-03 :
+    sans lui, deux pays partageant le même titre d'épreuve (ex. "Mathématiques BAC A
+    2016") produiraient le même nom de fichier dans le dossier plat sujets_pdf/, le
+    second écrasant silencieusement le PDF du premier."""
+
+    def test_filename_is_prefixed_by_lowercase_country_code(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        lesson = Lesson.objects.create(
+            title="Mathématiques BAC A 2016", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+
+        self.assertEqual(sujet_pdf_filename(lesson), "cm/mathematiques-bac-a-2016-sujet.pdf")
+
+    def test_two_countries_sharing_a_title_get_distinct_filenames(self):
+        bj = Country.objects.create(code="BJ", label="Bénin")
+        bj_subject = Subject.objects.create(country=bj, code="MATHS", label="Mathématiques")
+        cm_subject = Subject.objects.get(country__code="CM", code="MATHS")
+
+        cm_lesson = Lesson.objects.create(
+            title="Mathématiques BAC A 2016", subject=cm_subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+        bj_lesson = Lesson.objects.create(
+            title="Mathématiques BAC A 2016", subject=bj_subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+
+        self.assertNotEqual(sujet_pdf_filename(cm_lesson), sujet_pdf_filename(bj_lesson))
 
 
 class QuestionModelTests(TestCase):
@@ -1638,6 +1702,24 @@ class MissingExerciseHeadingRepairTests(TestCase):
         self.assertEqual(exercise.enonce_intro_markdown, "")
         self.assertEqual(exercise.incertitudes, [])
 
+    def test_never_injects_a_heading_in_front_of_a_part_marker(self):
+        # Reproduit bac-c-maths-2017-cameroun : le Problème d'une épreuve scindé en deux
+        # fichiers/Exercise ("exercice_4" = Partie A, "exercice_5" = Partie B,
+        # numero_exercice="5" purement numérique). Injecter "**Exercice 5**" devant
+        # "**Partie B**" ferait croire à tort à un 5e exercice indépendant plutôt qu'à
+        # la suite du Problème précédent, cassant la numérotation visible (1, 2, 3,
+        # Problème, Exercice 5).
+        payload = _exercise_payload("bac-maths-2024", numero="5")
+        payload["enonce_intro_markdown"] = "**Partie B**\n\nSoit $f$ une fonction."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.enonce_intro_markdown, "**Partie B**\n\nSoit $f$ une fonction.")
+        # _flag_part_headers_in_intro se déclenche bien (à part entière, voir
+        # PartHeaderInIntroSafetyNetTests) - seul le titre "Exercice N" ne doit pas
+        # avoir été injecté par _repair_missing_exercise_heading.
+        self.assertFalse(any("Titre" in note for note in exercise.incertitudes))
+
 
 class PartHeaderInIntroSafetyNetTests(TestCase):
     """Filet de sécurité mécanique pour l'erreur de composition documentée dans
@@ -1886,11 +1968,14 @@ class RunIngestionSkipsObsoleteFilesTests(TestCase):
         self.assertEqual(report["created"], 0)
 
 
-class RunIngestionSkipsQuizBatchFilesTests(TestCase):
-    """ingest/_quiz/<pays>/... est réservé aux lots CompetenceItem du skill
-    concepteur-quiz-competence (voir quiz.ingestion.run_ingestion) - ce format n'a ni
-    epreuve_source ni sections, run_ingestion ne doit ni tenter de l'ingérer comme
-    exercice/cours, ni le compter en erreur."""
+class RunIngestionSkipsUnderscorePrefixedPathsTests(TestCase):
+    """Tout composant de chemin préfixé par "_" (dossier ou fichier) est du tooling/état
+    interne, jamais du contenu - voir catalog.ingestion.run_ingestion. "_quiz" (lots
+    CompetenceItem du skill concepteur-quiz-competence, voir quiz.ingestion.run_ingestion)
+    en est le cas d'origine ; généralisé après un cas réel : bac-blanc-d-ti-
+    physique-2025-cameroun contenait un `_registry_dump.json` et un `_tmp_pages/` laissés
+    par erreur dans l'arbre publié, faisant échouer ingest_exercise sur "Champs
+    obligatoires manquants" à chaque ingestion pour une erreur qui n'en est pas une."""
 
     def test_quiz_batch_subfolder_is_never_scanned(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1899,6 +1984,30 @@ class RunIngestionSkipsQuizBatchFilesTests(TestCase):
             (quiz_dir / "derivation.json").write_text(
                 json.dumps([{"theme": "dérivation", "matiere": "Mathematiques"}]), encoding="utf-8",
             )
+
+            report = run_ingestion(Path(tmp))
+
+        self.assertEqual(report["files_found"], 0)
+        self.assertEqual(report["errors"], [])
+
+    def test_a_leading_underscore_file_is_never_scanned(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            exam_dir = Path(tmp) / "ingest" / "cm" / "bac-blanc-d-ti-physique-2025-cameroun"
+            exam_dir.mkdir(parents=True)
+            (exam_dir / "_registry_dump.json").write_text(
+                json.dumps({"some": "internal state"}), encoding="utf-8",
+            )
+
+            report = run_ingestion(Path(tmp))
+
+        self.assertEqual(report["files_found"], 0)
+        self.assertEqual(report["errors"], [])
+
+    def test_a_leading_underscore_subfolder_is_never_scanned(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_pages_dir = Path(tmp) / "ingest" / "cm" / "bac-blanc-d-ti-physique-2025-cameroun" / "_tmp_pages"
+            tmp_pages_dir.mkdir(parents=True)
+            (tmp_pages_dir / "stray.json").write_text(json.dumps({"not": "content"}), encoding="utf-8")
 
             report = run_ingestion(Path(tmp))
 

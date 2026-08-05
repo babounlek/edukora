@@ -1,6 +1,9 @@
-:80 {
+{$SITE_DOMAIN::80} {
     encode zstd gzip
 
+    header {
+        X-Robots-Tag "noindex, nofollow, noarchive"
+    }
 
     handle_path /static/* {
         root * /srv/staticfiles

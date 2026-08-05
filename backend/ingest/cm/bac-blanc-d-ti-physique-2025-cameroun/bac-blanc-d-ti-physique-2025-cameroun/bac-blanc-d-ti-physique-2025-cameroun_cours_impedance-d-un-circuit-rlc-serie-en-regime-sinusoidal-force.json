@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-impedance-d-un-circuit-rlc-serie-en-regime-sinusoidal-force-terminale-d-ti",
+  "meta": {
+    "titre": "Impédance d'un circuit RLC série en régime sinusoïdal forcé",
+    "matiere": "Physique",
+    "serie": "D et TI",
+    "sous_theme": "Électricité - circuits RLC en régime sinusoïdal",
+    "duree_estimee_min": 25,
+    "tags": [
+      "circuit RLC",
+      "impédance",
+      "réactance",
+      "régime sinusoïdal forcé"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-d-ti-physique-2025-cameroun",
+    "epreuve_titre": "Baccalaureat blanc D et TI - Physique - Session 2025 (DRES-NORD, evaluations harmonisees regionales)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-d-ti-physique-2025-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un circuit alimenté en courant alternatif ne se comporte pas comme en courant continu : la présence d'un condensateur et d'une bobine introduit une opposition au passage du courant qui dépend de la fréquence, appelée réactance. Ce cours te montre comment combiner résistance, réactance inductive et réactance capacitive pour obtenir l'impédance totale d'un circuit RLC série."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm pour un résistor",
+        "Notion de pulsation d'un signal sinusoïdal"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Impédance d'un circuit RLC série",
+      "contenu_markdown": "Pour un circuit série comportant une résistance $r$, une bobine d'inductance $L$ et un condensateur de capacité $C$, alimenté en régime sinusoïdal de pulsation $\\omega$, l'impédance totale du circuit combine la résistance et la réactance totale (différence entre réactance inductive $X_L=L\\omega$ et réactance capacitive $X_C=1/(C\\omega)$) selon un théorème de Pythagore électrique : $Z=\\sqrt{r^2+(X_L-X_C)^2}$.",
+      "formule_principale": "Z = \\sqrt{r^2 + \\left(L\\omega - \\dfrac{1}{C\\omega}\\right)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Circuit série r=100Ω, C=5×10⁻⁶F, L=0,100H, alimenté par un GBF de pulsation ω=100rad/s. Déterminer l'impédance du circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la réactance inductive",
+          "justification": "$X_L=L\\omega$ est la réactance propre à la bobine.",
+          "resultat_markdown": "$X_L = 0{,}100\\times100 = 10\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la réactance capacitive",
+          "justification": "$X_C=1/(C\\omega)$ est la réactance propre au condensateur.",
+          "resultat_markdown": "$X_C = \\dfrac{1}{5\\times10^{-6}\\times100} = 2000\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la réactance totale",
+          "justification": "C'est la différence algébrique entre réactance inductive et capacitive.",
+          "resultat_markdown": "$X_L - X_C = 10 - 2000 = -1990\\ \\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'impédance totale",
+          "justification": "On applique la formule combinant résistance et réactance totale.",
+          "resultat_markdown": "$Z = \\sqrt{100^2+(-1990)^2} = \\sqrt{3\\,970\\,100} \\approx 1992{,}5\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "L'impédance du circuit vaut environ 1992,5 Ω : elle est dominée ici par la réactance capacitive, très supérieure à la résistance et à la réactance inductive, du fait de la faible pulsation du générateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement $r + X_L - X_C$ au lieu d'utiliser la formule avec la racine carrée d'une somme de carrés.",
+          "pourquoi_faux": "En régime sinusoïdal, la résistance et la réactance ne sont pas en phase : elles se combinent comme les deux côtés d'un triangle rectangle (représentation de Fresnel ou complexe), pas comme des grandeurs directement additives.",
+          "correction_markdown": "Retiens la structure de la formule comme un théorème de Pythagore : $Z=\\sqrt{r^2+(X_L-X_C)^2}$, jamais une simple somme algébrique."
+        },
+        {
+          "erreur_markdown": "Oublier le signe négatif de $(X_L-X_C)$ avant de l'élever au carré, ou croire que ce signe négatif rend l'impédance négative.",
+          "pourquoi_faux": "Le carré d'un nombre négatif est positif : le signe de $(X_L-X_C)$ indique seulement si le circuit est globalement inductif ou capacitif, il n'affecte jamais le signe (toujours positif) de l'impédance elle-même.",
+          "correction_markdown": "Calcule toujours $(X_L-X_C)$ avec son signe, mais rappelle-toi que ce terme est ensuite élevé au carré : l'impédance finale, après racine carrée d'une somme de carrés, est toujours positive."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série a $r=50\\ \\Omega$, $X_L=80\\ \\Omega$ et $X_C=20\\ \\Omega$. Calculer son impédance.",
+          "solution_markdown": "$Z=\\sqrt{r^2+(X_L-X_C)^2}=\\sqrt{50^2+(80-20)^2}=\\sqrt{2500+3600}=\\sqrt{6100}\\approx78{,}1\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit RLC série comporte $r=40\\ \\Omega$, $L=0{,}2\\ H$, $C=4\\times10^{-5}\\ F$, alimenté à la pulsation $\\omega=200\\ rad/s$. Calculer l'impédance du circuit.",
+          "solution_markdown": "$X_L=L\\omega=0{,}2\\times200=40\\ \\Omega$. $X_C=\\dfrac{1}{C\\omega}=\\dfrac{1}{4\\times10^{-5}\\times200}=\\dfrac{1}{8\\times10^{-3}}=125\\ \\Omega$. $Z=\\sqrt{40^2+(40-125)^2}=\\sqrt{1600+7225}=\\sqrt{8825}\\approx94{,}0\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer qu'il existe une pulsation particulière $\\omega_0$ pour laquelle l'impédance d'un circuit RLC série est minimale et égale à $r$ seule, et exprimer cette pulsation en fonction de $L$ et $C$.",
+          "solution_markdown": "L'impédance $Z=\\sqrt{r^2+(L\\omega-1/(C\\omega))^2}$ est minimale quand le terme $(L\\omega-1/(C\\omega))^2$ est minimal, c'est-à-dire nul (un carré est toujours positif ou nul). Cela correspond à $L\\omega_0=\\dfrac{1}{C\\omega_0}$, soit $\\omega_0^2=\\dfrac{1}{LC}$, donc $\\omega_0=\\dfrac{1}{\\sqrt{LC}}$. À cette pulsation, appelée pulsation de résonance, l'impédance se réduit à $Z=r$ : elle est minimale, et le courant dans le circuit est alors maximal pour une tension d'alimentation donnée. C'est le phénomène de résonance d'intensité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'impédance d'un circuit RLC série combine résistance et réactance totale : $Z=\\sqrt{r^2+(X_L-X_C)^2}$.",
+        "Réactance inductive $X_L=L\\omega$ augmente avec la pulsation ; réactance capacitive $X_C=1/(C\\omega)$ diminue avec la pulsation.",
+        "Le signe de $(X_L-X_C)$ indique le caractère inductif ou capacitif dominant du circuit, mais l'impédance elle-même est toujours positive.",
+        "À la pulsation de résonance $\\omega_0=1/\\sqrt{LC}$, l'impédance est minimale et égale à $r$ : c'est un résultat à connaître pour les exercices sur la résonance.",
+        "Ce calcul d'impédance est la porte d'entrée de tout exercice sur les circuits RLC, qu'il s'agisse de calculer un courant, une tension ou d'étudier la résonance."
+      ]
+    }
+  ]
+}

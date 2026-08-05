@@ -51,10 +51,16 @@ _SERIE_NOISE_SUFFIX_RE = re.compile(r"-abi\b", re.IGNORECASE)
 
 
 def _split_series(serie_raw):
-    """'C-E' -> ['C', 'E'] ; 'C, E' -> ['C', 'E'] ; 'C' -> ['C'] ; 'A-ABI' -> ['A']"""
+    """'C-E' -> ['C', 'E'] ; 'C, E' -> ['C', 'E'] ; 'C' -> ['C'] ; 'A-ABI' -> ['A'] ;
+    'D et TI' -> ['D', 'TI'] (vu sur bac-blanc-d-ti-physique-2025-cameroun)."""
     cleaned = _SERIE_NOISE_SUFFIX_RE.sub("", str(serie_raw or ""))
     parts = re.split(r"[,/\-–—\s]+", cleaned.strip())
-    return [p for p in parts if p]
+    # "et" (conjonction française, jamais un code de série) n'a de sens comme séparateur
+    # QUE lorsqu'il tombe entre deux vrais tokens (espaces des deux côtés dans la chaîne
+    # d'origine) - un split générique sur tout espace le fait ressortir comme un token à
+    # part entière au même titre que "D"/"TI", d'où le filtrage après coup plutôt qu'une
+    # simple exclusion de motif dans le pattern de split lui-même.
+    return [p for p in parts if p and p.lower() != "et"]
 
 
 MATIERE_MAP = {
@@ -805,6 +811,15 @@ def _repair_narrow_array_columns(value):
 # même épreuve (voir bac-c-maths-1985-cameroun), leur injecter à tous le même titre
 # générique "**Problème**" créerait des repères dupliqués/ambigus pires que l'absence
 # de titre - dans ce cas on laisse tel quel plutôt que de mal deviner.
+#
+# Ne devine pas non plus quand le texte commence déjà par un repère de partie ("**Partie
+# B**", "**II.**"...) : repéré sur bac-c-maths-2017-cameroun, où le Problème d'une
+# épreuve a été scindé en deux fichiers/Exercise distincts (exercice_4 = "Partie A",
+# numero_exercice="4" ; exercice_5 = "Partie B", numero_exercice="5", purement
+# numérique) - injecter "**Exercice 5**" devant "**Partie B**" fait croire à tort à un
+# 5e exercice indépendant alors que c'est la suite du Problème précédent, et casse la
+# numérotation visible (1, 2, 3, Problème, Exercice 5). Même regex que
+# _flag_part_headers_in_intro (_INTRO_PART_HEADER_RE), ancrée en tête ici.
 _EXERCISE_HEADING_PRESENT_RE = re.compile(r"^\*\*\s*(Exercice|Probl[eè]me)\b", re.IGNORECASE)
 _PURE_NUMERIC_EXERCICE_RE = re.compile(r"^\d+$")
 
@@ -829,7 +844,8 @@ def _repair_missing_exercise_heading(data):
     first_question_enonce = (questions[0].get("enonce_markdown") or "") if questions else ""
     text_to_check = intro if intro.strip() else first_question_enonce
 
-    if _EXERCISE_HEADING_PRESENT_RE.match(text_to_check.strip()):
+    stripped = text_to_check.strip()
+    if _EXERCISE_HEADING_PRESENT_RE.match(stripped) or _INTRO_PART_HEADER_RE.match(stripped):
         return data, False
 
     heading = _build_exercise_heading(data.get("numero_exercice"), data.get("points"))
@@ -1237,15 +1253,23 @@ def run_ingestion(path):
     Retourne {"files_found": int, "created": int, "skipped": int, "errors": [str, ...]}.
     """
     path = Path(path)
-    # "_quiz" : sous-arbre réservé aux lots CompetenceItem du skill concepteur-quiz-
-    # competence (voir quiz.ingestion.run_ingestion) - un objet de ce format n'a ni
-    # "epreuve_source" ni "sections", donc atterrirait dans exercice_items et ferait
-    # échouer ingest_exercise sur "Champs obligatoires manquants" à chaque ingestion
-    # de correction, pour une erreur qui n'en est pas une. Exclu ici plutôt que de
-    # laisser cette pollution se répéter à chaque lancement.
+    # Tout composant de chemin préfixé par "_" (dossier ou fichier) est du tooling/état
+    # interne, jamais du contenu à ingérer - convention déjà utilisée par "_quiz"
+    # (sous-arbre réservé aux lots CompetenceItem du skill concepteur-quiz-competence,
+    # voir quiz.ingestion.run_ingestion) et généralisée ici après un cas réel :
+    # bac-blanc-d-ti-physique-2025-cameroun contenait un `_registry_dump.json` (état
+    # interne de la génération) et un `_tmp_pages/` (crops PNG intermédiaires) laissés
+    # par erreur dans l'arbre publié - un objet de ce genre n'a ni "epreuve_source" ni
+    # "sections", donc atterrit dans exercice_items et fait échouer ingest_exercise sur
+    # "Champs obligatoires manquants" à chaque ingestion, pour une erreur qui n'en est
+    # pas une. Exclu ici plutôt que de laisser cette pollution se répéter à chaque
+    # nouveau nom de fichier interne que la génération pourrait introduire.
     files = (
         [path] if path.is_file()
-        else sorted(f for f in path.rglob("*.json") if "_quiz" not in f.relative_to(path).parts)
+        else sorted(
+            f for f in path.rglob("*.json")
+            if not any(part.startswith("_") for part in f.relative_to(path).parts)
+        )
     )
 
     # Un cours référence toujours un rappel de méthode déjà ingéré comme exercice

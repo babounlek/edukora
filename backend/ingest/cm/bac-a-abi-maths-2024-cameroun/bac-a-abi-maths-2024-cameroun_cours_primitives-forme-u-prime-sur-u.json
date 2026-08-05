@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-primitives-forme-u-prime-sur-u-terminale-A-ABI",
+  "meta": {
+    "titre": "Primitives usuelles de la forme u'/u",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Primitives et calcul intégral",
+    "duree_estimee_min": 20,
+    "tags": ["primitives", "logarithme", "forme u'/u"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex1-qI1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver une primitive n'est pas toujours une question de formule à réciter. Face à $f(x)=\\dfrac{1}{2x-1}$, la tentation est d'écrire directement $\\ln(2x-1)$ - et de perdre un point pour un facteur oublié. Ce cours donne le réflexe qui évite cette erreur : reconnaître la forme $\\dfrac{u'}{u}$ derrière n'importe quelle fraction qui ressemble à un logarithme."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Calcul de dérivées usuelles (fonctions affines, fonction $\\ln$)", "Notion de primitive d'une fonction"]
+    },
+    {
+      "type": "regle",
+      "titre": "La primitive de u'/u",
+      "contenu_markdown": "Si $u$ est une fonction dérivable et strictement positive sur un intervalle $I$, alors la fonction $\\dfrac{u'}{u}$ admet pour primitive sur $I$ la fonction $\\ln(u)$. Plus généralement, si $u$ ne s'annule pas sur $I$, une primitive de $\\dfrac{u'}{u}$ est $\\ln|u|$.\n\nLa difficulté n'est presque jamais la formule elle-même, mais la reconnaissance de la forme : il faut identifier $u$, calculer $u'$, puis comparer $u'$ au numérateur de $f$. Si un coefficient multiplicatif $k$ sépare le numérateur réel de $u'$, on écrit $f = k\\times\\dfrac{u'}{u}$ et la primitive devient $k\\ln|u|$.",
+      "formule_principale": "\\int \\frac{u'(x)}{u(x)}\\,dx = \\ln|u(x)|+C"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer une primitive de $f(x)=\\dfrac{1}{2x-1}$ sur $\\left]\\dfrac12;+\\infty\\right[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser $u(x)=2x-1$ et calculer $u'(x)$",
+          "justification": "On veut faire apparaître la forme $u'/u$ dans $f$",
+          "resultat_markdown": "$u(x)=2x-1$, donc $u'(x)=2$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer le numérateur de $f$ à $u'(x)$",
+          "justification": "$f$ a pour numérateur $1$, alors que $u'(x)=2$ : il manque un facteur $\\dfrac12$",
+          "resultat_markdown": "$f(x)=\\dfrac{1}{2x-1}=\\dfrac12\\times\\dfrac{2}{2x-1}=\\dfrac12\\times\\dfrac{u'(x)}{u(x)}$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de primitive de u'/u",
+          "justification": "Sur $\\left]\\dfrac12;+\\infty\\right[$, $u(x)=2x-1>0$, donc $|u(x)|=u(x)$",
+          "resultat_markdown": "Une primitive de $\\dfrac{u'}{u}$ est $\\ln(u(x))=\\ln(2x-1)$"
+        },
+        {
+          "numero": 4,
+          "action": "Multiplier par le coefficient $\\dfrac12$ mis de côté à l'étape 2",
+          "justification": "La primitive de $\\dfrac12\\times\\dfrac{u'}{u}$ est $\\dfrac12$ fois la primitive de $\\dfrac{u'}{u}$",
+          "resultat_markdown": "$F(x)=\\dfrac12\\ln(2x-1)$"
+        }
+      ],
+      "conclusion_markdown": "La fonction $F(x)=\\dfrac12\\ln(2x-1)$ est une primitive de $f$ sur $\\left]\\dfrac12;+\\infty\\right[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire directement $F(x)=\\ln(2x-1)$ sans le facteur $\\dfrac12$",
+          "pourquoi_faux": "Dériver $\\ln(2x-1)$ donne $\\dfrac{2}{2x-1}$, pas $\\dfrac{1}{2x-1}$ : c'est le double de $f$. Le facteur $2$ vient de $u'(x)=2$, qu'il faut compenser.",
+          "correction_markdown": "Systématiquement calculer $u'(x)$ et comparer au numérateur de $f$ avant d'écrire la primitive ; ajuster par le coefficient manquant."
+        },
+        {
+          "erreur_markdown": "Oublier la valeur absolue et écrire $\\ln(u(x))$ sans vérifier le signe de $u$",
+          "pourquoi_faux": "$\\ln$ n'est défini que pour des valeurs strictement positives ; si $u$ peut être négatif sur l'intervalle d'étude, la primitive correcte est $\\ln|u(x)|$.",
+          "correction_markdown": "Vérifier le signe de $u$ sur l'intervalle donné : ici $2x-1>0$ car $x>\\dfrac12$, donc $\\ln(u(x))$ suffit, mais ce n'est pas toujours le cas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer une primitive de $g(x)=\\dfrac{3}{3x+2}$ sur $\\left]-\\dfrac23;+\\infty\\right[$.",
+          "solution_markdown": "On pose $u(x)=3x+2$, donc $u'(x)=3$. Le numérateur de $g$ est exactement $3=u'(x)$, donc $g=\\dfrac{u'}{u}$ directement, sans coefficient à ajouter. Une primitive de $g$ est $G(x)=\\ln(3x+2)$ (valeur absolue inutile car $3x+2>0$ sur l'intervalle donné)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer une primitive de $h(x)=\\dfrac{x}{x^2+1}$ sur $\\mathbb{R}$.",
+          "solution_markdown": "On pose $u(x)=x^2+1$, donc $u'(x)=2x$. Le numérateur de $h$ est $x$, soit $\\dfrac12\\times2x=\\dfrac12 u'(x)$. Donc $h(x)=\\dfrac12\\times\\dfrac{u'(x)}{u(x)}$. Comme $u(x)=x^2+1>0$ pour tout $x$, une primitive de $h$ est $H(x)=\\dfrac12\\ln(x^2+1)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer une primitive de $k(x)=\\dfrac{2x-3}{x^2-3x+5}$ sur $\\mathbb{R}$ (on admettra que $x^2-3x+5>0$ pour tout $x$).",
+          "solution_markdown": "On pose $u(x)=x^2-3x+5$, donc $u'(x)=2x-3$. Le numérateur de $k$ est exactement $2x-3=u'(x)$, donc $k=\\dfrac{u'}{u}$ directement. Comme $u(x)>0$ pour tout $x$ (donné dans l'énoncé), une primitive de $k$ est $K(x)=\\ln(x^2-3x+5)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant toute primitive d'une fraction, demande-toi : le numérateur ressemble-t-il à la dérivée du dénominateur ?",
+        "Calcule toujours $u'(x)$ en premier, puis compare-le au numérateur de $f$ pour repérer le coefficient manquant.",
+        "La primitive de $\\dfrac{u'}{u}$ est $\\ln|u|$ - n'oublie la valeur absolue que si tu as vérifié que $u$ garde un signe constant sur l'intervalle.",
+        "Ce motif revient très souvent au BAC dans les QCM de primitives : un réflexe rapide de reconnaissance de forme fait gagner du temps et évite l'erreur de coefficient."
+      ]
+    }
+  ]
+}

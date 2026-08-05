@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-resolution-systeme-trois-equations-trois-inconnues-terminale-A-ABI",
+  "meta": {
+    "titre": "Résolution d'un système de trois équations à trois inconnues",
+    "matiere": "Mathématiques",
+    "serie": "A-ABI",
+    "sous_theme": "Systèmes linéaires",
+    "duree_estimee_min": 25,
+    "tags": ["système linéaire", "combinaison", "substitution"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-maths-2024-cameroun",
+    "epreuve_titre": "BAC A-ABI Mathématiques 2024 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-maths-2024-cameroun-ex1-qII1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois clients, trois montants, trois animaux à prix inconnu : ce genre de situation ne se résout pas au hasard. Un système de trois équations à trois inconnues paraît lourd, mais il se traite avec la même logique qu'un système à deux inconnues : éliminer les inconnues une par une, méthodiquement, jusqu'à n'en garder qu'une seule."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Résolution d'un système de deux équations à deux inconnues", "Manipulation d'égalités (addition, soustraction membre à membre)"]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode par combinaison et substitution",
+      "contenu_markdown": "Pour résoudre un système de trois équations à trois inconnues $x$, $y$, $z$ :\n\n1. On combine deux équations entre elles (par addition ou soustraction membre à membre) pour éliminer une inconnue et obtenir une relation entre les deux inconnues restantes.\n2. On recommence avec une autre paire d'équations pour obtenir une seconde relation entre les deux mêmes inconnues restantes.\n3. On exprime deux des trois inconnues en fonction de la troisième à partir de ces deux relations, puis on substitue dans l'une des équations de départ pour obtenir une équation à une seule inconnue.\n4. On résout cette dernière équation, puis on remonte pour trouver les deux autres inconnues.\n5. On vérifie le triplet obtenu dans les TROIS équations de départ.",
+      "formule_principale": "(1)-(2) \\text{ et } (3)-(2) \\text{ pour réduire à deux relations, puis substitution}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre le système $\\begin{cases}2x+y+2z=38\\\\ x+y+z=23\\\\ 2x+2y+z=37\\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $(1)-(2)$",
+          "justification": "Éliminer $y$ entre les équations (1) et (2), qui ont toutes deux un coefficient 1 devant $y$",
+          "resultat_markdown": "$(2x+y+2z)-(x+y+z)=38-23 \\Rightarrow x+z=15$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $(3)-(2)$",
+          "justification": "Éliminer $z$ entre les équations (3) et (2), qui ont toutes deux un coefficient 1 devant $z$",
+          "resultat_markdown": "$(2x+2y+z)-(x+y+z)=37-23 \\Rightarrow x+y=14$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer $y$ et $z$ en fonction de $x$, puis substituer dans (2)",
+          "justification": "On dispose de deux relations ($x+z=15$ et $x+y=14$) qui isolent $y$ et $z$ en fonction de $x$",
+          "resultat_markdown": "$z=15-x$, $y=14-x$ ; dans (2) : $x+(14-x)+(15-x)=23 \\Rightarrow -x+29=23 \\Rightarrow x=6$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $y$ et $z$, puis vérifier",
+          "justification": "On remonte avec la valeur de $x$ trouvée",
+          "resultat_markdown": "$y=14-6=8$, $z=15-6=9$. Vérification dans (1) : $2(6)+8+2(9)=38$ ✓"
+        }
+      ],
+      "conclusion_markdown": "Le triplet solution est $(x,y,z)=(6,8,9)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Combiner les équations sans les numéroter ni écrire l'opération effectuée",
+          "pourquoi_faux": "Sans trace écrite de l'opération, une erreur de signe passe inaperçue et devient impossible à retrouver ensuite.",
+          "correction_markdown": "Numéroter systématiquement chaque équation et noter explicitement l'opération (ex. \"(1)-(2)\") avant de l'effectuer."
+        },
+        {
+          "erreur_markdown": "Vérifier le triplet trouvé dans une seule équation du système",
+          "pourquoi_faux": "Un triplet peut satisfaire une équation par coïncidence tout en étant faux pour les deux autres, surtout si une erreur de calcul s'est glissée en cours de route.",
+          "correction_markdown": "Toujours vérifier le triplet final dans les TROIS équations de départ, jamais une seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+y+z=12\\\\ x-y=1\\\\ y+z=7\\end{cases}$.",
+          "solution_markdown": "De la 3ème équation, $z=7-y$. On substitue dans la 1ère : $x+y+(7-y)=12 \\Rightarrow x+7=12 \\Rightarrow x=5$. De la 2ème équation, $y=x-1=5-1=4$. Puis $z=7-4=3$. Vérification : $5+4+3=12$ ✓, $5-4=1$ ✓, $4+3=7$ ✓. Solution : $(5,4,3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}2a+b+c=17\\\\ a+2b+c=19\\\\ a+b+2c=22\\end{cases}$.",
+          "solution_markdown": "On calcule $(2)-(1)$ : $(a+2b+c)-(2a+b+c)=19-17 \\Rightarrow -a+b=2 \\Rightarrow b=a+2$. On calcule $(3)-(1)$ : $(a+b+2c)-(2a+b+c)=22-17 \\Rightarrow -a+c=5 \\Rightarrow c=a+5$. On substitue dans (1) : $2a+(a+2)+(a+5)=17 \\Rightarrow 4a+7=17 \\Rightarrow a=2,5$. Donc $b=4,5$ et $c=7,5$. Vérification dans (1) : $2(2,5)+4,5+7,5=5+4,5+7,5=17$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un vendeur propose trois formules : Formule 1 (2 stylos + 1 cahier + 1 gomme) à 1900F, Formule 2 (1 stylo + 2 cahiers + 1 gomme) à 2200F, Formule 3 (1 stylo + 1 cahier + 2 gommes) à 1700F. Déterminer le prix d'un stylo, d'un cahier et d'une gomme.",
+          "solution_markdown": "On note $s$, $c$, $g$ les prix respectifs. Le système est $\\begin{cases}2s+c+g=1900\\\\ s+2c+g=2200\\\\ s+c+2g=1700\\end{cases}$. On calcule $(2)-(1)$ : $-s+c=300 \\Rightarrow c=s+300$. On calcule $(3)-(1)$ : $-s+g=-200 \\Rightarrow g=s-200$. On substitue dans (1) : $2s+(s+300)+(s-200)=1900 \\Rightarrow 4s+100=1900 \\Rightarrow s=450$. Donc $c=750$ et $g=250$. Vérification dans (1) : $2(450)+750+250=900+750+250=1900$ ✓. Le stylo coûte 450F, le cahier 750F, la gomme 250F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système à trois inconnues se ramène toujours à un système à deux inconnues, puis à une seule, par combinaisons successives.",
+        "Numérote chaque équation et note explicitement chaque opération de combinaison : c'est ce qui évite les erreurs de signe.",
+        "Vérifie systématiquement le triplet trouvé dans les trois équations de départ, jamais une seule.",
+        "Ce type de système apparaît fréquemment dans des problèmes concrets (achats, mélanges, prix) : reconnaître un système déjà résolu ailleurs dans la même épreuve fait gagner un temps précieux au BAC."
+      ]
+    }
+  ]
+}
