@@ -7,9 +7,10 @@ from django.contrib.admin.sites import AdminSite
 from django.contrib.messages import get_messages
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.exceptions import ValidationError
+from django.core.files.storage import default_storage
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
 from unittest.mock import patch
@@ -20,9 +21,10 @@ from access.models import LectureProgress
 from users.models import User
 
 from .admin import ExerciseAdmin
-from .ingestion import IngestionError, _country_code_from_path, _dedupe_question_enonce, ingest_cours, ingest_exercise, run_ingestion
-from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Lesson, LessonType, Origine, Question, Series, StatutContenu, Subject, Tag, TypeReponse, resolve_examen_label
-from .sujet_pdf import _render_html, sujet_pdf_filename
+from .ingestion import IngestionError, _country_code_from_path, ingest_cours, ingest_exercise, run_ingestion
+from .ingestion_repairs import _dedupe_question_enonce
+from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Figure, Lesson, LessonType, Origine, Question, Series, StatutContenu, Subject, Tag, TypeReponse, figure_upload_to, resolve_examen_label
+from .sujet_pdf import _render_html, save_sujet_pdf, sujet_pdf_filename
 
 
 def _exercise_payload(epreuve_source, numero="1"):
@@ -682,6 +684,69 @@ class CoursExercicesApplicationSectionTests(TestCase):
         })
         self.assertIn("Corrigé via alias.", rendered)
 
+    def test_bare_string_item_renders_without_crashing(self):
+        # Reproduit bac-c-d-chimie-1999/2000/2001/2002-cameroun (et une centaine
+        # d'autres Cours du corpus) : "items" est une liste de chaînes nues (l'énoncé
+        # seul, sans numero/difficulte/solution) plutôt que d'objets structurés -
+        # `item.get(...)` levait AttributeError: 'str' object has no attribute 'get'.
+        rendered = self._render("Comparer, dans un tableau, deux méthodes de calcul.")
+        self.assertIn("Comparer, dans un tableau, deux méthodes de calcul.", rendered)
+        # Pas de solution fournie pour cette forme : pas de toggle vide.
+        self.assertNotIn("### Solution", rendered)
+
+
+class CoursExempleResoluSectionTests(TestCase):
+    """Section "exemple_resolu" (mode cours) : "etapes" est parfois une liste de
+    chaînes nues plutôt que d'objets {numero, action, justification,
+    resultat_markdown}, constaté sur bac-c-d-chimie-1999-cameroun - même tolérance
+    texte-brut que pour les autres sections (voir CoursErreursClassiquesSectionTests)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(external_id="test-exemple-resolu", titre="Test", subject=subject)
+
+    def _render(self, etapes):
+        section = {"type": "exemple_resolu", "enonce_markdown": "Énoncé.", "etapes": etapes}
+        return self.cours._render_section(section)
+
+    def test_structured_etape_still_renders_as_before(self):
+        rendered = self._render([{"numero": 1, "action": "Identifier", "justification": "Car X."}])
+        self.assertIn("**Étape 1 - Identifier**", rendered)
+        self.assertIn("Car X.", rendered)
+
+    def test_bare_string_etape_renders_without_crashing(self):
+        rendered = self._render(["Identifier le caractère amphotère de l'aluminium."])
+        self.assertIn("Identifier le caractère amphotère de l'aluminium.", rendered)
+
+
+class CoursErreursClassiquesSectionTests(TestCase):
+    """Section "erreurs_classiques" (mode cours) : même tolérance texte-brut que
+    "exercices_application" (voir CoursExercicesApplicationSectionTests) - un item peut
+    être un objet {erreur_markdown, pourquoi_faux, correction_markdown} ou une simple
+    chaîne, constaté sur bac-c-d-chimie-1999/2000/2001/2002-cameroun."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(external_id="test-erreurs-classiques", titre="Test", subject=subject)
+
+    def _render(self, item):
+        section = {"type": "erreurs_classiques", "items": [item]}
+        return self.cours._render_section(section)
+
+    def test_structured_item_still_renders_as_before(self):
+        rendered = self._render({
+            "erreur_markdown": "Confondre A et B.",
+            "pourquoi_faux": "Ce sont deux notions distinctes.",
+            "correction_markdown": "Bien distinguer A de B.",
+        })
+        self.assertIn("Confondre A et B.", rendered)
+        self.assertIn("Ce sont deux notions distinctes.", rendered)
+        self.assertIn("Bien distinguer A de B.", rendered)
+
+    def test_bare_string_item_renders_without_crashing(self):
+        rendered = self._render("Confondre saponification et hydrolyse acide d'un ester.")
+        self.assertIn("Confondre saponification et hydrolyse acide d'un ester.", rendered)
+
 
 class IngestCoursRappelsLiesTests(TestCase):
     """`source.rappels_lies` (mode cours, SKILL.md) : d'autres rappels déjà ingérés,
@@ -817,6 +882,72 @@ class SujetPdfFilenamePrefixTests(TestCase):
         )
 
         self.assertNotEqual(sujet_pdf_filename(cm_lesson), sujet_pdf_filename(bj_lesson))
+
+
+class SaveSujetPdfOverwriteTests(TestCase):
+    """save_sujet_pdf() régénère un PDF sur le même nom de fichier déterministe
+    (voir sujet_pdf_filename) - sans suppression explicite de l'ancien fichier au
+    préalable, FieldFile.save() ne l'écrase jamais : le storage lui trouve un nom
+    disponible différent (suffixe aléatoire) et l'ancien PDF reste orphelin à chaque
+    régénération (ex. après correction du contenu, action admin "Générer le PDF du
+    sujet" relancée sur une leçon déjà pourvue)."""
+
+    def test_regenerating_overwrites_the_same_path_without_orphaning_the_old_file(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        lesson = Lesson.objects.create(
+            title="Sujet de test", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, content_markdown="Contenu de test.",
+        )
+        lesson.cursus.add(cursus)
+
+        with tempfile.TemporaryDirectory() as tmp, override_settings(MEDIA_ROOT=tmp):
+            with patch("catalog.sujet_pdf.generate_sujet_pdf", return_value=b"pdf-v1"):
+                save_sujet_pdf(lesson)
+            first_path = lesson.sujet_pdf.name
+            self.assertTrue(default_storage.exists(first_path))
+
+            with patch("catalog.sujet_pdf.generate_sujet_pdf", return_value=b"pdf-v2"):
+                save_sujet_pdf(lesson)
+            second_path = lesson.sujet_pdf.name
+
+            self.assertEqual(first_path, second_path, "Un nom différent signale que l'ancien fichier n'a pas été supprimé avant la réécriture.")
+            with default_storage.open(second_path, "rb") as f:
+                self.assertEqual(f.read(), b"pdf-v2")
+
+
+class FigureUploadToPrefixTests(TestCase):
+    """figure_upload_to() préfixe le nom de fichier par le code pays, même convention
+    et même raison que SujetPdfFilenamePrefixTests ci-dessus : le nom de fichier
+    original d'une figure (souvent générique, ex. "figure1.png", livré tel quel par
+    correction-experte) peut coïncider entre deux pays sans rapport, le second
+    écrasant alors silencieusement l'image du premier dans le dossier plat figures/."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        lesson = Lesson.objects.create(
+            title="Test", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+
+    def test_path_is_prefixed_by_lowercase_country_code(self):
+        figure = Figure(exercise=self.exercise, external_id="fig-1")
+        self.assertEqual(figure_upload_to(figure, "figure1.png"), "figures/cm/figure1.png")
+
+    def test_two_countries_sharing_a_filename_get_distinct_paths(self):
+        bj = Country.objects.create(code="BJ", label="Bénin")
+        bj_subject = Subject.objects.create(country=bj, code="MATHS", label="Mathématiques")
+        bj_lesson = Lesson.objects.create(
+            title="Test BJ", subject=bj_subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        bj_exercise = Exercise.objects.create(lesson=bj_lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+
+        cm_figure = Figure(exercise=self.exercise, external_id="fig-1")
+        bj_figure = Figure(exercise=bj_exercise, external_id="fig-1")
+
+        self.assertNotEqual(
+            figure_upload_to(cm_figure, "figure1.png"), figure_upload_to(bj_figure, "figure1.png"),
+        )
 
 
 class QuestionModelTests(TestCase):
@@ -1823,6 +1954,36 @@ class ForceReingestionTests(TestCase):
         payload = _exercise_payload("bac-maths-2024-nouveau")
         exercise, created = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024-nouveau"), force=True)
         self.assertTrue(created)
+
+    def test_force_deletes_old_figure_file_from_storage(self):
+        """Une réingestion force doit retirer du storage le fichier de l'ancienne
+        Figure, pas seulement sa ligne en base - sinon chaque correction relance via
+        l'admin ("Réingérer depuis le fichier JSON source") laisse une image orpheline
+        sur le disque/Spaces (voir _attach_figures/figure_upload_to)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "figure1.png").write_bytes(b"fake-png-bytes")
+
+            payload = _exercise_payload("bac-maths-2024")
+            payload["figures"] = [{
+                "id": "fig-1", "fichier": "figure1.png", "page_source": 1,
+                "type": "courbe", "legende": "Courbe", "indispensable": True, "lisibilite": "bonne",
+            }]
+            payload["questions"][0]["enonce_markdown"] = "Lire fig-1 (figure1.png)."
+
+            with override_settings(MEDIA_ROOT=tmp):
+                exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+                old_path = exercise.figures.get(external_id="fig-1").image.name
+                self.assertTrue(default_storage.exists(old_path))
+
+                # La version corrigée n'a plus de figure : l'ancienne image doit
+                # disparaître du storage, pas rester orpheline après le force.
+                corrected = _exercise_payload("bac-maths-2024")
+                new_exercise, _ = ingest_exercise(corrected, source_dir=source_dir, force=True)
+
+                self.assertFalse(default_storage.exists(old_path))
+            self.assertEqual(new_exercise.figures.count(), 0)
 
 
 class ReingererDepuisFichierActionTests(TestCase):

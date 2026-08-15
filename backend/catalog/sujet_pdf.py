@@ -212,6 +212,13 @@ def save_sujet_pdf(lesson):
     être épinglées précisément malgré plusieurs tentatives de correction).
     """
     pdf_bytes = generate_sujet_pdf(lesson)
+    # Le nom de fichier cible est déterministe (voir sujet_pdf_filename) : une
+    # régénération (ex. après correction du contenu) vise donc le même chemin que le
+    # PDF déjà en place. Sans suppression explicite au préalable, FieldFile.save() ne
+    # supprime jamais l'ancien fichier référencé - le storage lui trouve juste un nom
+    # disponible différent (suffixe aléatoire), et l'ancien PDF reste orphelin.
+    if lesson.sujet_pdf:
+        lesson.sujet_pdf.delete(save=False)
     lesson.sujet_pdf.save(sujet_pdf_filename(lesson), ContentFile(pdf_bytes), save=True)
 
 

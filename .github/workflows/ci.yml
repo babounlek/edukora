@@ -1,0 +1,61 @@
+# Fait tourner la suite de tests backend sur chaque pull request vers main - jusqu'ici
+# rien ne le faisait (voir deploy.yml : uniquement un déploiement manuel, sans aucun
+# test avant). Ne touche jamais à main ni au déploiement : ce workflow est
+# indépendant, purement informatif sur l'état d'une PR avant de la merger.
+#
+# Volontairement backend seulement pour l'instant (pas de lint/build frontend ici) :
+# c'est la partie qui porte la logique métier/argent (paiements, abonnements,
+# ingestion) et qui a déjà une vraie suite de tests à faire tourner - le frontend
+# n'a pour l'instant ni test ni pipeline dédiés.
+#
+# Aucun service Postgres nécessaire : `manage.py test` bascule automatiquement sur
+# SQLite en mémoire (voir edtech_cm/settings.py, `if "test" in sys.argv`). Aucune
+# installation de Chromium/Playwright non plus : la suite ne l'invoque jamais
+# (génération de PDF systématiquement mockée dans les tests concernés).
+
+name: CI backend
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/ci.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      # Valeurs factices : settings.py les lit sans défaut (SECRET_KEY/DB_*), mais
+      # DATABASES est de toute façon écrasé vers SQLite en mémoire pour `test` -
+      # aucune de ces valeurs n'est donc réellement utilisée pour se connecter à quoi
+      # que ce soit, elles n'ont besoin que d'exister pour que python-decouple ne lève
+      # pas UndefinedValueError au chargement des settings.
+      SECRET_KEY: ci-test-secret-key-not-used-for-anything-real-32-bytes-min
+      DB_NAME: ci
+      DB_USER: ci
+      DB_PASSWORD: ci
+      # Sans .env, DEBUG retombe sur son défaut (False) - ce qui active par défaut
+      # SECURE_SSL_REDIRECT (voir edtech_cm/settings.py, `default=not DEBUG`). Le
+      # client de test Django appelle toujours en clair (jamais HTTPS) : sans ce
+      # False explicite, SecurityMiddleware répond 301 à chaque requête de test au
+      # lieu de la laisser atteindre la vue - constaté en le testant en local avant
+      # d'ajouter ce workflow (73 échecs sur 280 tests, tous des 301 inattendus).
+      SECURE_SSL_REDIRECT: "False"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Lancer la suite de tests
+        run: python manage.py test
