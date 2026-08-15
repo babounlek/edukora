@@ -87,8 +87,19 @@ function resolveCalloutVariant(title: string): CalloutVariant | undefined {
  * à un bloc de code qui afficherait tout en texte brut.
  */
 export function extractCallouts(markdown: string): string {
+  // Le corps s'arrête normalement à la première ligne vide (un "### Piège à éviter"/
+  // "Conseil"/"Rappel de méthode" n'est en pratique jamais qu'un seul paragraphe) -
+  // sauf quand cette ligne vide est immédiatement suivie d'un marqueur
+  // "[COURS_LINK:...]" (voir _annotate_cours_links côté backend, qui l'injecte comme
+  // paragraphe séparé juste après un Rappel de méthode) : il faut alors continuer pour
+  // l'inclure dans le même blockquote, sans quoi il atterrit hors du Callout, en texte
+  // brut non stylé (constaté en prod). Sans le `(?!\[COURS_LINK:)`, un corps
+  // multi-paragraphe engloutirait aussi tout texte qui suit sans son propre titre
+  // "###" - notamment l'énoncé de la question suivante, qui n'est séparé du corrigé
+  // précédent que par une ligne vide (voir _render_question_corrige) : régression
+  // vérifiée et exclue explicitement ici.
   const headingRe = new RegExp(
-    `^###[ \\t]*(${TITLES_ALTERNATION})[ \\t]*\\n+([\\s\\S]*?)(?=\\n#{1,6}[ \\t]|\\n---|\\n*$)`,
+    `^###[ \\t]*(${TITLES_ALTERNATION})[ \\t]*\\n+([\\s\\S]*?)(?=\\n{2,}(?!\\[COURS_LINK:)|\\n#{1,6}[ \\t]|\\n---|\\n*(?![\\s\\S]))`,
     "gm",
   )
   markdown = markdown.replace(headingRe, (_match, title: string, body: string) => {

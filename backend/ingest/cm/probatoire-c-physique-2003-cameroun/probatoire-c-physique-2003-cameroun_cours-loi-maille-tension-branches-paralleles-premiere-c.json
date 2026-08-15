@@ -1,0 +1,41 @@
+{
+  "cours_id": "cours-loi-maille-tension-branches-paralleles-premiere-c",
+  "meta": {
+    "titre": "Calculer la tension aux bornes d'un groupement de branches en parallèle via la loi des mailles",
+    "cours_id": "cours-loi-maille-tension-branches-paralleles-premiere-c",
+    "matiere": "Physique",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Électrocinétique - loi des mailles",
+    "tags": ["loi des mailles", "branches parallèles", "résistance équivalente"],
+    "duree_estimee_minutes": 9,
+    "epreuve_source": "probatoire-c-physique-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-physique-2003-cameroun_exercice_2_q1b"
+  },
+  "sections": {
+    "accroche": "Dans une boucle électrique simple, la tension aux bornes d'un groupement (même complexe, comme deux branches en parallèle) se déduit directement de la loi des mailles, sans avoir besoin de connaître le détail interne du groupement.",
+    "prerequis": ["Loi des mailles (E=somme des chutes de tension)", "Propriété : deux branches en parallèle ont la même tension à leurs bornes"],
+    "regle": {
+      "titre": "U_groupement = E - (chutes de tension des autres éléments de la boucle)",
+      "contenu_markdown": "Dans une boucle simple comportant un générateur $(E,r)$, une résistance $R$, et un groupement quelconque (ici deux branches en parallèle) entre deux nœuds $A$ et $B$, la loi des mailles donne $E=rI+RI+U_{AB}$, d'où $U_{AB}=E-(r+R)I$ ($I$ étant le courant principal). Cette tension $U_{AB}$ est alors la MÊME aux bornes de chacune des branches en parallèle, ce qui permet ensuite de calculer la résistance de chaque branche via $U_{AB}=r_{\\text{branche}}\\times I_{\\text{branche}}$.",
+      "formule_principale": "$U_{AB}=E-(r+R)I$",
+      "variantes": []
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "E=10V, r=1Ω, R=2Ω, I=2A. Calculer U_AB aux bornes du groupement parallèle.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Application de la loi des mailles", "justification": "U_AB=E-(r+R)I", "resultat_markdown": "U_AB=10-(1+2)×2=10-6=4V"}
+      ],
+      "conclusion_markdown": "U_AB=4V."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier d'inclure la résistance interne r du générateur dans le calcul de la chute de tension, en ne comptant que la résistance R", "pourquoi_faux": "le générateur réel n'est jamais parfait : sa résistance interne r provoque elle aussi une chute de tension rI qui doit être soustraite de E pour obtenir la tension réellement disponible aux bornes du reste du circuit", "correction_markdown": "Toujours inclure la résistance interne du générateur dans la somme des chutes de tension de la loi des mailles, au même titre que les autres résistances du circuit."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "E=15V, r=0,5Ω, R=4Ω, I=1,5A. Calculer U_AB.", "solution_markdown": "U_AB=15-(0,5+4)×1,5=15-6,75=8,25V."}
+    ],
+    "synthese": "La tension aux bornes d'un groupement de branches en parallèle, dans une boucle simple, se calcule par la loi des mailles U=E-(somme des autres chutes de tension de la boucle) ; cette même tension s'applique ensuite à chaque branche du groupement parallèle."
+  }
+}

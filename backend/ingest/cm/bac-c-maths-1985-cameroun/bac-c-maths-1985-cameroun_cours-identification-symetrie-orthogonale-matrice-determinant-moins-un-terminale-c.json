@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-identification-symetrie-orthogonale-matrice-determinant-moins-un-terminale-c",
+  "meta": {
+    "titre": "Identifier une symétrie orthogonale et une symétrie glissée via matrice orthogonale et déterminant -1",
+    "cours_id": "cours-identification-symetrie-orthogonale-matrice-determinant-moins-un-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - isométries planes, classification",
+    "tags": ["symétrie orthogonale", "symétrie glissée", "matrice orthogonale", "déterminant", "isométrie"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_6_q2d"
+  },
+  "sections": {
+    "accroche": "La classification complète des isométries planes tient en quelques critères calculables : orthogonalité de la matrice (isométrie) et signe du déterminant (+1 pour un déplacement, -1 pour un antidéplacement) suffisent à identifier précisément le type de transformation, combinés à la présence ou non de points invariants.",
+    "prerequis": ["Vérification qu'une matrice est orthogonale ($M^TM=I$)", "Calcul d'un déterminant 2×2", "Vocabulaire des isométries planes (rotation, translation, symétrie, symétrie glissée)"],
+    "regle": {
+      "titre": "Classification des isométries planes par matrice et déterminant",
+      "contenu_markdown": "Pour un endomorphisme $f$ de matrice orthogonale ($M^TM=I$, colonnes orthonormées) : si $\\det M=1$, $f$ est une rotation vectorielle (associée, selon points fixes, à une rotation affine ou une translation) ; si $\\det M=-1$, $f$ est une symétrie orthogonale vectorielle par rapport à une droite (celle des vecteurs invariants, $\\ker(f-\\mathrm{Id})$). Pour l'application affine associée : si $\\det M=-1$ et qu'elle admet un point invariant, c'est une **symétrie orthogonale affine** (réflexion) d'axe passant par ce point invariant ; si $\\det M=-1$ et qu'elle n'admet aucun point invariant mais se décompose $\\rho=t_{\\vec W}\\circ\\psi$ avec $\\vec W$ parallèle à l'axe de $\\psi$, c'est une **symétrie glissée**.",
+      "formule_principale": "$\\det M=-1$ et matrice orthogonale $\\Rightarrow$ symétrie orthogonale vectorielle ; avec point fixe : réflexion ; sans point fixe mais $W\\parallel$axe : symétrie glissée",
+      "variantes": ["$\\det M=1$ et matrice orthogonale, avec point fixe : rotation ; sans point fixe : translation (rotation d'angle nul) ou 'rotation vissée' en dimension 3"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $M=\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$. Identifier le type d'endomorphisme vectoriel associé.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Vérifier l'orthogonalité", "justification": "colonnes normées et orthogonales", "resultat_markdown": "colonnes $(0,1)$ et $(1,0)$ : normes 1, produit scalaire $0\\times1+1\\times0=0$ ✓ orthogonale"},
+        {"numero": 2, "action": "Calculer le déterminant", "justification": "$\\det M=0\\times0-1\\times1$", "resultat_markdown": "$\\det M=-1$"},
+        {"numero": 3, "action": "Trouver l'axe (vecteurs invariants)", "justification": "résoudre $M\\vec v=\\vec v$", "resultat_markdown": "$y=x$ : axe dirigé par $(1,1)$"}
+      ],
+      "conclusion_markdown": "$M$ est la matrice d'une symétrie orthogonale vectorielle d'axe $\\mathrm{Vect}(1,1)$ (la droite $y=x$)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure au type d'isométrie uniquement à partir du déterminant, sans vérifier l'orthogonalité de la matrice", "pourquoi_faux": "une matrice non orthogonale de déterminant -1 pourrait correspondre à une transformation affine quelconque (avec changement d'échelle), pas nécessairement une isométrie", "correction_markdown": "Toujours vérifier d'abord l'orthogonalité de la matrice avant d'interpréter le signe du déterminant en termes d'isométrie."},
+      {"erreur_markdown": "Confondre une symétrie orthogonale affine (avec point fixe) et une symétrie glissée (sans point fixe)", "pourquoi_faux": "les deux ont le même type d'endomorphisme associé (déterminant -1, matrice orthogonale) mais se distinguent par l'existence ou non d'un point invariant", "correction_markdown": "Toujours vérifier l'existence d'un point invariant pour l'application affine (pas seulement pour l'endomorphisme vectoriel associé) avant de trancher entre réflexion et symétrie glissée."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Une application affine a pour endomorphisme associé une matrice orthogonale de déterminant -1, et n'admet aucun point invariant. Que peut-on en conclure sans calcul supplémentaire ?", "solution_markdown": "C'est nécessairement une symétrie glissée : composée d'une symétrie orthogonale d'axe D (direction = droite des vecteurs invariants de l'endomorphisme) et d'une translation de vecteur non nul parallèle à D — c'est la seule possibilité pour une isométrie indirecte sans point fixe dans le plan."}
+    ],
+    "synthese": "Une matrice orthogonale de déterminant -1 signale une symétrie orthogonale vectorielle ; combinée à l'existence ou non d'un point invariant pour l'application affine, elle permet de trancher entre réflexion (avec point fixe) et symétrie glissée (sans point fixe, vecteur de translation parallèle à l'axe)."
+  }
+}

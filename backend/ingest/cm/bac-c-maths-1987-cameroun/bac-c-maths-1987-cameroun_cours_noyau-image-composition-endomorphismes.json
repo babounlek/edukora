@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-noyau-image-composition-endomorphismes-terminale-c",
+  "meta": {"titre": "Déterminer noyau et image de deux endomorphismes et en déduire la nullité de leur composée", "cours_id": "cours-noyau-image-composition-endomorphismes-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — noyau, image et composition", "tags": ["noyau", "image", "composition d'endomorphismes"], "duree_estimee_minutes": 7, "epreuve_source": "bac-c-maths-1987-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1987-pA-1c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand l'image d'un endomorphisme coïncide exactement avec le noyau d'un autre, leur composée est automatiquement nulle : c'est une conséquence directe des définitions, aucun calcul matriciel supplémentaire n'est nécessaire pour le prouver (bien qu'il serve de vérification)."},
+    {"type": "prerequis", "items_markdown": ["Noyau: solutions de M(x,y)=(0,0). Image: engendrée par les colonnes de M", "u∈Im(g) et Im(g)⊂ker(f) ⟹ f(u)=0"]},
+    {"type": "regle", "titre": "Si Im(g)=ker(f), alors f∘g=θ", "contenu_markdown": "Pour tout vecteur $w$, $g(w)\\in\\text{Im}(g)$ par définition. Si $\\text{Im}(g)\\subset\\ker(f)$, alors $g(w)\\in\\ker(f)$, c'est-à-dire $f(g(w))=0$. Ceci étant vrai pour tout $w$, on conclut $f\\circ g=\\theta$ (endomorphisme nul), sans avoir besoin de multiplier les matrices — bien qu'un calcul matriciel direct serve de vérification indépendante.", "formule_principale": "Im(g) ⊂ ker(f) ⟹ f∘g = θ (pour tout w, f(g(w))=0 car g(w)∈Im(g)⊂ker(f))", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f de noyau Vect(1,0), g d'image Vect(1,0). Montrer que f∘g=θ.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Prendre w quelconque", "justification": "g(w)∈Im(g)=Vect(1,0)", "resultat_markdown": "g(w) est un multiple de (1,0)"},
+      {"numero": 2, "action": "Appliquer f", "justification": "Vect(1,0)=ker(f), donc f(g(w))=0", "resultat_markdown": "f(g(w))=0 pour tout w"}
+    ], "conclusion_markdown": "f∘g=θ, l'endomorphisme nul."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Vérifier Im(g)=ker(f) en comparant seulement des vecteurs générateurs isolés, sans s'assurer qu'il s'agit bien de la MÊME droite vectorielle (colinéarité)", "pourquoi_faux": "Deux vecteurs peuvent sembler différents en apparence (coordonnées non identiques) tout en engendrant la même droite vectorielle : seule la colinéarité effective compte, pas l'identité des coordonnées.", "correction_markdown": "Toujours vérifier la colinéarité explicite des vecteurs générateurs (un multiple scalaire de l'autre), jamais se fier à une simple ressemblance visuelle des coordonnées."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "h a pour noyau Vect(3,1) et k a pour image Vect(-6,-2). Montrer que h∘k=θ.", "solution_markdown": "Vect(-6,-2)=Vect(3,1) (facteur -2). Donc Im(k)=ker(h) : pour tout w, k(w)∈Im(k)=ker(h), donc h(k(w))=0. h∘k=θ."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La nullité d'une composée f∘g découle directement de l'inclusion Im(g)⊂ker(f), sans calcul matriciel nécessaire (bien qu'un tel calcul serve de vérification).", "Vérifier l'égalité de deux droites vectorielles exige de contrôler la colinéarité de leurs vecteurs générateurs, pas seulement leur ressemblance apparente."]}
+  ]
+}

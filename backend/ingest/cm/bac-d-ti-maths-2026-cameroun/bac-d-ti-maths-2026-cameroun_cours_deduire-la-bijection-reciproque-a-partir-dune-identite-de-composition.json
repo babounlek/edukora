@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-deduire-la-bijection-reciproque-a-partir-dune-identite-de-composition-terminale-d-ti",
+  "meta": {
+    "titre": "Déduire la bijection réciproque à partir d'une identité de composition",
+    "cours_id": "cours-deduire-la-bijection-reciproque-a-partir-dune-identite-de-composition-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Fonctions — bijection réciproque",
+    "tags": [
+      "bijection réciproque",
+      "composition",
+      "injectivité"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex1-3b"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois l'identité f(g(x))=x établie sur l'intervalle image de f, conclure que g est la réciproque de f est immédiat, sans nouveau calcul."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Définition de la bijection réciproque",
+        "Injectivité d'une fonction bijective"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De f(g(x))=x à g=f⁻¹",
+      "contenu_markdown": "Si $f$ est une bijection de $E$ sur $F$ et si $g:F\\to E$ vérifie $f(g(x))=x$ pour tout $x\\in F$, alors $g=f^{-1}$. En effet, pour chaque $x\\in F$, $g(x)$ est un antécédent de $x$ par $f$ ; comme $f$ est bijective (donc injective), cet antécédent est unique, donc $g(x)$ est nécessairement l'unique antécédent, c'est-à-dire $f^{-1}(x)$.",
+      "formule_principale": "f bijection de E sur F, g:F→E, f(g(x))=x pour tout x∈F ⟹ g=f⁻¹",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f bijection de R sur ]0;+∞[, g:]0;+∞[→R vérifie f(g(x))=x pour tout x>0. Que peut-on conclure ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le rôle de g(x)",
+          "justification": "g(x) est un antécédent de x par f.",
+          "resultat_markdown": "f(g(x))=x signifie g(x) antécédent de x"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser l'injectivité de f",
+          "justification": "f bijective donc injective : un seul antécédent possible.",
+          "resultat_markdown": "g(x) est l'unique antécédent de x"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "L'unique antécédent de x par f est par définition f⁻¹(x).",
+          "resultat_markdown": "g=f⁻¹"
+        }
+      ],
+      "conclusion_markdown": "g est la bijection réciproque de f."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'il faut aussi vérifier g(f(x))=x séparément pour conclure g=f⁻¹",
+          "pourquoi_faux": "Si f est bijective et g(F)⊂E avec f∘g=id_F, cela suffit déjà (par l'argument d'unicité de l'antécédent) à conclure g=f⁻¹ ; la seconde identité g∘f=id_E en découle alors automatiquement, elle n'a pas besoin d'être vérifiée séparément.",
+          "correction_markdown": "Une seule identité f(g(x))=x sur l'intervalle image de f, combinée à la bijectivité de f, suffit à conclure g=f⁻¹."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "f bijection de R sur R, g vérifie f(g(x))=x pour tout x. Que vaut g ?",
+          "solution_markdown": "g=f⁻¹."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la bijectivité de f est-elle indispensable dans ce raisonnement ?",
+          "solution_markdown": "Sans injectivité, un même x pourrait avoir plusieurs antécédents par f, et rien ne garantirait que g(x) désigne précisément celui recherché plutôt qu'un autre : l'unicité de l'antécédent est ce qui force g(x)=f⁻¹(x)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Cette méthode est-elle plus rapide que résoudre y=f(x) en x pour trouver f⁻¹ ?",
+          "solution_markdown": "Oui dans de nombreux cas : si l'énoncé fournit déjà une expression candidate g et guide sa vérification via composition, cela évite d'isoler algébriquement x dans y=f(x), ce qui peut être plus délicat (notamment avec des exponentielles ou logarithmes emboîtés)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si f bijective et f(g(x))=x sur l'intervalle image de f, alors g=f⁻¹.",
+        "L'argument clé est l'unicité de l'antécédent garantie par l'injectivité de f.",
+        "Cette méthode évite souvent d'isoler algébriquement x dans y=f(x)."
+      ]
+    }
+  ]
+}

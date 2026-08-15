@@ -1,15 +1,18 @@
 import re
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from catalog.models import Cursus, Subject, Tag, TypeReponse
+from catalog.models import Cours, Cursus, StatutContenu, Subject, Tag, TypeReponse
+from catalog.rendering import annotate_single_cours_link
+from catalog.serializers import CoursSummarySerializer, SubjectSerializer
 from subscriptions.models import Subscription
 
 from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare
-from .services import generer_session
+from .services import enregistrer_resultat_pour_revision, generer_session, maitrise_par_theme, revisions_dues
 
 
 def _get_answer(quiz_question):
@@ -49,6 +52,28 @@ def _clean_quiz_markdown(text):
     return text.strip()
 
 
+def _competence_item_corrige(item):
+    """
+    corrige_markdown d'un CompetenceItem, avec un lien "Voir le cours complet" injecté
+    quand un Cours publié couvre déjà sa compétence (item.theme) - jamais généré ou
+    deviné par le skill de génération (concepteur-quiz-competence n'a aucun moyen fiable
+    de connaître un slug de Cours au moment de la génération), toujours recalculé à la
+    lecture pour rester exact même si le Cours correspondant est publié après coup.
+    Même principe que catalog.rendering._clean_exercise_corrige pour Exercise, jamais
+    persisté sur item.corrige_markdown lui-même.
+    """
+    cours = (
+        Cours.objects.visibles()
+        .filter(subject=item.subject, tags=item.theme)
+        .filter(Q(cursus__in=item.cursus.all()) | Q(cursus__isnull=True))
+        .distinct()
+        .first()
+    )
+    if not cours:
+        return item.corrige_markdown
+    return annotate_single_cours_link(item.corrige_markdown, cours.slug)
+
+
 def _question_payload(quiz_question):
     """
     Contenu d'une QuizQuestion pour le client. corrige_markdown/reponse_correcte ne
@@ -76,7 +101,7 @@ def _question_payload(quiz_question):
             "subject_label": item.subject.label,
         }
         if answer:
-            payload["corrige_markdown"] = item.corrige_markdown
+            payload["corrige_markdown"] = _competence_item_corrige(item)
             payload["reponse_correcte"] = item.reponse_correcte
     else:
         question = quiz_question.question
@@ -236,13 +261,18 @@ def reveal_corrige(request, session_id, quiz_question_id):
         pk=quiz_question_id, session_id=session_id, session__user=request.user,
     )
     contenu = quiz_question.contenu
-    return Response({"corrige_markdown": contenu.corrige_markdown, "reponse_correcte": contenu.reponse_correcte})
+    corrige_markdown = (
+        _competence_item_corrige(contenu) if quiz_question.competence_item_id else contenu.corrige_markdown
+    )
+    return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": contenu.reponse_correcte})
 
 
 @api_view(["POST"])
 def answer_question(request, session_id, quiz_question_id):
     quiz_question = get_object_or_404(
-        QuizQuestion.objects.select_related("question__exercise__lesson__subject", "competence_item"),
+        QuizQuestion.objects.select_related(
+            "session", "question__exercise__lesson__subject", "competence_item",
+        ),
         pk=quiz_question_id, session_id=session_id, session__user=request.user,
     )
     contenu = quiz_question.contenu
@@ -268,7 +298,13 @@ def answer_question(request, session_id, quiz_question_id):
             )
         defaults["resultat_declare"] = resultat
 
-    QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
+    answer, _created = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
+
+    if quiz_question.competence_item_id:
+        item = quiz_question.competence_item
+        enregistrer_resultat_pour_revision(
+            request.user, quiz_question.session.cursus, item.subject, item.theme, answer.est_correcte,
+        )
 
     return Response(_question_payload(quiz_question))
 
@@ -280,3 +316,64 @@ def complete_session(request, session_id):
         session.completed_at = timezone.now()
         session.save(update_fields=["completed_at"])
     return Response(_resultat_payload(session))
+
+
+@api_view(["GET"])
+def list_revisions_dues(request):
+    """
+    File "à réviser aujourd'hui" (voir quiz.services.revisions_dues) : un thème par
+    ligne, avec de quoi le reprendre tout de suite - un raccourci vers un quiz ciblé sur
+    ce seul thème (même cursus/matière, voir startQuizSession côté frontend) et les
+    cours déjà publiés qui le couvrent, s'il y en a.
+    """
+    today = timezone.localdate()
+    payload = []
+    for schedule in revisions_dues(request.user):
+        cours_qs = (
+            Cours.objects.visibles()
+            .filter(subject=schedule.subject, tags=schedule.theme)
+            .filter(Q(cursus=schedule.cursus) | Q(cursus__isnull=True))
+            .distinct()
+        )
+        payload.append({
+            "id": schedule.id,
+            "theme": schedule.theme.name,
+            "theme_id": schedule.theme_id,
+            "subject_id": schedule.subject_id,
+            "subject_label": schedule.subject.label,
+            "cursus": schedule.cursus_id,
+            "cursus_display": _cursus_display(schedule.cursus),
+            "jours_retard": (today - schedule.due_at).days,
+            "cours": CoursSummarySerializer(cours_qs, many=True, context={"request": request}).data,
+        })
+    return Response(payload)
+
+
+@api_view(["GET"])
+def list_quiz_subjects(request):
+    """
+    Matières ayant au moins un CompetenceItem VALIDE pour le cursus donné - seule liste
+    que QuizStartPage doit proposer : lister toutes les matières du pays (comme
+    catalog.SubjectListView) laisserait choisir une matière sans aucune banque de quiz
+    générée pour ce cursus, et generer_session échouerait (ValueError "Aucune question
+    disponible") une fois le quiz lancé plutôt que de le signaler avant.
+    """
+    cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
+    qs = (
+        Subject.objects.filter(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus)
+        .select_related("country")
+        .distinct()
+        .order_by("label")
+    )
+    return Response(SubjectSerializer(qs, many=True, context={"request": request}).data)
+
+
+@api_view(["GET"])
+def maitrise(request):
+    """
+    Vue d'ensemble de la maîtrise par thème (voir quiz.services.maitrise_par_theme) -
+    alimente le tableau "Ma maîtrise" de la page Compte. `cursus` optionnel : sans lui,
+    l'historique complet de l'utilisateur tous cursus confondus.
+    """
+    cursus = get_object_or_404(Cursus, pk=request.GET["cursus"]) if request.GET.get("cursus") else None
+    return Response(maitrise_par_theme(request.user, cursus=cursus))

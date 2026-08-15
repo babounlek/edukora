@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-calculer-des-limites-avec-croissances-comparees-exponentielle-terminale-d-ti",
+  "meta": {"titre": "Calculer des limites impliquant croissances comparées avec l'exponentielle", "cours_id": "cours-calculer-des-limites-avec-croissances-comparees-exponentielle-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D/TI", "sous_theme": "Limites — croissances comparées", "tags": ["limite", "croissances comparées", "exponentielle"], "duree_estimee_minutes": 10, "epreuve_source": "bac-d-ti-maths-2024-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2024-cameroun-ex3-2c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Face à une forme indéterminée mêlant polynôme et exponentielle, les théorèmes de croissances comparées permettent de trancher immédiatement : l'exponentielle l'emporte toujours sur toute puissance de t."},
+    {"type": "prerequis", "items_markdown": ["Théorème des croissances comparées : lim t^n e^(-t) = 0 en +∞", "Forme indéterminée ∞×0"]},
+    {"type": "regle", "titre": "Identifier la forme et appliquer le théorème adapté", "contenu_markdown": "Pour une limite du type $\\lim_{t\\to+\\infty}P(t)e^{-kt}$ où $P$ est un polynôme et $k>0$, on réécrit sous la forme $t^n\\times e^{-kt}$ après factorisation, puis on applique directement $\\lim_{t\\to+\\infty}t^n e^{-kt}=0$ : l'exponentielle décroissante l'emporte toujours sur la croissance polynomiale.", "formule_principale": "lim(t→+∞) t^n e^(-kt) = 0 pour tout n entier et k>0", "variantes": ["lim(t→+∞) e^(kt)/t^n = +∞ (forme réciproque)"]},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer lim(t→+∞) (2t+3)e^(-2t).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Identifier la forme", "justification": "(2t+3)→+∞ et e^(-2t)→0, forme ∞×0", "resultat_markdown": "forme indéterminée"},
+      {"numero": 2, "action": "Décomposer en deux limites classiques", "justification": "2te^(-2t)→0 et 3e^(-2t)→0 par croissances comparées", "resultat_markdown": "somme de deux termes tendant chacun vers 0"}
+    ], "conclusion_markdown": "lim(t→+∞) (2t+3)e^(-2t) = 0."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Conclure hâtivement que la limite est +∞ ou -∞ en ne raisonnant que sur le terme polynomial (2t+3)→+∞, sans tenir compte du facteur exponentiel décroissant", "pourquoi_faux": "Le produit d'un terme qui tend vers +∞ et d'un terme qui tend vers 0 est une forme indéterminée qui ne se résout PAS en ne regardant qu'un seul des deux facteurs : il faut appliquer le théorème de croissances comparées.", "correction_markdown": "Toujours identifier explicitement la forme indéterminée (∞×0 ici) avant de choisir le théorème de croissances comparées adapté."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Calculer lim(t→+∞) t·e^(-t).", "solution_markdown": "0, par croissances comparées (n=1, k=1)."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Calculer lim(t→+∞) (t²-3t+1)e^(-t).", "solution_markdown": "Décomposer : t²e^(-t)→0, -3te^(-t)→0, e^(-t)→0. Somme de trois termes tendant vers 0, donc la limite vaut 0."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une forme ∞×0 avec exponentielle décroissante se résout par le théorème de croissances comparées.", "L'exponentielle décroissante l'emporte toujours sur n'importe quelle puissance polynomiale.", "Décomposer un polynôme en plusieurs termes séparés facilite l'application terme à terme du théorème."]}
+  ]
+}

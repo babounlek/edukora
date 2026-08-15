@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-matrice-f-base-vecteur-image-terminale-c",
+  "meta": {
+    "titre": "Écrire la matrice de f dans une base construite à partir d'un vecteur et de son image",
+    "cours_id": "cours-matrice-f-base-vecteur-image-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - matrice dans une base adaptée",
+    "tags": ["matrice d'un endomorphisme", "base adaptée", "colonnes d'images"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_5_qPIII-2b"
+  },
+  "sections": {
+    "accroche": "La matrice d'un endomorphisme dans une base construite à partir d'un vecteur u et de son image se lit presque immédiatement, sans calcul compliqué, dès que l'on sait exprimer f(u) et f(v) dans cette même base.",
+    "prerequis": ["Colonnes d'une matrice = coordonnées des images des vecteurs de base", "Relation liant v à f(u)"],
+    "regle": {
+      "titre": "Matrice de f dans la base (u,v) avec v lié à f(u)",
+      "contenu_markdown": "Dans une base $(\\vec u,\\vec v)$ où $\\vec v=\\dfrac1k f(\\vec u)$ pour un réel $k$, on a directement $f(\\vec u)=k\\vec v$ (première colonne $\\begin{pmatrix}0\\\\k\\end{pmatrix}$). Pour $f(\\vec v)$, on utilise $f(\\vec v)=\\dfrac1kf(f(\\vec u))=\\dfrac1k(f\\circ f)(\\vec u)$, que l'on exprime via la relation connue de $f\\circ f$ (par exemple $f\\circ f=-cId$), ce qui donne $f(\\vec v)=-\\dfrac ck\\vec u$ (seconde colonne).",
+      "formule_principale": "$\\mathrm{Mat}_{(\\vec u,\\vec v)}(f)=\\begin{pmatrix}0&-c/k\\\\k&0\\end{pmatrix}$ si $\\vec v=f(\\vec u)/k$ et $f\\circ f=-cId$",
+      "variantes": ["Cette forme antisymétrique de la matrice est typique d'un endomorphisme sans valeur propre réelle (rotation-homothétie)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit g∘g=-25Id, w≠0, v=g(w)/5. Écrire la matrice de g dans (w,v).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Image de w", "justification": "v=g(w)/5 donc g(w)=5v", "resultat_markdown": "g(w)=0·w+5·v"},
+        {"numero": 2, "action": "Image de v", "justification": "g(v)=g(g(w))/5=(g∘g)(w)/5=-25w/5", "resultat_markdown": "g(v)=-5w=-5·w+0·v"},
+        {"numero": 3, "action": "Assembler la matrice", "justification": "colonnes = images", "resultat_markdown": "$\\begin{pmatrix}0&-5\\\\5&0\\end{pmatrix}$"}
+      ],
+      "conclusion_markdown": "La matrice obtenue est celle d'une rotation d'angle π/2 composée avec une homothétie de rapport 5."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Inverser les lignes et les colonnes lors de l'écriture de la matrice (mettre les coordonnées de f(u) en ligne au lieu de colonne)", "pourquoi_faux": "par convention, la matrice d'un endomorphisme dans une base a pour COLONNES les coordonnées des images des vecteurs de base, pas ses lignes", "correction_markdown": "Toujours vérifier la convention : la j-ième colonne de la matrice contient les coordonnées de l'image du j-ième vecteur de base."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Soit h∘h=-Id, u≠0, v=h(u). Écrire la matrice de h dans (u,v).", "solution_markdown": "h(u)=v=0·u+1·v ; h(v)=h(h(u))=(h∘h)(u)=-u=-1·u+0·v. Matrice : [[0,-1],[1,0]]."}
+    ],
+    "synthese": "Dans une base construite à partir d'un vecteur u et d'un multiple v de son image f(u), la matrice de f s'obtient directement en exprimant f(u) (proportionnel à v) et f(v) (obtenu via f∘f, ramené à u) dans cette même base, produisant typiquement une matrice antisymétrique caractéristique d'un endomorphisme sans valeur propre réelle."
+  }
+}

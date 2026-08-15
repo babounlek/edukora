@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-somme-scores-epreuves-independantes-terminale-c",
+  "meta": {
+    "titre": "Calculer la probabilité d'une somme de scores sur des épreuves indépendantes",
+    "cours_id": "cours-somme-scores-epreuves-independantes-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Probabilités - répétition d'épreuves indépendantes",
+    "tags": ["épreuves indépendantes", "somme de scores", "dénombrement des arrangements"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_1_qI-2a"
+  },
+  "sections": {
+    "accroche": "Quand plusieurs parties indépendantes attribuent chacune un score parmi un ensemble fixe de valeurs, retrouver la probabilité d'un total donné exige d'abord de lister soigneusement toutes les façons d'atteindre ce total, puis de compter les ordres possibles pour chacune.",
+    "prerequis": ["Indépendance d'épreuves répétées", "Dénombrement des arrangements (position d'un résultat parmi n épreuves)"],
+    "regle": {
+      "titre": "Probabilité d'un total fixé sur des épreuves indépendantes",
+      "contenu_markdown": "Pour $n$ épreuves indépendantes, chacune donnant un score parmi un ensemble fini de valeurs avec des probabilités connues, la probabilité d'obtenir une somme totale donnée $S$ s'obtient en : (1) énumérant toutes les combinaisons de scores individuels (un score par épreuve) dont la somme vaut $S$ ; (2) pour chaque combinaison, calculant le produit des probabilités individuelles (indépendance) multiplié par le nombre d'ordres (arrangements) dans lesquels cette combinaison peut se réaliser ; (3) additionnant les résultats de toutes les combinaisons trouvées.",
+      "formule_principale": "$P(\\text{somme}=S)=\\displaystyle\\sum_{\\text{combinaisons}}(\\text{nombre d'arrangements})\\times\\prod(\\text{probabilités individuelles})$",
+      "variantes": ["Le nombre d'arrangements d'une combinaison avec répétitions se calcule via le multinôme n!/(n1!n2!...) si plusieurs épreuves donnent le même score"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "On lance 2 fois un dé truqué donnant 6 avec probabilité 1/4 et un autre résultat (noté 'autre') avec probabilité 3/4. Quelle est la probabilité d'obtenir un total 'un 6 et un autre' en 2 lancers ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier les combinaisons", "justification": "un 6 et un autre, dans un ordre quelconque", "resultat_markdown": "(6,autre) ou (autre,6) : 2 arrangements"},
+        {"numero": 2, "action": "Calculer la probabilité", "justification": "indépendance, 2 arrangements", "resultat_markdown": "P=2×(1/4)×(3/4)=6/16=3/8"}
+      ],
+      "conclusion_markdown": "La probabilité est 3/8."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de dénombrer tous les ordres possibles d'une combinaison de scores distincts", "pourquoi_faux": "chaque épreuve est distincte (première partie, deuxième partie, etc.), donc chaque ordre différent constitue un résultat distinct de l'expérience globale, même si le total est identique", "correction_markdown": "Toujours compter le nombre d'arrangements (positions possibles) de chaque combinaison avant de multiplier par les probabilités individuelles."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Trois lancers indépendants d'une pièce truquée donnant Pile avec P=0,6. Quelle est la probabilité d'obtenir exactement 2 Piles ?", "solution_markdown": "3 arrangements (position du seul Face) × 0,6²×0,4 = 3×0,36×0,4=0,432."}
+    ],
+    "synthese": "Pour calculer la probabilité qu'une somme de scores sur des épreuves indépendantes atteigne une valeur donnée, il faut systématiquement énumérer toutes les combinaisons de résultats individuels compatibles avec cette somme, puis sommer, pour chacune, le produit des probabilités individuelles multiplié par le nombre d'arrangements possibles."
+  }
+}

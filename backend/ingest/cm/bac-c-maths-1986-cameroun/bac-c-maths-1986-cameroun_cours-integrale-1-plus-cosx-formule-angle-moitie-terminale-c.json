@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-integrale-1-plus-cosx-formule-angle-moitie-terminale-c",
+  "meta": {
+    "titre": "Intégrer 1/(1+cos x) via la formule de l'angle moitié",
+    "cours_id": "cours-integrale-1-plus-cosx-formule-angle-moitie-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Calcul intégral - formules de duplication/angle moitié",
+    "tags": ["intégrale", "trigonométrie", "angle moitié", "tangente"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_1_q2"
+  },
+  "sections": {
+    "accroche": "L'intégrande 1/(1+cos x) résiste à toute primitive directe évidente ; la formule de l'angle moitié la transforme en une expression standard, immédiatement primitivable via la tangente.",
+    "prerequis": ["Formule de duplication cos(2a)=2cos²a-1", "Dérivée de tan x", "Identité 1+tan²u=1/cos²u"],
+    "regle": {
+      "titre": "Formule de l'angle moitié pour 1±cos x",
+      "contenu_markdown": "$1+\\cos x=2\\cos^2\\dfrac x2$ et $1-\\cos x=2\\sin^2\\dfrac x2$ (conséquences directes de $\\cos(2a)=2\\cos^2a-1=1-2\\sin^2a$ avec $a=x/2$). Ces formules transforment $\\dfrac1{1+\\cos x}$ en $\\dfrac12\\sec^2\\dfrac x2$, dont une primitive est $\\tan\\dfrac x2$ (à un facteur $\\frac12\\times2=1$ près, issu de la dérivée composée).",
+      "formule_principale": "$\\dfrac1{1+\\cos x}=\\dfrac12\\sec^2\\dfrac x2$, primitive $\\tan\\dfrac x2$",
+      "variantes": ["$\\dfrac1{1-\\cos x}=\\dfrac12\\csc^2\\dfrac x2$, primitive $-\\cot\\dfrac x2$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi/3}\\dfrac{dx}{1+\\cos x}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Transformer via l'angle moitié", "justification": "1+cosx=2cos²(x/2)", "resultat_markdown": "$\\dfrac1{1+\\cos x}=\\dfrac12\\sec^2\\dfrac x2$"},
+        {"numero": 2, "action": "Primitiver", "justification": "primitive de sec²(x/2) est 2tan(x/2)", "resultat_markdown": "$\\int\\dfrac12\\sec^2\\dfrac x2\\,dx=\\tan\\dfrac x2$"},
+        {"numero": 3, "action": "Évaluer aux bornes", "justification": "théorème fondamental", "resultat_markdown": "$\\left[\\tan\\dfrac x2\\right]_0^{\\pi/3}=\\tan\\dfrac\\pi6-\\tan0=\\dfrac{\\sqrt3}3-0$"}
+      ],
+      "conclusion_markdown": "L'intégrale vaut $\\dfrac{\\sqrt3}3$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier le facteur 1/2 lors du passage de 1+cos x à 2cos²(x/2)", "pourquoi_faux": "une erreur de facteur se répercute sur toute la primitive", "correction_markdown": "Toujours vérifier l'identité 1+cosx=2cos²(x/2) par un cas particulier (ex. x=0 : 1+1=2=2×1²) avant de l'utiliser."},
+      {"erreur_markdown": "Confondre la primitive de sec²(x/2) avec celle de sec²x (oubli du facteur 2 issu de la dérivée composée de x/2)", "pourquoi_faux": "la dérivée interne x/2 introduit un facteur 1/2 qu'il faut compenser", "correction_markdown": "Toujours vérifier par dérivation que la primitive proposée redonne bien l'intégrande de départ."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi/2}\\dfrac{dx}{1-\\cos x}$ (attention à la divergence possible en 0).", "solution_markdown": "L'intégrande diverge en x=0 (car 1-cos(0)=0) : l'intégrale est impropre et divergente sur cet intervalle."}
+    ],
+    "synthese": "Pour intégrer 1/(1+cos x), la formule de l'angle moitié 1+cos x=2cos²(x/2) ramène l'intégrande à (1/2)sec²(x/2), de primitive tan(x/2)."
+  }
+}

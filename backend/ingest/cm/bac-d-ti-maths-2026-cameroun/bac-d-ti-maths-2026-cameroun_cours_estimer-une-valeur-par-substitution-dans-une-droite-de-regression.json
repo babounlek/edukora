@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-estimer-une-valeur-par-substitution-dans-une-droite-de-regression-terminale-d-ti",
+  "meta": {
+    "titre": "Estimer une valeur par substitution dans une droite de régression",
+    "cours_id": "cours-estimer-une-valeur-par-substitution-dans-une-droite-de-regression-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Statistiques — prédiction",
+    "tags": [
+      "prédiction",
+      "substitution",
+      "extrapolation"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex4-I1c"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une droite de régression sert avant tout à prédire une valeur non observée, mais cette prédiction n'est fiable que dans la mesure où elle reste proche des données ayant servi à établir la droite."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Équation d'une droite de régression déjà établie",
+        "Substitution numérique dans une expression affine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Substituer et évaluer la fiabilité",
+      "contenu_markdown": "Pour estimer $y$ à une valeur $x_0$ donnée, on substitue $x=x_0$ dans l'équation $y=ax+b$ de la droite de régression déjà déterminée. La fiabilité de cette estimation dépend de la proximité de $x_0$ avec la plage des valeurs $x_i$ ayant servi à calculer la droite : une valeur $x_0$ largement en dehors de cette plage constitue une extrapolation, à signaler comme moins fiable.",
+      "formule_principale": "y(x0) = a×x0 + b",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "y=1,5x+1,67 (établie sur x∈{1,2,3}). Estimer y pour x=2,5 puis pour x=50.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Estimer pour x=2,5 (proche de la plage observée)",
+          "justification": "Substitution directe.",
+          "resultat_markdown": "y(2,5)=1,5×2,5+1,67=3,75+1,67=5,42"
+        },
+        {
+          "numero": 2,
+          "action": "Estimer pour x=50 (loin de la plage observée)",
+          "justification": "Substitution directe, mais extrapolation lointaine.",
+          "resultat_markdown": "y(50)=1,5×50+1,67=76,67"
+        }
+      ],
+      "conclusion_markdown": "La première estimation (x=2,5) est fiable (interpolation proche des données) ; la seconde (x=50) est une extrapolation lointaine, à interpréter avec prudence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Présenter toute prédiction issue d'une droite de régression comme également fiable, sans distinguer interpolation et extrapolation",
+          "pourquoi_faux": "Une droite de régression n'est calibrée que sur la plage des données observées ; l'extrapoler loin de cette plage peut donner des résultats non pertinents, même si le calcul algébrique reste correct.",
+          "correction_markdown": "Toujours comparer la valeur x0 à prédire avec la plage des données observées, et signaler explicitement toute extrapolation lointaine."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "y=2x-1. Estimer y pour x=3.",
+          "solution_markdown": "y=2×3-1=5."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Données observées sur x∈{5,10,15}. x=12 est-il une interpolation ou une extrapolation ?",
+          "solution_markdown": "Une interpolation, car 12 est à l'intérieur de la plage observée [5;15]."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi une extrapolation lointaine est-elle statistiquement risquée même si le calcul est mathématiquement correct ?",
+          "solution_markdown": "La droite de régression modélise une tendance linéaire observée sur une plage précise ; rien ne garantit que cette tendance se prolonge au-delà (la relation réelle entre les variables pourrait devenir non linéaire, changer de nature, ou atteindre un phénomène de saturation), donc le résultat numérique, bien que calculé correctement, perd sa validité statistique en dehors de la plage observée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une estimation par régression s'obtient par simple substitution dans l'équation de la droite.",
+        "Sa fiabilité dépend de la proximité de la valeur à prédire avec la plage des données observées.",
+        "Toujours distinguer interpolation (fiable) et extrapolation lointaine (à interpréter avec prudence)."
+      ]
+    }
+  ]
+}

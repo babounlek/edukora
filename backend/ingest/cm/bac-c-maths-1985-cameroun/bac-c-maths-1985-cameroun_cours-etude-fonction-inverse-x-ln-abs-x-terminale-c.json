@@ -1,0 +1,45 @@
+{
+  "cours_id": "cours-etude-fonction-inverse-x-ln-abs-x-terminale-c",
+  "meta": {
+    "titre": "Étude d'une fonction combinant inverse et logarithme : g(x) = 1/x + ln|x| + 1",
+    "cours_id": "cours-etude-fonction-inverse-x-ln-abs-x-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Étude de fonctions - fonctions logarithme et inverse combinées",
+    "tags": ["fonction logarithme", "dérivation", "sens de variation", "domaine de définition", "valeur absolue"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_1_q1a"
+  },
+  "sections": {
+    "accroche": "Une fonction qui mélange $1/x$ et $\\ln|x|$ n'est pas plus difficile qu'une fonction classique : il suffit d'appliquer les mêmes réflexes (domaine, dérivée, signe, limites) terme par terme, en faisant particulièrement attention à la valeur absolue dans le logarithme.",
+    "prerequis": ["Dérivée de $1/x$ et de $\\ln|x|$", "Règles de dérivation d'une somme", "Résolution d'inéquations avec mise au même dénominateur", "Limites usuelles de $\\ln x$ en $0^+$ et $+\\infty$"],
+    "regle": {
+      "titre": "Étudier une somme $1/x+\\ln|x|+c$",
+      "contenu_markdown": "Le domaine de définition est $\\mathbb R^*$ (le logarithme de $|x|$ est défini pour tout $x\\neq0$, et $1/x$ aussi). Pour la dérivée, on utilise la formule $(\\ln|x|)'=\\dfrac1x$ valable sur tout $\\mathbb R^*$ (et pas seulement sur $\\mathbb R_+^*$), ce qui simplifie souvent l'expression obtenue en mettant tous les termes au même dénominateur.",
+      "formule_principale": "$(\\ln|x|)'=\\dfrac1x$ pour tout $x\\in\\mathbb R^*$ ; $\\left(\\dfrac1x\\right)'=-\\dfrac1{x^2}$",
+      "variantes": ["La même méthode s'applique à des combinaisons du type $ax+\\ln|x|$, $\\dfrac1{x^2}+\\ln|x|$, etc."]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Étudier les variations de $h(x)=\\dfrac2x+\\ln|x|$ sur $\\mathbb R^*$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Dériver terme à terme", "justification": "somme de deux fonctions dérivables sur R*", "resultat_markdown": "$h'(x)=-\\dfrac2{x^2}+\\dfrac1x$"},
+        {"numero": 2, "action": "Mettre au même dénominateur", "justification": "comparer à zéro nécessite une seule fraction", "resultat_markdown": "$h'(x)=\\dfrac{-2+x}{x^2}=\\dfrac{x-2}{x^2}$"},
+        {"numero": 3, "action": "Étudier le signe", "justification": "$x^2>0$ toujours, donc le signe de $h'$ est celui de $x-2$", "resultat_markdown": "$h'(x)<0$ sur $]-\\infty,0[\\cup]0,2[$, $h'(x)>0$ sur $]2,+\\infty[$"}
+      ],
+      "conclusion_markdown": "$h$ est décroissante sur $]-\\infty,0[$ et sur $]0,2[$, croissante sur $]2,+\\infty[$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Écrire $(\\ln|x|)'=\\dfrac1{|x|}$", "pourquoi_faux": "la dérivée de $\\ln|x|$ est $1/x$ (avec le signe de $x$), pas $1/|x|$ qui serait toujours positif", "correction_markdown": "Retenir $(\\ln|x|)'=1/x$ sur tout $\\mathbb R^*$, valable aussi bien pour $x>0$ que pour $x<0$."},
+      {"erreur_markdown": "Restreindre le domaine à $\\mathbb R_+^*$ par réflexe (comme pour $\\ln x$ sans valeur absolue)", "pourquoi_faux": "la présence de la valeur absolue autorise justement les $x$ négatifs", "correction_markdown": "Toujours vérifier si c'est $\\ln x$ (domaine $\\mathbb R_+^*$) ou $\\ln|x|$ (domaine $\\mathbb R^*$) avant de fixer le domaine."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Calculer la dérivée de $k(x)=\\dfrac1x+\\ln|x|-3$.", "solution_markdown": "$k'(x)=-\\dfrac1{x^2}+\\dfrac1x=\\dfrac{x-1}{x^2}$"},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Étudier le signe de $k'(x)=\\dfrac{x-1}{x^2}$ sur $\\mathbb R^*$.", "solution_markdown": "$x^2>0$ toujours ; le signe est celui de $x-1$ : négatif sur $]-\\infty,0[\\cup]0,1[$, positif sur $]1,+\\infty[$."}
+    ],
+    "synthese": "Pour une somme combinant $1/x$ et $\\ln|x|$ : domaine $\\mathbb R^*$, dériver terme à terme avec $(\\ln|x|)'=1/x$, mettre au même dénominateur pour étudier le signe."
+  }
+}

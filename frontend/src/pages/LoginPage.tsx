@@ -1,10 +1,11 @@
-import { useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 
-import { requestOtp, verifyOtp } from "@/api/endpoints"
+import { googleSignIn, requestOtp, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { GoogleSignInButton } from "@/components/GoogleSignInButton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,6 +32,14 @@ type Step = "phone" | "code"
  */
 const SUPPORTED_REGISTRATION_COUNTRIES = ["cm"]
 
+// Miroir du cooldown serveur (voir backend/users/otp_service.py,
+// OTP_MIN_INTERVAL_SECONDS) - affiché ici pour éviter qu'un clic prématuré sur
+// "Renvoyer le code" ne se solde par une erreur 429 plutôt que par un simple bouton
+// grisé avec un décompte. Les deux valeurs peuvent diverger sans casser quoi que ce
+// soit (le serveur reste la seule source de vérité, cette constante n'est qu'un
+// affichage), juste avec un bouton réactivé un peu trop tôt ou trop tard.
+const OTP_RESEND_COOLDOWN_SECONDS = 60
+
 export function LoginPage() {
   useSeo({ title: "Connexion" })
 
@@ -41,6 +50,21 @@ export function LoginPage() {
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isResending, setIsResending] = useState(false)
+  const [resendCooldownEndsAt, setResendCooldownEndsAt] = useState<number | null>(null)
+  const [resendSecondsLeft, setResendSecondsLeft] = useState(0)
+
+  // Recalcule chaque seconde plutôt qu'un simple setTimeout unique : la valeur
+  // affichée doit rester correcte même si l'onglet passe en arrière-plan un moment
+  // (throttling des timers navigateur) - se base sur l'horodatage cible
+  // (resendCooldownEndsAt), jamais sur un compteur décrémenté à l'aveugle.
+  useEffect(() => {
+    if (!resendCooldownEndsAt) return
+    const tick = () => setResendSecondsLeft(Math.max(0, Math.ceil((resendCooldownEndsAt - Date.now()) / 1000)))
+    tick()
+    const interval = setInterval(tick, 1000)
+    return () => clearInterval(interval)
+  }, [resendCooldownEndsAt])
 
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -63,10 +87,27 @@ export function LoginPage() {
     try {
       await requestOtp(phoneNumber)
       setStep("code")
+      setResendCooldownEndsAt(Date.now() + OTP_RESEND_COOLDOWN_SECONDS * 1000)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  async function handleResendOtp() {
+    setError(null)
+    setIsResending(true)
+    try {
+      await requestOtp(phoneNumber)
+      setResendCooldownEndsAt(Date.now() + OTP_RESEND_COOLDOWN_SECONDS * 1000)
+    } catch (err) {
+      // Le 429 du cooldown serveur (voir OTP_RESEND_COOLDOWN_SECONDS) ne devrait
+      // normalement jamais arriver ici tant que le bouton reste grisé pendant le
+      // décompte - gardé quand même en filet pour une horloge client désynchronisée.
+      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+    } finally {
+      setIsResending(false)
     }
   }
 
@@ -77,7 +118,22 @@ export function LoginPage() {
     try {
       const response = await verifyOtp(phoneNumber, code, consumeReferralCode())
       clearReferralCode()
-      login(response.access, response.refresh, response.user)
+      login(response.access, response.user)
+      navigate(redirectTo, { replace: true })
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  async function handleGoogleCredential(credential: string) {
+    setError(null)
+    setIsSubmitting(true)
+    try {
+      const response = await googleSignIn(credential, consumeReferralCode())
+      clearReferralCode()
+      login(response.access, response.user)
       navigate(redirectTo, { replace: true })
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
@@ -153,7 +209,15 @@ export function LoginPage() {
                 {isSubmitting ? "Envoi..." : "Recevoir le code"}
               </Button>
             </form>
-          ) : (
+          ) : null}
+          {/* Hors du <form> : le bouton Google est rendu par Google et déclenche sa
+              propre soumission, l'imbriquer ferait aussi partir la demande d'OTP.
+              Volontairement une seule alternative visible en plus du téléphone -
+              au-delà de trois boutons, un écran de connexion cesse d'être un choix. */}
+          {step === "phone" && (
+            <GoogleSignInButton onCredential={handleGoogleCredential} disabled={isSubmitting} withSeparator />
+          )}
+          {step === "code" ? (
             <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="code">Code reçu par SMS</Label>
@@ -175,16 +239,29 @@ export function LoginPage() {
               <Button
                 type="button"
                 variant="ghost"
+                disabled={resendSecondsLeft > 0 || isResending}
+                onClick={handleResendOtp}
+              >
+                {resendSecondsLeft > 0
+                  ? `Renvoyer le code (${resendSecondsLeft}s)`
+                  : isResending
+                    ? "Envoi..."
+                    : "Renvoyer le code"}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
                 onClick={() => {
                   setStep("phone")
                   setCode("")
                   setError(null)
+                  setResendCooldownEndsAt(null)
                 }}
               >
                 Changer de numéro
               </Button>
             </form>
-          )}
+          ) : null}
         </CardContent>
       </Card>
     </div>

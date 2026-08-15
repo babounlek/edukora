@@ -1,0 +1,48 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2014-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2014,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "titre_exercice": "Problème, Partie A : étude complète de f(x)=e^x/(x+2), restriction bijective, construction de la réciproque",
+  "points": 4.5,
+  "figures": [],
+  "enonce_intro_markdown": "On considère la fonction numérique de la variable réelle $x$ définie pour tout $x\\ne-2$ par $f(x)=\\dfrac{e^x}{x+2}$. On note $(C)$ sa courbe représentative dans un repère orthonormé $(O,\\vec\\imath,\\vec\\jmath)$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1pt",
+      "enonce_markdown": "Déterminer les limites de $f$ aux bornes de son domaine de définition.",
+      "rappels_de_methode": [{"cours_id": "cours-limites-quotient-exponentielle-polynome-bornes-domaine-terminale-d-ti", "texte": "Pour une fonction f(x)=e^x/(x+2), on étudie les limites en -∞, aux abords de la valeur interdite -2 (limites à gauche et à droite, distinctes), et en +∞ (croissance comparée)."}],
+      "corrige_markdown": "### Rappel de méthode\nLe domaine de définition de $f$ étant $\\mathbb R\\setminus\\{-2\\}$, il faut étudier les limites en $-\\infty$, aux abords de la valeur interdite $-2$ (à gauche ET à droite, séparément, car elles peuvent différer), et en $+\\infty$.\n\n**Limite en $-\\infty$.** Quand $x\\to-\\infty$ : $e^x\\to0^+$ et $x+2\\to-\\infty$.\n\n$$\\lim_{x\\to-\\infty}f(x)=\\dfrac{0^+}{-\\infty}=0^-$$\n\n**Limite en $-2^-$ (à gauche de $-2$).** Le numérateur $e^x\\to e^{-2}\\approx0{,}135$ (constante positive), et $x+2\\to0^-$.\n\n$$\\lim_{x\\to-2^-}f(x)=\\dfrac{e^{-2}}{0^-}=-\\infty$$\n\n**Limite en $-2^+$ (à droite de $-2$).** Le numérateur tend toujours vers $e^{-2}>0$, et $x+2\\to0^+$.\n\n$$\\lim_{x\\to-2^+}f(x)=\\dfrac{e^{-2}}{0^+}=+\\infty$$\n\n**Limite en $+\\infty$.** Par croissance comparée, $\\dfrac{e^x}x\\to+\\infty$ ; comme $x+2\\sim x$ en $+\\infty$ :\n\n$$\\lim_{x\\to+\\infty}f(x)=+\\infty$$\n\n**Conséquence : la droite d'équation $x=-2$ est asymptote verticale à $(C)$.**"
+    },
+    {
+      "numero": "2",
+      "points": "1pt",
+      "enonce_markdown": "Étudier les variations de $f$ et dresser son tableau de variation.",
+      "rappels_de_methode": [{"cours_id": "cours-deriver-quotient-exponentielle-polynome-signe-terminale-d-ti", "texte": "Pour dériver f(x)=e^x/(x+2), on applique la formule du quotient (u/v)'=(u'v-uv')/v² ; le signe de f' se réduit ensuite au signe du seul facteur polynomial (le dénominateur au carré et l'exponentielle étant toujours positifs)."}],
+      "corrige_markdown": "### Rappel de méthode\nPour dériver un quotient $f=\\dfrac uv$, on applique la formule $f'=\\dfrac{u'v-uv'}{v^2}$. Comme $v^2>0$ et souvent le numérateur $u$ (ici $e^x$) est toujours positif, le signe de $f'$ se réduit généralement au signe d'un facteur polynomial simple, obtenu en simplifiant le numérateur de la dérivée.\n\n**Dérivation, avec $u=e^x$, $u'=e^x$, $v=x+2$, $v'=1$.**\n\n$$f'(x)=\\dfrac{e^x(x+2)-e^x(1)}{(x+2)^2}=\\dfrac{e^x\\big[(x+2)-1\\big]}{(x+2)^2}=\\dfrac{e^x(x+1)}{(x+2)^2}$$\n\n**Étude du signe de $f'(x)$.** Le facteur $e^x>0$ toujours, et $(x+2)^2>0$ pour $x\\ne-2$ : le signe de $f'(x)$ est donc celui de $(x+1)$.\n\n$$f'(x)>0\\ \\Longleftrightarrow\\ x>-1\\qquad f'(x)<0\\ \\Longleftrightarrow\\ x<-1\\ (x\\ne-2)$$\n\n**$f$ est décroissante sur $\\,]-\\infty;-2[$ et sur $\\,]-2;-1]$, croissante sur $[-1;+\\infty[$.**\n\n**Calcul du minimum local, en $x=-1$.**\n\n$$f(-1)=\\dfrac{e^{-1}}{-1+2}=\\dfrac{e^{-1}}1=\\dfrac1e\\approx0{,}368$$\n\n**Tableau de variation.**\n\n$$\\begin{array}{c|ccccccc}x&-\\infty&&-2&&-1&&+\\infty\\\\\\hline f'(x)&&-&\\|&-&0&+&\\\\\\hline f(x)&0^-&\\searrow&\\underset{-\\infty}{\\|}\\overset{+\\infty}{\\ }&\\searrow&\\frac1e&\\nearrow&+\\infty\\end{array}$$"
+    },
+    {
+      "numero": "3",
+      "points": "1pt",
+      "enonce_markdown": "Soit $g$ la restriction de $f$ à l'intervalle $I=\\,]-1;+\\infty[$ ; montrer que $g$ réalise une bijection de $I$ sur un intervalle $J$ que l'on déterminera.",
+      "rappels_de_methode": [{"cours_id": "cours-restriction-bijection-intervalle-monotonie-stricte-terminale-d-ti", "texte": "Pour montrer qu'une restriction g réalise une bijection de I sur J, on vérifie que f est continue et strictement monotone sur I ; J est alors l'image de I par f, un intervalle ouvert borné par les limites de f aux bornes de I."}],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une restriction $g$ de $f$ à un intervalle $I$ réalise une bijection de $I$ sur un intervalle $J$, on vérifie que $f$ est continue et strictement monotone sur $I$ (théorème de la bijection) ; l'intervalle image $J$ est alors déterminé par les limites de $f$ aux bornes de $I$ (bornes ouvertes si $I$ est ouvert et les limites correspondantes ne sont pas atteintes).\n\n**Continuité.** $f$ est continue sur $I=\\,]-1;+\\infty[$ (quotient de fonctions continues, dénominateur non nul car $-2\\notin I$).\n\n**Stricte monotonie.** D'après la question 2, $f'(x)>0$ pour tout $x>-1$ : $f$ est strictement croissante sur $I$.\n\n**$g$ est donc continue et strictement croissante sur $I$ : par le théorème de la bijection, $g$ réalise une bijection de $I$ sur $J=g(I)$.**\n\n**Détermination de $J$.** Comme $g$ est strictement croissante sur l'intervalle ouvert $I=\\,]-1;+\\infty[$ :\n\n$$J=\\left]\\lim_{x\\to-1^+}f(x)\\,;\\,\\lim_{x\\to+\\infty}f(x)\\right[=\\left]f(-1)\\,;\\,+\\infty\\right[=\\left]\\dfrac1e\\,;\\,+\\infty\\right[$$\n\n**$g$ réalise une bijection de $I=\\,]-1;+\\infty[$ sur $J=\\left]\\dfrac1e\\,;\\,+\\infty\\right[$.**"
+    },
+    {
+      "numero": "4",
+      "points": "1,5pt",
+      "enonce_markdown": "Tracer dans le même repère, la courbe $(C)$ représentative de $f$, et la courbe $(C')$ représentative de $g^{-1}$.",
+      "rappels_de_methode": [{"cours_id": "cours-tracer-courbe-reciproque-symetrie-droite-terminale-d-ti", "texte": "La courbe de la réciproque g⁻¹ s'obtient par symétrie de la courbe de g par rapport à la droite d'équation y=x."}],
+      "corrige_markdown": "### Rappel de méthode\nLa courbe représentative de la fonction réciproque $g^{-1}$ s'obtient à partir de celle de $g$ par symétrie orthogonale par rapport à la droite d'équation $y=x$ (première bissectrice du repère).\n\n**Éléments de $(C)$ à reporter** (d'après les questions 1 et 2) : asymptote verticale $x=-2$, minimum local $\\left(-1\\,;\\,\\frac1e\\right)$, branche décroissante vers $0^-$ en $-\\infty$, branches vers $\\pm\\infty$ de part et d'autre de l'asymptote, branche croissante vers $+\\infty$ après le minimum.\n\n**Construction de $(C')$.** La portion de $(C)$ correspondant à $g$ (restriction de $f$ à $I=\\,]-1;+\\infty[$) va du point $\\left(-1\\,;\\,\\frac1e\\right)$ (exclu) jusqu'à $+\\infty$. Sa symétrique par rapport à la droite $y=x$ donne $(C')$, courbe de $g^{-1}$, allant du point $\\left(\\frac1e\\,;\\,-1\\right)$ (exclu) jusqu'à $+\\infty$, entièrement contenue dans le demi-plan $x>\\frac1e$.\n\n**Tracé.** On trace $(C)$ avec tous ses éléments caractéristiques, puis on trace la droite $y=x$ en pointillés comme axe de symétrie, puis on construit $(C')$ point par point comme symétrique de la portion de $(C)$ sur $I$.\n\n### Conseil\nTracer d'abord la droite $y=x$ en pointillés avant de construire $(C')$ : elle sert de guide visuel direct pour vérifier que chaque point construit est bien le symétrique de son homologue sur $(C)$."
+    }
+  ]
+}

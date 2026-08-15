@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-exprimer-le-terme-general-d-une-suite-geometrique-et-de-la-suite-associee-par-exponentiation-terminale-c",
+  "meta": {
+    "titre": "Exprimer le terme général d'une suite géométrique et de la suite associée par exponentiation",
+    "cours_id": "cours-exprimer-le-terme-general-d-une-suite-geometrique-et-de-la-suite-associee-par-exponentiation-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques",
+    "tags": [
+      "terme général",
+      "suite géométrique",
+      "exponentielle"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex1-I.2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la nature géométrique établie, retrouver l'expression explicite de la suite d'origine n'est qu'une question de composition par l'exponentielle, l'opération inverse du logarithme utilisé pour la définir."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître le terme général d'une suite géométrique v_n=v_0×q^n",
+        "Savoir que exp et ln sont des fonctions réciproques"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retrouver u_n à partir de v_n",
+      "contenu_markdown": "Si $v_n=\\ln u_n-c$ est géométrique de raison $q$ et de premier terme $v_0$, alors $v_n=v_0q^n$, d'où $\\ln u_n=v_n+c$, et enfin $u_n=e^{v_n+c}$ en composant par l'exponentielle.",
+      "formule_principale": "v_n = v0 q^n ; u_n = exp(v_n + c)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "v_n géométrique de raison 1/3, v_0=ln4-3, avec v_n=ln(u_n)-3. Exprimer u_n et v_n en fonction de n.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le terme général de v_n",
+          "justification": "Formule du terme général d'une suite géométrique.",
+          "resultat_markdown": "v_n = (ln4-3)×(1/3)^n"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler ln(u_n)",
+          "justification": "v_n=ln(u_n)-3 donc ln(u_n)=v_n+3.",
+          "resultat_markdown": "ln(u_n) = (ln4-3)(1/3)^n + 3"
+        },
+        {
+          "numero": 3,
+          "action": "Composer par l'exponentielle",
+          "justification": "u_n=e^(ln u_n).",
+          "resultat_markdown": "u_n = exp[(ln4-3)(1/3)^n + 3]"
+        }
+      ],
+      "conclusion_markdown": "v_n=(ln4-3)(1/3)^n et u_n=exp[(ln4-3)(1/3)^n+3]."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de composer par l'exponentielle et laisser la réponse sous forme de ln(u_n)=...",
+          "pourquoi_faux": "La question demande explicitement d'exprimer u_n, pas ln(u_n) : il faut impérativement appliquer l'exponentielle des deux côtés pour isoler u_n.",
+          "correction_markdown": "Toujours vérifier que la variable demandée par l'énoncé est bien celle isolée dans la réponse finale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "v_n=3×2^n et v_n=ln(u_n)-1. Exprimer u_n.",
+          "solution_markdown": "ln(u_n)=3×2^n+1, donc u_n=exp(3×2^n+1)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer u_2 dans l'exemple résolu (valeur numérique approchée).",
+          "solution_markdown": "v_2=(ln4-3)(1/9)≈(1,386-3)/9≈-0,179, donc ln(u_2)≈2,821, u_2≈e^2,821≈16,79."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi cette méthode (passer par un logarithme puis composer par l'exponentielle) est-elle plus simple que de manipuler directement la relation de récurrence sur u_n ?",
+          "solution_markdown": "La relation de récurrence sur u_n mêle une racine cubique et une exponentielle, deux opérations non linéaires difficiles à itérer directement ; le logarithme transforme cette relation multiplicative/radicielle en une relation affine simple sur v_n, pour laquelle la formule du terme général d'une suite géométrique s'applique immédiatement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le terme général d'une suite géométrique est v_n=v_0×q^n.",
+        "On retrouve u_n en isolant ln(u_n)=v_n+c puis en composant par l'exponentielle : u_n=e^(v_n+c).",
+        "Toujours vérifier que la variable finale demandée par l'énoncé est bien celle isolée."
+      ]
+    }
+  ]
+}

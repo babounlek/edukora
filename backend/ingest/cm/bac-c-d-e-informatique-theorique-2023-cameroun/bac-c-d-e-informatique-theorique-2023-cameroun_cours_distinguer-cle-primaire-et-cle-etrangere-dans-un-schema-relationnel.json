@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-distinguer-cle-primaire-et-cle-etrangere-dans-un-schema-relationnel-terminale-c",
+  "meta": {
+    "titre": "Distinguer clé primaire et clé étrangère dans un schéma relationnel",
+    "cours_id": "cours-distinguer-cle-primaire-et-cle-etrangere-dans-un-schema-relationnel-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Bases de données relationnelles",
+    "tags": [
+      "clé primaire",
+      "clé étrangère",
+      "schéma relationnel"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans la représentation textuelle d'un schéma relationnel, deux conventions typographiques en disent long : le soulignement d'un attribut, et le symbole # devant un autre. Savoir les lire est indispensable pour comprendre n'importe quel schéma de base de données."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la notion de table (relation) dans une base de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire un schéma relationnel : clé primaire et clé étrangère",
+      "contenu_markdown": "Dans un schéma relationnel écrit sous forme textuelle, l'attribut **souligné** est la **clé primaire** de la table : il identifie de façon unique chaque ligne (chaque occurrence) de cette table. Un attribut précédé du symbole **#** est une **clé étrangère** : il reprend la valeur de la clé primaire d'une autre table, matérialisant ainsi un lien entre les deux tables.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dire ce que représentent Matricule et #NumClasse dans ELEVE (Matricule, Nom, Prénom, ..., #NumClasse).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'attribut souligné",
+          "justification": "Matricule est souligné dans le schéma.",
+          "resultat_markdown": "Matricule = clé primaire de ELEVE"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'attribut précédé de #",
+          "justification": "#NumClasse porte le symbole de clé étrangère.",
+          "resultat_markdown": "#NumClasse = clé étrangère référençant CLASSE"
+        }
+      ],
+      "conclusion_markdown": "L'attribut souligné est la clé primaire (identifiant unique) ; l'attribut précédé de # est une clé étrangère (référence vers une autre table)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que #NumClasse est \"juste un attribut normal\" de ELEVE, sans mentionner le lien vers CLASSE",
+          "pourquoi_faux": "Le symbole # signale précisément qu'il ne s'agit pas d'un attribut ordinaire mais d'une référence vers une autre table ; omettre ce lien revient à ignorer une information essentielle du schéma.",
+          "correction_markdown": "Mentionne systématiquement la table référencée quand tu identifies une clé étrangère (ici : #NumClasse référence CLASSE)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans MATIERE (IdMatiere, Intitule, #IdProf), quel est l'attribut clé primaire ?",
+          "solution_markdown": "IdMatiere (souligné), identifiant unique de chaque matière."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que représente #IdProf dans la table MATIERE ?",
+          "solution_markdown": "Une clé étrangère référençant la table PROFESSEUR : elle indique quel professeur enseigne cette matière."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un attribut peut-il être à la fois clé primaire de sa table ET clé étrangère référençant une autre table ? Donner un exemple de situation où cela arrive.",
+          "solution_markdown": "Oui, c'est le cas typique d'une relation \"héritée\" ou d'une association un-à-un stricte : par exemple, si une table DIRECTEUR(NumEmploye) partageait le même identifiant qu'une table EMPLOYE(NumEmploye) dont chaque directeur est aussi un employé, NumEmploye serait à la fois clé primaire de DIRECTEUR et clé étrangère vers EMPLOYE. C'est également le cas dans une table intermédiaire d'association N,N, où la clé primaire composite est entièrement formée des deux clés étrangères des tables reliées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'attribut souligné dans un schéma relationnel est la clé primaire de la table.",
+        "L'attribut précédé de # est une clé étrangère, référençant une autre table.",
+        "Toujours préciser la table référencée par une clé étrangère identifiée.",
+        "Un attribut peut être à la fois clé primaire de sa table et clé étrangère vers une autre."
+      ]
+    }
+  ]
+}

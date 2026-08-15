@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-histogramme-classes-amplitudes-inegales-premiere-c",
+  "meta": {
+    "titre": "Construire un histogramme avec des classes d'amplitudes inégales",
+    "cours_id": "cours-histogramme-classes-amplitudes-inegales-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Statistiques - histogrammes à classes inégales",
+    "tags": ["histogramme", "densité d'effectif", "classes inégales"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_2_q1"
+  },
+  "sections": {
+    "accroche": "Un histogramme représente des effectifs par des AIRES, pas par des hauteurs : dès que les classes n'ont pas toutes la même largeur, oublier cette distinction déforme complètement la lecture visuelle des données.",
+    "prerequis": ["Notion d'amplitude d'une classe statistique", "Lecture d'un tableau d'effectifs"],
+    "regle": {
+      "titre": "Construction d'un histogramme à classes inégales",
+      "contenu_markdown": "Dans un histogramme, l'aire de chaque rectangle doit être proportionnelle à l'effectif de la classe qu'il représente. Si toutes les classes ont la même amplitude, hauteur et effectif sont proportionnels et on peut prendre la hauteur égale à l'effectif. Mais si les amplitudes diffèrent, il faut calculer une densité d'effectif $d_i=\\dfrac{n_i}{a_i}$ (effectif divisé par amplitude) et prendre cette densité comme hauteur du rectangle : ainsi, aire $=$ hauteur $\\times$ largeur $=d_i\\times a_i=n_i$, l'effectif recherché.",
+      "formule_principale": "Hauteur du rectangle $=\\dfrac{\\text{effectif de la classe}}{\\text{amplitude de la classe}}$",
+      "variantes": ["Si un tableau donne des fréquences plutôt que des effectifs, on utilise de la même façon la densité de fréquence, fréquence divisée par amplitude"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Construire l'histogramme de la série : [0;5[ (effectif 30), [5;7[ (effectif 20), [7;12[ (effectif 25).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer les amplitudes", "justification": "borne sup - borne inf", "resultat_markdown": "5, 2, 5"},
+        {"numero": 2, "action": "Calculer les densités", "justification": "effectif/amplitude", "resultat_markdown": "30/5=6 ; 20/2=10 ; 25/5=5"},
+        {"numero": 3, "action": "Tracer", "justification": "hauteur = densité", "resultat_markdown": "Rectangles de hauteurs respectives 6, 10, 5 sur les bases [0;5[, [5;7[, [7;12["}
+      ],
+      "conclusion_markdown": "Le rectangle le plus étroit ([5;7[) est aussi le plus haut, car sa densité est la plus forte malgré un effectif inférieur à celui de [7;12[."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Prendre directement les effectifs comme hauteurs, même quand les amplitudes diffèrent d'une classe à l'autre", "pourquoi_faux": "cela fait apparaître les classes larges comme artificiellement dominantes et les classes étroites comme artificiellement faibles, alors que c'est l'aire, pas la hauteur, qui doit représenter l'effectif", "correction_markdown": "Toujours vérifier si les amplitudes sont égales avant de tracer ; si elles diffèrent, calculer systématiquement la densité (effectif/amplitude) avant de fixer les hauteurs des rectangles."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Classes [0;4[ (effectif 40), [4;6[ (effectif 30) : calculer les hauteurs des rectangles.", "solution_markdown": "Amplitude 4 et 2 ; densités 40/4=10 et 30/2=15."}
+    ],
+    "synthese": "Construire un histogramme à classes d'amplitudes inégales exige de remplacer l'effectif brut par une densité (effectif divisé par amplitude) comme hauteur de chaque rectangle, afin que ce soit l'aire, et non la hauteur, qui reste fidèlement proportionnelle à l'effectif représenté."
+  }
+}

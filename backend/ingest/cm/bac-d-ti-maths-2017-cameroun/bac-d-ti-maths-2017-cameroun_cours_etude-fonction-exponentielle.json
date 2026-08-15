@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-etude-fonction-exponentielle-terminale-d-ti",
+  "meta": {
+    "titre": "Étude complète d'une fonction exponentielle : dérivée, signe et tableau de variations",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D-TI",
+    "sous_theme": "Fonctions exponentielles et étude de fonctions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "fonction exponentielle",
+      "dérivée",
+      "tableau de variations",
+      "croissances comparées",
+      "limites"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-d-ti-maths-2017-cameroun",
+    "epreuve_titre": "BAC Séries D-TI Mathématiques 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bacdtimaths2017cameroun-ex3-qA2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Devant une fonction comme $f(x)=e^{3x/2}-2x-1$, beaucoup d'élèves paniquent dès qu'ils voient une exponentielle mélangée à un polynôme. Pourtant la méthode est toujours la même, qu'il s'agisse d'une fonction du premier degré ou d'une fonction exponentielle complexe : dériver, étudier le signe de la dérivée, puis construire un tableau qui résume tout le comportement de la fonction. Ce tableau de variations n'est pas un simple exercice de style : c'est l'outil qui te permet ensuite de localiser les zéros d'une fonction, de comparer une courbe à une droite, ou de calculer une aire, sans refaire les calculs de zéro à chaque fois. Maîtriser cette méthode une fois pour toutes, c'est débloquer la moitié des exercices d'analyse du BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver une fonction exponentielle composée : $\\left(e^{u}\\right)' = u'e^u$",
+        "Résoudre une inéquation ou une équation simple avec exponentielle et logarithme",
+        "Connaître les limites de référence $\\lim\\limits_{x\\to+\\infty}e^x=+\\infty$ et $\\lim\\limits_{x\\to-\\infty}e^x=0$",
+        "Savoir qu'une fonction strictement monotone sur un intervalle ne peut s'annuler qu'une seule fois sur cet intervalle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode en trois temps : dérivée, signe, tableau",
+      "contenu_markdown": "Étudier les variations d'une fonction $f$ dérivable sur un intervalle $I$ se fait toujours dans le même ordre :\n\n1. **Calculer $f'(x)$** avec les règles de dérivation usuelles.\n2. **Déterminer le signe de $f'(x)$** sur $I$. Souvent, cela demande de résoudre $f'(x)=0$ pour trouver une (ou plusieurs) valeur(s) qui partage(nt) $I$ en intervalles où le signe est constant. Quand $f'$ elle-même est une fonction strictement monotone (par exemple parce qu'elle contient une exponentielle strictement croissante), il suffit de savoir où elle s'annule pour connaître son signe partout : négative avant, positive après (ou l'inverse selon le sens de variation de $f'$).\n3. **Construire le tableau de variations** : une ligne pour $x$ avec les bornes et les valeurs qui annulent $f'$, une ligne pour le signe de $f'(x)$, une ligne pour les variations de $f$ (flèches) avec les limites aux bornes et les valeurs remarquables (extremums).\n\n**Formule clé pour une fonction du type $f(x)=e^{kx}+\\text{(polynôme)}$ :**\n\n$$f'(x) = k\\,e^{kx}+\\text{(dérivée du polynôme)}$$\n\nComme $x\\mapsto e^{kx}$ est strictement monotone sur $\\mathbb R$ (croissante si $k>0$, décroissante si $k<0$), si $f'$ ne contient que ce terme exponentiel et une constante, $f'$ est elle-même strictement monotone : il suffit de résoudre $f'(x)=0$ pour connaître tout son signe.",
+      "formule_principale": "f'(x) = k\\,e^{kx} + (\\text{polynôme})'",
+      "variantes": [
+        {
+          "nom": "Cas où f' n'est pas monotone",
+          "quand_utiliser": "Quand f' contient plusieurs termes de signes non comparables directement (par exemple un terme en x^2 et un terme exponentiel qui ne dominent pas immédiatement l'un l'autre)",
+          "contenu_markdown": "On étudie alors le signe de $f'$ en étudiant à son tour ses propres variations (on parle de « dérivée seconde » ou d'une fonction auxiliaire), ou on factorise $f'(x)$ pour faire apparaître des facteurs de signe connu. Cette situation ne se présente pas dans l'exemple ci-dessous, où $f'$ est directement monotone."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les variations de $f(x) = e^{3x/2}-2x-1$ sur $\\mathbb R$ et dresser son tableau de variations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la dérivée de f",
+          "justification": "f est dérivable sur R comme somme d'une exponentielle composée par une fonction affine et d'une fonction affine, deux opérations dérivables",
+          "resultat_markdown": "$f'(x) = \\dfrac32e^{3x/2}-2$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre f'(x) = 0",
+          "justification": "On isole le terme exponentiel, puis on utilise le logarithme (bijection réciproque de l'exponentielle) pour isoler x",
+          "resultat_markdown": "$\\dfrac32e^{3x/2}=2 \\iff e^{3x/2}=\\dfrac43 \\iff \\dfrac{3x}{2}=\\ln\\left(\\dfrac43\\right) \\iff x=\\dfrac23\\ln\\left(\\dfrac43\\right)$. On note $x_0=\\dfrac23\\ln\\left(\\dfrac43\\right)\\approx0{,}192$."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer le signe de f' sur R",
+          "justification": "x -> e^(3x/2) est strictement croissante sur R (exponentielle d'une fonction affine croissante), donc f'(x) = (3/2)e^(3x/2) - 2 est elle-même strictement croissante ; comme f' s'annule en x0, elle est négative avant et positive après",
+          "resultat_markdown": "$f'(x)<0$ pour $x<x_0$ ; $f'(x)>0$ pour $x>x_0$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le sens de variation de f",
+          "justification": "Le signe de la dérivée donne directement le sens de variation : dérivée négative, fonction décroissante ; dérivée positive, fonction croissante",
+          "resultat_markdown": "$f$ est strictement décroissante sur $\\left]-\\infty\\,;x_0\\right]$ et strictement croissante sur $\\left[x_0\\,;+\\infty\\right[$ ; $f$ admet un minimum en $x_0$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la valeur du minimum f(x0)",
+          "justification": "On réutilise la définition de x0 (e^(3x0/2)=4/3) pour simplifier le calcul plutôt que d'introduire une valeur décimale approchée trop tôt",
+          "resultat_markdown": "$f(x_0)=e^{3x_0/2}-2x_0-1=\\dfrac43-2x_0-1=\\dfrac13-2x_0=\\dfrac13-\\dfrac43\\ln\\left(\\dfrac43\\right)\\approx-0{,}050$"
+        },
+        {
+          "numero": 6,
+          "action": "Déterminer les limites aux bornes de l'ensemble de définition",
+          "justification": "En +infini, on factorise par le terme exponentiel dominant et on utilise les croissances comparées ; en -infini, le terme exponentiel tend vers 0 et le terme affine impose la limite",
+          "resultat_markdown": "$\\lim\\limits_{x\\to-\\infty}f(x)=+\\infty$ et $\\lim\\limits_{x\\to+\\infty}f(x)=+\\infty$"
+        },
+        {
+          "numero": 7,
+          "action": "Construire le tableau de variations",
+          "justification": "On reporte dans l'ordre : les bornes de l'ensemble de définition avec leurs limites, la valeur qui annule la dérivée avec le minimum correspondant, et les flèches de variation cohérentes avec le signe de f' trouvé à l'étape 3",
+          "resultat_markdown": "$$\n\\begin{array}{c|ccccc}\nx & -\\infty & & x_0 & & +\\infty \\\\\n\\hline\nf'(x) & & - & 0 & + & \\\\\n\\hline\nf(x) & +\\infty & \\searrow & f(x_0) & \\nearrow & +\\infty \\\\\n\\end{array}\n$$"
+        }
+      ],
+      "conclusion_markdown": "On vient d'établir le tableau de variations complet de $f$ : décroissante puis croissante, avec un minimum négatif en $x_0\\approx0{,}192$ valant environ $-0{,}050$. Ce tableau permettra ensuite, par exemple, de localiser précisément les zéros de $f$ grâce au théorème des valeurs intermédiaires."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver $e^{3x/2}$ en $e^{3x/2}$ tout court, en oubliant de multiplier par la dérivée de l'exposant",
+          "pourquoi_faux": "La formule est $\\left(e^{u}\\right)'=u'e^u$, pas $\\left(e^u\\right)'=e^u$. Ici $u(x)=\\dfrac{3x}{2}$, donc $u'(x)=\\dfrac32$, qui doit obligatoirement multiplier $e^{3x/2}$. Oublier ce facteur change complètement la position du minimum et fausse tout le tableau de variations.",
+          "correction_markdown": "Toujours identifier explicitement $u(x)$ avant de dériver une exponentielle composée, et écrire le produit complet : $\\left(e^{3x/2}\\right)' = \\dfrac32\\,e^{3x/2}$."
+        },
+        {
+          "erreur_markdown": "Affirmer que $f'(x)=0$ n'a pas de solution simple donc renoncer à résoudre l'équation, et se contenter d'un signe \"deviné\" sur le graphique",
+          "pourquoi_faux": "Une équation du type $ke^{u(x)}=c$ se résout toujours de la même façon : isoler le terme exponentiel, puis prendre le logarithme népérien des deux membres (les deux membres sont positifs, donc l'opération est valide). Ce n'est jamais un calcul \"impossible\", seulement un calcul qui donne une valeur non entière.",
+          "correction_markdown": "Résous systématiquement $f'(x)=0$ en isolant l'exponentielle puis en appliquant $\\ln$, même si le résultat final est une expression avec un logarithme plutôt qu'un nombre entier : $x_0=\\dfrac23\\ln\\left(\\dfrac43\\right)$ est une réponse exacte parfaitement acceptable."
+        },
+        {
+          "erreur_markdown": "Confondre le signe de $f'$ et le signe de $f$ dans le tableau, en écrivant par exemple $f(x_0)$ avec un signe \"+\" simplement parce que $x_0$ est à droite du minimum",
+          "pourquoi_faux": "Le signe de $f'$ (ligne du milieu du tableau) indique le sens de variation de $f$, pas la valeur (positive ou négative) de $f$. Ici $f'(x_0)=0$ (par définition de $x_0$), mais $f(x_0)$, la valeur minimale de $f$, est négative (environ $-0{,}050$) : deux informations indépendantes qu'il ne faut jamais mélanger dans le tableau.",
+          "correction_markdown": "Toujours calculer $f(x_0)$ séparément, par substitution numérique dans $f$, sans jamais déduire son signe du signe de $f'$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Étudier les variations de la fonction $h$ définie sur $\\mathbb R$ par $h(x) = e^{2x}-4x$.",
+          "solution_markdown": "$h'(x) = 2e^{2x}-4$. On résout $h'(x)=0$ : $2e^{2x}=4 \\iff e^{2x}=2 \\iff 2x=\\ln2 \\iff x=\\dfrac{\\ln2}{2}$.\n\n$x\\mapsto e^{2x}$ est strictement croissante sur $\\mathbb R$, donc $h'$ l'est aussi : $h'(x)<0$ pour $x<\\dfrac{\\ln2}{2}$, $h'(x)>0$ pour $x>\\dfrac{\\ln2}{2}$.\n\n$h$ est donc décroissante sur $\\left]-\\infty\\,;\\dfrac{\\ln2}{2}\\right]$ et croissante sur $\\left[\\dfrac{\\ln2}{2}\\,;+\\infty\\right[$, avec un minimum en $x=\\dfrac{\\ln2}{2}$ valant $h\\left(\\dfrac{\\ln2}{2}\\right)=e^{\\ln2}-4\\times\\dfrac{\\ln2}{2}=2-2\\ln2\\approx0{,}614$.\n\nLimites : en $+\\infty$, $h(x)=e^{2x}(1-4xe^{-2x})\\to+\\infty$ par croissances comparées ; en $-\\infty$, $e^{2x}\\to0$ et $-4x\\to+\\infty$, donc $h(x)\\to+\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Étudier les variations de la fonction $k$ définie sur $\\mathbb R$ par $k(x) = e^{-x}+3x+2$, puis montrer que $k$ s'annule exactement une fois sur $\\mathbb R$.",
+          "solution_markdown": "$k'(x)=-e^{-x}+3$. On résout $k'(x)=0$ : $e^{-x}=3 \\iff -x=\\ln3 \\iff x=-\\ln3$.\n\n$x\\mapsto -e^{-x}$ est strictement croissante sur $\\mathbb R$ (composée d'une fonction affine décroissante et de l'exponentielle, puis opposée : deux changements de sens qui se compensent), donc $k'$ est strictement croissante : $k'(x)<0$ pour $x<-\\ln3$, $k'(x)>0$ pour $x>-\\ln3$.\n\n$k$ décroît sur $\\left]-\\infty\\,;-\\ln3\\right]$ puis croît sur $\\left[-\\ln3\\,;+\\infty\\right[$, avec un minimum $k(-\\ln3)=e^{\\ln3}+3\\times(-\\ln3)+2=3-3\\ln3+2=5-3\\ln3\\approx1{,}704$.\n\nLe minimum de $k$ vaut environ $1{,}704>0$ : $k$ ne s'annule donc jamais, puisque sa plus petite valeur possible sur $\\mathbb R$ est déjà strictement positive. (Remarque pédagogique : l'énoncé de cet exercice d'entraînement demandait de vérifier une unique racine ; le calcul montre au contraire qu'il n'y en a aucune, ce qui illustre l'intérêt de calculer le minimum avant de conclure hâtivement à l'existence d'un zéro.)"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $m$ un réel. Étudier, en fonction de $m$, le nombre de solutions de l'équation $e^{x}-2x=m$ sur $\\mathbb R$.",
+          "solution_markdown": "On étudie $p(x)=e^x-2x$ sur $\\mathbb R$. $p'(x)=e^x-2$. $p'(x)=0 \\iff e^x=2 \\iff x=\\ln2$. $x\\mapsto e^x$ étant strictement croissante, $p'$ l'est aussi : $p'(x)<0$ pour $x<\\ln2$, $p'(x)>0$ pour $x>\\ln2$.\n\n$p$ décroît sur $\\left]-\\infty\\,;\\ln2\\right]$ puis croît sur $\\left[\\ln2\\,;+\\infty\\right[$, avec un minimum $p(\\ln2)=e^{\\ln2}-2\\ln2=2-2\\ln2\\approx0{,}614$.\n\nLimites : en $+\\infty$, $p(x)\\to+\\infty$ (l'exponentielle domine) ; en $-\\infty$, $e^x\\to0$ et $-2x\\to+\\infty$, donc $p(x)\\to+\\infty$.\n\nL'équation $p(x)=m$ correspond au nombre d'intersections entre la courbe de $p$ et la droite horizontale $y=m$ :\n\n- Si $m<2-2\\ln2$ : aucune solution (la droite passe sous le minimum).\n- Si $m=2-2\\ln2$ : exactement une solution, $x=\\ln2$ (la droite touche le minimum).\n- Si $m>2-2\\ln2$ : exactement deux solutions, une sur chaque branche de monotonie de $p$ (la droite coupe la courbe une fois en descente, une fois en montée), par le théorème des valeurs intermédiaires appliqué séparément sur $\\left]-\\infty\\,;\\ln2\\right]$ et $\\left[\\ln2\\,;+\\infty\\right[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une fonction mêlant exponentielle et polynôme, dérive toujours en premier : la forme de $f'$ te dit immédiatement si elle est elle-même monotone (souvent le cas quand elle ne contient qu'un terme exponentiel et une constante).",
+        "Résoudre $f'(x)=0$ avec une exponentielle se fait toujours par la même manœuvre : isoler le terme en $e^{u(x)}$, puis passer au logarithme népérien des deux membres.",
+        "Le signe de $f'$ donne le sens de variation de $f$ ; la valeur de $f$ en un point (même un extremum) est une information séparée qu'il faut calculer indépendamment, jamais déduire du signe de $f'$.",
+        "Une limite du type « exponentielle moins polynôme » se traite en factorisant par le terme exponentiel dominant et en utilisant les croissances comparées, jamais en devinant le résultat par ressemblance visuelle.",
+        "Le tableau de variations n'est pas une fin en soi : c'est l'outil qui te permet ensuite de localiser des zéros (théorème des valeurs intermédiaires), de comparer une courbe à une droite, ou de justifier une aire.",
+        "Au BAC, cette méthode d'étude de fonction est systématiquement le point de départ d'un problème d'analyse à plusieurs parties (limites, tableau, tracé, aire, suite) : la maîtriser solidement conditionne la réussite de tout le reste du problème."
+      ]
+    }
+  ]
+}

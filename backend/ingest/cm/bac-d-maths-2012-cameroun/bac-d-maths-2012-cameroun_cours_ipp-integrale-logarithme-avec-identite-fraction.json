@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-ipp-integrale-logarithme-avec-identite-fraction-terminale-d",
+  "meta": {"titre": "Calculer par IPP une intégrale de ln(1+x) ou ln(1-x) à l'aide d'une identité de fraction", "cours_id": "cours-ipp-integrale-logarithme-avec-identite-fraction-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Calcul intégral — intégration par parties", "tags": ["intégration par parties", "logarithme", "identité de fraction"], "duree_estimee_minutes": 5, "epreuve_source": "bac-d-maths-2012-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2012-cameroun-ex4-q2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "L'intégration par parties de ln(1+x) fait toujours apparaître une fraction du type x/(1+x), qu'il faut réécrire comme une constante plus une fraction simple pour en trouver la primitive."},
+    {"type": "prerequis", "items_markdown": ["Formule d'intégration par parties ∫u'v=[uv]-∫uv'", "Primitive de 1/(1+x) : ln|1+x|"]},
+    {"type": "regle", "titre": "IPP avec u=ln(1+x), v'=1, puis réécriture de la fraction restante", "contenu_markdown": "Pour $\\int\\ln(1+x)dx$, on pose $u=\\ln(1+x)$ (donc $u'=\\frac1{1+x}$) et $v'=1$ (donc $v=x$). L'IPP fait apparaître $\\int\\frac x{1+x}dx$, que l'on réécrit à l'aide de l'identité $\\frac x{1+x}=1-\\frac1{1+x}$ pour obtenir une primitive immédiate $x-\\ln(1+x)$.", "formule_principale": "∫ln(1+x)dx = xln(1+x) - ∫x/(1+x)dx, avec x/(1+x)=1-1/(1+x)", "variantes": ["Pour ln(1-x) : x/(1-x)=-1+1/(1-x), avec un signe supplémentaire dû à la dérivée -1/(1-x) de ln(1-x)"]},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫₀^1 ln(1+x)dx.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "IPP", "justification": "u=ln(1+x), v=x", "resultat_markdown": "[xln(1+x)]₀¹-∫₀¹x/(1+x)dx = 1×ln2 - ∫₀¹x/(1+x)dx"},
+      {"numero": 2, "action": "Réécrire la fraction", "justification": "x/(1+x)=1-1/(1+x)", "resultat_markdown": "∫₀¹x/(1+x)dx=[x-ln(1+x)]₀¹=1-ln2"},
+      {"numero": 3, "action": "Assembler", "justification": "ln2-(1-ln2)", "resultat_markdown": "2ln2-1"}
+    ], "conclusion_markdown": "∫₀^1 ln(1+x)dx = 2ln2-1."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier le signe négatif propre à la dérivée de ln(1-x) (qui est -1/(1-x), et non 1/(1-x)) lors de l'IPP pour cette variante", "pourquoi_faux": "Une confusion de signe à cette étape se répercute sur tout le calcul de la primitive et inverse le résultat final.", "correction_markdown": "Toujours écrire explicitement la dérivée de ln(1-x) avant de commencer l'IPP, en vérifiant son signe : (ln(1-x))'=-1/(1-x)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "En utilisant la formule générale I=a-(1+a)ln(1+a) établie ci-dessus pour ∫ₐ^0 ln(1+x)dx, calculer ∫₋₀,₅^0 ln(1+x)dx.", "solution_markdown": "Avec a=-0,5 : I=-0,5-(1-0,5)ln(1-0,5)=-0,5-0,5×ln(0,5)=-0,5-0,5×(-ln2)=-0,5+0,5ln2."}
+    ]},
+    {"type": "synthese", "items_markdown": ["L'IPP d'une intégrale de ln(1+x) ou ln(1-x) fait toujours apparaître une fraction du type x/(1±x), réécrite via une identité fournie ou déduite en une constante plus une fraction simple.", "Bien vérifier le signe de la dérivée du logarithme choisi avant de commencer l'IPP."]}
+  ]
+}

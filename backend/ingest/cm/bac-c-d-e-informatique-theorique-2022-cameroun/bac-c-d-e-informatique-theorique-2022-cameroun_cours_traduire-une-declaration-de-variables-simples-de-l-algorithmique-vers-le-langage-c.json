@@ -1,0 +1,100 @@
+{
+  "cours_id": "cours-traduire-une-declaration-de-variables-simples-de-l-algorithmique-vers-le-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire une déclaration de variables simples de l'algorithmique vers le langage C",
+    "cours_id": "cours-traduire-une-declaration-de-variables-simples-de-l-algorithmique-vers-le-langage-c-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Traduction algorithme vers C",
+    "tags": [
+      "déclaration de variables",
+      "langage C"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex5-q2-3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Déclarer plusieurs variables de même type l'une après l'autre serait fastidieux ; le langage C permet de les regrouper en une seule instruction concise."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître les types de base du langage C (int, float, char)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire une déclaration de variables simples vers le langage C",
+      "contenu_markdown": "En pseudocode, `var1, var2 : Type` déclare plusieurs variables du même type. En langage C, l'équivalent est `type var1, var2;`, où le type précède la liste des noms de variables séparés par des virgules, l'instruction se terminant par un point-virgule.",
+      "formule_principale": "type nom1, nom2, ...;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en C la déclaration \"Trv, i : Entiers\".",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type commun des variables",
+          "justification": "\"Entiers\" en pseudocode correspond au type int en C.",
+          "resultat_markdown": "int"
+        },
+        {
+          "numero": 2,
+          "action": "Regrouper les noms de variables séparés par des virgules",
+          "justification": "Le C autorise de déclarer plusieurs variables de même type en une seule instruction.",
+          "resultat_markdown": "`int Trv, i;`"
+        }
+      ],
+      "conclusion_markdown": "Plusieurs variables de même type se déclarent en une seule instruction C : type nom1, nom2;"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `int Trv; int i;` en pensant que c'est obligatoire, ou écrire `int Trv, int i;` avec le type répété",
+          "pourquoi_faux": "Il est certes possible d'écrire deux déclarations séparées, mais l'énoncé demande de traduire fidèlement une déclaration groupée du pseudocode ; répéter \"int\" devant chaque nom séparé par une virgule est en revanche une erreur de syntaxe stricte, le type ne s'écrit qu'une seule fois.",
+          "correction_markdown": "Un seul mot-clé de type suffit, suivi de la liste des noms séparés par des virgules : `int Trv, i;`, pas `int Trv, int i;`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C la déclaration \"x, y, z : Reels\".",
+          "solution_markdown": "`float x, y, z;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Peut-on initialiser une variable dès sa déclaration en C ? Donner un exemple avec Trv.",
+          "solution_markdown": "Oui : `int Trv = 0, i;` initialise Trv à 0 dès sa déclaration, tandis que i reste non initialisée ; chaque variable de la liste peut recevoir sa propre valeur initiale, indépendamment des autres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il recommandé, en pratique, d'éviter de regrouper des variables de nature très différente (ex. un compteur de boucle et un résultat de calcul) dans une seule ligne de déclaration, même si le type est identique ?",
+          "solution_markdown": "Bien que syntaxiquement valide, regrouper des variables au rôle très différent nuit à la lisibilité du code : un lecteur doit pouvoir comprendre rapidement le rôle de chaque variable, ce qui est plus facile si des variables de rôles distincts (un compteur de boucle i, un résultat de calcul Trv) sont déclarées séparément, éventuellement avec un commentaire, même au prix d'une ligne supplémentaire. Le regroupement reste pertinent pour des variables réellement liées par leur usage (ex. plusieurs compteurs de boucles imbriquées i, j, k)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Plusieurs variables de même type se déclarent en une seule instruction : type nom1, nom2;",
+        "Le mot-clé de type ne s'écrit qu'une seule fois, jamais répété devant chaque nom.",
+        "Une variable peut être initialisée dès sa déclaration (ex. int Trv = 0, i;).",
+        "Mieux vaut séparer les déclarations de variables au rôle très différent, pour la lisibilité, même si leur type est identique."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-calcul-des-integrales-tle-c-e",
+  "meta": {
+    "titre": "Calcul des intégrales (Terminale C/E)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Calcul intégral : primitives usuelles, intégration par parties et calcul d'aires",
+    "duree_estimee_min": 35,
+    "tags": ["Calcul des intégrales (Tle C/E)", "intégrale", "primitive", "intégration par parties", "calcul d'aire"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "25", "savoir_numero": "VIII"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-2008-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 2008",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-d-maths-2008-cameroun-ex3-qB.4a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une antenne ne calcule jamais littéralement une aire, mais l'ingénieur qui la conçoit, si : dès qu'une grandeur physique se lit comme une aire sous une courbe (distance parcourue à partir d'une vitesse, travail d'une force, quantité produite au cours du temps), c'est un calcul intégral qui donne la valeur exacte. Tu sais déjà qu'une primitive $F$ d'une fonction $f$ vérifie $F'=f$ ; ce cours te montre comment utiliser cette primitive pour calculer une valeur numérique précise, l'intégrale $\\int_a^b f(x)\\,dx$, et comment l'interpréter comme une aire quand $f$ garde un signe constant. Deux techniques reviennent sans cesse dès que la fonction à intégrer n'est pas immédiatement une primitive usuelle : l'intégration par parties, pour un produit de deux fonctions de nature différente, et la reconnaissance de la forme $u'/u$, pour une fraction. Ce sont exactement les outils qui reviennent aux BAC séries C et E, en fin de problème d'étude de fonction, pour calculer ou encadrer une aire que la seule lecture graphique ne peut pas donner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les dérivées usuelles : polynômes, $e^{x}$, $\\ln x$, $\\dfrac{1}{x}$, $x^{n}$.",
+        "Savoir ce qu'est une primitive : une fonction $F$ telle que $F'=f$ sur un intervalle donné.",
+        "Savoir étudier le signe d'une fonction simple sur un intervalle (polynôme, exponentielle, forme $\\ln(x+1)$).",
+        "Connaître les règles de calcul sur les puissances et les logarithmes, en particulier $\\ln(e^{k})=k$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer une intégrale : primitive et formule fondamentale",
+      "contenu_markdown": "Si $f$ est une fonction continue sur un intervalle $[a;b]$ et $F$ une primitive de $f$ sur cet intervalle (c'est-à-dire $F'=f$), l'intégrale de $f$ entre $a$ et $b$ vaut :\n$$\\int_a^b f(x)\\,dx = \\big[F(x)\\big]_a^b = F(b)-F(a)$$\n\nCette valeur ne dépend pas du choix de la primitive $F$ : deux primitives de $f$ diffèrent d'une constante, qui s'annule dans la différence $F(b)-F(a)$.\n\nQuand $f$ est continue et positive sur $[a;b]$, $\\int_a^b f(x)\\,dx$ est exactement l'aire, en unités d'aire, du domaine plan délimité par la courbe de $f$, l'axe des abscisses, et les droites $x=a$ et $x=b$.\n\nTrouver l'intégrale revient donc toujours à trouver d'abord une primitive. Les primitives usuelles à connaître :\n\n| Fonction $f$ | Une primitive $F$ |\n|---|---|\n| $x^{n}$ ($n$ entier, $n\\neq -1$) | $\\dfrac{x^{n+1}}{n+1}$ |\n| $\\dfrac{1}{x}$ sur $]0,+\\infty[$ | $\\ln x$ |\n| $e^{x}$ | $e^{x}$ |\n| $u'e^{u}$ | $e^{u}$ |\n| $u'u^{n}$ ($n\\neq -1$) | $\\dfrac{u^{n+1}}{n+1}$ |\n\nDès que l'intégrande ne rentre dans aucune de ces formes directement, deux techniques permettent presque toujours de s'y ramener : l'intégration par parties et la reconnaissance de la forme $u'/u$.",
+      "formule_principale": "\\int_a^b f(x)\\,dx = F(b) - F(a)",
+      "variantes": [
+        {
+          "nom": "Intégration par parties",
+          "quand_utiliser": "Quand l'intégrande est un produit de deux fonctions de nature différente (polynôme × exponentielle, polynôme × logarithme), sans primitive usuelle immédiate.",
+          "contenu_markdown": "Pour deux fonctions $u$ et $v$ dérivables, avec $u'$ et $v'$ continues sur $[a;b]$ :\n$$\\int_a^b u(x)v'(x)\\,dx = \\big[u(x)v(x)\\big]_a^b - \\int_a^b u'(x)v(x)\\,dx$$\n\nOn choisit $u$ la partie qui se simplifie par dérivation (souvent le polynôme, dont le degré baisse, ou $\\ln$, qui devient $1/x$) et $v'$ la partie dont on connaît déjà une primitive simple $v$. Un mauvais choix de $u$ et $v'$ donne en général une intégrale plus compliquée que celle de départ : si c'est le cas, échanger les rôles."
+        },
+        {
+          "nom": "Reconnaissance de la forme $u'/u$",
+          "quand_utiliser": "Quand l'intégrande est une fraction dont le numérateur est proportionnel à la dérivée du dénominateur.",
+          "contenu_markdown": "Si $u$ est une fonction dérivable et de signe constant sur $[a;b]$, alors :\n$$\\int_a^b \\dfrac{u'(x)}{u(x)}\\,dx = \\Big[\\ln\\big|u(x)\\big|\\Big]_a^b$$\n\nLe réflexe consiste à calculer d'abord $u'$ à partir du dénominateur $u$, puis à comparer le numérateur donné à $u'$ : s'il en est un multiple constant $k$, l'intégrande s'écrit $k\\times\\dfrac{u'}{u}$ et sa primitive est $k\\ln|u|$."
+        },
+        {
+          "nom": "Calcul d'une aire à l'aide d'une intégrale",
+          "quand_utiliser": "Quand la question demande l'aire d'un domaine plan délimité par une courbe, une droite (ou l'axe des abscisses), et deux bornes verticales $x=a$ et $x=b$.",
+          "contenu_markdown": "L'aire entre deux courbes $f$ et $g$ sur $[a;b]$ vaut, en toute rigueur, $\\int_a^b \\big|f(x)-g(x)\\big|\\,dx$. Cette expression se simplifie en $\\int_a^b \\big[f(x)-g(x)\\big]\\,dx$ dès que l'on a démontré que $f(x)\\ge g(x)$ sur tout l'intervalle (sinon il faut découper $[a;b]$ aux points où $f-g$ change de signe). Le résultat est en unités d'aire ; si l'énoncé donne une unité graphique de $k$ cm sur les axes, il faut multiplier par $k^{2}$ pour obtenir un résultat en $\\text{cm}^{2}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer, en unités d'aire, l'aire du domaine plan compris entre la courbe représentative de la fonction $f$ définie sur $[0;1]$ par $f(x)=xe^{x}$, l'axe des abscisses, et les droites d'équations $x=0$ et $x=1$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier le signe de $f$ sur $[0;1]$",
+          "justification": "L'aire ne s'obtient directement comme une intégrale, sans valeur absolue, que si $f$ garde un signe constant sur l'intervalle.",
+          "resultat_markdown": "Pour tout $x\\in[0;1]$, $x\\ge0$ et $e^{x}>0$, donc $f(x)=xe^{x}\\ge0$ sur $[0;1]$. L'aire cherchée vaut donc directement $\\displaystyle\\int_0^1 xe^{x}\\,dx$, en unités d'aire."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la méthode de calcul de la primitive",
+          "justification": "$xe^{x}$ est un produit d'un polynôme et d'une exponentielle : ce n'est pas une primitive usuelle directe, ce type de produit relève de l'intégration par parties.",
+          "resultat_markdown": "On pose $u(x)=x$ et $v'(x)=e^{x}$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $u'$ et $v$",
+          "justification": "$u'$ s'obtient en dérivant $u$, $v$ en trouvant une primitive de $v'$.",
+          "resultat_markdown": "$u'(x)=1$ et $v(x)=e^{x}$ (une primitive de $e^{x}$)."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule d'intégration par parties",
+          "justification": "$\\int u v' = [uv] - \\int u'v$.",
+          "resultat_markdown": "$\\displaystyle\\int_0^1 xe^{x}\\,dx = \\big[xe^{x}\\big]_0^1 - \\int_0^1 1\\times e^{x}\\,dx = \\big[xe^{x}\\big]_0^1 - \\big[e^{x}\\big]_0^1$"
+        },
+        {
+          "numero": 5,
+          "action": "Regrouper en une seule primitive",
+          "justification": "$xe^{x}-e^{x}=(x-1)e^{x}$, ce qui permet d'écrire le résultat sous une seule expression entre crochets.",
+          "resultat_markdown": "$\\displaystyle\\int_0^1 xe^{x}\\,dx = \\big[(x-1)e^{x}\\big]_0^1$"
+        },
+        {
+          "numero": 6,
+          "action": "Évaluer aux bornes",
+          "justification": "On remplace $x$ par $1$ puis par $0$ dans $(x-1)e^{x}$, et on soustrait.",
+          "resultat_markdown": "En $x=1$ : $(1-1)e^{1}=0\\times e=0$. En $x=0$ : $(0-1)e^{0}=(-1)\\times1=-1$. Donc $\\displaystyle\\int_0^1 xe^{x}\\,dx = 0-(-1)=1$."
+        }
+      ],
+      "conclusion_markdown": "L'aire du domaine considéré vaut $1$ unité d'aire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer l'intégration par parties mais écrire $\\int_0^1 xe^{x}\\,dx = [xe^{x}]_0^1 + \\int_0^1 e^{x}\\,dx$, en oubliant le signe moins devant l'intégrale restante.",
+          "pourquoi_faux": "Le signe moins fait partie intégrante de la formule, il vient de la dérivée d'un produit $(uv)'=u'v+uv'$ réarrangée en $uv'=(uv)'-u'v$. L'oublier change le résultat final : ici cela donnerait $e+(e-1)=2e-1\\approx4{,}44$ au lieu de $1$, une valeur nettement trop grande.",
+          "correction_markdown": "Recopie la formule complète avant de substituer, avec le signe moins déjà en place : $\\int u v' = [uv]-\\int u'v$. Vérifie ensuite que ce signe moins a bien été reporté sur toute l'intégrale restante, pas seulement sur son premier terme."
+        },
+        {
+          "erreur_markdown": "Écrire directement qu'une aire entre une courbe et une droite vaut $\\int_a^b[f(x)-g(x)]\\,dx$, sans avoir vérifié au préalable que $f(x)\\ge g(x)$ sur tout l'intervalle $[a;b]$.",
+          "pourquoi_faux": "Si $f-g$ change de signe sur $[a;b]$, cette intégrale calcule une aire algébrique où les parties où $f<g$ se retranchent au lieu de s'ajouter : le résultat peut être trop petit, voire négatif, ce qui est impossible pour une aire.",
+          "correction_markdown": "Étudie toujours le signe de $f(x)-g(x)$ sur $[a;b]$ avant d'écrire l'aire sans valeur absolue. Si le signe change, découpe l'intervalle aux points où $f-g$ s'annule et traite chaque morceau séparément."
+        },
+        {
+          "erreur_markdown": "Chercher une primitive générale de $\\dfrac{1}{x}$ et écrire seulement $\\ln x$, en omettant la constante $+C$.",
+          "pourquoi_faux": "Une primitive générale de $f$ n'est jamais unique : toutes les fonctions $\\ln x + C$, pour $C$ réel quelconque, sont des primitives de $\\dfrac{1}{x}$. Omettre $+C$ revient à n'en donner qu'une seule, ce qui est incomplet dès que la question porte sur la primitive et non sur une intégrale définie précise.",
+          "correction_markdown": "Distingue toujours les deux situations : pour une primitive générale (sans bornes), ajoute systématiquement $+C$ ; pour une intégrale définie $\\int_a^b$, la constante $C$ disparaît automatiquement dans la différence $F(b)-F(a)$ et n'a pas à être écrite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^2 (3x^{2}-4x+5)\\,dx$.",
+          "solution_markdown": "On cherche une primitive $F$ de $f(x)=3x^{2}-4x+5$, terme par terme, à l'aide des primitives usuelles ($x^{n}\\mapsto\\dfrac{x^{n+1}}{n+1}$) :\n$$F(x)=3\\times\\dfrac{x^{3}}{3}-4\\times\\dfrac{x^{2}}{2}+5x=x^{3}-2x^{2}+5x$$\n\nOn applique la formule fondamentale $\\displaystyle\\int_0^2 f(x)\\,dx=F(2)-F(0)$.\n\nEn $x=2$ : $F(2)=2^{3}-2\\times2^{2}+5\\times2=8-8+10=10$.\n\nEn $x=0$ : $F(0)=0^{3}-2\\times0^{2}+5\\times0=0$.\n\nDonc $\\displaystyle\\int_0^2 (3x^{2}-4x+5)\\,dx=10-0=10$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\displaystyle J=\\int_0^1 \\dfrac{4x+2}{x^{2}+x+1}\\,dx$.",
+          "solution_markdown": "On pose $u(x)=x^{2}+x+1$, le dénominateur. Sa dérivée est $u'(x)=2x+1$.\n\nOn compare le numérateur $4x+2$ à $u'(x)=2x+1$ : $4x+2=2\\times(2x+1)=2u'(x)$. L'intégrande s'écrit donc $2\\times\\dfrac{u'(x)}{u(x)}$, dont une primitive est $2\\ln|u(x)|$.\n\nLe dénominateur $u(x)=x^{2}+x+1$ a pour discriminant $\\Delta=1^{2}-4\\times1\\times1=1-4=-3<0$ : il ne s'annule jamais et reste strictement positif (coefficient de $x^{2}$ positif), donc $|u(x)|=u(x)$ sur $[0;1]$.\n\nUne primitive de $\\dfrac{4x+2}{x^{2}+x+1}$ est donc $F(x)=2\\ln(x^{2}+x+1)$.\n\nEn $x=1$ : $u(1)=1+1+1=3$, donc $F(1)=2\\ln3$.\n\nEn $x=0$ : $u(0)=0+0+1=1$, donc $F(0)=2\\ln1=0$.\n\nDonc $J=F(1)-F(0)=2\\ln3-0=2\\ln3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h$ la fonction définie sur $[0;+\\infty[$ par $h(x)=\\ln(x+1)$. Calculer, en unités d'aire, l'aire du domaine plan délimité par la courbe de $h$, l'axe des abscisses, et les droites d'équations $x=0$ et $x=e^{2}-1$.",
+          "solution_markdown": "**Signe de $h$ sur l'intervalle.** Pour $x\\in[0;e^{2}-1]$, $x+1\\in[1;e^{2}]$, donc $\\ln(x+1)\\ge\\ln1=0$ puisque $\\ln$ est croissante. Donc $h(x)\\ge0$ sur cet intervalle, et l'aire cherchée vaut directement $\\displaystyle\\int_0^{e^{2}-1} \\ln(x+1)\\,dx$, en unités d'aire.\n\n**Calcul de la primitive.** On intègre par parties avec $u(x)=\\ln(x+1)$ et $v'(x)=1$, donc $u'(x)=\\dfrac{1}{x+1}$ et $v(x)=x+1$ :\n$$\\int \\ln(x+1)\\,dx = (x+1)\\ln(x+1) - \\int (x+1)\\times\\dfrac{1}{x+1}\\,dx = (x+1)\\ln(x+1) - \\int 1\\,dx = (x+1)\\ln(x+1)-(x+1)+C$$\n\n**Vérification de la primitive.** $\\dfrac{d}{dx}\\big[(x+1)\\ln(x+1)-(x+1)\\big] = \\ln(x+1)+(x+1)\\times\\dfrac{1}{x+1} - 1 = \\ln(x+1)+1-1=\\ln(x+1)$, qui est bien $h(x)$.\n\n**Évaluation aux bornes.** En $x=e^{2}-1$ : $x+1=e^{2}$, donc $(x+1)\\ln(x+1)-(x+1) = e^{2}\\times\\ln\\!\\big(e^{2}\\big)-e^{2} = e^{2}\\times2-e^{2}=2e^{2}-e^{2}=e^{2}$.\n\nEn $x=0$ : $x+1=1$, donc $(x+1)\\ln(x+1)-(x+1) = 1\\times\\ln1-1=0-1=-1$.\n\nDonc $\\displaystyle\\int_0^{e^{2}-1} \\ln(x+1)\\,dx = e^{2}-(-1)=e^{2}+1$.\n\nL'aire du domaine considéré vaut $e^{2}+1$ unités d'aire, soit environ $8{,}39$ u.a. puisque $e^{2}\\approx7{,}39$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Calculer une intégrale, c'est d'abord trouver une primitive $F$ de $f$, puis appliquer $\\int_a^b f(x)\\,dx=F(b)-F(a)$ : la constante $C$ n'intervient jamais dans ce résultat, elle s'annule dans la différence.",
+        "Face à un produit de deux fonctions de nature différente (polynôme × exponentielle, polynôme × logarithme), pense à l'intégration par parties $\\int u v' = [uv]-\\int u'v$, en choisissant $u$ la partie qui se simplifie par dérivation.",
+        "Face à une fraction dont le numérateur est proportionnel à la dérivée du dénominateur, reconnais la forme $u'/u$ : sa primitive est $\\ln|u|$.",
+        "Une aire entre une courbe et une droite (ou l'axe des abscisses) sur $[a;b]$ vaut $\\int_a^b[f(x)-g(x)]\\,dx$ seulement après avoir vérifié que $f\\ge g$ sur tout l'intervalle - sinon, découpe l'intervalle aux points où le signe change.",
+        "N'oublie jamais de convertir le résultat en $\\text{cm}^{2}$ quand l'énoncé donne une unité graphique différente de $1\\,\\text{cm}$ sur les axes.",
+        "Au BAC séries C et E, le calcul intégral apparaît presque toujours en fin de problème d'étude de fonction, pour calculer ou encadrer une aire : maîtriser primitives usuelles, intégration par parties et forme $u'/u$ est un passage obligé."
+      ]
+    }
+  ]
+}

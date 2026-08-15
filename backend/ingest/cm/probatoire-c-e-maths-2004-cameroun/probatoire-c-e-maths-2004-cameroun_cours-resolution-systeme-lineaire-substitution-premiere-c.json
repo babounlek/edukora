@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-resolution-systeme-lineaire-substitution-premiere-c",
+  "meta": {
+    "titre": "Résoudre un système linéaire 3×3 par substitutions successives",
+    "cours_id": "cours-resolution-systeme-lineaire-substitution-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Systèmes linéaires - résolution par substitution",
+    "tags": ["système linéaire", "substitution", "trois inconnues"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_1_q1"
+  },
+  "sections": {
+    "accroche": "Un système à trois inconnues dont deux équations expriment déjà une inconnue en fonction d'une seule autre se résout presque mécaniquement : il suffit d'enchaîner les substitutions pour se ramener à une seule équation à une seule inconnue.",
+    "prerequis": ["Résolution d'une équation du premier degré à une inconnue", "Substitution d'une expression dans une équation"],
+    "regle": {
+      "titre": "Méthode de résolution par substitutions successives",
+      "contenu_markdown": "Face à un système où certaines équations expriment directement une inconnue en fonction d'une autre (par exemple $x=\\alpha y+\\beta z$, $y=\\gamma z$), on exprime toutes les inconnues en fonction d'une seule d'entre elles, puis on substitue ces expressions dans la dernière équation restante pour obtenir une équation à une seule inconnue, que l'on résout directement. On remonte ensuite pour calculer les autres inconnues.",
+      "formule_principale": "Exprimer $x$ et $y$ en fonction de $z$, substituer dans la 3ᵉ équation, résoudre en $z$, puis remonter",
+      "variantes": ["Si aucune équation n'exprime directement une inconnue isolée, on peut d'abord effectuer une combinaison linéaire de deux équations pour éliminer une inconnue avant de revenir à la substitution"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Résoudre le système : x-2y=0 ; y-z=0 ; 2x+y+3z=54.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Exprimer x et y en fonction de z", "justification": "à partir des deux premières équations", "resultat_markdown": "y=z (2ᵉ éq.), puis x=2y=2z (1ʳᵉ éq.)"},
+        {"numero": 2, "action": "Substituer dans la 3ᵉ équation", "justification": "obtenir une équation à une inconnue", "resultat_markdown": "2(2z)+z+3z=54 ⟹ 4z+z+3z=54 ⟹ 8z=54 ⟹ z=6,75"},
+        {"numero": 3, "action": "Remonter", "justification": "calcul de y et x", "resultat_markdown": "y=6,75 ; x=13,5"}
+      ],
+      "conclusion_markdown": "La solution est (x,y,z)=(13,5 ; 6,75 ; 6,75)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Substituer une expression dans la mauvaise équation (par exemple réinjecter dans une équation déjà utilisée pour obtenir cette expression), ce qui produit une identité 0=0 sans information nouvelle", "pourquoi_faux": "on doit toujours réserver une équation encore inutilisée pour la substitution finale, sinon on tourne en rond sans jamais isoler la dernière inconnue", "correction_markdown": "Repérer clairement quelles équations ont déjà servi à exprimer des inconnues, et réserver systématiquement la dernière équation non utilisée pour la substitution finale."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Résoudre : a-b=0 ; b-3c=0 ; 2a+b+c=30.", "solution_markdown": "b=3c, a=b=3c ; 2(3c)+3c+c=30 ⟹ 10c=30 ⟹ c=3, b=9, a=9."}
+    ],
+    "synthese": "Résoudre un système linéaire par substitutions successives consiste à exprimer toutes les inconnues en fonction d'une seule, puis à réinjecter ces expressions dans l'équation restante non encore utilisée pour obtenir une équation à une inconnue, avant de remonter calculer les autres valeurs."
+  }
+}

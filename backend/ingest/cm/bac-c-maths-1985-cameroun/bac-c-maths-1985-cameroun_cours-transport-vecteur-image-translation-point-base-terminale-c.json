@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-transport-vecteur-image-translation-point-base-terminale-c",
+  "meta": {
+    "titre": "Transporter un vecteur décomposé via la relation de Chasles pour passer d'un point à un autre",
+    "cours_id": "cours-transport-vecteur-image-translation-point-base-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - relation de Chasles, applications affines",
+    "tags": ["relation de Chasles", "translation", "point de base", "application affine"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_4_qA2a"
+  },
+  "sections": {
+    "accroche": "Quand une propriété est établie en un point de base (souvent noté A), la relation de Chasles permet de la transporter à un autre point (B) sans refaire le raisonnement : il suffit d'exprimer les vecteurs en B en fonction de ceux en A via un détour par le point de base.",
+    "prerequis": ["Relation de Chasles $\\overrightarrow{XY}=\\overrightarrow{XA}+\\overrightarrow{AY}$", "Propriétés d'une application affine sur les vecteurs", "Notion de vecteur image par un endomorphisme associé"],
+    "regle": {
+      "titre": "Transport d'un vecteur via Chasles",
+      "contenu_markdown": "Pour relier $\\overrightarrow{\\rho(B)B}$ à $\\overrightarrow{\\rho(A)A}$ (déjà décomposé), on utilise la relation de Chasles en passant par $A$ : $\\overrightarrow{\\rho(B)B}=\\overrightarrow{\\rho(B)\\rho(A)}+\\overrightarrow{\\rho(A)A}+\\overrightarrow{AB}$. Or $\\overrightarrow{\\rho(B)\\rho(A)}=f(\\overrightarrow{BA})=-f(\\overrightarrow{AB})$ (propriété d'une application affine sur les vecteurs, $f$ endomorphisme associé). En regroupant : $\\overrightarrow{\\rho(B)B}=\\overrightarrow{\\rho(A)A}+\\overrightarrow{AB}-f(\\overrightarrow{AB})=\\overrightarrow{\\rho(A)A}+g(\\overrightarrow{AB})$ où $g=\\mathrm{Id}-f$ (ou son opposé selon la convention adoptée pour $g$).",
+      "formule_principale": "$\\overrightarrow{\\rho(B)B}=\\overrightarrow{\\rho(A)A}+g(\\overrightarrow{AB})$ (à un signe de convention près sur g)",
+      "variantes": ["Cette technique de transport via Chasles s'applique à toute quantité vectorielle définie relativement à un point, pour la faire dépendre d'un autre point"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $\\rho$ une application affine d'endomorphisme associé $f$, avec $\\overrightarrow{\\rho(A)A}=\\vec v_0$ connu. Exprimer $\\overrightarrow{\\rho(B)B}$ en fonction de $\\vec v_0$ et de $\\overrightarrow{AB}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Décomposer via Chasles en passant par A", "justification": "relation de Chasles standard", "resultat_markdown": "$\\overrightarrow{\\rho(B)B}=\\overrightarrow{\\rho(B)\\rho(A)}+\\overrightarrow{\\rho(A)A}+\\overrightarrow{AB}$"},
+        {"numero": 2, "action": "Remplacer $\\overrightarrow{\\rho(B)\\rho(A)}$ par $-f(\\overrightarrow{AB})$", "justification": "propriété de l'endomorphisme associé sur les vecteurs images", "resultat_markdown": "$\\overrightarrow{\\rho(B)B}=-f(\\overrightarrow{AB})+\\vec v_0+\\overrightarrow{AB}$"},
+        {"numero": 3, "action": "Regrouper les termes en $\\overrightarrow{AB}$", "justification": "factorisation", "resultat_markdown": "$\\overrightarrow{\\rho(B)B}=\\vec v_0+(\\mathrm{Id}-f)(\\overrightarrow{AB})$"}
+      ],
+      "conclusion_markdown": "$\\overrightarrow{\\rho(B)B}=\\vec v_0-g(\\overrightarrow{AB})$ avec $g=f-\\mathrm{Id}$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Se tromper de sens dans $\\overrightarrow{\\rho(B)\\rho(A)}=f(\\overrightarrow{BA})$ et écrire $f(\\overrightarrow{AB})$ directement", "pourquoi_faux": "l'ordre des points dans le vecteur de départ doit correspondre exactement à l'ordre dans le vecteur image", "correction_markdown": "Toujours vérifier le sens du vecteur avant d'appliquer f, quitte à passer par $\\overrightarrow{BA}=-\\overrightarrow{AB}$ pour clarifier le signe."},
+      {"erreur_markdown": "Oublier un terme dans la relation de Chasles à trois points", "pourquoi_faux": "un chaînon manquant rend l'identité fausse", "correction_markdown": "Toujours vérifier que la somme des vecteurs de Chasles reconstitue bien le vecteur de départ (les points intermédiaires doivent s'annuler deux à deux)."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Pourquoi la formule de transport fait-elle apparaître précisément g=f-Id (ou -g) et pas f seul ?", "solution_markdown": "Parce que le terme $\\overrightarrow{AB}$ non transformé (issu de Chasles) se combine avec $-f(\\overrightarrow{AB})$ transformé, donnant $(\\mathrm{Id}-f)(\\overrightarrow{AB})=-g(\\overrightarrow{AB})$."}
+    ],
+    "synthese": "La relation de Chasles, combinée à la propriété de l'endomorphisme associé sur les vecteurs images, permet de transporter une quantité connue en un point A vers un point B quelconque, faisant naturellement apparaître g=f-Id."
+  }
+}

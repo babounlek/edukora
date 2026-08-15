@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-calculer-la-limite-d-une-suite-geometrique-et-en-deduire-la-convergence-d-une-suite-associee-terminale-c",
+  "meta": {
+    "titre": "Calculer la limite d'une suite géométrique et en déduire la convergence d'une suite associée",
+    "cours_id": "cours-calculer-la-limite-d-une-suite-geometrique-et-en-deduire-la-convergence-d-une-suite-associee-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques",
+    "tags": [
+      "limite d'une suite géométrique",
+      "convergence",
+      "composition de limites"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex1-I.3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La convergence d'une suite géométrique de raison strictement comprise entre -1 et 1 se propage, par composition, à toute suite qui s'en déduit par une fonction continue comme l'exponentielle."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître lim q^n=0 si |q|<1",
+        "Connaître la continuité de la fonction exponentielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Limite d'une suite géométrique et convergence par composition",
+      "contenu_markdown": "Si $|q|<1$, $\\lim_{n\\to+\\infty}q^n=0$, donc toute suite $v_n=v_0q^n$ tend vers 0. Si $u_n=e^{v_n+c}$ et $v_n\\to\\ell$, alors par continuité de l'exponentielle, $u_n\\to e^{\\ell+c}$ : la convergence de $(v_n)$ entraîne celle de $(u_n)$.",
+      "formule_principale": "|q|<1 ⟹ v_n=v0 q^n → 0 ; u_n=e^(v_n+c) → e^c par continuité",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "v_n=(ln4-3)(1/3)^n, u_n=exp(v_n+3). Calculer la limite de v_n et en déduire la convergence de u_n.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la limite de (1/3)^n",
+          "justification": "Raison de module <1.",
+          "resultat_markdown": "(1/3)^n → 0 quand n→+∞"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la limite de v_n",
+          "justification": "v_n est le produit d'une constante par (1/3)^n.",
+          "resultat_markdown": "v_n → 0"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la limite de ln(u_n)",
+          "justification": "ln(u_n)=v_n+3.",
+          "resultat_markdown": "ln(u_n) → 3"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par continuité de l'exponentielle",
+          "justification": "u_n=e^(ln u_n), exponentielle continue.",
+          "resultat_markdown": "u_n → e³"
+        }
+      ],
+      "conclusion_markdown": "(v_n) converge vers 0, et (u_n) converge vers e³."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure directement que u_n converge vers 0 sans repasser par l'exponentielle",
+          "pourquoi_faux": "u_n n'est pas égal à v_n : c'est ln(u_n) qui est lié à v_n par une relation affine, pas u_n lui-même ; il faut composer par l'exponentielle pour obtenir la vraie limite de u_n, qui n'est généralement pas 0.",
+          "correction_markdown": "Toujours distinguer la limite de la suite auxiliaire (v_n ou ln(u_n)) de la limite de la suite d'origine (u_n), reliées par une composition de fonction, pas une égalité directe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer lim (1/2)^n.",
+          "solution_markdown": "0, car |1/2|<1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si w_n=5×(0,9)^n-2, calculer sa limite.",
+          "solution_markdown": "5×(0,9)^n→0, donc w_n→-2."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passerait-il si la raison q de la suite géométrique auxiliaire valait 2 au lieu de 1/3 ?",
+          "solution_markdown": "Avec |q|=2>1, la suite v_n=v0×2^n diverge vers +∞ ou -∞ selon le signe de v0 ; par composition avec l'exponentielle (fonction croissante), u_n divergerait alors également vers +∞ (si ln(u_n)→+∞) ou tendrait vers 0 (si ln(u_n)→-∞), selon le signe de la limite de v_n."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une suite géométrique de raison |q|<1 converge toujours vers 0.",
+        "La convergence d'une suite auxiliaire (via logarithme) se transmet à la suite d'origine par composition avec une fonction continue (exponentielle).",
+        "Ne jamais confondre la limite de la suite auxiliaire avec celle de la suite d'origine : il faut toujours repasser par la composition."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "type": "cours",
+  "cours_id": "cours-calcul-vitesse-maximale-masse-ressort-bacc1-ex3-qa.2",
+  "meta": {
+    "titre": "Calculer numériquement la vitesse maximale d'un système masse-ressort à partir de sa raideur et de son amplitude",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mécanique - oscillateurs et énergie",
+    "duree_estimee_min": 10,
+    "tags": ["Énergie mécanique", "Raideur du ressort"]
+  },
+  "source": {"rappel_id": "rdi-ep-cm-physique-bac-c-1-2026-s1-ex3-qa.2-0"},
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une formule correcte ne garantit pas un résultat correct : la moitié des erreurs sur ce type de calcul viennent non pas de la physique, mais d'une conversion d'unité oubliée entre l'énoncé (en grammes, en centimètres) et le calcul (qui exige des kilogrammes et des mètres)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Expression littérale $v=a\\sqrt{k/m}$ de la vitesse maximale d'un système masse-ressort",
+        "Conversions d'unités usuelles : g→kg, cm→m"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode pour une application numérique fiable",
+      "contenu_markdown": "Une fois l'expression littérale établie ($v=a\\sqrt{k/m}$), le calcul numérique se déroule toujours dans le même ordre : convertir systématiquement TOUTES les données dans le Système International (masse en kg, longueur en m, raideur déjà en N/m dans la plupart des énoncés) AVANT de substituer les valeurs, calculer d'abord le rapport k/m sous la racine, puis multiplier par a en dernier.\n\nUne vérification d'ordre de grandeur en fin de calcul (la vitesse maximale d'un oscillateur mécanique de laboratoire est presque toujours de l'ordre du dixième au mètre par seconde, jamais des dizaines ou centaines de m/s) permet de repérer immédiatement une erreur de conversion.",
+      "formule_principale": "v=a\\sqrt{\\dfrac{k}{m}} \\quad (a\\text{ en m},\\ k\\text{ en N/m},\\ m\\text{ en kg} \\Rightarrow v\\text{ en m/s})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un système masse-ressort a pour raideur k=60N/m, pour masse m=150g, et pour amplitude a=3cm. Calculer la vitesse maximale du solide.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les données en unités SI",
+          "justification": "Le calcul de v en m/s exige m en kg et a en m ; k est déjà en N/m.",
+          "resultat_markdown": "$m=150\\,g=0{,}150\\,kg$ ; $a=3\\,cm=0{,}03\\,m$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le rapport k/m",
+          "justification": "On calcule d'abord ce qui se trouve sous la racine, avant de la prendre.",
+          "resultat_markdown": "$\\dfrac{k}{m}=\\dfrac{60}{0{,}150}=400$"
+        },
+        {
+          "numero": 3,
+          "action": "Prendre la racine puis multiplier par a",
+          "justification": "On termine le calcul en respectant l'ordre des opérations de la formule.",
+          "resultat_markdown": "$v=a\\sqrt{400}=0{,}03\\times20=0{,}60\\,m/s$"
+        }
+      ],
+      "conclusion_markdown": "La vitesse maximale du solide est de 0,60 m/s - un ordre de grandeur tout à fait cohérent avec un oscillateur mécanique de laboratoire (quelques dixièmes de m/s), ce qui confirme la vraisemblance du résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer m=150 directement dans la formule sans convertir en kg (utiliser 150 au lieu de 0,150).",
+          "pourquoi_faux": "Un facteur 1000 d'erreur sur m se répercute (atténué par la racine carrée) sur le résultat final : le calcul reste \"exécutable\" mais donne un résultat totalement faux, sans erreur visible dans les étapes.",
+          "correction_markdown": "Convertir systématiquement toutes les masses en kg et toutes les longueurs en m avant toute substitution numérique, jamais après."
+        },
+        {
+          "erreur_markdown": "Multiplier a par k/m avant de prendre la racine carrée (calculer $a\\times k/m$ au lieu de $a\\times\\sqrt{k/m}$).",
+          "pourquoi_faux": "La racine carrée ne porte que sur le rapport k/m, pas sur le produit final : oublier de l'appliquer au bon endroit change complètement l'ordre de grandeur du résultat.",
+          "correction_markdown": "Toujours réécrire la formule complète avant de substituer les valeurs, pour ne pas oublier où se situe exactement la racine carrée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Convertir en unités SI : m=250g, a=6cm.",
+          "solution_markdown": "$m=0{,}250\\,kg$ ; $a=0{,}06\\,m$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Calculer la vitesse maximale d'un système masse-ressort de raideur k=90N/m, masse m=360g, amplitude a=4cm.",
+          "solution_markdown": "$m=0{,}360\\,kg$, $a=0{,}04\\,m$. $k/m=90/0{,}360=250$. $v=0{,}04\\times\\sqrt{250}\\approx0{,}04\\times15{,}81\\approx0{,}63\\,m/s$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un système masse-ressort a une vitesse maximale calculée v=6,3 m/s pour une raideur k=40N/m et une amplitude a=5cm. Ce résultat est-il physiquement plausible pour un système de laboratoire ? Justifier et identifier l'erreur probable.",
+          "solution_markdown": "Ce résultat n'est pas plausible : 6,3 m/s est bien trop élevé pour un oscillateur de laboratoire (attendu : quelques dixièmes de m/s). L'erreur la plus probable est un oubli de conversion de la masse : si m avait été laissée en grammes au lieu de kg dans le calcul (par exemple m=250 au lieu de 0,250kg), le rapport k/m serait 1000 fois trop petit, donc sa racine environ 31,6 fois trop petite — ce qui, au contraire, donnerait un résultat trop faible, pas trop élevé. L'erreur la plus cohérente avec un résultat trop GRAND est plutôt d'avoir oublié de convertir l'amplitude a de centimètres en mètres (utiliser a=5 au lieu de 0,05), ce qui multiplierait le résultat correct par 100."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toujours convertir masse (kg) et longueur (m) en unités SI avant de substituer les valeurs dans $v=a\\sqrt{k/m}$.",
+        "Respecter l'ordre des opérations : calculer d'abord k/m, prendre la racine, puis multiplier par a.",
+        "Vérifier l'ordre de grandeur du résultat final : quelques dixièmes de m/s pour un oscillateur de laboratoire typique.",
+        "Un résultat anormalement grand ou petit signale presque toujours une conversion d'unité oubliée, pas une erreur de formule."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-composee-endomorphismes-produit-matriciel-nature-terminale-c",
+  "meta": {"titre": "Identifier la nature d'une composée de deux endomorphismes via le produit matriciel", "cours_id": "cours-composee-endomorphismes-produit-matriciel-nature-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — composition et nature géométrique", "tags": ["composition d'endomorphismes", "produit matriciel", "symétrie vectorielle"], "duree_estimee_minutes": 7, "epreuve_source": "bac-c-maths-1988-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1988-pA-3c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une matrice qui vérifie M²=I caractérise toujours une symétrie vectorielle : ses sous-espaces propres associés à +1 et -1 en donnent immédiatement la base et la direction."},
+    {"type": "prerequis", "items_markdown": ["Mat(f∘g)=Mat(f)×Mat(g) dans une base commune", "Une symétrie vectorielle vérifie S∘S=Id, donc Mat(S)²=I"]},
+    {"type": "regle", "titre": "Calculer le produit matriciel puis vérifier M²=I", "contenu_markdown": "Pour identifier la nature de $S=f\\circ\\sigma$, on calcule $\\text{Mat}(S)=\\text{Mat}(f)\\times\\text{Mat}(\\sigma)$ dans une base commune. Si $\\text{Mat}(S)^2=I$, alors $S$ est une symétrie vectorielle. Si la matrice obtenue est diagonale $\\text{diag}(\\lambda_1,\\lambda_2)$ avec $\\lambda_1,\\lambda_2\\in\\{1,-1\\}$, le vecteur de base associé à $+1$ donne la base de la symétrie, celui associé à $-1$ sa direction.", "formule_principale": "Mat(f∘g)=Mat(f)×Mat(g) ; M²=I ⟹ symétrie vectorielle, éléments propres via diag(±1)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Dans une base, Mat(f)=[[0,1],[1,0]] et Mat(g)=[[1,0],[0,-1]]. Identifier T=f∘g.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Produit matriciel", "justification": "Mat(T)=Mat(f)×Mat(g)", "resultat_markdown": "[[0,1],[1,0]]×[[1,0],[0,-1]]=[[0,-1],[1,0]]"},
+      {"numero": 2, "action": "Vérifier M²", "justification": "[[0,-1],[1,0]]²=[[-1,0],[0,-1]]=-I", "resultat_markdown": "T∘T=-Id, T n'est pas une symétrie mais un élément de type f∘f=-Id"}
+    ], "conclusion_markdown": "T vérifie T∘T=-Id : ce n'est pas une symétrie vectorielle dans cet exemple (contre-exemple illustrant l'importance de vérifier M²=I et pas juste de le supposer)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Composer les matrices dans le mauvais ordre (Mat(g)×Mat(f) au lieu de Mat(f)×Mat(g) pour f∘g)", "pourquoi_faux": "La composition d'endomorphismes n'est pas commutative en général : inverser l'ordre du produit matriciel donne la matrice de g∘f, pas de f∘g.", "correction_markdown": "Toujours respecter l'ordre : pour S=f∘σ, calculer Mat(f)×Mat(σ), jamais Mat(σ)×Mat(f)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Mat(f)=[[0,-1],[1,0]], Mat(σ)=[[1,0],[0,-1]]. Calculer Mat(f∘σ) et vérifier si c'est une symétrie.", "solution_markdown": "Mat(f∘σ)=[[0,-1],[1,0]]×[[1,0],[0,-1]]=[[0,1],[1,0]]. Carré: [[0,1],[1,0]]²=[[1,0],[0,1]]=I. C'est bien une symétrie vectorielle (échange les deux vecteurs de base : c'est la symétrie par rapport à la première bissectrice)."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La matrice d'une composée s'obtient par produit matriciel, dans le bon ordre, des matrices individuelles.", "Une matrice M vérifiant M²=I caractérise une symétrie vectorielle ; ses valeurs propres ±1 donnent base et direction."]}
+  ]
+}

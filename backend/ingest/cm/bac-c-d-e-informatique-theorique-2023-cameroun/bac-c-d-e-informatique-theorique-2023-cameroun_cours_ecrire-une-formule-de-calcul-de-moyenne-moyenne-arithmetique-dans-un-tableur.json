@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-calcul-de-moyenne-moyenne-arithmetique-dans-un-tableur-terminale-c",
+  "meta": {
+    "titre": "Écrire une formule de calcul de moyenne (moyenne arithmétique) dans un tableur",
+    "cours_id": "cours-ecrire-une-formule-de-calcul-de-moyenne-moyenne-arithmetique-dans-un-tableur-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Fonctions de tableur",
+    "tags": [
+      "MOYENNE",
+      "tableur",
+      "calcul de moyenne"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qC3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une moyenne à la main, chiffre par chiffre, devient vite fastidieux dès qu'il faut le refaire pour chaque élève et chaque matière. La fonction MOYENNE d'un tableur automatise ce calcul en une seule formule."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir utiliser une formule simple de tableur (référence de cellule, signe =)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction MOYENNE dans un tableur",
+      "contenu_markdown": "La fonction `MOYENNE(plage)` calcule la moyenne arithmétique de toutes les valeurs numériques contenues dans une plage de cellules donnée, c'est-à-dire leur somme divisée par leur nombre. Par exemple, `=MOYENNE(A1:A3)` fait la moyenne des valeurs de A1, A2 et A3.",
+      "formule_principale": "=MOYENNE(plage_de_cellules)",
+      "variantes": [
+        {
+          "nom": "Division directe",
+          "quand_utiliser": "Quand on calcule la moyenne d'exactement deux valeurs précises.",
+          "contenu_markdown": "On peut aussi écrire directement `=(B3+C3)/2` pour la moyenne de deux cellules seulement, équivalent à MOYENNE(B3:C3) dans ce cas particulier."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la formule calculant la note trimestrielle d'informatique (moyenne des deux notes de séquence SEQ 1 en B3 et SEQ 2 en C3).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les cellules à moyenner",
+          "justification": "La note trimestrielle est la moyenne des deux notes de séquence.",
+          "resultat_markdown": "Cellules B3 (SEQ 1) et C3 (SEQ 2)"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule avec MOYENNE",
+          "justification": "La fonction MOYENNE calcule directement la moyenne arithmétique de la plage indiquée.",
+          "resultat_markdown": "`=MOYENNE(B3:C3)`"
+        }
+      ],
+      "conclusion_markdown": "La fonction MOYENNE(plage) calcule la moyenne arithmétique de toutes les valeurs de la plage indiquée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=SOMME(B3:C3)` en oubliant de diviser par le nombre de valeurs",
+          "pourquoi_faux": "SOMME additionne les valeurs sans les diviser, ce qui donnerait le total des deux notes (20) et non leur moyenne (10) ; il faut utiliser MOYENNE, ou diviser explicitement la somme par le nombre de valeurs.",
+          "correction_markdown": "Distingue toujours SOMME (addition simple) de MOYENNE (somme divisée par le nombre de valeurs) selon ce que demande réellement l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la formule calculant la moyenne des cellules A1, A2 et A3.",
+          "solution_markdown": "`=MOYENNE(A1:A3)`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Comment calculer une moyenne pondérée (chaque note ayant un coefficient différent) plutôt qu'une moyenne simple ?",
+          "solution_markdown": "Une moyenne pondérée ne s'obtient pas directement avec MOYENNE (qui suppose un poids égal pour chaque valeur) : il faut calculer la somme des produits (note × coefficient) divisée par la somme des coefficients, par exemple `=SOMMEPROD(B3:B7;E3:E7)/SOMME(E3:E7)` si B3:B7 contient les notes et E3:E7 les coefficients."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la fonction MOYENNE ignore-t-elle automatiquement les cellules vides d'une plage, contrairement à ce que l'on pourrait croire (les compter comme des zéros) ?",
+          "solution_markdown": "MOYENNE est conçue pour calculer une moyenne représentative des valeurs réellement saisies : si elle comptait les cellules vides comme des zéros, la moyenne serait faussée à la baisse dès qu'une note manque temporairement (élève absent, saisie en cours). En ignorant les cellules vides (mais pas les zéros explicitement saisis, qui eux sont comptés), elle ne fait la moyenne que des données effectivement disponibles, ce qui correspond à l'usage attendu dans un contexte comme un bulletin de notes en cours de remplissage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "MOYENNE(plage) calcule la moyenne arithmétique des valeurs d'une plage.",
+        "Elle équivaut à la somme des valeurs divisée par leur nombre.",
+        "Ne pas confondre avec SOMME, qui n'effectue pas cette division.",
+        "MOYENNE ignore les cellules vides (mais pas les zéros explicitement saisis) dans son calcul."
+      ]
+    }
+  ]
+}

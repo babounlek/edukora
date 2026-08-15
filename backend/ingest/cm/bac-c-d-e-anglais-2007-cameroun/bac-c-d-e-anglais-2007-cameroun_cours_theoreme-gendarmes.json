@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-theoreme-gendarmes-limite-suite-c",
+  "meta": {
+    "titre": "Théorèmes de comparaison et des gendarmes pour les limites de suites",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Limites de suites",
+    "duree_estimee_min": 20,
+    "tags": ["théorème des gendarmes", "théorème de comparaison", "limite de suite", "croissances comparées"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Impossible de calculer la limite d'une suite dont on ne connaît pas la formule explicite ? Ce n'est pas un obstacle si l'on dispose d'un encadrement suffisamment précis : coincée entre deux suites dont on connaît le comportement, la suite mystère est forcée de suivre le même chemin. C'est toute la puissance du théorème des gendarmes et de son cousin, le théorème de comparaison."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Encadrement d'une suite", "Limite de référence des croissances comparées", "Notion de limite infinie et de limite finie d'une suite"]
+    },
+    {
+      "type": "regle",
+      "titre": "Gendarmes pour une limite finie, comparaison pour une limite infinie",
+      "contenu_markdown": "**Théorème des gendarmes.** Si $v_n\\leq u_n\\leq w_n$ à partir d'un certain rang, et si $(v_n)$ et $(w_n)$ convergent vers la même limite finie $\\ell$, alors $(u_n)$ converge aussi vers $\\ell$.\n\n**Théorème de comparaison (cas infini).** Si $u_n\\geq v_n$ à partir d'un certain rang, et si $v_n\\to+\\infty$, alors $u_n\\to+\\infty$ (de même, si $u_n\\leq w_n$ et $w_n\\to-\\infty$, alors $u_n\\to-\\infty$).\n\n**Croissances comparées.** Pour tout entier $n$, $\\displaystyle\\lim_{n\\to+\\infty}\\frac{e^n}{n}=+\\infty$ (l'exponentielle l'emporte sur toute puissance de $n$), et plus généralement $\\displaystyle\\lim_{n\\to+\\infty}\\frac{n}{e^n}=0$.",
+      "formule_principale": "v_n\\leq u_n\\leq w_n,\\ v_n,w_n\\to\\ell \\ \\Rightarrow\\ u_n\\to\\ell",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que pour tout $n\\geq1$, $\\dfrac{e^n-1}{n(e+1)}\\leq u_n\\leq \\dfrac{e^n-1}{2n}$, déterminer la limite de $u_n$ puis celle de $\\dfrac{u_n}{e^n}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Étudier la limite du minorant",
+          "justification": "On veut appliquer le théorème de comparaison pour une limite infinie.",
+          "resultat_markdown": "$\\dfrac{e^n-1}{n}\\to+\\infty$ par croissances comparées, donc $\\dfrac{e^n-1}{n(e+1)}\\to+\\infty$ (constante positive $\\frac{1}{e+1}$)."
+        },
+        {
+          "numero": 2,
+          "action": "Conclure sur la limite de u_n par comparaison",
+          "justification": "u_n est minorée par une suite qui tend vers +infini.",
+          "resultat_markdown": "$\\lim_{n\\to+\\infty}u_n=+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser l'encadrement de départ par e^n",
+          "justification": "Pour étudier u_n/e^n, on divise chaque membre par une quantité positive.",
+          "resultat_markdown": "$\\dfrac{1-e^{-n}}{n(e+1)} \\leq \\dfrac{u_n}{e^n} \\leq \\dfrac{1-e^{-n}}{2n}$ (après simplification par $e^n$)"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier la limite des deux bornes",
+          "justification": "e^{-n} tend vers 0, donc le numérateur tend vers 1 ; le dénominateur n tend vers l'infini.",
+          "resultat_markdown": "Les deux bornes tendent vers $0$ quand $n\\to+\\infty$."
+        }
+      ],
+      "conclusion_markdown": "Par le théorème des gendarmes, $\\displaystyle\\lim_{n\\to+\\infty}\\dfrac{u_n}{e^n}=0$. On a donc $u_n\\to+\\infty$ tout en ayant $u_n/e^n\\to0$ : $u_n$ diverge, mais moins vite que $e^n$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser le théorème des gendarmes (qui suppose une limite finie commune) alors que les deux bornes de l'encadrement tendent vers l'infini.",
+          "pourquoi_faux": "Le théorème des gendarmes ne s'applique qu'avec une limite finie identique pour le minorant et le majorant. Si les bornes tendent vers $+\\infty$, il faut utiliser le théorème de comparaison, qui ne nécessite qu'un seul côté de l'encadrement (le minorant, pour une limite $+\\infty$).",
+          "correction_markdown": "Repère d'abord si la limite recherchée semble finie ou infinie avant de choisir le bon théorème : gendarmes pour une limite finie encadrée des deux côtés, comparaison pour une limite infinie avec un seul côté suffisant."
+        },
+        {
+          "erreur_markdown": "Considérer que u_n → +∞ et u_n/e^n → 0 sont contradictoires.",
+          "pourquoi_faux": "Ces deux résultats portent sur des comparaisons différentes : le premier dit que $u_n$ devient arbitrairement grand ; le second dit seulement que $u_n$ grandit moins vite que $e^n$. Une suite peut très bien tendre vers l'infini tout en étant négligeable devant une autre suite qui tend elle aussi vers l'infini.",
+          "correction_markdown": "Avant de douter d'un résultat qui semble contradictoire, vérifie ce que chaque limite compare réellement : ici, l'une regarde $u_n$ seule, l'autre regarde $u_n$ relativement à $e^n$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $(a_n)$ une suite telle que pour tout $n\\geq1$, $3-\\dfrac1n\\leq a_n\\leq 3+\\dfrac1n$. Déterminer $\\lim_{n\\to+\\infty}a_n$.",
+          "solution_markdown": "$3-\\dfrac1n\\to3$ et $3+\\dfrac1n\\to3$ quand $n\\to+\\infty$ (les deux bornes convergent vers la même limite finie). Par le théorème des gendarmes, $\\lim_{n\\to+\\infty}a_n=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $(b_n)$ une suite telle que pour tout $n\\geq1$, $b_n\\geq n^2-5n$. Déterminer $\\lim_{n\\to+\\infty}b_n$.",
+          "solution_markdown": "$n^2-5n=n(n-5)\\to+\\infty$ quand $n\\to+\\infty$ (produit de deux facteurs qui tendent vers $+\\infty$). Par le théorème de comparaison, comme $b_n$ est minorée par une suite qui tend vers $+\\infty$, $\\lim_{n\\to+\\infty}b_n=+\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(c_n)$ définie par $c_n=\\dfrac{2^n+n^3}{2^n+1}$. Démontrer que $\\dfrac{2^n}{2^n+1}\\leq c_n\\leq \\dfrac{2^n+n^3}{2^n}$, puis en déduire la limite de $(c_n)$.",
+          "solution_markdown": "**Minoration.** $c_n=\\dfrac{2^n+n^3}{2^n+1}\\geq\\dfrac{2^n}{2^n+1}$ car le numérateur $2^n+n^3\\geq2^n$ (on a seulement ajouté $n^3\\geq0$), et le dénominateur est identique et positif.\n\n**Majoration.** $c_n=\\dfrac{2^n+n^3}{2^n+1}\\leq\\dfrac{2^n+n^3}{2^n}$ car le dénominateur $2^n\\leq2^n+1$ (diminuer un dénominateur positif augmente la fraction).\n\n**Limites des deux bornes.** $\\dfrac{2^n}{2^n+1}=\\dfrac{1}{1+2^{-n}}\\to\\dfrac{1}{1+0}=1$. $\\dfrac{2^n+n^3}{2^n}=1+\\dfrac{n^3}{2^n}\\to1+0=1$ (croissances comparées : $2^n$ l'emporte sur $n^3$).\n\nLes deux bornes tendent vers la même limite finie $1$ : par le théorème des gendarmes, $\\lim_{n\\to+\\infty}c_n=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème des gendarmes s'applique quand une suite est encadrée par deux suites convergeant vers la même limite finie : la suite encadrée converge alors vers cette limite commune.",
+        "Le théorème de comparaison s'applique pour une limite infinie : un seul côté de l'encadrement suffit (le minorant pour $+\\infty$, le majorant pour $-\\infty$).",
+        "Les résultats de croissances comparées (l'exponentielle l'emporte sur toute puissance) sont souvent la clé pour déterminer la limite des bornes de l'encadrement.",
+        "Deux résultats de limite portant sur des quantités différentes (une suite seule, puis cette suite divisée par une autre) ne sont jamais contradictoires : ils apportent des informations complémentaires sur la vitesse de croissance.",
+        "Cette combinaison (encadrement de fonction, intégration de l'inégalité, puis théorème des gendarmes ou de comparaison) est l'un des schémas de raisonnement les plus fréquents du BAC C sur les suites définies par une intégrale."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-calcul-explicite-vecteur-translation-W-terminale-c",
+  "meta": {
+    "titre": "Calculer explicitement le vecteur W d'une décomposition en résolvant un système de décomposition",
+    "cours_id": "cours-calcul-explicite-vecteur-translation-W-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - calcul explicite d'une décomposition vectorielle",
+    "tags": ["décomposition vectorielle", "système linéaire", "vecteurs directeurs", "calcul explicite"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_6_q2c"
+  },
+  "sections": {
+    "accroche": "Calculer explicitement le vecteur W de la décomposition canonique d'une application affine se ramène, une fois la théorie posée, à un calcul très concret : décomposer un vecteur connu selon deux directions données, en résolvant un simple système 2×2.",
+    "prerequis": ["Décomposition d'un vecteur selon deux directions non colinéaires", "Résolution de systèmes linéaires par substitution", "Relation W=-u (ou convention analogue selon le cours)"],
+    "regle": {
+      "titre": "Calcul explicite de W par décomposition",
+      "contenu_markdown": "Pour calculer $\\vec W$ dans la décomposition $\\rho=t_{\\vec W}\\circ\\psi$ : 1) calculer $\\rho(O)$ pour un point de référence $O$ (souvent l'origine), 2) former le vecteur $\\overrightarrow{\\rho(O)O}$, 3) décomposer ce vecteur selon les directions de $\\ker g$ et $\\mathrm{Im}\\,g$ (déjà identifiées), en résolvant le système linéaire $t\\vec d_1+s\\vec d_2=\\overrightarrow{\\rho(O)O}$, 4) identifier la composante sur $\\ker g$ (souvent notée $\\vec u$) et poser $\\vec W=-\\vec u$ (ou $\\vec u$ directement, selon la convention de signe adoptée dans l'exercice).",
+      "formule_principale": "$\\overrightarrow{\\rho(O)O}=t\\vec d_1+s\\vec d_2\\Rightarrow\\vec u=t\\vec d_1$ (composante sur $\\ker g$), $\\vec W=-\\vec u$",
+      "variantes": ["On peut vérifier le résultat en refaisant le calcul à partir d'un autre point que O : le résultat pour W doit être identique (indépendance du point de départ)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Avec $\\ker g=\\mathrm{Vect}(1,0)$, $\\mathrm{Im}\\,g=\\mathrm{Vect}(0,1)$, et $\\overrightarrow{\\rho(O)O}=(3,-2)$, calculer $\\vec u$ (composante sur $\\ker g$) et $\\vec W=-\\vec u$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Décomposer selon les axes", "justification": "base canonique déjà alignée avec ker g et Im g", "resultat_markdown": "$(3,-2)=3(1,0)+(-2)(0,1)$"},
+        {"numero": 2, "action": "Identifier $\\vec u$", "justification": "composante sur $\\ker g=\\mathrm{Vect}(1,0)$", "resultat_markdown": "$\\vec u=(3,0)$"},
+        {"numero": 3, "action": "Calculer $\\vec W$", "justification": "$\\vec W=-\\vec u$", "resultat_markdown": "$\\vec W=(-3,0)$"}
+      ],
+      "conclusion_markdown": "$\\vec W=(-3,0)$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre la composante sur ker g avec celle sur Im g au moment de définir W", "pourquoi_faux": "W doit précisément être défini à partir de la composante dans ker g (F), pas dans Im g", "correction_markdown": "Toujours vérifier, dans la construction théorique de l'exercice, quelle composante (ker g ou Im g) sert à définir W avant de l'extraire du calcul."},
+      {"erreur_markdown": "Oublier le signe négatif dans W=-u si la convention de l'exercice l'exige", "pourquoi_faux": "un oubli de signe donne un vecteur de translation opposé au bon", "correction_markdown": "Toujours vérifier, dans la question théorique correspondante, la relation exacte entre W et u avant de conclure."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Avec $\\ker g=\\mathrm{Vect}(1,1)$, $\\mathrm{Im}\\,g=\\mathrm{Vect}(1,-1)$, et $\\overrightarrow{\\rho(O)O}=(4,0)$, décomposer ce vecteur.", "solution_markdown": "$t(1,1)+s(1,-1)=(4,0)\\Rightarrow t+s=4,\\ t-s=0\\Rightarrow t=s=2$. Donc $\\vec u=(2,2)$ (composante sur ker g), $\\vec W=-(2,2)=(-2,-2)$."}
+    ],
+    "synthese": "Le calcul explicite de W repose sur la décomposition du vecteur ρ(O)O selon les directions de ker g et Im g (résolution d'un système 2×2), suivi de l'extraction de la composante appropriée et de l'application de la convention de signe W=-u."
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 3,
+  "titre_exercice": "Similitude directe, cercle image et lieu géométrique dans le plan complexe",
+  "points": 4.25,
+  "figures": [],
+  "enonce_intro_markdown": "Le plan est rapporté au repère orthonormé $(O\\,;I,J)$. L'unité sur les axes est le centimètre. On donne les points $A$, $B$ et $C$ d'affixes respectives $z_A=-1+5i$, $z_B=-1+i$ et $z_C=3+i$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "points": "0,5pt",
+      "enonce_markdown": "Donner la forme algébrique de $\\dfrac{z_B-z_C}{z_B-z_A}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-ecrire-un-quotient-de-differences-daffixes-sous-forme-algebrique-terminale-d-ti",
+          "texte": "Pour écrire un quotient de nombres complexes sous forme algébrique, on calcule séparément le numérateur et le dénominateur, puis on simplifie le quotient obtenu (en multipliant par le conjugué du dénominateur si nécessaire, ou en reconnaissant une forme simple comme $1/i=-i$)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn calcule séparément numérateur et dénominateur, puis on simplifie le quotient.\n\n**Numérateur.** $z_B-z_C=(-1+i)-(3+i)=-4$\n\n**Dénominateur.** $z_B-z_A=(-1+i)-(-1+5i)=-4i$\n\n**Quotient.** $\\dfrac{z_B-z_C}{z_B-z_A}=\\dfrac{-4}{-4i}=\\dfrac1i$\n\nOr $\\dfrac1i=\\dfrac{1\\times(-i)}{i\\times(-i)}=\\dfrac{-i}{-i^2}=\\dfrac{-i}{1}=-i$\n\n**Conclusion.** $\\dfrac{z_B-z_C}{z_B-z_A}=-i$ (forme algébrique : $0-i$)."
+    },
+    {
+      "numero": "1.b",
+      "points": "0,5pt",
+      "enonce_markdown": "En déduire la nature exacte du triangle $ABC$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-la-nature-dun-triangle-a-partir-dun-quotient-daffixes-purement-imaginaire-terminale-d-ti",
+          "texte": "Pour un quotient $Z=\\dfrac{z_B-z_C}{z_B-z_A}$, $|Z|$ donne le rapport des longueurs $\\dfrac{BC}{BA}$ et $\\arg(Z)$ donne l'angle orienté entre les vecteurs $\\vec{AB}$ et $\\vec{CB}$ ; en particulier ce même angle correspond à celui formé au sommet $B$ entre les côtés $[BA]$ et $[BC]$ du triangle. $|Z|=1$ signifie deux côtés égaux ; $\\arg(Z)=\\pm\\frac\\pi2$ signifie un angle droit."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour $Z=\\dfrac{z_B-z_C}{z_B-z_A}$, $|Z|=\\dfrac{BC}{BA}$ et $\\arg(Z)$ est l'angle entre les côtés $[BA]$ et $[BC]$ au sommet $B$. $|Z|=1$ signifie deux côtés égaux ; $\\arg(Z)=\\pm\\frac\\pi2$ signifie un angle droit.\n\n**Module et argument de $Z=-i$.** $Z=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$ (car $\\cos(-\\pi/2)=0$ et $\\sin(-\\pi/2)=-1$, ce qui redonne bien $0-i=-i$), donc $|Z|=1$ et $\\arg(Z)=-\\dfrac\\pi2$.\n\n**Interprétation du module.** $|Z|=\\dfrac{BC}{BA}=1$ (avec $BC=|z_B-z_C|=|-4|=4$ et $BA=|z_B-z_A|=|-4i|=4$, ce qui confirme directement $BC=BA=4$) : le triangle est isocèle en $B$.\n\n**Interprétation de l'argument.** $\\arg(Z)=-\\dfrac\\pi2$ signifie que les côtés $[BA]$ et $[BC]$ sont perpendiculaires : l'angle en $B$ est droit.\n\n**Conclusion.** Le triangle $ABC$ est rectangle et isocèle en $B$, avec $BA=BC=4\\ \\text{cm}$.\n\n### Conseil\nUne vérification rapide : $BA=4$ et $BC=4$ ont été retrouvés directement à partir des modules calculés en 1.a, sans calcul supplémentaire — un gain de temps à exploiter."
+    },
+    {
+      "numero": "2.a",
+      "points": "0,5pt",
+      "enonce_markdown": "On désigne par $S$ la similitude directe de centre $B$ qui transforme $A$ en $C$. Donner l'expression complexe de $S$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-lecriture-complexe-dune-similitude-de-centre-connu-et-un-couple-point-image-terminale-d-ti",
+          "texte": "Une similitude directe de centre $\\Omega$ s'écrit $z'-z_\\Omega=a(z-z_\\Omega)$. Si de plus $S(P)=P'$ pour un couple connu, alors $a=\\dfrac{z_{P'}-z_\\Omega}{z_P-z_\\Omega}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$z'-z_\\Omega=a(z-z_\\Omega)$, avec $a=\\dfrac{z_{P'}-z_\\Omega}{z_P-z_\\Omega}$ si $S(P)=P'$ est connu.\n\n**Calcul de $a$.** Ici $\\Omega=B$, $P=A$, $P'=C$ : $a=\\dfrac{z_C-z_B}{z_A-z_B}$.\n\n$z_C-z_B=(3+i)-(-1+i)=4$\n\n$z_A-z_B=(-1+5i)-(-1+i)=4i$\n\n$a=\\dfrac4{4i}=\\dfrac1i=-i$\n\n**Écriture complexe.** $z'-z_B=a(z-z_B)\\iff z'=-i(z-(-1+i))+(-1+i)=-i(z+1-i)+(-1+i)$\n\nOn développe : $-i(z+1-i)=-iz-i-i\\times(-i)=-iz-i+i^2=-iz-i-1$\n\nDonc $z'=-iz-i-1+(-1+i)=-iz-i-1-1+i=-iz-2$\n\n**Vérification.** $S(A)$ doit donner $C$ : $-i\\times(-1+5i)-2=i-5i^2-2=i+5-2=3+i=z_C$ ✓\n\n**Conclusion.** $S:\\ z'=-iz-2$."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "En déduire les éléments caractéristiques de $S$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-lire-le-rapport-et-langle-dune-similitude-sur-son-ecriture-complexe-terminale-d-ti",
+          "texte": "Pour $z'=az+b$, le rapport est $k=|a|$ et l'angle $\\theta=\\arg(a)$ ; si $k=1$, la similitude est en réalité une rotation."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour $z'=az+b$, $k=|a|$ et $\\theta=\\arg(a)$ ; si $k=1$, c'est une rotation.\n\nD'après la question 2.a, $a=-i$, donc $k=|-i|=1$ et $\\theta=\\arg(-i)=-\\dfrac\\pi2$ (déjà établi en 1.b).\n\n**Conséquence.** Comme $k=1$, $S$ n'est pas une similitude d'agrandissement/réduction : c'est en réalité une **rotation** de centre $B(-1,1)$ et d'angle $-\\dfrac\\pi2$.\n\n**Conclusion.** $S$ est la rotation de centre $B(-1\\,;1)$ et d'angle $-\\dfrac\\pi2$."
+    },
+    {
+      "numero": "3.a",
+      "points": "0,75pt",
+      "enonce_markdown": "Soient $H$ le milieu du segment $[AC]$ et $(C_1)$ le cercle de centre $H$ et de rayon $[BH]$. Donner une équation cartésienne de $(C_2)$, image du cercle $(C_1)$ par cette similitude directe $S$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-limage-dun-cercle-par-une-rotation-terminale-d-ti",
+          "texte": "L'image d'un cercle de centre $\\Omega$ et de rayon $r$ par une rotation est le cercle de centre l'image de $\\Omega$ et de **même rayon** $r$ (une rotation conserve les distances)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'image d'un cercle par une rotation est le cercle de centre l'image du centre, et de même rayon.\n\n**Calcul de $H$.** $H$ est le milieu de $[AC]$ : $z_H=\\dfrac{z_A+z_C}2=\\dfrac{(-1+5i)+(3+i)}2=\\dfrac{2+6i}2=1+3i$, donc $H(1,3)$.\n\n**Calcul du rayon $BH$.** $BH=|z_H-z_B|=|(1+3i)-(-1+i)|=|2+2i|=\\sqrt{2^2+2^2}=\\sqrt8=2\\sqrt2$\n\n**Image du centre $H$ par $S$.** $S$ est une rotation (question 2.b) : l'image de $(C_1)$ est le cercle de centre $S(H)$ et de même rayon $2\\sqrt2$.\n\n$$z_{S(H)}=-i\\times z_H-2=-i(1+3i)-2=-i-3i^2-2=-i+3-2=1-i$$\n\nDonc $S(H)$ a pour coordonnées $(1,-1)$.\n\n**Équation cartésienne de $(C_2)$.** Cercle de centre $(1,-1)$ et de rayon $2\\sqrt2$ (donc de rayon au carré $8$) :\n\n$$(x-1)^2+(y+1)^2=8$$\n\n**Conclusion.** $(C_2):\\ (x-1)^2+(y+1)^2=8$."
+    },
+    {
+      "numero": "3.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Représenter $(C_2)$ dans le repère.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-representer-un-cercle-connaissant-centre-et-rayon-terminale-d-ti",
+          "texte": "Pour représenter un cercle d'équation $(x-a)^2+(y-b)^2=r^2$, on place le centre $(a,b)$, puis on trace le cercle de rayon $r$ (en reportant $r$ horizontalement et verticalement depuis le centre pour guider le tracé)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn place le centre, puis on trace le cercle de rayon $r$ en reportant $r$ horizontalement et verticalement pour guider le tracé.\n\nD'après la question 3.a, $(C_2)$ a pour centre $(1,-1)$ et pour rayon $2\\sqrt2\\approx2,83\\ \\text{cm}$.\n\n**Construction.** On place le point de coordonnées $(1,-1)$ dans le repère $(O;I,J)$ (unité : le centimètre). On reporte une longueur d'environ $2,83$ cm de part et d'autre de ce centre, horizontalement et verticalement (points approximatifs $(3,83\\,;-1)$, $(-1,83\\,;-1)$, $(1\\,;1,83)$, $(1\\,;-3,83)$), puis on trace le cercle passant par ces quatre points de guidage, centré en $(1,-1)$.\n\n**Conclusion.** $(C_2)$ est le cercle de centre $(1,-1)$ et de rayon $2\\sqrt2\\approx2,83\\ \\text{cm}$, tracé au compas à partir de ces éléments."
+    },
+    {
+      "numero": "4.a",
+      "points": "0,25pt",
+      "enonce_markdown": "Placer dans ce même repère le point $D$ tel que $\\overrightarrow{BD}=\\overrightarrow{BA}+\\overrightarrow{BC}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-laffixe-dun-point-defini-par-une-somme-de-vecteurs-terminale-d-ti",
+          "texte": "Si $\\overrightarrow{BD}=\\overrightarrow{BA}+\\overrightarrow{BC}$, alors en affixes $z_D-z_B=(z_A-z_B)+(z_C-z_B)$, soit $z_D=z_A+z_C-z_B$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$\\overrightarrow{BD}=\\overrightarrow{BA}+\\overrightarrow{BC}\\iff z_D=z_A+z_C-z_B$.\n\n$$z_D=(-1+5i)+(3+i)-(-1+i)=(-1+3+1)+(5+1-1)i=3+5i$$\n\n**Vérification.** $\\overrightarrow{BD}=z_D-z_B=(3+5i)-(-1+i)=4+4i$. $\\overrightarrow{BA}+\\overrightarrow{BC}=(z_A-z_B)+(z_C-z_B)=4i+4=4+4i$ ✓ (avec $z_A-z_B=4i$ et $z_C-z_B=4$, déjà calculés aux questions précédentes).\n\n**Conclusion.** $D$ a pour affixe $3+5i$, soit $D(3,5)$ : on le place directement dans le repère à ces coordonnées."
+    },
+    {
+      "numero": "4.b",
+      "points": "0,75pt",
+      "enonce_markdown": "Déterminer, puis représenter le lieu géométrique des points $M(x,y)$ du plan tels que $\\lVert\\overrightarrow{MD}-\\overrightarrow{MA}-\\overrightarrow{MC}\\rVert=\\lVert\\overrightarrow{BC}\\rVert$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-simplifier-une-combinaison-vectorielle-pour-identifier-un-lieu-geometrique-circulaire-terminale-d-ti",
+          "texte": "Pour simplifier une expression $\\overrightarrow{MD}-\\overrightarrow{MA}-\\overrightarrow{MC}$, on développe chaque vecteur en affixes ($\\overrightarrow{MP}=z_P-z_M$) : les termes en $z_M$ se combinent, faisant apparaître une expression indépendante de $M$, ou un vecteur simple comme $\\overrightarrow{\\Omega M}$ pour un point fixe $\\Omega$ à identifier."
+          }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn développe chaque vecteur en affixes pour faire apparaître une combinaison indépendante de $M$, souvent un vecteur simple comme $\\overrightarrow{\\Omega M}$.\n\n**Développement.** Notons $z$ l'affixe de $M$. $\\overrightarrow{MD}-\\overrightarrow{MA}-\\overrightarrow{MC}$ a pour affixe :\n\n$$(z_D-z)-(z_A-z)-(z_C-z)=z_D-z_A-z_C+z$$\n\n**Simplification de $z_D-z_A-z_C$.** D'après la question 4.a, $z_D=z_A+z_C-z_B$, donc :\n\n$$z_D-z_A-z_C=(z_A+z_C-z_B)-z_A-z_C=-z_B$$\n\n**Conclusion intermédiaire.** L'affixe de $\\overrightarrow{MD}-\\overrightarrow{MA}-\\overrightarrow{MC}$ vaut donc $z-z_B$, c'est-à-dire exactement l'affixe du vecteur $\\overrightarrow{BM}$.\n\n**Réécriture de la condition.** La condition $\\lVert\\overrightarrow{MD}-\\overrightarrow{MA}-\\overrightarrow{MC}\\rVert=\\lVert\\overrightarrow{BC}\\rVert$ devient donc :\n\n$$\\lVert\\overrightarrow{BM}\\rVert=\\lVert\\overrightarrow{BC}\\rVert\\iff BM=BC$$\n\n**Calcul de $BC$.** $BC=|z_C-z_B|=|4|=4$ (déjà calculé en question 2.a).\n\n**Identification du lieu.** L'ensemble des points $M$ tels que $BM=4$ (distance constante à un point fixe $B$) est le cercle de centre $B(-1,1)$ et de rayon $4$.\n\n**Représentation.** On place le centre $B(-1,1)$ dans le repère, puis on trace le cercle de rayon $4$ cm centré en $B$ (on peut noter au passage que ce cercle passe exactement par $C$, puisque $BC=4$).\n\n**Conclusion.** Le lieu géométrique cherché est le cercle de centre $B(-1\\,;1)$ et de rayon $4$.\n\n### Conseil\nUne combinaison de vecteurs qui semble complexe au premier regard se simplifie presque toujours en un vecteur unique une fois traduite en affixes : chercher systématiquement à faire disparaître le terme en $z_M$ de part et d'autre est le réflexe à avoir."
+    }
+  ]
+}

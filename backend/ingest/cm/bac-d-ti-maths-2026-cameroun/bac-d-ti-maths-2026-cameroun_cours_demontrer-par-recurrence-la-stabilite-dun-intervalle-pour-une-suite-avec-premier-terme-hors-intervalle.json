@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-pour-une-suite-avec-premier-terme-hors-intervalle-terminale-d-ti",
+  "meta": {
+    "titre": "Démontrer par récurrence la stabilité d'un intervalle pour une suite dont le premier terme est hors de l'intervalle",
+    "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-pour-une-suite-avec-premier-terme-hors-intervalle-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Suites — récurrence avec démarrage décalé",
+    "tags": [
+      "récurrence",
+      "intervalle stable",
+      "démarrage décalé"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex3-2a"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand le premier terme d'une suite récurrente est en dehors de l'intervalle visé par une propriété, la récurrence doit démarrer non pas au rang 0, mais au premier rang où la propriété devient effectivement vraie."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Principe de récurrence",
+        "Stabilité d'un intervalle par une fonction monotone"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier le bon rang de départ avant de lancer la récurrence",
+      "contenu_markdown": "Si $u_0$ n'appartient pas à l'intervalle $]a;b[$ visé par une propriété $P(n)$, mais que $u_1=f(u_0)$ y appartient (calcul direct), alors on initialise la récurrence au rang $n=1$ (vérification directe de $P(1)$), et on démontre l'hérédité pour $n\\ge1$ en utilisant la stabilité de $]a;b[$ par $f$. La propriété est alors établie pour tout $n\\ge1$, mais pas nécessairement pour $n=0$.",
+      "formule_principale": "u0 ∉ ]a;b[, u1=f(u0) ∈ ]a;b[ ⟹ récurrence initialisée au rang 1, propriété vraie pour tout n≥1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "v0=10 (hors de ]0;5[), v(n+1)=f(vn) avec f(10)=3 ∈]0;5[, et f stable sur ]0;5[. Que peut-on affirmer sur (vn) ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Constater que v0 est hors intervalle",
+          "justification": "10 ∉ ]0;5[.",
+          "resultat_markdown": "v0=10 en dehors de l'intervalle visé"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer v1 et vérifier qu'il y entre",
+          "justification": "v1=f(v0)=3 ∈]0;5[.",
+          "resultat_markdown": "v1=3 ∈ ]0;5["
+        },
+        {
+          "numero": 3,
+          "action": "Lancer la récurrence à partir du rang 1",
+          "justification": "Stabilité de ]0;5[ par f pour n≥1.",
+          "resultat_markdown": "pour tout n≥1, vn ∈ ]0;5["
+        }
+      ],
+      "conclusion_markdown": "La propriété -2<vn<0 (ou ici 0<vn<5) est établie pour tout n≥1, mais v0 reste une exception hors de cet intervalle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer la propriété 'pour tout n∈N' en incluant n=0 sans vérifier que u0 la satisfait réellement",
+          "pourquoi_faux": "Si u0 est en dehors de l'intervalle visé, l'énoncé de la propriété incluant n=0 serait mathématiquement faux ; il faut restreindre la conclusion aux rangs où elle est réellement démontrée.",
+          "correction_markdown": "Toujours vérifier la propriété directement au rang 0 avant d'affirmer qu'elle est valable pour tout n∈N ; si elle échoue à ce rang, restreindre explicitement la conclusion à n≥1 (ou au rang de départ pertinent), en le signalant clairement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "w0=-5, hors de ]-1;1[. w1=f(w0)=0,5 ∈]-1;1[. À quel rang doit démarrer la récurrence pour prouver wn∈]-1;1[ ?",
+          "solution_markdown": "Au rang n=1 (vérification directe), puis hérédité pour n≥1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi ne peut-on pas dire simplement 'la propriété est vraie pour tout n' sans préciser 'n≥1' dans ce genre de situation ?",
+          "solution_markdown": "Parce que le rang 0 est explicitement exclu (u0 est en dehors de l'intervalle), donc l'énoncé 'pour tout n∈N' incluant n=0 serait faux ; la précision 'n≥1' est mathématiquement nécessaire, pas une simple formalité."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Ce genre de situation (u0 hors intervalle, u1 dedans) est-il un signe d'erreur dans l'énoncé, ou peut-il être parfaitement normal ?",
+          "solution_markdown": "Cela peut être parfaitement normal et volontaire : l'énoncé peut choisir un premier terme u0 'hors norme' pour tester la compréhension de l'élève sur la nécessité de vérifier soigneusement le rang de départ, plutôt que d'appliquer mécaniquement une récurrence à partir de n=0 sans réflexion. Si toutefois la formulation de la question prétend explicitement inclure n=0 alors que ce n'est manifestement pas vérifiable, cela peut aussi signaler une imprécision de rédaction à signaler."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si u0 est hors de l'intervalle visé mais u1 y entre, la récurrence démarre au rang 1, pas au rang 0.",
+        "La propriété est alors établie pour tout n≥1, en excluant explicitement u0.",
+        "Toujours vérifier directement le rang de départ annoncé avant de lancer une récurrence."
+      ]
+    }
+  ]
+}

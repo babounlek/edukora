@@ -1,0 +1,111 @@
+{
+  "type": "cours",
+  "cours_id": "cours-suite-auxiliaire-geometrique-points-fixes-homographique",
+  "meta": {
+    "titre": "Suite auxiliaire géométrique associée à une suite homographique, par ses points fixes",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "Suites numériques"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex3-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par une relation homographique $u_{n+1}=\\dfrac{au_n+b}{cu_n+d}$ semble difficile à étudier directement. La bonne idée : chercher ses points fixes, puis construire à partir d'eux une suite auxiliaire qui, elle, est géométrique - et donc parfaitement connue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Suite géométrique : définition et raison",
+        "Résolution d'une équation du premier ou second degré",
+        "Calcul sur les fractions et mise au même dénominateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode des points fixes pour une suite homographique",
+      "contenu_markdown": "Soit $(u_n)$ définie par $u_{n+1}=\\dfrac{au_n+b}{cu_n+d}$. On cherche d'abord ses points fixes, solutions de $L=\\dfrac{aL+b}{cL+d}$. Si cette équation a deux solutions distinctes $\\alpha$ et $\\beta$, alors la suite $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$ est géométrique. On le démontre en calculant $v_{n+1}$ à partir de $u_{n+1}$, en factorisant le numérateur par $(u_n-\\alpha)$ et le dénominateur par $(u_n-\\beta)$ : le facteur $\\dfrac{1}{cu_n+d}$ commun aux deux se simplifie, laissant apparaître $v_{n+1}=q\\times v_n$ pour une constante $q$ ne dépendant pas de $n$.",
+      "formule_principale": "v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}\\ \\text{est géométrique de raison}\\ q=\\dfrac{a-c\\alpha}{a-c\\beta}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $(u_n)$ la suite définie par $u_0=0$ et, pour tout entier naturel $n$, $u_{n+1}=\\dfrac{u_n+2}{2u_n+1}$. On admet que les points fixes de cette relation sont $1$ et $-1$. On pose $v_n=\\dfrac{u_n-1}{u_n+1}$. Démontrer que $(v_n)$ est géométrique.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer $u_{n+1}-1$",
+          "justification": "On remplace $u_{n+1}$ par son expression et on réduit au même dénominateur.",
+          "resultat_markdown": "$u_{n+1}-1=\\dfrac{u_n+2}{2u_n+1}-1=\\dfrac{u_n+2-(2u_n+1)}{2u_n+1}=\\dfrac{-u_n+1}{2u_n+1}=\\dfrac{-(u_n-1)}{2u_n+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer $u_{n+1}+1$",
+          "justification": "Même méthode avec $+1$.",
+          "resultat_markdown": "$u_{n+1}+1=\\dfrac{u_n+2}{2u_n+1}+1=\\dfrac{u_n+2+2u_n+1}{2u_n+1}=\\dfrac{3u_n+3}{2u_n+1}=\\dfrac{3(u_n+1)}{2u_n+1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Former $v_{n+1}$ et simplifier",
+          "justification": "Le facteur $\\dfrac{1}{2u_n+1}$ commun au numérateur et au dénominateur du quotient se simplifie.",
+          "resultat_markdown": "$v_{n+1}=\\dfrac{u_{n+1}-1}{u_{n+1}+1}=\\dfrac{-(u_n-1)}{3(u_n+1)}=-\\dfrac13\\times\\dfrac{u_n-1}{u_n+1}=-\\dfrac13\\,v_n$"
+        }
+      ],
+      "conclusion_markdown": "$(v_n)$ est donc géométrique, de raison $q=-\\dfrac13$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir $v_n=\\dfrac{u_n-\\beta}{u_n-\\alpha}$ (points fixes inversés) sans s'en rendre compte.",
+          "pourquoi_faux": "Le résultat reste une suite géométrique, mais avec l'inverse de la raison attendue - une confusion fréquente si l'énoncé impose une expression précise de $v_n$.",
+          "correction_markdown": "Toujours reprendre l'expression de $v_n$ exactement telle qu'elle est donnée dans l'énoncé."
+        },
+        {
+          "erreur_markdown": "Oublier de factoriser complètement le numérateur et le dénominateur avant de simplifier le quotient.",
+          "pourquoi_faux": "Sans la factorisation par $(u_n-\\alpha)$ et $(u_n-\\beta)$, le facteur commun $\\dfrac{1}{cu_n+d}$ ne se simplifie pas et $q$ semble dépendre de $n$.",
+          "correction_markdown": "Systématiquement factoriser chaque expression avant de former le quotient $v_{n+1}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "On admet que les points fixes de $u_{n+1}=\\dfrac{u_n+6}{u_n+2}$ sont $3$ et $-2$. Sachant que $v_n=\\dfrac{u_n-3}{u_n+2}$ est géométrique de raison $q=-\\dfrac{1}{5}$ (donnée), et que $u_0=0$, calculer $v_0$.",
+          "solution_markdown": "$v_0=\\dfrac{u_0-3}{u_0+2}=\\dfrac{-3}{2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Les points fixes de $u_{n+1}=\\dfrac{3u_n-2}{u_n}$ (pour $u_n\\neq0$) sont $1$ et $2$. Écrire l'expression de la suite auxiliaire $v_n=\\dfrac{u_n-1}{u_n-2}$ et calculer $v_{n+1}-\\dfrac{u_{n+1}-1}{u_{n+1}-2}$ formellement (doit valoir 0 par définition).",
+          "solution_markdown": "Par définition, $v_{n+1}=\\dfrac{u_{n+1}-1}{u_{n+1}-2}$ : la différence demandée vaut donc $0$, ce n'est qu'une reformulation directe de la définition de $v_n$ au rang $n+1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $(u_n)$ définie par $u_0=5$ et $u_{n+1}=\\dfrac{2u_n-1}{u_n}$ (pour $u_n\\neq0$). Vérifier que $1$ est point fixe, puis, sachant que l'autre point fixe est également $1$ (point fixe double), expliquer pourquoi la méthode $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$ ne s'applique pas ici.",
+          "solution_markdown": "$L=\\dfrac{2L-1}{L}\\Leftrightarrow L^2=2L-1\\Leftrightarrow L^2-2L+1=0\\Leftrightarrow(L-1)^2=0$ : $1$ est l'unique point fixe (racine double). La méthode du cours suppose deux points fixes distincts $\\alpha\\neq\\beta$ ; avec un seul point fixe double, on utilise à la place la suite auxiliaire $w_n=\\dfrac{1}{u_n-1}$, qui devient arithmétique (méthode différente, hors du cadre de ce cours)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On cherche les points fixes $\\alpha,\\beta$ en résolvant $L=\\dfrac{aL+b}{cL+d}$.",
+        "Si $\\alpha\\neq\\beta$, la suite $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$ est géométrique.",
+        "La raison $q$ s'obtient en factorisant $u_{n+1}-\\alpha$ et $u_{n+1}-\\beta$ puis en simplifiant le facteur commun.",
+        "Cette méthode ramène l'étude d'une suite homographique compliquée à celle, bien maîtrisée, d'une suite géométrique.",
+        "Elle ne s'applique que si les deux points fixes sont distincts ; un point fixe double demande une autre suite auxiliaire."
+      ]
+    }
+  ]
+}

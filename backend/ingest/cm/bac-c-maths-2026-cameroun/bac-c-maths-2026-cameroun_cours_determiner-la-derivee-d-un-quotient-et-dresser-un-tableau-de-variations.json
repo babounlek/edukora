@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-determiner-la-derivee-d-un-quotient-et-dresser-un-tableau-de-variations-terminale-c",
+  "meta": {
+    "titre": "Déterminer la dérivée d'un quotient et dresser un tableau de variations",
+    "cours_id": "cours-determiner-la-derivee-d-un-quotient-et-dresser-un-tableau-de-variations-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse — étude de fonction",
+    "tags": [
+      "dérivée d'un quotient",
+      "fonction auxiliaire",
+      "tableau de variations"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex3-II.6-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand le signe de la dérivée d'un quotient reste difficile à lire directement, étudier le signe du seul numérateur — parfois via une fonction auxiliaire dont on dérive à son tour — suffit à dresser le tableau de variations complet."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la formule (u/v)'=(u'v-uv')/v²",
+        "Savoir étudier le signe d'une fonction auxiliaire en dérivant à nouveau si nécessaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer f' et étudier son signe via une fonction auxiliaire",
+      "contenu_markdown": "Après avoir calculé $f'=\\dfrac{u'v-uv'}{v^2}$, si le signe du numérateur $N(x)=u'(x)v(x)-u(x)v'(x)$ n'est pas immédiat, on étudie $N$ comme une fonction à part entière : on calcule $N'(x)$, on en déduit le sens de variation de $N$, puis son signe (souvent en comparant à une valeur connue comme $N(0)$).",
+      "formule_principale": "f'=(u'v-uv')/v² ; étudier le signe du numérateur N via N' si nécessaire",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f(x)=ln(x+1)/x sur ]0;+∞[, f(0)=1, f'(0)=-1/2. Déterminer f' et dresser le tableau de variations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer f' par la formule du quotient",
+          "justification": "u=ln(x+1), v=x.",
+          "resultat_markdown": "f'(x) = [x/(x+1) - ln(x+1)] / x² = [x-(x+1)ln(x+1)] / [x²(x+1)]"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe du numérateur N(x)=x-(x+1)ln(x+1)",
+          "justification": "N(0)=0-1×0=0.",
+          "resultat_markdown": "N(0)=0"
+        },
+        {
+          "numero": 3,
+          "action": "Dériver N pour connaître son sens de variation",
+          "justification": "N'(x)=1-[ln(x+1)+1]=-ln(x+1).",
+          "resultat_markdown": "N'(x)=-ln(x+1)<0 pour x>0 : N strictement décroissante, partant de N(0)=0"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le signe de f'",
+          "justification": "N(x)<0 pour x>0, dénominateur x²(x+1)>0.",
+          "resultat_markdown": "f'(x)<0 pour tout x>0"
+        }
+      ],
+      "conclusion_markdown": "f est strictement décroissante sur [0;+∞[, de f(0)=1 à lim(+∞)f=0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne pas réutiliser la valeur f'(0)=-1/2 déjà établie et donner un tableau de variations incomplet en x=0",
+          "pourquoi_faux": "Le tableau de variations doit couvrir tout le domaine [0;+∞[, y compris x=0 ; le résultat f'(0)=-1/2, déjà établi par une méthode différente (encadrement), doit être réutilisé et intégré au tableau plutôt que recalculé ou oublié.",
+          "correction_markdown": "Toujours vérifier la cohérence entre le résultat général de f' et les valeurs particulières déjà établies dans les questions précédentes (ici f'(0))."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de g(x)=x²/(x+1) sur ]-1;+∞[.",
+          "solution_markdown": "g'(x)=[2x(x+1)-x²]/(x+1)²=(x²+2x)/(x+1)²=x(x+2)/(x+1)²."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi étudier N'(x)=-ln(x+1) suffit-il à connaître le signe de N sur tout ]0;+∞[ ?",
+          "solution_markdown": "N'(x)<0 pour x>0 montre que N est strictement décroissante sur cet intervalle ; combiné à N(0)=0 (valeur de départ), cela garantit que N(x)<N(0)=0 pour tout x>0, donnant directement le signe de N sans autre calcul."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment cette méthode (étudier le signe du numérateur via une fonction auxiliaire) se généralise-t-elle à d'autres quotients complexes ?",
+          "solution_markdown": "Chaque fois que le signe direct du numérateur d'une dérivée n'est pas évident (mélange de termes polynomiaux et logarithmiques/exponentiels, par exemple), on peut traiter ce numérateur comme une nouvelle fonction à étudier indépendamment : la dériver, trouver son signe, éventuellement itérer le procédé si le signe de sa propre dérivée n'est pas non plus immédiat, jusqu'à obtenir une expression dont le signe est trivial."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La dérivée d'un quotient se calcule par (u'v-uv')/v², le signe étant celui du numérateur (si v²>0).",
+        "Quand le signe du numérateur n'est pas immédiat, l'étudier comme une fonction auxiliaire à part entière (dérivée, variations) le révèle.",
+        "Toujours réutiliser les résultats déjà établis dans les questions précédentes pour construire un tableau de variations cohérent."
+      ]
+    }
+  ]
+}

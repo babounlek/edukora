@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-utiliser-le-pgcd-pour-determiner-la-plus-grande-dimension-dun-carreau-carre-troisieme",
+  "meta": {"titre": "Utiliser le PGCD pour déterminer la plus grande dimension possible d'un carreau carré", "cours_id": "cours-utiliser-le-pgcd-pour-determiner-la-plus-grande-dimension-dun-carreau-carre-troisieme", "matiere": "Mathématiques", "niveau": "Troisième", "sous_theme": "Arithmétique — PGCD, application concrète", "tags": ["PGCD", "algorithme d'Euclide", "pavage"], "duree_estimee_minutes": 10, "epreuve_source": "bepc-maths-2024-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bepc-maths-2024-cameroun-ex7-t2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Paver un rectangle avec des carreaux carrés de la plus grande taille possible, sans espace ni découpe, revient exactement à calculer le PGCD des deux dimensions du rectangle."},
+    {"type": "prerequis", "items_markdown": ["Notion de diviseur commun à deux nombres", "Algorithme d'Euclide pour calculer un PGCD"]},
+    {"type": "regle", "titre": "Le côté du carreau est le PGCD des deux dimensions", "contenu_markdown": "Pour paver sans espace ni découpe un rectangle de dimensions $L\\times l$ (en une unité commune) avec des carreaux carrés de la plus grande taille possible, le côté du carreau doit être un diviseur commun de $L$ et $l$ : la plus grande valeur possible est $c=\\text{PGCD}(L,l)$. Le nombre de carreaux est alors $\\dfrac Lc\\times\\dfrac lc$.", "formule_principale": "côté du carreau = PGCD(L, l) ; nombre de carreaux = (L/c)×(l/c)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Paver un rectangle de 360cm×240cm avec des carreaux carrés de la plus grande taille possible. Trouver le côté du carreau et le nombre de carreaux.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Algorithme d'Euclide", "justification": "360=1×240+120 ; 240=2×120+0", "resultat_markdown": "PGCD(360,240)=120"},
+      {"numero": 2, "action": "Nombre de carreaux", "justification": "(360/120)×(240/120)", "resultat_markdown": "3×2=6"}
+    ], "conclusion_markdown": "Côté du carreau : 120cm. Nombre de carreaux : 6."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser des dimensions exprimées dans des unités différentes (par exemple mètres pour l'une, centimètres pour l'autre) sans les convertir dans une unité commune avant de calculer le PGCD", "pourquoi_faux": "Le PGCD ne peut se calculer qu'entre deux nombres exprimés dans la MÊME unité ; mélanger les unités donnerait un PGCD dénué de sens physique.", "correction_markdown": "Toujours convertir les deux dimensions dans une unité commune (généralement le centimètre) avant de calculer le PGCD."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Paver un rectangle de 210cm×150cm avec des carreaux carrés de la plus grande taille possible. Trouver le côté et le nombre de carreaux.", "solution_markdown": "PGCD(210,150): 210=1×150+60 ; 150=2×60+30 ; 60=2×30+0. PGCD=30. Nombre=(210/30)×(150/30)=7×5=35."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi le côté du carreau ne peut-il pas être plus grand que le PGCD des deux dimensions ?", "solution_markdown": "Si le côté était plus grand que le PGCD, il ne diviserait pas exactement au moins l'une des deux dimensions, ce qui obligerait à découper des carreaux ou à laisser des espaces, ce que l'énoncé interdit."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Paver sans espace ni découpe avec les plus grands carreaux carrés possibles revient à calculer le PGCD des dimensions du rectangle.", "Toutes les dimensions doivent être exprimées dans la même unité avant le calcul du PGCD.", "Le nombre de carreaux s'obtient en divisant chaque dimension par le côté du carreau, puis en multipliant les deux quotients."]}
+  ]
+}

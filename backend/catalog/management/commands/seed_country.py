@@ -11,16 +11,22 @@ from catalog.models import Country, Cursus, Examen, Series, Subject
 # dans le système scolaire réel de ce pays.
 SUBJECTS = [
     ("MATHS", "Mathématiques"),
+    ("PHYSIQUE", "Physique"),
+    ("CHIMIE", "Chimie"),
     ("PHYSIQUE_CHIMIE", "Physique-Chimie"),
     ("SVT", "Sciences de la Vie et de la Terre"),
     ("FRANCAIS", "Français"),
     ("PHILOSOPHIE", "Philosophie"),
     ("HISTOIRE_GEO", "Histoire-Géographie"),
     ("ANGLAIS", "Anglais"),
+    ("ESPAGNOL", "Espagnol"),
     ("ECONOMIE", "Économie"),
     ("DROIT", "Droit"),
+    ("EDUCATION_CIVIQUE", "Éducation Civique"),
     ("LITTERATURE", "Littérature"),
     ("EPS", "Éducation physique et sportive"),
+    ("INFORMATIQUE", "Informatique"),
+    ("PHYSIQUE_CHIMIE_TECH", "Physique-Chimie-Technologie"),
 ]
 
 SERIES = [
@@ -40,7 +46,9 @@ class Command(BaseCommand):
         "partir de celui du Cameroun, pour éviter d'écrire une migration de données "
         "ponctuelle à chaque nouveau pays (voir 0015_country.py pour l'ancien procédé). "
         "Idempotent : ré-exécuter ne duplique rien, et complète un pays déjà partiellement "
-        "seedé. Le résultat est un point de départ à ajuster ensuite depuis l'admin."
+        "seedé. Le résultat est un point de départ à ajuster ensuite depuis l'admin. Le "
+        "pays est créé inactif (Country.actif=False) : un clonage de référentiel n'est pas "
+        "une localisation réelle, l'activation publique reste un geste manuel délibéré."
     )
 
     def add_arguments(self, parser):
@@ -61,7 +69,16 @@ class Command(BaseCommand):
         with transaction.atomic():
             country, country_created = Country.objects.get_or_create(
                 code=code,
-                defaults={"label": label, "dial_code": options["dial_code"], "currency": options["currency"]},
+                defaults={
+                    "label": label,
+                    "dial_code": options["dial_code"],
+                    "currency": options["currency"],
+                    # Un référentiel cloné depuis le Cameroun (voir commentaire SUBJECTS
+                    # ci-dessus) n'est jamais une localisation réelle - le pays reste
+                    # invisible du catalogue public (voir VisibleQuerySet.visibles()) tant
+                    # qu'un admin ne l'a pas vérifié et activé à la main depuis l'admin.
+                    "actif": False,
+                },
             )
             if not country_created:
                 self.stdout.write(self.style.WARNING(f"Country {code} existe déjà - référentiel complété si besoin."))
@@ -95,3 +112,9 @@ class Command(BaseCommand):
             "Référentiel calqué sur celui du Cameroun - vérifie et ajuste depuis l'admin "
             "(Subject/Series) si ce pays n'a pas exactement les mêmes matières/séries.",
         )
+        if country_created:
+            self.stdout.write(self.style.WARNING(
+                f"{country.label} créé inactif (Country.actif=False) - invisible du catalogue "
+                "public jusqu'à activation manuelle depuis l'admin, une fois le référentiel "
+                "vérifié et du contenu réel ingéré.",
+            ))

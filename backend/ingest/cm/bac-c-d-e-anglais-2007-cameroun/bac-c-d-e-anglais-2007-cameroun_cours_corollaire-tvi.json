@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-corollaire-tvi-unicite-solution-c",
+  "meta": {
+    "titre": "Corollaire du théorème des valeurs intermédiaires (existence et unicité d'une solution)",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Étude de fonctions - résolution d'équations",
+    "duree_estimee_min": 20,
+    "tags": ["théorème des valeurs intermédiaires", "bijection", "unicité de solution"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qB2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation $h(x)=0$ qu'on ne sait pas résoudre explicitement (pas de formule, pas de valeur remarquable) n'est pas pour autant un mur infranchissable. En combinant continuité, monotonie stricte et un changement de signe repéré à la calculatrice, on peut affirmer avec certitude qu'une solution existe, qu'elle est unique, et même l'encadrer précisément - sans jamais la calculer explicitement."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Théorème des valeurs intermédiaires (existence d'une solution)", "Stricte monotonie d'une fonction", "Tableau de variation"]
+    },
+    {
+      "type": "regle",
+      "titre": "Continuité + stricte monotonie + changement de signe = unique solution",
+      "contenu_markdown": "Si une fonction $h$ est continue et strictement monotone sur un intervalle $[a;b]$, et si $h(a)$ et $h(b)$ sont de signes opposés (ou l'un des deux est nul), alors l'équation $h(x)=0$ admet une unique solution dans $[a;b]$ (ou $]a;b[$ si $h(a)$ et $h(b)$ sont non nuls).\n\nCe résultat est un corollaire du théorème des valeurs intermédiaires : la continuité et le changement de signe garantissent l'existence d'au moins une solution (TVI classique) ; la stricte monotonie garantit qu'il ne peut pas y en avoir deux (une fonction strictement monotone ne prend jamais deux fois la même valeur).",
+      "formule_principale": "h \\text{ continue, strictement monotone sur } [a;b],\\ h(a)h(b)<0 \\ \\Rightarrow\\ \\exists! \\lambda\\in\\,]a;b[,\\ h(\\lambda)=0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Démontrer que l'équation $h(x)=0$, où $h(x)=\\dfrac{x+1}{2x+1}-\\ln x$, admet une unique solution $\\lambda$ dans l'intervalle $]1;2[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la continuité et la stricte monotonie de h",
+          "justification": "Ces propriétés, établies dans une question précédente, sont les hypothèses du corollaire.",
+          "resultat_markdown": "$h$ est continue et strictement décroissante sur $]0;+\\infty[$, donc en particulier sur $[1;2]$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer h(1) et h(2)",
+          "justification": "Pour vérifier le changement de signe aux bornes.",
+          "resultat_markdown": "$h(1)=\\dfrac23>0$ ; $h(2)=\\dfrac35-\\ln2\\approx-0{,}093<0$"
+        },
+        {
+          "numero": 3,
+          "action": "Constater le changement de signe",
+          "justification": "h(1) et h(2) sont de signes opposés.",
+          "resultat_markdown": "$h(1)>0$ et $h(2)<0$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par le corollaire du TVI",
+          "justification": "Continuité, stricte monotonie et changement de signe réunis.",
+          "resultat_markdown": "L'équation $h(x)=0$ admet une unique solution $\\lambda\\in\\,]1;2[$."
+        }
+      ],
+      "conclusion_markdown": "On a démontré l'existence et l'unicité de $\\lambda$ sans jamais le calculer explicitement - une calculatrice permettrait seulement d'en obtenir une valeur approchée (ici $\\lambda\\approx1{,}835$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à l'unicité en ne vérifiant que la continuité et le changement de signe, sans la stricte monotonie.",
+          "pourquoi_faux": "Le théorème des valeurs intermédiaires \"de base\" garantit seulement l'existence d'au moins une solution : sans monotonie stricte, la fonction pourrait osciller et croiser zéro plusieurs fois entre a et b.",
+          "correction_markdown": "Cite systématiquement les trois ingrédients (continuité, stricte monotonie, changement de signe) et vérifie chacun séparément, même brièvement, avant de conclure à l'unicité."
+        },
+        {
+          "erreur_markdown": "Chercher à résoudre littéralement l'équation h(x)=0 pour ensuite en vérifier l'unicité.",
+          "pourquoi_faux": "Beaucoup d'équations mêlant fonctions logarithmiques, rationnelles ou exponentielles n'ont pas de solution exprimable par une formule explicite : s'acharner à la trouver est une perte de temps quand le corollaire du TVI permet de conclure sans elle.",
+          "correction_markdown": "Dès qu'une équation te paraît impossible à résoudre par le calcul direct, pense au corollaire du TVI plutôt que de continuer à chercher une formule explicite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=x^3+x-1$ sur $\\mathbb{R}$. Démontrer que l'équation $g(x)=0$ admet une unique solution dans $[0;1]$.",
+          "solution_markdown": "$g$ est un polynôme, donc continue et dérivable sur $\\mathbb{R}$. $g'(x)=3x^2+1>0$ pour tout $x$ (somme d'un carré positif et de $1$), donc $g$ est strictement croissante sur $\\mathbb{R}$, en particulier sur $[0;1]$. $g(0)=-1<0$ et $g(1)=1<0$... en fait $g(1)=1+1-1=1>0$. $g(0)=-1<0$ et $g(1)=1>0$ : changement de signe. Par le corollaire du TVI (continuité, stricte croissance, changement de signe), l'équation $g(x)=0$ admet une unique solution dans $]0;1[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $k(x)=e^x-3x$ sur $\\mathbb{R}$. Étudier les variations de $k$ puis démontrer que l'équation $k(x)=0$ admet exactement deux solutions sur $\\mathbb{R}$.",
+          "solution_markdown": "$k'(x)=e^x-3$, qui s'annule en $x=\\ln3$, négative avant, positive après : $k$ est décroissante sur $]-\\infty;\\ln3]$ puis croissante sur $[\\ln3;+\\infty[$, avec un minimum $k(\\ln3)=3-3\\ln3\\approx3-3{,}296=-0{,}296<0$.\n\nSur $]-\\infty;\\ln3]$ : $k$ continue, strictement décroissante, avec $k(0)=1>0$ et $k(\\ln3)<0$ : changement de signe, donc une unique solution dans $]0;\\ln3[$ par le corollaire du TVI (et $\\lim_{x\\to-\\infty}k(x)=+\\infty$ confirme qu'il n'y a pas d'autre solution plus loin sur cette branche puisque $k$ y est strictement décroissante depuis $+\\infty$).\n\nSur $[\\ln3;+\\infty[$ : $k$ continue, strictement croissante, $k(\\ln3)<0$ et $\\lim_{x\\to+\\infty}k(x)=+\\infty$ (croissances comparées) : une unique solution sur cette branche également.\n\nAu total, $k(x)=0$ admet exactement deux solutions réelles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $m(x)=\\ln x-\\dfrac{2}{x}$ sur $]0;+\\infty[$. Démontrer que l'équation $m(x)=0$ admet une unique solution $\\mu$, puis donner un encadrement de $\\mu$ d'amplitude $0{,}5$.",
+          "solution_markdown": "$m'(x)=\\dfrac1x+\\dfrac{2}{x^2}=\\dfrac{x+2}{x^2}$, strictement positif pour tout $x>0$ (numérateur et dénominateur strictement positifs). $m$ est donc strictement croissante sur $]0;+\\infty[$, donc continue et strictement monotone.\n\n$\\lim_{x\\to0^+}m(x)=-\\infty-(+\\infty)=-\\infty$ (les deux termes divergent vers $-\\infty$). $\\lim_{x\\to+\\infty}m(x)=+\\infty-0=+\\infty$. Par le corollaire du TVI, l'équation $m(x)=0$ admet une unique solution $\\mu$ sur $]0;+\\infty[$.\n\nEncadrement : $m(2)=\\ln2-1\\approx0{,}693-1=-0{,}307<0$. $m(2{,}5)=\\ln2{,}5-0{,}8\\approx0{,}916-0{,}8=0{,}116>0$. Donc $\\mu\\in\\,]2;2{,}5[$, un encadrement d'amplitude $0{,}5$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le corollaire du théorème des valeurs intermédiaires combine trois ingrédients : continuité, stricte monotonie, changement de signe aux bornes - les trois doivent être vérifiés explicitement.",
+        "La continuité et le changement de signe garantissent l'existence d'une solution ; la stricte monotonie garantit qu'elle est unique.",
+        "Ce corollaire est l'outil de référence face à une équation qu'on ne sait manifestement pas résoudre par le calcul formel (mélange de fonctions logarithme, exponentielle, rationnelle).",
+        "Une fois l'existence et l'unicité établies, un encadrement de plus en plus fin de la solution (en évaluant la fonction en des points intermédiaires) permet d'en obtenir une valeur approchée.",
+        "Ce résultat sert très souvent, au BAC C, de tremplin pour la question suivante : établir le signe de la fonction de part et d'autre de cette unique solution."
+      ]
+    }
+  ]
+}

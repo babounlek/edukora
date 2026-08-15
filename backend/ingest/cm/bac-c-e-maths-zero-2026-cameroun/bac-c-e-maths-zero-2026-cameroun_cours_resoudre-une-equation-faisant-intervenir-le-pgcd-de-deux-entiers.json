@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-resoudre-une-equation-faisant-intervenir-le-pgcd-de-deux-entiers-terminale-c",
+  "meta": {
+    "titre": "Résoudre une équation faisant intervenir le PGCD de deux entiers",
+    "cours_id": "cours-resoudre-une-equation-faisant-intervenir-le-pgcd-de-deux-entiers-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Arithmétique — PGCD",
+    "tags": [
+      "équation diophantienne",
+      "pgcd",
+      "vérification a posteriori"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex1-II.2.b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Résoudre une équation où le PGCD apparaît mêlé à une expression algébrique de l'inconnue demande une stratégie à deux temps : réduire les candidats possibles grâce aux propriétés du PGCD, puis vérifier chaque candidat par l'algorithme d'Euclide."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir que pgcd(x;n) appartient toujours à l'ensemble des diviseurs de n",
+        "Savoir résoudre une équation du second degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Stratégie de résolution en deux temps",
+      "contenu_markdown": "Pour résoudre $\\mathrm{pgcd}(x;n)=g(x)$ dans $\\mathbb{Z}$, on pose $d=\\mathrm{pgcd}(x;n)$, nécessairement dans $D(n)$. Pour chaque valeur possible de $d\\in D(n)$, on résout l'équation algébrique $g(x)=d$ (souvent du second degré), ce qui donne des candidats $x$. On vérifie ensuite, pour chaque candidat, que $\\mathrm{pgcd}(x;n)$ vaut réellement $d$ via l'algorithme d'Euclide : seules les valeurs qui passent cette vérification sont solutions.",
+      "formule_principale": "pgcd(x;n)=g(x) : tester chaque d∈D(n) dans g(x)=d, puis vérifier pgcd(x;n)=d pour chaque candidat trouvé",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans ℤ l'équation pgcd(x;56) = (8/15)x − (1/105)x².",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire au même dénominateur et poser d=pgcd(x;56)",
+          "justification": "Multiplier par 105 pour éliminer les fractions.",
+          "resultat_markdown": "x² - 56x + 105d = 0"
+        },
+        {
+          "numero": 2,
+          "action": "Tester chaque d∈D(56)={1,2,4,7,8,14,28,56} via le discriminant",
+          "justification": "Δ=3136-420d doit être un carré parfait positif.",
+          "resultat_markdown": "Seul d=7 donne Δ=196=14² (carré parfait)"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'équation pour d=7",
+          "justification": "x=(56±14)/2.",
+          "resultat_markdown": "x=35 ou x=21"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier pgcd(x;56)=7 pour chaque candidat",
+          "justification": "Application de l'algorithme d'Euclide.",
+          "resultat_markdown": "pgcd(21;56)=7 ✓ ; pgcd(35;56)=7 ✓"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est S={21;35}."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Considérer comme solutions toutes les racines de l'équation algébrique sans vérification",
+          "pourquoi_faux": "L'équation algébrique x²-56x+105d=0 peut avoir des racines qui ne vérifient pas réellement pgcd(x;56)=d une fois recalculé par l'algorithme d'Euclide ; sans cette vérification, on risque d'inclure de fausses solutions.",
+          "correction_markdown": "Toujours vérifier chaque candidat par un calcul explicite du pgcd (algorithme d'Euclide), pas seulement en résolvant l'équation algébrique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelles sont les valeurs possibles pour d=pgcd(x;12) ?",
+          "solution_markdown": "D(12)={1,2,3,4,6,12}, donc d peut prendre l'une de ces 6 valeurs."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi teste-t-on le discriminant plutôt que d'essayer de deviner les solutions ?",
+          "solution_markdown": "Le discriminant permet de vérifier rapidement, pour chaque valeur possible de d, si l'équation du second degré associée a des solutions entières (ou du moins réelles), sans avoir à résoudre explicitement l'équation à chaque fois avant de savoir si elle a des solutions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi peut-on limiter la recherche aux x tels que 0<x<56 dans l'exemple résolu ?",
+          "solution_markdown": "Le second membre (8/15)x-(1/105)x² se factorise en x(56-x)/105, qui est strictement négatif pour x<0 ou x>56 ; or un pgcd est toujours positif, donc aucune solution ne peut exister en dehors de l'intervalle ]0;56[."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le PGCD candidat d appartient toujours à l'ensemble des diviseurs du second nombre.",
+        "Résoudre l'équation algébrique pour chaque d possible donne des candidats à vérifier.",
+        "La vérification finale par l'algorithme d'Euclide est indispensable, jamais facultative."
+      ]
+    }
+  ]
+}

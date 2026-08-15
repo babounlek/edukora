@@ -1,0 +1,61 @@
+{
+  "epreuve_source": "bac-d-maths-2013-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2013,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "titre_exercice": "Problème, Partie A : suite récurrente définie par une fonction homographique, suite auxiliaire géométrique",
+  "points": 4.0,
+  "figures": [],
+  "enonce_intro_markdown": "Soit $f$ la fonction définie sur $]1;+\\infty[$ par $f(x)=\\dfrac{x^2}{2x-1}$. Soit $(u_n)$ la suite définie par $u_0=2$ et, pour tout entier naturel $n$, $u_{n+1}=f(u_n)$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer que, pour tout réel $x>1$, $f(x)>1$.",
+      "rappels_de_methode": [{"cours_id": "cours-etudier-signe-difference-f-x-moins-constante-terminale-d", "texte": "Pour démontrer f(x)>k, on étudie le signe de f(x)-k en le réduisant au même dénominateur, puis en analysant le signe du numérateur et du dénominateur séparément."}],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer une inégalité du type $f(x)>k$, on étudie le signe de $f(x)-k$ en réduisant l'expression au même dénominateur, puis en analysant séparément le signe du numérateur et celui du dénominateur.\n\n**Calcul de $f(x)-1$.**\n\n$$f(x)-1=\\dfrac{x^2}{2x-1}-1=\\dfrac{x^2-(2x-1)}{2x-1}=\\dfrac{x^2-2x+1}{2x-1}$$\n\nOn reconnaît une identité remarquable au numérateur :\n\n$$x^2-2x+1=(x-1)^2$$\n\n$$f(x)-1=\\dfrac{(x-1)^2}{2x-1}$$\n\n**Étude du signe pour $x>1$.**\n\nLe numérateur $(x-1)^2$ est strictement positif pour $x>1$ (carré d'un nombre non nul).\n\nLe dénominateur $2x-1$ : pour $x>1$, $2x-1>2\\times1-1=1>0$, donc strictement positif.\n\n**Un quotient de deux quantités strictement positives est strictement positif :**\n\n$$f(x)-1=\\dfrac{(x-1)^2}{2x-1}>0$$\n\n**On a donc bien $f(x)>1$ pour tout réel $x>1$.**\n\n### Conseil\nCe résultat sera directement réutilisé à la question 2a pour démontrer par récurrence que tous les termes de la suite $(u_n)$ restent strictement supérieurs à $1$ : dès qu'un terme $u_n>1$, la relation $u_{n+1}=f(u_n)>1$ découle immédiatement de ce résultat, sans nouveau calcul."
+    },
+    {
+      "numero": "2a",
+      "points": "0,5pt",
+      "enonce_markdown": "On considère les suites $(v_n)$ et $(w_n)$ telles que, pour tout entier naturel $n$, $v_n=\\dfrac{u_n-1}{u_n}$ et $w_n=\\ln v_n$. Démontrer par récurrence que, pour tout entier naturel $n$, $u_n>1$.",
+      "rappels_de_methode": [{"cours_id": "cours-recurrence-simple-utilisant-resultat-precedent-terminale-d", "texte": "Pour une récurrence dont l'hérédité s'appuie directement sur un résultat déjà démontré (ici f(x)>1 pour x>1), l'étape d'hérédité se réduit à appliquer ce résultat à un=x, sans nouveau calcul de signe."}],
+      "corrige_markdown": "### Rappel de méthode\nPour une récurrence dont l'hérédité s'appuie directement sur un résultat déjà démontré dans une question antérieure, l'étape d'hérédité se réduit à appliquer ce résultat déjà établi, sans nouveau calcul de signe.\n\n**Initialisation (rang $n=0$).**\n\n$$u_0=2>1$$\n\n**L'initialisation est vérifiée.**\n\n**Hérédité.** Soit $n\\in\\mathbb N$. On suppose $u_n>1$ (hypothèse de récurrence), et on veut démontrer $u_{n+1}>1$.\n\nComme $u_n>1$, d'après la question 1 (appliquée à $x=u_n$) : $f(u_n)>1$.\n\nOr, par définition de la suite, $u_{n+1}=f(u_n)$.\n\n$$u_{n+1}=f(u_n)>1$$\n\n**L'hérédité est démontrée.**\n\n**Conclusion.** L'initialisation étant vérifiée et l'hérédité établie, par le principe de récurrence, pour tout entier naturel $n$ : $u_n>1$.\n\n### Piège à éviter\nOublier de préciser explicitement que l'hérédité utilise le résultat de la question 1 appliqué à $x=u_n$ (et non une nouvelle démonstration indépendante) : la clarté de cette référence est importante pour la rigueur de la rédaction."
+    },
+    {
+      "numero": "2b",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer $v_1$ et $w_1$.",
+      "rappels_de_methode": [{"cours_id": "cours-calculer-terme-suite-substitution-directe-terminale-d", "texte": "Pour calculer un terme particulier d'une suite définie par des formules successives, on calcule d'abord les termes intermédiaires nécessaires (ici u1 via u0), puis on substitue dans les formules données pour vn et wn."}],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer un terme particulier d'une suite définie à partir de formules successives, on calcule d'abord les termes intermédiaires nécessaires (ici $u_1$, obtenu à partir de $u_0$), puis on substitue ce résultat dans les formules données pour les suites dérivées.\n\n**Calcul de $u_1=f(u_0)$.**\n\n$$u_1=f(2)=\\dfrac{2^2}{2\\times2-1}=\\dfrac4{4-1}=\\dfrac43$$\n\n**Calcul de $v_1=\\dfrac{u_1-1}{u_1}$.**\n\n$$v_1=\\dfrac{\\frac43-1}{\\frac43}=\\dfrac{\\frac13}{\\frac43}=\\dfrac13\\times\\dfrac34=\\dfrac14$$\n\n**$v_1=\\dfrac14$.**\n\n**Calcul de $w_1=\\ln v_1$.**\n\n$$w_1=\\ln\\dfrac14=\\ln(4^{-1})=-\\ln4=-\\ln(2^2)=-2\\ln2$$\n\n**$w_1=-2\\ln2$.**"
+    },
+    {
+      "numero": "2c",
+      "points": "1pt",
+      "enonce_markdown": "Démontrer que $(w_n)$ est une suite géométrique dont on déterminera la raison et le premier terme.",
+      "rappels_de_methode": [{"cours_id": "cours-demontrer-suite-geometrique-via-relation-recurrence-fonctionnelle-terminale-d", "texte": "Pour démontrer qu'une suite (wn) est géométrique, on exprime w(n+1) en fonction de wn via un calcul algébrique intermédiaire (souvent en passant par vn+1 en fonction de vn), et on montre que le quotient w(n+1)/wn (ou la différence dans le cas logarithmique, w(n+1)=q×wn) est une constante."}],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'une suite $(w_n)$ définie par $w_n=\\ln v_n$ est géométrique, on cherche d'abord une relation entre $v_{n+1}$ et $v_n$ (souvent $v_{n+1}=v_n^k$ pour une constante $k$), puis on applique le logarithme pour obtenir $w_{n+1}=k\\times w_n$, ce qui établit la relation de suite géométrique de raison $k$.\n\n**Étape 1 — Exprimer $v_{n+1}$ en fonction de $v_n$.**\n\n$$v_{n+1}=\\dfrac{u_{n+1}-1}{u_{n+1}}=\\dfrac{f(u_n)-1}{f(u_n)}$$\n\nD'après la question 1 (généralisée à $x=u_n$) : $f(u_n)-1=\\dfrac{(u_n-1)^2}{2u_n-1}$.\n\nEt $f(u_n)=\\dfrac{u_n^2}{2u_n-1}$.\n\n$$v_{n+1}=\\dfrac{\\frac{(u_n-1)^2}{2u_n-1}}{\\frac{u_n^2}{2u_n-1}}=\\dfrac{(u_n-1)^2}{u_n^2}=\\left(\\dfrac{u_n-1}{u_n}\\right)^2=v_n^2$$\n\n**On a établi la relation $v_{n+1}=v_n^2$ pour tout entier naturel $n$.**\n\n**Étape 2 — En déduire une relation entre $w_{n+1}$ et $w_n$.**\n\n$$w_{n+1}=\\ln v_{n+1}=\\ln(v_n^2)=2\\ln v_n=2w_n$$\n\n(en utilisant la propriété du logarithme $\\ln(a^k)=k\\ln a$, valide car $v_n>0$ comme quotient de deux réels strictement positifs, $u_n-1>0$ d'après la question 2a et $u_n>0$)\n\n**On obtient $w_{n+1}=2w_n$ pour tout entier naturel $n$ : $(w_n)$ est donc une suite géométrique de raison $q=2$.**\n\n**Premier terme.** $v_0=\\dfrac{u_0-1}{u_0}=\\dfrac{2-1}2=\\dfrac12$. $w_0=\\ln\\dfrac12=-\\ln2$.\n\n**$(w_n)$ est une suite géométrique de premier terme $w_0=-\\ln2$ et de raison $q=2$.**\n\n### Conseil\nVérifier la cohérence avec $w_1$ déjà calculé à la question 2b : $w_1=2w_0=2\\times(-\\ln2)=-2\\ln2$, qui coïncide exactement avec la valeur trouvée directement en 2b. Cette double vérification confirme la validité de la relation de récurrence trouvée."
+    },
+    {
+      "numero": "2d",
+      "points": "0,75pt",
+      "enonce_markdown": "Exprimer, pour tout entier naturel $n$, $w_n$ puis $v_n$ en fonction de $n$.",
+      "rappels_de_methode": [{"cours_id": "cours-formule-terme-general-suite-geometrique-terminale-d", "texte": "Le terme général d'une suite géométrique de premier terme w0 et de raison q est wn=w0×q^n ; pour retrouver vn à partir de wn=ln(vn), on applique l'exponentielle : vn=e^(wn)."}],
+      "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de premier terme $w_0$ et de raison $q$ est $w_n=w_0\\times q^n$. Pour retrouver $v_n$ à partir de $w_n=\\ln v_n$, on applique l'exponentielle : $v_n=e^{w_n}$.\n\n**Expression de $w_n$, avec $w_0=-\\ln2$ et $q=2$ (question 2c).**\n\n$$w_n=w_0\\times q^n=-\\ln2\\times2^n=-2^n\\ln2$$\n\n**Expression de $v_n$.**\n\n$$v_n=e^{w_n}=e^{-2^n\\ln2}=e^{\\ln\\left(2^{-2^n}\\right)}=2^{-2^n}$$\n\n(en utilisant la propriété $e^{k\\ln a}=a^k$, ici avec $k=-2^n$ et $a=2$)\n\n$$v_n=\\left(\\dfrac12\\right)^{2^n}$$\n\n**$w_n=-2^n\\ln2$ et $v_n=\\left(\\dfrac12\\right)^{2^n}$.**\n\n### Piège à éviter\nNe pas confondre $2^n$ (exposant qui croît, apparaissant lui-même en exposant de $\\frac12$) avec un simple facteur multiplicatif $2n$ : ici l'exposant de $\\frac12$ est $2^n$ (puissance de $2$), une croissance bien plus rapide qu'un facteur linéaire."
+    },
+    {
+      "numero": "2e",
+      "points": "0,75pt",
+      "enonce_markdown": "En déduire que $u_n=\\dfrac1{1-\\left(\\frac12\\right)^{2^n}}$ ; puis calculer $\\displaystyle\\lim_{n\\to+\\infty}u_n$.",
+      "rappels_de_methode": [{"cours_id": "cours-exprimer-un-fonction-vn-limite-suite-geometrique-terminale-d", "texte": "Pour retrouver un à partir de vn=(un-1)/un, on isole un par manipulation algébrique (un=1/(1-vn)) ; la limite s'obtient ensuite en utilisant que (1/2)^(2^n)→0 quand n→+∞ (croissance exponentielle de l'exposant)."}],
+      "corrige_markdown": "### Rappel de méthode\nPour retrouver $u_n$ à partir de la relation $v_n=\\dfrac{u_n-1}{u_n}$, on isole $u_n$ par manipulation algébrique. La limite s'obtient ensuite en utilisant que $\\left(\\frac12\\right)^{k}\\to0$ quand $k\\to+\\infty$, ici avec $k=2^n\\to+\\infty$.\n\n**Étape 1 — Isoler $u_n$ à partir de $v_n=\\dfrac{u_n-1}{u_n}$.**\n\n$$v_n=\\dfrac{u_n-1}{u_n}=1-\\dfrac1{u_n}$$\n\n$$\\dfrac1{u_n}=1-v_n$$\n\n$$u_n=\\dfrac1{1-v_n}$$\n\n**Substitution de $v_n=\\left(\\dfrac12\\right)^{2^n}$ (question 2d).**\n\n$$u_n=\\dfrac1{1-\\left(\\frac12\\right)^{2^n}}$$\n\n**On retrouve exactement la formule annoncée.**\n\n**Étape 2 — Calcul de la limite.**\n\nQuand $n\\to+\\infty$, $2^n\\to+\\infty$ (croissance exponentielle de l'exposant). Comme $\\left|\\dfrac12\\right|<1$, on a $\\left(\\dfrac12\\right)^{2^n}\\to0$ (une puissance de $\\frac12$ tend vers $0$ quand l'exposant tend vers $+\\infty$).\n\n$$\\lim_{n\\to+\\infty}u_n=\\dfrac1{1-0}=1$$\n\n**$\\displaystyle\\lim_{n\\to+\\infty}u_n=1$.**\n\n### Conseil\nCe résultat est cohérent avec la question 1 : la suite $(u_n)$ reste toujours strictement supérieure à $1$ (question 2a) mais converge vers $1$ sans jamais l'atteindre, ce qui est exactement le comportement attendu d'une suite qui décroît (ou converge) vers la borne inférieure de son domaine de définition $]1;+\\infty[$."
+    }
+  ]
+}

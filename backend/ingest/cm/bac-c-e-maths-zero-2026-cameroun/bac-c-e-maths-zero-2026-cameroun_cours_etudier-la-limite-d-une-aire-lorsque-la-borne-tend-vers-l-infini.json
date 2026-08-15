@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-etudier-la-limite-d-une-aire-lorsque-la-borne-tend-vers-l-infini-terminale-c",
+  "meta": {
+    "titre": "Étudier la limite d'une aire lorsque la borne tend vers l'infini",
+    "cours_id": "cours-etudier-la-limite-d-une-aire-lorsque-la-borne-tend-vers-l-infini-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Analyse — calcul intégral",
+    "tags": [
+      "aire",
+      "limite",
+      "intégrale impropre",
+      "croissances comparées"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-A.2.d-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une aire qui s'accumule indéfiniment sous une courbe peut, contre l'intuition, rester bornée : c'est le signe qu'une intégrale impropre converge, un résultat qui se lit directement dans une limite."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Disposer de l'expression littérale de l'aire Aire(a) en fonction de la borne a",
+        "Maîtriser les croissances comparées"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Limite d'une aire quand la borne tend vers l'infini",
+      "contenu_markdown": "Pour savoir si une aire $\\mathcal{A}(a)$, dépendant d'une borne variable $a$, admet une limite finie quand $a\\to+\\infty$, on calcule $\\displaystyle\\lim_{a\\to+\\infty}\\mathcal{A}(a)$ en utilisant les croissances comparées lorsque des termes polynomiaux sont multipliés par une exponentielle décroissante (qui tendent alors vers 0). Si la limite existe et est finie, l'aire totale, bien qu'accumulée sur un intervalle infini, reste bornée.",
+      "formule_principale": "lim(a→+∞) Aire(a) finie ⟺ l'aire totale sous la courbe, prolongée à l'infini, converge",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'aire vaut Aire(a) = 10/e - (a²+4a+5)e^(-a). Cette aire admet-elle une limite lorsque a tend vers +∞ ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le terme qui dépend de a et tend vers une forme indéterminée",
+          "justification": "(a²+4a+5)e^(-a) est de la forme polynôme×exponentielle décroissante.",
+          "resultat_markdown": "Terme à étudier : (a²+4a+5)e^(-a)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer les croissances comparées terme à terme",
+          "justification": "lim a²e^(-a)=0, lim ae^(-a)=0, lim e^(-a)=0 quand a→+∞.",
+          "resultat_markdown": "lim (a²+4a+5)e^(-a) = 0"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la limite de l'aire",
+          "justification": "Substitution dans l'expression de Aire(a).",
+          "resultat_markdown": "lim Aire(a) = 10/e - 0 = 10/e"
+        }
+      ],
+      "conclusion_markdown": "Oui, l'aire admet une limite finie égale à 10/e ≈ 3,68 unités d'aire quand a→+∞."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'une aire accumulée sur un intervalle de longueur infinie est nécessairement infinie",
+          "pourquoi_faux": "C'est une intuition fausse dans le cas d'une fonction qui décroît suffisamment vite (ici exponentiellement) : l'aire totale peut converger vers une valeur finie même si l'intervalle d'intégration s'étend à l'infini, exactement comme une série géométrique convergente malgré une infinité de termes.",
+          "correction_markdown": "Toujours calculer explicitement la limite avant de conclure sur la convergence ou la divergence d'une aire étendue à l'infini, sans se fier à l'intuition seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer lim(a→+∞) ae^(-a).",
+          "solution_markdown": "0, par croissance comparée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'aire sous g(x)=1/x entre 1 et a admet-elle une limite finie quand a→+∞ ?",
+          "solution_markdown": "Non : une primitive de 1/x est ln(x), et ln(a)→+∞ quand a→+∞, donc l'aire diverge (c'est l'exemple classique d'intégrale impropre divergente malgré une fonction qui tend vers 0)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi le fait que f(x)→0 en +∞ ne garantit-il pas, à lui seul, que l'aire sous la courbe converge ?",
+          "solution_markdown": "La convergence de l'aire dépend de la vitesse à laquelle f tend vers 0, pas seulement du fait qu'elle y tende : une décroissance exponentielle (comme e^(-x)) est assez rapide pour garantir la convergence, mais une décroissance trop lente (comme 1/x) ne l'est pas, comme le montre la divergence de l'aire sous 1/x malgré 1/x→0."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une aire dépendant d'une borne variable peut converger vers une valeur finie même si la borne tend vers l'infini.",
+        "Les croissances comparées permettent de calculer cette limite lorsque des termes polynomiaux sont multipliés par une exponentielle décroissante.",
+        "La convergence dépend de la vitesse de décroissance de la fonction, pas seulement du fait qu'elle tende vers 0."
+      ]
+    }
+  ]
+}

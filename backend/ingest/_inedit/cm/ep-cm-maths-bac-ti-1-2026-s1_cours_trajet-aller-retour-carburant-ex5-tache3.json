@@ -1,0 +1,110 @@
+{
+  "type": "cours",
+  "cours_id": "cours-trajet-aller-retour-realisable-carburant",
+  "meta": {
+    "titre": "Déterminer si un trajet aller-retour est réalisable avec une quantité de carburant donnée",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Théorie des graphes - exploitation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "exploitation de graphe",
+      "plus court chemin"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex5-qtache-3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois le plus court chemin trouvé dans un graphe pondéré, la question posée n'est pas toujours « quelle est sa longueur ? » mais « peut-on le parcourir compte tenu d'une contrainte donnée (carburant, temps, budget) ? ». Un simple calcul de comparaison suffit, à condition de ne pas oublier le trajet retour."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Longueur d'un plus court chemin déjà déterminée (algorithme de Dijkstra ou lecture directe)",
+        "Conversion d'une distance en quantité consommée, à taux de consommation constant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer une ressource disponible à un besoin total",
+      "contenu_markdown": "Pour un trajet aller-retour empruntant, à l'aller comme au retour, un chemin de longueur $d$ (en km), et un véhicule consommant $c$ litres par km, le besoin total en carburant est $2dc$ litres (aller + retour, un graphe non orienté ayant la même distance dans les deux sens). Le trajet est réalisable sans ravitaillement si et seulement si la réserve disponible $R$ vérifie $R\\geq2dc$.",
+      "formule_principale": "\\text{Trajet aller-retour réalisable} \\iff R \\geq 2dc"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un scooter de livraison quitte un dépôt avec 6 litres de carburant, consomme 0,5 litre par km, et doit relier un client situé à 5 km par le plus court chemin puis revenir au dépôt par le même chemin. Peut-il effectuer l'aller-retour sans faire le plein ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance totale de l'aller-retour",
+          "justification": "Le trajet retour a la même longueur que le trajet aller.",
+          "resultat_markdown": "$2\\times5=10$ km"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir en carburant nécessaire",
+          "justification": "On multiplie la distance totale par la consommation au km.",
+          "resultat_markdown": "$10\\times0{,}5=5$ litres nécessaires"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer au carburant disponible",
+          "justification": "On compare le besoin calculé à la réserve initiale.",
+          "resultat_markdown": "$5\\leq6$ : le carburant disponible suffit"
+        }
+      ],
+      "conclusion_markdown": "Le scooter peut effectuer l'aller-retour sans ravitaillement : il lui restera même 1 litre de marge."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne comparer la réserve disponible qu'à la distance aller, en oubliant le trajet retour.",
+          "pourquoi_faux": "Un aller-retour parcourt deux fois la distance du chemin le plus court (sauf indication contraire d'un itinéraire différent au retour) : oublier le facteur 2 conduit à conclure à tort qu'un trajet est réalisable.",
+          "correction_markdown": "Toujours doubler la distance du plus court chemin avant de convertir en carburant nécessaire, sauf si l'énoncé précise un chemin retour différent."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la distance en litres avant de comparer à la réserve, en comparant directement des km à des litres.",
+          "pourquoi_faux": "La réserve est exprimée en litres et la distance en km : sans conversion via la consommation au km, la comparaison n'a pas de sens.",
+          "correction_markdown": "Multiplier systématiquement la distance par la consommation au kilomètre avant toute comparaison."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un véhicule dispose de 20 litres et consomme 1 litre par km. Le plus court chemin aller mesure 8 km. Peut-il faire l'aller-retour sans ravitaillement ?",
+          "solution_markdown": "Besoin total : $2\\times8\\times1=16$ litres. $16\\leq20$ : oui, il reste 4 litres de marge."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un camion dispose de 30 litres et consomme 1,5 litre par km. Le plus court chemin aller mesure 11 km. Peut-il faire l'aller-retour sans ravitaillement ?",
+          "solution_markdown": "Besoin total : $2\\times11\\times1{,}5=33$ litres. $33>30$ : non, il manque 3 litres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un véhicule dispose de 25 litres et consomme 0,8 litre par km. Quelle est la distance maximale du plus court chemin aller pour que l'aller-retour reste réalisable sans ravitaillement ?",
+          "solution_markdown": "On cherche $d$ tel que $2\\times d\\times0{,}8\\leq25$, soit $1{,}6d\\leq25$, donc $d\\leq\\dfrac{25}{1{,}6}=15{,}625$ km. La distance aller maximale est donc $15{,}625$ km."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un aller-retour parcourt deux fois la distance du plus court chemin (sauf chemin retour différent précisé).",
+        "On convertit toujours la distance totale en quantité consommée avant de la comparer à la réserve disponible.",
+        "Le trajet est réalisable si et seulement si la réserve est supérieure ou égale au besoin total calculé.",
+        "Comparer les ordres de grandeur avant le calcul détaillé permet souvent de repérer rapidement une impossibilité."
+      ]
+    }
+  ]
+}

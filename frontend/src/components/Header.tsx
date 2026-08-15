@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Globe, Menu, UserCircle } from "lucide-react"
+import { Globe, Menu, Search, UserCircle } from "lucide-react"
 
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -75,7 +75,9 @@ export function Header() {
 
   const isTarifsSection = pathname.startsWith("/tarifs")
   const isQuizSection = !isTarifsSection && pathname.startsWith("/quiz")
-  const isCoursSection = !isTarifsSection && !isQuizSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
+  const isFichesSection = !isTarifsSection && pathname.startsWith("/fiches")
+  const isCoursSection =
+    !isTarifsSection && !isQuizSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
   const isEpreuvesSection =
     !isCoursSection &&
     !isTarifsSection &&
@@ -84,11 +86,13 @@ export function Header() {
 
   // Même triplet actif/libellé/lien que les boutons desktop juste en dessous - une
   // seule liste pour ne jamais les faire diverger (ex. un lien ajouté ici sans son
-  // équivalent desktop, ou l'inverse).
+  // équivalent desktop, ou l'inverse). "Épreuves" couvre désormais aussi les épreuves
+  // inédites (catalogue fusionné, voir CataloguePage.tsx) - plus d'entrée de nav dédiée.
   const navLinks = [
     { to: catalogueHomePath(country), label: "Épreuves", active: isEpreuvesSection },
     { to: coursListPath(country), label: "Cours", active: isCoursSection },
     { to: "/quiz", label: "Quiz", active: isQuizSection },
+    { to: "/fiches", label: "Fiches", active: isFichesSection },
     { to: "/tarifs", label: "Tarifs", active: isTarifsSection },
   ]
 
@@ -100,14 +104,24 @@ export function Header() {
           <span className="font-display text-xl font-semibold tracking-tight text-primary">
             {SITE_NAME}
           </span>
-          <span className="hidden font-display text-xs italic text-muted-foreground sm:inline">
+          <span className="hidden whitespace-nowrap font-display text-xs italic text-muted-foreground sm:inline">
             réussis ton examen
           </span>
         </Link>
         <nav className="flex items-center gap-2">
+          {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
+              desktop plus bas : la recherche était jusqu'ici invisible tant qu'on
+              n'avait pas déjà scrollé sur la page Épreuves elle-même (voir
+              CataloguePage.tsx) - ce bouton la rend accessible depuis n'importe quelle
+              page, y compris sur mobile où la place au clavier manque le plus. */}
+          <Button asChild variant="ghost" size="icon" aria-label="Rechercher une épreuve">
+            <Link to={`${catalogueHomePath(country)}#catalogue`}>
+              <Search className="size-4.5" />
+            </Link>
+          </Button>
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="sm:hidden" aria-label="Ouvrir le menu">
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Ouvrir le menu">
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
@@ -132,16 +146,19 @@ export function Header() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Button asChild variant={isEpreuvesSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
+          <Button asChild variant={isEpreuvesSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to={catalogueHomePath(country)}>Épreuves</Link>
           </Button>
-          <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
+          <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to={coursListPath(country)}>Cours</Link>
           </Button>
-          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
+          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to="/quiz">Quiz</Link>
           </Button>
-          <Button asChild variant={isTarifsSection ? "secondary" : "ghost"} size="sm" className="hidden sm:inline-flex">
+          <Button asChild variant={isFichesSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
+            <Link to="/fiches">Fiches</Link>
+          </Button>
+          <Button asChild variant={isTarifsSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to="/tarifs">Tarifs</Link>
           </Button>
           <CountrySwitcher />
@@ -150,7 +167,7 @@ export function Header() {
             <Button asChild variant="ghost" size="sm">
               <Link to="/compte" className="flex items-center gap-1.5">
                 <UserCircle className="size-4" />
-                {user?.full_name || user?.phone_number}
+                {user?.full_name || user?.pseudo || user?.phone_number}
               </Link>
             </Button>
           ) : (

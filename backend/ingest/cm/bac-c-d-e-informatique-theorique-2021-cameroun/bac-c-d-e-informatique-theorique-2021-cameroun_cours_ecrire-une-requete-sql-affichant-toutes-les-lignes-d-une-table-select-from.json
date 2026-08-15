@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-affichant-toutes-les-lignes-d-une-table-select-from-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL affichant toutes les lignes d'une table (SELECT * FROM)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL — Interrogation de données",
+    "duree_estimee_min": 8,
+    "tags": [
+      "SELECT",
+      "SQL"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La requête la plus simple et la plus utilisée en SQL consiste à afficher tout le contenu d'une table, sans aucun filtre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Aucun prérequis particulier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Afficher toutes les lignes d'une table avec SELECT * FROM",
+      "contenu_markdown": "L'instruction `SELECT * FROM table;` affiche toutes les colonnes et toutes les lignes de la table indiquée, sans aucun filtre ni restriction.",
+      "formule_principale": "SELECT * FROM table;",
+      "variantes": [
+        {
+          "nom": "SELECT avec colonnes spécifiques",
+          "quand_utiliser": "Quand seules certaines colonnes intéressent l'utilisateur.",
+          "contenu_markdown": "`SELECT nom, prenom FROM CLIENT;` n'affiche que les colonnes nom et prénom, plutôt que toutes les colonnes (*)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête affichant l'ensemble des voitures enregistrées dans la table VOITURE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier qu'aucun filtre n'est demandé",
+          "justification": "L'énoncé demande d'afficher toutes les voitures, sans condition.",
+          "resultat_markdown": "Pas de clause WHERE nécessaire"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la requête SELECT * FROM",
+          "justification": "Le symbole * sélectionne toutes les colonnes.",
+          "resultat_markdown": "`SELECT * FROM VOITURE;`"
+        }
+      ],
+      "conclusion_markdown": "SELECT * FROM table; affiche toutes les colonnes et toutes les lignes, sans filtre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter une clause WHERE inutile alors que l'énoncé demande explicitement toutes les lignes sans condition",
+          "pourquoi_faux": "Ajouter un filtre non demandé restreint le résultat et ne répond plus exactement à la question posée.",
+          "correction_markdown": "N'ajoute une clause WHERE que si l'énoncé exprime explicitement une condition de filtrage."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête affichant toutes les colonnes de la table CLIENT.",
+          "solution_markdown": "`SELECT * FROM CLIENT;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête affichant uniquement les colonnes nom et telephone de la table CLIENT.",
+          "solution_markdown": "`SELECT nom, telephone FROM CLIENT;`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour une très grande table (des millions de lignes), pourquoi éviter SELECT * FROM table; sans précaution en environnement de production ?",
+          "solution_markdown": "Une telle requête peut renvoyer un volume de données énorme, saturant la mémoire de l'application cliente et le réseau, et ralentissant fortement le SGBD ; en pratique, on limite souvent le résultat (ex. clause LIMIT), on sélectionne uniquement les colonnes réellement nécessaires, et on ajoute des filtres WHERE pertinents pour éviter de charger des données inutiles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT * FROM table; affiche toutes les colonnes et toutes les lignes sans filtre.",
+        "Le symbole * désigne \"toutes les colonnes\".",
+        "On peut restreindre les colonnes affichées en les nommant explicitement.",
+        "Sur de grandes tables, SELECT * sans filtre ni limite est déconseillé en production."
+      ]
+    }
+  ]
+}

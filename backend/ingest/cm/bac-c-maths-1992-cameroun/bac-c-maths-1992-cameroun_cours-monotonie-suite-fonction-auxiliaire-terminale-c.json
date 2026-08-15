@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-monotonie-suite-fonction-auxiliaire-terminale-c",
+  "meta": {
+    "titre": "Établir la monotonie d'une suite via une fonction auxiliaire déjà étudiée",
+    "cours_id": "cours-monotonie-suite-fonction-auxiliaire-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques - monotonie par réutilisation",
+    "tags": ["suite numérique", "monotonie", "fonction auxiliaire"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_2_q2"
+  },
+  "sections": {
+    "accroche": "Beaucoup de problèmes de suites cachent, sous une différence U(n+1)-U(n), l'évaluation d'une fonction déjà étudiée en question précédente : reconnaître ce lien économise entièrement une nouvelle étude.",
+    "prerequis": ["Définition d'une suite strictement croissante", "Lecture d'un énoncé multi-questions comme un tout cohérent"],
+    "regle": {
+      "titre": "Monotonie d'une suite via une fonction auxiliaire",
+      "contenu_markdown": "Pour montrer qu'une suite $(U_n)$ est strictement croissante, on calcule $U_{n+1}-U_n$ et on cherche à l'identifier à $f(n+1)$ ou $f(n)$, où f est une fonction dont le signe est déjà connu (souvent étudiée dans une question précédente du même problème). Le signe de f, valable pour tout réel positif, s'applique alors en particulier à l'entier considéré, donnant directement le signe de la différence.",
+      "formule_principale": "$U_{n+1}-U_n=f(n+1)$ avec $f>0$ connu $\\;\\Longrightarrow\\;(U_n)$ strictement croissante",
+      "variantes": ["La construction inverse est fréquente : une suite est définie précisément pour que sa différence reconstitue une fonction déjà étudiée"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant que $\\varphi(x)=\\ln(1+x)-x+\\dfrac{x^2}2>0$ pour x>0 (établi précédemment), et $V_n=\\displaystyle\\sum_{k=1}^n\\ln\\left(1+\\dfrac1k\\right)-\\dfrac1k+\\dfrac1{2k^2}$, étudier la monotonie de V.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer V(n+1)-V(n)", "justification": "différence de sommes télescopiques", "resultat_markdown": "$V_{n+1}-V_n=\\ln\\left(1+\\dfrac1{n+1}\\right)-\\dfrac1{n+1}+\\dfrac1{2(n+1)^2}=\\varphi\\left(\\dfrac1{n+1}\\right)$"},
+        {"numero": 2, "action": "Utiliser le signe de φ", "justification": "1/(n+1)>0", "resultat_markdown": "$\\varphi(1/(n+1))>0$"},
+        {"numero": 3, "action": "Conclure", "justification": "différence positive", "resultat_markdown": "(V_n) est strictement croissante"}
+      ],
+      "conclusion_markdown": "Aucun nouveau calcul de signe n'était nécessaire : le résultat sur φ, déjà acquis, se réutilise directement."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Refaire une étude de signe de U(n+1)-U(n) à partir de zéro sans chercher le lien avec une fonction précédente", "pourquoi_faux": "cela ignore l'articulation voulue par l'énoncé entre les questions, et double le travail inutilement", "correction_markdown": "Toujours comparer l'expression obtenue pour U(n+1)-U(n) à celle de toute fonction étudiée dans une question antérieure du même problème."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Sachant que g(x)=x-sin(x)>0 pour x>0, et W_n=n-sin(n) (n entier positif), la suite W est-elle strictement croissante ? (Indication : comparer W(n+1)-W(n) à g.)", "solution_markdown": "W(n+1)-W(n)=1-(sin(n+1)-sin(n)), qui ne correspond pas directement à g évalué en un point simple ; ce cas ne se prête pas à la méthode (contre-exemple pédagogique : le lien direct n'existe que si la suite est spécifiquement construite, comme dans l'exemple résolu)."}
+    ],
+    "synthese": "Pour établir la monotonie d'une suite définie à partir d'une somme ou d'une expression liée à une fonction étudiée précédemment, chercher à écrire U(n+1)-U(n) comme la valeur de cette fonction en un point bien choisi : le signe déjà établi de la fonction donne alors immédiatement la monotonie, sans nouveau calcul."
+  }
+}

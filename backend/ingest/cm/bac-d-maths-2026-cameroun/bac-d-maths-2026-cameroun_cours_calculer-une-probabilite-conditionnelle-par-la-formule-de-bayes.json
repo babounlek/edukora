@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-conditionnelle-par-la-formule-de-bayes-terminale-d",
+  "meta": {
+    "titre": "Calculer une probabilité conditionnelle par la formule de Bayes",
+    "cours_id": "cours-calculer-une-probabilite-conditionnelle-par-la-formule-de-bayes-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Probabilités — formule de Bayes",
+    "tags": [
+      "formule de Bayes",
+      "probabilité conditionnelle",
+      "inversion du conditionnement"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex3-2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La formule de Bayes permet de répondre à la question inverse de celle posée par l'énoncé initial : connaissant P(B|A), elle calcule P(A|B)."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Définition de la probabilité conditionnelle P(A|B)=P(A∩B)/P(B)",
+        "Formule des probabilités totales"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule de Bayes",
+      "contenu_markdown": "$P(A\\mid B)=\\dfrac{P(A)\\times P(B\\mid A)}{P(B)}$. Le numérateur est la probabilité du chemin de l'arbre passant par $A$ puis $B$ (soit $P(A\\cap B)$) ; le dénominateur est la probabilité totale de $B$, obtenue en sommant tous les chemins menant à $B$.",
+      "formule_principale": "P(A|B) = P(A)P(B|A) / P(B)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reprenons l'exemple précédent (P(R)=0,3, P(pair|R)=0,6, P(pair)=0,32). Une boule tirée est numérotée pair. Calculer la probabilité qu'elle soit rouge.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le numérateur",
+          "justification": "P(R)×P(pair|R)=0,3×0,6=0,18.",
+          "resultat_markdown": "numérateur = 0,18"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le dénominateur",
+          "justification": "P(pair)=0,32, déjà calculé par la formule des probabilités totales.",
+          "resultat_markdown": "dénominateur = 0,32"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de Bayes",
+          "justification": "P(R|pair)=0,18/0,32.",
+          "resultat_markdown": "P(R|pair)=0,5625"
+        }
+      ],
+      "conclusion_markdown": "Sachant que la boule est numérotée pair, la probabilité qu'elle soit rouge est 0,5625 (soit 56,25%)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre P(A|B) avec P(B|A)",
+          "pourquoi_faux": "Ce sont deux probabilités conditionnelles différentes en général (sauf cas particulier) : P(B|A) mesure B sachant A, P(A|B) mesure A sachant B, et l'énoncé précise toujours dans quel sens la question est posée.",
+          "correction_markdown": "Bien identifier avant de calculer lequel des deux événements est la condition (après le 'sachant que') et lequel est l'événement dont on cherche la probabilité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "P(A)=0,2, P(B|A)=0,7, P(B)=0,3. Calculer P(A|B).",
+          "solution_markdown": "P(A|B)=0,2×0,7/0,3=0,14/0,3≈0,467."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi faut-il souvent calculer P(B) par la formule des probabilités totales avant d'appliquer Bayes ?",
+          "solution_markdown": "Parce que P(B) n'est presque jamais donné directement par l'énoncé (seules les probabilités conditionnelles P(B|Ai) le sont) : la formule des probabilités totales est le passage obligé pour obtenir le dénominateur de la formule de Bayes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment vérifier la cohérence d'un résultat de Bayes ?",
+          "solution_markdown": "Vérifier que P(A|B) est bien compris entre 0 et 1, et comparer intuitivement à P(A) : si P(B|A)>P(B|Ā), alors observer B doit augmenter la probabilité de A par rapport à sa probabilité de base P(A), et inversement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule de Bayes inverse le sens d'un conditionnement : P(A|B)=P(A)P(B|A)/P(B).",
+        "Le dénominateur P(B) se calcule généralement au préalable par la formule des probabilités totales.",
+        "Bien distinguer P(A|B) de P(B|A), qui sont deux quantités différentes."
+      ]
+    }
+  ]
+}

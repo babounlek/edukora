@@ -53,6 +53,20 @@ class TypeReponse(models.TextChoices):
     QCM = "QCM", "Choix multiple (correction automatique)"
 
 
+class NatureEpreuve(models.TextChoices):
+    """
+    Nature de l'épreuve (théorique/pratique), indépendante de la discipline (Subject) -
+    ex : "Physique" + Théorique, "Physique" + Pratique, "Chimie" + Pratique. Générique,
+    pas spécifique à la Physique-Chimie : n'importe quelle matière future à double
+    épreuve peut réutiliser ce même champ sans code supplémentaire. Vide (pas de choix)
+    pour toute épreuve où cette distinction n'existe pas ou n'est pas déterminable -
+    voir Lesson.nature_epreuve, jamais deviné à l'ingestion.
+    """
+
+    THEORIQUE = "THEORIQUE", "Théorique"
+    PRATIQUE = "PRATIQUE", "Pratique"
+
+
 class StatutContenu(models.TextChoices):
     BROUILLON = "BROUILLON", "Brouillon"
     VALIDE = "VALIDE", "Validé"
@@ -84,6 +98,23 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.label
+
+
+# Familles de Subject.code "combinables" pour une même épreuve : quand une épreuve
+# mélange plusieurs disciplines d'une même famille (ex. exercices de Physique et de
+# Chimie au sein d'un même sujet, épreuve historique jamais séparée en deux copies),
+# elle est classée sous le code combiné plutôt que fragmentée en plusieurs Lesson -
+# voir catalog.ingestion._subject_family_codes (résolution/promotion à l'ingestion) et
+# catalog.views.LessonListView (paramètre ?discipline=, recherche "contient X" par
+# opposition à ?subject= qui reste une correspondance exacte). Vit ici (pas dans
+# ingestion.py) pour rester importable par le code de lecture (API) sans tirer les
+# dépendances lourdes du module d'ingestion. Seule famille aujourd'hui ; une future
+# matière composite ajouterait sa propre entrée plutôt que de généraliser un mécanisme
+# encore jamais rencontré pour un autre couple de matières.
+SUBJECT_FAMILIES = {
+    "PHYSIQUE": "PHYSIQUE_CHIMIE",
+    "CHIMIE": "PHYSIQUE_CHIMIE",
+}
 
 
 class Series(models.Model):
@@ -260,6 +291,16 @@ class Tag(models.Model):
     """Vocabulaire partagé pour les thèmes pédagogiques et les mots-clés de recherche."""
 
     name = models.CharField(max_length=100, unique=True)
+    savoir_officiel = models.ForeignKey(
+        "programme.Savoir", null=True, blank=True, on_delete=models.SET_NULL, related_name="tags",
+        help_text=(
+            "Rattachement au référentiel programme officiel (voir programme.Savoir) - "
+            "additif et rempli progressivement, rien ne dépend de ce champ pour "
+            "fonctionner. Le vocabulaire Tag reste plus fin qu'un Savoir (plusieurs "
+            "tags par savoir) : ce n'est pas un remplacement, juste un regroupement "
+            "pédagogique par-dessus."
+        ),
+    )
 
     class Meta:
         ordering = ["name"]
@@ -284,21 +325,27 @@ class VisibleQuerySet(models.QuerySet):
 
     def par_slug_ou_id(self, value):
         """
-        Accepte soit le slug (URL publique, "/epreuves/<slug>/lire"), soit l'id
-        numérique - compat historique pour le seul lien pas encore migré vers un slug
-        (QuizSessionPage.tsx, construit depuis Question.lesson_id sur d'anciennes
-        sessions de quiz pré-bascule vers CompetenceItem, qui n'a pas de lesson_id).
+        Accepte soit le slug (URL publique, "/epreuves/<slug>/lire", "/cours/<slug>/lire"),
+        soit l'id numérique - compat historique pour les liens pas encore migrés vers un
+        slug (QuizSessionPage.tsx, construit depuis Question.lesson_id sur d'anciennes
+        sessions de quiz pré-bascule vers CompetenceItem, qui n'a pas de lesson_id ; et
+        tout marqueur [COURS_LINK:<id>]/COURS_REF:<id> déjà figé dans un content_markdown
+        compilé avant l'introduction de Cours.slug).
         """
         return self.filter(pk=value) if str(value).isdigit() else self.filter(slug=value)
 
 
-def _generate_unique_slug(model_cls, title, existing_pk=None):
+def generate_unique_slug(model_cls, title, existing_pk=None):
     """
     Slug lisible (SEO, partage) dérivé du titre, unique dans `model_cls` - un simple
     id numérique dans l'URL ("/epreuves/723/lire") ne dit rien du contenu et n'incite
     pas au partage. `existing_pk` exclut l'objet en cours d'enregistrement de la
     vérification d'unicité (mise à jour) ; None (objet pas encore créé) ne fausse rien
     ici, exclude(pk=None) équivaut à "pk IS NOT NULL", donc à aucune exclusion réelle.
+
+    Pas préfixé d'un underscore malgré son usage historique interne à ce module :
+    utilitaire pur (ne dépend que du `model_cls` passé en argument), désormais
+    partagé avec inedit.models.EpreuveInedite - voir sa docstring de champ slug.
     """
     base = slugify(title) or "contenu"
     slug = base
@@ -337,6 +384,14 @@ class Lesson(models.Model):
         max_length=255, blank=True,
         help_text="Nom de l'établissement (ORIGINE=ETABLISSEMENT uniquement).",
     )
+    nature_epreuve = models.CharField(
+        max_length=10, choices=NatureEpreuve.choices, blank=True,
+        help_text=(
+            "Théorique/Pratique quand l'épreuve source le précise (ex : Physique "
+            "pratique au BAC C) - vide si cette distinction n'existe pas pour cette "
+            "matière ou n'est pas déterminable, jamais deviné à l'ingestion."
+        ),
+    )
 
     themes = models.ManyToManyField(Tag, blank=True, related_name="lessons_as_theme")
     mots_cles_recherche = models.ManyToManyField(Tag, blank=True, related_name="lessons_as_keyword")
@@ -361,6 +416,15 @@ class Lesson(models.Model):
     statut = models.CharField(max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON)
     published_at = models.DateTimeField(null=True, blank=True)
 
+    est_vitrine = models.BooleanField(
+        default=False,
+        help_text=(
+            "Corrigé complet en accès libre, sans abonnement ni connexion - pour qu'un "
+            "visiteur juge la qualité réelle avant de payer. À réserver à une épreuve par "
+            "cursus, choisie à la main : rien n'empêche techniquement d'en cocher plusieurs."
+        ),
+    )
+
     sujet_pdf = models.FileField(
         upload_to="sujets_pdf/", blank=True,
         help_text=(
@@ -384,7 +448,7 @@ class Lesson(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = _generate_unique_slug(Lesson, self.title, existing_pk=self.pk)
+            self.slug = generate_unique_slug(Lesson, self.title, existing_pk=self.pk)
             update_fields = kwargs.get("update_fields")
             if update_fields is not None:
                 kwargs["update_fields"] = [*update_fields, "slug"]
@@ -413,6 +477,7 @@ class Lesson(models.Model):
             "coefficient": self.coefficient or None,
             "origine": self.get_origine_display() if self.origine != Origine.OFFICIEL else None,
             "etablissement": self.etablissement or None,
+            "nature": self.get_nature_epreuve_display() if self.nature_epreuve else None,
             # Depuis Subject.country plutôt que cursus_list : toujours renseigné (FK
             # obligatoire), contrairement à cursus qui peut être vide pour un Cours
             # "toutes séries" - source fiable unique pour indiquer le pays au visiteur.
@@ -424,6 +489,18 @@ class Lesson(models.Model):
         from . import rendering
 
         return rendering.lesson_preview_markdown(self)
+
+    def preview_exercises(self):
+        """Sujet public découpé par exercice, sans aucun corrigé - voir catalog.rendering.lesson_preview_exercises."""
+        from . import rendering
+
+        return rendering.lesson_preview_exercises(self)
+
+    def exercises_breakdown(self):
+        """Énoncé/corrigé par exercice, séparément - voir catalog.rendering.lesson_exercises_breakdown."""
+        from . import rendering
+
+        return rendering.lesson_exercises_breakdown(self)
 
     def compile_from_exercises(self):
         """Agrège les Exercise validés dans ce Lesson - voir catalog.rendering.compile_lesson_from_exercises."""
@@ -521,7 +598,16 @@ class Question(models.Model):
 
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name="questions")
     numero = models.CharField(
-        max_length=10,
+        # 10 ne suffisait pas : "Présentation" (12 caractères, un item de barème récurrent
+        # sur les épreuves de maths - clarté/soin de la copie, sans rapport avec une
+        # sous-question numérotée) est apparu identique sur 3 lots d'épreuves distincts et
+        # sans rapport (bac-c-maths-2026, bac-d-maths-2023, bepc-maths-2024-cameroun),
+        # signe d'une convention réelle et récurrente plutôt que d'une coquille isolée -
+        # contrairement au cas "2.2.1-2.2.2" (une fusion de sous-questions à un seul autre
+        # endroit du corpus) qui avait été corrigé côté contenu plutôt que par une
+        # migration. Marge conservée au-delà de 12 pour tolérer une variante similaire
+        # ("Orthographe", 11) sans nouvelle migration.
+        max_length=20,
         help_text="Repère au sein de l'exercice parent (ex : 1, 2, a, b) - pas forcément numero_exercice.",
     )
     ordre = models.PositiveSmallIntegerField(help_text="Ordre d'affichage/résolution au sein de l'exercice.")
@@ -604,7 +690,7 @@ class Figure(models.Model):
 
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name="figures")
     external_id = models.CharField(
-        max_length=20,
+        max_length=255,
         help_text="Identifiant du placeholder dans le Markdown (ex: fig-1) - unique seulement au sein d'un exercice.",
     )
     image = models.FileField(upload_to=figure_upload_to)
@@ -648,6 +734,10 @@ class Cours(models.Model):
     objects = VisibleQuerySet.as_manager()
 
     titre = models.CharField(max_length=255)
+    slug = models.SlugField(
+        max_length=255, unique=True, blank=True,
+        help_text="Généré automatiquement depuis le titre à la création - ne pas modifier après publication.",
+    )
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT, related_name="cours")
     cursus = models.ManyToManyField(
         Cursus, related_name="cours", blank=True,
@@ -679,6 +769,14 @@ class Cours(models.Model):
     def __str__(self):
         return self.titre
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_slug(Cours, self.titre, existing_pk=self.pk)
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                kwargs["update_fields"] = [*update_fields, "slug"]
+        super().save(*args, **kwargs)
+
     def header_info(self):
         series_codes = [c.series.code for c in self.cursus.select_related("series").all() if c.series]
         return {
@@ -706,6 +804,12 @@ class Cours(models.Model):
         from . import rendering
 
         return rendering.cours_preview_markdown(self)
+
+    def sections_breakdown(self, allowed_types=None):
+        """Sections individuellement typées, pour la lecture en ligne - voir catalog.rendering.cours_sections_breakdown."""
+        from . import rendering
+
+        return rendering.cours_sections_breakdown(self, allowed_types=allowed_types)
 
 
 class RappelDeMethode(models.Model):
@@ -737,3 +841,43 @@ class RappelDeMethode(models.Model):
     @property
     def cours_genere(self):
         return self.cours_id is not None
+
+
+class TemoignageQuerySet(models.QuerySet):
+    def publies(self):
+        return self.filter(est_publie=True)
+
+
+class Temoignage(models.Model):
+    """
+    Avis d'un élève, saisi et publié à la main depuis l'admin - jamais généré ni
+    déduit automatiquement (voir l'audit UX, reco 8.3 : preuve sociale réelle ou
+    absente, jamais fabriquée). `est_publie` par défaut à False : un témoignage
+    récolté (ex. par message) reste invisible du public tant qu'un admin ne l'a pas
+    relu et publié explicitement - même logique que Country.actif pour seed_country.
+    """
+
+    auteur_nom = models.CharField(max_length=100)
+    auteur_description = models.CharField(
+        max_length=150, blank=True,
+        help_text="Ex : « Terminale D, Cameroun » ou « Bachelière 2025 » - jamais de numéro de téléphone ni d'identifiant.",
+    )
+    contenu = models.TextField(max_length=600)
+    note = models.PositiveSmallIntegerField(
+        null=True, blank=True,
+        help_text="Note sur 5, optionnelle - laisser vide si le témoignage n'en comporte pas.",
+    )
+    est_publie = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = TemoignageQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.auteur_nom} ({'publié' if self.est_publie else 'brouillon'})"
+
+    def clean(self):
+        if self.note is not None and not (1 <= self.note <= 5):
+            raise ValidationError({"note": "La note doit être comprise entre 1 et 5."})

@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-decomposition-unique-somme-directe-terminale-c",
+  "meta": {
+    "titre": "Unicité de la décomposition d'un vecteur dans une somme directe",
+    "cours_id": "cours-decomposition-unique-somme-directe-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - somme directe, unicité de décomposition",
+    "tags": ["somme directe", "unicité", "décomposition vectorielle"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_4_qA1b"
+  },
+  "sections": {
+    "accroche": "L'unicité de la décomposition dans une somme directe n'est pas une simple formalité : c'est elle qui garantit qu'une construction définie via cette décomposition (comme une application W ou ψ) est bien définie, sans ambiguïté.",
+    "prerequis": ["Définition d'une somme directe", "Raisonnement par soustraction pour prouver l'unicité"],
+    "regle": {
+      "titre": "Preuve de l'unicité dans une somme directe",
+      "contenu_markdown": "Si $E=A\\oplus B$ et $\\vec v=\\vec u_1+\\vec w_1=\\vec u_2+\\vec w_2$ avec $\\vec u_1,\\vec u_2\\in A$ et $\\vec w_1,\\vec w_2\\in B$, alors $\\vec u_1-\\vec u_2=\\vec w_2-\\vec w_1$. Le membre de gauche est dans $A$ (différence de deux éléments de $A$), le membre de droite est dans $B$ : c'est donc un élément de $A\\cap B=\\{0\\}$ (définition de la somme directe). Donc $\\vec u_1-\\vec u_2=\\vec0$ et $\\vec w_2-\\vec w_1=\\vec0$, c'est-à-dire $\\vec u_1=\\vec u_2$ et $\\vec w_1=\\vec w_2$ : la décomposition est unique.",
+      "formule_principale": "$E=A\\oplus B\\Rightarrow$ décomposition $\\vec v=\\vec u+\\vec w$ ($\\vec u\\in A,\\vec w\\in B$) unique",
+      "variantes": ["La même méthode de preuve (différence, appartenance à l'intersection triviale) s'applique à toute somme directe, quel que soit le contexte (vectoriel ou affine)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que si $(2,3)=\\vec u_1+\\vec w_1=\\vec u_2+\\vec w_2$ avec $\\vec u_i\\in\\mathrm{Vect}(1,0)$, $\\vec w_i\\in\\mathrm{Vect}(0,1)$, alors $\\vec u_1=\\vec u_2$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser la différence", "justification": "méthode standard de preuve d'unicité", "resultat_markdown": "$\\vec u_1-\\vec u_2=\\vec w_2-\\vec w_1$"},
+        {"numero": 2, "action": "Identifier l'appartenance à l'intersection", "justification": "membre de gauche dans Vect(1,0), membre de droite dans Vect(0,1)", "resultat_markdown": "$\\vec u_1-\\vec u_2\\in\\mathrm{Vect}(1,0)\\cap\\mathrm{Vect}(0,1)=\\{(0,0)\\}$"}
+      ],
+      "conclusion_markdown": "$\\vec u_1-\\vec u_2=(0,0)$, donc $\\vec u_1=\\vec u_2$ (et de même $\\vec w_1=\\vec w_2$)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Affirmer l'unicité sans la démontrer, en la considérant comme 'évidente'", "pourquoi_faux": "l'unicité découle spécifiquement de l'intersection triviale entre A et B, ce n'est pas automatique pour toute somme (seulement pour une somme directe)", "correction_markdown": "Toujours dérouler l'argument de la différence appartenant à $A\\cap B=\\{0\\}$, même brièvement, pour justifier l'unicité."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Pourquoi l'argument d'unicité échouerait-il si $A\\cap B\\neq\\{0\\}$ ?", "solution_markdown": "Si $A\\cap B$ contient un vecteur non nul $\\vec z$, alors $\\vec u_1-\\vec u_2$ pourrait valoir $\\vec z\\neq\\vec0$, donnant deux décompositions distinctes du même vecteur $\\vec v$."}
+    ],
+    "synthese": "L'unicité de la décomposition dans une somme directe se prouve en montrant que la différence des deux candidats appartient à l'intersection triviale A∩B={0}, donc est nulle."
+  }
+}

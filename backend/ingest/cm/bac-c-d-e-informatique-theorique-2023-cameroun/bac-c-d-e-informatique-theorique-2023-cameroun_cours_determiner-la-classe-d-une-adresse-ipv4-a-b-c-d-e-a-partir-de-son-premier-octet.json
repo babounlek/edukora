@@ -1,0 +1,100 @@
+{
+  "cours_id": "cours-determiner-la-classe-d-une-adresse-ipv4-a-b-c-d-e-a-partir-de-son-premier-octet-terminale-c",
+  "meta": {
+    "titre": "Déterminer la classe d'une adresse IPv4 (A, B, C, D, E) à partir de son premier octet",
+    "cours_id": "cours-determiner-la-classe-d-une-adresse-ipv4-a-b-c-d-e-a-partir-de-son-premier-octet-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Adressage IP",
+    "tags": [
+      "classes d'adresses IP",
+      "IPv4"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB3c-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'invention du CIDR moderne, les adresses IPv4 étaient réparties en cinq classes (A à E), chacune définie par la valeur du premier octet. Cette classification historique reste régulièrement demandée en examen."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une adresse IPv4 en notation décimale pointée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les classes d'adresses IPv4",
+      "contenu_markdown": "La classe d'une adresse IPv4 se détermine par la valeur de son **premier octet** : classe **A** (1 à 126), classe **B** (128 à 191), classe **C** (192 à 223), classe **D** (224 à 239, réservée au multicast), classe **E** (240 à 255, réservée à un usage expérimental). L'adresse 127.x.x.x est réservée à la boucle locale (loopback) et n'appartient à aucune classe utilisable.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la classe de l'adresse IP 192.168.0.23.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet de l'adresse",
+          "justification": "C'est la valeur du premier octet qui détermine la classe.",
+          "resultat_markdown": "192"
+        },
+        {
+          "numero": 2,
+          "action": "Situer cette valeur dans les plages de classes",
+          "justification": "192 appartient à la plage 192-223.",
+          "resultat_markdown": "Classe C"
+        }
+      ],
+      "conclusion_markdown": "Le premier octet détermine la classe : A (1-126), B (128-191), C (192-223), D (224-239), E (240-255)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la plage réservée 127.x.x.x (loopback), et la classer par erreur en classe A",
+          "pourquoi_faux": "Bien que 127 tombe numériquement dans la plage historique de la classe A (1-126 stricto sensu exclut déjà 127), cette plage est en réalité réservée à l'adresse de boucle locale (127.0.0.1 = localhost) et n'est pas utilisable comme adresse de classe A ordinaire.",
+          "correction_markdown": "Retiens 127.x.x.x comme cas particulier réservé (loopback), à part des 5 classes A à E."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la classe de l'adresse 10.0.0.1 ?",
+          "solution_markdown": "Classe A (premier octet 10, compris entre 1 et 126)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la classe de l'adresse 172.16.0.1 ?",
+          "solution_markdown": "Classe B (premier octet 172, compris entre 128 et 191)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La classification par classes (A/B/C/D/E) est-elle encore utilisée telle quelle dans les réseaux modernes ?",
+          "solution_markdown": "Non, pas directement : depuis les années 1990, l'adressage moderne utilise le CIDR (Classless Inter-Domain Routing), qui abandonne les frontières rigides des classes au profit d'un découpage flexible via un préfixe (/24, /16...) indépendant du premier octet. La notion de classe reste toutefois enseignée car elle explique l'origine historique des plages d'adresses privées (10.x.x.x classe A, 172.16-31.x.x classe B, 192.168.x.x classe C) toujours utilisées aujourd'hui."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe d'une adresse IPv4 se détermine par son premier octet.",
+        "Classe A (1-126), B (128-191), C (192-223), D (224-239, multicast), E (240-255).",
+        "127.x.x.x est réservée à la boucle locale (loopback), pas une classe A ordinaire.",
+        "Le CIDR moderne a remplacé ce découpage rigide, mais les classes expliquent l'origine des plages privées actuelles."
+      ]
+    }
+  ]
+}

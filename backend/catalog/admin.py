@@ -5,11 +5,11 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import path
 
-from .ingestion import IngestionError, ingest_exercise, run_ingestion
-from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag
+from .ingestion import IngestionError, ingest_exercise, queue_ingestion, read_ingestion_report
+from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
 from .sujet_pdf import queue_sujet_pdf_generation
 
 # Phrase à taper pour confirmer la purge (voir LessonAdmin.purge_view) - une action qui
@@ -67,6 +67,14 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
+@admin.register(Temoignage)
+class TemoignageAdmin(admin.ModelAdmin):
+    list_display = ["auteur_nom", "auteur_description", "note", "est_publie", "created_at"]
+    list_filter = ["est_publie", "note"]
+    list_editable = ["est_publie"]
+    search_fields = ["auteur_nom", "contenu"]
+
+
 class ExerciseInline(admin.TabularInline):
     model = Exercise
     extra = 0
@@ -88,15 +96,16 @@ class RappelDeMethodeInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ["title", "subject", "cursus_list", "lesson_type", "origine", "year", "statut", "updated_at"]
-    list_filter = ["statut", "lesson_type", "origine", "subject", "cursus"]
+    list_display = ["title", "subject", "nature_epreuve", "cursus_list", "lesson_type", "origine", "year", "statut", "est_vitrine", "updated_at"]
+    list_filter = ["statut", "lesson_type", "origine", "subject", "nature_epreuve", "cursus", "est_vitrine"]
+    list_editable = ["est_vitrine"]
     search_fields = ["title", "epreuve_source", "slug"]
     filter_horizontal = ["cursus", "themes", "mots_cles_recherche"]
     inlines = [ExerciseInline]
     actions = ["compiler_depuis_exercices", "generer_pdf_sujet"]
     # Auto-rempli en JS depuis le titre (comportement natif de l'admin) - reste
     # modifiable manuellement si besoin avant la première sauvegarde ; Lesson.save()
-    # ne régénère jamais un slug déjà renseigné (voir _generate_unique_slug).
+    # ne régénère jamais un slug déjà renseigné (voir generate_unique_slug).
     prepopulated_fields = {"slug": ("title",)}
 
     def get_urls(self):
@@ -108,30 +117,35 @@ class LessonAdmin(admin.ModelAdmin):
 
     def ingestion_view(self, request):
         """
-        Lance run_ingestion() sur INGEST_DIR - le pendant, depuis l'admin, de
-        `manage.py ingest_corrections ingest/` : évite d'avoir à ouvrir un terminal
-        pour injecter les fichiers déposés par correction-experte.
+        Lance `manage.py ingest_corrections` sur INGEST_DIR - le pendant, depuis l'admin,
+        de la même commande en ligne de commande : évite d'avoir à ouvrir un terminal pour
+        injecter les fichiers déposés par correction-experte.
+
+        Le run part dans un processus détaché, jamais dans ce thread de requête : il dure
+        largement plus que le `--timeout 30` de gunicorn dès que le dossier grossit, et le
+        worker se faisait tuer en plein run (voir catalog.ingestion.queue_ingestion). La
+        page n'affiche donc plus le rapport dans sa réponse au clic, mais celui du dernier
+        run, relu sur disque à chaque affichage - et les PDF de sujet manquants sont
+        générés par la commande elle-même, plus par cette vue.
         """
-        report = None
+        report = read_ingestion_report()
         if request.method == "POST":
-            report = run_ingestion(INGEST_DIR)
-            # Même logique que la commande `ingest_corrections` : ne pas laisser une
-            # leçon fraîchement ingérée sans PDF de sujet en attendant qu'on pense à
-            # relancer generate_sujet_pdfs séparément. Mais - contrairement à un essai
-            # précédent qui appelait save_sujet_pdf() ici même, en synchrone - jamais
-            # Playwright dans ce thread de requête : ça s'est montré peu fiable en
-            # pratique (voir sujet_pdf.save_sujet_pdf). On délègue donc à un processus
-            # détaché (voir queue_sujet_pdf_generation), le même pattern déjà fiable
-            # pour la tâche planifiée qui appelle `ingest_corrections` en CLI.
-            #
-            # Bornée aux leçons touchées par CE run (report["lesson_ids"]) : le
-            # rattrapage du retard historique reste le travail de
-            # `manage.py generate_sujet_pdfs` (ou `ingest_corrections` en CLI).
-            lessons_a_traiter = Lesson.objects.filter(
-                pk__in=report["lesson_ids"], statut=StatutContenu.VALIDE, sujet_pdf="",
-            )
-            report["pdf_en_cours"] = list(lessons_a_traiter.values_list("pk", flat=True))
-            queue_sujet_pdf_generation(report["pdf_en_cours"])
+            if report and report.get("status") == "running":
+                messages.warning(
+                    request,
+                    "Une ingestion est déjà en cours - attendez qu'elle se termine avant "
+                    "d'en relancer une (actualisez cette page pour suivre son état).",
+                )
+            else:
+                queue_ingestion(INGEST_DIR)
+                messages.info(
+                    request,
+                    "Ingestion lancée en arrière-plan. Actualisez cette page pour suivre "
+                    "son avancement : le rapport s'affichera ici une fois le run terminé.",
+                )
+            # POST/redirect/GET : sans ça, actualiser la page pour justement suivre le run
+            # en cours reproposerait d'en lancer un second.
+            return redirect(request.path)
 
         # rglob (récursif), pas glob : doit lister exactement ce que run_ingestion()
         # va traiter (voir catalog.ingestion.run_ingestion, qui parcourt aussi les
@@ -343,6 +357,10 @@ class CoursAdmin(admin.ModelAdmin):
     search_fields = ["titre", "sous_theme", "external_id"]
     filter_horizontal = ["cursus", "tags"]
     actions = ["compiler_depuis_sections"]
+    # Auto-rempli en JS depuis le titre (comportement natif de l'admin) - reste
+    # modifiable manuellement si besoin avant la première sauvegarde ; Cours.save() ne
+    # régénère jamais un slug déjà renseigné (même logique que LessonAdmin).
+    prepopulated_fields = {"slug": ("titre",)}
 
     @admin.display(description="Cursus")
     def cursus_list(self, obj):

@@ -1,0 +1,90 @@
+{
+  "epreuve_source": "bac-c-maths-1985-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 1985,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 6,
+  "titre_exercice": "Problème — Troisième partie : application concrète, identification d'une symétrie glissée",
+  "points": 2,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème (suite et fin)**\n\n**Troisième partie**\n\nSoit $\\mathcal E$ un plan affine euclidien, associé au plan vectoriel $E$, $(O,\\vec\\imath,\\vec\\jmath)$ un repère orthonormé de $\\mathcal E$, et $\\rho$ l'application de $\\mathcal E$ dans $\\mathcal E$ qui à tout point $M(x,y)$ associe le point $M'(x',y')$ tel que :\n\n$$\\begin{cases}x'=\\dfrac35x+\\dfrac45y+\\dfrac85\\\\[4pt]y'=\\dfrac45x-\\dfrac35y+\\dfrac95\\end{cases}$$",
+  "questions": [
+    {
+      "numero": "1",
+      "points": 0.25,
+      "enonce_markdown": "Montrer que $\\rho$ n'admet pas de point invariant.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-recherche-points-invariants-application-affine-plan-terminale-c",
+          "texte": "Un point invariant M(x,y) vérifie x=x' et y=y' ; on obtient un système linéaire de deux équations en x et y qu'il suffit de résoudre (ou de montrer incompatible) pour conclure.",
+          "id": "bac-c-maths-1985-cameroun_exercice_6_q1"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUn point invariant M(x,y) verifie x=x' et y=y' ; on obtient un systeme lineaire de deux equations en x et y qu'il suffit de resoudre (ou de montrer incompatible) pour conclure a l'existence ou non d'un point invariant.\n\nUn point $M(x,y)$ est invariant par $\\rho$ si et seulement si $x'=x$ et $y'=y$, soit :\n\n$$\\begin{cases}x=\\dfrac35x+\\dfrac45y+\\dfrac85\\\\[4pt]y=\\dfrac45x-\\dfrac35y+\\dfrac95\\end{cases}$$\n\n**Première équation** : $x-\\dfrac35x-\\dfrac45y=\\dfrac85\\iff\\dfrac25x-\\dfrac45y=\\dfrac85$. En multipliant par $5$ : $2x-4y=8$, soit, en divisant par $2$ : **$x-2y=4$**. (i)\n\n**Seconde équation** : $y+\\dfrac35y-\\dfrac45x=\\dfrac95\\iff\\dfrac85y-\\dfrac45x=\\dfrac95$. En multipliant par $5$ : $8y-4x=9$, soit **$-4x+8y=9$**. (ii)\n\n**Résolution du système (i)-(ii)** : multiplions (i) par $4$ : $4x-8y=16$. Ajoutons cette égalité à (ii) : $(4x-8y)+(-4x+8y)=16+9$, soit $0=25$.\n\nCette égalité est **impossible** (0 ≠ 25) : le système (i)-(ii) n'a **aucune solution**.\n\n**$\\rho$ n'admet donc pas de point invariant.**\n\n### Piège à éviter\nNe pas confondre « pas de point invariant » et « l'application n'est pas bien définie » : $\\rho$ est parfaitement définie sur tout le plan, elle transforme simplement chaque point en un autre point distinct de lui-même — c'est la signature d'une application affine sans point fixe, comme une translation ou (on le verra) une symétrie glissée."
+    },
+    {
+      "numero": "2a",
+      "points": 0.5,
+      "enonce_markdown": "On désigne par $f$ l'endomorphisme associé à $\\rho$ et on pose $g=f-\\mathrm{Id}_E$ et $F=\\{\\vec u\\in E\\,;\\,f(\\vec u)=\\vec u\\}$. Montrer que $E=\\ker g\\oplus\\mathrm{Im}\\,g$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-verification-somme-directe-dimension-2-terminale-c",
+          "texte": "Pour montrer E=ker g⊕Im g en dimension 2, il suffit de trouver un vecteur directeur de chacun des deux sous-espaces et de vérifier qu'ils ne sont pas colinéaires.",
+          "id": "bac-c-maths-1985-cameroun_exercice_6_q2a"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'endomorphisme associe f a rho se lit directement sur la partie lineaire du systeme (sans les termes constants) ; g=f-Id s'obtient en retranchant l'identite matriciellement ; pour montrer E=ker g plus-oplus Im g en dimension 2, il suffit de trouver un vecteur directeur de chacun des deux sous-espaces et de verifier qu'ils ne sont pas colineaires (ce qui garantit une intersection reduite au vecteur nul, et donc, les dimensions s'additionnant a dim E=2, une somme directe egale a E).\n\n**Endomorphisme associé** : $f(x,y)=\\left(\\dfrac35x+\\dfrac45y,\\ \\dfrac45x-\\dfrac35y\\right)$ (partie linéaire de $\\rho$, sans les termes constants $\\frac85$ et $\\frac95$).\n\n**Calcul de $g=f-\\mathrm{Id}_E$** : $g(x,y)=\\left(\\dfrac35x+\\dfrac45y-x,\\ \\dfrac45x-\\dfrac35y-y\\right)=\\left(-\\dfrac25x+\\dfrac45y,\\ \\dfrac45x-\\dfrac85y\\right)$.\n\nFactorisons chaque composante par $(x-2y)$ : $-\\dfrac25x+\\dfrac45y=-\\dfrac25(x-2y)$, et $\\dfrac45x-\\dfrac85y=\\dfrac45(x-2y)$. Donc **$g(x,y)=(x-2y)\\left(-\\dfrac25,\\dfrac45\\right)$**.\n\n**$\\ker g$** : $g(x,y)=(0,0)\\iff x-2y=0\\iff x=2y$. Donc $\\ker g=\\{(2y,y)\\,:\\,y\\in\\mathbb R\\}=\\mathrm{Vect}(2,1)$, droite vectorielle dirigée par $(2,1)$ : $\\dim(\\ker g)=1$.\n\n**$\\mathrm{Im}\\,g$** : d'après l'expression $g(x,y)=(x-2y)\\left(-\\frac25,\\frac45\\right)$, tout vecteur image de $g$ est colinéaire à $\\left(-\\frac25,\\frac45\\right)$, donc à $(-1,2)$. Donc $\\mathrm{Im}\\,g=\\mathrm{Vect}(-1,2)$, droite vectorielle dirigée par $(-1,2)$ : $\\dim(\\mathrm{Im}\\,g)=1$.\n\n**$\\ker g\\cap\\mathrm{Im}\\,g=\\{\\vec0\\}$** : les vecteurs directeurs $(2,1)$ et $(-1,2)$ sont non colinéaires, car $2\\times2-1\\times(-1)=4+1=5\\neq0$ (déterminant non nul). Deux droites vectorielles distinctes du plan ne se coupent qu'en $\\vec0$ : **$\\ker g\\cap\\mathrm{Im}\\,g=\\{\\vec0\\}$**.\n\nComme $\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)=1+1=2=\\dim E$ et $\\ker g\\cap\\mathrm{Im}\\,g=\\{\\vec0\\}$, on conclut **$E=\\ker g\\oplus\\mathrm{Im}\\,g$**."
+    },
+    {
+      "numero": "2b",
+      "points": 0.25,
+      "enonce_markdown": "En déduire qu'il existe un unique $\\vec W$ appartenant à $F$ et une unique application affine $\\psi$ de $\\mathcal E$ dans $\\mathcal E$, admettant au moins un point invariant, tels que $\\rho=t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-application-theoreme-existence-unicite-terminale-c",
+          "texte": "Ayant vérifié E=ker g⊕Im g (équivalent à ker(g∘g)⊂ker g, condition de la Deuxième partie), le théorème d'existence et d'unicité démontré en Deuxième partie s'applique directement à ce ρ concret.",
+          "id": "bac-c-maths-1985-cameroun_exercice_6_q2b"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nAyant verifie E=ker g plus-oplus Im g (equivalent a ker(g o g) subset ker g, condition de la Deuxieme partie), le theoreme d'existence et d'unicite demontre en Deuxieme partie (A et B) s'applique directement a ce rho concret.\n\nD'après la question précédente, $E=\\ker g\\oplus\\mathrm{Im}\\,g$, ce qui équivaut (Première partie, question 2.b) à $\\ker(g\\circ g)\\subset\\ker g$. Les hypothèses de la Deuxième partie sont donc satisfaites pour ce $\\rho$ et ce $g$ concrets.\n\nD'après la Deuxième partie (A), il existe un vecteur $\\vec W\\in F=\\ker g$ et une application affine $\\psi$ de $\\mathcal E$ dans $\\mathcal E$, admettant au moins un point invariant, tels que $\\rho=t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$.\n\nD'après la Deuxième partie (B), une telle décomposition (avec $\\vec W\\in F$ et $\\psi$ à point invariant de même endomorphisme associé que $\\rho$) est **unique**.\n\n**Conclusion** : il existe un **unique** $\\vec W\\in F$ et une **unique** application affine $\\psi$ admettant au moins un point invariant, telles que $\\rho=t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$."
+    },
+    {
+      "numero": "2c",
+      "points": 0.5,
+      "enonce_markdown": "Déterminer $\\vec W$ (on exprimera $\\overrightarrow{\\rho(O)O}$ comme somme de deux vecteurs dont l'un appartient à $\\ker g$ et l'autre à $\\mathrm{Im}\\,g$).",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calcul-explicite-vecteur-translation-W-terminale-c",
+          "texte": "La composante dans ker g du vecteur allant de ρ(A) vers A (pour n'importe quel point A) est indépendante du choix de A et vaut précisément le vecteur u=-W ; il suffit de décomposer ce vecteur, calculé en un point commode comme l'origine O, en sa composante sur ker g et sa composante sur Im g.",
+          "id": "bac-c-maths-1985-cameroun_exercice_6_q2c"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nD'apres la construction de la Deuxieme partie, la composante dans ker g du vecteur allant de rho(A) vers A (pour n'importe quel point A) est independante du choix de A et vaut precisement le vecteur u=-W ; il suffit donc de decomposer ce vecteur, calcule en un point commode comme l'origine O, en sa composante sur ker g et sa composante sur Im g.\n\n**Calcul de $\\rho(O)$** : en $(x,y)=(0,0)$, $x'=\\dfrac85$, $y'=\\dfrac95$. Donc $\\rho(O)=\\left(\\dfrac85,\\dfrac95\\right)$.\n\n**Vecteur $\\overrightarrow{\\rho(O)O}$** : $\\overrightarrow{\\rho(O)O}=O-\\rho(O)=\\left(0-\\dfrac85,\\ 0-\\dfrac95\\right)=\\left(-\\dfrac85,-\\dfrac95\\right)$.\n\nD'après la Deuxième partie (A), ce vecteur se décompose de façon unique en $\\overrightarrow{\\rho(O)O}=\\vec u+\\vec v$ avec $\\vec u\\in\\ker g$ et $\\vec v\\in\\mathrm{Im}\\,g$, et $\\vec W=-\\vec u$.\n\n**Décomposition** : cherchons $t,s\\in\\mathbb R$ tels que $\\left(-\\dfrac85,-\\dfrac95\\right)=t(2,1)+s(-1,2)$ (avec $(2,1)$ dirigeant $\\ker g$ et $(-1,2)$ dirigeant $\\mathrm{Im}\\,g$, question 2.a) :\n\n$$\\begin{cases}2t-s=-\\dfrac85\\\\t+2s=-\\dfrac95\\end{cases}$$\n\nDe la première équation : $s=2t+\\dfrac85$. En substituant dans la seconde : $t+2\\left(2t+\\dfrac85\\right)=-\\dfrac95\\iff t+4t+\\dfrac{16}5=-\\dfrac95\\iff5t=-\\dfrac95-\\dfrac{16}5=-\\dfrac{25}5=-5\\iff t=-1$.\n\nD'où $s=2(-1)+\\dfrac85=-2+\\dfrac85=-\\dfrac{10}5+\\dfrac85=-\\dfrac25$.\n\n**Vérification** : $t(2,1)+s(-1,2)=-1(2,1)+\\left(-\\dfrac25\\right)(-1,2)=(-2,-1)+\\left(\\dfrac25,-\\dfrac45\\right)=\\left(-2+\\dfrac25,\\,-1-\\dfrac45\\right)=\\left(-\\dfrac85,-\\dfrac95\\right)$ ✓, conforme à $\\overrightarrow{\\rho(O)O}$.\n\nDonc $\\vec u=t(2,1)=(-2,-1)$ (composante dans $\\ker g$) et $\\vec v=s(-1,2)=\\left(\\dfrac25,-\\dfrac45\\right)$ (composante dans $\\mathrm{Im}\\,g$).\n\n**$\\vec W=-\\vec u=-(-2,-1)=(2,1)$.**\n\n### Conseil\nLe résultat de la Deuxième partie (unicité de la décomposition, indépendante du point de départ $A$) garantit que ce calcul aurait donné le même $\\vec W$ en partant de n'importe quel autre point que $O$ : c'est un bon moyen de vérifier son calcul, en le refaisant avec un point $A$ différent (par exemple $A(1,0)$) et en s'assurant de retrouver $\\vec W=(2,1)$."
+    },
+    {
+      "numero": "2d",
+      "points": 0.5,
+      "enonce_markdown": "Montrer que $\\psi$ est une symétrie orthogonale dont on précisera l'axe.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-identification-symetrie-orthogonale-matrice-determinant-moins-un-terminale-c",
+          "texte": "Une application linéaire de matrice orthogonale et de déterminant -1 est une symétrie orthogonale (réflexion) par rapport à une droite vectorielle ; combinée à un point invariant, l'application affine ψ associée est la symétrie orthogonale affine d'axe la droite passant par ce point, de direction cette droite vectorielle.",
+          "id": "bac-c-maths-1985-cameroun_exercice_6_q2d"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne application lineaire de matrice orthogonale (colonnes orthonormees) et de determinant -1 est une symetrie orthogonale (reflexion) par rapport a une droite vectorielle ; combinee a un point invariant, l'application affine psi de meme partie lineaire est alors la symetrie orthogonale affine d'axe la droite passant par ce point invariant, de direction cette droite vectorielle (le sous-espace propre associe a la valeur propre 1).\n\n**La matrice de $f$ est orthogonale** : $M=\\begin{pmatrix}3/5&4/5\\\\4/5&-3/5\\end{pmatrix}$. Vérifions $M^TM=I_2$ : la première colonne a pour norme au carré $\\left(\\frac35\\right)^2+\\left(\\frac45\\right)^2=\\frac9{25}+\\frac{16}{25}=1$ ; la seconde colonne a pour norme au carré $\\left(\\frac45\\right)^2+\\left(-\\frac35\\right)^2=\\frac{16}{25}+\\frac9{25}=1$ ; le produit scalaire des deux colonnes vaut $\\frac35\\times\\frac45+\\frac45\\times\\left(-\\frac35\\right)=\\frac{12}{25}-\\frac{12}{25}=0$. Les colonnes forment donc une base orthonormée : **$f$ est un endomorphisme orthogonal**.\n\n**$\\det f=-1$** : $\\det M=\\frac35\\times\\left(-\\frac35\\right)-\\frac45\\times\\frac45=-\\frac9{25}-\\frac{16}{25}=-\\frac{25}{25}=-1$.\n\nUn endomorphisme orthogonal du plan de déterminant $-1$ est une **symétrie orthogonale (réflexion) par rapport à une droite vectorielle**, à savoir la droite des vecteurs invariants par $f$, c'est-à-dire **$\\ker g=\\ker(f-\\mathrm{Id})$** (question 2.a, $F$ étant *ici* effectivement égal à $\\ker g$ et non à $\\ker f$, ce dernier étant réduit à $\\{\\vec0\\}$ puisque $f$ est bijectif) : $\\ker g=\\mathrm{Vect}(2,1)$.\n\n$\\psi=t_{\\vec u}\\circ\\rho$ (avec $\\vec u=-\\vec W=(-2,-1)$, question 2.c) a le **même endomorphisme associé $f$** que $\\rho$ (propriété générale de la Deuxième partie, question A.2.b) : $\\psi$ est donc, elle aussi, associée à une symétrie orthogonale vectorielle d'axe $\\mathrm{Vect}(2,1)$.\n\n$\\psi$ **admet un point invariant** $B$ (Deuxième partie, question A.2.b) : une application affine dont l'endomorphisme associé est une symétrie orthogonale vectorielle **et** qui admet un point invariant **est elle-même une symétrie orthogonale affine**, d'axe la droite passant par ce point invariant et de direction $\\ker g=\\mathrm{Vect}(2,1)$.\n\n**Détermination explicite de l'axe** : calculons $\\psi(x,y)=\\rho(x,y)+\\vec u=\\left(\\dfrac35x+\\dfrac45y+\\dfrac85-2,\\ \\dfrac45x-\\dfrac35y+\\dfrac95-1\\right)=\\left(\\dfrac35x+\\dfrac45y-\\dfrac25,\\ \\dfrac45x-\\dfrac35y+\\dfrac45\\right)$.\n\nLes points invariants de $\\psi$ vérifient $x=\\dfrac35x+\\dfrac45y-\\dfrac25$ et $y=\\dfrac45x-\\dfrac35y+\\dfrac45$. La première équation donne $\\dfrac25x-\\dfrac45y=-\\dfrac25$, soit, en multipliant par $\\dfrac52$ : **$x-2y=-1$**. La seconde équation donne $\\dfrac85y-\\dfrac45x=\\dfrac45$, soit, en multipliant par $\\dfrac54$ : $2y-x=1$, c'est-à-dire **$x-2y=-1$** également (les deux équations coïncident, ce qui est cohérent : l'ensemble des points invariants d'une symétrie orthogonale forme une droite entière, pas un point isolé).\n\n**$\\psi$ est la symétrie orthogonale d'axe la droite $D:\\ x-2y+1=0$** (ou encore $x=2y-1$), droite de direction $(2,1)$ (conforme à $\\ker g$).\n\n**Conclusion d'ensemble** : $\\rho=t_{\\vec W}\\circ\\psi$ avec $\\vec W=(2,1)$ **parallèle à l'axe $D$** de la symétrie $\\psi$ : $\\rho$ est donc une **symétrie glissée** (composée d'une symétrie orthogonale d'axe $D:x-2y+1=0$ et d'une translation de vecteur $(2,1)$ dirigé par cet axe)."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-deduire-integrale-combinaison-lineaire-integrales-connues-terminale-c",
+  "meta": {
+    "titre": "Déduire une troisième intégrale par combinaison linéaire de deux intégrales déjà calculées",
+    "cours_id": "cours-deduire-integrale-combinaison-lineaire-integrales-connues-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Calcul intégral - linéarité, relations entre intégrales",
+    "tags": ["intégrale", "linéarité", "identité pythagoricienne", "déduction"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_1_q3"
+  },
+  "sections": {
+    "accroche": "Une question 'en déduire' signale presque toujours qu'un nouveau calcul complet n'est pas nécessaire : il suffit de trouver la relation algébrique reliant la nouvelle intégrale aux précédentes.",
+    "prerequis": ["Linéarité de l'intégrale", "Identité pythagoricienne sin²x+cos²x=1", "Résolution d'une équation simple à une inconnue"],
+    "regle": {
+      "titre": "Combinaison linéaire de deux intégrales connues",
+      "contenu_markdown": "Si les intégrandes de deux intégrales déjà calculées ($I$ et $J$) sont liées par une identité algébrique (par exemple, leur somme redonne l'intégrande d'une troisième intégrale $K$ à calculer), alors intégrer cette identité terme à terme donne directement une relation entre $I$, $J$ et $K$ (grâce à la linéarité de l'intégrale), permettant de déduire $K$ sans nouveau calcul de primitive.",
+      "formule_principale": "Si intégrande(K) = intégrande(J) - intégrande(I), alors K = J - I",
+      "variantes": ["Le même principe s'applique à toute combinaison linéaire : si intégrande(K)=2×intégrande(I)-intégrande(J), alors K=2I-J"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant $\\displaystyle\\int_0^1(x+1)dx=\\frac32$ et $\\displaystyle\\int_0^1(x-1)dx=-\\frac12$, déduire $\\displaystyle\\int_0^1 x\\,dx$ sans nouveau calcul de primitive.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Remarquer la relation algébrique entre les intégrandes", "justification": "(x+1)+(x-1)=2x", "resultat_markdown": "somme des deux intégrandes = 2x"},
+        {"numero": 2, "action": "Intégrer la relation", "justification": "linéarité de l'intégrale", "resultat_markdown": "$\\frac32+(-\\frac12)=\\int_0^1 2x\\,dx=2\\int_0^1x\\,dx$"}
+      ],
+      "conclusion_markdown": "$\\int_0^1 x\\,dx=\\dfrac{3/2-1/2}2=\\dfrac12$ (résultat cohérent avec le calcul direct)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Calculer la troisième intégrale directement au lieu de chercher la combinaison linéaire suggérée par l'énoncé ('en déduire')", "pourquoi_faux": "c'est un travail redondant qui ignore l'indication méthodologique de l'énoncé, et peut être plus long ou plus risqué", "correction_markdown": "Toujours chercher en premier une relation algébrique entre les intégrandes avant de se lancer dans un nouveau calcul de primitive."},
+      {"erreur_markdown": "Se tromper de signe dans la combinaison linéaire (additionner au lieu de soustraire, ou inversement)", "pourquoi_faux": "un signe erroné donne un résultat complètement faux", "correction_markdown": "Toujours vérifier l'identité algébrique entre intégrandes terme à terme avant d'intégrer, par exemple en testant une valeur particulière de x."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Sachant $\\int_0^{\\pi/2}\\sin^2x\\,dx=\\frac\\pi4$ et $\\int_0^{\\pi/2}1\\,dx=\\frac\\pi2$, déduire $\\int_0^{\\pi/2}\\cos^2x\\,dx$.", "solution_markdown": "$\\sin^2x+\\cos^2x=1$, donc $\\int\\sin^2x+\\int\\cos^2x=\\int1=\\frac\\pi2$, d'où $\\int\\cos^2x=\\frac\\pi2-\\frac\\pi4=\\frac\\pi4$."}
+    ],
+    "synthese": "Quand une question demande de 'déduire' une intégrale de deux autres déjà calculées, chercher la relation algébrique entre les intégrandes (souvent via une identité comme sin²x+cos²x=1) et l'intégrer terme à terme, plutôt que de recalculer une primitive."
+  }
+}

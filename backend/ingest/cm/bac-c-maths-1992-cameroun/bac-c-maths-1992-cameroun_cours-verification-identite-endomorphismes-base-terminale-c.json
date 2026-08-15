@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-verification-identite-endomorphismes-base-terminale-c",
+  "meta": {
+    "titre": "Vérifier une identité d'endomorphismes sur une base et montrer l'unicité des paramètres",
+    "cours_id": "cours-verification-identite-endomorphismes-base-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - identités d'endomorphismes",
+    "tags": ["identité d'endomorphismes", "vérification sur une base", "indépendance de paramètres"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_3_qPI-2b"
+  },
+  "sections": {
+    "accroche": "Pour prouver qu'un endomorphisme est nul, il suffit — et c'est une simplification considérable — de vérifier qu'il annule chaque vecteur d'une seule base, la linéarité se chargeant d'étendre le résultat à tout l'espace.",
+    "prerequis": ["Linéarité et principe de prolongement depuis une base", "Famille libre dans L(E)"],
+    "regle": {
+      "titre": "Preuve d'une identité d'endomorphismes via une base",
+      "contenu_markdown": "Pour montrer qu'un endomorphisme $h$ est nul ($h=\\theta$), il suffit de vérifier $h(\\vec e)=\\vec0$ pour chaque vecteur $\\vec e$ d'une base : par linéarité, $h$ s'annule alors sur toute combinaison linéaire de ces vecteurs, donc sur l'espace entier. Pour montrer l'indépendance de coefficients par rapport à un choix arbitraire, on suppose l'existence de deux jeux de coefficients distincts vérifiant la même identité, on soustrait les deux relations, et on utilise la liberté de la famille $\\{Id,f\\}$ dans $L(E)$ (valable si $f$ n'est pas colinéaire à $Id$) pour conclure à l'égalité des coefficients.",
+      "formule_principale": "$h(\\vec e_1)=h(\\vec e_2)=\\vec0 \\;\\Longrightarrow\\; h=\\theta$ (h nul sur toute la base ⟹ nul partout)",
+      "variantes": ["La liberté de {Id,f} dans L(E) équivaut à l'absence de valeur propre réelle commune, ou plus simplement au fait que f n'est pas une homothétie"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que h=f∘f-3f+2Id est nul, sachant h(u)=0 et h(f(u))=0, avec (u,f(u)) base.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Constater l'annulation sur la base", "justification": "hypothèses données", "resultat_markdown": "h(u)=0 et h(f(u))=0"},
+        {"numero": 2, "action": "Étendre par linéarité", "justification": "tout vecteur v=au+bf(u)", "resultat_markdown": "h(v)=a·h(u)+b·h(f(u))=0"},
+        {"numero": 3, "action": "Conclure", "justification": "v quelconque", "resultat_markdown": "h=θ sur tout E"}
+      ],
+      "conclusion_markdown": "L'annulation sur les deux seuls vecteurs de la base suffit à garantir l'annulation partout, par linéarité."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Vérifier l'identité seulement sur le premier vecteur de la base et généraliser sans vérifier le second", "pourquoi_faux": "l'annulation sur un seul vecteur ne garantit rien sur le reste de l'espace tant que la base n'est pas entièrement testée", "correction_markdown": "Toujours vérifier explicitement l'identité sur CHAQUE vecteur de la base choisie, aucune exception."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Sachant f∘f=2f+3Id et f∘f=2'f+3'Id simultanément, avec f non colinéaire à Id, que peut-on conclure sur les couples (2,3) et (2',3') ?", "solution_markdown": "En soustrayant, (2-2')f+(3-3')Id=θ ; comme {Id,f} est libre (f non colinéaire à Id), on obtient 2=2' et 3=3' : les coefficients sont uniques."}
+    ],
+    "synthese": "Une identité entre endomorphismes se prouve en la vérifiant sur chaque vecteur d'une base (suffisant par linéarité) ; l'unicité de coefficients apparaissant dans une telle identité se déduit en confrontant deux hypothétiques jeux de solutions et en invoquant la liberté de la famille {Id,f} dans L(E), valable dès que f n'est pas une homothétie."
+  }
+}

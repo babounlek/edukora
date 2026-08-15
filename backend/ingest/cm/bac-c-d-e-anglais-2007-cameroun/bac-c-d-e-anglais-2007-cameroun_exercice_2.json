@@ -1,0 +1,180 @@
+{
+  "epreuve_source": "bac-c-d-e-anglais-2007-cameroun.pdf",
+  "numero_exercice": "2",
+  "matiere": "Mathématiques",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2007",
+  "duree_epreuve": null,
+  "coefficient": null,
+  "points": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\nPour tout $n$ de $\\mathbb{N}$ et $x$ de $\\mathbb{R}$, on note $f_n$ la fonction définie par $f_n(x)=\\dfrac{e^{nx}}{1+e^x}$.\n\nOn définit la suite $(u_n)$ par son terme général $u_n=\\displaystyle\\int_0^1 f_n(x)\\,dx$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "Démontrer que la suite $(u_n)$ est définie et à termes positifs.",
+      "corrige_markdown": "### Rappel de méthode\nPour justifier qu'une intégrale $\\displaystyle\\int_a^b g(x)\\,dx$ est bien définie, il suffit de vérifier que $g$ est continue sur $[a;b]$. Pour justifier qu'elle est positive, il suffit que $g$ soit positive sur $[a;b]$ : l'intégrale d'une fonction continue et positive sur un intervalle $[a;b]$ avec $a<b$ est positive (strictement, si la fonction n'est pas identiquement nulle).\n\nFixons $n\\in\\mathbb{N}$. La fonction $f_n$ est définie sur $\\mathbb{R}$ par $f_n(x)=\\dfrac{e^{nx}}{1+e^x}$ : le numérateur $e^{nx}$ et le dénominateur $1+e^x$ sont tous deux des fonctions continues sur $\\mathbb{R}$ (composées et sommes de fonctions usuelles), et le dénominateur ne s'annule jamais puisque $e^x>0$ entraîne $1+e^x>1>0$. Le quotient $f_n$ est donc continu sur $\\mathbb{R}$, en particulier sur $[0;1]$.\n\nUne fonction continue sur un segment $[0;1]$ y est intégrable : l'intégrale $u_n=\\displaystyle\\int_0^1 f_n(x)\\,dx$ existe donc bien pour tout $n\\in\\mathbb{N}$.\n\nDe plus, pour tout $x\\in[0;1]$, $e^{nx}>0$ et $1+e^x>0$, donc $f_n(x)=\\dfrac{e^{nx}}{1+e^x}>0$. L'intégrale d'une fonction continue strictement positive sur $[0;1]$ (intervalle non réduit à un point) est strictement positive. Donc $u_n>0$ pour tout $n\\in\\mathbb{N}$.\n\nLa suite $(u_n)$ est bien définie et à termes strictement positifs.",
+      "themes": [
+        "existence d'une intégrale",
+        "signe d'une intégrale",
+        "continuité"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q1a-0",
+          "competence": "Existence et signe d'une intégrale par continuité et positivité de l'intégrande",
+          "contenu_markdown": "Pour justifier qu'une intégrale $\\displaystyle\\int_a^b g(x)\\,dx$ est bien définie, il suffit de vérifier que $g$ est continue sur $[a;b]$. Pour justifier qu'elle est positive, il suffit que $g$ soit positive sur $[a;b]$ : l'intégrale d'une fonction continue et positive sur un intervalle $[a;b]$ avec $a<b$ est positive (strictement, si la fonction n'est pas identiquement nulle).",
+          "cours_genere": true,
+          "cours_id": "cours-existence-signe-integrale-continuite-c"
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "Calculer $u_1$ et $u_0+u_1$. En déduire la valeur exacte de $u_0$.",
+      "corrige_markdown": "### Rappel de méthode\nPour intégrer une fonction de la forme $\\dfrac{e^x}{1+e^x}$, on reconnaît une forme $\\dfrac{u'(x)}{u(x)}$ dont une primitive est $\\ln\\lvert u(x)\\rvert$ : ici $u(x)=1+e^x$ a pour dérivée $u'(x)=e^x$, qui est exactement le numérateur.\n\n**Calcul de $u_1$.**\n$$u_1=\\int_0^1 \\frac{e^x}{1+e^x}\\,dx$$\nLa fonction $x\\mapsto \\ln(1+e^x)$ a pour dérivée $x\\mapsto \\dfrac{e^x}{1+e^x}$ (et $1+e^x>0$ donc pas besoin de valeur absolue). C'est donc une primitive de l'intégrande :\n$$u_1=\\Big[\\ln(1+e^x)\\Big]_0^1=\\ln(1+e)-\\ln(1+1)=\\ln(1+e)-\\ln 2=\\ln\\!\\left(\\frac{1+e}{2}\\right)$$\n\n**Calcul de $u_0+u_1$.** On additionne les intégrandes avant d'intégrer :\n$$u_0+u_1=\\int_0^1\\big(f_0(x)+f_1(x)\\big)\\,dx=\\int_0^1\\left(\\frac{1}{1+e^x}+\\frac{e^x}{1+e^x}\\right)dx=\\int_0^1 \\frac{1+e^x}{1+e^x}\\,dx=\\int_0^1 1\\,dx=1$$\n\n**Valeur exacte de $u_0$.** On isole $u_0$ :\n$$u_0=1-u_1=1-\\ln\\!\\left(\\frac{1+e}{2}\\right)$$\n\nOn peut aussi l'écrire $u_0=1+\\ln 2-\\ln(1+e)$.\n\n### Conseil\nAvant de te lancer dans le calcul direct de $u_0=\\displaystyle\\int_0^1\\dfrac{dx}{1+e^x}$ (qui demande une astuce de calcul moins immédiate, par exemple multiplier haut et bas par $e^{-x}$), pense à regarder si l'énoncé ne te donne pas un raccourci : ici, additionner $f_0$ et $f_1$ fait apparaître une simplification immédiate $\\big(\\frac{1+e^x}{1+e^x}=1\\big)$, ce qui rend $u_0+u_1$ triviale à calculer et évite un calcul plus long.",
+      "themes": [
+        "primitive de u'/u",
+        "calcul intégral",
+        "logarithme"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q1b-0",
+          "competence": "Primitive de la forme u'/u",
+          "contenu_markdown": "Pour intégrer une fonction de la forme $\\dfrac{e^x}{1+e^x}$, on reconnaît une forme $\\dfrac{u'(x)}{u(x)}$ dont une primitive est $\\ln\\lvert u(x)\\rvert$ : ici $u(x)=1+e^x$ a pour dérivée $u'(x)=e^x$, qui est exactement le numérateur.",
+          "cours_genere": true,
+          "cours_id": "cours-primitive-u-prime-sur-u-c"
+        }
+      ]
+    },
+    {
+      "numero": "1.c",
+      "enonce_markdown": "Pour tout $n$ de $\\mathbb{N}$, calculer $u_n+u_{n+1}$ en fonction de $n$.",
+      "corrige_markdown": "On généralise le calcul de la question précédente. Pour tout $n\\in\\mathbb{N}$ :\n$$u_n+u_{n+1}=\\int_0^1\\big(f_n(x)+f_{n+1}(x)\\big)\\,dx=\\int_0^1\\left(\\frac{e^{nx}}{1+e^x}+\\frac{e^{(n+1)x}}{1+e^x}\\right)dx$$\n\nOn factorise le numérateur par $e^{nx}$ : $e^{nx}+e^{(n+1)x}=e^{nx}\\left(1+e^x\\right)$, donc :\n$$u_n+u_{n+1}=\\int_0^1 \\frac{e^{nx}(1+e^x)}{1+e^x}\\,dx=\\int_0^1 e^{nx}\\,dx$$\n\n**Cas $n=0$.** $\\displaystyle\\int_0^1 e^{0}\\,dx=\\int_0^1 1\\,dx=1$, ce qui redonne bien $u_0+u_1=1$ trouvé à la question précédente.\n\n**Cas $n\\geq 1$.** Une primitive de $x\\mapsto e^{nx}$ est $x\\mapsto \\dfrac{e^{nx}}{n}$ (car $n\\neq 0$), donc :\n$$u_n+u_{n+1}=\\left[\\frac{e^{nx}}{n}\\right]_0^1=\\frac{e^n}{n}-\\frac{1}{n}=\\frac{e^n-1}{n}$$\n\nEn conclusion : $u_n+u_{n+1}=\\dfrac{e^n-1}{n}$ pour tout entier $n\\geq 1$, et $u_0+u_1=1$ pour $n=0$.",
+      "themes": [
+        "calcul intégral",
+        "factorisation",
+        "suite définie par récurrence sur une intégrale"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "Démontrer que la suite $(u_n)$ est croissante.",
+      "corrige_markdown": "### Rappel de méthode\nPour étudier la monotonie d'une suite définie par une intégrale, on étudie le signe de $u_{n+1}-u_n$ en le ramenant, par linéarité de l'intégrale, à l'intégrale d'une seule fonction sur le même intervalle : si cette fonction garde un signe constant sur l'intervalle, l'intégrale (donc $u_{n+1}-u_n$) a ce même signe.\n\nPour tout $n\\in\\mathbb{N}$ :\n$$u_{n+1}-u_n=\\int_0^1\\big(f_{n+1}(x)-f_n(x)\\big)\\,dx=\\int_0^1 \\frac{e^{(n+1)x}-e^{nx}}{1+e^x}\\,dx=\\int_0^1 \\frac{e^{nx}\\left(e^x-1\\right)}{1+e^x}\\,dx$$\n\nÉtudions le signe de l'intégrande sur $[0;1]$ : $e^{nx}>0$ et $1+e^x>0$ pour tout $x$. Pour $x\\in[0;1]$, $x\\geq 0$ donc $e^x\\geq e^0=1$ (la fonction exponentielle est strictement croissante), donc $e^x-1\\geq 0$, avec égalité uniquement en $x=0$.\n\nL'intégrande $\\dfrac{e^{nx}(e^x-1)}{1+e^x}$ est donc positif ou nul sur $[0;1]$, strictement positif sauf en un point isolé $(x=0)$. L'intégrale d'une fonction continue positive sur $[0;1]$, non identiquement nulle, est strictement positive :\n$$u_{n+1}-u_n>0$$\n\nLa suite $(u_n)$ est donc strictement croissante.",
+      "themes": [
+        "monotonie d'une suite",
+        "signe d'une intégrale",
+        "croissance de l'exponentielle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2a-0",
+          "competence": "Étude de la monotonie d'une suite définie par une intégrale",
+          "contenu_markdown": "Pour étudier la monotonie d'une suite définie par une intégrale, on étudie le signe de $u_{n+1}-u_n$ en le ramenant, par linéarité de l'intégrale, à l'intégrale d'une seule fonction sur le même intervalle : si cette fonction garde un signe constant sur l'intervalle, l'intégrale (donc $u_{n+1}-u_n$) a ce même signe.",
+          "cours_genere": true,
+          "cours_id": "cours-monotonie-suite-integrale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "Démontrer que pour tout $n$ de $\\mathbb{N}$, et pour tout $x$ de l'intervalle $[0;1]$, $\\dfrac{e^{nx}}{e+1}\\leq f_n(x)\\leq \\dfrac{1}{2}e^{nx}$.",
+      "corrige_markdown": "### Rappel de méthode\nPour encadrer un quotient $\\dfrac{A}{B}$ où $A$ est fixe et $B$ varie dans un intervalle connu, on encadre d'abord $B$, puis on prend l'inverse de l'encadrement (ce qui inverse les inégalités puisque $B>0$), et enfin on multiplie par $A$ (qui ne change pas le sens des inégalités puisque $A>0$).\n\nSoit $x\\in[0;1]$. La fonction exponentielle est strictement croissante sur $\\mathbb{R}$, donc de $0\\leq x\\leq 1$ on déduit :\n$$e^0\\leq e^x\\leq e^1 \\quad\\text{c'est-à-dire}\\quad 1\\leq e^x\\leq e$$\n\nEn ajoutant $1$ à chaque membre :\n$$2\\leq 1+e^x\\leq 1+e$$\n\nTous les membres de cet encadrement sont strictement positifs. En passant à l'inverse (ce qui inverse le sens des inégalités pour des quantités strictement positives) :\n$$\\frac{1}{1+e}\\leq \\frac{1}{1+e^x}\\leq \\frac{1}{2}$$\n\nOn multiplie chaque membre par $e^{nx}>0$ (ce qui ne change pas le sens des inégalités) :\n$$\\frac{e^{nx}}{1+e}\\leq \\frac{e^{nx}}{1+e^x}\\leq \\frac{e^{nx}}{2}$$\n\nc'est-à-dire, en notant que $\\dfrac{e^{nx}}{1+e^x}=f_n(x)$ :\n$$\\frac{e^{nx}}{e+1}\\leq f_n(x)\\leq \\frac{1}{2}e^{nx}$$\n\nce qui est le résultat demandé, valable pour tout $n\\in\\mathbb{N}$ et tout $x\\in[0;1]$.\n\n### Piège à éviter\nL'erreur la plus fréquente sur ce type d'encadrement est d'oublier d'inverser le sens des inégalités au moment de passer à l'inverse. Vérifie toujours ce point avec un exemple numérique simple : $2\\leq 3$ mais $\\frac12\\geq\\frac13$, le sens s'inverse bien.",
+      "themes": [
+        "encadrement d'une fonction",
+        "croissance de l'exponentielle",
+        "passage à l'inverse dans une inégalité"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2b-0",
+          "competence": "Encadrement d'un quotient par encadrement du dénominateur",
+          "contenu_markdown": "Pour encadrer un quotient $\\dfrac{A}{B}$ où $A$ est fixe et $B$ varie dans un intervalle connu, on encadre d'abord $B$, puis on prend l'inverse de l'encadrement (ce qui inverse les inégalités puisque $B>0$), et enfin on multiplie par $A$ (qui ne change pas le sens des inégalités puisque $A>0$).",
+          "cours_genere": true,
+          "cours_id": "cours-encadrement-quotient-denominateur-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.c",
+      "enonce_markdown": "En déduire un encadrement de $u_n$.",
+      "corrige_markdown": "### Rappel de méthode\nUne inégalité entre deux fonctions continues sur un intervalle $[a;b]$ se conserve par intégration sur cet intervalle (l'intégrale respecte l'ordre) : si $g(x)\\leq \\varphi(x) \\leq \\psi(x)$ sur $[a;b]$, alors $\\displaystyle\\int_a^b g(x)\\,dx \\leq \\int_a^b \\varphi(x)\\,dx \\leq \\int_a^b \\psi(x)\\,dx$.\n\nOn intègre l'encadrement de la question précédente sur $[0;1]$ :\n$$\\int_0^1 \\frac{e^{nx}}{e+1}\\,dx \\;\\leq\\; \\int_0^1 f_n(x)\\,dx \\;\\leq\\; \\int_0^1 \\frac{1}{2}e^{nx}\\,dx$$\n\nc'est-à-dire :\n$$\\frac{1}{e+1}\\int_0^1 e^{nx}\\,dx \\;\\leq\\; u_n \\;\\leq\\; \\frac12\\int_0^1 e^{nx}\\,dx$$\n\n**Pour $n\\geq 1$**, on a établi à la question 1(c) que $\\displaystyle\\int_0^1 e^{nx}\\,dx=\\dfrac{e^n-1}{n}$, donc :\n$$\\frac{e^n-1}{n(e+1)} \\;\\leq\\; u_n \\;\\leq\\; \\frac{e^n-1}{2n}$$\n\n**Pour $n=0$**, $\\displaystyle\\int_0^1 e^{0}\\,dx=1$, donc l'encadrement devient $\\dfrac{1}{e+1}\\leq u_0\\leq \\dfrac12$ (cohérent avec la valeur exacte $u_0=1-\\ln\\!\\left(\\frac{1+e}{2}\\right)\\approx 0{,}380$ trouvée en 1(b), qui est bien comprise entre $\\frac{1}{e+1}\\approx 0{,}269$ et $\\frac12$).",
+      "themes": [
+        "intégration d'une inégalité",
+        "encadrement d'une suite"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2c-0",
+          "competence": "Intégration d'une inégalité (conservation de l'ordre par intégration)",
+          "contenu_markdown": "Une inégalité entre deux fonctions continues sur un intervalle $[a;b]$ se conserve par intégration sur cet intervalle (l'intégrale respecte l'ordre) : si $g(x)\\leq \\varphi(x) \\leq \\psi(x)$ sur $[a;b]$, alors $\\displaystyle\\int_a^b g(x)\\,dx \\leq \\int_a^b \\varphi(x)\\,dx \\leq \\int_a^b \\psi(x)\\,dx$.",
+          "cours_genere": true,
+          "cours_id": "cours-integration-inegalite-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Déduire de la question 2(b) la limite de $u_n$ puis celle de $\\dfrac{u_n}{e^n}$.",
+      "corrige_markdown": "### Rappel de méthode\nLe théorème de comparaison (ou \"théorème des gendarmes\" côté minorant) dit que si $u_n\\geq v_n$ à partir d'un certain rang et si $v_n\\to +\\infty$, alors $u_n\\to +\\infty$. Pour un encadrement $v_n\\leq u_n\\leq w_n$ avec $v_n$ et $w_n$ tendant vers la même limite finie, la suite $(u_n)$ converge vers cette limite commune (théorème des gendarmes classique).\n\n**Limite de $u_n$.** D'après la question 2(c), pour tout $n\\geq 1$ :\n$$u_n\\geq \\frac{e^n-1}{n(e+1)}$$\n\nOr $\\displaystyle\\lim_{n\\to+\\infty}\\frac{e^n-1}{n}=+\\infty$ (croissances comparées : l'exponentielle l'emporte sur toute puissance de $n$, en particulier sur $n$ lui-même), donc $\\displaystyle\\lim_{n\\to+\\infty}\\frac{e^n-1}{n(e+1)}=+\\infty$ (le facteur $\\frac{1}{e+1}$ est une constante strictement positive).\n\nPar comparaison, puisque $u_n$ est minorée par une suite qui tend vers $+\\infty$ :\n$$\\lim_{n\\to+\\infty}u_n=+\\infty$$\n\n**Limite de $\\dfrac{u_n}{e^n}$.** On divise l'encadrement de la question 2(c) par $e^n>0$ (pour $n\\geq 1$), ce qui ne change pas le sens des inégalités :\n$$\\frac{e^n-1}{n(e+1)e^n} \\;\\leq\\; \\frac{u_n}{e^n} \\;\\leq\\; \\frac{e^n-1}{2n\\,e^n}$$\n\nOn simplifie chaque membre en factorisant $e^n$ au numérateur :\n$$\\frac{1-e^{-n}}{n(e+1)} \\;\\leq\\; \\frac{u_n}{e^n} \\;\\leq\\; \\frac{1-e^{-n}}{2n}$$\n\nQuand $n\\to+\\infty$ : $e^{-n}\\to 0$, donc $1-e^{-n}\\to 1$ ; et $n\\to+\\infty$. Les deux membres de l'encadrement tendent donc vers $0$ (un numérateur borné, un dénominateur qui tend vers $+\\infty$).\n\nPar le théorème des gendarmes :\n$$\\lim_{n\\to+\\infty}\\frac{u_n}{e^n}=0$$\n\n### Conseil\nCe couple de résultats ($u_n\\to+\\infty$ mais $u_n/e^n\\to 0$) n'est pas contradictoire : il signifie que $u_n$ tend vers l'infini, mais \"moins vite\" que $e^n$. C'est un schéma de raisonnement classique au BAC C : quand tu obtiens deux limites qui semblent tirer en sens opposé, prends le réflexe de vérifier qu'elles portent sur des quantités de nature différente (ici $u_n$ seule, puis $u_n$ comparée à $e^n$), plutôt que de soupçonner une erreur de calcul.",
+      "themes": [
+        "théorème de comparaison",
+        "croissances comparées",
+        "théorème des gendarmes",
+        "limite de suite"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q3-0",
+          "competence": "Théorèmes de comparaison et des gendarmes pour les limites de suites",
+          "contenu_markdown": "Le théorème de comparaison (ou \"théorème des gendarmes\" côté minorant) dit que si $u_n\\geq v_n$ à partir d'un certain rang et si $v_n\\to +\\infty$, alors $u_n\\to +\\infty$. Pour un encadrement $v_n\\leq u_n\\leq w_n$ avec $v_n$ et $w_n$ tendant vers la même limite finie, la suite $(u_n)$ converge vers cette limite commune (théorème des gendarmes classique).",
+          "cours_genere": true,
+          "cours_id": "cours-theoreme-gendarmes-limite-suite-c"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "suite définie par une intégrale",
+    "encadrement de suite",
+    "théorème des gendarmes",
+    "primitive u'/u",
+    "croissances comparées",
+    "BAC C 2007 Cameroun analyse"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

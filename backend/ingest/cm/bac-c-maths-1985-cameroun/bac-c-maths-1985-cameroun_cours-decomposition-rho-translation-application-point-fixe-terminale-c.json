@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-decomposition-rho-translation-application-point-fixe-terminale-c",
+  "meta": {
+    "titre": "Conclure à la décomposition ρ = t_W∘ψ = ψ∘t_W",
+    "cours_id": "cours-decomposition-rho-translation-application-point-fixe-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - décomposition canonique d'une application affine",
+    "tags": ["décomposition canonique", "translation", "application affine à point fixe", "commutation"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_4_qA2d"
+  },
+  "sections": {
+    "accroche": "L'étape finale d'une preuve d'existence de décomposition consiste à assembler tous les résultats intermédiaires (point invariant construit, vecteur de translation identifié) en une seule égalité d'applications ρ=t_W∘ψ=ψ∘t_W, en vérifiant la commutation.",
+    "prerequis": ["Composée d'applications affines", "Point invariant déjà construit pour ψ", "Vérification de l'égalité de deux applications point par point"],
+    "regle": {
+      "titre": "Assembler la décomposition finale ρ=t_W∘ψ=ψ∘t_W",
+      "contenu_markdown": "Une fois établi que $\\psi=t_{\\vec u}\\circ\\rho$ admet un point invariant (donc $\\rho=t_{-\\vec u}\\circ\\psi=t_{\\vec W}\\circ\\psi$ avec $\\vec W=-\\vec u$), il reste à vérifier la commutation $t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$. Cela découle du fait que $\\vec W\\in F$ (vecteur invariant par l'endomorphisme associé à $\\psi$) : pour tout point $M$, $(\\psi\\circ t_{\\vec W})(M)=\\psi(M+\\vec W)=\\psi(M)+f(\\vec W)=\\psi(M)+\\vec W=(t_{\\vec W}\\circ\\psi)(M)$ (car $f(\\vec W)=\\vec W$ puisque $\\vec W\\in F$). Les deux applications coïncident en tout point, donc sont égales.",
+      "formule_principale": "$\\vec W\\in F\\Rightarrow t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$",
+      "variantes": ["Cette commutation est caractéristique des décompositions canoniques (symétrie glissée, rotation vissée...) où le vecteur de translation est toujours choisi dans la direction invariante de l'application à point fixe"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $\\psi$ une symétrie orthogonale d'axe $D$ de direction $\\vec d$, et $\\vec W=2\\vec d$. Vérifier que $t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Rappeler que $\\vec d$ (direction de l'axe) est fixé par l'endomorphisme associé à $\\psi$", "justification": "propriété d'une symétrie orthogonale d'axe D", "resultat_markdown": "$f(\\vec d)=\\vec d$, donc $f(\\vec W)=f(2\\vec d)=2\\vec d=\\vec W$"},
+        {"numero": 2, "action": "Appliquer la propriété de commutation", "justification": "résultat général ci-dessus", "resultat_markdown": "$(\\psi\\circ t_{\\vec W})(M)=\\psi(M)+f(\\vec W)=\\psi(M)+\\vec W=(t_{\\vec W}\\circ\\psi)(M)$"}
+      ],
+      "conclusion_markdown": "$t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$ : c'est précisément la structure d'une symétrie glissée."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Affirmer la commutation translation∘application sans vérifier que le vecteur de translation appartient bien à F", "pourquoi_faux": "en général, une translation et une application affine quelconque ne commutent pas ; c'est spécifiquement l'appartenance à F qui garantit la commutation", "correction_markdown": "Toujours vérifier explicitement $f(\\vec W)=\\vec W$ avant d'affirmer la commutation $t_{\\vec W}\\circ\\psi=\\psi\\circ t_{\\vec W}$."},
+      {"erreur_markdown": "Confondre l'ordre des applications composées ($t_{\\vec W}\\circ\\psi$ signifie 'd'abord ψ, puis la translation')", "pourquoi_faux": "l'ordre de composition est essentiel, même si dans ce cas précis les deux ordres coïncident grâce à la commutation démontrée", "correction_markdown": "Toujours écrire explicitement quelle application s'applique en premier lors de la composition, même si le résultat final montre que l'ordre n'a pas d'importance ici."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Pourquoi la décomposition ρ=t_W∘ψ avec W∈F et ψ à point fixe est-elle dite 'canonique' ?", "solution_markdown": "Parce qu'elle est unique (démontrée séparément) : il n'existe qu'une seule façon d'écrire ρ comme composée commutative d'une translation de vecteur dans F et d'une application affine à point fixe de même endomorphisme associé."}
+    ],
+    "synthese": "La décomposition finale ρ=t_W∘ψ=ψ∘t_W s'obtient en identifiant W=-u (vecteur de la translation initiale) puis en vérifiant la commutation, qui découle du fait que W appartient à F, l'ensemble des vecteurs invariants par l'endomorphisme associé à ψ."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-determiner-l-adresse-reseau-a-partir-d-une-adresse-ip-et-de-son-masque-notation-cidr-terminale-c",
+  "meta": {
+    "titre": "Déterminer l'adresse réseau à partir d'une adresse IP et de son masque (notation CIDR)",
+    "cours_id": "cours-determiner-l-adresse-reseau-a-partir-d-une-adresse-ip-et-de-son-masque-notation-cidr-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Adressage IP",
+    "tags": [
+      "adresse IP",
+      "adresse réseau",
+      "CIDR",
+      "masque de sous-réseau"
+    ],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex1-q2b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse IP comme 192.168.10.102/24 mélange en réalité deux informations : l'identité du réseau auquel appartient la machine, et son identité propre à l'intérieur de ce réseau. Savoir les séparer est la base de tout calcul d'adressage IP."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la notation décimale pointée d'une adresse IPv4"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminer l'adresse réseau à partir d'une adresse IP et de son masque",
+      "contenu_markdown": "Une adresse IPv4 en notation CIDR (ex. 192.168.10.102**/24**) indique, après le slash, le nombre de bits réservés à la partie **réseau** de l'adresse ; les bits restants forment la partie **hôte**. L'**adresse réseau** s'obtient en mettant tous les bits de la partie hôte à 0. Pour un /24 (masque 255.255.255.0), les 3 premiers octets forment le réseau, le dernier octet (mis à 0) donne l'adresse réseau.",
+      "formule_principale": "Adresse réseau = adresse IP avec la partie hôte mise à 0",
+      "variantes": [
+        {
+          "nom": "Masques autres que /24",
+          "quand_utiliser": "Quand le préfixe CIDR n'est pas un multiple de 8 (ex. /26, /27).",
+          "contenu_markdown": "Pour un préfixe qui ne tombe pas sur une frontière d'octet, il faut convertir en binaire pour appliquer le masque bit à bit ; ce cas dépasse le programme de Terminale, où l'on se limite généralement aux masques /8, /16 et /24."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'adresse réseau à partir de l'adresse 192.168.10.102/24.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le préfixe CIDR",
+          "justification": "Le /24 indique que les 24 premiers bits (3 premiers octets) forment la partie réseau.",
+          "resultat_markdown": "/24 → réseau sur 192.168.10"
+        },
+        {
+          "numero": 2,
+          "action": "Mettre la partie hôte à 0",
+          "justification": "Le dernier octet (partie hôte) est mis à 0 pour obtenir l'adresse réseau.",
+          "resultat_markdown": "192.168.10.0/24"
+        }
+      ],
+      "conclusion_markdown": "L'adresse réseau s'obtient en conservant les octets désignés par le préfixe CIDR et en mettant à 0 le ou les octets restants (partie hôte)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner l'adresse de la machine (192.168.10.102) comme \"adresse du réseau\"",
+          "pourquoi_faux": "192.168.10.102 est l'adresse d'un hôte précis à l'intérieur du réseau, pas l'adresse identifiant le réseau lui-même (qui se termine toujours par .0 pour un /24).",
+          "correction_markdown": "Distingue toujours l'adresse d'un hôte particulier (partie hôte ≠ 0) de l'adresse réseau (partie hôte = 0)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'adresse réseau de 10.0.5.20/24.",
+          "solution_markdown": "10.0.5.0/24"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer l'adresse réseau de 172.16.30.45/16.",
+          "solution_markdown": "172.16.0.0/16, puisque le préfixe /16 ne conserve que les deux premiers octets (172.16), les deux derniers étant mis à 0."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi l'adresse réseau elle-même (ex. 192.168.10.0) ne peut-elle pas être attribuée à un poste de travail ?",
+          "solution_markdown": "L'adresse réseau (partie hôte entièrement à 0) est une adresse réservée qui identifie le réseau dans son ensemble, utilisée notamment par les équipements de routage pour désigner la destination globale du sous-réseau ; l'attribuer à un poste créerait une ambiguïté entre \"le réseau\" et \"une machine précise\", c'est pourquoi elle est exclue de la plage d'adresses attribuables aux hôtes, au même titre que l'adresse de diffusion (broadcast, partie hôte à 255)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le préfixe CIDR (/24, /16...) indique le nombre de bits réservés à la partie réseau.",
+        "L'adresse réseau s'obtient en mettant la partie hôte à 0.",
+        "Pour un /24, l'adresse réseau se termine toujours par .0.",
+        "L'adresse réseau elle-même n'est jamais attribuable à un poste de travail."
+      ]
+    }
+  ]
+}

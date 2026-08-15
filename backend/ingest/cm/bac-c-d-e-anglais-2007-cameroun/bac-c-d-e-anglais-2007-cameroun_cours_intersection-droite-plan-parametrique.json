@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-intersection-droite-plan-parametrique-c",
+  "meta": {
+    "titre": "Intersection d'une droite et d'un plan par représentation paramétrique",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Géométrie analytique de l'espace",
+    "duree_estimee_min": 20,
+    "tags": ["représentation paramétrique", "intersection", "droite", "plan"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q2d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver le point où une droite perce un plan est l'une des manipulations les plus fréquentes en géométrie de l'espace. La méthode par représentation paramétrique fonctionne toujours, sans exception, dès que l'on connaît un point et un vecteur directeur de la droite : c'est la méthode de secours à avoir en tête quand une astuce plus rapide (comme repérer une perpendicularité) n'est pas disponible."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Représentation paramétrique d'une droite", "Équation cartésienne d'un plan", "Résolution d'une équation du premier degré"]
+    },
+    {
+      "type": "regle",
+      "titre": "Substitution du paramètre dans l'équation du plan",
+      "contenu_markdown": "Soit $(D)$ une droite passant par $A(x_A;y_A;z_A)$ de vecteur directeur $\\vec u(u_1;u_2;u_3)$, et $(P)$ un plan d'équation $ax+by+cz+d=0$. Une représentation paramétrique de $(D)$ est :\n$$\\begin{cases}x=x_A+t\\,u_1\\\\y=y_A+t\\,u_2\\\\z=z_A+t\\,u_3\\end{cases},\\quad t\\in\\mathbb{R}$$\n\nUn point de $(D)$ appartient à $(P)$ si et seulement si ses coordonnées vérifient l'équation de $(P)$. On substitue donc les expressions de $x$, $y$, $z$ en fonction de $t$ dans l'équation du plan, ce qui donne une équation du premier degré en $t$ (sauf cas particulier de parallélisme) :\n$$a(x_A+t u_1)+b(y_A+tu_2)+c(z_A+tu_3)+d=0$$\n\nOn résout cette équation pour trouver $t_0$, puis on substitue $t_0$ dans la représentation paramétrique pour obtenir les coordonnées du point d'intersection.",
+      "formule_principale": "a(x_A+tu_1)+b(y_A+tu_2)+c(z_A+tu_3)+d=0 \\Rightarrow t_0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La droite $(D)$ passe par $A(1;2;3)$ et a pour vecteur directeur $\\vec u(1;1;1)$. Le plan $(P)$ a pour équation $x+y+z-3=0$. Déterminer les coordonnées du point d'intersection $H$ de $(D)$ et $(P)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire une représentation paramétrique de (D)",
+          "justification": "On utilise le point A et le vecteur directeur u donnés.",
+          "resultat_markdown": "$\\begin{cases}x=1+t\\\\y=2+t\\\\z=3+t\\end{cases}$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans l'équation du plan",
+          "justification": "Le point d'intersection doit vérifier l'équation de (P).",
+          "resultat_markdown": "$(1+t)+(2+t)+(3+t)-3=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'équation en t",
+          "justification": "C'est une équation du premier degré.",
+          "resultat_markdown": "$6+3t-3=0 \\Rightarrow 3+3t=0 \\Rightarrow t=-1$"
+        },
+        {
+          "numero": 4,
+          "action": "Substituer t=-1 dans la représentation paramétrique",
+          "justification": "On obtient les coordonnées du point d'intersection.",
+          "resultat_markdown": "$x=1-1=0,\\ y=2-1=1,\\ z=3-1=2$"
+        }
+      ],
+      "conclusion_markdown": "Le point d'intersection de $(D)$ et $(P)$ est $H(0;1;2)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de vérifier que la droite n'est pas parallèle au plan avant de chercher t.",
+          "pourquoi_faux": "Si le vecteur directeur de la droite est orthogonal au vecteur normal du plan (produit scalaire nul), l'équation en $t$ se réduit à une constante : soit elle est toujours vraie (droite incluse dans le plan, intersection = toute la droite), soit toujours fausse (droite strictement parallèle, aucune intersection). Chercher une unique valeur de $t$ dans ce cas n'a pas de sens.",
+          "correction_markdown": "Si en développant l'équation, le coefficient de $t$ s'annule, arrête-toi et interprète ce cas particulier plutôt que de continuer à chercher une valeur de $t$ qui n'existe pas."
+        },
+        {
+          "erreur_markdown": "Substituer $t_0$ dans l'équation du plan au lieu de la représentation paramétrique de la droite.",
+          "pourquoi_faux": "$t_0$ est le paramètre correspondant au point de la droite qui appartient au plan : c'est dans les équations paramétriques de $(D)$ qu'il faut le substituer pour obtenir les coordonnées du point, pas dans l'équation de $(P)$ (qui ne dépend pas de $t$).",
+          "correction_markdown": "Une fois $t_0$ trouvé, reviens systématiquement aux trois équations $x=x_A+t_0u_1$, etc., pour obtenir les coordonnées explicites."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La droite $(D_1)$ passe par $B(0;0;0)$ et a pour vecteur directeur $\\vec v(1;0;0)$. Le plan $(Q)$ a pour équation $x=5$. Déterminer le point d'intersection de $(D_1)$ et $(Q)$.",
+          "solution_markdown": "Représentation paramétrique : $x=t,\\ y=0,\\ z=0$. Substitution dans $x=5$ : $t=5$. Le point d'intersection est $(5;0;0)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La droite $(D_2)$ passe par $C(2;-1;3)$ et a pour vecteur directeur $\\vec w(1;2;-1)$. Le plan $(R)$ a pour équation $2x-y+z-4=0$. Déterminer le point d'intersection.",
+          "solution_markdown": "Représentation paramétrique : $x=2+t,\\ y=-1+2t,\\ z=3-t$. Substitution : $2(2+t)-(-1+2t)+(3-t)-4=0 \\Rightarrow 4+2t+1-2t+3-t-4=0 \\Rightarrow 4-t=0 \\Rightarrow t=4$. Le point est $x=2+4=6,\\ y=-1+8=7,\\ z=3-4=-1$, soit $(6;7;-1)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La droite $(D_3)$ passe par $D(1;1;1)$ et a pour vecteur directeur $\\vec r(1;-1;0)$. Le plan $(S)$ a pour équation $x+y-2=0$. Que peut-on dire de l'intersection de $(D_3)$ et $(S)$ ?",
+          "solution_markdown": "Représentation paramétrique : $x=1+t,\\ y=1-t,\\ z=1$. Substitution dans l'équation de $(S)$ : $(1+t)+(1-t)-2=0 \\Rightarrow 1+t+1-t-2=0 \\Rightarrow 0=0$. L'équation est vérifiée pour tout $t$, indépendamment de sa valeur : cela signifie que tous les points de $(D_3)$ appartiennent à $(S)$, autrement dit $(D_3)$ est entièrement incluse dans $(S)$ (le coefficient de $t$ s'annule dans l'équation, confirmant qu'il fallait être attentif à ce cas particulier)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver l'intersection d'une droite et d'un plan, écris une représentation paramétrique de la droite puis substitue dans l'équation du plan.",
+        "L'équation obtenue en $t$ est du premier degré : sa résolution donne le paramètre du point d'intersection, à réinjecter ensuite dans la représentation paramétrique.",
+        "Si le coefficient de $t$ s'annule dans l'équation substituée, la droite est parallèle au plan (incluse dans le plan si l'équation devient $0=0$, disjointe si elle devient $0=$ constante non nulle).",
+        "Cette méthode fonctionne dans tous les cas, y compris quand la droite n'est pas perpendiculaire au plan - contrairement à la méthode par symétrie orthogonale, qui suppose une perpendicularité.",
+        "Elle constitue une excellente méthode de vérification croisée quand un résultat a déjà été obtenu par une autre voie, comme le montre l'exercice source qui redemande explicitement de retrouver $H$ par une autre méthode."
+      ]
+    }
+  ]
+}

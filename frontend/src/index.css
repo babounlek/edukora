@@ -28,7 +28,12 @@
   --accent-foreground: hsl(158 83% 16%);
   --destructive: hsl(3 72% 46%);
   --destructive-foreground: hsl(40 30% 98%);
-  --success: hsl(142.1 76.2% 32%);
+  /* 28% (pas 32%) : le badge "success" (voir components/ui/badge.tsx) est passé sous
+     le seuil WCAG AA texte normal (4.5:1, mesuré à 3.98:1) - voir l'audit UX, reco 6.1.
+     28% remonte à ~5:1, avec la même marge que les autres tokens de badge (warning,
+     gold, primary tournent tous autour de 6.5-8:1) plutôt qu'un seuil tout juste
+     franchi. N'affecte que la lisibilité, jamais la teinte perçue (même 142°/76%). */
+  --success: hsl(142.1 76.2% 28%);
   --success-foreground: hsl(40 30% 98%);
   --warning: hsl(38 92% 50%);
   --warning-foreground: hsl(150 15% 10%);
@@ -171,4 +176,29 @@
 
 .animate-fade-up {
   animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Étend la zone tactile d'un bouton icône (size-7, 28px - bascule cartes/liste du
+   catalogue) jusqu'au minimum recommandé (WCAG 2.5.5 / Apple HIG, 44px) sans agrandir
+   son apparence visuelle : le ::before invisible comble l'écart, seul le
+   déclenchement du tap est concerné. (44 - 28) / 2 = 8px de marge de chaque côté. */
+.tap-target-44 {
+  position: relative;
+}
+.tap-target-44::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+/* Masque la barre de défilement native des rails horizontaux (EpreuveRail) - le
+   scroll reste entièrement fonctionnel (molette, tactile, flèches dédiées), seule
+   la barre disparaît au profit des flèches et du scroll-snap, qui portent déjà le
+   signal "il y a plus de contenu" sans avoir besoin d'une barre native superposée. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

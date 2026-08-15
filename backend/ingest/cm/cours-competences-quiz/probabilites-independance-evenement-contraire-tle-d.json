@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-probabilites-independance-evenement-contraire-tle-d",
+  "meta": {
+    "titre": "Probabilités : indépendance et événement contraire (Terminale D)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Calcul de probabilités : indépendance des événements et événement contraire",
+    "duree_estimee_min": 35,
+    "tags": ["Probabilités (Tle D)", "probabilités", "événements indépendants", "événement contraire", "au moins un", "calcul de probabilités"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "D", "module_numero": "26", "savoir_numero": "II"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-1999-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 1999",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-1999d-ex2-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un système d'alarme incendie ne repose jamais sur un seul capteur : plusieurs détecteurs indépendants surveillent la même pièce, précisément parce qu'un seul appareil peut tomber en panne ou manquer un départ de feu. Calculer la probabilité qu'au moins un détecteur se déclenche en cas d'incendie, ou celle qu'un seul se déclenche pendant que les autres restent muets, revient à combiner les probabilités de plusieurs événements qui se produisent indépendamment les uns des autres. Calculer directement « au moins un » en énumérant tous les cas favorables devient vite impraticable dès que le nombre d'essais grandit. Ce cours présente une méthode bien plus rapide, fondée sur l'événement contraire, ainsi que la technique de décomposition en cas disjoints quand le nombre exact de succès est imposé. C'est un classique du BAC série D, souvent posé sous la forme d'un tireur, d'un joueur ou, comme ici, d'un dispositif de sécurité répété plusieurs fois de façon indépendante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois connaître la notion d'événement et d'univers, et savoir calculer une probabilité par équiprobabilité (nombre de cas favorables sur nombre de cas possibles), vue en classe de Première dans le chapitre Dénombrement.",
+        "Tu dois savoir manipuler l'événement contraire d'un événement $A$, noté $\\overline{A}$, et connaître la relation $P(\\overline{A})=1-P(A)$.",
+        "Tu dois savoir reconnaître si deux événements sont incompatibles (ils ne peuvent pas se produire en même temps) pour pouvoir additionner leurs probabilités.",
+        "Pour l'exercice d'approfondissement, tu dois savoir résoudre une inéquation à l'aide de la fonction logarithme népérien (croissance de $\\ln$, passage au logarithme dans une inégalité)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Indépendance des événements et événement contraire",
+      "contenu_markdown": "Deux événements $A$ et $B$ sont indépendants lorsque la réalisation de l'un ne modifie pas la probabilité de l'autre. Dans la pratique, l'indépendance vient soit d'une hypothèse explicite de l'énoncé (« les lancers sont indépendants », « les capteurs fonctionnent indépendamment les uns des autres »), soit de la nature même de l'expérience (des dispositifs physiquement séparés, un tirage avec remise). Lorsque des événements $A_1, A_2, \\ldots, A_n$ sont indépendants, la probabilité qu'ils se réalisent tous simultanément est le produit de leurs probabilités individuelles : $P(A_1\\cap A_2\\cap\\cdots\\cap A_n)=P(A_1)\\times P(A_2)\\times\\cdots\\times P(A_n)$. Cette règle s'applique aussi bien à une combinaison de succès qu'à une combinaison d'échecs, en remplaçant chaque $P(A_i)$ par $1-P(A_i)$ pour l'événement contraire correspondant.\n\nQuand l'énoncé demande la probabilité qu'au moins un des $n$ essais indépendants réussisse, calculer directement cette probabilité oblige à examiner tous les cas où un, deux, trois, ..., jusqu'à $n$ essais réussissent : autant de sommes à calculer séparément. L'événement contraire de « au moins un succès parmi les $n$ essais » est beaucoup plus simple à décrire : c'est « aucun succès », c'est-à-dire l'échec des $n$ essais à la fois. Par indépendance, $P(\\text{aucun succès})$ est le produit des $n$ probabilités d'échec, et la relation $P(\\overline{A})=1-P(A)$ donne directement $P(\\text{au moins un succès})=1-P(\\text{aucun succès})$. Une seule multiplication de $n$ termes remplace alors l'examen de tous les cas favorables.",
+      "formule_principale": "P(\\text{au moins un succès})=1-\\prod_{i=1}^{n}\\big(1-p_i\\big)",
+      "variantes": [
+        {
+          "nom": "Décomposition en cas disjoints pour un nombre exact de succès",
+          "quand_utiliser": "Quand l'énoncé impose un nombre exact de succès parmi les n essais indépendants (« exactement un », « exactement deux »), et pas seulement « au moins un » ou « aucun » : l'événement contraire ne simplifie alors pas le calcul, il faut recenser directement les cas favorables.",
+          "contenu_markdown": "Pour obtenir la probabilité d'exactement $k$ succès parmi $n$ essais indépendants de probabilités de succès éventuellement différentes $p_1, p_2, \\ldots, p_n$, on décompose l'événement en autant de cas disjoints qu'il y a de façons de choisir lesquels des $n$ essais réussissent. Pour « exactement un succès » parmi $n$ essais, il y a $n$ cas disjoints (un par essai qui réussit, les $n-1$ autres échouant) : la probabilité de chaque cas est le produit d'un $p_i$ et de $(n-1)$ facteurs $(1-p_j)$, et la probabilité cherchée est la somme de ces $n$ produits, puisque les cas sont deux à deux incompatibles."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un local sensible est équipé de trois détecteurs de fumée indépendants $D_1$, $D_2$ et $D_3$. La probabilité que $D_1$ se déclenche en cas de départ de feu est $0{,}9$, celle de $D_2$ est $0{,}8$ et celle de $D_3$ est $0{,}7$. On suppose un départ de feu réel et on admet que le fonctionnement des trois détecteurs est indépendant. Calculer la probabilité qu'exactement un détecteur se déclenche, puis la probabilité qu'au moins un détecteur se déclenche.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les probabilités de succès et d'échec de chaque détecteur",
+          "justification": "Pour appliquer le produit des probabilités, il faut d'abord écrire, pour chaque détecteur, sa probabilité de se déclencher et sa probabilité complémentaire de ne pas se déclencher.",
+          "resultat_markdown": "$D_1$ : $p_1=0{,}9$, échec $1-p_1=0{,}1$. $D_2$ : $p_2=0{,}8$, échec $1-p_2=0{,}2$. $D_3$ : $p_3=0{,}7$, échec $1-p_3=0{,}3$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la probabilité qu'aucun détecteur ne se déclenche",
+          "justification": "Les trois détecteurs sont indépendants : la probabilité qu'aucun ne se déclenche est le produit de leurs trois probabilités d'échec.",
+          "resultat_markdown": "$$P(\\text{aucun détecteur})=(1-p_1)\\times(1-p_2)\\times(1-p_3)=0{,}1\\times0{,}2\\times0{,}3=0{,}006$$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la probabilité qu'au moins un détecteur se déclenche",
+          "justification": "L'événement « au moins un détecteur se déclenche » est l'événement contraire de « aucun détecteur ne se déclenche ».",
+          "resultat_markdown": "$$P(\\text{au moins un détecteur})=1-P(\\text{aucun détecteur})=1-0{,}006=0{,}994$$"
+        },
+        {
+          "numero": 4,
+          "action": "Décomposer l'événement « exactement un détecteur se déclenche » en trois cas disjoints",
+          "justification": "L'événement contraire ne simplifie pas ce calcul : il faut ici recenser séparément les trois façons dont un seul détecteur, et un seul, peut se déclencher.",
+          "resultat_markdown": "Seul $D_1$ se déclenche : $p_1\\times(1-p_2)\\times(1-p_3)=0{,}9\\times0{,}2\\times0{,}3=0{,}054$.\n\nSeul $D_2$ se déclenche : $(1-p_1)\\times p_2\\times(1-p_3)=0{,}1\\times0{,}8\\times0{,}3=0{,}024$.\n\nSeul $D_3$ se déclenche : $(1-p_1)\\times(1-p_2)\\times p_3=0{,}1\\times0{,}2\\times0{,}7=0{,}014$."
+        },
+        {
+          "numero": 5,
+          "action": "Additionner les trois cas disjoints",
+          "justification": "Les trois cas correspondent à des événements deux à deux incompatibles (un seul détecteur précis se déclenche à chaque fois) : leur probabilité totale est donc la somme des trois probabilités calculées.",
+          "resultat_markdown": "$$P(\\text{exactement un détecteur})=0{,}054+0{,}024+0{,}014=0{,}092$$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité qu'exactement un détecteur se déclenche est $0{,}092$, contre $0{,}994$ pour qu'au moins un se déclenche : l'écart s'explique par le fait que, les trois détecteurs étant individuellement assez fiables, il est bien plus probable que deux ou trois se déclenchent ensemble plutôt qu'un seul isolément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Pour calculer la probabilité qu'exactement un détecteur se déclenche, écrire directement $P(\\text{exactement un})=1-P(\\text{aucun})$, par analogie avec le calcul de « au moins un ».",
+          "pourquoi_faux": "L'événement contraire de « exactement un détecteur se déclenche » n'est pas « aucun détecteur ne se déclenche » : c'est « zéro détecteur se déclenche OU au moins deux détecteurs se déclenchent ». La formule $1-P(\\text{aucun})$ donne en réalité $P(\\text{au moins un})$, pas $P(\\text{exactement un})$ : sur l'exemple précédent, cette confusion donnerait $0{,}994$ au lieu de la valeur correcte $0{,}092$, un écart énorme qui devrait alerter.",
+          "correction_markdown": "Avant d'utiliser l'événement contraire, vérifie toujours que l'événement visé est bien « aucun » ou son contraire exact « au moins un ». Pour un nombre de succès imposé de façon exacte (« exactement un », « exactement deux »), reviens à la décomposition en cas disjoints : il n'existe pas de raccourci par le complémentaire."
+        },
+        {
+          "erreur_markdown": "Multiplier les probabilités de deux événements successifs, $P(A)\\times P(B)$, sans avoir vérifié que $A$ et $B$ sont réellement indépendants, par exemple pour un tirage de deux boules sans remise dans une urne.",
+          "pourquoi_faux": "Le produit $P(A)\\times P(B)$ ne calcule $P(A\\cap B)$ que si $A$ et $B$ sont indépendants. Dans un tirage sans remise, la composition de l'urne change après le premier tirage : la probabilité du second événement dépend du résultat du premier, les deux événements ne sont pas indépendants, et appliquer quand même le produit donne un résultat faux.",
+          "correction_markdown": "Avant d'appliquer le produit des probabilités, identifie explicitement la source de l'indépendance : une hypothèse énoncée noir sur blanc, ou des dispositifs physiquement séparés (plusieurs capteurs, plusieurs lancers, un tirage avec remise). Dans le doute, ou en cas de tirage sans remise, utilise plutôt la probabilité conditionnelle $P(A\\cap B)=P(A)\\times P_A(B)$."
+        },
+        {
+          "erreur_markdown": "Pour « exactement un succès parmi trois essais », ne calculer qu'un seul des trois cas (par exemple « seul $D_1$ se déclenche ») et l'annoncer comme réponse finale, en oubliant les deux autres cas symétriques.",
+          "pourquoi_faux": "L'événement « exactement un détecteur se déclenche » regroupe tous les détecteurs qui pourraient être ce seul détecteur déclenché, pas un détecteur particulier fixé à l'avance. Oublier les autres cas revient à répondre à une question plus restrictive que celle posée, avec un résultat systématiquement trop petit.",
+          "correction_markdown": "Avant de sommer, compte le nombre de cas attendu : pour « exactement un succès parmi $n$ essais », il y a exactement $n$ cas disjoints, un par essai qui pourrait être celui qui réussit. Vérifie que ton calcul comporte bien ce nombre de termes avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un immeuble est équipé de deux détecteurs de fumée indépendants $A$ et $B$. La probabilité que $A$ se déclenche en cas d'incendie est $0{,}85$ et celle que $B$ se déclenche est $0{,}6$. Calculer la probabilité qu'aucun des deux détecteurs ne se déclenche, puis la probabilité qu'au moins un des deux se déclenche.",
+          "solution_markdown": "Les probabilités d'échec sont $1-0{,}85=0{,}15$ pour $A$ et $1-0{,}6=0{,}4$ pour $B$. Les deux détecteurs étant indépendants, la probabilité qu'aucun des deux ne se déclenche est le produit de leurs probabilités d'échec :\n\n$$P(\\text{aucun des deux})=0{,}15\\times0{,}4=0{,}06$$\n\nL'événement « au moins un des deux se déclenche » est l'événement contraire de « aucun des deux ne se déclenche » :\n\n$$P(\\text{au moins un})=1-P(\\text{aucun des deux})=1-0{,}06=0{,}94$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève répond à un questionnaire de trois questions indépendantes. D'après son niveau de préparation, il estime sa probabilité de répondre correctement à $0{,}5$ pour la première question, $0{,}4$ pour la deuxième et $0{,}3$ pour la troisième. Calculer la probabilité qu'il réponde correctement à exactement une question, puis la probabilité qu'il réponde correctement à au moins une question.",
+          "solution_markdown": "Notons $p_1=0{,}5$, $p_2=0{,}4$ et $p_3=0{,}3$ les probabilités de succès aux trois questions, indépendantes les unes des autres ; les probabilités d'échec associées sont $1-p_1=0{,}5$, $1-p_2=0{,}6$ et $1-p_3=0{,}7$.\n\nPour « exactement une question réussie », on décompose en trois cas disjoints selon la question réussie :\n\nSeule la question 1 est réussie : $p_1\\times(1-p_2)\\times(1-p_3)=0{,}5\\times0{,}6\\times0{,}7=0{,}21$.\n\nSeule la question 2 est réussie : $(1-p_1)\\times p_2\\times(1-p_3)=0{,}5\\times0{,}4\\times0{,}7=0{,}14$.\n\nSeule la question 3 est réussie : $(1-p_1)\\times(1-p_2)\\times p_3=0{,}5\\times0{,}6\\times0{,}3=0{,}09$.\n\nCes trois cas étant deux à deux incompatibles :\n\n$$P(\\text{exactement une question})=0{,}21+0{,}14+0{,}09=0{,}44$$\n\nPour « au moins une question réussie », l'événement contraire est « aucune question réussie », de probabilité le produit des trois probabilités d'échec :\n\n$$P(\\text{aucune question})=0{,}5\\times0{,}6\\times0{,}7=0{,}21$$\n\n$$P(\\text{au moins une question})=1-0{,}21=0{,}79$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une usine fabrique des ampoules électriques. On admet que, dans la production, la probabilité qu'une ampoule prise au hasard soit défectueuse vaut $p=0{,}05$, indépendamment d'une ampoule à l'autre. On prélève au hasard un échantillon de $n$ ampoules dans la production. Déterminer le plus petit entier naturel $n$ tel que la probabilité que l'échantillon contienne au moins une ampoule défectueuse soit supérieure ou égale à $0{,}9$.",
+          "solution_markdown": "Pour une ampoule donnée, la probabilité qu'elle ne soit pas défectueuse vaut $1-p=0{,}95$. Les $n$ ampoules de l'échantillon étant indépendantes, la probabilité qu'aucune ne soit défectueuse est le produit de $n$ facteurs égaux à $0{,}95$ :\n\n$$P(\\text{aucune défectueuse})=(0{,}95)^n$$\n\nPar événement contraire, la probabilité que l'échantillon contienne au moins une ampoule défectueuse est :\n\n$$P(\\text{au moins une défectueuse})=1-(0{,}95)^n$$\n\nOn cherche le plus petit entier $n$ tel que cette probabilité soit supérieure ou égale à $0{,}9$ :\n\n$$1-(0{,}95)^n\\geqslant0{,}9 \\Longleftrightarrow (0{,}95)^n\\leqslant0{,}1$$\n\nLa fonction logarithme népérien est strictement croissante sur $]0;+\\infty[$, donc l'inégalité est équivalente à celle obtenue en prenant le logarithme népérien des deux membres :\n\n$$\\ln\\big((0{,}95)^n\\big)\\leqslant\\ln(0{,}1) \\Longleftrightarrow n\\ln(0{,}95)\\leqslant\\ln(0{,}1)$$\n\nLe nombre $\\ln(0{,}95)$ est strictement négatif (car $0{,}95<1$) : diviser les deux membres par $\\ln(0{,}95)$ inverse le sens de l'inégalité.\n\n$$n\\geqslant\\frac{\\ln(0{,}1)}{\\ln(0{,}95)}$$\n\nÀ la calculatrice, $\\ln(0{,}1)\\approx-2{,}302585$ et $\\ln(0{,}95)\\approx-0{,}051293$, donc :\n\n$$\\frac{\\ln(0{,}1)}{\\ln(0{,}95)}\\approx\\frac{-2{,}302585}{-0{,}051293}\\approx44{,}89$$\n\n$n$ doit être un entier supérieur ou égal à $44{,}89$, donc $n\\geqslant45$. Le plus petit entier qui convient est $n=45$.\n\nOn vérifie ce résultat : pour $n=44$, $(0{,}95)^{44}\\approx0{,}1047>0{,}1$, la condition n'est pas encore vérifiée ; pour $n=45$, $(0{,}95)^{45}\\approx0{,}0994<0{,}1$, la condition est vérifiée. L'échantillon doit donc contenir au moins $45$ ampoules."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le produit des probabilités $P(A_1)\\times P(A_2)\\times\\cdots\\times P(A_n)$ ne calcule la probabilité de leur intersection que si les événements sont réellement indépendants : vérifie toujours cette hypothèse avant de multiplier.",
+        "Pour « au moins un succès parmi plusieurs essais indépendants », passe systématiquement par l'événement contraire « aucun succès » : une seule multiplication remplace l'examen de tous les cas favorables.",
+        "Pour un nombre de succès imposé de façon exacte (« exactement un », « exactement deux »), le complémentaire ne simplifie rien : décompose en cas disjoints et vérifie que tu as bien autant de cas que d'essais possibles pour ce nombre de succès.",
+        "$P(\\overline{A})=1-P(A)$ reste vrai pour n'importe quel événement $A$, indépendance ou pas : c'est la définition de l'événement contraire, pas une propriété liée à l'indépendance.",
+        "Au BAC série D, ce type de calcul apparaît sous des habillages variés (tirs, capteurs, contrôles qualité, QCM) mais suit toujours le même schéma : identifier les probabilités de succès et d'échec de chaque essai, vérifier l'indépendance, puis choisir entre le passage au complémentaire et la décomposition en cas disjoints selon que l'événement demandé est « au moins un » ou un nombre exact."
+      ]
+    }
+  ]
+}

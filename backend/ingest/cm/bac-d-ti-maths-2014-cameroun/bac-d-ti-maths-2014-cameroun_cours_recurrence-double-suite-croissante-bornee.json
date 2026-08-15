@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-recurrence-double-suite-croissante-bornee-terminale-d-ti",
+  "meta": {"titre": "Démontrer par récurrence qu'une suite récurrente un+1=f(un) est croissante et bornée", "cours_id": "cours-recurrence-double-suite-croissante-bornee-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Suites — récurrence double (croissance et bornage simultanés)", "tags": ["récurrence", "suite croissante bornée", "stabilité d'intervalle"], "duree_estimee_minutes": 6, "epreuve_source": "bac-d-ti-maths-2014-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2014-cameroun-ex5-q1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Démontrer simultanément la croissance et le bornage d'une suite récurrente s'appuie sur la stricte croissance de f et sur la stabilité de l'intervalle considéré par f."},
+    {"type": "prerequis", "items_markdown": ["f strictement croissante sur l'intervalle considéré", "f([m;M])⊂[m;M] (stabilité de l'intervalle)"]},
+    {"type": "regle", "titre": "Établir simultanément un∈[m;M] et un≤un+1 par récurrence", "contenu_markdown": "Pour une suite $u_{n+1}=f(u_n)$ avec $f$ strictement croissante sur $[m;M]$ stable par $f$, on démontre par récurrence la propriété double $P(n)$ : « $u_n\\in[m;M]$ et $u_n\\leqslant u_{n+1}$ ». À l'hérédité, on applique $f$ (strictement croissante) à l'inégalité $u_n\\leqslant u_{n+1}$ pour obtenir $u_{n+1}\\leqslant u_{n+2}$, et la stabilité de l'intervalle garantit que $u_{n+2}$ reste dans $[m;M]$.", "formule_principale": "P(n): un∈[m;M] et un≤un+1 ; hérédité via f croissante et stabilité de [m;M]", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "u0=1, f croissante sur [1;2], f([1;2])⊂[1;2], u1=f(1)≥1. Amorcer la récurrence.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "u0=1∈[1;2], vérifier u0≤u1", "resultat_markdown": "à vérifier numériquement"},
+      {"numero": 2, "action": "Hérédité", "justification": "appliquer f croissante à un≤un+1", "resultat_markdown": "un+1≤un+2, stabilité garantit un+2∈[1;2]"}
+    ], "conclusion_markdown": "Suite croissante et bornée dans [1;2]."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Démontrer séparément la croissance et le bornage dans deux récurrences indépendantes, plutôt que dans une seule récurrence conjointe où chaque propriété s'appuie sur l'autre", "pourquoi_faux": "La propagation de la croissance (via la stricte monotonie de f) nécessite que les termes comparés restent dans l'intervalle où f est croissante ; séparer les deux démonstrations complique inutilement la rédaction et peut créer une dépendance circulaire mal gérée.", "correction_markdown": "Toujours mener une seule récurrence conjointe établissant simultanément l'appartenance à l'intervalle ET la croissance, chaque étape s'appuyant explicitement sur l'autre."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "v0=2, f croissante sur [2;3], f([2;3])⊂[2;3], v1=f(2)≈2,4. Rédiger le principe de la récurrence conjointe.", "solution_markdown": "Initialisation : v0=2∈[2;3] et v0≤v1 (vérifié numériquement, 2≤2,4). Hérédité : si vn∈[2;3] et vn≤vn+1, alors par stricte croissance de f, f(vn)≤f(vn+1) donne vn+1≤vn+2, et par stabilité de [2;3], vn+2∈[2;3]. Conclusion par récurrence : suite croissante et bornée dans [2;3]."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La récurrence conjointe (croissance et bornage) s'appuie sur la stricte croissance de f et la stabilité de l'intervalle considéré.", "Une suite croissante et majorée converge, d'après le théorème de la limite monotone."]}
+  ]
+}

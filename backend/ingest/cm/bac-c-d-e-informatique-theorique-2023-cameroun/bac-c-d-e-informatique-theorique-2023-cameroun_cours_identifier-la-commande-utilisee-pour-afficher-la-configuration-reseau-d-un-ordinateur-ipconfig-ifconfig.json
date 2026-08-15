@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-identifier-la-commande-utilisee-pour-afficher-la-configuration-reseau-d-un-ordinateur-ipconfig-ifconfig-terminale-c",
+  "meta": {
+    "titre": "Identifier la commande utilisée pour afficher la configuration réseau d'un ordinateur (ipconfig/ifconfig)",
+    "cours_id": "cours-identifier-la-commande-utilisee-pour-afficher-la-configuration-reseau-d-un-ordinateur-ipconfig-ifconfig-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Diagnostic réseau",
+    "tags": [
+      "ipconfig",
+      "ifconfig",
+      "configuration réseau"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB3a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour connaître l'adresse IP, le masque ou la passerelle d'un ordinateur, il n'est pas nécessaire d'ouvrir les paramètres graphiques : une seule commande, tapée dans un terminal, affiche toute la configuration réseau d'un coup."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande ipconfig : afficher la configuration réseau",
+      "contenu_markdown": "La commande **ipconfig /all** (sous Windows) — ou **ifconfig** / **ip addr** sous Linux — affiche l'ensemble des paramètres de configuration réseau d'un ordinateur : adresse physique (MAC), adresse IP, masque de sous-réseau, passerelle par défaut, serveurs DNS, statut du DHCP, etc.",
+      "formule_principale": "ipconfig /all",
+      "variantes": [
+        {
+          "nom": "Sous Linux/Unix",
+          "quand_utiliser": "Sur un système Linux ou macOS plutôt que Windows.",
+          "contenu_markdown": "La commande équivalente est `ifconfig` (historique) ou `ip addr` (moderne), qui affiche des informations similaires."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier la commande qui a permis d'obtenir la configuration réseau affichée (adresse IP, masque, passerelle, DNS, DHCP).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les informations affichées",
+          "justification": "La sortie contient adresse IP, masque, passerelle, DNS, DHCP : ce sont les informations typiques d'une configuration réseau complète.",
+          "resultat_markdown": "Configuration réseau complète"
+        },
+        {
+          "numero": 2,
+          "action": "Associer ces informations à la commande qui les produit",
+          "justification": "ipconfig /all est la commande Windows qui affiche l'ensemble de ces paramètres.",
+          "resultat_markdown": "`ipconfig /all`"
+        }
+      ],
+      "conclusion_markdown": "ipconfig /all (Windows) ou ifconfig/ip addr (Linux) affichent l'ensemble de la configuration réseau d'un ordinateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre simplement \"ipconfig\" sans l'option /all",
+          "pourquoi_faux": "La commande ipconfig seule (sans /all) n'affiche qu'un résumé limité (adresse IP, masque, passerelle) ; l'option /all est nécessaire pour obtenir l'ensemble des informations visibles ici, comme l'adresse physique, les DNS et le statut DHCP.",
+          "correction_markdown": "Précise toujours l'option /all lorsque la sortie observée contient des informations détaillées (adresse physique, DNS, DHCP)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande affiche la configuration réseau sous Windows, sans détails supplémentaires ?",
+          "solution_markdown": "`ipconfig` (sans option), qui affiche un résumé (adresse IP, masque, passerelle) sans les détails comme l'adresse MAC ou les DNS."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle commande équivalente utiliser sous Linux ?",
+          "solution_markdown": "`ifconfig` ou, sur les systèmes plus récents, `ip addr` (ou `ip a`)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En quoi la commande ipconfig /all est-elle utile pour diagnostiquer un problème réseau, au-delà de la simple lecture de l'adresse IP ?",
+          "solution_markdown": "Elle permet de vérifier en un coup d'œil plusieurs points de diagnostic essentiels : l'adresse IP est-elle bien attribuée (pas de type 169.254.x.x, signe d'échec DHCP) ? Le masque et la passerelle sont-ils cohérents avec le réseau attendu ? Le DHCP est-il actif comme prévu ? Les serveurs DNS sont-ils renseignés (sans quoi la résolution de noms de domaine échouerait) ? C'est souvent la toute première commande à exécuter face à un problème de connectivité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ipconfig /all (Windows) affiche la configuration réseau complète d'un ordinateur.",
+        "ifconfig ou ip addr sont les équivalents sous Linux.",
+        "L'option /all est nécessaire pour obtenir les détails (adresse MAC, DNS, DHCP).",
+        "C'est souvent la première commande à exécuter pour diagnostiquer un problème réseau."
+      ]
+    }
+  ]
+}

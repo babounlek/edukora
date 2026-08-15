@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>{{ fiche.titre }}</title>
+<link rel="stylesheet" href="{{ katex_css_url }}">
+<script src="{{ katex_js_url }}"></script>
+<script src="{{ katex_auto_render_url }}"></script>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Georgia", "Times New Roman", serif;
+        color: #1a1a1a;
+        margin: 0;
+        padding: 0 40px 40px 40px;
+        line-height: 1.55;
+        font-size: 14px;
+        text-align: justify;
+    }
+    .brand-header {
+        background: #0a6e4e;
+        color: #ffffff;
+        margin: 0 -40px 28px -40px;
+        padding: 22px 40px 18px 40px;
+    }
+    .brand-header p.brand {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        margin: 0 0 10px 0;
+    }
+    .brand-header h1 {
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row span {
+        background: rgba(255,255,255,0.15);
+        border-radius: 3px;
+        padding: 3px 10px;
+    }
+    h2, h3 {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #0a6e4e;
+        border-bottom: 1px solid #d8d8d8;
+        padding-bottom: 6px;
+        margin-top: 32px;
+        font-size: 17px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 14px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 14px 0;
+        font-size: 13px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: center;
+    }
+    .continue-cta {
+        margin-top: 40px;
+        padding: 18px 22px;
+        background: #e8f5ef;
+        border: 1px solid #0a6e4e;
+        border-radius: 6px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .continue-cta p.title {
+        font-weight: bold;
+        font-size: 13.5px;
+        color: #0a6e4e;
+        margin: 0 0 4px 0;
+    }
+    .continue-cta p.body {
+        font-size: 11.5px;
+        color: #333;
+        margin: 0;
+    }
+    .continue-cta .qr-image {
+        width: 74px;
+        height: 74px;
+        margin: 0;
+        flex-shrink: 0;
+    }
+    .footer-note {
+        margin-top: 14px;
+        font-size: 10.5px;
+        color: #999;
+        text-align: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .footer-note a {
+        color: inherit;
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+    <div class="brand-header">
+        <p class="brand">{{ site_name }} - Fiche d'exercices</p>
+        <h1>{{ fiche.titre }}</h1>
+        <div class="meta-row">
+            <span>{{ fiche.subject.label }}</span>
+            <span>{{ cursus_display }}</span>
+            <span>{{ fiche.nombre_questions }} question{{ fiche.nombre_questions|pluralize }}</span>
+        </div>
+    </div>
+
+    {{ content_html|safe }}
+
+    <div class="continue-cta">
+        <div>
+            <p class="title">Envie de plus d'exercices comme ceux-ci ?</p>
+            <p class="body">Cours, corrigés d'annales et quiz pour le BEPC, le Probatoire et le BAC - sur {{ site_name }}.</p>
+        </div>
+        {% if qr_code_data_uri %}
+        <img src="{{ qr_code_data_uri }}" alt="QR code vers {{ site_name }}" class="qr-image">
+        {% endif %}
+    </div>
+    <p class="footer-note">Fiche préparée par {{ prepared_by }} - <a href="{{ deep_link }}">{{ site_url_display }}</a></p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            try {
+                if (typeof renderMathInElement === "function") {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+            } catch (e) {
+                // rendu KaTeX best-effort, jamais une condition d'échec du PDF
+            }
+            window.__katexDone = true;
+        });
+    </script>
+</body>
+</html>

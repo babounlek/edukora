@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-passer-du-mcd-au-mld-pour-une-association-de-type-n-n-avec-table-intermediaire-terminale-c",
+  "meta": {
+    "titre": "Passer du MCD au MLD pour une association de type N,N (avec table intermédiaire)",
+    "cours_id": "cours-passer-du-mcd-au-mld-pour-une-association-de-type-n-n-avec-table-intermediaire-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Modélisation de données (Merise)",
+    "tags": [
+      "MLD",
+      "passage MCD-MLD",
+      "table intermédiaire",
+      "association N,N"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Passer du schéma conceptuel (MCD) au schéma logique (MLD) suit des règles précises et systématiques. Le cas le plus délicat, mais aussi le plus fréquent, est celui d'une association plusieurs-à-plusieurs, qui impose la création d'une table supplémentaire."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître les cardinalités d'une association",
+        "Connaître la notion de clé primaire et de clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Passer du MCD au MLD pour une association de type N,N",
+      "contenu_markdown": "Lorsqu'une association présente une cardinalité maximale **n** des **deux côtés** (type (0,n) ou (1,n) pour chacune des deux entités reliées), on parle d'association **plusieurs-à-plusieurs (N,N)**. Dans ce cas, ni l'une ni l'autre des deux tables ne peut porter seule une clé étrangère unique vers l'autre : il faut créer une **table intermédiaire**, dont la clé primaire est composée des clés primaires des deux entités (en clés étrangères), et qui porte également les éventuelles propriétés propres à l'association : `Table_association (#clé1, #clé2, propriétés_de_l_association)`.",
+      "formule_principale": "",
+      "variantes": [
+        {
+          "nom": "Association 1,N (une seule clé migre)",
+          "quand_utiliser": "Quand une des deux cardinalités maximales vaut 1 (ex. (1,1) ou (0,1)).",
+          "contenu_markdown": "Dans ce cas plus simple, aucune table intermédiaire n'est nécessaire : la clé de l'entité côté \"1\" migre directement dans la table de l'entité côté \"n\"."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déduire le MLD de l'association CONCERNER, de type (1,n) côté COMMANDE et (0,n) côté PRODUIT, portant la propriété quantite.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Constater que les deux cardinalités maximales valent n",
+          "justification": "COMMANDE (1,n) et PRODUIT (0,n) sont toutes deux à cardinalité maximale n : c'est une association N,N.",
+          "resultat_markdown": "Association plusieurs-à-plusieurs"
+        },
+        {
+          "numero": 2,
+          "action": "Créer une table intermédiaire portant les deux clés étrangères et les propriétés de l'association",
+          "justification": "Aucune des deux tables COMMANDE ou PRODUIT ne peut porter seule la clé de l'autre sans dupliquer les lignes.",
+          "resultat_markdown": "CONCERNER(#numCommande, #code, quantite)"
+        }
+      ],
+      "conclusion_markdown": "Une association N,N (cardinalité maximale n des deux côtés) se traduit toujours par une table intermédiaire portant les deux clés étrangères et les propriétés propres de l'association."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter la clé étrangère #code directement dans la table COMMANDE (comme pour une association 1,N)",
+          "pourquoi_faux": "Une commande pouvant contenir plusieurs produits, une seule colonne #code dans COMMANDE ne pourrait stocker qu'un seul produit par commande, ce qui est incompatible avec la cardinalité (1,n) côté COMMANDE de l'association.",
+          "correction_markdown": "Dès que les DEUX cardinalités maximales valent n, la seule solution correcte est la table intermédiaire — jamais la migration d'une simple clé étrangère."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une association ETUDIER entre ETUDIANT et MATIERE est de type (0,n)/(0,n), avec une propriété note. Écrire son MLD.",
+          "solution_markdown": "`ETUDIER(#numEtudiant, #codeMatiere, note)`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la clé primaire de la table intermédiaire est-elle composée des deux clés étrangères, et non d'un identifiant auto-incrémenté séparé ?",
+          "solution_markdown": "La combinaison des deux clés étrangères (#numCommande, #code) garantit naturellement qu'une même paire (commande, produit) ne peut apparaître qu'une seule fois dans la table, ce qui correspond exactement au sens de l'association ; un identifiant séparé resterait possible techniquement, mais n'apporterait rien et obligerait à ajouter une contrainte d'unicité supplémentaire sur la paire pour obtenir la même garantie."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passerait-il si l'association CONCERNER ne portait aucune propriété (pas de quantite) ? Faudrait-il quand même une table intermédiaire ?",
+          "solution_markdown": "Oui, la table intermédiaire reste nécessaire même sans propriété portée, car sa raison d'être n'est pas de stocker des propriétés mais de représenter la mise en relation plusieurs-à-plusieurs elle-même ; elle se limiterait alors aux deux clés étrangères seules : `CONCERNER(#numCommande, #code)`, formant une clé primaire composite qui matérialise chaque paire (commande, produit) existante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association N,N (cardinalité max n des deux côtés) impose une table intermédiaire.",
+        "Cette table porte les deux clés étrangères et les propriétés propres à l'association.",
+        "La combinaison des deux clés étrangères forme naturellement la clé primaire de la table intermédiaire.",
+        "Une association 1,N plus simple ne nécessite qu'une migration de clé, sans table supplémentaire."
+      ]
+    }
+  ]
+}

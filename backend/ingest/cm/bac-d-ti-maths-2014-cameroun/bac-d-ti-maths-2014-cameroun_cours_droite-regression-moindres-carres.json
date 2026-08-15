@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-droite-regression-moindres-carres-terminale-d-ti",
+  "meta": {"titre": "Déterminer la droite de régression de y en x par la méthode des moindres carrés", "cours_id": "cours-droite-regression-moindres-carres-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Statistiques — ajustement affine par les moindres carrés", "tags": ["droite de régression", "moindres carrés", "covariance"], "duree_estimee_minutes": 6, "epreuve_source": "bac-d-ti-maths-2014-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2014-cameroun-ex2-q3"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "La méthode des moindres carrés donne la droite d'ajustement affine la plus précise possible, en minimisant la somme des carrés des écarts verticaux ; sa formule repose sur deux sommes intermédiaires, Sxy et Sxx."},
+    {"type": "prerequis", "items_markdown": ["Σxi, Σyi, Σxiyi, Σxi² déjà calculés à partir du tableau", "Point moyen G déjà déterminé"]},
+    {"type": "regle", "titre": "a=Sxy/Sxx, b=ȳ-a x̄", "contenu_markdown": "La droite de régression de $y$ en $x$ par la méthode des moindres carrés s'écrit $y=ax+b$, avec $a=\\dfrac{S_{xy}}{S_{xx}}$, où $S_{xy}=\\displaystyle\\sum x_iy_i-n\\bar x\\bar y$ (covariance non normalisée) et $S_{xx}=\\displaystyle\\sum x_i^2-n\\bar x^2$ (variance non normalisée de $x$), et $b=\\bar y-a\\bar x$ (obtenu en imposant que la droite passe par le point moyen $G$).", "formule_principale": "a=Sxy/Sxx=(Σxiyi-n x̄ȳ)/(Σxi²-n x̄²) ; b=ȳ-a x̄", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "xi:1,2,3 ; yi:2,4,5. Déterminer la droite de régression de y en x.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Sommes", "justification": "Σxiyi=2+8+15=25, Σxi²=14, x̄=2, ȳ=11/3", "resultat_markdown": "sommes calculées"},
+      {"numero": 2, "action": "a et b", "justification": "Sxy=25-3(2)(11/3)=3, Sxx=14-3(4)=2", "resultat_markdown": "a=1,5 ; b=ȳ-a x̄=11/3-3=2/3"}
+    ], "conclusion_markdown": "y=1,5x+2/3."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Confondre la formule Sxy=Σxiyi-n x̄ȳ avec Σxiyi seul, en oubliant de soustraire le terme n x̄ȳ", "pourquoi_faux": "Omettre cette soustraction revient à ne pas centrer les données par rapport à leur moyenne, ce qui fausse complètement le coefficient directeur a calculé.", "correction_markdown": "Toujours soustraire n x̄ȳ (ou l'équivalent (Σxi)(Σyi)/n) du produit Σxiyi pour obtenir la vraie covariance non normalisée Sxy."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "xi:1,2,3,4 ; yi:3,5,6,8. Déterminer a et b de la droite de régression de y en x.", "solution_markdown": "x̄=2,5, ȳ=5,5. Σxiyi=3+10+18+32=63. Σxi²=30. Sxy=63-4(2,5)(5,5)=63-55=8. Sxx=30-4(6,25)=5. a=8/5=1,6. b=5,5-1,6(2,5)=5,5-4=1,5."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La droite de régression de y en x par les moindres carrés a pour coefficient directeur a=Sxy/Sxx et pour ordonnée à l'origine b=ȳ-a x̄.", "Cette droite passe toujours par le point moyen G de la série, ce qui sert de vérification."]}
+  ]
+}

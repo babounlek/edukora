@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-identifier-une-instruction-d-initialisation-dans-un-programme-c-terminale-c",
+  "meta": {
+    "titre": "Identifier une instruction d'initialisation dans un programme C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Boucles en langage C",
+    "duree_estimee_min": 8,
+    "tags": [
+      "initialisation",
+      "boucle for",
+      "langage C"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex5-q1.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant qu'un compteur puisse avancer, il doit partir d'une valeur connue. Ce cours isole le rôle de l'instruction d'initialisation dans une boucle for."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe générale de la boucle for en langage C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'instruction d'initialisation",
+      "contenu_markdown": "Une instruction d'initialisation donne sa valeur de départ à une variable, avant que celle-ci ne soit utilisée ou modifiée. Dans une boucle for(initialisation; condition; incrémentation), l'initialisation s'exécute une seule fois, avant le premier tour de boucle.",
+      "formule_principale": "i = 0;  // initialisation, exécutée une seule fois",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier une instruction d'initialisation dans for(i=0; i<n; i++).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les trois parties de la boucle for",
+          "justification": "for(initialisation; condition; incrémentation) suit toujours cet ordre fixe.",
+          "resultat_markdown": "i=0 (initialisation) ; i<n (condition) ; i++ (incrémentation)"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la première partie comme l'initialisation",
+          "justification": "C'est la partie qui fixe la valeur de départ de i, avant tout tour de boucle.",
+          "resultat_markdown": "i = 0"
+        }
+      ],
+      "conclusion_markdown": "i = 0 est l'instruction d'initialisation de cette boucle for."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que int n, i; (la déclaration) est l'instruction d'initialisation",
+          "pourquoi_faux": "int n, i; déclare seulement le type des variables, sans leur donner de valeur ; i=0, dans le for, est ce qui donne concrètement sa valeur de départ à i.",
+          "correction_markdown": "Distingue la déclaration (réserver une variable avec son type, ex. int i;) de l'initialisation (lui donner une première valeur, ex. i=0)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est l'instruction d'initialisation dans for(k=10; k>0; k--) ?",
+          "solution_markdown": "k=10."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que se passerait-il si on omettait l'initialisation, en écrivant for(; i<n; i++) alors que i n'a jamais été initialisée avant ?",
+          "solution_markdown": "La boucle utiliserait la valeur indéterminée que contenait i en mémoire avant la boucle (une valeur \"poubelle\", non prévisible), ce qui rendrait le comportement du programme imprévisible ou incorrect. Il faut toujours initialiser i avant de l'utiliser dans une condition."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Peut-on initialiser deux variables à la fois dans un seul for, par exemple i et un total cumulé ? Donne un exemple de syntaxe.",
+          "solution_markdown": "Oui, en séparant les deux initialisations par une virgule dans la première partie du for. Exemple : ```c\nfor(i=0, somme=0; i<n; i++){\n    somme = somme + i;\n}\n```\nIci, i et somme sont toutes les deux initialisées à 0 avant le premier tour de boucle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une instruction d'initialisation donne sa valeur de départ à une variable.",
+        "Dans for(initialisation; condition; incrémentation), l'initialisation s'exécute une seule fois.",
+        "Ne confonds pas déclaration (réserver le type) et initialisation (donner la première valeur).",
+        "Plusieurs variables peuvent être initialisées ensemble, séparées par une virgule."
+      ]
+    }
+  ]
+}

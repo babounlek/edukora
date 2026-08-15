@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-passer-du-mcd-au-mld-pour-une-association-de-type-1-n-terminale-c",
+  "meta": {
+    "titre": "Passer du MCD au MLD pour une association de type 1,N",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Passage du MCD au MLD",
+    "duree_estimee_min": 20,
+    "tags": [
+      "MLD",
+      "cardinalités",
+      "clé étrangère",
+      "association 1,N"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le MCD décrit le sens métier des données ; le MLD, lui, décrit les tables qu'il faudra réellement créer dans la base de données. Passer de l'un à l'autre suit une règle précise selon le type de l'association, une règle que ce cours détaille pas à pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire les cardinalités d'une association MCD (min, max)",
+        "Savoir identifier une entité et une association sur un MCD"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Règle de passage MCD → MLD pour une association 1,N",
+      "contenu_markdown": "Une association binaire est de type 1,N quand une entité porte la cardinalité maximale 1 (ex. (1,1)) et l'autre la cardinalité maximale n (ex. (1,n)). Dans ce cas, aucune table n'est créée pour l'association elle-même : la clé primaire de l'entité côté cardinalité maximale 1 migre comme clé étrangère dans la table de l'entité côté cardinalité maximale n.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Association N,N (plusieurs-à-plusieurs)",
+          "quand_utiliser": "Quand les deux entités portent une cardinalité maximale n (ex. (0,n) et (1,n)).",
+          "contenu_markdown": "Dans ce cas, une table intermédiaire est créée pour l'association, contenant les clés primaires des deux entités comme clés étrangères (et les éventuels attributs propres à l'association)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déduire du diagramme (Client (1,n) - Effectue - (1,1) Réservation) le MLD correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les cardinalités maximales de chaque côté",
+          "justification": "Client porte (1,n) : cardinalité max n. Réservation porte (1,1) : cardinalité max 1.",
+          "resultat_markdown": "Association de type 1,N (Client = côté 1, Réservation = côté N)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la règle de passage 1,N",
+          "justification": "La clé primaire du côté 1 (Client) migre comme clé étrangère dans la table du côté N (Réservation).",
+          "resultat_markdown": "codeClient devient une clé étrangère dans la table Réservation"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les deux tables du MLD",
+          "justification": "Chaque entité devient une table ; les attributs suivent, l'identifiant en clé primaire.",
+          "resultat_markdown": "Client(codeClient, nom, prenom) ; Réservation(codeReservation, date, #codeClient)"
+        }
+      ],
+      "conclusion_markdown": "Le MLD comporte deux tables, Client et Réservation, cette dernière portant la clé étrangère #codeClient - aucune troisième table n'est nécessaire pour une association 1,N."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une table \"Effectue\" séparée pour l'association, comme pour une association N,N",
+          "pourquoi_faux": "Une table intermédiaire n'est nécessaire que lorsque les deux cardinalités maximales valent n (association N,N) ; ici, une des deux cardinalités maximales vaut 1, ce qui permet la simple migration de clé, sans table supplémentaire.",
+          "correction_markdown": "Vérifie toujours les deux cardinalités maximales avant de décider s'il faut une table intermédiaire (N,N) ou une simple migration de clé (1,N)."
+        },
+        {
+          "erreur_markdown": "Faire migrer la clé de Réservation vers Client, dans le mauvais sens",
+          "pourquoi_faux": "La clé migre du côté \"1\" vers le côté \"N\", jamais l'inverse : c'est la table du côté \"N\" (celle qui peut apparaître plusieurs fois pour une même valeur de l'autre entité) qui reçoit la clé étrangère.",
+          "correction_markdown": "Repère d'abord quelle entité est du côté \"1\" (cardinalité max 1) : c'est sa clé primaire qui migre, jamais celle du côté \"N\"."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur un MCD, un Élève (1,1) -- Appartient -- (1,n) Classe. Quelle table reçoit la clé étrangère ?",
+          "solution_markdown": "Élève porte la cardinalité max 1, Classe porte la cardinalité max n : c'est donc la table Élève (côté 1) qui reçoit la clé étrangère #codeClasse référençant Classe."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le MLD complet pour Élève(codeEleve, nom) (1,1) -- Appartient -- (1,n) Classe(codeClasse, libelle).",
+          "solution_markdown": "Élève(**codeEleve**, nom, #codeClasse) ; Classe(**codeClasse**, libelle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si l'association Effectue de l'exercice devenait (0,n) côté Client et (1,1) côté Réservation (au lieu de (1,n)), le MLD change-t-il ?",
+          "solution_markdown": "Non, le MLD reste identique dans sa structure : seule la cardinalité MINIMALE change (de 1 à 0), ce qui affecte le caractère obligatoire ou non de la relation (un client peut exister sans avoir encore effectué de réservation), mais ne change pas la cardinalité MAXIMALE (toujours 1 côté Réservation, n côté Client), qui est le seul facteur déterminant le sens de la migration de clé. Réponse : Client(codeClient, nom, prenom) ; Réservation(codeReservation, date, #codeClient), inchangé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association 1,N ne crée jamais de table séparée : la clé migre.",
+        "La clé primaire du côté 1 migre en clé étrangère dans la table du côté N.",
+        "Une association N,N (les deux côtés en n) crée, elle, une table intermédiaire.",
+        "Seule la cardinalité MAXIMALE (1 ou n) détermine le sens de la migration de clé, pas la cardinalité minimale."
+      ]
+    }
+  ]
+}

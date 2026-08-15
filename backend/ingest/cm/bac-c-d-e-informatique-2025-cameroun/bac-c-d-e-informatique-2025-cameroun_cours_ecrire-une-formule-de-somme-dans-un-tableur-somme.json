@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-somme-dans-un-tableur-somme-terminale-c",
+  "meta": {
+    "titre": "Écrire une formule de somme dans un tableur (SOMME)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Formules de tableur",
+    "duree_estimee_min": 10,
+    "tags": [
+      "SOMME",
+      "formules",
+      "tableur"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex1-q5.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer un total dans un tableur ne se fait jamais en additionnant les valeurs à la main : la fonction SOMME() s'en charge, à condition de bien indiquer la plage de cellules à additionner. C'est la formule la plus utilisée dans un tableur, et la plus attendue au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir repérer une cellule par sa référence (ex. D2, B5)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction SOMME() d'un tableur",
+      "contenu_markdown": "SOMME(plage) additionne le contenu de toutes les cellules de la plage indiquée. Une plage s'écrit \"première_cellule:dernière_cellule\" (ex. D2:D4 désigne les cellules D2, D3 et D4).",
+      "formule_principale": "=SOMME(première_cellule:dernière_cellule)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la formule permettant de déterminer le montant total des achats (cellule D5).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la plage à additionner",
+          "justification": "Le total des achats correspond à la somme des montants de chaque ligne, colonne D, lignes 2 à 4.",
+          "resultat_markdown": "Plage D2:D4"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule SOMME",
+          "justification": "La fonction SOMME() prend la plage identifiée en argument.",
+          "resultat_markdown": "=SOMME(D2:D4)"
+        }
+      ],
+      "conclusion_markdown": "La formule =SOMME(D2:D4), placée en D5, calcule automatiquement le montant total des achats."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire =D2+D3+D4 au lieu de =SOMME(D2:D4)",
+          "pourquoi_faux": "Cette formule reste correcte pour trois cellules, mais devient vite impraticable pour une plage large (10, 50, 100 lignes) ; SOMME() est la méthode attendue et généralisable.",
+          "correction_markdown": "Privilégie toujours SOMME(plage) dès que plus de deux ou trois cellules sont concernées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la formule qui additionne les cellules B2 à B10.",
+          "solution_markdown": "=SOMME(B2:B10)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le devis comporte une nouvelle ligne 5 (Modem 2) avant le Total, désormais en ligne 6. Réécris la formule du total.",
+          "solution_markdown": "La plage doit maintenant couvrir toutes les lignes de montant, de la ligne 2 à la nouvelle ligne 5. Réponse : =SOMME(D2:D5)"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi faut-il que chaque cellule de la colonne Montant (D2, D3, D4) contienne déjà une formule (comme =B2*C2) avant d'écrire =SOMME(D2:D4) en D5 ?",
+          "solution_markdown": "SOMME(D2:D4) additionne le contenu déjà présent dans ces cellules ; si D2, D3 et D4 sont vides ou ne contiennent pas le calcul Prix×Quantité, la somme obtenue serait nulle ou fausse. Le calcul du montant total dépend donc d'abord du calcul correct de chaque montant individuel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SOMME(plage) additionne toutes les cellules de la plage indiquée.",
+        "Une plage s'écrit première_cellule:dernière_cellule (ex. D2:D4).",
+        "Le calcul du total suppose que chaque ligne intermédiaire (le montant de chaque article) est déjà calculée.",
+        "SOMME() est la formule la plus utilisée dans les exercices de tableur du BAC informatique."
+      ]
+    }
+  ]
+}

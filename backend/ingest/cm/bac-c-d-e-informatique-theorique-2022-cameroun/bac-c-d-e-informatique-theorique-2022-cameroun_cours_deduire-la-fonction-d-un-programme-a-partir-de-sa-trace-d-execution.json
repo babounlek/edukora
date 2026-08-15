@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-deduire-la-fonction-d-un-programme-a-partir-de-sa-trace-d-execution-terminale-c",
+  "meta": {
+    "titre": "Déduire la fonction d'un programme à partir de sa trace d'exécution",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique - trace d'exécution",
+    "tags": ["trace d'exécution", "algorithme", "débogage"],
+    "duree_estimee_min": 20,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un sujet d'examen te donne parfois un algorithme sans dire ce qu'il fait : à toi de le découvrir. Deviner à la lecture rapide donne souvent la mauvaise réponse, surtout si l'algorithme contient une erreur. La seule méthode fiable est de le faire tourner à la main, ligne par ligne, en notant l'état réel des variables à chaque étape."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Lire un algorithme (affectation, boucle Pour, structure Si)", "Savoir ce qu'est une variable et ce que signifie l'affecter"]
+    },
+    {
+      "type": "regle",
+      "titre": "Faire la trace d'un programme pour en déduire sa fonction",
+      "contenu_markdown": "Faire la trace d'un programme consiste à simuler son exécution pas à pas : pour chaque ligne exécutée, on note la valeur de chaque variable après cette ligne, et ce qui est éventuellement affiché à l'écran. On choisit un jeu de données concret (fourni par l'énoncé ou inventé), on déroule les lignes dans l'ordre réel d'exécution (en respectant les boucles et les conditions), puis on observe le résultat final pour en déduire ce que fait réellement le programme - qui n'est pas toujours ce que son nom de variable ou son intention apparente suggère.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'algorithme suivant est censé calculer le minimum d'un tableau Tab de 5 entiers :\n\n```\nTrv <- 0\nPour i allant de 1 à 5 faire\n    Si Tab[i] < Trv alors\n        Trv <- Tab[i]\n    Finsi\nFinpour\n```\n\nFaire la trace de cet algorithme pour Tab = [5, 7, 1, 2, 6], puis déduire ce qu'il fait réellement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les variables à suivre et leur valeur initiale",
+          "justification": "Avant la boucle, une seule instruction s'exécute : l'initialisation.",
+          "resultat_markdown": "Trv = 0 (avant d'entrer dans la boucle)"
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler chaque tour de boucle en testant la condition avant de décider si Trv change",
+          "justification": "La condition `Tab[i] < Trv` doit être évaluée avec la valeur COURANTE de Trv, pas avec la valeur attendue - c'est le piège de cet algorithme.",
+          "resultat_markdown": "| i | Tab[i] | Tab[i] < Trv ? | Trv après |\n|---|--------|----------------|-----------|\n| 1 | 5      | 5 < 0 ? Non    | 0         |\n| 2 | 7      | 7 < 0 ? Non    | 0         |\n| 3 | 1      | 1 < 0 ? Non    | 0         |\n| 4 | 2      | 2 < 0 ? Non    | 0         |\n| 5 | 6      | 6 < 0 ? Non    | 0         |"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer le résultat obtenu (Trv = 0 à la fin) avec ce que l'algorithme est censé calculer",
+          "justification": "Le vrai minimum de [5, 7, 1, 2, 6] est 1, pas 0 : la trace révèle que l'algorithme ne fait pas ce qu'il prétend faire.",
+          "resultat_markdown": "Trv vaut 0 à la fin, alors qu'aucune valeur du tableau ne vaut 0 : le résultat est faux."
+        }
+      ],
+      "conclusion_markdown": "L'intention de l'algorithme est de calculer le minimum du tableau, mais son initialisation `Trv <- 0` est erronée : comme toutes les valeurs du tableau sont positives, aucune n'est jamais strictement inférieure à 0, donc Trv n'est jamais mis à jour. La trace montre que l'algorithme, tel qu'écrit, ne calcule pas correctement le minimum."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Sauter des tours de boucle et raisonner « de tête » plutôt que de dérouler chaque itération dans un tableau",
+          "pourquoi_faux": "Une erreur peut se cacher précisément dans un tour de boucle qu'on a sauté - c'est exactement le cas de l'exemple ci-dessus, où le bug n'apparaît qu'en vérifiant chaque comparaison une par une.",
+          "correction_markdown": "Construis systématiquement un tableau avec une ligne par tour de boucle et une colonne par variable suivie, même quand la boucle semble courte."
+        },
+        {
+          "erreur_markdown": "Conclure sur la fonction de l'algorithme à partir de son intention apparente (le nom des variables, les commentaires) plutôt qu'à partir du résultat réellement obtenu par la trace",
+          "pourquoi_faux": "Un nom de variable comme « Trv » (pour minimum) ou un commentaire suggère ce que le programmeur voulait faire, pas nécessairement ce que le code fait vraiment s'il contient une erreur.",
+          "correction_markdown": "Fie-toi uniquement au résultat obtenu à la fin de ta trace, jamais au nom des variables ni à l'intention supposée du programme."
+        },
+        {
+          "erreur_markdown": "Oublier de réévaluer une condition avec la valeur COURANTE d'une variable, et utiliser à la place sa valeur finale ou attendue",
+          "pourquoi_faux": "Une condition comme `Tab[i] < Trv` doit être testée avec la valeur de Trv telle qu'elle est À CE MOMENT PRÉCIS de la boucle, qui peut différer de sa valeur après la boucle entière.",
+          "correction_markdown": "Mets à jour ta colonne « valeur courante » avant de tester la condition du tour suivant, jamais après."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Faire la trace de l'algorithme suivant pour n = 3, puis dire ce qu'il calcule :\n\n```\nS <- 0\nPour i allant de 1 à n faire\n    S <- S + i\nFinpour\n```",
+          "solution_markdown": "| i | S avant | S après |\n|---|---------|---------|\n| 1 | 0       | 1       |\n| 2 | 1       | 3       |\n| 3 | 3       | 6       |\n\nÀ la fin, S = 6 = 1 + 2 + 3. L'algorithme **calcule la somme des entiers de 1 à n**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Faire la trace de l'algorithme suivant pour Tab = [4, 9, 2, 7], puis dire ce qu'il calcule :\n\n```\nCpt <- 0\nPour i allant de 1 à 4 faire\n    Si Tab[i] > 5 alors\n        Cpt <- Cpt + 1\n    Finsi\nFinpour\n```",
+          "solution_markdown": "| i | Tab[i] | Tab[i] > 5 ? | Cpt après |\n|---|--------|--------------|-----------|\n| 1 | 4      | Non          | 0         |\n| 2 | 9      | Oui          | 1         |\n| 3 | 2      | Non          | 1         |\n| 4 | 7      | Oui          | 2         |\n\nÀ la fin, Cpt = 2. L'algorithme **compte le nombre de valeurs du tableau strictement supérieures à 5**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'algorithme ci-dessous est censé calculer le maximum d'un tableau. Faire sa trace pour Tab = [3, 8, 1, 6], identifier s'il contient une erreur, et si oui, la corriger :\n\n```\nMax <- 100\nPour i allant de 1 à 4 faire\n    Si Tab[i] > Max alors\n        Max <- Tab[i]\n    Finsi\nFinpour\n```",
+          "solution_markdown": "| i | Tab[i] | Tab[i] > Max ? | Max après |\n|---|--------|-----------------|-----------|\n| 1 | 3      | 3 > 100 ? Non   | 100       |\n| 2 | 8      | 8 > 100 ? Non   | 100       |\n| 3 | 1      | 1 > 100 ? Non   | 100       |\n| 4 | 6      | 6 > 100 ? Non   | 100       |\n\nÀ la fin, Max = 100, alors que le vrai maximum de [3, 8, 1, 6] est 8 : l'algorithme est erroné. Le bug vient de l'initialisation `Max <- 100`, une valeur trop grande pour jamais être dépassée par les valeurs du tableau. **Correction** : initialiser Max avec la première valeur du tableau (`Max <- Tab[1]`) et faire démarrer la boucle à i = 2, ou initialiser Max avec une valeur volontairement très petite si aucune borne n'est connue à l'avance."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Faire une trace, c'est dérouler l'algorithme ligne par ligne en notant la valeur de chaque variable à chaque étape - jamais de raccourci mental.",
+        "Construis un tableau avec une ligne par tour de boucle : c'est la seule façon fiable de ne rater aucun bug.",
+        "Le résultat obtenu par la trace fait foi, jamais l'intention supposée du programme ou le nom de ses variables.",
+        "Une initialisation mal choisie (0 pour un minimum, une valeur trop grande pour un maximum) est le bug le plus fréquent sur ce type d'exercice.",
+        "Au BAC, cette compétence sert aussi bien à décrire ce que fait un algorithme fourni sans commentaire qu'à débusquer une erreur dans un algorithme censé faire une chose précise."
+      ]
+    }
+  ]
+}

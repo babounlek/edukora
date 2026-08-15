@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-d-ajout-de-colonne-a-une-table-existante-alter-table-add-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL d'ajout de colonne à une table existante (ALTER TABLE... ADD)",
+    "cours_id": "cours-ecrire-une-requete-sql-d-ajout-de-colonne-a-une-table-existante-alter-table-add-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Langage SQL — Définition de données (LDD)",
+    "tags": [
+      "ALTER TABLE",
+      "ADD COLUMN",
+      "VARCHAR"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données vit et évolue : un besoin nouveau (comme suivre la classe de chaque élève) impose souvent d'ajouter une colonne à une table déjà en service, sans tout recréer."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître l'instruction CREATE TABLE et les types de données SQL de base (INT, VARCHAR)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ajouter une colonne à une table existante : ALTER TABLE ... ADD",
+      "contenu_markdown": "L'instruction `ALTER TABLE table ADD nomColonne type;` ajoute une nouvelle colonne à une table déjà créée, sans supprimer les données déjà présentes (les lignes existantes reçoivent la valeur NULL pour cette nouvelle colonne, sauf valeur par défaut précisée).",
+      "formule_principale": "ALTER TABLE table ADD nomColonne type;",
+      "variantes": [
+        {
+          "nom": "Suppression d'une colonne",
+          "quand_utiliser": "Quand on veut retirer une colonne devenue inutile.",
+          "contenu_markdown": "`ALTER TABLE table DROP COLUMN nomColonne;` supprime définitivement une colonne et toutes les valeurs qu'elle contenait."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête SQL permettant d'ajouter la colonne Classe (taille variable, maximale 12) à la table Eleve.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et le nom de la colonne à ajouter",
+          "justification": "La table Eleve doit recevoir une nouvelle colonne Classe.",
+          "resultat_markdown": "Table Eleve, colonne Classe"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le type adapté à \"taille variable, maximale 12\"",
+          "justification": "VARCHAR(n) désigne une chaîne de longueur variable avec une taille maximale n.",
+          "resultat_markdown": "VARCHAR(12)"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la requête complète",
+          "justification": "ALTER TABLE ... ADD ajoute la colonne à la structure existante.",
+          "resultat_markdown": "`ALTER TABLE Eleve ADD Classe VARCHAR(12);`"
+        }
+      ],
+      "conclusion_markdown": "ALTER TABLE table ADD colonne type; ajoute une colonne à une table existante ; VARCHAR(n) convient pour une chaîne de taille variable et maximale n."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser CREATE TABLE au lieu de ALTER TABLE, en pensant \"recréer\" la table avec la nouvelle colonne",
+          "pourquoi_faux": "CREATE TABLE créerait une toute nouvelle table (ou provoquerait une erreur si Eleve existe déjà), ce qui n'est pas l'objectif ; il faut modifier la table EXISTANTE, donc utiliser ALTER TABLE.",
+          "correction_markdown": "Réserve CREATE TABLE à la création d'une table qui n'existe pas encore ; utilise ALTER TABLE pour modifier une table déjà créée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête ajoutant une colonne Email de type VARCHAR(50) à la table Eleve.",
+          "solution_markdown": "`ALTER TABLE Eleve ADD Email VARCHAR(50);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête ajoutant une colonne Moyenne de type nombre décimal à la table Eleve.",
+          "solution_markdown": "`ALTER TABLE Eleve ADD Moyenne FLOAT;` (ou DECIMAL/DOUBLE selon le SGBD utilisé)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quel est l'inconvénient d'ajouter une colonne à une table qui contient déjà des milliers de lignes, du point de vue de la cohérence des données ?",
+          "solution_markdown": "Toutes les lignes déjà existantes recevront la valeur NULL pour cette nouvelle colonne (sauf si une valeur par défaut est précisée avec DEFAULT), ce qui peut créer des données incomplètes à corriger a posteriori (il faudra alors mettre à jour chaque ligne existante avec un UPDATE pour renseigner la nouvelle information, ce qui peut être long et sujet à erreurs sur de gros volumes)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ALTER TABLE table ADD colonne type; ajoute une colonne à une table existante.",
+        "Les lignes déjà présentes reçoivent NULL pour la nouvelle colonne (sauf valeur par défaut).",
+        "VARCHAR(n) convient pour une chaîne de caractères de taille variable et maximale n.",
+        "Ne pas confondre avec CREATE TABLE, réservé à la création d'une toute nouvelle table."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-reconnaitre-ellipse-relation-complexe-c",
+  "meta": {
+    "titre": "Reconnaître une ellipse à partir d'une relation en z et z-barre",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Nombres complexes et coniques",
+    "duree_estimee_min": 25,
+    "tags": ["nombres complexes", "affixe", "ellipse", "forme réduite"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qA1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une relation écrite avec $z$ et $\\bar z$ ressemble à un casse-tête abstrait, mais elle cache presque toujours une figure géométrique bien connue - cercle, ellipse, droite. La clé consiste à revenir aux coordonnées cartésiennes $x$ et $y$, terrain familier où les identités remarquables et la complétion du carré suffisent à révéler la figure."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Écriture algébrique d'un nombre complexe z=x+iy", "Relations z*z-barre=x²+y² et z+z-barre=2x", "Complétion du carré et forme réduite d'une ellipse"]
+    },
+    {
+      "type": "regle",
+      "titre": "Revenir aux coordonnées réelles",
+      "contenu_markdown": "Pour déterminer la nature géométrique d'un ensemble de points défini par une relation portant sur l'affixe $z=x+iy$ et son conjugué $\\bar z=x-iy$ :\n\n1. Remplacer $z\\bar z$ par $x^2+y^2$ et $z+\\bar z$ par $2x$ (les deux identités de base).\n2. Développer l'équation obtenue en $x$ et $y$.\n3. Compléter le carré sur chaque variable pour faire apparaître une forme réduite $\\dfrac{(x-x_0)^2}{a^2}+\\dfrac{(y-y_0)^2}{b^2}=1$, caractéristique d'une ellipse de centre $(x_0;y_0)$.\n\nUne fois la forme réduite obtenue, le plus grand des deux dénominateurs indique la direction du grand axe, et permet de calculer $c^2=|a^2-b^2|$ (grand carré moins petit carré), l'excentricité $e=c/(\\text{grand demi-axe})$, les foyers et les directrices.",
+      "formule_principale": "z\\bar z = x^2+y^2,\\quad z+\\bar z = 2x",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la nature de l'ensemble $(G)$ des points d'affixe $z$ vérifiant $5z\\bar z+(z+\\bar z+1)^2-1=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser z=x+iy et remplacer z*z-barre et z+z-barre",
+          "justification": "Identités de base pour revenir aux coordonnées réelles.",
+          "resultat_markdown": "$5(x^2+y^2)+(2x+1)^2-1=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Développer et regrouper",
+          "justification": "On simplifie pour obtenir une équation polynomiale en x et y.",
+          "resultat_markdown": "$5x^2+5y^2+4x^2+4x+1-1=0 \\Rightarrow 9x^2+4x+5y^2=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Compléter le carré en x",
+          "justification": "Pour isoler une forme reconnaissable.",
+          "resultat_markdown": "$9\\left(x+\\dfrac29\\right)^2-\\dfrac49+5y^2=0 \\Rightarrow 9\\left(x+\\dfrac29\\right)^2+5y^2=\\dfrac49$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser pour obtenir la forme réduite",
+          "justification": "On veut une somme de deux carrés divisés égale à 1.",
+          "resultat_markdown": "$\\dfrac{(x+\\frac29)^2}{4/81}+\\dfrac{y^2}{4/45}=1$"
+        }
+      ],
+      "conclusion_markdown": "On reconnaît une ellipse de centre $\\left(-\\frac29;0\\right)$. Comme le dénominateur en $y$ est plus grand, le grand axe est vertical ; on en déduit ensuite excentricité, foyers et directrices par les formules usuelles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre les rôles de a² et b² et se tromper sur l'orientation du grand axe.",
+          "pourquoi_faux": "Dans la forme réduite d'une ellipse, c'est le plus grand dénominateur qui correspond au grand axe, pas nécessairement celui associé à x.",
+          "correction_markdown": "Compare toujours numériquement les deux dénominateurs avant de conclure sur l'orientation du grand axe."
+        },
+        {
+          "erreur_markdown": "Oublier de re-décaler le centre de l'ellipse après la complétion du carré, et donner par erreur des foyers ou directrices centrés à l'origine.",
+          "pourquoi_faux": "La complétion du carré en x fait apparaître un centre différent de l'origine dès que l'équation initiale contient un terme linéaire en x (ou en y) : ignorer ce décalage fausse toutes les coordonnées calculées ensuite.",
+          "correction_markdown": "Repère explicitement les coordonnées du centre $(x_0;y_0)$ dès que la forme réduite est obtenue, et reporte ce décalage sur les foyers et les directrices."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer la nature de l'ensemble des points d'affixe z vérifiant $4z\\bar z+(z+\\bar z)^2=4$.",
+          "solution_markdown": "$z\\bar z=x^2+y^2$, $z+\\bar z=2x$. L'équation devient $4(x^2+y^2)+4x^2=4$, soit $8x^2+4y^2=4$, puis $\\dfrac{x^2}{1/2}+\\dfrac{y^2}{1}=1$. C'est une ellipse centrée à l'origine, de grand axe vertical (dénominateur $1>1/2$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer la nature de l'ensemble des points d'affixe z vérifiant $z\\bar z-(z+\\bar z)=3$.",
+          "solution_markdown": "$x^2+y^2-2x=3$. On complète le carré : $(x-1)^2-1+y^2=3$, soit $(x-1)^2+y^2=4$. C'est un cercle de centre $(1;0)$ et de rayon $2$ (cas particulier d'ellipse avec $a=b$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer la nature de l'ensemble des points d'affixe z vérifiant $3z\\bar z+2(z+\\bar z)-(z-\\bar z)^2/(-4)=1$, sachant que $(z-\\bar z)^2=-4y^2$.",
+          "solution_markdown": "On remplace $(z-\\bar z)^2$ par $-4y^2$ : le terme $-(z-\\bar z)^2/(-4)$ devient $-(-4y^2)/(-4)=-y^2$. L'équation devient $3(x^2+y^2)+2(2x)-y^2=1$, soit $3x^2+3y^2+4x-y^2=1$, soit $3x^2+4x+2y^2=1$. On complète le carré : $3\\left(x^2+\\dfrac43x\\right)+2y^2=1 \\Rightarrow 3\\left[(x+\\dfrac23)^2-\\dfrac49\\right]+2y^2=1 \\Rightarrow 3(x+\\dfrac23)^2+2y^2=1+\\dfrac43=\\dfrac73$. Forme réduite : $\\dfrac{(x+2/3)^2}{7/9}+\\dfrac{y^2}{7/6}=1$. C'est une ellipse de centre $\\left(-\\dfrac23;0\\right)$, de grand axe vertical (dénominateur $7/6>7/9$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une relation en z et z-barre, remplace systématiquement z*z-barre par x²+y² et z+z-barre par 2x avant toute autre manipulation.",
+        "Développe puis complète le carré sur chaque variable pour faire apparaître la forme réduite caractéristique d'une conique.",
+        "Le plus grand des deux dénominateurs de la forme réduite indique la direction du grand axe - compare-les explicitement, ne devine pas.",
+        "N'oublie jamais de reporter le décalage du centre (issu de la complétion du carré) sur le calcul des foyers et des directrices.",
+        "Cette méthode se généralise à toute conique définie par une relation complexe : selon les coefficients obtenus, on peut aussi tomber sur un cercle (cas particulier d'ellipse) ou une autre courbe - reste attentif à la forme finale plutôt que d'anticiper le résultat."
+      ]
+    }
+  ]
+}

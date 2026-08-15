@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-traduire-l-instruction-de-lecture-lire-de-l-algorithmique-en-scanf-du-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire l'instruction de lecture (Lire) de l'algorithmique en scanf() du langage C",
+    "cours_id": "cours-traduire-l-instruction-de-lecture-lire-de-l-algorithmique-en-scanf-du-langage-c-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Traduction algorithme vers C",
+    "tags": [
+      "scanf",
+      "Lire",
+      "saisie clavier"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex5-q2-1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'instruction Lire() du pseudocode masque une subtilité du langage C : pour remplir une variable depuis le clavier, il ne suffit pas de donner son nom, il faut donner l'adresse mémoire où stocker la valeur saisie."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la déclaration d'un tableau et d'une variable simple en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire l'instruction Lire() en scanf() du langage C",
+      "contenu_markdown": "En pseudocode, `Lire(variable)` lit une valeur saisie au clavier et la stocke dans `variable`. En langage C, l'équivalent est `scanf(\"%d\", &variable);` pour un entier (`%f` pour un réel, `%c` pour un caractère...), où le symbole **&** transmet l'**adresse mémoire** de la variable à remplir, et non sa valeur.",
+      "formule_principale": "scanf(\"%d\", &variable);",
+      "variantes": [
+        {
+          "nom": "Lecture dans une case de tableau",
+          "quand_utiliser": "Quand on lit une valeur dans un élément de tableau plutôt qu'une variable simple.",
+          "contenu_markdown": "`scanf(\"%d\", &Tab[i]);` : le nom du tableau indexé (Tab[i]) désigne déjà un emplacement mémoire précis, on lui applique donc le & comme pour une variable simple."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire l'instruction Lire(Tab[i]) en langage C.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type de la valeur à lire",
+          "justification": "Tab est déclaré comme un tableau d'entiers.",
+          "resultat_markdown": "Type entier → format %d"
+        },
+        {
+          "numero": 2,
+          "action": "Construire l'appel scanf avec l'adresse de la case ciblée",
+          "justification": "Le symbole & transmet l'adresse mémoire de Tab[i] à remplir.",
+          "resultat_markdown": "`scanf(\"%d\", &Tab[i]);`"
+        }
+      ],
+      "conclusion_markdown": "Lire(variable) se traduit par scanf(\"%d\", &variable); pour un entier, le & étant indispensable pour transmettre l'adresse mémoire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `scanf(\"%d\", Tab[i]);` en oubliant le symbole &",
+          "pourquoi_faux": "Sans le &, scanf reçoit la VALEUR de Tab[i] (et non son adresse), et ne sait donc pas où écrire la valeur saisie ; ce type d'erreur provoque un comportement indéfini ou un plantage du programme à l'exécution.",
+          "correction_markdown": "N'oublie jamais le & devant une variable simple ou une case de tableau passée à scanf, sauf dans de rares cas particuliers (comme un nom de tableau seul, qui décrit déjà une adresse) hors programme de Terminale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire Lire(age) en C, sachant que age est un entier.",
+          "solution_markdown": "`scanf(\"%d\", &age);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire Lire(moyenne) en C, sachant que moyenne est un nombre réel (float).",
+          "solution_markdown": "`scanf(\"%f\", &moyenne);` — le spécificateur de format change selon le type (%d pour un entier, %f pour un réel)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi le symbole & est-il nécessaire pour scanf mais absent dans un appel comme printf(\"%d\", age); ?",
+          "solution_markdown": "scanf doit MODIFIER la variable (y écrire une valeur saisie), il a donc besoin de connaître son adresse mémoire pour pouvoir y accéder en écriture, d'où le &. printf, à l'inverse, ne fait que LIRE la valeur actuelle de la variable pour l'afficher, il lui suffit donc de recevoir directement cette valeur, sans passer par son adresse. Cette différence illustre la distinction fondamentale, en C, entre passage par valeur (lecture seule) et passage par adresse (permettant la modification)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lire(variable) se traduit par scanf(\"%d\", &variable); pour un entier.",
+        "Le symbole & transmet l'adresse mémoire, indispensable pour que scanf puisse écrire la valeur saisie.",
+        "Le spécificateur de format (%d, %f, %c...) dépend du type de la variable.",
+        "scanf a besoin de l'adresse (écriture) là où printf se contente de la valeur (lecture)."
+      ]
+    }
+  ]
+}

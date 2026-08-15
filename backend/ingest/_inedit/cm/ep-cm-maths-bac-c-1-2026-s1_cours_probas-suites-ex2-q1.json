@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-probas-conditionnelles-suites-recurrentes-bac-c",
+  "meta": {
+    "titre": "Probabilités conditionnelles et suites récurrentes",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Probabilités et suites",
+    "duree_estimee_min": 30,
+    "tags": ["probabilités conditionnelles", "suite géométrique explicite"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex2-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« La probabilité de gagner demain dépend de si j'ai gagné aujourd'hui » : dès qu'un énoncé décrit une chaîne d'événements qui s'influencent d'une étape à l'autre, c'est le signal d'un exercice combinant probabilités totales et suite récurrente. La méthode est toujours la même, et elle mène presque toujours à une suite géométrique auxiliaire qu'on sait résoudre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Formule des probabilités totales",
+        "Probabilité conditionnelle $P_A(B)$",
+        "Suite géométrique : définition, terme général, somme des premiers termes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la récurrence probabiliste à la suite géométrique",
+      "contenu_markdown": "Quand un événement au rang $n+1$ dépend de l'issue au rang $n$ (avec deux issues possibles, de probabilités conditionnelles connues), la formule des probabilités totales donne : $P_{n+1}=P_n\\times P_{A_n}(A_{n+1})+(1-P_n)\\times P_{\\overline{A_n}}(A_{n+1})$, qui se réécrit sous la forme affine $P_{n+1}=qP_n+c$.\n\nPour résoudre cette récurrence, on introduit la suite auxiliaire $Q_n=P_n-\\ell$, où $\\ell=\\dfrac{c}{1-q}$ est le point fixe de la relation (solution de $\\ell=q\\ell+c$). La suite $(Q_n)$ est alors géométrique de raison $q$, ce qui permet d'obtenir $P_n$ explicitement.",
+      "formule_principale": "P_{n+1}=qP_n+c \\ \\Longrightarrow\\ Q_n=P_n-\\ell \\text{ est géométrique de raison } q, \\ \\ell=\\dfrac{c}{1-q}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un joueur gagne son premier match avec probabilité $P_1=\\dfrac25$. S'il gagne un match, il gagne le suivant avec probabilité $\\dfrac34$ ; s'il perd, avec probabilité $\\dfrac13$. Établir une relation de récurrence entre $P_{n+1}$ et $P_n$, puis exprimer $P_n$ en fonction de $n$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la formule des probabilités totales",
+          "justification": "On distingue selon que le $n$-ième match a été gagné (probabilité $P_n$) ou perdu (probabilité $1-P_n$).",
+          "resultat_markdown": "$P_{n+1}=P_n\\times\\dfrac34+(1-P_n)\\times\\dfrac13$"
+        },
+        {
+          "numero": 2,
+          "action": "Développer et regrouper les termes en $P_n$",
+          "justification": "On factorise pour obtenir la forme affine $P_{n+1}=qP_n+c$.",
+          "resultat_markdown": "$P_{n+1}=\\dfrac{5}{12}P_n+\\dfrac13$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le point fixe $\\ell$",
+          "justification": "$\\ell$ est solution de $\\ell=\\dfrac{5}{12}\\ell+\\dfrac13$.",
+          "resultat_markdown": "$\\ell=\\dfrac47$"
+        },
+        {
+          "numero": 4,
+          "action": "Poser $Q_n=P_n-\\dfrac47$ et vérifier que $(Q_n)$ est géométrique",
+          "justification": "$Q_{n+1}=P_{n+1}-\\dfrac47=\\dfrac{5}{12}P_n-\\dfrac{5}{21}=\\dfrac{5}{12}\\left(P_n-\\dfrac47\\right)=\\dfrac{5}{12}Q_n$.",
+          "resultat_markdown": "$(Q_n)$ géométrique de raison $\\dfrac{5}{12}$, $Q_1=P_1-\\dfrac47=-\\dfrac{6}{35}$"
+        },
+        {
+          "numero": 5,
+          "action": "En déduire $P_n$",
+          "justification": "$Q_n=Q_1\\times\\left(\\dfrac{5}{12}\\right)^{n-1}$, puis $P_n=Q_n+\\dfrac47$.",
+          "resultat_markdown": "$P_n=\\dfrac47-\\dfrac{6}{35}\\left(\\dfrac{5}{12}\\right)^{n-1}$"
+        }
+      ],
+      "conclusion_markdown": "$P_{n+1}=\\dfrac{5}{12}P_n+\\dfrac13$, et pour tout $n\\geqslant1$, $P_n=\\dfrac47-\\dfrac{6}{35}\\left(\\dfrac{5}{12}\\right)^{n-1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se tromper d'indice de départ pour la suite auxiliaire (calculer $Q_0$ au lieu de $Q_1$ quand la suite $(P_n)$ commence à $n=1$).",
+          "pourquoi_faux": "Le premier terme de $(Q_n)$ doit correspondre exactement au premier terme réellement défini de $(P_n)$, sinon toute l'expression explicite est décalée.",
+          "correction_markdown": "Toujours vérifier à quel indice démarre la suite $(P_n)$ dans l'énoncé avant de calculer le premier terme de la suite auxiliaire."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier numériquement le résultat obtenu (par exemple recalculer $P_2$ à partir de la formule explicite et comparer à la valeur trouvée directement).",
+          "pourquoi_faux": "Une erreur de signe dans le calcul du point fixe $\\ell$ ou de la raison $q$ passe facilement inaperçue sans ce contrôle.",
+          "correction_markdown": "Toujours substituer une petite valeur de $n$ (comme $n=1$ ou $n=2$) dans la formule explicite trouvée et comparer au résultat calculé directement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Une suite $(u_n)$ vérifie $u_{n+1}=\\dfrac12u_n+3$ pour tout $n\\geqslant0$, avec $u_0=1$. Calculer $u_1$ et $u_2$.",
+          "solution_markdown": "$u_1=\\dfrac12(1)+3=3{,}5$. $u_2=\\dfrac12(3{,}5)+3=4{,}75$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Avec la suite de l'exercice précédent, poser $v_n=u_n-6$ et montrer que $(v_n)$ est géométrique. En déduire $u_n$ en fonction de $n$.",
+          "solution_markdown": "Le point fixe est $\\ell=\\dfrac12\\ell+3\\Rightarrow\\ell=6$. $v_{n+1}=u_{n+1}-6=\\dfrac12u_n+3-6=\\dfrac12u_n-3=\\dfrac12(u_n-6)=\\dfrac12v_n$ : $(v_n)$ est géométrique de raison $\\dfrac12$, $v_0=1-6=-5$. Donc $v_n=-5\\times\\left(\\dfrac12\\right)^n$ et $u_n=6-5\\times\\left(\\dfrac12\\right)^n$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Une machine fonctionne correctement le premier jour avec probabilité $0{,}9$. Si elle fonctionne un jour, elle fonctionne encore le lendemain avec probabilité $0{,}8$ ; si elle est en panne, elle est réparée et refonctionne le lendemain avec probabilité $0{,}6$. En notant $P_n$ la probabilité qu'elle fonctionne le $n$-ième jour, établir la relation de récurrence entre $P_{n+1}$ et $P_n$, puis exprimer $P_n$ en fonction de $n$.",
+          "solution_markdown": "$P_{n+1}=P_n\\times0{,}8+(1-P_n)\\times0{,}6=0{,}2P_n+0{,}6$. Point fixe : $\\ell=0{,}2\\ell+0{,}6\\Rightarrow\\ell=0{,}75$. En posant $Q_n=P_n-0{,}75$ : $(Q_n)$ géométrique de raison $0{,}2$, $Q_1=0{,}9-0{,}75=0{,}15$. Donc $P_n=0{,}75+0{,}15\\times(0{,}2)^{n-1}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une chaîne d'événements où l'issue au rang $n+1$ dépend de l'issue au rang $n$ se traite par la formule des probabilités totales.",
+        "Cette formule mène toujours à une relation affine $P_{n+1}=qP_n+c$.",
+        "Le point fixe $\\ell=\\dfrac{c}{1-q}$ (valable si $q\\neq1$) permet de construire une suite auxiliaire géométrique $Q_n=P_n-\\ell$.",
+        "$(Q_n)$ a pour raison $q$ (la même que la relation de récurrence de $(P_n)$).",
+        "Ne jamais oublier de recalculer le premier terme de $(Q_n)$ à partir du VRAI premier terme de $(P_n)$.",
+        "Au BAC : cette suite de questions (calcul numérique, relation de récurrence, suite auxiliaire) est un enchaînement classique qui teste la même méthode à trois niveaux de généralité croissante."
+      ]
+    }
+  ]
+}

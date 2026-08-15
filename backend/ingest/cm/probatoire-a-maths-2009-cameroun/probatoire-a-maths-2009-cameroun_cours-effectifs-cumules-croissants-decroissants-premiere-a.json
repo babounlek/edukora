@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-effectifs-cumules-croissants-decroissants-premiere-a",
+  "meta": {
+    "titre": "Construire les tableaux d'effectifs cumulés croissants et décroissants",
+    "cours_id": "cours-effectifs-cumules-croissants-decroissants-premiere-a",
+    "matiere": "Mathématiques",
+    "niveau": "Première A (Probatoire)",
+    "sous_theme": "Statistiques - effectifs cumulés (les deux sens)",
+    "tags": ["effectif cumulé croissant", "effectif cumulé décroissant"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-a-maths-2009-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-a-maths-2009-cameroun_exercice_2_q1c"
+  },
+  "sections": {
+    "accroche": "Les effectifs cumulés croissants et décroissants répondent à deux questions symétriques : combien d'individus sont en dessous d'une borne, et combien sont au-dessus — la seconde se construit en remontant le tableau depuis la fin plutôt qu'en descendant depuis le début.",
+    "prerequis": ["Effectif de chaque classe", "Addition simple"],
+    "regle": {
+      "titre": "Construction des deux types d'effectifs cumulés",
+      "contenu_markdown": "L'effectif cumulé croissant (ECC) en une borne $b$ compte tous les individus dont la valeur est inférieure à $b$ : il se construit en cumulant les effectifs depuis la PREMIÈRE classe vers la dernière. L'effectif cumulé décroissant (ECD) en une borne $b$ compte tous les individus dont la valeur est supérieure ou égale à $b$ : il se construit en cumulant les effectifs depuis la DERNIÈRE classe vers la première (en remontant). Pour toute borne intermédiaire, $\\text{ECC}+\\text{ECD}$ (calculés à la même borne mais avec la convention < / ≥) est légèrement différent selon la convention exacte adoptée, mais aux bornes extrêmes, $\\text{ECC}(\\text{borne inf. de la 1ère classe})=0$ et $\\text{ECD}(\\text{borne inf. de la 1ère classe})=\\text{effectif total}$.",
+      "formule_principale": "ECC : cumul depuis la première classe (croissant) ; ECD : cumul depuis la dernière classe (décroissant)",
+      "variantes": ["Le point d'intersection des deux polygones cumulés (croissant et décroissant), tracés sur un même graphique, donne une valeur approximative de la médiane de la série"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Effectifs de 3 classes : 6, 9, 5. Construire ECC et ECD.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "ECC (cumul croissant)", "justification": "depuis la première classe", "resultat_markdown": "6, 6+9=15, 15+5=20"},
+        {"numero": 2, "action": "ECD (cumul décroissant)", "justification": "depuis la dernière classe, en remontant", "resultat_markdown": "5, 5+9=14, 14+6=20"}
+      ],
+      "conclusion_markdown": "ECC : 6, 15, 20. ECD (dans le même ordre de classes) : 20, 14, 5."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Construire l'ECD en cumulant depuis la première classe (comme l'ECC), au lieu de partir de la dernière classe et remonter", "pourquoi_faux": "l'ECD représente un comptage en sens inverse (« au-dessus d'une borne »), donc il doit nécessairement être construit en partant de la fin du tableau, sinon le résultat obtenu est simplement une copie de l'ECC, pas un cumul décroissant", "correction_markdown": "Toujours commencer la construction de l'ECD par la DERNIÈRE classe du tableau, et remonter progressivement vers la première, en ajoutant à chaque étape l'effectif de la classe qu'on vient d'atteindre."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Effectifs de 4 classes : 10, 8, 12, 6. Construire ECC et ECD.", "solution_markdown": "ECC : 10, 18, 30, 36. ECD : 36, 26, 18, 6."}
+    ],
+    "synthese": "L'effectif cumulé croissant se construit en cumulant les effectifs depuis la première classe vers la dernière (comptage « en dessous de »), tandis que l'effectif cumulé décroissant se construit en cumulant depuis la dernière classe vers la première (comptage « au-dessus de »)."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-appliquer-linegalite-des-accroissements-finis-a-une-suite-recurrente-terminale-d",
+  "meta": {
+    "titre": "Appliquer l'inégalité des accroissements finis à une suite récurrente",
+    "cours_id": "cours-appliquer-linegalite-des-accroissements-finis-a-une-suite-recurrente-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Suites — convergence par contraction",
+    "tags": [
+      "inégalité des accroissements finis",
+      "suite récurrente",
+      "point fixe"
+    ],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex2-6"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'inégalité des accroissements finis transforme une majoration de la dérivée en une majoration de l'écart entre deux termes consécutifs d'une suite récurrente et sa limite pressentie."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Théorème de l'inégalité des accroissements finis",
+        "Notion de point fixe d'une fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la majoration de f' à l'inégalité de contraction",
+      "contenu_markdown": "Si $f$ est dérivable sur un intervalle $I$ contenant $\\ell$ (point fixe de $f$, i.e. $f(\\ell)=\\ell$) et $U_n$, et si $|f'(x)|\\le k$ sur $I$, alors l'inégalité des accroissements finis donne $|f(U_n)-f(\\ell)|\\le k|U_n-\\ell|$, c'est-à-dire $|U_{n+1}-\\ell|\\le k|U_n-\\ell|$ (car $f(\\ell)=\\ell$).",
+      "formule_principale": "|f'(x)|≤k sur I, ℓ,Un∈I ⟹ |U(n+1)-ℓ|≤k|Un-ℓ|",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f(x)=√(x+2), point fixe ℓ=2 (car f(2)=2), |f'(x)|≤1/4 sur [1;3], Un∈[1;3]. Majorer |U(n+1)-2|.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les éléments de l'inégalité des accroissements finis",
+          "justification": "f dérivable sur [1;3], Un et ℓ=2 dans [1;3], |f'|≤1/4.",
+          "resultat_markdown": "Conditions réunies pour appliquer le théorème"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer l'inégalité entre Un et ℓ",
+          "justification": "|f(Un)-f(2)|≤(1/4)|Un-2|.",
+          "resultat_markdown": "|f(Un)-f(2)|≤(1/4)|Un-2|"
+        },
+        {
+          "numero": 3,
+          "action": "Remplacer f(Un) et f(2)",
+          "justification": "f(Un)=U(n+1), f(2)=2 (point fixe).",
+          "resultat_markdown": "|U(n+1)-2|≤(1/4)|Un-2|"
+        }
+      ],
+      "conclusion_markdown": "On obtient une inégalité de contraction, base de la preuve de convergence vers 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer l'inégalité des accroissements finis sans vérifier que le point fixe ℓ appartient bien à l'intervalle où |f'| est majorée",
+          "pourquoi_faux": "Le théorème s'applique entre deux points de l'intervalle où la majoration de f' est valable : si ℓ n'y est pas, l'inégalité ne peut pas être établie de cette façon.",
+          "correction_markdown": "Toujours vérifier explicitement que le point fixe ℓ appartient au même intervalle que Un avant d'appliquer le théorème."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "f(3)=3 (point fixe), |f'|≤1/2 sur l'intervalle considéré. Écrire l'inégalité de contraction.",
+          "solution_markdown": "|U(n+1)-3|≤(1/2)|Un-3|."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi cette inégalité s'appelle-t-elle une inégalité de contraction ?",
+          "solution_markdown": "Parce qu'à chaque itération, l'écart à la limite est multiplié par un facteur k<1, donc il se réduit (se contracte) à chaque étape."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passerait-il si k≥1 dans cette inégalité ?",
+          "solution_markdown": "L'écart à la limite ne serait plus garanti de diminuer à chaque étape ; la méthode ne permettrait plus de conclure à la convergence vers ℓ par ce raisonnement (il faudrait k<1 strictement pour une contraction)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'inégalité des accroissements finis relie |f'(x)|≤k à |f(b)-f(a)|≤k|b-a|.",
+        "Appliquée entre Un et le point fixe ℓ de f, elle donne |U(n+1)-ℓ|≤k|Un-ℓ|.",
+        "Cette inégalité de contraction (avec k<1) est la clé de la preuve de convergence géométrique vers ℓ."
+      ]
+    }
+  ]
+}

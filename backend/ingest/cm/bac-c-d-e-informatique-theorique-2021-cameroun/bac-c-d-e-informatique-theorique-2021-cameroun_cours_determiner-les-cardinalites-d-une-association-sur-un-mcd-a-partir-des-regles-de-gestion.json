@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-determiner-les-cardinalites-d-une-association-sur-un-mcd-a-partir-des-regles-de-gestion-terminale-c",
+  "meta": {
+    "titre": "Déterminer les cardinalités d'une association sur un MCD à partir des règles de gestion",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Modélisation de données (Merise)",
+    "duree_estimee_min": 12,
+    "tags": [
+      "cardinalités",
+      "MCD",
+      "min,max"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un client peut-il louer plusieurs voitures ? Une voiture peut-elle être louée par plusieurs clients à la fois ? Les cardinalités répondent précisément à ces questions et conditionnent toute la suite de la modélisation (passage au MLD)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion d'association en MCD"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminer les cardinalités d'une association",
+      "contenu_markdown": "La **cardinalité** exprime, pour chaque entité participant à une association, le nombre minimum et maximum de fois qu'une occurrence de cette entité peut participer à l'association, sous la forme (min,max). Le minimum est généralement 0 (participation facultative) ou 1 (participation obligatoire) ; le maximum est généralement 1 (au plus une fois) ou n (plusieurs fois possibles). Les cardinalités se déterminent en lisant attentivement les règles de gestion données dans le cahier des charges.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer les cardinalités de l'association LOUER entre CLIENT et VOITURE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser la règle de gestion côté CLIENT",
+          "justification": "Il faut savoir combien de voitures un même client peut louer.",
+          "resultat_markdown": "Un client peut louer plusieurs voitures (au fil du temps) → cardinalité (1,n) côté CLIENT"
+        },
+        {
+          "numero": 2,
+          "action": "Analyser la règle de gestion côté VOITURE",
+          "justification": "Il faut savoir par combien de clients une même voiture peut être louée.",
+          "resultat_markdown": "Une voiture peut être louée par plusieurs clients (à des périodes différentes) → cardinalité (1,n) côté VOITURE"
+        }
+      ],
+      "conclusion_markdown": "La cardinalité (min,max) se lit du côté de chaque entité et s'appuie strictement sur les règles de gestion énoncées dans le cahier des charges."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le sens de lecture des cardinalités (attribuer la cardinalité \"côté client\" à la voiture)",
+          "pourquoi_faux": "La cardinalité placée près d'une entité répond à la question posée du point de vue de l'AUTRE entité (\"combien de fois CETTE occurrence de voiture participe-t-elle à l'association\"), pas du point de vue de l'entité elle-même.",
+          "correction_markdown": "Pose toujours la question complète : \"une occurrence de [entité X] participe combien de fois à l'association ?\" et place la réponse du côté de X."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une association ECRIRE entre AUTEUR et LIVRE, si chaque livre a exactement un seul auteur et chaque auteur peut écrire plusieurs livres, quelle est la cardinalité côté LIVRE ?",
+          "solution_markdown": "(1,1) côté LIVRE, puisque chaque livre est écrit par un seul auteur, ni plus ni moins."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la même association, quelle est la cardinalité côté AUTEUR ?",
+          "solution_markdown": "(0,n) ou (1,n) côté AUTEUR selon la règle de gestion : (0,n) si un auteur peut être enregistré sans avoir encore écrit de livre, (1,n) si tout auteur enregistré a nécessairement écrit au moins un livre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment la cardinalité maximale de chaque côté d'une association détermine-t-elle si l'association nécessite une table intermédiaire lors du passage au MLD ?",
+          "solution_markdown": "Si l'association est de type (1,n)/(1,n) des deux côtés (plusieurs-à-plusieurs), elle nécessite obligatoirement une table intermédiaire portant les deux clés étrangères (plus ses propriétés propres) car aucune des deux tables ne peut, à elle seule, stocker une clé étrangère unique vers l'autre. En revanche, si l'association est (0,n) ou (1,n) d'un côté et (0,1) ou (1,1) de l'autre, la clé de l'entité côté \"1\" migre simplement dans la table de l'entité côté \"n\", sans créer de table supplémentaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La cardinalité (min,max) exprime combien de fois une occurrence d'entité participe à l'association.",
+        "Elle se détermine strictement à partir des règles de gestion du cahier des charges.",
+        "La cardinalité placée près d'une entité répond à la question posée du point de vue de l'autre entité.",
+        "Une association (1,n)/(1,n) impose une table intermédiaire lors du passage au MLD."
+      ]
+    }
+  ]
+}

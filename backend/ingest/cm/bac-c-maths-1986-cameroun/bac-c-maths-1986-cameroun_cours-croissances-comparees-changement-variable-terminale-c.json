@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-croissances-comparees-changement-variable-terminale-c",
+  "meta": {
+    "titre": "Établir une croissance comparée par changement de variable t=ln x",
+    "cours_id": "cours-croissances-comparees-changement-variable-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Limites - croissances comparées, changement de variable",
+    "tags": ["croissance comparée", "changement de variable", "logarithme", "exponentielle"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_4_qB1b"
+  },
+  "sections": {
+    "accroche": "Une limite en (ln x)ⁿ/x se ramène toujours, par le changement de variable t=ln x, à la croissance comparée classique tⁿ/eᵗ, ce qui permet de démontrer rigoureusement un résultat qui semblerait sinon 'admis'.",
+    "prerequis": ["Changement de variable dans une limite", "Croissance comparée classique tⁿ/eᵗ→0", "Formule du binôme de Newton pour développer une puissance de somme"],
+    "regle": {
+      "titre": "Démontrer (ln x)ⁿ/x→0 par changement de variable",
+      "contenu_markdown": "Pour démontrer $\\lim_{x\\to+\\infty}\\dfrac{(\\ln x)^n}x=0$, poser $t=\\ln x$ (donc $x=e^t$, et $t\\to+\\infty$ quand $x\\to+\\infty$). L'expression devient $\\dfrac{t^n}{e^t}$, qui tend vers $0$ par le résultat classique de croissance comparée (l'exponentielle l'emporte sur toute puissance). Ce résultat, une fois établi pour $(\\ln x)^n$, s'étend à $(1+\\ln x)^n$ en développant par le binôme de Newton : chaque terme de la somme, contenant $(\\ln x)^k/x$ pour $k\\leqslant n$, tend vers $0$ par le même argument.",
+      "formule_principale": "$t=\\ln x\\Rightarrow\\dfrac{(\\ln x)^n}x=\\dfrac{t^n}{e^t}\\to0$ (croissance comparée)",
+      "variantes": ["Le même changement de variable s'utilise pour toute limite en +∞ impliquant lnx et x, quelle que soit la puissance"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Démontrer que $\\lim_{x\\to+\\infty}\\dfrac{(\\ln x)^2}{\\sqrt x}=0$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser t=ln x", "justification": "changement de variable, x=e^t", "resultat_markdown": "expression devient $\\dfrac{t^2}{e^{t/2}}$"},
+        {"numero": 2, "action": "Reconnaître la forme de croissance comparée", "justification": "t²/(e^{t/2})=t²/(e^{t/2}), avec e^{t/2}→+∞ plus vite que t²", "resultat_markdown": "$\\dfrac{t^2}{e^{t/2}}\\to0$ quand $t\\to+\\infty$"}
+      ],
+      "conclusion_markdown": "La limite vaut 0."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Admettre le résultat (ln x)ⁿ/x→0 sans le démontrer par changement de variable quand l'énoncé le demande explicitement", "pourquoi_faux": "l'énoncé demande une démonstration, pas une simple citation du résultat", "correction_markdown": "Toujours effectuer le changement de variable demandé et invoquer explicitement la croissance comparée standard tⁿ/eᵗ→0."},
+      {"erreur_markdown": "Oublier que le développement du binôme de Newton introduit une somme FINIE de termes (donc chaque terme individuel tendant vers 0 suffit à conclure pour la somme)", "pourquoi_faux": "avec une somme infinie, la conclusion ne serait pas automatique ; ici le nombre de termes (n+1) est fixe et fini", "correction_markdown": "Toujours préciser que la somme est finie (n+1 termes) pour justifier que la limite de la somme est la somme des limites."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Démontrer par changement de variable t=ln x que lim_{x→+∞}(ln x)³/x²=0.", "solution_markdown": "t=lnx, x=e^t, expression devient t³/e^{2t}, qui tend vers 0 par croissance comparée (l'exponentielle l'emporte)."}
+    ],
+    "synthese": "Le changement de variable t=ln x transforme toute limite en (ln x)ⁿ/x en la croissance comparée classique tⁿ/eᵗ→0, ce qui permet de démontrer rigoureusement ce résultat plutôt que de l'admettre."
+  }
+}

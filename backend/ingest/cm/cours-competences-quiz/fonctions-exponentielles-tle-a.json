@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-fonctions-exponentielles-tle-a",
+  "meta": {
+    "titre": "Fonctions exponentielles : propriétés et résolution d'équations",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Fonction exponentielle - définition, propriétés et résolution d'équations",
+    "duree_estimee_min": 30,
+    "tags": [
+      "Fonctions exponentielles (Tle A)",
+      "fonction exponentielle",
+      "équations exponentielles",
+      "changement de variable",
+      "fonction e^x"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "A",
+      "module_numero": "21",
+      "savoir_numero": "VII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-A-2005-MATHS",
+    "epreuve_titre": "Mathématiques BAC A 2005",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2005-cameroun-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu connais déjà le logarithme népérien $\\ln$, qui transforme un produit en somme. La fonction exponentielle fait exactement l'inverse : à tout réel $x$, elle associe l'unique réel strictement positif $e^{x}$ tel que $\\ln(e^{x})=x$. Cette fonction revient sans cesse au BAC série A, en particulier dans des équations où l'inconnue se cache dans un exposant - une forme qui semble bloquée tant qu'on ne connaît pas le bon réflexe. Ce cours te donne ce réflexe : reconnaître ce type d'équation, la ramener à une équation du second degré déjà maîtrisée, puis revenir proprement à $x$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la fonction logarithme népérien $\\ln$ : son sens de variation et l'équivalence $\\ln x=t \\iff x=e^{t}$.",
+        "Résoudre une équation du second degré $at^{2}+bt+c=0$ à l'aide du discriminant $\\Delta=b^{2}-4ac$.",
+        "Manipuler les puissances : $(a^{m})^{n}=a^{mn}$, $a^{-n}=\\dfrac{1}{a^{n}}$.",
+        "Étudier le signe d'un trinôme du second degré."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction exponentielle : propriétés et méthode de résolution par changement de variable",
+      "contenu_markdown": "La fonction exponentielle, notée $x\\mapsto e^{x}$, est la fonction réciproque du logarithme népérien : pour tout réel $x$ et tout réel $y>0$,\n$$e^{x}=y \\iff x=\\ln y$$\n\nElle vérifie $e^{0}=1$, elle est strictement positive sur $\\mathbb{R}$ ($e^{x}>0$ pour tout réel $x$, jamais nulle), et strictement croissante sur $\\mathbb{R}$ - donc injective : $e^{a}=e^{b} \\iff a=b$. Trois propriétés algébriques, conséquences directes de cette réciprocité avec $\\ln$, permettent de manipuler les expressions exponentielles :\n$$e^{a+b}=e^{a}\\times e^{b} \\qquad e^{-a}=\\dfrac{1}{e^{a}} \\qquad \\left(e^{a}\\right)^{n}=e^{na},\\ n\\in\\mathbb{Z}$$\n\nCes propriétés donnent la méthode centrale de ce cours : quand une équation ne fait apparaître que $e^{x}$ et $e^{2x}$, on remarque que $e^{2x}=\\left(e^{x}\\right)^{2}$, ce qui permet de poser $t=e^{x}$ (avec la condition **obligatoire** $t>0$, puisque $e^{x}$ ne prend jamais de valeur négative ou nulle). L'équation devient alors une équation polynomiale ordinaire en $t$, que l'on sait résoudre. Une fois les racines de $t$ trouvées, on rejette celles qui ne sont pas strictement positives, puis on revient à $x$ pour chaque racine valide grâce à $e^{x}=t \\iff x=\\ln t$.",
+      "formule_principale": "A\\,e^{2x}+B\\,e^{x}+C=0 \\;\\xrightarrow{\\ t=e^{x},\\ t>0\\ }\\; A\\,t^{2}+B\\,t+C=0",
+      "variantes": [
+        {
+          "nom": "Factorisation directe par $e^{x}$",
+          "quand_utiliser": "Quand l'équation admet un facteur commun en $e^{x}$ visible immédiatement (pas de terme constant isolé), plutôt que de poser un changement de variable inutile.",
+          "contenu_markdown": "Si l'équation s'écrit, par exemple, $e^{2x}-e^{x}=0$, on peut factoriser directement par $e^{x}$ : $e^{x}\\left(e^{x}-1\\right)=0$. Comme $e^{x}$ n'est jamais nul, cela équivaut à $e^{x}-1=0$, soit $e^{x}=1$, soit $x=0$. Cette méthode est plus rapide que le changement de variable dès qu'aucun terme constant ne complique la factorisation."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $e^{2x}-3e^{x}-4=0$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître la forme de l'équation et poser le changement de variable",
+          "justification": "L'équation ne contient que $e^{x}$ et $e^{2x}=\\left(e^{x}\\right)^{2}$ : c'est exactement la situation qui permet de poser $t=e^{x}$, avec la condition $t>0$.",
+          "resultat_markdown": "On pose $t=e^{x}$, avec $t>0$. Comme $e^{2x}=\\left(e^{x}\\right)^{2}=t^{2}$, l'équation devient : $$t^{2}-3t-4=0$$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le discriminant de l'équation en $t$",
+          "justification": "On applique $\\Delta=b^{2}-4ac$ avec $a=1$, $b=-3$, $c=-4$.",
+          "resultat_markdown": "$$\\Delta=(-3)^{2}-4\\times1\\times(-4)=9+16=25$$"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer les racines de l'équation en $t$",
+          "justification": "Comme $\\Delta>0$ et $\\sqrt{\\Delta}=\\sqrt{25}=5$, l'équation admet deux racines réelles distinctes.",
+          "resultat_markdown": "$$t=\\dfrac{3-5}{2}=-1 \\qquad \\text{ou} \\qquad t=\\dfrac{3+5}{2}=4$$"
+        },
+        {
+          "numero": 4,
+          "action": "Rejeter les racines qui ne sont pas strictement positives",
+          "justification": "$t$ représente $e^{x}$, qui est strictement positif pour tout réel $x$. La racine $t=-1$ ne correspond donc à aucun réel $x$ et doit être écartée.",
+          "resultat_markdown": "$t=-1$ rejeté. Reste $t=4$, qui est bien strictement positif."
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à l'inconnue $x$",
+          "justification": "On utilise l'équivalence $e^{x}=t \\iff x=\\ln t$, valable puisque $t=4>0$.",
+          "resultat_markdown": "$$e^{x}=4 \\iff x=\\ln 4$$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions de l'équation est $S=\\{\\ln 4\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Trouver les deux racines de l'équation en $t$, par exemple $t=-1$ et $t=4$, et revenir directement à $x=\\ln(-1)$ et $x=\\ln 4$ sans vérifier le signe de chaque racine.",
+          "pourquoi_faux": "$e^{x}$ est strictement positif pour tout réel $x$ : une racine $t$ négative ou nulle ne correspond à aucune valeur de $x$, et $\\ln(-1)$ n'est même pas défini.",
+          "correction_markdown": "Avant de revenir à $x$, vérifie systématiquement que chaque racine trouvée pour $t$ est strictement positive. Rejette immédiatement toute racine négative ou nulle."
+        },
+        {
+          "erreur_markdown": "Confondre $e^{2x}$ avec $2e^{x}$ et écrire, par exemple, l'équation $2e^{x}-3e^{x}-4=0$ au lieu de $t^{2}-3t-4=0$.",
+          "pourquoi_faux": "$e^{2x}=\\left(e^{x}\\right)^{2}$ est le carré de $e^{x}$, pas son double : ce sont deux opérations complètement différentes (puissance d'une puissance contre multiplication par un scalaire).",
+          "correction_markdown": "Réécris toujours $e^{2x}$ sous la forme $\\left(e^{x}\\right)^{2}$ avant de poser $t=e^{x}$ : l'équation devient alors $t^{2}$, jamais $2t$."
+        },
+        {
+          "erreur_markdown": "Trouver $t=4$, conclure directement $S=\\{4\\}$ et s'arrêter là, sans revenir à $x$.",
+          "pourquoi_faux": "$t$ n'est qu'une variable auxiliaire introduite pour simplifier le calcul ; l'équation de départ porte sur $x$, pas sur $t$. La question posée reste « résoudre en $x$ », pas « résoudre en $t$ ».",
+          "correction_markdown": "Termine toujours par l'étape $e^{x}=t \\iff x=\\ln t$ pour chaque racine valide : le changement de variable n'est qu'une étape intermédiaire, jamais la réponse finale."
+        },
+        {
+          "erreur_markdown": "Face à une équation contenant un terme en $e^{-x}$, comme $e^{x}-6+5e^{-x}=0$, poser $t=e^{x}$ et écrire directement $5e^{-x}=5t$ au lieu de $5e^{-x}=\\dfrac{5}{t}$, ce qui donne l'équation fausse $t-6+5t=0$.",
+          "pourquoi_faux": "$e^{-x}=\\dfrac{1}{e^{x}}=\\dfrac{1}{t}$ est l'inverse de $t$, pas $t$ lui-même : changer le signe de l'exposant ne se traduit jamais par une simple recopie de $t$.",
+          "correction_markdown": "Écris d'abord $5e^{-x}=\\dfrac{5}{t}$, puis multiplie toute l'équation par $t$ (jamais nul, car $t=e^{x}>0$) pour obtenir une équation polynomiale propre : ici, $t^{2}-6t+5=0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $e^{2x}-e^{x}-6=0$.",
+          "solution_markdown": "On pose $t=e^{x}$, avec $t>0$. Comme $e^{2x}=\\left(e^{x}\\right)^{2}=t^{2}$, l'équation devient :\n$$t^{2}-t-6=0$$\n\nDiscriminant : $\\Delta=(-1)^{2}-4\\times1\\times(-6)=1+24=25$.\n\nComme $\\Delta>0$ : $t=\\dfrac{1-5}{2}=-2$ ou $t=\\dfrac{1+5}{2}=3$.\n\nLa racine $t=-2$ est négative, donc rejetée (impossible pour $e^{x}$). Reste $t=3$.\n\nOn revient à $x$ : $e^{x}=3 \\iff x=\\ln 3$.\n\nL'ensemble des solutions est $S=\\{\\ln 3\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'inéquation $e^{2x}-5e^{x}+6\\le 0$.",
+          "solution_markdown": "On pose $t=e^{x}$. Quand $x$ décrit $\\mathbb{R}$, $t$ décrit exactement l'intervalle $]0,+\\infty[$. Comme $e^{2x}=t^{2}$, l'inéquation devient :\n$$t^{2}-5t+6\\le 0$$\n\nOn cherche les racines du trinôme : $\\Delta=(-5)^{2}-4\\times1\\times6=25-24=1$, donc $t=\\dfrac{5-1}{2}=2$ ou $t=\\dfrac{5+1}{2}=3$. Le trinôme se factorise : $t^{2}-5t+6=(t-2)(t-3)$.\n\nLe coefficient dominant du trinôme est positif ($1>0$), donc $(t-2)(t-3)\\le 0$ exactement entre les racines :\n$$t\\in[2\\,;\\,3]$$\n\nCet intervalle est bien inclus dans $]0,+\\infty[$, donc aucune racine n'est à rejeter. On revient à $x$ : la fonction $x\\mapsto e^{x}$ est strictement croissante sur $\\mathbb{R}$, elle conserve donc l'ordre entre les deux membres d'une inégalité.\n$$2\\le e^{x} \\iff \\ln 2\\le x \\qquad\\text{et}\\qquad e^{x}\\le 3 \\iff x\\le \\ln 3$$\n\nL'ensemble des solutions est $S=[\\ln 2\\,;\\,\\ln 3]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le réel $m$ est un paramètre. Discuter, selon les valeurs de $m$, le nombre de solutions dans $\\mathbb{R}$ de l'équation $e^{2x}-2e^{x}+m=0$.",
+          "solution_markdown": "On pose $t=e^{x}$, avec $t>0$. Comme $e^{2x}=t^{2}$, l'équation devient :\n$$t^{2}-2t+m=0$$\n\nDiscriminant : $\\Delta=(-2)^{2}-4\\times1\\times m=4-4m=4(1-m)$. Le signe de $\\Delta$ dépend de la position de $m$ par rapport à $1$.\n\n**Cas $m>1$.** Alors $1-m<0$, donc $\\Delta<0$ : l'équation en $t$ n'admet aucune racine réelle. L'équation en $x$ n'a **aucune solution**.\n\n**Cas $m=1$.** Alors $\\Delta=0$ : l'équation en $t$ admet une racine double, $t=\\dfrac{2}{2}=1$. Comme $t=1>0$, cette racine est valide : $e^{x}=1 \\iff x=0$. L'équation en $x$ admet **une solution**, $x=0$.\n\n**Cas $m<1$.** Alors $\\Delta>0$ : l'équation en $t$ admet deux racines distinctes,\n$$t_{1}=1-\\sqrt{1-m} \\qquad\\text{et}\\qquad t_{2}=1+\\sqrt{1-m}$$\n\nComme $\\sqrt{1-m}>0$ pour $m<1$, on a $t_{2}=1+\\sqrt{1-m}>1>0$ : cette racine est toujours strictement positive, donc toujours valide. Le signe de $t_{1}=1-\\sqrt{1-m}$ dépend, lui, de la comparaison entre $\\sqrt{1-m}$ et $1$, c'est-à-dire entre $m$ et $0$ :\n\n- Si $0<m<1$ : $1-m<1$ donc $\\sqrt{1-m}<1$, donc $t_{1}>0$. Les deux racines $t_{1}$ et $t_{2}$ sont valides : l'équation en $x$ admet **deux solutions**, $x_{1}=\\ln t_{1}$ et $x_{2}=\\ln t_{2}$.\n- Si $m=0$ : $\\sqrt{1-0}=1$, donc $t_{1}=1-1=0$. Cette racine est rejetée, car $e^{x}$ n'est jamais nul. Seule $t_{2}=1+1=2$ reste valide : l'équation en $x$ admet **une solution**, $x=\\ln 2$.\n- Si $m<0$ : $1-m>1$ donc $\\sqrt{1-m}>1$, donc $t_{1}<0$. Cette racine est rejetée. Seule $t_{2}$ reste valide : l'équation en $x$ admet **une solution**, $x=\\ln\\left(1+\\sqrt{1-m}\\right)$.\n\nEn résumé : aucune solution si $m>1$ ; une solution si $m=1$, si $m=0$, ou si $m<0$ ; deux solutions si $0<m<1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une équation qui ne contient que $e^{x}$ et $e^{2x}$, pose systématiquement $t=e^{x}$ avec la condition $t>0$ : tu te ramènes à une équation du second degré que tu sais déjà résoudre.",
+        "N'oublie jamais que $e^{x}$ est strictement positif pour tout réel $x$ : toute racine négative ou nulle trouvée pour $t$ doit être rejetée avant même de chercher $x$.",
+        "La substitution ne remplace pas la conclusion : une fois $t$ trouvé, il reste l'étape $e^{x}=t \\iff x=\\ln t$ à effectuer pour chaque racine valide.",
+        "La fonction exponentielle est strictement croissante sur $\\mathbb{R}$ : elle conserve l'ordre, ce qui permet de transformer directement une inéquation en $e^{x}$ en une inéquation en $x$ à l'aide du logarithme népérien.",
+        "Un problème avec paramètre combine deux réflexes indissociables : l'étude du signe du discriminant ET la vérification du signe de chaque racine trouvée pour $t$ - l'un ne dispense jamais de l'autre.",
+        "Au BAC série A, ce type de résolution apparaît rarement isolé : il clôture souvent un exercice d'algèbre ou sert d'étape dans un problème plus large - le maîtriser vite te fait gagner un temps précieux ailleurs dans l'épreuve."
+      ]
+    }
+  ]
+}

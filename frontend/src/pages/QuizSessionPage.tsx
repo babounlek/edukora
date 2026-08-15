@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -143,6 +144,7 @@ export function QuizSessionPage() {
     setSubmitting(true)
     try {
       await completeQuizSession(session!.id)
+      trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode })
       navigate(`/quiz/session/${session!.id}/resultat`)
     } catch {
       setError("Impossible de terminer le quiz. Réessaie.")

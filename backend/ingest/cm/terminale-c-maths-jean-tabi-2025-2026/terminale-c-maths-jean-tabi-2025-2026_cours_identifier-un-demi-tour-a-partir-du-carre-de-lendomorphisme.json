@@ -1,0 +1,31 @@
+{
+  "cours_id": "cours-identifier-un-demi-tour-a-partir-du-carre-de-lendomorphisme-et-de-lespace-des-vecteurs-invariants-terminale-c",
+  "meta": {
+    "titre": "Identifier un demi-tour à partir de f∘f et de l'espace des vecteurs invariants",
+    "cours_id": "cours-identifier-un-demi-tour-a-partir-du-carre-de-lendomorphisme-et-de-lespace-des-vecteurs-invariants-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Isométries de l'espace — nature géométrique",
+    "tags": ["demi-tour", "retournement", "involution", "isométrie directe"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex1-4"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Identifier la nature géométrique précise d'une isométrie vectorielle de l'espace demande de croiser trois indices : le déterminant (directe ou indirecte), la dimension de l'espace des points fixes, et le comportement au carré."},
+    {"type": "prerequis", "items_markdown": ["Isométrie vectorielle directe/indirecte (déterminant)", "Notion de rotation d'axe et d'angle en dimension 3"]},
+    {"type": "regle", "titre": "Caractérisation du demi-tour", "contenu_markdown": "Une isométrie vectorielle directe $f\\neq\\mathrm{id}$, dont l'espace des vecteurs invariants $F=\\{f(\\vec u)=\\vec u\\}$ est une droite $D$, et qui vérifie $f\\circ f=\\mathrm{id}$, est nécessairement le demi-tour (rotation d'angle $\\pi$) d'axe $D$. Justification : une rotation d'axe $D$ et d'angle $\\theta$ vérifie $(f\\circ f)=$ rotation d'angle $2\\theta$ ; $f\\circ f=\\mathrm{id}$ impose $2\\theta\\equiv0\\,[2\\pi]$, donc $\\theta\\equiv0\\,[\\pi]$ ; $\\theta=0$ est exclu car $f\\neq\\mathrm{id}$, il reste $\\theta=\\pi$.", "formule_principale": "f≠id, det(f)=1, F=droite, f∘f=id ⟹ f = demi-tour d'axe F", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f a pour matrice M=[[1,0,0],[0,-1,0],[0,0,-1]] dans une base orthonormée. Identifier la nature de f.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Calculer det(M)", "justification": "det = 1×(-1)×(-1) = 1.", "resultat_markdown": "det(f)=1, isométrie directe"},
+      {"numero": 2, "action": "Espace des vecteurs invariants", "justification": "f(u)=u impose y=-y et z=-z, donc y=z=0 ; x libre.", "resultat_markdown": "F = Vect((1,0,0)), une droite"},
+      {"numero": 3, "action": "Calculer f∘f", "justification": "M² = I (matrice diagonale à coefficients ±1 au carré).", "resultat_markdown": "f∘f = id"},
+      {"numero": 4, "action": "Conclure", "justification": "det=1, F=droite, f∘f=id, f≠id.", "resultat_markdown": "f est le demi-tour d'axe Vect((1,0,0))"}
+    ], "conclusion_markdown": "Les quatre critères réunis identifient sans ambiguïté un demi-tour."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Conclure à un demi-tour dès que f∘f=id, sans vérifier que f est directe (det=1) et que F est une droite (pas un plan ni {0})", "pourquoi_faux": "f∘f=id est aussi vérifié par une symétrie plane (indirecte, F=plan) ou par l'identité elle-même (F=E tout entier) : ces trois cas se distinguent uniquement par det(f) et dim(F).", "correction_markdown": "Toujours croiser les trois informations : signe de det(f), dimension de F, et f∘f=id, avant de conclure à un demi-tour."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "f de matrice diag(-1,-1,1). f est-elle un demi-tour ? De quel axe ?", "solution_markdown": "det=1, F=Vect((0,0,1)) (droite), f²=id : oui, demi-tour d'axe Vect((0,0,1))."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "f de matrice diag(-1,-1,-1) (symétrie centrale). f est-elle un demi-tour ?", "solution_markdown": "det=(-1)³=-1 (indirecte) : ce n'est pas un demi-tour mais une symétrie centrale (F={0})."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un demi-tour est caractérisé par : isométrie directe (det=1), f≠id, F=droite, f∘f=id.", "L'argument de l'angle double justifie pourquoi f∘f=id force l'angle à valoir exactement π.", "Ne jamais conclure à un demi-tour sur la seule base de f∘f=id : croiser avec det(f) et dim(F)."]}
+  ]
+}

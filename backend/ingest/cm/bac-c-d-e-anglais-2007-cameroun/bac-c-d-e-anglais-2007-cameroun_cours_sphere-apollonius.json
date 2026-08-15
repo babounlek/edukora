@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-sphere-apollonius-c",
+  "meta": {
+    "titre": "Sphère d'Apollonius (lieu des points de rapport de distances constant à deux points fixes)",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Sphères et lieux géométriques dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": ["sphère d'Apollonius", "lieu géométrique", "équation cartésienne"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q3a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux points fixes $A$ et $H$, et une consigne simple : trouve tous les points $M$ deux fois, trois fois, cinq fois plus proches de $A$ que de $H$. Le résultat surprend souvent les élèves la première fois : ce lieu n'est ni une droite, ni un plan, mais une sphère - à condition que le rapport demandé ne soit pas égal à $1$. C'est ce lieu, appelé sphère d'Apollonius, que ce cours permet de déterminer systématiquement par le calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Norme d'un vecteur et distance entre deux points dans l'espace", "Développement d'une expression au carré", "Équation réduite d'une sphère $x^2+y^2+z^2+Dx+Ey+Fz+G=0$"]
+    },
+    {
+      "type": "regle",
+      "titre": "Élever au carré pour éliminer les racines",
+      "contenu_markdown": "Soient $A$ et $H$ deux points fixes distincts de l'espace et $k$ un réel strictement positif, $k\\neq1$. L'ensemble des points $M$ tels que $MA=k\\,MH$ est une sphère (dite sphère d'Apollonius de $A$, $H$ et $k$).\n\n**Méthode.** La relation $MA=k\\,MH$, où les deux membres sont positifs, équivaut à $MA^2=k^2MH^2$ (élever au carré des quantités positives est une équivalence, ce qui élimine les racines carrées cachées dans les normes). On développe alors chaque membre avec les coordonnées de $M(x;y;z)$, $A(x_A;y_A;z_A)$ et $H(x_H;y_H;z_H)$ :\n$$MA^2=(x-x_A)^2+(y-y_A)^2+(z-z_A)^2,\\qquad MH^2=(x-x_H)^2+(y-y_H)^2+(z-z_H)^2$$\n\nEn développant $MA^2=k^2MH^2$ et en regroupant, les termes en $x^2,y^2,z^2$ ne s'éliminent pas (sauf si $k=1$, cas exclu, où l'on obtiendrait un plan médiateur) : on obtient une équation de la forme $x^2+y^2+z^2+Dx+Ey+Fz+G=0$, qui est une équation de sphère dès que le rayon associé est réel strictement positif.",
+      "formule_principale": "MA=k\\,MH \\iff MA^2 = k^2\\,MH^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $A(1;2;3)$, $H(0;1;2)$ et $k=5$, déterminer l'équation cartésienne de l'ensemble $(S)$ des points $M$ tels que $\\dfrac{MA}{MH}=5$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la condition par une égalité de carrés",
+          "justification": "MA/MH=5 équivaut à MA=5MH (MH non nul), puis à MA²=25MH² en élevant au carré.",
+          "resultat_markdown": "$MA^2=25\\,MH^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Développer MA² et 25MH²",
+          "justification": "On utilise les coordonnées de A et H.",
+          "resultat_markdown": "$MA^2=x^2+y^2+z^2-2x-4y-6z+14$ ; $25MH^2=25x^2+25y^2+25z^2-50y-100z+125$"
+        },
+        {
+          "numero": 3,
+          "action": "Regrouper tous les termes dans un membre",
+          "justification": "On ramène l'équation à la forme 0=... pour identifier une équation de sphère.",
+          "resultat_markdown": "$-24x^2-24y^2-24z^2-2x+46y+94z-111=0$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser par le coefficient de x²,y²,z² pour normaliser",
+          "justification": "On veut une équation de la forme x²+y²+z²+Dx+Ey+Fz+G=0, avec coefficient 1 devant les carrés.",
+          "resultat_markdown": "$x^2+y^2+z^2+\\dfrac{1}{12}x-\\dfrac{23}{12}y-\\dfrac{47}{12}z+\\dfrac{37}{8}=0$"
+        }
+      ],
+      "conclusion_markdown": "Cette équation, une fois réduite (centre et rayon calculés par complétion du carré), donne la sphère de centre $\\Omega\\left(-\\frac{1}{24};\\frac{23}{24};\\frac{47}{24}\\right)$ et de rayon $\\dfrac{5\\sqrt3}{24}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'élever au carré et travailler directement avec MA=5MH, ce qui bloque tout développement.",
+          "pourquoi_faux": "Les distances $MA$ et $MH$ contiennent chacune une racine carrée ; sans élever la relation au carré, on ne peut pas développer les expressions en coordonnées.",
+          "correction_markdown": "Vérifie toujours que les deux membres de l'égalité de départ sont positifs (ce qui est automatique pour des distances et un rapport positif) avant d'élever au carré : c'est ce qui garantit l'équivalence, pas seulement une implication."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par le coefficient commun de x², y², z² avant d'identifier D, E, F, G.",
+          "pourquoi_faux": "La formule du centre $\\left(-D/2;-E/2;-F/2\\right)$ et du rayon suppose que le coefficient devant $x^2+y^2+z^2$ vaut exactement $1$. L'appliquer directement sur une équation où ce coefficient vaut $-24$ (ou tout autre nombre) donne un centre et un rayon faux.",
+          "correction_markdown": "Avant toute identification, divise systématiquement toute l'équation par le coefficient de $x^2$ (ou multiplie par $-1$ si ce coefficient est négatif, comme ici), pour ramener l'équation à la forme normalisée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec $A(0;0;0)$, $B(4;0;0)$ et $k=3$, déterminer l'équation de l'ensemble des points $M$ tels que $MA=3\\,MB$.",
+          "solution_markdown": "$MA^2=x^2+y^2+z^2$ ; $9MB^2=9\\left[(x-4)^2+y^2+z^2\\right]=9x^2-72x+144+9y^2+9z^2$. L'égalité $MA^2=9MB^2$ donne $x^2+y^2+z^2=9x^2-72x+144+9y^2+9z^2$, soit $-8x^2-8y^2-8z^2+72x-144=0$, puis en divisant par $-8$ : $x^2+y^2+z^2-9x+18=0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent et déterminer le centre et le rayon de la sphère obtenue.",
+          "solution_markdown": "$D=-9,E=0,F=0,G=18$. Centre $\\Omega\\left(\\dfrac92;0;0\\right)$. Rayon : $R^2=\\dfrac{D^2+E^2+F^2}{4}-G=\\dfrac{81}{4}-18=\\dfrac{81-72}{4}=\\dfrac94$, donc $R=\\dfrac32$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, en utilisant la formule $\\Omega=\\dfrac{A-k^2H}{1-k^2}$ et $R=\\dfrac{k}{\\lvert1-k^2\\rvert}AH$, que ces formules redonnent le résultat de l'exemple résolu ($A(1;2;3)$, $H(0;1;2)$, $k=5$).",
+          "solution_markdown": "$k^2=25$. $\\Omega=\\dfrac{A-25H}{1-25}=\\dfrac{(1;2;3)-(0;25;50)}{-24}=\\dfrac{(1;-23;-47)}{-24}=\\left(-\\dfrac{1}{24};\\dfrac{23}{24};\\dfrac{47}{24}\\right)$, qui coïncide avec le centre trouvé par développement direct.\n\n$AH=\\sqrt{(1-0)^2+(2-1)^2+(3-2)^2}=\\sqrt3$. $R=\\dfrac{5}{\\lvert1-25\\rvert}\\sqrt3=\\dfrac{5}{24}\\sqrt3=\\dfrac{5\\sqrt3}{24}$, qui coïncide également avec le rayon trouvé par développement direct et complétion du carré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un rapport de distances constant $MA/MH=k$ avec $k\\neq1$, le lieu des points $M$ est toujours une sphère : élève la relation au carré, développe, regroupe, puis normalise pour identifier une équation réduite.",
+        "Le cas $k=1$ est différent : le lieu devient le plan médiateur de $[AH]$, pas une sphère.",
+        "Avant d'identifier centre et rayon, vérifie toujours que le coefficient devant $x^2+y^2+z^2$ vaut $1$ - normalise sinon en divisant toute l'équation par ce coefficient.",
+        "Le centre de la sphère d'Apollonius est toujours aligné avec les deux points fixes $A$ et $H$ : cette propriété, démontrable avec la formule $\\Omega=\\frac{A-k^2H}{1-k^2}$, fournit une vérification rapide indépendante du développement direct.",
+        "Ce type de lieu géométrique apparaît régulièrement au BAC C en complément d'une étude de symétrie ou de projection, où les deux points fixes sont souvent un point donné et son projeté orthogonal sur un plan."
+      ]
+    }
+  ]
+}

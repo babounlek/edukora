@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-demontrer-un-encadrement-de-1-sur-1-plus-t-par-reduction-au-meme-denominateur-terminale-c",
+  "meta": {
+    "titre": "Démontrer un encadrement de 1 sur 1 plus t par réduction au même dénominateur",
+    "cours_id": "cours-demontrer-un-encadrement-de-1-sur-1-plus-t-par-reduction-au-meme-denominateur-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse — inégalités",
+    "tags": [
+      "encadrement",
+      "réduction au même dénominateur",
+      "étude de signe simple"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex3-II.2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Prouver qu'une fonction est encadrée par deux polynômes ne nécessite pas toujours une étude de variations complète : réduire chaque différence au même dénominateur suffit souvent à révéler directement le signe recherché."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir réduire une expression au même dénominateur",
+        "Savoir reconnaître le signe d'une puissance positive"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Prouver un encadrement par réduction au même dénominateur",
+      "contenu_markdown": "Pour démontrer $g(t)\\leq\\dfrac1{1+t}\\leq h(t)$ pour $t>0$, on calcule séparément $\\dfrac1{1+t}-g(t)$ et $h(t)-\\dfrac1{1+t}$, on les réduit au même dénominateur $(1+t)$, et on étudie le signe du numérateur obtenu (souvent une simple puissance de $t$, positive pour $t>0$).",
+      "formule_principale": "1/(1+t) - g(t) = [numérateur]/(1+t), signe du numérateur détermine l'inégalité",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Démontrer que pour t>0, 1-t ≤ 1/(1+t) ≤ 1-t+t².",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire 1/(1+t)-(1-t) au même dénominateur",
+          "justification": "Mettre les deux termes sur (1+t).",
+          "resultat_markdown": "= [1-(1-t)(1+t)]/(1+t) = [1-(1-t²)]/(1+t) = t²/(1+t)"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de ce résultat pour t>0",
+          "justification": "t²≥0 et 1+t>0.",
+          "resultat_markdown": "t²/(1+t) ≥ 0, donc 1/(1+t) ≥ 1-t"
+        },
+        {
+          "numero": 3,
+          "action": "Réduire (1-t+t²)-1/(1+t) au même dénominateur",
+          "justification": "Développer (1-t+t²)(1+t)=1+t³ (télescopage).",
+          "resultat_markdown": "= [1+t³-1]/(1+t) = t³/(1+t)"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de ce second résultat",
+          "justification": "t³≥0 et 1+t>0 pour t>0.",
+          "resultat_markdown": "t³/(1+t) ≥ 0, donc 1-t+t² ≥ 1/(1+t)"
+        }
+      ],
+      "conclusion_markdown": "1-t ≤ 1/(1+t) ≤ 1-t+t² pour tout t>0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se lancer dans une étude de dérivée pour prouver l'inégalité alors qu'une simple réduction au même dénominateur suffit",
+          "pourquoi_faux": "Une étude de fonction complète (dérivée, tableau de variations) est souvent inutilement longue quand la différence se réduit directement à une expression de signe évident (puissance positive sur dénominateur positif) ; c'est une perte de temps en situation d'examen.",
+          "correction_markdown": "Toujours essayer d'abord la réduction au même dénominateur directe avant d'envisager une étude de fonction plus longue."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réduire 1/(1+t) - 1 au même dénominateur pour t≠-1.",
+          "solution_markdown": "[1-(1+t)]/(1+t) = -t/(1+t)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Développer (1-t+t²)(1+t) étape par étape.",
+          "solution_markdown": "1×1+1×t-t×1-t×t+t²×1+t²×t = 1+t-t-t²+t²+t³ = 1+t³ (télescopage des termes croisés)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Ce type d'encadrement (par des sommes partielles alternées de puissances de t) rappelle quel développement classique ?",
+          "solution_markdown": "Il s'agit d'un encadrement lié au développement en série de 1/(1+t) = 1-t+t²-t³+t⁴-... (série géométrique de raison -t) : les sommes partielles alternées de cette série encadrent alternativement la valeur exacte, un principe qui se généralise à tout ordre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver un encadrement, réduire chaque différence au même dénominateur avant d'envisager une étude de fonction.",
+        "Le signe d'une différence réduite se lit souvent directement (puissance positive sur dénominateur positif).",
+        "Ce type d'encadrement est lié au développement en série géométrique de 1/(1+t)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+  <div class="manual-payment-stats" style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+      <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.pending }}</div>
+      <div>En attente</div>
+    </div>
+    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+      <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.approved_today }}</div>
+      <div>Validés aujourd'hui</div>
+    </div>
+    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+      <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.rejected }}</div>
+      <div>Rejetés</div>
+    </div>
+    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+      <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.total_approved_amount }} FCFA</div>
+      <div>Montant total validé</div>
+    </div>
+    {% for row in manual_payment_stats.repartition %}
+    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+      <div style="font-size:1.4rem; font-weight:700;">{{ row.total }} FCFA</div>
+      <div>{{ row.operator }} ({{ row.n }})</div>
+    </div>
+    {% endfor %}
+  </div>
+  {{ block.super }}
+{% endblock %}

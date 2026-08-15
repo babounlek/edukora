@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-appliquer-bezout-generalise-pour-verifier-lexistence-de-solutions-entieres-terminale-c",
+  "meta": {"titre": "Appliquer le théorème de Bézout généralisé pour vérifier l'existence de solutions entières", "cours_id": "cours-appliquer-bezout-generalise-pour-verifier-lexistence-de-solutions-entieres-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Arithmétique — équations diophantiennes", "tags": ["Bézout", "pgcd", "équation diophantienne"], "duree_estimee_minutes": 10, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex2-ii-bezout"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Décider si une équation diophantienne ax+by=c a des solutions entières ne nécessite pas de les chercher : il suffit de vérifier si le pgcd de a et b divise c."},
+    {"type": "prerequis", "items_markdown": ["Calcul du pgcd de deux entiers", "Divisibilité"]},
+    {"type": "regle", "titre": "Vérifier si pgcd(a,b) divise c", "contenu_markdown": "L'équation $ax+by=c$ (avec $a,b$ entiers non tous deux nuls) admet des solutions dans $\\mathbb Z^2$ si et seulement si $\\mathrm{pgcd}(a,b)$ divise $c$ (théorème de Bézout généralisé). En particulier si $\\mathrm{pgcd}(a,b)=1$, l'équation admet TOUJOURS des solutions, quel que soit $c$.", "formule_principale": "ax+by=c a des solutions entières ⟺ pgcd(a,b) | c", "variantes": ["Si a=0 : l'équation devient by=c, solutions ssi b|c", "Si b=0 : l'équation devient ax=c, solutions ssi a|c"]},
+    {"type": "exemple_resolu", "enonce_markdown": "L'équation 6x+9y=15 a-t-elle des solutions entières ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Calculer pgcd(6,9)", "justification": "6=2×3, 9=3×3", "resultat_markdown": "pgcd(6,9)=3"},
+      {"numero": 2, "action": "Vérifier la divisibilité", "justification": "15/3=5, entier", "resultat_markdown": "3 divise 15"}
+    ], "conclusion_markdown": "Oui, l'équation 6x+9y=15 admet des solutions entières (car pgcd(6,9)=3 divise 15)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Chercher à résoudre entièrement l'équation avant de vérifier au préalable si pgcd(a,b) divise c", "pourquoi_faux": "Chercher des solutions à une équation qui n'en a pas fait perdre du temps ; la vérification de divisibilité par le pgcd est immédiate et doit toujours précéder toute tentative de résolution.", "correction_markdown": "Toujours vérifier en premier lieu si pgcd(a,b) divise c avant de se lancer dans l'algorithme d'Euclide étendu pour trouver les solutions explicites."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "L'équation 4x+6y=7 a-t-elle des solutions entières ?", "solution_markdown": "pgcd(4,6)=2. 2 ne divise pas 7 (impair). Non, pas de solution entière."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "L'équation 0x+5y=20 a-t-elle des solutions entières ?", "solution_markdown": "Cas a=0 : équation 5y=20, soit y=4 (x quelconque). Oui, solutions entières (car 5 divise 20)."}
+    ]},
+    {"type": "synthese", "items_markdown": ["L'existence de solutions entières à ax+by=c se décide immédiatement via pgcd(a,b) | c.", "Si pgcd(a,b)=1, l'équation a toujours des solutions, quel que soit c.", "Les cas particuliers a=0 ou b=0 se traitent séparément mais suivent le même principe (divisibilité du coefficient restant)."]}
+  ]
+}

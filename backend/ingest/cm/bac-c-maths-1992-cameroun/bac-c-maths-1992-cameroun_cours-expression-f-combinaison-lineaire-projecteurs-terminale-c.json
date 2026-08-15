@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-expression-f-combinaison-lineaire-projecteurs-terminale-c",
+  "meta": {
+    "titre": "Exprimer f comme combinaison linéaire de projecteurs (décomposition spectrale)",
+    "cours_id": "cours-expression-f-combinaison-lineaire-projecteurs-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - décomposition spectrale élémentaire",
+    "tags": ["projecteur", "combinaison linéaire", "décomposition spectrale"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_4_qPII-3"
+  },
+  "sections": {
+    "accroche": "Une fois deux projecteurs associés aux deux racines a,b construits, retrouver f lui-même comme leur combinaison linéaire n'est qu'un système linéaire à résoudre — c'est la version élémentaire de la décomposition spectrale d'un endomorphisme.",
+    "prerequis": ["Définitions de p et q en fonction de f et Id", "Résolution d'un système linéaire de deux équations à deux inconnues (Id et f)"],
+    "regle": {
+      "titre": "Décomposition de f sur ses projecteurs",
+      "contenu_markdown": "À partir des définitions $p=\\dfrac1{b-a}(f-aId)$ et $q=\\dfrac1{a-b}(f-bId)$, on obtient un système linéaire en $f$ et $Id$ : $(b-a)p=f-aId$ et $(b-a)q=bId-f$. En combinant astucieusement (multiplier la première par b, la seconde par a, puis additionner), on isole $f=bp+aq$ ; en additionnant simplement les deux relations initiales, on retrouve $p+q=Id$. Cette décomposition $f=bp+aq$ est la version élémentaire, en dimension 2, de la décomposition spectrale : $p$ et $q$ sont les projections sur les sous-espaces propres associés respectivement à $a$ et $b$.",
+      "formule_principale": "$f=b\\,p+a\\,q$ et $p+q=Id$",
+      "variantes": ["Cette technique se généralise à n valeurs propres distinctes avec n projecteurs, chacun combiné avec la valeur propre correspondante des AUTRES facteurs (formule d'interpolation de Lagrange appliquée aux endomorphismes)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant p=(f-2Id)/(5-2), q=(f-5Id)/(2-5) (a=2,b=5), exprimer f en fonction de p et q.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Appliquer la formule f=bp+aq", "justification": "b=5, a=2", "resultat_markdown": "f=5p+2q"},
+        {"numero": 2, "action": "Vérifier", "justification": "substitution directe", "resultat_markdown": "5p+2q=5(f-2Id)/3+2(f-5Id)/(-3)=[5(f-2Id)-2(f-5Id)]/3=[3f]/3=f ✓"}
+      ],
+      "conclusion_markdown": "La vérification confirme f=5p+2q, cohérente avec la formule générale f=bp+aq."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Associer par erreur le coefficient a à p et b à q (inverser la formule en f=ap+bq)", "pourquoi_faux": "la formule correcte associe à chaque projecteur le coefficient de l'AUTRE valeur, précisément parce que p est construit à partir de a (donc s'annule pour la partie associée à a) et porte le coefficient b, et réciproquement", "correction_markdown": "Retenir que le coefficient associé à un projecteur est celui de l'autre valeur propre : f=bp+aq (p construit avec a, coefficient b ; q construit avec b, coefficient a) — toujours vérifier par substitution directe en cas de doute."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Avec a=-1, b=4, p=(f+Id)/5, q=(f-4Id)/(-5), exprimer f en fonction de p et q.", "solution_markdown": "f=bp+aq=4p-q, à vérifier par substitution directe des expressions de p et q."}
+    ],
+    "synthese": "Une fois deux projecteurs p et q définis à partir de f, a et b, on retrouve f comme combinaison linéaire f=bp+aq en résolvant le système linéaire issu de leurs définitions ; cette construction est l'exemple le plus simple de décomposition spectrale d'un endomorphisme sur ses projecteurs propres."
+  }
+}

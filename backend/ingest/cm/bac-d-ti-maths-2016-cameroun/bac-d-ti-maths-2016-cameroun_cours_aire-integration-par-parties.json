@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-aire-integration-par-parties-produit-exponentielle-terminale-d-ti",
+  "meta": {"titre": "Calculer une aire par intégration par parties d'un produit polynôme×exponentielle", "cours_id": "cours-aire-integration-par-parties-produit-exponentielle-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Calcul intégral — intégration par parties, aires", "tags": ["intégration par parties", "aire", "exponentielle"], "duree_estimee_minutes": 7, "epreuve_source": "bac-d-ti-maths-2016-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2016-cameroun-ex3-q6"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Le calcul d'une aire entre une courbe et une droite, quand l'intégrande est un produit polynôme×exponentielle, exige presque toujours une intégration par parties, précédée d'une identification rigoureuse de la position relative des deux courbes."},
+    {"type": "prerequis", "items_markdown": ["Position relative de deux courbes (établie dans une question précédente)", "Formule d'intégration par parties : ∫u dv=uv-∫v du"]},
+    {"type": "regle", "titre": "Identifier la fonction du dessus, intégrer par parties, évaluer", "contenu_markdown": "Pour l'aire entre une courbe $(\\mathcal C_f)$ et une droite $(\\Delta)$ sur $[p;q]$, on intègre la différence (fonction du dessus $-$ fonction du dessous), déterminée par la position relative déjà établie. Si l'intégrande est un produit polynôme×exponentielle, on pose $u=$ polynôme, $dv=e^x\\,dx$, et on applique $\\int u\\,dv=uv-\\int v\\,du$.", "formule_principale": "aire=∫(dessus-dessous)dx, avec IPP si l'intégrande est polynôme×exponentielle", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫₀¹(1-x)e^x dx par IPP.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Poser u et dv", "justification": "u=1-x, du=-dx ; dv=e^x dx, v=e^x", "resultat_markdown": "IPP applicable"},
+      {"numero": 2, "action": "Appliquer la formule", "justification": "(1-x)e^x-∫e^x×(-1)dx", "resultat_markdown": "(1-x)e^x+e^x=(2-x)e^x"},
+      {"numero": 3, "action": "Évaluer entre 0 et 1", "justification": "(2-1)e-(2-0)e^0", "resultat_markdown": "e-2"}
+    ], "conclusion_markdown": "Intégrale = e-2."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Intégrer directement (fonction supérieure - fonction inférieure) sans avoir vérifié explicitement, à partir d'une question précédente, quelle courbe est effectivement au-dessus sur l'intervalle considéré", "pourquoi_faux": "Intégrer dans le mauvais sens (dessous-dessus au lieu de dessus-dessous) donne une intégrale négative, incompatible avec la notion d'aire (toujours positive) ; il faut impérativement s'appuyer sur l'étude de position relative déjà établie avant d'écrire l'intégrale.", "correction_markdown": "Toujours vérifier, avant d'écrire l'intégrale de l'aire, quelle courbe est au-dessus sur l'intervalle considéré (à partir d'une étude de position déjà faite), pour intégrer dans le bon sens et obtenir un résultat positif."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer ∫₀¹(3-x)e^x dx par IPP.", "solution_markdown": "u=3-x, du=-dx; dv=e^x dx, v=e^x. ∫=（3-x)e^x+∫e^x dx=(3-x)e^x+e^x=(4-x)e^x. Évaluer: (4-1)e-(4-0)e^0=3e-4."},
+      {"numero": 2, "difficulte": "difficile", "enonce_markdown": "Pourquoi choisit-on systématiquement u=polynôme et dv=e^x dx (et non l'inverse) dans ce type d'intégration par parties ?", "solution_markdown": "En posant u=polynôme, sa dérivée du est de degré inférieur (voire une constante pour un polynôme du premier degré), ce qui simplifie l'intégrale résiduelle ∫v du ; poser l'inverse (u=e^x) ne simplifierait rien puisque la dérivée de e^x reste e^x, ne réduisant pas la complexité du polynôme à intégrer ensuite."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Le calcul d'une aire entre courbe et droite s'appuie sur la position relative déjà établie (fonction du dessus moins fonction du dessous).", "L'intégration par parties de (polynôme)×e^x se fait en posant u=polynôme, dv=e^x dx.", "Toujours vérifier que le résultat final de l'aire est bien positif, cohérent avec sa nature géométrique."]}
+  ]
+}

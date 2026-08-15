@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-montrer-qu-un-triangle-est-equilateral-a-partir-des-affixes-de-ses-sommets-et-determiner-l-affixe-du-centre-terminale-c",
+  "meta": {
+    "titre": "Montrer qu'un triangle est équilatéral à partir des affixes de ses sommets et déterminer l'affixe du centre",
+    "cours_id": "cours-montrer-qu-un-triangle-est-equilateral-a-partir-des-affixes-de-ses-sommets-et-determiner-l-affixe-du-centre-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Nombres complexes — géométrie",
+    "tags": [
+      "triangle équilatéral",
+      "affixes",
+      "module d'une différence"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex1-I.1.b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois points du plan complexe forment un triangle équilatéral dès que les trois distances qui les séparent, calculées comme des modules de différences d'affixes, sont rigoureusement égales."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la formule |e^(iα)−e^(iβ)|=2|sin((α−β)/2)|",
+        "Savoir que le centre d'un triangle équilatéral est la moyenne des affixes de ses sommets"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Prouver l'équilatéralité et trouver le centre",
+      "contenu_markdown": "Pour montrer qu'un triangle ABC d'affixes $z_A,z_B,z_C$ est équilatéral, on calcule les trois longueurs $AB=|z_B-z_A|$, $BC=|z_C-z_B|$, $CA=|z_A-z_C|$ et on vérifie qu'elles sont égales. Lorsque les affixes s'écrivent $e^{i\\alpha}$, la formule $|e^{i\\alpha}-e^{i\\beta}|=2|\\sin(\\frac{\\alpha-\\beta}2)|$ accélère grandement le calcul. L'affixe du centre (confondu, pour un triangle équilatéral, avec le centre de gravité) vaut $z_\\Omega=\\frac{z_A+z_B+z_C}3$.",
+      "formule_principale": "AB=BC=CA ⟺ triangle équilatéral ; z_Ω = (z_A+z_B+z_C)/3",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que le triangle de sommets d'affixes 1, e^(-2iπ/3), e^(2iπ/3) est équilatéral et donner l'affixe de son centre.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer AB",
+          "justification": "Utiliser la formule du module d'une différence d'exponentielles.",
+          "resultat_markdown": "AB=2|sin(π/3)|=√3"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer BC",
+          "justification": "Même formule appliquée aux deux autres sommets.",
+          "resultat_markdown": "BC=2|sin(-2π/3)|=√3"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer CA",
+          "justification": "Dernière paire de sommets.",
+          "resultat_markdown": "CA=2|sin(π/3)|=√3"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer les trois longueurs et calculer le centre",
+          "justification": "AB=BC=CA, et zΩ=(zA+zB+zC)/3, avec e^(2iπ/3)+e^(-2iπ/3)=2cos(2π/3)=-1.",
+          "resultat_markdown": "AB=BC=CA=√3 (équilatéral) ; zΩ=(1-1)/3=0"
+        }
+      ],
+      "conclusion_markdown": "Le triangle est équilatéral, de centre Ω d'affixe 0 (l'origine du repère)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que le centre est le centre de gravité sans le justifier",
+          "pourquoi_faux": "Cette identification (centre de gravité = centre du cercle circonscrit = orthocentre) n'est vraie que parce que le triangle est équilatéral ; il faut l'établir (ou au moins la mentionner) avant de l'utiliser, car ce n'est pas vrai pour un triangle quelconque.",
+          "correction_markdown": "Toujours préciser que l'identification des centres remarquables du triangle repose sur son caractère équilatéral, déjà démontré."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer |e^(iπ/2)-e^(-iπ/2)| avec la formule du cours.",
+          "solution_markdown": "2|sin(π/2)|=2×1=2."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trois points ont pour affixes 0, 2, 1+i√3. Le triangle est-il équilatéral ?",
+          "solution_markdown": "AB=|2-0|=2, BC=|1+i√3-2|=|-1+i√3|=√(1+3)=2, CA=|0-1-i√3|=√(1+3)=2 : AB=BC=CA=2, le triangle est équilatéral."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la somme de deux exponentielles complexes conjuguées e^(iα)+e^(-iα) vaut-elle toujours 2cos(α) ?",
+          "solution_markdown": "Par la formule d'Euler, e^(iα)=cos α+i sin α et e^(-iα)=cos α-i sin α ; en additionnant, les parties imaginaires s'annulent et il reste 2cos α."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un triangle est équilatéral si et seulement si les trois modules des différences d'affixes de ses sommets sont égaux.",
+        "La formule |e^(iα)−e^(iβ)|=2|sin((α−β)/2)| simplifie le calcul pour des affixes sur le cercle unité.",
+        "Le centre d'un triangle équilatéral est la moyenne des affixes de ses sommets."
+      ]
+    }
+  ]
+}

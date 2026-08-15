@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-existence-unicite-solution-tvi-monotonie-terminale-c",
+  "meta": {
+    "titre": "Établir l'existence et l'unicité d'une solution via le TVI et la monotonie",
+    "cours_id": "cours-existence-unicite-solution-tvi-monotonie-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse - théorème des valeurs intermédiaires",
+    "tags": ["théorème des valeurs intermédiaires", "unicité", "encadrement d'une solution"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_5_q1b"
+  },
+  "sections": {
+    "accroche": "Combiner continuité, stricte monotonie et changement de signe aux bornes garantit non seulement l'existence d'une solution à une équation, mais aussi son unicité — un théorème puissant et économique en calcul.",
+    "prerequis": ["Théorème des valeurs intermédiaires (TVI)", "Corollaire du TVI pour une fonction strictement monotone (bijection sur son image)"],
+    "regle": {
+      "titre": "Corollaire du TVI pour une fonction strictement monotone",
+      "contenu_markdown": "Si $g$ est continue et strictement monotone sur un intervalle $I$, avec des limites aux bornes de signes opposés (ou encadrant $0$), alors l'équation $g(x)=0$ admet une **unique** solution dans $I$ (c'est le corollaire du TVI, parfois appelé théorème de la bijection). Pour encadrer numériquement cette solution, il suffit d'évaluer $g$ en deux points bien choisis et de constater un changement de signe entre eux : par monotonie, la solution se situe entre ces deux points.",
+      "formule_principale": "$g$ continue, strictement monotone sur $I$, limites de signes opposés aux bornes $\\;\\Longrightarrow\\;\\exists!\\,\\alpha\\in I,\\ g(\\alpha)=0$",
+      "variantes": ["Pour affiner l'encadrement (par exemple passer de ]a,b[ à un intervalle plus petit), on évalue g en un point intermédiaire et on réitère l'argument de changement de signe (méthode de dichotomie)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que x³+x-1=0 admet une unique solution dans ]0,1[.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Étudier la monotonie", "justification": "dérivée 3x²+1>0 toujours", "resultat_markdown": "strictement croissante sur ℝ"},
+        {"numero": 2, "action": "Évaluer aux bornes", "justification": "f(0)=-1<0, f(1)=1>0", "resultat_markdown": "changement de signe entre 0 et 1"},
+        {"numero": 3, "action": "Conclure", "justification": "corollaire du TVI", "resultat_markdown": "unique solution dans ]0,1["}
+      ],
+      "conclusion_markdown": "L'équation admet une unique solution dans ]0,1[, sans qu'il soit nécessaire de la calculer explicitement."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Invoquer seulement le TVI (existence) sans la stricte monotonie pour conclure à l'UNICITÉ de la solution", "pourquoi_faux": "le TVI seul garantit l'existence d'au moins une solution, mais sans monotonie stricte, il pourrait y en avoir plusieurs", "correction_markdown": "Toujours établir explicitement la stricte monotonie de la fonction sur l'intervalle avant d'affirmer l'unicité de la solution, en plus de son existence garantie par le TVI."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Montrer que ln x - 2 + x = 0 admet une unique solution dans ]1,2[ (on donne ln 1=0, ln 2≈0,69).", "solution_markdown": "Fonction strictement croissante (dérivée 1/x+1>0), valeurs aux bornes -1<0 (en x=1) et ln2-2+2=ln2≈0,69>0 (en x=2) : changement de signe, unique solution dans ]1,2[ par le corollaire du TVI."}
+    ],
+    "synthese": "Pour établir l'existence ET l'unicité d'une solution à g(x)=0 sur un intervalle, on combine le théorème des valeurs intermédiaires (existence, via un changement de signe entre deux évaluations) et la stricte monotonie de g (unicité) ; l'encadrement précis de la solution découle directement du choix des deux points d'évaluation."
+  }
+}

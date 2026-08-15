@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-identifier-les-entites-attributs-et-identifiants-d-un-mcd-a-partir-d-un-cahier-des-charges-terminale-c",
+  "meta": {
+    "titre": "Identifier les entités, attributs et identifiants d'un MCD à partir d'un cahier des charges",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Modélisation de données (Merise)",
+    "duree_estimee_min": 12,
+    "tags": [
+      "MCD",
+      "entité",
+      "identifiant"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Construire un MCD commence toujours par la même étape : lire le cahier des charges et en extraire les entités du monde réel à modéliser, leurs propriétés, et l'identifiant qui distingue chaque occurrence."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de propriété (attribut)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier les entités, attributs et identifiants d'un MCD",
+      "contenu_markdown": "Une **entité** représente un ensemble d'objets concrets ou abstraits de même nature ayant un intérêt pour le système (ex. CLIENT, VOITURE). Chaque entité possède des **attributs** (propriétés) et un **identifiant** : un attribut (ou groupe d'attributs) dont la valeur est unique pour chaque occurrence de l'entité, permettant de la distinguer sans ambiguïté (ex. un numéro de client, une immatriculation).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier les entités, leurs attributs et leurs identifiants à partir du cahier des charges de l'agence de location.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les objets du monde réel mentionnés dans le texte",
+          "justification": "Le texte mentionne des clients et des voitures.",
+          "resultat_markdown": "CLIENT et VOITURE"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les attributs de chaque entité",
+          "justification": "Chaque entité est décrite par des informations propres citées dans l'énoncé.",
+          "resultat_markdown": "CLIENT : numClient, nom, prenom, telephone / VOITURE : immatriculation, marque, modele"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'attribut identifiant de chaque entité",
+          "justification": "Il faut un attribut unique par occurrence pour distinguer sans ambiguïté chaque client ou chaque voiture.",
+          "resultat_markdown": "numClient pour CLIENT, immatriculation pour VOITURE"
+        }
+      ],
+      "conclusion_markdown": "Chaque entité regroupe ses attributs propres, et l'un d'eux (l'identifiant) doit permettre de distinguer sans ambiguïté chaque occurrence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir un attribut non unique comme identifiant (ex. le nom du client, puisque deux clients peuvent porter le même nom)",
+          "pourquoi_faux": "L'identifiant doit garantir l'unicité pour chaque occurrence ; un nom peut être partagé par plusieurs personnes, ce qui créerait une ambiguïté.",
+          "correction_markdown": "Préfère toujours un identifiant technique garanti unique (numéro auto-généré, immatriculation, code) à un attribut \"naturel\" qui pourrait se répéter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour une entité LIVRE dans un système de bibliothèque, proposer un identifiant pertinent.",
+          "solution_markdown": "L'ISBN (numéro international normalisé du livre), unique pour chaque référence de livre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi l'immatriculation est-elle un bon identifiant pour l'entité VOITURE ?",
+          "solution_markdown": "Parce qu'elle est unique et attribuée légalement à un seul véhicule à la fois : deux voitures ne peuvent pas porter la même immatriculation, ce qui garantit l'absence d'ambiguïté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si le cahier des charges ne mentionne aucun numéro ou code unique explicite pour une entité, comment procéder ?",
+          "solution_markdown": "On crée un identifiant technique artificiel (souvent appelé identifiant \"de substitution\" ou \"surrogate key\"), par exemple un numéro auto-incrémenté (idClient, idProduit), qui n'a pas de signification métier mais garantit l'unicité requise ; cette pratique est très courante lorsque les informations naturelles disponibles ne suffisent pas à garantir l'unicité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'entité regroupe des objets de même nature ayant un intérêt pour le système.",
+        "Ses attributs décrivent ses caractéristiques.",
+        "L'identifiant est l'attribut (ou groupe d'attributs) garantissant l'unicité de chaque occurrence.",
+        "À défaut d'identifiant naturel fiable, on crée un identifiant technique (numéro auto-incrémenté)."
+      ]
+    }
+  ]
+}

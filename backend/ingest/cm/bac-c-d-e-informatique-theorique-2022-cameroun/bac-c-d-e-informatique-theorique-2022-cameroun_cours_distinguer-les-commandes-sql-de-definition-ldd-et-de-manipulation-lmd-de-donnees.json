@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-distinguer-les-commandes-sql-de-definition-ldd-et-de-manipulation-lmd-de-donnees-terminale-c",
+  "meta": {
+    "titre": "Distinguer les commandes SQL de définition (LDD) et de manipulation (LMD) de données",
+    "cours_id": "cours-distinguer-les-commandes-sql-de-definition-ldd-et-de-manipulation-lmd-de-donnees-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Langage SQL",
+    "tags": [
+      "LDD",
+      "LMD",
+      "classification SQL"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les instructions SQL ne se ressemblent pas dans leur finalité : certaines construisent la structure de la base, d'autres agissent sur son contenu. Cette distinction, LDD contre LMD, structure tout le langage SQL."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître quelques commandes SQL de base (CREATE TABLE, SELECT)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "LDD et LMD : deux familles de commandes SQL",
+      "contenu_markdown": "Le **LDD** (Langage de Définition de Données) regroupe les commandes qui créent, modifient ou suppriment la **structure** de la base de données : `CREATE` (DATABASE/TABLE), `ALTER TABLE`, `DROP` (DATABASE/TABLE). Le **LMD** (Langage de Manipulation de Données) regroupe les commandes qui agissent sur le **contenu** des tables : `SELECT`, `INSERT INTO`, `UPDATE`, `DELETE`.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner deux commandes SQL de définition de données, et deux commandes SQL de manipulation de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir deux commandes qui modifient la structure",
+          "justification": "Le LDD regroupe les commandes de création/modification/suppression de structure.",
+          "resultat_markdown": "CREATE TABLE, ALTER TABLE"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux commandes qui agissent sur le contenu",
+          "justification": "Le LMD regroupe les commandes de manipulation des données elles-mêmes.",
+          "resultat_markdown": "SELECT, INSERT INTO"
+        }
+      ],
+      "conclusion_markdown": "LDD = structure de la base (CREATE, ALTER, DROP) ; LMD = contenu des tables (SELECT, INSERT, UPDATE, DELETE)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer CREATE TABLE dans le LMD, en pensant que \"créer une table\" est une forme de \"manipulation\"",
+          "pourquoi_faux": "CREATE TABLE définit la structure de la base (les tables et leurs colonnes), il appartient donc au LDD ; le LMD concerne exclusivement les lignes de données à l'intérieur de tables déjà existantes.",
+          "correction_markdown": "Pose-toi la question : \"est-ce que cette commande change la structure (tables, colonnes) ou le contenu (lignes) ?\" pour classer correctement chaque commande."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "DROP TABLE appartient-il au LDD ou au LMD ?",
+          "solution_markdown": "Au LDD, puisqu'il supprime une structure (une table entière), pas seulement des lignes de données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "UPDATE appartient-il au LDD ou au LMD ?",
+          "solution_markdown": "Au LMD, puisqu'il modifie le contenu (les valeurs) de lignes déjà existantes, sans changer la structure de la table."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le SQL comporte aussi un LCD (Langage de Contrôle des Données, avec GRANT et REVOKE) et un LTD (Langage de Transaction de Données, avec COMMIT et ROLLBACK). En quoi ces deux familles complètent-elles le LDD et le LMD ?",
+          "solution_markdown": "Le LCD gère les droits d'accès à la base (qui peut lire, écrire, administrer), une préoccupation de sécurité distincte de la structure ou du contenu ; le LTD gère la validation ou l'annulation d'un ensemble de modifications regroupées (une transaction), garantissant la cohérence des données en cas d'erreur en cours d'opération. Ensemble, LDD, LMD, LCD et LTD couvrent les quatre grandes préoccupations d'un SGBD : structurer, manipuler, sécuriser et fiabiliser les données."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le LDD définit la structure de la base : CREATE, ALTER, DROP.",
+        "Le LMD manipule le contenu des tables : SELECT, INSERT, UPDATE, DELETE.",
+        "ALTER TABLE, même appliqué à une table existante, reste du LDD car il change la structure.",
+        "Le SQL comporte aussi un LCD (droits d'accès) et un LTD (transactions), complémentaires du LDD et du LMD."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "cours_id": "cours-calculer-une-aire-sous-une-courbe-et-convertir-via-une-echelle-pour-verifier-une-estimation-terminale-d-ti",
+  "meta": {
+    "titre": "Calculer une aire sous une courbe et la convertir via une échelle pour vérifier une estimation",
+    "cours_id": "cours-calculer-une-aire-sous-une-courbe-et-convertir-via-une-echelle-pour-verifier-une-estimation-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Intégration — applications concrètes",
+    "tags": [
+      "intégrale",
+      "aire",
+      "conversion d'échelle",
+      "vérification d'estimation"
+    ],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex5-tache2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une aire calculée dans le repère abstrait d'un graphe reste sans valeur pratique tant qu'elle n'a pas été convertie via l'échelle réelle : c'est cette conversion qui permet de confronter un calcul mathématique à une estimation de terrain."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Calcul d'une aire entre deux courbes par intégrale",
+        "Notion d'échelle de réduction/agrandissement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégrer puis convertir via l'échelle au carré",
+      "contenu_markdown": "L'aire entre une droite $y=k$ (au-dessus) et une courbe $y=f(x)$ (en dessous) sur $[a;b]$ est $\\displaystyle\\int_a^b\\big(k-f(x)\\big)dx$, exprimée dans l'unité du repère. Si 1 unité du repère représente une longueur réelle $L$ (donnée par l'échelle du graphique), alors 1 unité d'aire du repère représente $L^2$ en aire réelle : il faut donc multiplier l'aire calculée par $L^2$ pour obtenir l'aire réelle, avant toute comparaison avec une estimation exprimée en unités réelles (m², tonnes, etc.).",
+      "formule_principale": "Aire réelle = (∫[a,b](k-f(x))dx) × L², où L est la longueur réelle représentée par 1 unité du repère",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Aire entre y=5 et g(x)=x²+1 sur [0;2] (où g(x)<5), avec 1 unité du repère = 10 m. Calculer l'aire réelle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'aire en unités du repère",
+          "justification": "∫[0,2](5-(x²+1))dx = ∫[0,2](4-x²)dx.",
+          "resultat_markdown": "[4x-x³/3] de 0 à 2 = 8-8/3 = 16/3 ≈5,33 unités²"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir via l'échelle",
+          "justification": "1 unité du repère = 10 m, donc 1 unité² = 100 m².",
+          "resultat_markdown": "Aire réelle ≈5,33×100=533 m²"
+        }
+      ],
+      "conclusion_markdown": "L'aire réelle est d'environ 533 m²."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier l'aire calculée par l'échelle L au lieu de L²",
+          "pourquoi_faux": "Une aire est une grandeur de dimension 2 (longueur×longueur) ; convertir une aire nécessite de multiplier par le facteur d'échelle AU CARRÉ, pas par l'échelle linéaire simple utilisée pour convertir des longueurs.",
+          "correction_markdown": "Toujours élever le facteur d'échelle linéaire au carré avant de l'appliquer à une conversion d'aire, jamais l'utiliser tel quel comme pour une longueur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "1 unité du repère = 5 m. Que représente 1 unité² d'aire en réalité ?",
+          "solution_markdown": "5²=25 m²."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Aire calculée = 2 unités². Échelle : 1 unité = 3 m. Aire réelle ?",
+          "solution_markdown": "2×3²=2×9=18 m²."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il essentiel de convertir l'aire avant de la comparer à une estimation exprimée en tonnes de production ?",
+          "solution_markdown": "Une estimation de production (en tonnes) est calibrée sur une surface réelle (par exemple en dam² ou m²) via un rendement par unité de surface réelle ; comparer directement une aire en unités abstraites du repère à cette estimation reviendrait à comparer des grandeurs incompatibles, menant à une conclusion erronée sur la validité de l'estimation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'aire entre une droite et une courbe se calcule par une intégrale, en unités abstraites du repère.",
+        "La conversion en aire réelle nécessite de multiplier par le carré du facteur d'échelle linéaire (jamais l'échelle simple).",
+        "Cette conversion est indispensable avant toute comparaison avec une estimation exprimée en unités réelles."
+      ]
+    }
+  ]
+}

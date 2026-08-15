@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-terme-general-suite-homographique-via-geometrique",
+  "meta": {
+    "titre": "Retrouver le terme général d'une suite homographique à partir de sa suite géométrique associée",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Suites numériques"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex3-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois qu'on sait qu'une suite auxiliaire $(v_n)$ est géométrique, il reste une étape purement algébrique : inverser la relation qui définit $v_n$ pour retrouver $u_n$ en fonction de $n$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Terme général d'une suite géométrique : $v_n=v_0\\times q^n$",
+        "Suite auxiliaire $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$ associée à une suite homographique",
+        "Résolution d'une équation du premier degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De $v_n$ à $u_n$",
+      "contenu_markdown": "Connaissant $v_n=v_0\\times q^n$ (suite géométrique) et la relation $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$, on isole $u_n$ par un calcul algébrique direct : $v_n(u_n-\\beta)=u_n-\\alpha$, soit $u_n(v_n-1)=\\beta v_n-\\alpha$, d'où $u_n=\\dfrac{\\beta v_n-\\alpha}{v_n-1}$ (valable tant que $v_n\\neq1$).",
+      "formule_principale": "v_n=v_0\\,q^n \\quad\\Longrightarrow\\quad u_n=\\dfrac{\\beta v_n-\\alpha}{v_n-1}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On reprend la suite $(u_n)$ du cours précédent : $u_0=0$, $u_{n+1}=\\dfrac{u_n+2}{2u_n+1}$, points fixes $1$ et $-1$, et $v_n=\\dfrac{u_n-1}{u_n+1}$ géométrique de raison $q=-\\dfrac13$. Exprimer $v_n$ puis $u_n$ en fonction de $n$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $v_0$",
+          "justification": "On applique la définition de $v_n$ au rang 0.",
+          "resultat_markdown": "$v_0=\\dfrac{u_0-1}{u_0+1}=\\dfrac{-1}{1}=-1$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer $v_n$ en fonction de $n$",
+          "justification": "Suite géométrique de premier terme $v_0$ et de raison $q$.",
+          "resultat_markdown": "$v_n=v_0\\times q^n=-1\\times\\left(-\\dfrac13\\right)^n=-\\left(-\\dfrac13\\right)^n$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $u_n$ dans $v_n=\\dfrac{u_n-1}{u_n+1}$",
+          "justification": "Avec $\\alpha=1$ et $\\beta=-1$, la formule générale donne $u_n=\\dfrac{-v_n-1}{v_n-1}=\\dfrac{1+v_n}{1-v_n}$.",
+          "resultat_markdown": "$u_n=\\dfrac{1+v_n}{1-v_n}$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "On remplace $v_n$ par son expression.",
+          "resultat_markdown": "$u_n=\\dfrac{1-\\left(-\\frac13\\right)^n}{1+\\left(-\\frac13\\right)^n}$"
+        }
+      ],
+      "conclusion_markdown": "Pour tout entier naturel $n$, $u_n=\\dfrac{1-\\left(-\\frac13\\right)^n}{1+\\left(-\\frac13\\right)^n}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre $\\alpha$ et $\\beta$ en isolant $u_n$, ce qui inverse le résultat final.",
+          "pourquoi_faux": "La formule $u_n=\\dfrac{\\beta v_n-\\alpha}{v_n-1}$ dépend de l'ordre exact dans lequel $\\alpha$ et $\\beta$ apparaissent dans $v_n=\\dfrac{u_n-\\alpha}{u_n-\\beta}$.",
+          "correction_markdown": "Refaire le calcul d'isolement de $u_n$ à chaque exercice plutôt que d'appliquer la formule générale de mémoire."
+        },
+        {
+          "erreur_markdown": "Oublier de calculer $v_0$ à partir de $u_0$ et utiliser directement $v_0=u_0$.",
+          "pourquoi_faux": "$v_0$ est l'image de $u_0$ par la fonction qui définit $v_n$, pas $u_0$ lui-même.",
+          "correction_markdown": "Toujours calculer $v_0$ en appliquant la formule de $v_n$ au rang $0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Une suite géométrique $(v_n)$ vérifie $v_0=2$ et $v_n=\\dfrac{u_n-4}{u_n-1}$, avec raison $q=\\dfrac12$. Calculer $v_3$.",
+          "solution_markdown": "$v_3=v_0\\times q^3=2\\times\\dfrac18=\\dfrac14$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "On a $v_n=\\dfrac{u_n-4}{u_n-1}$ avec $v_n=\\dfrac14$ (résultat de l'exercice précédent). Calculer $u_3$.",
+          "solution_markdown": "$v_n(u_n-1)=u_n-4\\Rightarrow u_n(v_n-1)=1\\cdot v_n-4\\Rightarrow u_n=\\dfrac{v_n-4}{v_n-1}$. Avec $v_3=\\dfrac14$ : $u_3=\\dfrac{\\frac14-4}{\\frac14-1}=\\dfrac{-\\frac{15}{4}}{-\\frac34}=5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Une suite $(w_n)$ vérifie $v_n=\\dfrac{w_n-2}{w_n+3}$ géométrique de raison $q=\\dfrac25$ et $v_0=-\\dfrac15$. Exprimer $w_n$ en fonction de $n$.",
+          "solution_markdown": "$v_n=-\\dfrac15\\left(\\dfrac25\\right)^n$. En isolant $w_n$ dans $v_n=\\dfrac{w_n-2}{w_n+3}$ : $v_n(w_n+3)=w_n-2\\Rightarrow w_n(v_n-1)=-2-3v_n\\Rightarrow w_n=\\dfrac{2+3v_n}{1-v_n}$, soit $w_n=\\dfrac{2+3\\left(-\\frac15\\left(\\frac25\\right)^n\\right)}{1-\\left(-\\frac15\\left(\\frac25\\right)^n\\right)}=\\dfrac{2-\\frac35\\left(\\frac25\\right)^n}{1+\\frac15\\left(\\frac25\\right)^n}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On calcule d'abord $v_0$ à partir de $u_0$, jamais l'inverse.",
+        "$v_n=v_0\\times q^n$ donne l'expression explicite de la suite géométrique auxiliaire.",
+        "On isole ensuite $u_n$ par un calcul algébrique direct dans l'égalité qui définit $v_n$.",
+        "Cette expression de $u_n$ en fonction de $n$ permet ensuite de calculer sa limite quand $n\\to+\\infty$."
+      ]
+    }
+  ]
+}

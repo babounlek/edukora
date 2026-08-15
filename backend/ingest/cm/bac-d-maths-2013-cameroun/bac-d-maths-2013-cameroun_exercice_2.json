@@ -1,0 +1,61 @@
+{
+  "epreuve_source": "bac-d-maths-2013-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "D",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2013,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 2,
+  "titre_exercice": "Exercice 2 : jeu de tirage de boules, probabilités conditionnelles et espérance mathématique",
+  "points": 4.0,
+  "figures": [],
+  "enonce_intro_markdown": "Une boîte contient $6$ boules vertes et $n$ boules blanches, toutes indiscernables au toucher. Un jeu consiste à tirer successivement, sans remise, deux boules de la boîte. Si les deux boules sont de même couleur, le joueur gagne $100$F ; si les boules sont de couleurs différentes, le joueur perd $100$F.",
+  "questions": [
+    {
+      "numero": "1a-i",
+      "points": "0,5pt",
+      "enonce_markdown": "Dans cette question, on suppose $n=3$. Calculer la probabilité d'obtenir deux boules de même couleur.",
+      "rappels_de_methode": [{"cours_id": "cours-probabilite-tirage-successif-sans-remise-meme-couleur-terminale-d", "texte": "Pour un tirage successif sans remise, la probabilité d'obtenir deux boules de même couleur est la somme des probabilités de chaque couleur possible, chacune calculée comme un produit de probabilités conditionnelles successives (ou via les combinaisons)."}],
+      "corrige_markdown": "### Rappel de méthode\nPour un tirage successif sans remise de deux éléments, la probabilité d'obtenir deux éléments de même catégorie est la somme, sur chaque catégorie possible, du produit des probabilités conditionnelles successives (ou, de façon équivalente, un rapport de combinaisons).\n\n**Données pour $n=3$.** $6$ boules vertes, $3$ boules blanches, total $9$ boules.\n\n**Probabilité d'obtenir deux boules vertes.**\n\n$$P(VV)=\\dfrac69\\times\\dfrac58=\\dfrac{30}{72}=\\dfrac5{12}$$\n\n**Probabilité d'obtenir deux boules blanches.**\n\n$$P(BB)=\\dfrac39\\times\\dfrac28=\\dfrac6{72}=\\dfrac1{12}$$\n\n**Probabilité d'obtenir deux boules de même couleur (VV ou BB, événements incompatibles).**\n\n$$P(\\text{même couleur})=P(VV)+P(BB)=\\dfrac5{12}+\\dfrac1{12}=\\dfrac6{12}=\\dfrac12$$\n\n**$P(\\text{même couleur})=\\dfrac12$.**\n\n### Conseil\nOn peut vérifier ce résultat avec les combinaisons : $P(VV)=\\dfrac{\\binom62}{\\binom92}=\\dfrac{15}{36}=\\dfrac5{12}$ et $P(BB)=\\dfrac{\\binom32}{\\binom92}=\\dfrac3{36}=\\dfrac1{12}$, ce qui redonne exactement les mêmes valeurs — une bonne confirmation croisée entre les deux méthodes (tirage successif et tirage simultané)."
+    },
+    {
+      "numero": "1a-ii",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer la probabilité d'obtenir deux boules de couleurs différentes.",
+      "rappels_de_methode": [{"cours_id": "cours-probabilite-evenement-complementaire-terminale-d", "texte": "La probabilité de l'événement complémentaire (couleurs différentes) s'obtient directement par 1 moins la probabilité de l'événement déjà calculé (même couleur), sans nouveau calcul détaillé."}],
+      "corrige_markdown": "### Rappel de méthode\nLorsque deux événements sont complémentaires (ici « même couleur » et « couleurs différentes » couvrent tous les cas possibles, sans chevauchement), la probabilité de l'un s'obtient directement à partir de l'autre par $P(\\text{différentes})=1-P(\\text{même couleur})$, sans nouveau calcul détaillé.\n\n**Utilisation du résultat de la question précédente.**\n\n$$P(\\text{couleurs différentes})=1-P(\\text{même couleur})=1-\\dfrac12=\\dfrac12$$\n\n**$P(\\text{couleurs différentes})=\\dfrac12$.**\n\n### Conseil\nOn peut vérifier directement : $P(\\text{différentes})=\\dfrac{6}9\\times\\dfrac38+\\dfrac39\\times\\dfrac68=\\dfrac{18}{72}+\\dfrac{18}{72}=\\dfrac{36}{72}=\\dfrac12$, confirmant le résultat obtenu par complémentarité."
+    },
+    {
+      "numero": "1b",
+      "points": "0,5pt",
+      "enonce_markdown": "Sachant que la première boule tirée est verte, quelle est la probabilité pour que la deuxième boule tirée soit verte ?",
+      "rappels_de_methode": [{"cours_id": "cours-probabilite-conditionnelle-tirage-sans-remise-terminale-d", "texte": "Après un premier tirage sans remise, la probabilité conditionnelle du second tirage se calcule directement sur la composition restante de la boîte (un élément de la catégorie du premier tirage a été retiré)."}],
+      "corrige_markdown": "### Rappel de méthode\nAprès un premier tirage sans remise, la probabilité conditionnelle du second tirage se calcule directement sur la composition RESTANTE de la boîte : un élément de la catégorie tirée en premier a été retiré, ce qui modifie à la fois l'effectif de cette catégorie et l'effectif total.\n\n**Composition restante après le tirage d'une première boule verte (pour $n=3$).**\n\nAvant le premier tirage : $6$ vertes, $3$ blanches, $9$ au total.\n\nAprès avoir retiré une boule verte : $5$ vertes, $3$ blanches, $8$ au total.\n\n**Probabilité que la deuxième boule soit verte, sachant la première verte.**\n\n$$P(\\text{2e verte}\\,|\\,\\text{1re verte})=\\dfrac58$$\n\n### Piège à éviter\nRéutiliser par erreur la composition INITIALE de la boîte (6 vertes sur 9) au lieu de la composition RESTANTE après le premier tirage (5 vertes sur 8) : un tirage sans remise modifie nécessairement la composition disponible pour le tirage suivant."
+    },
+    {
+      "numero": "2a",
+      "points": "1pt",
+      "enonce_markdown": "Dans cette question, l'entier naturel $n$ est quelconque et supérieur à $3$. On note $X$ la variable aléatoire qui, à chaque tirage successif sans remise de deux boules, associe le gain algébrique en francs du joueur. Exprimer, en fonction de $n$, les probabilités des événements $[X=-100]$ et $[X=100]$.",
+      "rappels_de_methode": [{"cours_id": "cours-exprimer-probabilite-parametree-effectif-variable-terminale-d", "texte": "Pour exprimer une probabilité en fonction d'un paramètre n représentant un effectif, on garde n comme inconnue littérale dans les formules de combinaisons ou de probabilités successives, sans le remplacer par une valeur numérique."}],
+      "corrige_markdown": "### Rappel de méthode\nPour exprimer une probabilité en fonction d'un paramètre $n$ représentant un effectif, on garde $n$ comme inconnue littérale dans les formules de combinaisons (ou de probabilités successives), exactement comme on l'aurait fait avec une valeur numérique fixée.\n\n**Composition générale de la boîte.** $6$ boules vertes, $n$ boules blanches, $n+6$ boules au total.\n\n**$[X=-100]$ correspond à « couleurs différentes ».**\n\n$$P(X=-100)=\\dfrac{\\binom61\\times\\binom n1}{\\binom{n+6}2}=\\dfrac{6n}{\\frac{(n+6)(n+5)}2}=\\dfrac{12n}{(n+6)(n+5)}$$\n\n**$[X=100]$ correspond à « même couleur ».**\n\n$$P(X=100)=\\dfrac{\\binom62+\\binom n2}{\\binom{n+6}2}=\\dfrac{15+\\frac{n(n-1)}2}{\\frac{(n+6)(n+5)}2}=\\dfrac{30+n(n-1)}{(n+6)(n+5)}=\\dfrac{n^2-n+30}{(n+6)(n+5)}$$\n\n**Vérification.** $P(X=-100)+P(X=100)=\\dfrac{12n+n^2-n+30}{(n+6)(n+5)}=\\dfrac{n^2+11n+30}{(n+6)(n+5)}=\\dfrac{(n+6)(n+5)}{(n+6)(n+5)}=1$ ✓ (la somme des deux probabilités vaut bien $1$, confirmant la cohérence).\n\n### Conseil\nToujours vérifier, une fois les deux probabilités exprimées en fonction de n, que leur somme redonne exactement 1 : c'est un contrôle rapide et fiable de la validité des deux expressions obtenues."
+    },
+    {
+      "numero": "2b",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer que l'espérance mathématique de $X$ est $E(X)=100\\dfrac{n^2-13n+30}{(n+6)(n+5)}$.",
+      "rappels_de_methode": [{"cours_id": "cours-calculer-esperance-variable-aleatoire-deux-valeurs-terminale-d", "texte": "L'espérance mathématique d'une variable aléatoire prenant deux valeurs x1 et x2 se calcule par E(X)=x1×P(X=x1)+x2×P(X=x2)."}],
+      "corrige_markdown": "### Rappel de méthode\nL'espérance mathématique d'une variable aléatoire prenant deux valeurs $x_1$ et $x_2$ se calcule par $E(X)=x_1\\times P(X=x_1)+x_2\\times P(X=x_2)$.\n\n**Application, avec les probabilités trouvées à la question 2a.**\n\n$$E(X)=100\\times P(X=100)+(-100)\\times P(X=-100)$$\n\n$$E(X)=100\\left[P(X=100)-P(X=-100)\\right]$$\n\n$$E(X)=100\\left[\\dfrac{n^2-n+30}{(n+6)(n+5)}-\\dfrac{12n}{(n+6)(n+5)}\\right]$$\n\nLes deux fractions ont le même dénominateur, on soustrait directement les numérateurs :\n\n$$E(X)=100\\times\\dfrac{(n^2-n+30)-12n}{(n+6)(n+5)}=100\\times\\dfrac{n^2-13n+30}{(n+6)(n+5)}$$\n\n**On retrouve exactement la formule annoncée : $E(X)=100\\dfrac{n^2-13n+30}{(n+6)(n+5)}$.**"
+    },
+    {
+      "numero": "2c",
+      "points": "1pt",
+      "enonce_markdown": "Pour quelles valeurs de $n$ a-t-on $E(X)<0$ ?",
+      "rappels_de_methode": [{"cours_id": "cours-etude-signe-expression-rationnelle-factorisation-terminale-d", "texte": "Pour étudier le signe d'une expression rationnelle, on factorise le numérateur (via le discriminant si c'est un trinôme), on étudie le signe du dénominateur, puis on combine les deux signes sur un tableau."}],
+      "corrige_markdown": "### Rappel de méthode\nPour étudier le signe d'une expression rationnelle, on factorise le numérateur (via le discriminant s'il s'agit d'un trinôme du second degré), on étudie le signe du dénominateur, puis on combine les deux signes.\n\n**Signe du dénominateur $(n+6)(n+5)$.** Comme $n$ est un entier naturel supérieur à $3$, on a $n+6>0$ et $n+5>0$ : le dénominateur est toujours strictement positif.\n\n**Le signe de $E(X)$ est donc exactement celui du numérateur $n^2-13n+30$.**\n\n**Factorisation du numérateur.** Discriminant : $\\Delta=(-13)^2-4\\times1\\times30=169-120=49=7^2$.\n\n$$n=\\dfrac{13\\pm7}2$$\n\n$$n_1=\\dfrac{13-7}2=3\\qquad n_2=\\dfrac{13+7}2=10$$\n\n$$n^2-13n+30=(n-3)(n-10)$$\n\n**Étude du signe de $(n-3)(n-10)$ pour $n>3$ (contrainte de l'énoncé).**\n\nComme $n>3$, on a toujours $n-3>0$. Le signe du produit dépend donc uniquement de $(n-10)$ :\n\n- pour $3<n<10$ : $n-10<0$, donc $(n-3)(n-10)<0$\n- pour $n=10$ : $(n-3)(n-10)=0$\n- pour $n>10$ : $n-10>0$, donc $(n-3)(n-10)>0$\n\n**$E(X)<0\\iff(n-3)(n-10)<0\\iff3<n<10$.**\n\nComme $n$ est un entier naturel, les valeurs vérifiant $3<n<10$ sont :\n\n$$n\\in\\{4,5,6,7,8,9\\}$$\n\n**$E(X)<0$ pour $n\\in\\{4,5,6,7,8,9\\}$ (le jeu est alors défavorable au joueur).**\n\n### Conseil\nInterpréter le résultat concrètement : le jeu n'est défavorable au joueur (espérance négative) que pour un nombre modéré de boules blanches (entre 4 et 9) ; au-delà de 10 boules blanches, la probabilité d'obtenir deux boules blanches (donc « même couleur », gain) redevient suffisamment élevée pour rendre l'espérance à nouveau positive."
+    }
+  ]
+}

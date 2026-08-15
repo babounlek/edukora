@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de création de table (CREATE TABLE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Bases de données - SQL",
+    "tags": ["SQL", "CREATE TABLE", "clé primaire", "clé étrangère"],
+    "duree_estimee_min": 20,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir stocker la moindre donnée dans une base, il faut d'abord lui construire une table : décrire ses colonnes, leur type, et les règles qui garantissent que chaque ligne reste identifiable et cohérente avec les autres tables."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Identifier les entités, attributs et identifiants d'un MCD"]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande CREATE TABLE",
+      "contenu_markdown": "`CREATE TABLE nom (colonne1 type1, colonne2 type2, ..., PRIMARY KEY(colonne), FOREIGN KEY(colonne) REFERENCES autre_table(colonne));` crée une table en définissant, dans l'ordre : le nom de chaque colonne avec son type de données (VARCHAR pour du texte, INT pour un entier, DATE pour une date...), sa **clé primaire** (PRIMARY KEY, l'attribut qui identifie chaque ligne de façon unique), et ses éventuelles **clés étrangères** (FOREIGN KEY, qui référencent la clé primaire d'une autre table pour matérialiser un lien entre les deux). Chaque table du MLD (Modèle Logique de Données) se traduit par une instruction CREATE TABLE distincte.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table ELEVE comporte les colonnes Matricule (identifiant), Nom, Prenom, Adresse, Sexe, DateNaissance, LieuNaissance, et NumClasse (référence à la table CLASSE). Écrire la requête SQL qui crée cette table.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister chaque colonne avec un type adapté à sa nature",
+          "justification": "Un texte (nom, prénom, adresse) prend le type VARCHAR ; une date prend le type DATE.",
+          "resultat_markdown": "Matricule VARCHAR(10), Nom VARCHAR(30), Prenom VARCHAR(30), Adresse VARCHAR(50), Sexe CHAR(1), DateNaissance DATE, LieuNaissance VARCHAR(30), NumClasse INT."
+        },
+        {
+          "numero": 2,
+          "action": "Désigner la clé primaire de la table",
+          "justification": "Matricule est l'identifiant de l'entité ÉLÈVE : c'est lui qui garantit qu'on ne confond jamais deux élèves.",
+          "resultat_markdown": "PRIMARY KEY(Matricule)"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la clé étrangère qui matérialise le lien vers CLASSE",
+          "justification": "NumClasse référence la table CLASSE : c'est la trace, côté ÉLÈVE, de l'association qui le relie à sa classe.",
+          "resultat_markdown": "FOREIGN KEY (NumClasse) REFERENCES CLASSE(NumClasse)"
+        }
+      ],
+      "conclusion_markdown": "```sql\nCREATE TABLE ELEVE (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Adresse VARCHAR(50),\n    Sexe CHAR(1),\n    DateNaissance DATE,\n    LieuNaissance VARCHAR(30),\n    NumClasse INT,\n    FOREIGN KEY (NumClasse) REFERENCES CLASSE(NumClasse)\n);\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la clause FOREIGN KEY pour une colonne qui référence une autre table",
+          "pourquoi_faux": "Sans FOREIGN KEY, la colonne NumClasse reste un simple entier sans aucun lien formalisé avec la table CLASSE - la base ne peut alors ni garantir la cohérence des données, ni exploiter cette relation dans les requêtes de jointure.",
+          "correction_markdown": "Repère systématiquement, dans le MLD, chaque # devant un attribut (convention notant une clé étrangère) et traduis-le par une clause FOREIGN KEY."
+        },
+        {
+          "erreur_markdown": "Choisir un type numérique (INT) pour un identifiant qui peut comporter un zéro non significatif ou n'a jamais vocation à être calculé",
+          "pourquoi_faux": "Un identifiant comme \"0111\" ou un matricule perdrait son zéro de tête s'il était stocké en type numérique, alors qu'un identifiant sert à identifier, jamais à effectuer un calcul.",
+          "correction_markdown": "Utilise VARCHAR plutôt qu'un type numérique dès qu'un identifiant peut comporter un zéro non significatif en tête, ou ne sert jamais à un calcul."
+        },
+        {
+          "erreur_markdown": "Oublier les parenthèses de taille sur un type VARCHAR (écrire VARCHAR au lieu de VARCHAR(30))",
+          "pourquoi_faux": "VARCHAR nécessite toujours une longueur maximale précisée entre parenthèses, sans quoi la requête est syntaxiquement invalide dans la plupart des SGBD.",
+          "correction_markdown": "Précise toujours une taille raisonnable entre parenthèses après VARCHAR, en cohérence avec la nature de la donnée (un nom : 30, une adresse : 50...)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête SQL qui crée la table PRODUIT, avec les colonnes Code (identifiant, texte de 10 caractères maximum), Libelle (texte de 50 caractères maximum) et PrixUnitaire (entier).",
+          "solution_markdown": "```sql\nCREATE TABLE PRODUIT (\n    Code VARCHAR(10) PRIMARY KEY,\n    Libelle VARCHAR(50),\n    PrixUnitaire INT\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête SQL qui crée la table COMMANDE, avec les colonnes NumCommande (identifiant, entier), DateCommande (date), et CodeClient (référence vers la table CLIENT, dont l'identifiant est Code).",
+          "solution_markdown": "```sql\nCREATE TABLE COMMANDE (\n    NumCommande INT PRIMARY KEY,\n    DateCommande DATE,\n    CodeClient VARCHAR(10),\n    FOREIGN KEY (CodeClient) REFERENCES CLIENT(Code)\n);\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La table LIGNE_COMMANDE, issue d'une association N,N entre COMMANDE et PRODUIT, comporte les colonnes NumCommande, CodeProduit et Quantite. Elle n'a pas de colonne d'identifiant propre : sa clé primaire est composée des deux clés étrangères ensemble. Écrire la requête SQL correspondante.",
+          "solution_markdown": "```sql\nCREATE TABLE LIGNE_COMMANDE (\n    NumCommande INT,\n    CodeProduit VARCHAR(10),\n    Quantite INT,\n    PRIMARY KEY (NumCommande, CodeProduit),\n    FOREIGN KEY (NumCommande) REFERENCES COMMANDE(NumCommande),\n    FOREIGN KEY (CodeProduit) REFERENCES PRODUIT(Code)\n);\n```\nUne clé primaire composée de deux colonnes (PRIMARY KEY (NumCommande, CodeProduit)) est la traduction classique d'une association N,N : le couple (commande, produit) est unique, même si ni NumCommande ni CodeProduit ne le sont individuellement dans cette table."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE définit le nom d'une table, ses colonnes avec leur type, sa clé primaire et ses clés étrangères.",
+        "Chaque # d'un MLD (clé étrangère) doit se traduire par une clause FOREIGN KEY... REFERENCES...",
+        "Préfère VARCHAR à un type numérique pour tout identifiant susceptible de comporter un zéro de tête ou jamais destiné à un calcul.",
+        "N'oublie jamais la taille entre parenthèses d'un type VARCHAR.",
+        "Au BAC, cette compétence traduit directement le MLD obtenu en amont : une erreur de MCD/MLD se répercute mécaniquement sur le CREATE TABLE."
+      ]
+    }
+  ]
+}

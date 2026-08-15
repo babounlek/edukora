@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-montrer-systeme-base-absurde-terminale-c",
+  "meta": {
+    "titre": "Montrer qu'un système est une base par un raisonnement par l'absurde",
+    "cours_id": "cours-montrer-systeme-base-absurde-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - liberté d'un système par contradiction",
+    "tags": ["base", "raisonnement par l'absurde", "endomorphisme sans valeur propre réelle"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_5_qPIII-2a"
+  },
+  "sections": {
+    "accroche": "Pour prouver qu'un vecteur et son image ne sont jamais colinéaires, la contradiction la plus efficace consiste souvent à aboutir à une équation réelle du type λ²=-1, impossible par nature.",
+    "prerequis": ["Deux vecteurs non colinéaires en dimension 2 forment une base", "Raisonnement par l'absurde"],
+    "regle": {
+      "titre": "Preuve de non-colinéarité via une équation réelle impossible",
+      "contenu_markdown": "Pour montrer que $(\\vec u,\\vec v)$ (avec $\\vec v$ lié à $f(\\vec u)$) forme une base, on suppose par l'absurde $\\vec v=\\lambda\\vec u$ pour un réel $\\lambda$, on réapplique f à cette relation, et on utilise une relation connue sur $f\\circ f$ (par exemple $f\\circ f=-c\\,Id$ avec $c>0$) pour aboutir à une équation du type $\\lambda^2=-1$ (ou plus généralement $\\lambda^2<0$), impossible pour un réel : la supposition initiale est donc fausse, et le système est libre, donc une base en dimension 2.",
+      "formule_principale": "Supposer v=λu ⟹ (via f∘f=-cId) λ²=-c/(coefficient)<0, impossible ⟹ (u,v) libre",
+      "variantes": ["Ce schéma prouve plus généralement qu'un endomorphisme vérifiant f∘f=-cId (c>0) n'a aucune valeur propre réelle : aucun vecteur non nul u ne vérifie f(u)=λu"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit g avec g∘g=-9Id, et u≠0. Montrer que u et g(u) ne sont pas colinéaires.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Supposer par l'absurde g(u)=λu", "justification": "colinéarité supposée", "resultat_markdown": "g(u)=λu"},
+        {"numero": 2, "action": "Appliquer g à nouveau", "justification": "réapplication", "resultat_markdown": "g(g(u))=λg(u)=λ²u"},
+        {"numero": 3, "action": "Comparer à la relation connue", "justification": "g∘g=-9Id", "resultat_markdown": "λ²u=-9u ⟹ λ²=-9 (u≠0), impossible pour λ réel"}
+      ],
+      "conclusion_markdown": "La contradiction λ²=-9 prouve que u et g(u) ne sont jamais colinéaires : ils forment une base."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de vérifier u≠0 avant de simplifier l'équation λ²u=-9u en λ²=-9", "pourquoi_faux": "simplifier par u nécessite u non nul, sans quoi l'équation est vérifiée par tout λ et le raisonnement s'effondre", "correction_markdown": "Toujours rappeler explicitement l'hypothèse u≠0 (souvent donnée dans l'énoncé) avant de diviser par u ou de simplifier l'équation vectorielle en une équation scalaire."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit h avec h∘h+16Id=θ, et w≠0. Montrer que (w,h(w)) est libre.", "solution_markdown": "Par l'absurde h(w)=λw ⟹ h(h(w))=λ²w ; or h∘h=-16Id donc λ²w=-16w, soit λ²=-16 (w≠0), impossible : (w,h(w)) libre."}
+    ],
+    "synthese": "Pour prouver qu'un vecteur u et son image par un endomorphisme vérifiant f∘f=-cId (c>0) ne sont jamais colinéaires, on suppose l'existence d'un réel λ tel que f(u)=λu, on réapplique f, et on aboutit à une équation impossible λ²=-c/coefficient<0 : la contradiction établit la liberté du système, donc son statut de base en dimension 2."
+  }
+}

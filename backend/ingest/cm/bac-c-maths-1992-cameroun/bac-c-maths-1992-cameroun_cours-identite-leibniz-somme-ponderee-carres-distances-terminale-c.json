@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-identite-leibniz-somme-ponderee-carres-distances-terminale-c",
+  "meta": {
+    "titre": "Identité de Leibniz pour une somme pondérée de carrés de distances",
+    "cours_id": "cours-identite-leibniz-somme-ponderee-carres-distances-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - fonctions scalaires de Leibniz",
+    "tags": ["identité de Leibniz", "application constante", "carrés de distances"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_1_q1b"
+  },
+  "sections": {
+    "accroche": "Une somme pondérée de carrés de distances à des points fixes, avec des coefficients de somme nulle, cache toujours une application constante : le même principe de translation que pour les vecteurs s'applique, à condition de développer soigneusement les carrés.",
+    "prerequis": ["Développement d'un carré vectoriel (u+w)²=u²+2u·w+w²", "Relation de Chasles"],
+    "regle": {
+      "titre": "Fonction scalaire de Leibniz",
+      "contenu_markdown": "Pour $g(M)=\\sum_k\\lambda_k\\,MX_k^2$ avec $\\sum\\lambda_k=0$, on développe chaque $MX_k^2$ à l'aide d'un point fixe auxiliaire A : $MX_k^2=(\\overrightarrow{MA}+\\overrightarrow{AX_k})^2=MA^2+2\\overrightarrow{MA}\\cdot\\overrightarrow{AX_k}+AX_k^2$. Le terme en $MA^2$ disparaît grâce à $\\sum\\lambda_k=0$, et le terme linéaire en $\\overrightarrow{MA}$ disparaît si le vecteur associé (souvent lui-même une fonction de Leibniz vectorielle déjà nulle) s'annule. Il ne reste que des constantes.",
+      "formule_principale": "$\\sum\\lambda_k=0 \\;\\Longrightarrow\\; g(M)=\\sum\\lambda_k\\,MX_k^2$ est constante",
+      "variantes": ["Un terme constant additionnel dans l'énoncé de g compense souvent exactement les termes croisés résiduels, aboutissant à g=0"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "A, B deux points fixes, montrer que $h(M)=MA^2-MB^2$ est une fonction affine de M (donc pas nécessairement constante, coefficient de somme 1-1=0 ici trivial mais avec un seul terme croisé).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Développer via un point auxiliaire A", "justification": "MB²=(MA+AB)²", "resultat_markdown": "$h(M)=MA^2-(MA^2+2\\overrightarrow{MA}\\cdot\\overrightarrow{AB}+AB^2)=-2\\overrightarrow{MA}\\cdot\\overrightarrow{AB}-AB^2$"},
+        {"numero": 2, "action": "Conclure", "justification": "dépend de M via le produit scalaire", "resultat_markdown": "h(M) n'est pas constante (elle dépend linéairement de M), contrairement au cas où les coefficients s'annulent aussi au premier ordre"}
+      ],
+      "conclusion_markdown": "La constance de g requiert non seulement la somme nulle des coefficients (annule le terme quadratique) mais aussi l'annulation du terme linéaire résiduel (souvent liée à une fonction de Leibniz vectorielle déjà connue)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier le terme croisé 2MA·AX_k lors du développement de MX_k²", "pourquoi_faux": "ce terme est indispensable pour identifier correctement la partie linéaire en M, qui doit s'annuler pour conclure à la constance", "correction_markdown": "Toujours développer intégralement (MA+AX_k)² avant de regrouper les termes par degré en M."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Montrer que k(M)=MA²+MB²-2ME² est constante, où E est le milieu de [AB].", "solution_markdown": "Coefficients 1+1-2=0 ; développement via A montre que le terme linéaire s'annule car E est le milieu (application du théorème de la médiane), et k=AB²/2."}
+    ],
+    "synthese": "Une somme pondérée de carrés de distances à coefficients de somme nulle est constante si, de plus, le terme linéaire résiduel du développement s'annule (souvent parce qu'il coïncide avec une fonction de Leibniz vectorielle déjà établie nulle) ; la valeur constante se calcule ensuite en un point particulier."
+  }
+}

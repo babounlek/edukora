@@ -32,6 +32,12 @@ services:
       - static_files:/app/staticfiles
       - ./media:/app/media
       - ./backend/ingest:/app/ingest
+      # PDF sujet/corrigé d'Épreuve Inédite (voir inedit.storage.protected_storage) -
+      # sans ce montage, ce dossier vit dans le filesystem éphémère du conteneur et
+      # est perdu à chaque rebuild (constaté : 500 FileNotFoundError après un rebuild,
+      # alors même que la ligne en base pointait toujours vers le fichier). Sans effet
+      # en production, qui utilise S3 (voir STORAGES["inedit_protected"] en prod).
+      - ./protected_media:/app/protected_media
 
   backup:
     build:
@@ -74,6 +80,13 @@ services:
     build:
       context: .
       dockerfile: docker/caddy/Dockerfile
+      # `env_file` ci-dessous ne vaut qu'à l'exécution : les variables Vite sont
+      # figées dans le bundle au build, elles doivent donc passer par `args`.
+      # Reprise depuis l'environnement du shell qui lance la commande - la syntaxe
+      # `${VAR}` va chercher .env à la racine du projet, que Compose charge de
+      # lui-même pour l'interpolation.
+      args:
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
 
     env_file:
       - .env

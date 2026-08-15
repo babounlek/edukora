@@ -1,0 +1,97 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2022,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 4,
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 pts) — Exercice 1 : Algorithmique (3 pts)**\n\nDans le cadre de la réalisation d'un devoir à faire à domicile, Paul vient de copier l'algorithme ci-dessous sur internet.\n\n```\n 1  Algorithme Parcours\n 2  Variables\n 3      Tab : Tableau[1..5] d'entiers\n 4      Trv, i : Entiers\n 5  Debut\n 6    pour (i allant de 1 à 10) faire\n 7        Ecrire(\"Saisir un nombre\")\n 8        Lire(Tab[i])\n 9    Finpour\n10        Trv <- 0\n11        Pour (i allant de 1 à 10) faire\n12          si (Tab[i] < trv) alors\n13              Trv <- Tab[i]\n14          Finsi\n15        Finpour\n16  Fin\n```\n\nRépondez aux questions ci-dessous qui peuvent aider Paul à mieux comprendre et utiliser cet algorithme.",
+  "mots_cles_recherche": [
+    "tableau",
+    "trace d'exécution",
+    "boucle pour",
+    "boucle tantque",
+    "recherche du minimum"
+  ],
+  "incertitudes": [
+    "L'algorithme source déclare Tab comme un tableau de 5 éléments (Tableau[1..5]) mais les deux boucles \"pour\" (lignes 6 et 11) itèrent i de 1 à 10 : il y a une incohérence entre la taille déclarée du tableau et les bornes des boucles, très probablement une erreur de transcription de l'énoncé original (la borne \"10\" semble être une coquille pour \"5\"). Pour la question 3 (trace d'exécution), le jeu de données fourni (Tab=[5,7,1,2,6]) ne comporte que 5 valeurs : la trace est donc réalisée sur les bornes 1 à 5, cohérentes avec la taille réelle du tableau et le jeu de test fourni, tout en signalant explicitement l'incohérence du texte source. Cette incohérence n'affecte pas la question 2 (simple réécriture syntaxique Pour→TantQue), où la borne \"10\" du texte source est conservée telle quelle."
+  ],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Expliquer en deux lignes maximum, ce que fait la ligne 3 de l'algorithme. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa déclaration `nom : tableau de n éléments de type T` réserve en mémoire une structure de données nommée `nom`, capable de stocker n valeurs de type T, chacune accessible par un indice.\n\n### Corrigé\nLa ligne 3 déclare **Tab**, une structure de données de type **tableau**, pouvant contenir **5 éléments entiers**, indexés de 1 à 5.",
+      "themes": [
+        "structure de données",
+        "déclaration"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q1-0",
+          "competence": "Identifier une structure de données et sa taille dans un algorithme",
+          "contenu_markdown": "La déclaration `nom : tableau de n éléments de type T` réserve en mémoire une structure de données nommée `nom`, capable de stocker n valeurs de type T, chacune accessible par un indice.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-une-structure-de-donnees-et-sa-taille-dans-un-algorithme-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Réécrire les lignes 6, 7, 8 et 9 de cet algorithme en utilisant la structure itérative TANTQUE. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nToute boucle \"Pour i allant de a à b Faire ... FinPour\" se traduit en boucle \"TantQue\" en initialisant i à a avant la boucle, en testant \"TantQue i <= b\", et en incrémentant i (i <- i+1) à la fin de chaque itération.\n\n### Corrigé\n```\ni <- 1\nTantQue (i <= 10) faire\n    Ecrire(\"Saisir un nombre\")\n    Lire(Tab[i])\n    i <- i + 1\nFinTantQue\n```\n\n### Piège à éviter\nNe pas oublier l'incrémentation `i <- i + 1` à l'intérieur de la boucle TantQue : contrairement à la boucle Pour, qui l'effectue implicitement, la boucle TantQue exige de la programmer explicitement, sous peine de boucle infinie.",
+      "themes": [
+        "boucle TantQue",
+        "traduction algorithmique"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q2-0",
+          "competence": "Transformer une boucle 'pour...finpour' en boucle 'tantque...fintantque' en algorithmique",
+          "contenu_markdown": "Toute boucle \"Pour i allant de a à b Faire ... FinPour\" se traduit en boucle \"TantQue\" en initialisant i à a avant la boucle, en testant \"TantQue i <= b\", et en incrémentant i (i <- i+1) à la fin de chaque itération.",
+          "cours_genere": true,
+          "cours_id": "cours-transformer-une-boucle-pour-finpour-en-boucle-tantque-fintantque-en-algorithmique-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Exécuter pas à pas l'algorithme sur votre feuille de composition pour Tab=[5, 7, 1, 2, 6] et déduire ce que fait cet algorithme. (1,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa trace d'exécution consiste à dérouler l'algorithme ligne par ligne en notant à chaque étape la valeur de chaque variable, afin d'observer son comportement réel et d'en déduire sa fonction.\n\n### Corrigé\n*(Trace réalisée sur les bornes 1 à 5, cohérentes avec la taille du tableau et le jeu de données fourni — voir incertitude en tête d'exercice.)*\n\n**Phase de saisie (lignes 6-9)** : Tab[1]=5, Tab[2]=7, Tab[3]=1, Tab[4]=2, Tab[5]=6.\n\n**Phase de calcul (lignes 10-15)** : Trv initialisé à 0.\n\n| i | Tab[i] | Tab[i] < Trv ? | Trv après |\n|---|--------|----------------|-----------|\n| 1 | 5      | 5 < 0 ? Non    | 0         |\n| 2 | 7      | 7 < 0 ? Non    | 0         |\n| 3 | 1      | 1 < 0 ? Non    | 0         |\n| 4 | 2      | 2 < 0 ? Non    | 0         |\n| 5 | 6      | 6 < 0 ? Non    | 0         |\n\nÀ la fin, **Trv vaut toujours 0**, quelle que soit la valeur minimale réelle du tableau (ici 1).\n\n**Ce que fait réellement l'algorithme** : son intention est visiblement de rechercher la **plus petite valeur** (le minimum) du tableau Tab. Mais l'initialisation `Trv <- 0` est erronée : puisque toutes les valeurs saisies dans ce test sont positives, aucune n'est jamais strictement inférieure à 0, donc Trv n'est jamais mis à jour et reste à 0. **L'algorithme, tel qu'écrit, ne calcule pas correctement le minimum** — c'est un algorithme bogué que Paul a copié sur internet sans le vérifier.\n\n### Piège à éviter\nNe pas conclure hâtivement que \"l'algorithme calcule le minimum\" simplement parce que c'est son intention apparente : la trace montre clairement que le résultat obtenu (Trv=0) est faux dès que toutes les valeurs du tableau sont positives. Il faut bien distinguer ce que l'algorithme est censé faire de ce qu'il fait réellement.\n\n### Conseil\nPour corriger cet algorithme, il suffirait d'initialiser Trv avec la première valeur du tableau (`Trv <- Tab[1]`) plutôt qu'avec 0, avant de comparer les valeurs suivantes.",
+      "themes": [
+        "trace d'exécution",
+        "algorithme de recherche du minimum",
+        "débogage"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q3-0",
+          "competence": "Déduire la fonction d'un programme à partir de sa trace d'exécution",
+          "contenu_markdown": "La trace d'exécution consiste à dérouler l'algorithme ligne par ligne en notant à chaque étape la valeur de chaque variable, afin d'observer son comportement réel et d'en déduire sa fonction.",
+          "cours_genere": true,
+          "cours_id": "cours-deduire-la-fonction-d-un-programme-a-partir-de-sa-trace-d-execution-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-identifier-une-structure-de-donnees-et-sa-taille-dans-un-algorithme-terminale-c",
+  "meta": {
+    "titre": "Identifier une structure de données et sa taille dans un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique - structures de données",
+    "tags": ["tableau", "structure de données", "déclaration"],
+    "duree_estimee_min": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une ligne de déclaration comme `Tab : tableau de 5 éléments entiers` tient en une phrase, mais elle réserve concrètement une zone mémoire précise avant même que l'algorithme ne commence à s'exécuter. Savoir la lire, c'est savoir combien de valeurs on peut stocker et comment y accéder."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Distinguer une variable simple d'un tableau"]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une déclaration de tableau",
+      "contenu_markdown": "La déclaration `nom : tableau de n éléments de type T` réserve en mémoire une structure de données nommée `nom`, capable de stocker exactement **n** valeurs de type T, chacune accessible individuellement par un indice (souvent noté nom[i]). La taille du tableau (le nombre d'éléments qu'il peut contenir) est fixée dès la déclaration et ne change jamais pendant l'exécution de l'algorithme. Repérer cette taille est indispensable avant toute manipulation du tableau : c'est elle qui borne les valeurs d'indice valides dans une boucle de parcours.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La ligne 3 d'un algorithme déclare : `Tab : Tableau[1..5] d'entiers`. Expliquer ce que fait cette ligne en deux lignes maximum.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nom et le type de la structure déclarée",
+          "justification": "La syntaxe `nom : tableau de ... de type T` indique un tableau nommé `Tab`, dont chaque case contient un entier.",
+          "resultat_markdown": "Tab est un tableau d'entiers."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer la taille exacte à partir des bornes indiquées",
+          "justification": "`[1..5]` signifie que les indices valides vont de 1 à 5 inclus, soit 5 valeurs distinctes.",
+          "resultat_markdown": "Tab peut contenir 5 éléments entiers, indexés de 1 à 5."
+        }
+      ],
+      "conclusion_markdown": "La ligne 3 déclare Tab, une structure de données de type tableau, pouvant contenir 5 éléments entiers, indexés de 1 à 5."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter mal le nombre d'éléments d'un tableau déclaré `[0..5]`, en oubliant que les deux bornes sont incluses",
+          "pourquoi_faux": "`[0..5]` désigne les indices 0, 1, 2, 3, 4 et 5 : cela fait 6 valeurs distinctes, pas 5, malgré la borne haute affichant « 5 ».",
+          "correction_markdown": "Calcule toujours la taille par (borne haute - borne basse + 1), jamais en recopiant simplement le dernier chiffre de la déclaration."
+        },
+        {
+          "erreur_markdown": "Confondre la taille du tableau (fixée à la déclaration) avec le nombre de valeurs effectivement lues ou utilisées au cours de l'algorithme",
+          "pourquoi_faux": "Un tableau de taille 10 peut n'être rempli que sur ses 6 premières cases si l'algorithme le décide ainsi - la taille déclarée est une capacité maximale, pas nécessairement le nombre de valeurs réellement traitées.",
+          "correction_markdown": "Distingue toujours « taille déclarée du tableau » et « nombre de valeurs effectivement utilisées », qui peuvent différer selon la logique de l'algorithme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un algorithme déclare `Notes : Tableau[1..20] de réels`. Combien de valeurs ce tableau peut-il contenir, et de quel type sont-elles ?",
+          "solution_markdown": "Le tableau peut contenir 20 valeurs (indices de 1 à 20 inclus), chacune de type réel."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un algorithme déclare `Villes : Tableau[0..7] de chaînes de caractères`. Combien de valeurs ce tableau peut-il contenir ? Justifier le calcul.",
+          "solution_markdown": "8 valeurs. Les indices valides vont de 0 à 7 inclus : (7 - 0 + 1) = 8 cases distinctes, chacune contenant une chaîne de caractères."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorithme déclare deux structures : `Age : Entier` et `Ages : Tableau[1..30] d'entiers`. Explique la différence fondamentale entre ces deux déclarations, et donne un exemple de situation où chacune est appropriée.",
+          "solution_markdown": "`Age : Entier` déclare une variable simple, capable de mémoriser une seule valeur entière à la fois (ex. l'âge d'UN élève précis, saisi une fois). `Ages : Tableau[1..30] d'entiers` déclare une structure capable de mémoriser jusqu'à 30 valeurs entières simultanément, chacune accessible par son indice (ex. l'âge de chacun des 30 élèves d'une classe, tous conservés en mémoire en même temps pour être traités - calculer une moyenne, trouver le plus jeune, etc.). Le choix dépend du besoin : une seule valeur à la fois → variable simple ; plusieurs valeurs de même nature à traiter ensemble → tableau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une déclaration de tableau réserve une structure capable de stocker plusieurs valeurs du même type, chacune accessible par un indice.",
+        "La taille se calcule par (borne haute - borne basse + 1), pas en recopiant simplement un chiffre de la déclaration.",
+        "La taille déclarée est fixe pendant toute l'exécution : c'est une capacité maximale, pas forcément le nombre de valeurs réellement utilisées.",
+        "Une variable simple mémorise une seule valeur ; un tableau en mémorise plusieurs, accessibles individuellement.",
+        "Au BAC, lire correctement une déclaration de tableau est indispensable avant toute question de trace, de parcours ou de traduction en langage C."
+      ]
+    }
+  ]
+}

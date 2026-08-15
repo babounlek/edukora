@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-interpreter-le-resultat-d-une-requete-sql-de-selection-avec-condition-select-where-terminale-c",
+  "meta": {
+    "titre": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT... WHERE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Bases de données - SQL",
+    "tags": ["SQL", "SELECT", "WHERE", "requête"],
+    "duree_estimee_min": 18,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une requête SQL avec plusieurs conditions ressemble à un simple tri, mais une seule erreur d'interprétation - oublier une condition, confondre ET et OU - donne un résultat complètement différent. Savoir « exécuter » une requête à la main, ligne par ligne, est la seule façon fiable de répondre juste."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Connaître la structure d'une table (lignes, colonnes)", "Comprendre la commande SELECT simple"]
+    },
+    {
+      "type": "regle",
+      "titre": "Interpréter SELECT ... FROM ... WHERE ... AND ...",
+      "contenu_markdown": "Une requête `SELECT colonnes FROM table WHERE condition1 AND condition2` s'exécute en deux temps : d'abord, la clause **WHERE** filtre les LIGNES de la table, en ne conservant que celles qui vérifient **simultanément** toutes les conditions reliées par AND (une ligne qui échoue sur une seule condition est rejetée) ; ensuite, la clause **SELECT** détermine quelles COLONNES afficher parmi les lignes retenues, en ignorant toutes les autres colonnes de la table, même si elles existent.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une table `Eleve` contient les colonnes Matricule, Nom, Prenoms, Sexe, Age, avec 3 lignes : (10Y125, YANN W, MVONDO, M, 18), (09T145, Ebode, Ernest, M, 17), (10C124, Seke, Danielle, F, 18). Donner le résultat de la requête `SELECT Nom, Prenoms, Sexe FROM Eleve WHERE Sexe <> 'F' AND Age = 18`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Examiner chaque ligne de la table contre les deux conditions du WHERE",
+          "justification": "AND impose que les DEUX conditions soient vérifiées simultanément pour qu'une ligne soit conservée.",
+          "resultat_markdown": "- 10Y125 (YANN W / MVONDO, 18, M) : Sexe ≠ 'F' ✓ et Age = 18 ✓ → retenue.\n- 09T145 (Ebode / Ernest, 17, M) : Sexe ≠ 'F' ✓ mais Age = 18 ✗ (Age=17) → rejetée.\n- 10C124 (Seke / Danielle, 18, F) : Sexe ≠ 'F' ✗ (Sexe='F') → rejetée."
+        },
+        {
+          "numero": 2,
+          "action": "N'afficher que les colonnes demandées dans le SELECT, pour les lignes retenues",
+          "justification": "Le SELECT liste explicitement Nom, Prenoms, Sexe : les colonnes Matricule et Age ne doivent pas apparaître dans le résultat, même si elles existent dans la table.",
+          "resultat_markdown": "| Nom    | Prenoms | Sexe |\n|--------|---------|------|\n| YANN W | MVONDO  | M    |"
+        }
+      ],
+      "conclusion_markdown": "Une seule ligne satisfait les deux conditions à la fois : le résultat contient uniquement Nom, Prenoms et Sexe de cette ligne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Retenir une ligne qui vérifie une seule des deux conditions reliées par AND",
+          "pourquoi_faux": "AND exige la vérification SIMULTANÉE de toutes les conditions - une ligne qui échoue sur une seule condition, même si elle vérifie parfaitement l'autre, doit être rejetée en entier.",
+          "correction_markdown": "Teste chaque condition séparément pour chaque ligne, et ne retiens la ligne que si TOUTES les conditions sont vraies à la fois."
+        },
+        {
+          "erreur_markdown": "Afficher dans le résultat une colonne présente dans la table mais absente de la clause SELECT",
+          "pourquoi_faux": "SELECT détermine précisément ce qui s'affiche, indépendamment de ce qui existe réellement dans la table - une colonne non listée dans le SELECT ne doit jamais apparaître dans le résultat.",
+          "correction_markdown": "Recopie exactement, dans cet ordre, les colonnes listées après SELECT ; ignore toute colonne non mentionnée, même si elle te semble utile."
+        },
+        {
+          "erreur_markdown": "Confondre `<>` (différent de) avec `=` lors du test d'une condition",
+          "pourquoi_faux": "`Sexe <> 'F'` sélectionne tout ce qui N'EST PAS 'F', et non ce qui vaut 'F' - une confusion inverse totalement le résultat de la requête.",
+          "correction_markdown": "Relis chaque opérateur de comparaison avant de tester une ligne : `=` (égal), `<>` (différent), `<`, `>`, `<=`, `>=`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une table `Produit` (Code, Nom, Prix) contient (P1, Stylo, 200), (P2, Cahier, 500), (P3, Gomme, 100). Donner le résultat de `SELECT Nom, Prix FROM Produit WHERE Prix > 150`.",
+          "solution_markdown": "| Nom   | Prix |\n|-------|------|\n| Stylo | 200  |\n| Cahier| 500  |\n\nSeuls Stylo (200) et Cahier (500) ont un prix strictement supérieur à 150 ; Gomme (100) est rejetée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre la table Produit ci-dessus. Donner le résultat de `SELECT Code FROM Produit WHERE Prix >= 100 AND Prix <= 200`.",
+          "solution_markdown": "| Code |\n|------|\n| P1   |\n| P3   |\n\nStylo (200) vérifie 100 ≤ 200 ≤ 200 ✓. Gomme (100) vérifie 100 ≤ 100 ≤ 200 ✓. Cahier (500) échoue sur la condition Prix ≤ 200 ✗ - rejeté malgré Prix ≥ 100."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table `Client` (Nom, Ville, Fidele) contient (Awa, Yaoundé, oui), (Beti, Douala, non), (Chris, Yaoundé, non). Un élève écrit `SELECT Nom FROM Client WHERE Ville = 'Yaoundé' AND Fidele = 'oui' OR Ville = 'Douala'` et obtient Awa, Beti ET Chris. Explique pourquoi son résultat est probablement faux par rapport à l'intention « clients fidèles de Yaoundé, ou clients de Douala », et propose une correction.",
+          "solution_markdown": "SQL évalue AND avant OR (comme la multiplication avant l'addition en calcul), donc la requête est en réalité comprise comme `(Ville='Yaoundé' AND Fidele='oui') OR (Ville='Douala')` - ce qui, ici, correspond effectivement à l'intention et donne Awa (Yaoundé+fidèle) et Beti (Douala), mais PAS Chris (Yaoundé, non fidèle, ne vérifie aucune des deux branches). Si le résultat obtenu inclut à tort Chris, l'erreur vient d'une mauvaise application manuelle des priorités, pas de la requête elle-même. Pour lever toute ambiguïté et sécuriser la lecture (à l'écrit comme à l'examen), on ajoute des parenthèses explicites : `SELECT Nom FROM Client WHERE (Ville = 'Yaoundé' AND Fidele = 'oui') OR Ville = 'Douala'`, qui donne sans ambiguïté Awa et Beti."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "WHERE filtre les LIGNES ; SELECT détermine les COLONNES à afficher parmi les lignes retenues.",
+        "AND exige que toutes les conditions soient vérifiées simultanément : une seule condition fausse rejette la ligne entière.",
+        "N'affiche jamais une colonne absente de la clause SELECT, même si elle existe dans la table.",
+        "Relis toujours l'opérateur de comparaison exact (=, <>, <, >) avant de tester une ligne.",
+        "En cas de mélange AND/OR, les parenthèses lèvent l'ambiguïté - AND est évalué avant OR par défaut, comme la multiplication avant l'addition."
+      ]
+    }
+  ]
+}

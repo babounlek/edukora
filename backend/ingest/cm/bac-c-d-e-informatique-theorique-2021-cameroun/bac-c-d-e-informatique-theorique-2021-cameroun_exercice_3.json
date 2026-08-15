@@ -1,0 +1,169 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": "3",
+  "points": "4",
+  "figures": [],
+  "enonce_intro_markdown": "**EXERCICE 2 : BASES DE DONNEES (4pts)**\n\nM. OTABELA souhaite à présent créer la base de données OTABD de gestion de sa clientèle. Dans cette base de données, il voudrait pouvoir sauvegarder les factures des différents clients dans la table FACTURE dont le schéma est FACTURE(Num_facture, Description_facture, Montant_facture, Date_emission).\n\nEn vous servant de cette description et de vos connaissances, répondez aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Définir : base de données. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne définition de base de données doit mentionner l'organisation structurée des données et leur gestion par un logiciel dédié (le SGBD).\n\n### Corrigé\nUne **base de données** est un ensemble structuré et organisé de données, stockées de manière cohérente et non redondante, destinées à être consultées, gérées et mises à jour par un système de gestion de base de données (SGBD).",
+      "themes": [
+        "bases de données",
+        "définitions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q1-0",
+          "competence": "Définir la notion de base de données",
+          "contenu_markdown": "Une définition de base de données doit mentionner l'organisation structurée des données et leur gestion par un logiciel dédié (le SGBD).",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-notion-de-base-de-donnees-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Citer un exemple de logiciel d'application pouvant être utilisée pour créer physiquement cette base de données. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nCréer physiquement une base de données nécessite un logiciel SGBD (Système de Gestion de Base de Données), qui existe sous forme de logiciel serveur (MySQL, PostgreSQL) ou de logiciel de bureau (Microsoft Access).\n\n### Corrigé\nRéponse (exemple) : **MySQL** (ou Microsoft Access, PostgreSQL).",
+      "themes": [
+        "SGBD",
+        "logiciels"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q2-0",
+          "competence": "Identifier un logiciel SGBD pour créer une base de données",
+          "contenu_markdown": "Créer physiquement une base de données nécessite un logiciel SGBD (Système de Gestion de Base de Données), qui existe sous forme de logiciel serveur (MySQL, PostgreSQL) ou de logiciel de bureau (Microsoft Access).",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-un-logiciel-sgbd-pour-creer-une-base-de-donnees-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3.a",
+      "enonce_markdown": "3. Écrire une requête SQL permettant de :\n\na. Créer la base de données OTABD. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa commande CREATE DATABASE crée une nouvelle base de données vide, avant que ses tables ne soient définies avec CREATE TABLE.\n\n### Corrigé\n```sql\nCREATE DATABASE OTABD;\n```",
+      "themes": [
+        "SQL",
+        "CREATE DATABASE"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.a-0",
+          "competence": "Écrire une requête SQL de création de base de données (CREATE DATABASE)",
+          "contenu_markdown": "La commande CREATE DATABASE crée une nouvelle base de données vide, avant que ses tables ne soient définies avec CREATE TABLE.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-base-de-donnees-create-database-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3.b",
+      "enonce_markdown": "b. Créer la table FACTURE sachant que le champ Num_facture est un entier, le champ description_facture est une chaîne de 255 caractères au plus, le champ Montant_facture est un réel, le champ date_emission est une chaîne de 10 caractères. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nCREATE TABLE définit le nom et le type de chaque colonne. Un entier se déclare INT, une chaîne de caractères de longueur maximale connue se déclare VARCHAR(n), un nombre réel se déclare FLOAT ou DECIMAL.\n\n### Corrigé\nNum_facture est un entier (INT), Description_facture une chaîne d'au plus 255 caractères (VARCHAR(255)), Montant_facture un réel (FLOAT), Date_emission une chaîne de 10 caractères (VARCHAR(10), format JJ/MM/AAAA).\n\n```sql\nCREATE TABLE FACTURE (\n    Num_facture INT PRIMARY KEY,\n    Description_facture VARCHAR(255),\n    Montant_facture FLOAT,\n    Date_emission VARCHAR(10)\n);\n```",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "types de données"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.b-0",
+          "competence": "Écrire une requête SQL de création de table (CREATE TABLE)",
+          "contenu_markdown": "CREATE TABLE définit le nom et le type de chaque colonne. Un entier se déclare INT, une chaîne de caractères de longueur maximale connue se déclare VARCHAR(n), un nombre réel se déclare FLOAT ou DECIMAL.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3.c",
+      "enonce_markdown": "c. Supprimer toutes les factures émises avant le \"25/01/2015\". (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa commande DELETE FROM table WHERE condition supprime toutes les lignes de la table qui vérifient la condition indiquée.\n\n### Corrigé\nOn supprime toutes les factures dont la date d'émission est antérieure au 25/01/2015.\n\n```sql\nDELETE FROM FACTURE WHERE Date_emission < '25/01/2015';\n```\n\n### Conseil\nCette requête reproduit fidèlement la syntaxe attendue au niveau Terminale. En toute rigueur, Date_emission étant stockée comme une simple chaîne de caractères (VARCHAR) au format JJ/MM/AAAA, une comparaison directe avec < compare les dates caractère par caractère et non chronologiquement (par exemple, '05/03/2020' serait lexicographiquement inférieure à '25/01/2015' bien que postérieure). Dans une base de données réelle, on utiliserait un type DATE, ou un format AAAA-MM-JJ, pour garantir un tri chronologique fiable.",
+      "themes": [
+        "SQL",
+        "DELETE FROM",
+        "condition de suppression"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.c-0",
+          "competence": "Écrire une requête SQL de suppression conditionnelle (DELETE FROM... WHERE)",
+          "contenu_markdown": "La commande DELETE FROM table WHERE condition supprime toutes les lignes de la table qui vérifient la condition indiquée.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-suppression-conditionnelle-delete-from-where-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3.d",
+      "enonce_markdown": "d. Afficher toutes les factures de la base de données. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nSELECT * FROM table affiche toutes les colonnes de toutes les lignes de la table, sans aucune condition de filtrage.\n\n### Corrigé\n```sql\nSELECT * FROM FACTURE;\n```",
+      "themes": [
+        "SQL",
+        "SELECT"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.d-0",
+          "competence": "Écrire une requête SQL affichant toutes les lignes d'une table (SELECT * FROM)",
+          "contenu_markdown": "SELECT * FROM table affiche toutes les colonnes de toutes les lignes de la table, sans aucune condition de filtrage.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-affichant-toutes-les-lignes-d-une-table-select-from-terminale-c"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "base de données",
+    "SQL",
+    "CREATE DATABASE",
+    "CREATE TABLE",
+    "DELETE FROM",
+    "SELECT",
+    "bac c d e informatique 2021"
+  ],
+  "incertitudes": [
+    "Le champ serie est fixé à C, comme pour les autres exercices de cette même épreuve.",
+    "Le schéma FACTURE(Num_facture, Description_facture, Montant_facture, Date_emission) n'indique pas explicitement par un soulignement lequel des attributs est l'identifiant dans le texte extrait ; Num_facture, premier attribut cité et de type entier, est retenu comme clé primaire par convention Merise standard.",
+    "La question 3.c demande de supprimer les factures antérieures au 25/01/2015, alors que date_emission est définie comme une chaîne de 10 caractères (et non un type DATE) ; une comparaison directe par < sur une chaîne au format JJ/MM/AAAA ne garantit pas un tri chronologique correct (une date de 2020 peut being lexicographiquement inférieure à une date de 2015 selon les chiffres du jour/mois). Le corrigé fournit la requête attendue au niveau Terminale, tout en signalant cette limite technique en Conseil."
+  ],
+  "statut": "brouillon",
+  "nature_epreuve": "theorique"
+}

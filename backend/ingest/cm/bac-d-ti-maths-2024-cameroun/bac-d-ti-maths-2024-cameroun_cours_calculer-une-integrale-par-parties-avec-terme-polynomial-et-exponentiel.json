@@ -1,0 +1,31 @@
+{
+  "cours_id": "cours-calculer-une-integrale-par-parties-avec-terme-polynomial-et-exponentiel-terminale-d-ti",
+  "meta": {
+    "titre": "Calculer une intégrale par parties avec un terme polynomial et un terme exponentiel",
+    "cours_id": "cours-calculer-une-integrale-par-parties-avec-terme-polynomial-et-exponentiel-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Intégration — intégration par parties",
+    "tags": ["intégration par parties", "polynôme", "exponentielle"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex3-1c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour intégrer un produit polynôme×exponentielle, l'intégration par parties fait systématiquement baisser le degré du terme polynomial jusqu'à disparition complète."},
+    {"type": "prerequis", "items_markdown": ["Formule d'intégration par parties ∫u'v=[uv]-∫uv'", "Primitive de e^(kt)"]},
+    {"type": "regle", "titre": "Choisir u=polynôme, dv=exponentielle dt", "contenu_markdown": "Pour $\\int(\\alpha t+\\beta)e^{kt}dt$, on pose $u=\\alpha t+\\beta$ (donc $u'=\\alpha$, degré qui baisse) et $dv=e^{kt}dt$ (donc $v=\\dfrac1ke^{kt}$, primitive simple). La formule $\\int uv'=[uv]-\\int u'v$ transforme l'intégrale du produit en une intégrale d'exponentielle seule, immédiate à calculer.", "formule_principale": "∫(αt+β)e^(kt)dt : u=αt+β, dv=e^(kt)dt, v=(1/k)e^(kt)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫₀¹(2t+1)e^t dt par intégration par parties.", "epreuve_source": true, "etapes": [
+      {"numero": 1, "action": "Choisir u et dv", "justification": "u=2t+1, dv=e^t dt.", "resultat_markdown": "u'=2, v=e^t"},
+      {"numero": 2, "action": "Appliquer la formule", "justification": "[uv]-∫u'v dt.", "resultat_markdown": "[(2t+1)e^t]₀¹ - ∫₀¹2e^t dt"},
+      {"numero": 3, "action": "Calculer chaque partie", "justification": "[(2t+1)e^t]₀¹=(3e)-(1)=3e-1 ; ∫2e^t dt=[2e^t]₀¹=2e-2.", "resultat_markdown": "I=(3e-1)-(2e-2)=e+1"}
+    ], "conclusion_markdown": "I=e+1."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Choisir u=e^(kt) et dv=(polynôme)dt, inversant les rôles habituels", "pourquoi_faux": "Ce choix fait AUGMENTER le degré du terme polynomial après intégration (dv=(αt+β)dt donne v de degré 2), ce qui complique l'intégrale au lieu de la simplifier.", "correction_markdown": "Toujours choisir u=terme polynomial (dont la dérivée baisse le degré) et dv=terme exponentiel dt (dont la primitive reste de forme simple)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Quelle est une primitive de e^(3t) ?", "solution_markdown": "(1/3)e^(3t)."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pour ∫(5t-2)e^(3t)dt, quel choix de u et dv est judicieux ?", "solution_markdown": "u=5t-2 (u'=5), dv=e^(3t)dt (v=(1/3)e^(3t))."},
+      {"numero": 3, "difficulte": "approfondissement", "enonce_markdown": "Comment traiter ∫(t²+1)e^t dt, où le polynôme est de degré 2 ?", "solution_markdown": "Une seule intégration par parties (u=t²+1, dv=e^t dt) ramène à ∫2t·e^t dt, qui nécessite une SECONDE intégration par parties (u=2t, dv=e^t dt) pour éliminer complètement le terme polynomial ; en général, un polynôme de degré n nécessite n intégrations par parties successives."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Pour ∫(polynôme)×e^(kt)dt, poser u=polynôme et dv=e^(kt)dt.", "La formule ∫uv'=[uv]-∫u'v fait baisser le degré du polynôme à chaque application.", "Un polynôme de degré n nécessite n intégrations par parties successives pour disparaître complètement."]}
+  ]
+}

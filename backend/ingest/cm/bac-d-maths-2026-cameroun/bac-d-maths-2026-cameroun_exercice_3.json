@@ -1,0 +1,56 @@
+{
+  "epreuve_source": "bac-d-maths-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": "DRES Nord (Évaluations Harmonisées Régionales N°1) - Épreuve zéro",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 3,
+  "titre_exercice": "Probabilités conditionnelles : contrôle qualité et loi binomiale",
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "Une usine produit des composants électroniques. On sait que 5% des composants produits sont défectueux. Un test de contrôle est appliqué à chaque composant : si un composant est défectueux, le test est positif dans 98% des cas ; si un composant est sain, le test est négatif dans 97% des cas.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1,5pt",
+      "enonce_markdown": "Montrer que la probabilité que le test soit positif est $\\dfrac{31}{400}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-totale-a-partir-dun-arbre-pondere-terminale-d",
+          "texte": "Quand un événement B (ici « test positif ») peut se réaliser selon plusieurs causes exclusives et exhaustives $A_1,\\dots,A_k$ (ici « défectueux » et « sain »), la formule des probabilités totales donne $P(B)=\\sum_i P(A_i)\\times P(B\\mid A_i)$. Un arbre de probabilités pondéré, avec au premier niveau les causes et au second niveau l'événement B conditionné à chaque cause, permet de visualiser et de ne pas oublier une branche."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nQuand un événement B (ici « test positif ») peut se réaliser selon plusieurs causes exclusives et exhaustives $A_1,\\dots,A_k$ (ici « défectueux » et « sain »), la formule des probabilités totales donne $P(B)=\\sum_i P(A_i)\\times P(B\\mid A_i)$. Un arbre de probabilités pondéré, avec au premier niveau les causes et au second niveau l'événement B conditionné à chaque cause, permet de visualiser et de ne pas oublier une branche.\n\nNotons $D$ l'événement « le composant est défectueux » et $T$ l'événement « le test est positif ».\n\n**Données de l'énoncé.**\n\n$P(D) = \\dfrac{5}{100} = 0,05$, donc $P(\\overline D) = 1-0,05 = 0,95$ (composant sain)\n\n$P(T\\mid D) = \\dfrac{98}{100} = 0,98$ (test positif sachant défectueux)\n\n$P(\\overline T\\mid\\overline D) = \\dfrac{97}{100} = 0,97$ (test négatif sachant sain), donc $P(T\\mid\\overline D) = 1-0,97 = 0,03$ (test positif sachant sain, faux positif)\n\n**Formule des probabilités totales.** $D$ et $\\overline D$ forment une partition de l'univers, donc :\n\n$P(T) = P(D)\\times P(T\\mid D) + P(\\overline D)\\times P(T\\mid\\overline D)$\n\n$P(T) = 0,05\\times0,98 + 0,95\\times0,03 = 0,049 + 0,0285 = 0,0775$\n\n**Vérification sous forme de fraction.** $0,0775 = \\dfrac{775}{10000} = \\dfrac{31}{400}$ (en divisant numérateur et dénominateur par $25$).\n\n**Conclusion.** $P(T) = \\dfrac{31}{400}$, ce qui est bien le résultat annoncé.\n\n### Conseil\nToujours vérifier que les probabilités conditionnelles utilisées correspondent bien au sens de la question posée : ici, $P(T\\mid\\overline D)$ (faux positif) se déduit de $P(\\overline T\\mid\\overline D)$ par complémentation, une étape qu'il ne faut pas oublier."
+    },
+    {
+      "numero": "2",
+      "points": "0,5pt",
+      "enonce_markdown": "Un test est positif. Montrer que la probabilité que le test soit défectueux est $\\dfrac{98}{155}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-conditionnelle-par-la-formule-de-bayes-terminale-d",
+          "texte": "La formule de Bayes permet d'inverser le sens d'un conditionnement : $P(A\\mid B)=\\dfrac{P(A)\\times P(B\\mid A)}{P(B)}$. Le numérateur est la probabilité du chemin de l'arbre passant par $A$ puis $B$ ; le dénominateur est la probabilité totale de $B$, déjà calculée par ailleurs."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa formule de Bayes permet d'inverser le sens d'un conditionnement : $P(A\\mid B)=\\dfrac{P(A)\\times P(B\\mid A)}{P(B)}$. Le numérateur est la probabilité du chemin de l'arbre passant par $A$ puis $B$ ; le dénominateur est la probabilité totale de $B$, déjà calculée par ailleurs.\n\nOn cherche $P(D\\mid T)$ (probabilité que le composant soit défectueux sachant que le test est positif).\n\n**Formule de Bayes.** $P(D\\mid T) = \\dfrac{P(D)\\times P(T\\mid D)}{P(T)}$\n\nD'après la question 1 : $P(D)\\times P(T\\mid D) = 0,05\\times0,98 = 0,049$ et $P(T)=0,0775=\\dfrac{31}{400}$\n\n$P(D\\mid T) = \\dfrac{0,049}{0,0775}$\n\n**Passage aux fractions pour la valeur exacte.** $0,049=\\dfrac{49}{1000}$ et $0,0775=\\dfrac{775}{10000}=\\dfrac{31}{400}$\n\n$P(D\\mid T) = \\dfrac{49/1000}{31/400} = \\dfrac{49}{1000}\\times\\dfrac{400}{31} = \\dfrac{49\\times400}{1000\\times31} = \\dfrac{19600}{31000} = \\dfrac{196}{310} = \\dfrac{98}{155}$\n\n(en simplifiant successivement par $100$ puis par $2$)\n\n**Conclusion.** $P(D\\mid T) = \\dfrac{98}{155}$, ce qui est bien le résultat annoncé.\n\n### Piège à éviter\nNe pas confondre $P(D\\mid T)$ (proportion de défectueux parmi les tests positifs, ce qui est demandé ici) avec $P(T\\mid D)$ (proportion de tests positifs parmi les défectueux, donnée dans l'énoncé) : ce sont deux quantités différentes, reliées par la formule de Bayes."
+    },
+    {
+      "numero": "3",
+      "points": "1pt",
+      "enonce_markdown": "On prélève 10 composants au hasard (avec remise). Quelle est la probabilité qu'au moins un composant soit défectueux ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-binomiale-au-moins-un-succes-par-levenement-complementaire-terminale-d",
+          "texte": "Lorsqu'on répète $n$ fois, de façon indépendante, une même épreuve à deux issues (ici « défectueux » ou « non défectueux », avec remise donc probabilité constante à chaque tirage), le nombre de succès suit une loi binomiale $\\mathcal B(n,p)$. La probabilité de l'événement « au moins un succès » se calcule le plus simplement via l'événement complémentaire « aucun succès » : $P(X\\ge1)=1-P(X=0)=1-(1-p)^n$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLorsqu'on répète $n$ fois, de façon indépendante, une même épreuve à deux issues (ici « défectueux » ou « non défectueux », avec remise donc probabilité constante à chaque tirage), le nombre de succès suit une loi binomiale $\\mathcal B(n,p)$. La probabilité de l'événement « au moins un succès » se calcule le plus simplement via l'événement complémentaire « aucun succès » : $P(X\\ge1)=1-P(X=0)=1-(1-p)^n$.\n\nLe tirage se fait avec remise, donc les 10 tirages sont indépendants et la probabilité qu'un composant soit défectueux reste $p=P(D)=0,05$ à chaque tirage. Le nombre $X$ de composants défectueux parmi les 10 suit donc une loi binomiale $\\mathcal B(10\\,;\\,0,05)$.\n\n**Événement complémentaire.** $P(X\\ge1) = 1-P(X=0)$\n\n$P(X=0) = (1-p)^{10} = (0,95)^{10}$\n\n**Calcul numérique de $(0,95)^{10}$.** En développant successivement : $0,95^2=0,9025$ ; $0,95^4=(0,9025)^2\\approx0,8145$ ; $0,95^5\\approx0,8145\\times0,95\\approx0,7738$ ; $0,95^{10}=(0,95^5)^2\\approx(0,7738)^2\\approx0,5987$\n\n$P(X\\ge1) = 1-0,5987 = 0,4013$\n\n**Conclusion.** La probabilité qu'au moins un composant soit défectueux parmi les 10 prélevés est d'environ $0,4013$, soit environ $40,1\\%$.\n\n### Conseil\nLe réflexe « au moins un » doit systématiquement déclencher le passage par le complémentaire « aucun » : calculer directement $P(X\\ge1)$ terme à terme (en sommant $P(X=1)+P(X=2)+\\dots+P(X=10)$) serait beaucoup plus long et source d'erreurs."
+    }
+  ]
+}

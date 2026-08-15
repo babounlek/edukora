@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-retour-suite-origine-exponentielle-limite-terminale-d",
+  "meta": {"titre": "Revenir de la suite auxiliaire logarithmique à la suite d'origine et calculer sa limite", "cours_id": "cours-retour-suite-origine-exponentielle-limite-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Suites numériques — retour à la suite d'origine et limite", "tags": ["exponentielle", "limite de suite", "changement de variable"], "duree_estimee_minutes": 4, "epreuve_source": "bac-d-maths-2012-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2012-cameroun-ex5-q2c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une fois le terme général de la suite auxiliaire vn=ln(un)-c trouvé, revenir à un se fait par exponentielle, et la limite de un se déduit directement de celle de vn."},
+    {"type": "prerequis", "items_markdown": ["Terme général de vn déjà déterminé", "e^(ln x)=x et propriétés de l'exponentielle", "Limite de q^(n-1) pour |q|<1"]},
+    {"type": "regle", "titre": "Isoler ln(un), appliquer l'exponentielle, puis passer à la limite", "contenu_markdown": "À partir de $v_n=\\ln(u_n)-c$, on isole $\\ln(u_n)=v_n+c$, puis on applique l'exponentielle : $u_n=e^{v_n+c}=e^c\\times e^{v_n}$. Pour la limite, si $v_n=v_1\\times q^{n-1}$ avec $|q|<1$, alors $v_n\\to0$ quand $n\\to+\\infty$, donc $u_n\\to e^c\\times e^0=e^c$ par continuité de l'exponentielle.", "formule_principale": "un=e^(vn+c) ; si vn→0 alors un→e^c", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "vn=ln(un)-3ln2, avec vn=-3ln2×(1/2)^(n-1). Exprimer un et calculer sa limite.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Isoler ln(un)", "justification": "ln(un)=vn+3ln2", "resultat_markdown": "un=e^(vn+3ln2)=8×e^(vn)"},
+      {"numero": 2, "action": "Limite", "justification": "(1/2)^(n-1)→0 donc vn→0", "resultat_markdown": "un→8×e^0=8"}
+    ], "conclusion_markdown": "un=8e^(vn), lim un=8."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de repasser par e^c=e^(2ln k)=k² (ou la valeur équivalente) et laisser la limite sous forme e^c non simplifiée, sans la convertir en une puissance entière ou simple", "pourquoi_faux": "La forme e^c, quand c est un multiple de ln(k), se simplifie toujours en une puissance entière de k (via e^(mln k)=k^m) : laisser le résultat sous forme e^c non simplifiée est incomplet et moins clair.", "correction_markdown": "Toujours vérifier si la constante c au numérateur de l'exposant est un multiple d'un logarithme connu, et simplifier e^c en conséquence (ex. e^(2ln2)=2²=4)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "vn=ln(un)-3ln3, avec vn=-3ln3×(1/3)^(n-1). Exprimer un et calculer sa limite.", "solution_markdown": "ln(un)=vn+3ln3, un=e^(vn)×3³=27e^(vn). (1/3)^(n-1)→0 donc vn→0, un→27."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Le retour de vn à un se fait par exponentielle, en isolant d'abord ln(un).", "La limite de un se déduit directement de celle de vn (souvent 0 pour une suite géométrique de raison |q|<1), via la continuité de l'exponentielle."]}
+  ]
+}

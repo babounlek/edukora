@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-utiliser-la-commande-ping-pour-tester-la-connectivite-reseau-terminale-c",
+  "meta": {
+    "titre": "Utiliser la commande ping pour tester la connectivité réseau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Réseaux informatiques - diagnostic",
+    "tags": ["ping", "adresse IP", "connectivité réseau"],
+    "duree_estimee_min": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB4b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Je n'arrive pas à accéder au serveur » : avant même de chercher une cause complexe, un technicien réseau vérifie d'abord une chose toute simple - la machine distante répond-elle seulement au réseau ? La commande ping donne la réponse en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Savoir ce qu'est une adresse IP"]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande ping",
+      "contenu_markdown": "La commande **ping** envoie des paquets de test vers une adresse IP donnée et affiche si une réponse est reçue en retour, ce qui permet de vérifier la connectivité réseau entre deux machines. Une réponse reçue signifie que le chemin réseau entre les deux machines fonctionne ; une absence de réponse (« délai d'attente dépassé », « host unreachable ») signale un problème de connectivité à ce niveau - câble débranché, machine éteinte, pare-feu qui bloque, ou route réseau invalide.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la commande qui permet de tester la connexion réseau avec une autre machine.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la commande de diagnostic réseau adaptée à ce besoin",
+          "justification": "Tester si une machine distante répond sur le réseau est précisément le rôle de la commande ping.",
+          "resultat_markdown": "La commande ping."
+        },
+        {
+          "numero": 2,
+          "action": "Préciser sa syntaxe, en indiquant l'adresse IP de la machine ciblée",
+          "justification": "ping s'utilise toujours suivi de l'adresse (IP ou nom) de la machine à tester.",
+          "resultat_markdown": "`ping <adresse_IP_de_la_machine>`"
+        }
+      ],
+      "conclusion_markdown": "`ping <adresse_IP_de_la_machine>` - par exemple `ping 192.168.0.1`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre uniquement « ping » sans préciser qu'il faut lui associer une adresse IP (ou un nom de machine) cible",
+          "pourquoi_faux": "La commande seule, sans destination, ne teste rien de précis - c'est l'adresse fournie en argument qui détermine quelle machine est réellement testée.",
+          "correction_markdown": "Donne toujours la syntaxe complète avec un exemple d'adresse, pas seulement le nom de la commande."
+        },
+        {
+          "erreur_markdown": "Croire qu'une absence de réponse au ping signifie toujours que la machine distante est éteinte",
+          "pourquoi_faux": "Une absence de réponse peut avoir plusieurs causes : machine éteinte, câble débranché, mais aussi un pare-feu configuré pour ignorer volontairement les paquets ping, alors que la machine fonctionne normalement par ailleurs.",
+          "correction_markdown": "Ne conclus jamais trop vite « la machine est éteinte » : cite plusieurs causes possibles à une absence de réponse (panne, débranchement, pare-feu)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande qui teste la connectivité vers la machine d'adresse IP 10.0.0.5.",
+          "solution_markdown": "`ping 10.0.0.5`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien exécute `ping 192.168.1.1` et obtient des réponses régulières de la machine distante. Que peut-il en conclure sur la connectivité réseau entre les deux machines, et que ne peut-il PAS en conclure ?",
+          "solution_markdown": "Il peut conclure que le chemin réseau entre les deux machines fonctionne au niveau de base (les paquets circulent et reviennent). Il ne peut PAS en conclure que tous les services de la machine distante fonctionnent correctement (un serveur web ou une base de données peuvent être en panne alors même que la machine répond au ping) : ping teste uniquement la connectivité réseau de bas niveau, pas la disponibilité d'une application ou d'un service précis hébergé sur cette machine."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur ne parvient pas à accéder à un serveur web interne. Il exécute `ping <adresse_du_serveur>` et obtient bien des réponses. Explique pourquoi le problème n'est probablement pas lié à la connectivité réseau de base, et propose une piste de diagnostic suivante.",
+          "solution_markdown": "Un ping réussi prouve que les paquets circulent correctement entre les deux machines : le réseau de base (câblage, routage, la machine serveur elle-même allumée et joignable) fonctionne. Le problème d'accès au serveur web se situe donc probablement à un niveau plus élevé, hors de portée de ping : le service web (ex. Apache, Nginx) est peut-être arrêté sur le serveur, ou un pare-feu bloque spécifiquement le port utilisé par ce service (souvent le port 80 ou 443) sans bloquer les paquets ping (qui utilisent un protocole différent, ICMP). La piste suivante consiste à vérifier que le service web est bien démarré sur le serveur, puis à tester spécifiquement l'accès au port concerné plutôt que la simple connectivité réseau générale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ping envoie des paquets de test vers une adresse IP et signale si une réponse est reçue.",
+        "Une réponse reçue confirme la connectivité réseau de base ; une absence de réponse peut avoir plusieurs causes (panne, débranchement, pare-feu).",
+        "ping teste uniquement la connectivité réseau, jamais la disponibilité d'un service ou d'une application précise sur la machine distante.",
+        "La syntaxe s'écrit toujours `ping <adresse_IP_ou_nom_de_machine>`.",
+        "Au BAC, cette compétence s'évalue en donnant la commande adaptée à un besoin de diagnostic réseau exprimé en français."
+      ]
+    }
+  ]
+}

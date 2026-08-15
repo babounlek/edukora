@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-identifier-les-structures-de-controle-utiles-a-un-probleme-donne-sequentielle-conditionnelle-terminale-c",
+  "meta": {
+    "titre": "Identifier les structures de contrôle utiles à un problème donné (séquentielle, conditionnelle)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique - structures de contrôle",
+    "tags": ["structure séquentielle", "structure conditionnelle", "structure itérative"],
+    "duree_estimee_min": 18,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tout algorithme, même le plus complexe, se construit en combinant seulement trois briques de base. Savoir les reconnaître dans un problème donné, c'est déjà savoir quelle forme prendra la solution avant même d'écrire la première ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Lire un algorithme simple (affectation, Si, Pour, Tant que)"]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois structures de contrôle",
+      "contenu_markdown": "Un algorithme combine généralement plusieurs structures de contrôle, chacune organisant différemment l'exécution des instructions. La **structure séquentielle** exécute les instructions les unes après les autres, dans l'ordre où elles sont écrites - elle est toujours présente, dans tout algorithme. La **structure conditionnelle** (Si...Alors...Sinon) exécute un bloc d'instructions ou un autre selon qu'une condition est vraie ou fausse - elle intervient dès qu'un problème impose de choisir entre plusieurs traitements possibles. La **structure itérative** (boucle, Pour ou Tant que) répète un traitement tant qu'une condition reste vraie, ou un nombre de fois déterminé - elle intervient dès qu'un problème impose de répéter une même action sur plusieurs valeurs.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On souhaite écrire un algorithme qui prend en entrée la moyenne d'un élève et affiche « Admis » si elle est supérieure ou égale à 10, « Refusé » sinon. Identifier les structures de contrôle nécessaires pour résoudre ce problème.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer si le problème impose une répétition",
+          "justification": "Le traitement porte sur une seule moyenne saisie une seule fois, sans répétition annoncée.",
+          "resultat_markdown": "Aucune structure itérative n'est nécessaire ici : une seule évaluation suffit."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer si le problème impose un choix entre plusieurs traitements",
+          "justification": "Le problème demande explicitement deux réponses différentes (« Admis » ou « Refusé ») selon la valeur de la moyenne.",
+          "resultat_markdown": "Ce choix entre deux issues possibles correspond à une structure conditionnelle."
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la structure toujours présente",
+          "justification": "L'enchaînement ordonné des instructions (lire la moyenne, puis la tester, puis afficher le résultat) mobilise la structure séquentielle, présente dans tout algorithme.",
+          "resultat_markdown": "La structure séquentielle organise l'ensemble de l'algorithme."
+        }
+      ],
+      "conclusion_markdown": "Ce problème mobilise la structure séquentielle (l'enchaînement ordonné des instructions) et la structure conditionnelle (l'alternative Si...Alors...Sinon), sans structure itérative."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter systématiquement une boucle à chaque algorithme, même quand le problème ne traite qu'une seule valeur",
+          "pourquoi_faux": "Une boucle répète un traitement - si le problème ne demande de traiter qu'une seule donnée une seule fois, une structure itérative est inutile et complique l'algorithme sans raison.",
+          "correction_markdown": "Vérifie toujours si l'énoncé mentionne un traitement à répéter (plusieurs élèves, plusieurs valeurs d'un tableau...) avant d'ajouter une boucle."
+        },
+        {
+          "erreur_markdown": "Ne citer qu'une seule structure de contrôle alors que le problème en mobilise plusieurs à la fois",
+          "pourquoi_faux": "De nombreux problèmes combinent naturellement plusieurs structures (ex. une boucle qui contient elle-même une condition) - identifier une seule structure quand le problème en utilise deux ou trois fait perdre des points.",
+          "correction_markdown": "Analyse le problème structure par structure (y a-t-il une répétition ? y a-t-il un choix ?) plutôt que de t'arrêter à la première structure identifiée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un algorithme doit lire trois notes, puis afficher leur moyenne, sans aucune condition ni répétition. Quelle(s) structure(s) de contrôle ce problème mobilise-t-il ?",
+          "solution_markdown": "Uniquement la structure séquentielle : les instructions (lire les trois notes, calculer la moyenne, afficher le résultat) s'exécutent simplement les unes après les autres, sans aucun choix ni répétition."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un algorithme doit lire les notes de 30 élèves d'une classe, une par une, et calculer leur moyenne générale. Quelle(s) structure(s) de contrôle ce problème mobilise-t-il ?",
+          "solution_markdown": "La structure séquentielle (l'enchaînement des instructions) et la structure itérative (une boucle qui répète la lecture d'une note, 30 fois, une pour chaque élève, avant de calculer la moyenne générale). Aucune structure conditionnelle n'est nécessaire ici, puisqu'aucun choix entre plusieurs traitements n'est demandé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorithme doit parcourir un tableau de 50 notes et compter combien d'entre elles sont supérieures ou égales à 10. Identifie les trois structures de contrôle mobilisées par ce problème et explique le rôle de chacune.",
+          "solution_markdown": "**Structure itérative** : une boucle Pour parcourt les 50 valeurs du tableau, une par une, puisque le traitement (tester chaque note) doit se répéter pour chacune d'elles. **Structure conditionnelle** : à l'intérieur de la boucle, un Si teste, pour chaque note, si elle est supérieure ou égale à 10, pour décider d'incrémenter ou non le compteur. **Structure séquentielle** : elle organise l'ordre global des instructions (initialiser le compteur à 0 avant la boucle, exécuter la boucle, puis afficher le résultat après la boucle) - ce problème illustre bien qu'une structure itérative CONTIENT souvent, en son sein, une structure conditionnelle, les trois structures travaillant ensemble plutôt qu'isolément."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois structures de contrôle existent : séquentielle (toujours présente), conditionnelle (un choix), itérative (une répétition).",
+        "Une répétition annoncée dans l'énoncé (plusieurs élèves, un tableau, plusieurs valeurs) signale une structure itérative.",
+        "Un choix entre plusieurs issues possibles signale une structure conditionnelle.",
+        "Un même algorithme combine souvent plusieurs structures à la fois - ne t'arrête pas à la première identifiée.",
+        "Au BAC, cette compétence prépare directement l'écriture de l'algorithme complet ou sa traduction en langage C."
+      ]
+    }
+  ]
+}

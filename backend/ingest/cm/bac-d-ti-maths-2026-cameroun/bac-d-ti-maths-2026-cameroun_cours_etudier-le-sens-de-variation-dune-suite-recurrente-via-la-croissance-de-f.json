@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-etudier-le-sens-de-variation-dune-suite-recurrente-via-la-croissance-de-f-terminale-d-ti",
+  "meta": {
+    "titre": "Étudier le sens de variation d'une suite récurrente via la croissance de f et la comparaison des deux premiers termes",
+    "cours_id": "cours-etudier-le-sens-de-variation-dune-suite-recurrente-via-la-croissance-de-f-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Suites — sens de variation",
+    "tags": [
+      "suite récurrente",
+      "sens de variation",
+      "croissance de f"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex3-2b"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour une suite récurrente pilotée par une fonction croissante, comparer seulement les deux premiers termes utiles suffit à déterminer le sens de variation de toute la suite."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Signe de la dérivée et sens de variation de f",
+        "Principe : f croissante préserve l'ordre entre deux termes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Propager l'ordre initial via la croissance de f",
+      "contenu_markdown": "Si $f$ est strictement croissante sur un intervalle stable contenant tous les $u_n$ (pour $n$ à partir d'un certain rang $n_0$), et si $u_{n_0+1}$ et $u_{n_0}$ sont comparés (par exemple $u_{n_0+1}<u_{n_0}$), alors cette comparaison se propage à tout rang $n\\ge n_0$ par application répétée de $f$ (qui préserve l'ordre car croissante) : la suite est monotone (décroissante dans cet exemple) à partir du rang $n_0$.",
+      "formule_principale": "f croissante, u(n0+1)<u(n0) ⟹ suite décroissante pour tout n≥n0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f croissante sur ]0;10[, u1=6, u2=f(u1)=4. Que peut-on dire du sens de variation de (un) pour n≥1 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Comparer u2 et u1",
+          "justification": "4<6.",
+          "resultat_markdown": "u2<u1"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la croissance de f",
+          "justification": "f croissante préserve l'ordre : f(u2)<f(u1), donc u3<u2.",
+          "resultat_markdown": "u3<u2"
+        },
+        {
+          "numero": 3,
+          "action": "Généraliser par récurrence implicite",
+          "justification": "L'ordre se propage indéfiniment de la même façon.",
+          "resultat_markdown": "pour tout n≥1, u(n+1)<un"
+        }
+      ],
+      "conclusion_markdown": "La suite (un) est strictement décroissante pour n≥1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer u0 et u1 pour conclure sur le sens de variation, alors que la propriété de stabilité de l'intervalle n'est établie qu'à partir de u1",
+          "pourquoi_faux": "Si u0 est hors de l'intervalle où f est croissante et stable, la comparaison u1 vs u0 ne suffit pas à garantir que l'argument de propagation par croissance de f s'applique correctement dès ce rang.",
+          "correction_markdown": "Toujours comparer les deux premiers termes qui appartiennent effectivement à l'intervalle où la croissance de f et sa stabilité ont été établies, pas nécessairement u0 et u1 si u0 est hors de cet intervalle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "f croissante, u5=2, u6=5. Que peut-on en déduire pour u7 ?",
+          "solution_markdown": "u6>u5 donc par croissance de f, u7=f(u6)>f(u5)=u6 : la suite est croissante à partir du rang 5."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi ce raisonnement ne fonctionnerait-il pas si f était décroissante ?",
+          "solution_markdown": "Une fonction décroissante inverse l'ordre à chaque application : si u(n+1)<un, alors f(u(n+1))>f(un), c'est-à-dire u(n+2)>u(n+1), ce qui empêcherait la suite d'être monotone de façon simple (elle oscillerait typiquement autour d'un point fixe)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passe-t-il si u1=u0 exactement (à un rang où la comparaison est faite) ?",
+          "solution_markdown": "Alors f(u1)=f(u0) (car f est une fonction, donc deux entrées égales donnent la même image), donc u2=u1, et par récurrence toute la suite serait constante à partir de ce rang : u0 serait un point fixe de f."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une suite récurrente pilotée par f croissante, l'ordre entre deux termes consécutifs se propage à tous les rangs suivants.",
+        "Il suffit de comparer les deux premiers termes pertinents (dans l'intervalle où f est croissante et stable) pour conclure sur toute la suite.",
+        "Ce raisonnement échoue avec f décroissante, qui inverse l'ordre à chaque itération."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "cours_id": "cours-etude-signe-fonction-tableau-variation-terminale-c",
+  "meta": {
+    "titre": "Étudier le signe d'une fonction à partir de son tableau de variation",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Étude de fonctions et applications aux suites",
+    "duree_estimee_min": 30,
+    "tags": [
+      "signe d'une fonction",
+      "tableau de variation",
+      "limites",
+      "monotonie stricte",
+      "croissances comparées"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon",
+    "duplicate_warning": "*** DOUBLON CONFIRME - NE PAS INGERER *** Ce PDF (bac-c-math-1992-cameroun.pdf) est un doublon byte-pour-byte (MD5 identique) de bac-c-maths-1992-cameroun.pdf, deja traite et present dans json/cm/bac-c-maths-1992-cameroun/ avec un corrige distinct. Ce dossier json/cm/bac-c-math-1992-cameroun/ constitue une correction redondante du meme sujet, produite par erreur avant que le doublon ne soit detecte. A exclure de toute ingestion en base pour eviter un contenu duplique."
+  },
+  "source": {
+    "epreuve_id": "bac-c-math-1992-cameroun",
+    "epreuve_titre": "Baccalauréat C 1992, Cameroun, Mathématiques",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-math-1992-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment prouver qu'une expression est toujours positive, sans jamais la calculer pour chaque valeur de $x$ une par une ? C'est exactement le problème que pose une question du type « étudier le signe de $f(x)$ » : résoudre $f(x)=0$ est parfois impossible à la main, et pourtant l'examinateur attend une réponse certaine, valable pour tout $x$ du domaine. La solution ne passe pas par le calcul de racines, mais par l'étude des variations de $f$ : une fonction qui ne cesse jamais de décroître (ou de croître) et dont on connaît les limites aux bornes ne peut avoir qu'un comportement de signe parfaitement déterminé. Cette méthode revient dans une très grande partie des problèmes de Terminale, souvent comme étape préparatoire à l'étude d'une suite ou d'une autre fonction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir calculer une dérivée usuelle (polynômes, $1/x$, $\\ln x$, $e^x$, et leurs sommes).",
+        "Tu dois savoir déterminer le domaine de définition d'une fonction construite à partir de $\\ln$, de $1/x$, ou d'un quotient.",
+        "Tu dois connaître le lien entre le signe de $f'$ et le sens de variation de $f$ (dérivée positive : fonction croissante ; dérivée négative : fonction décroissante).",
+        "Tu dois savoir calculer une limite simple, y compris avec les croissances comparées ($\\ln n$ négligeable devant $n$, etc.)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Étudier le signe d'une fonction par ses variations",
+      "contenu_markdown": "Pour déterminer le signe de $f(x)$ sur un intervalle $I$, sans résoudre explicitement $f(x)=0$, on suit trois étapes : calculer $f'$ et étudier son signe pour obtenir le sens de variation de $f$ ; calculer les limites de $f$ aux bornes de $I$ ; construire le tableau de variation complet. Si $f$ est strictement monotone sur $I$ et que l'une de ses limites vaut une constante $\\ell$ sans jamais l'atteindre (limite en une borne ouverte), alors $f$ reste strictement du même côté de $\\ell$ sur tout $I$ : $f(x)>\\ell$ si $f$ décroît vers $\\ell$, $f(x)<\\ell$ si $f$ croît vers $\\ell$.",
+      "formule_principale": "f' > 0 \\text{ sur } I \\;\\Longrightarrow\\; f \\text{ strictement croissante sur } I",
+      "variantes": [
+        {
+          "nom": "Fonction non monotone (avec extremum)",
+          "quand_utiliser": "Quand $f'$ change de signe une seule fois sur $I$ (un minimum ou un maximum local)",
+          "contenu_markdown": "Si $f'$ s'annule et change de signe en un point $x_0$, $f$ admet un extremum local en $x_0$. Le signe de $f$ se lit alors en comparant la valeur de cet extremum $f(x_0)$ à $0$ : si $f(x_0)\\geqslant0$ et que $x_0$ est un minimum global, $f$ est positive ou nulle sur tout $I$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les variations de la fonction $f$ définie sur $]0,+\\infty[$ par $f(x)=\\dfrac1x-\\ln(x+1)+\\ln x$, et en déduire le signe de $f(x)$ selon les valeurs de $x$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le domaine de définition",
+          "justification": "$1/x$ exige $x\\neq0$, $\\ln(x+1)$ exige $x+1>0$, $\\ln x$ exige $x>0$ : la condition la plus restrictive est $x>0$",
+          "resultat_markdown": "$D_f=\\,]0,+\\infty[$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la dérivée",
+          "justification": "On dérive terme à terme $f(x)=\\dfrac1x+\\ln x-\\ln(x+1)$, puis on réduit au même dénominateur",
+          "resultat_markdown": "$f'(x)=-\\dfrac1{x^2}+\\dfrac1x-\\dfrac1{x+1}=\\dfrac{-(x+1)+x}{x^2(x+1)}=\\dfrac{-1}{x^2(x+1)}$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe de la dérivée",
+          "justification": "Pour $x>0$, $x^2(x+1)>0$, donc $f'(x)$, qui est l'opposé d'un nombre strictement positif, est strictement négatif",
+          "resultat_markdown": "$f'(x)<0$ pour tout $x>0$ : $f$ est strictement décroissante sur $]0,+\\infty[$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la limite en $0^+$",
+          "justification": "En posant $x=1/n$ avec $n\\to+\\infty$, $\\dfrac1x+\\ln x=n-\\ln n\\to+\\infty$ par croissances comparées ($n$ l'emporte sur $\\ln n$), et $\\ln(x+1)\\to\\ln1=0$",
+          "resultat_markdown": "$\\displaystyle\\lim_{x\\to0^+}f(x)=+\\infty$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la limite en $+\\infty$",
+          "justification": "$\\dfrac1x\\to0$, et $\\ln x-\\ln(x+1)=-\\ln\\!\\left(1+\\dfrac1x\\right)\\to-\\ln1=0$ car $\\dfrac1x\\to0$",
+          "resultat_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}f(x)=0$"
+        },
+        {
+          "numero": 6,
+          "action": "Construire le tableau de variation et conclure sur le signe",
+          "justification": "$f$ est strictement décroissante et tend vers $0$ en $+\\infty$ sans jamais atteindre cette valeur (c'est une limite, pas une valeur prise) : elle reste donc strictement au-dessus",
+          "resultat_markdown": "$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & 0 & & +\\infty \\\\\n\\hline\nf'(x) & & - & \\\\\n\\hline\n & +\\infty & & \\\\\nf(x) & & \\searrow & \\\\\n & & & 0 \\\\\n\\hline\n\\end{array}\n$$"
+        }
+      ],
+      "conclusion_markdown": "$f(x)>0$ pour tout $x>0$ : on vient de démontrer, sans jamais résoudre $f(x)=0$, que $f$ ne s'annule jamais et reste strictement positive sur tout son domaine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le signe de $f'(x)$ avec le signe de $f(x)$ : conclure que $f(x)<0$ parce que $f'(x)<0$.",
+          "pourquoi_faux": "Le signe de $f'$ renseigne uniquement sur le sens de variation de $f$ (croissante ou décroissante), pas sur la position de $f$ par rapport à $0$. Une fonction strictement décroissante peut très bien rester positive sur tout son domaine, comme dans l'exemple ci-dessus où $f'(x)<0$ partout alors que $f(x)>0$ partout.",
+          "correction_markdown": "Le signe de $f$ se lit sur la dernière ligne du tableau de variation (celle des valeurs de $f$), jamais sur la ligne du signe de $f'$. Utilise les limites et les valeurs extrêmes pour conclure sur le signe, pas la ligne intermédiaire."
+        },
+        {
+          "erreur_markdown": "Affirmer qu'une fonction s'annule quelque part parce que l'une de ses limites vaut $0$.",
+          "pourquoi_faux": "Une limite est une valeur approchée indéfiniment, pas nécessairement une valeur atteinte. Dans l'exemple, $f(x)\\to0$ quand $x\\to+\\infty$, mais $f$ ne prend jamais la valeur $0$ : elle reste strictement positive sur tout l'intervalle.",
+          "correction_markdown": "Distingue toujours une limite en une borne ouverte (non atteinte) d'une valeur réellement prise par la fonction en un point de son domaine. Seule une valeur effectivement atteinte peut annuler la fonction."
+        },
+        {
+          "erreur_markdown": "Oublier de déterminer précisément le domaine de définition avant de dériver, notamment en présence de $\\ln$, de racines carrées ou de quotients.",
+          "pourquoi_faux": "Une erreur de domaine fausse tout le tableau de variation : une borne mal identifiée peut faire disparaître une limite essentielle, ou au contraire faire étudier la fonction sur un intervalle où elle n'est pas définie.",
+          "correction_markdown": "Avant tout calcul de dérivée, prends le temps d'identifier toutes les conditions d'existence (dénominateur non nul, argument de logarithme strictement positif, quantité sous une racine positive ou nulle) et retiens la plus restrictive."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On considère la fonction $h$ définie sur $\\mathbb{R}$ par $h(x)=e^x-x-1$. Étudier les variations de $h$, puis en déduire que $h(x)\\geqslant0$ pour tout réel $x$ (autrement dit, $e^x\\geqslant x+1$ pour tout $x\\in\\mathbb{R}$).",
+          "solution_markdown": "**Dérivée.** $h'(x)=e^x-1$.\n\n**Signe de $h'$.** $e^x-1>0 \\iff e^x>1 \\iff x>0$ (la fonction exponentielle est strictement croissante et $e^0=1$). Donc $h'(x)<0$ pour $x<0$, $h'(0)=0$, et $h'(x)>0$ pour $x>0$.\n\n**Variations.** $h$ est strictement décroissante sur $]-\\infty,0]$ et strictement croissante sur $[0,+\\infty[$ : $h$ admet donc un minimum global en $x=0$.\n\n**Valeur du minimum.** $h(0)=e^0-0-1=1-0-1=0$.\n\n**Limites.** En $-\\infty$ : $e^x\\to0$ et $-x-1\\to+\\infty$, donc $h(x)\\to+\\infty$. En $+\\infty$ : $e^x$ l'emporte sur $-x-1$ par croissances comparées, donc $h(x)\\to+\\infty$.\n\n**Tableau de variation.**\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & -\\infty & 0 & +\\infty \\\\\n\\hline\nh'(x) & - & 0 & + \\\\\n\\hline\nh(x) & & 0 & \\\\\n\\hline\n\\end{array}\n$$\n\n**Conclusion.** Le minimum de $h$ sur $\\mathbb{R}$ vaut $0$, atteint uniquement en $x=0$ : donc $h(x)\\geqslant0$ pour tout $x\\in\\mathbb{R}$, c'est-à-dire $e^x\\geqslant x+1$ pour tout réel $x$, avec égalité seulement en $x=0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère la fonction $\\varphi$ définie sur $]0,+\\infty[$ par $\\varphi(x)=\\ln x-x+1$. Étudier les variations de $\\varphi$, puis en déduire que $\\ln x\\leqslant x-1$ pour tout $x>0$.",
+          "solution_markdown": "**Dérivée.** $\\varphi'(x)=\\dfrac1x-1=\\dfrac{1-x}{x}$.\n\n**Signe de $\\varphi'$.** Pour $x>0$, le dénominateur $x$ est positif : le signe de $\\varphi'(x)$ est celui de $1-x$. Donc $\\varphi'(x)>0$ pour $0<x<1$, $\\varphi'(1)=0$, et $\\varphi'(x)<0$ pour $x>1$.\n\n**Variations.** $\\varphi$ est strictement croissante sur $]0,1]$ et strictement décroissante sur $[1,+\\infty[$ : elle admet un maximum global en $x=1$.\n\n**Valeur du maximum.** $\\varphi(1)=\\ln1-1+1=0-1+1=0$.\n\n**Limites.** En $0^+$ : $\\ln x\\to-\\infty$ et $-x+1\\to1$, donc $\\varphi(x)\\to-\\infty$. En $+\\infty$ : $-x$ l'emporte sur $\\ln x$ par croissances comparées, donc $\\varphi(x)\\to-\\infty$.\n\n**Tableau de variation.**\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & 0 & 1 & +\\infty \\\\\n\\hline\n\\varphi'(x) & + & 0 & - \\\\\n\\hline\n\\varphi(x) & & 0 & \\\\\n\\hline\n\\end{array}\n$$\n\n**Conclusion.** Le maximum de $\\varphi$ sur $]0,+\\infty[$ vaut $0$, atteint uniquement en $x=1$ : donc $\\varphi(x)\\leqslant0$ pour tout $x>0$, c'est-à-dire $\\ln x\\leqslant x-1$ pour tout $x>0$, avec égalité seulement en $x=1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En utilisant le résultat de l'exercice précédent ($\\ln x\\leqslant x-1$ pour tout $x>0$), montrer que, pour tout entier $n\\geqslant1$ : $\\left(1+\\dfrac1n\\right)^n<e$.",
+          "solution_markdown": "**Application de l'inégalité.** Pour tout $n\\geqslant1$, le réel $x=1+\\dfrac1n$ est strictement positif : l'inégalité $\\ln x\\leqslant x-1$ de l'exercice 2 s'applique et donne :\n$$\\ln\\!\\left(1+\\frac1n\\right)\\leqslant\\left(1+\\frac1n\\right)-1=\\frac1n$$\n\n**Multiplication par $n$.** Comme $n>0$, multiplier les deux membres par $n$ conserve le sens de l'inégalité :\n$$n\\ln\\!\\left(1+\\frac1n\\right)\\leqslant n\\times\\frac1n=1$$\n\n**Réécriture du membre de gauche.** Par les propriétés du logarithme, $n\\ln\\!\\left(1+\\dfrac1n\\right)=\\ln\\!\\left[\\left(1+\\dfrac1n\\right)^n\\right]$, donc :\n$$\\ln\\!\\left[\\left(1+\\frac1n\\right)^n\\right]\\leqslant1=\\ln e$$\n\n**Passage à l'exponentielle.** La fonction $\\ln$ est strictement croissante sur $]0,+\\infty[$, donc l'inégalité entre logarithmes équivaut à la même inégalité (large) entre les quantités elles-mêmes :\n$$\\left(1+\\frac1n\\right)^n\\leqslant e$$\n\n**Passage à l'inégalité stricte.** L'égalité dans $\\ln x\\leqslant x-1$ n'a lieu qu'en $x=1$ (exercice 2). Or $x=1+\\dfrac1n\\neq1$ pour tout entier $n\\geqslant1$ (puisque $\\dfrac1n>0$) : l'inégalité de départ est donc strictement vérifiée, et il en va de même après multiplication par $n>0$ et passage à l'exponentielle (opérations qui conservent la stricte inégalité). **Conclusion : $\\left(1+\\dfrac1n\\right)^n<e$ pour tout entier $n\\geqslant1$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une question « étudier le signe de $f(x)$ », ne cherche pas à résoudre $f(x)=0$ à tout prix : passe par les variations et les limites, c'est presque toujours la voie attendue.",
+        "Le signe de $f'$ te donne le sens de variation, pas le signe de $f$ : ne confonds jamais les deux lignes du tableau.",
+        "Une limite non atteinte en une borne ouverte encadre strictement la fonction sans qu'elle atteigne jamais cette valeur : c'est souvent l'argument final qui permet de conclure sur un signe strict.",
+        "Détermine toujours le domaine de définition avant de dériver, surtout en présence de $\\ln$, de quotients ou de racines : une borne oubliée fausse tout le tableau.",
+        "Cette méthode ne sert pas qu'à répondre à la question posée : le signe ou l'inégalité obtenus deviennent souvent, dans la question suivante, l'outil pour étudier une suite ou une autre fonction (comme le montre l'exercice d'approfondissement ci-dessus).",
+        "Au BAC, cette compétence apparaît presque à chaque session, seule ou comme étape intermédiaire d'un problème d'analyse plus long : la maîtriser solidement rapporte des points sur plusieurs exercices à la fois."
+      ]
+    }
+  ]
+}

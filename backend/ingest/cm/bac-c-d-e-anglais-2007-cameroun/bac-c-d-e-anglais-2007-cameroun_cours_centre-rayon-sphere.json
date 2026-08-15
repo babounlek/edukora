@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-centre-rayon-sphere-equation-developpee-c",
+  "meta": {
+    "titre": "Centre et rayon d'une sphère à partir de son équation cartésienne développée",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Sphères dans l'espace",
+    "duree_estimee_min": 20,
+    "tags": ["sphère", "équation réduite", "complétion du carré"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q3b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation comme $x^2+y^2+z^2+Dx+Ey+Fz+G=0$ ne ressemble à rien de reconnaissable au premier coup d'œil. Pourtant, derrière cette écriture développée se cache presque toujours une sphère bien précise, avec un centre et un rayon calculables en quelques lignes. La complétion du carré, déjà connue en dimension 1 pour les équations du second degré, se généralise ici à trois variables."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Complétion du carré à une variable", "Équation cartésienne d'une sphère de centre et rayon connus", "Distance entre deux points dans l'espace"]
+    },
+    {
+      "type": "regle",
+      "titre": "Identification directe par la formule du centre et du rayon",
+      "contenu_markdown": "Une équation de la forme $x^2+y^2+z^2+Dx+Ey+Fz+G=0$ (coefficient $1$ devant chaque carré) se ramène, par complétion du carré sur chaque variable, à :\n$$\\left(x+\\frac D2\\right)^2+\\left(y+\\frac E2\\right)^2+\\left(z+\\frac F2\\right)^2 = \\frac{D^2+E^2+F^2}{4}-G$$\n\nSi le second membre est strictement positif, cette équation est celle d'une sphère de centre $\\Omega\\left(-\\dfrac D2;-\\dfrac E2;-\\dfrac F2\\right)$ et de rayon :\n$$R=\\sqrt{\\frac{D^2+E^2+F^2}{4}-G}$$\n\nSi le second membre est nul, l'\"ensemble\" se réduit au seul point $\\Omega$. S'il est négatif, l'équation n'a aucune solution réelle (ensemble vide).",
+      "formule_principale": "\\Omega\\left(-\\frac D2;-\\frac E2;-\\frac F2\\right),\\quad R=\\sqrt{\\frac{D^2+E^2+F^2}{4}-G}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le centre et le rayon de la sphère d'équation $x^2+y^2+z^2+\\dfrac{1}{12}x-\\dfrac{23}{12}y-\\dfrac{47}{12}z+\\dfrac{37}{8}=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier D, E, F, G",
+          "justification": "Ce sont les coefficients de l'équation développée, avec le signe tel qu'il apparaît devant chaque terme.",
+          "resultat_markdown": "$D=\\dfrac{1}{12},\\ E=-\\dfrac{23}{12},\\ F=-\\dfrac{47}{12},\\ G=\\dfrac{37}{8}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le centre",
+          "justification": "Formule directe Ω(-D/2;-E/2;-F/2).",
+          "resultat_markdown": "$\\Omega=\\left(-\\dfrac{1}{24}\\,;\\,\\dfrac{23}{24}\\,;\\,\\dfrac{47}{24}\\right)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer D²+E²+F²",
+          "justification": "Étape intermédiaire nécessaire au calcul du rayon.",
+          "resultat_markdown": "$D^2=\\dfrac{1}{144},\\ E^2=\\dfrac{529}{144},\\ F^2=\\dfrac{2209}{144}$, somme $=\\dfrac{2739}{144}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer (D²+E²+F²)/4 puis soustraire G",
+          "justification": "C'est le carré du rayon.",
+          "resultat_markdown": "$\\dfrac{2739}{576}-\\dfrac{2664}{576}=\\dfrac{75}{576}=\\dfrac{25}{192}$ (avec $G=\\frac{37}{8}=\\frac{2664}{576}$)"
+        },
+        {
+          "numero": 5,
+          "action": "Prendre la racine carrée",
+          "justification": "Le second membre est strictement positif, donc c'est bien une sphère.",
+          "resultat_markdown": "$R=\\sqrt{\\dfrac{25}{192}}=\\dfrac{5}{8\\sqrt3}=\\dfrac{5\\sqrt3}{24}$"
+        }
+      ],
+      "conclusion_markdown": "La sphère a pour centre $\\Omega\\left(-\\frac{1}{24};\\frac{23}{24};\\frac{47}{24}\\right)$ et pour rayon $R=\\dfrac{5\\sqrt3}{24}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la formule du centre sans avoir vérifié que le coefficient devant x², y², z² vaut exactement 1.",
+          "pourquoi_faux": "Si l'équation de départ est, par exemple, $2x^2+2y^2+2z^2+\\ldots=0$, la formule $\\Omega(-D/2;\\ldots)$ appliquée directement sur ces coefficients donne un résultat faux : il faut d'abord diviser toute l'équation par le coefficient commun.",
+          "correction_markdown": "Avant toute identification de $D$, $E$, $F$, $G$, vérifie systématiquement (en un coup d'œil) que le coefficient devant chaque carré vaut $1$."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le signe de $\\frac{D^2+E^2+F^2}{4}-G$ avant de conclure à l'existence d'une sphère.",
+          "pourquoi_faux": "Une équation de cette forme ne définit pas toujours une sphère : si cette quantité est négative, aucun point réel ne vérifie l'équation.",
+          "correction_markdown": "Calcule toujours cette quantité avant de prendre la racine carrée, et interprète le résultat (sphère, point unique, ou ensemble vide) avant de continuer l'exercice."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer le centre et le rayon de la sphère d'équation $x^2+y^2+z^2-4x+2y-6z+5=0$.",
+          "solution_markdown": "$D=-4,E=2,F=-6,G=5$. $\\Omega=(2;-1;3)$. $R^2=\\dfrac{16+4+36}{4}-5=\\dfrac{56}{4}-5=14-5=9$, donc $R=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'équation $2x^2+2y^2+2z^2-8x+4y+12=0$ définit-elle une sphère ? Si oui, donner son centre et son rayon.",
+          "solution_markdown": "On divise d'abord par $2$ : $x^2+y^2+z^2-4x+2y+6=0$. $D=-4,E=2,F=0,G=6$. $\\Omega=(2;-1;0)$. $R^2=\\dfrac{16+4+0}{4}-6=5-6=-1<0$ : la quantité est négative, l'équation ne définit donc aucun point réel (ce n'est pas une sphère, l'ensemble est vide)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère la famille d'équations $x^2+y^2+z^2-2x-2y-2z+m=0$, où $m$ est un paramètre réel. Déterminer les valeurs de $m$ pour lesquelles cette équation définit une sphère.",
+          "solution_markdown": "$D=E=F=-2$, $G=m$. $R^2=\\dfrac{4+4+4}{4}-m=3-m$. Pour que ce soit une sphère (au sens strict, rayon réel non nul), il faut $R^2>0$, c'est-à-dire $3-m>0$, soit $m<3$. Pour $m=3$, l'équation se réduit au point unique $(1;1;1)$. Pour $m>3$, l'ensemble est vide."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une équation $x^2+y^2+z^2+Dx+Ey+Fz+G=0$ (coefficient 1 devant chaque carré) a pour centre $\\Omega\\left(-\\frac D2;-\\frac E2;-\\frac F2\\right)$ et pour rayon $R=\\sqrt{\\frac{D^2+E^2+F^2}{4}-G}$, à condition que cette quantité soit strictement positive.",
+        "Normalise toujours l'équation (coefficient 1 devant les carrés) avant d'identifier D, E, F, G.",
+        "Vérifie le signe de la quantité sous la racine avant de conclure : positive → sphère, nulle → point unique, négative → ensemble vide.",
+        "Cette formule dispense de refaire la complétion du carré à chaque exercice, à condition de bien la retenir et de savoir d'où elle vient (elle en est un raccourci direct).",
+        "Au BAC C, cette étape suit très souvent le développement d'une relation de distance (sphère d'Apollonius, ensemble de points à distance fixée d'un point donné) : elle en est la conclusion géométrique."
+      ]
+    }
+  ]
+}

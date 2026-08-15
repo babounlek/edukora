@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-montrer-quun-endomorphisme-nest-pas-un-automorphisme-via-la-dimension-de-limage-terminale-c",
+  "meta": {"titre": "Montrer qu'un endomorphisme n'est pas un automorphisme via la dimension de l'image", "cours_id": "cours-montrer-quun-endomorphisme-nest-pas-un-automorphisme-via-la-dimension-de-limage-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — endomorphismes", "tags": ["automorphisme", "image", "dimension"], "duree_estimee_minutes": 10, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex2-i1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Repérer une relation de dépendance linéaire entre les images de vecteurs connus suffit souvent à prouver qu'un endomorphisme n'est pas surjectif, sans avoir besoin de calculer explicitement toute la matrice."},
+    {"type": "prerequis", "items_markdown": ["En dimension finie, un endomorphisme est bijectif ⟺ il est surjectif ⟺ dim(Im f)=dim E", "Notion de famille liée (vecteurs colinéaires ou combinaison linéaire nulle non triviale)"]},
+    {"type": "regle", "titre": "Repérer une dépendance entre les images connues", "contenu_markdown": "Si l'on connaît les images $f(v_1),\\dots,f(v_p)$ d'une base $(v_1,\\dots,v_p)$ de $E$, et que l'on observe une relation de dépendance linéaire entre certaines de ces images (par exemple $f(v_i)=\\lambda f(v_j)$), alors $\\mathrm{Im}\\,f$ est engendrée par strictement moins de $p$ vecteurs indépendants, donc $\\dim(\\mathrm{Im}\\,f)<\\dim E=p$ : $f$ n'est pas surjectif, donc pas un automorphisme.", "formule_principale": "dépendance linéaire entre les images ⟹ dim(Im f) < dim E ⟹ f pas automorphisme", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f endomorphisme de dimension 2 avec f(e1)=u, f(e2)=2u (e1,e2 base). f est-il un automorphisme ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Observer la dépendance", "justification": "f(e2)=2f(e1), colinéaires", "resultat_markdown": "Im f = Vect(u), dimension 1"},
+      {"numero": 2, "action": "Comparer les dimensions", "justification": "dim(Im f)=1 < dim E=2", "resultat_markdown": "f n'est pas surjectif"}
+    ], "conclusion_markdown": "f n'est pas un automorphisme."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Vérifier seulement que les VECTEURS DE DÉPART forment une base et en conclure hâtivement que f est un automorphisme", "pourquoi_faux": "Le fait que les vecteurs de départ forment une base garantit seulement que f est bien défini partout ; c'est l'indépendance des IMAGES par f qui détermine la bijectivité, pas celle des antécédents.", "correction_markdown": "Toujours examiner les images par f, jamais seulement les vecteurs de départ, pour juger de la bijectivité."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "g(e1)=e1, g(e2)=e1+e2, g(e3)=3e1 (base e1,e2,e3 de dim 3). g est-il un automorphisme ?", "solution_markdown": "g(e3)=3g(e1), dépendance. Im g de dimension au plus 2 < 3. Pas un automorphisme."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "h(e1)=e1, h(e2)=e2, h(e3)=e1+e2 (dim 3). h est-il un automorphisme ?", "solution_markdown": "h(e3)=h(e1)+h(e2), dépendance. Im h=Vect(e1,e2), dimension 2<3. Pas un automorphisme."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une relation de dépendance entre les images de vecteurs d'une base suffit à prouver la non-surjectivité.", "En dimension finie, non-surjectif équivaut à non-bijectif, donc pas automorphisme.", "C'est toujours l'examen des IMAGES, jamais des antécédents, qui détermine la bijectivité."]}
+  ]
+}

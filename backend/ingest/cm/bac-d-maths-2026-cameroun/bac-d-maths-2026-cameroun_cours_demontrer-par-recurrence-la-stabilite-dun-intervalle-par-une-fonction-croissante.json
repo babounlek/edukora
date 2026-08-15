@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-par-une-fonction-croissante-terminale-d",
+  "meta": {
+    "titre": "Démontrer par récurrence la stabilité d'un intervalle pour une suite récurrente",
+    "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-par-une-fonction-croissante-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Suites — récurrence et intervalles stables",
+    "tags": [
+      "récurrence",
+      "intervalle stable",
+      "suite récurrente",
+      "monotonie de f"
+    ],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex2-2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Montrer qu'une suite récurrente reste toujours dans un même intervalle est le socle indispensable de toute étude de convergence : sans cet encadrement, ni la monotonie ni la limite ne peuvent être établies rigoureusement."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Principe de démonstration par récurrence",
+        "Monotonie d'une fonction sur un intervalle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Encadrer une suite récurrente par récurrence, via la monotonie de f",
+      "contenu_markdown": "Pour $U_{n+1}=f(U_n)$ avec $f$ croissante sur $[a;b]$ et $f([a;b])\\subset[a;b]$ : si $U_n\\in[a;b]$, alors par croissance $f(a)\\le f(U_n)\\le f(b)$, donc $U_{n+1}=f(U_n)\\in[f(a);f(b)]\\subset[a;b]$ (car $f(a)\\ge a$ et $f(b)\\le b$). On initialise avec $U_0\\in[a;b]$, on suppose $U_n\\in[a;b]$, on applique la croissance de $f$, on conclut $U_{n+1}\\in[a;b]$.",
+      "formule_principale": "U0∈[a;b], f croissante sur [a;b], f(a)≥a, f(b)≤b ⟹ ∀n, Un∈[a;b]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "U0=1, U(n+1)=√(Un+3), f(x)=√(x+3) croissante sur [1;3], f(1)=2, f(3)=√6≈2,45. Montrer que pour tout n, 1≤Un≤3.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialisation",
+          "justification": "U0=1, donc 1≤U0≤3.",
+          "resultat_markdown": "Vrai au rang 0"
+        },
+        {
+          "numero": 2,
+          "action": "Hérédité : appliquer la croissance de f",
+          "justification": "Si 1≤Un≤3, alors f(1)≤f(Un)≤f(3) car f croissante.",
+          "resultat_markdown": "2≤U(n+1)≤√6"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure l'encadrement voulu",
+          "justification": "2≥1 et √6≈2,45≤3, donc 1≤U(n+1)≤3.",
+          "resultat_markdown": "Vrai au rang n+1"
+        }
+      ],
+      "conclusion_markdown": "Par récurrence, pour tout n, 1≤Un≤3."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la monotonie de f sans avoir vérifié qu'elle est bien croissante (ou décroissante) sur l'intervalle exact considéré",
+          "pourquoi_faux": "Si f n'est pas monotone sur tout l'intervalle, l'encadrement f(a)≤f(Un)≤f(b) n'est pas valide.",
+          "correction_markdown": "Toujours établir (ou rappeler, si déjà fait dans une question précédente) la monotonie de f sur l'intervalle précis avant de l'utiliser dans une récurrence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "f croissante sur [0;1], f(0)=0,2, f(1)=0,9. Un∈[0;1]. Que peut-on dire de U(n+1) ?",
+          "solution_markdown": "U(n+1)=f(Un)∈[f(0);f(1)]=[0,2;0,9]⊂[0;1]."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi l'initialisation (vérifier U0 dans l'intervalle) est-elle indispensable ?",
+          "solution_markdown": "Sans elle, l'hérédité seule ne prouve rien : une récurrence a besoin d'un point de départ vérifié pour que la chaîne d'implications s'enclenche."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passerait-il si f était décroissante sur l'intervalle au lieu de croissante ?",
+          "solution_markdown": "L'encadrement s'inverserait : si Un∈[a;b] et f décroissante, alors f(b)≤f(Un)≤f(a), ce qui peut compliquer la conclusion si f(b) et f(a) ne sont pas dans le bon ordre par rapport à [a;b] ; une étude au cas par cas serait nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour montrer qu'une suite récurrente reste dans [a;b], on utilise la monotonie de f sur cet intervalle.",
+        "Le raisonnement se fait par récurrence : initialisation puis hérédité via f(a)≤f(Un)≤f(b) (cas croissant).",
+        "Cet encadrement est le prérequis indispensable à toute étude ultérieure de monotonie et de convergence."
+      ]
+    }
+  ]
+}

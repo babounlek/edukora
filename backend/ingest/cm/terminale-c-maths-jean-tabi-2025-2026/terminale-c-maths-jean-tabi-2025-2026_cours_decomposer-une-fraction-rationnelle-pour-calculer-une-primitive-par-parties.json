@@ -1,0 +1,31 @@
+{
+  "cours_id": "cours-decomposer-une-fraction-rationnelle-pour-calculer-une-primitive-par-parties-terminale-c",
+  "meta": {
+    "titre": "Décomposer une fraction rationnelle pour calculer une primitive par intégration par parties",
+    "cours_id": "cours-decomposer-une-fraction-rationnelle-pour-calculer-une-primitive-par-parties-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Calcul intégral — intégration par parties et fractions rationnelles",
+    "tags": ["intégration par parties", "fraction rationnelle", "primitive", "aire"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex3-4b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Certaines primitives de fonctions logarithmiques nécessitent une intégration par parties dont l'un des termes est une fraction rationnelle : la décomposer d'abord en une forme sans division rend le calcul de sa propre primitive immédiat."},
+    {"type": "prerequis", "items_markdown": ["Intégration par parties ∫u'v = uv - ∫uv'", "Identité remarquable (x-1)² = x²-2x+1"]},
+    {"type": "regle", "titre": "Décomposer avant d'intégrer", "contenu_markdown": "Pour $\\dfrac{P(x)}{x-a}$ avec $P$ un polynôme, on écrit $P(x)$ en faisant apparaître $(x-a)$ en facteur via une identité remarquable, ce qui donne une décomposition du type $\\dfrac{P(x)}{x-a}=Q(x)+\\dfrac{c}{x-a}$ avec $Q$ polynomiale : cette forme s'intègre alors terme à terme, le second terme donnant un logarithme.", "formule_principale": "P(x)/(x-a) = Q(x) + c/(x-a), avec ∫Q(x)dx immédiat et ∫c/(x-a)dx = c·ln|x-a|", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer une primitive de f(x)=(x-2)ln(x-2) sur ]2;+∞[ par IBP.", "epreuve_source": true, "etapes": [
+      {"numero": 1, "action": "Poser u et dv", "justification": "u=ln(x-2) (u'=1/(x-2)), dv=(x-2)dx (v=(x-2)²/2).", "resultat_markdown": "u=ln(x-2), v=(x-2)²/2"},
+      {"numero": 2, "action": "Appliquer IBP", "justification": "∫u'v inversé : ∫f = uv - ∫vu'.", "resultat_markdown": "∫f dx = (x-2)²/2×ln(x-2) - ∫(x-2)²/2 × 1/(x-2) dx"},
+      {"numero": 3, "action": "Simplifier la fraction restante", "justification": "(x-2)²/2 × 1/(x-2) = (x-2)/2, plus de division compliquée.", "resultat_markdown": "∫f dx = (x-2)²/2×ln(x-2) - ∫(x-2)/2 dx"},
+      {"numero": 4, "action": "Intégrer le terme polynomial", "justification": "∫(x-2)/2 dx = (x-2)²/4.", "resultat_markdown": "F(x) = (x-2)²/2×ln(x-2) - (x-2)²/4"}
+    ], "conclusion_markdown": "Ici la fraction se simplifiait directement ; dans un cas plus complexe où le numérateur ne se divise pas exactement par (x-a), l'identité remarquable (x-a)²=x²-2ax+a² permet de faire apparaître un reste constant c à traiter séparément par un logarithme."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Intégrer directement une fraction P(x)/(x-a) sans la décomposer, en cherchant une primitive « au flair »", "pourquoi_faux": "Une fraction rationnelle non décomposée n'a pas de primitive évidente ; sans décomposition en partie polynomiale + partie logarithmique, on risque d'oublier le terme en ln ou de mal l'intégrer.", "correction_markdown": "Toujours décomposer explicitement la fraction (via identité remarquable ou division euclidienne) avant de chercher sa primitive terme à terme."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Vérifier que (x²-4x)/(x-2) = x-2-4/(x-2).", "solution_markdown": "x²-4x=(x-2)²-4 (car (x-2)²=x²-4x+4). Donc (x²-4x)/(x-2)=(x-2)-4/(x-2). Vérifié."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "En déduire une primitive de (x²-4x)/(x-2).", "solution_markdown": "∫[(x-2)-4/(x-2)]dx = (x-2)²/2 - 4ln|x-2| + C."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Décomposer une fraction P(x)/(x-a) en partie polynomiale + terme constant/(x-a) rend l'intégration immédiate.", "L'identité remarquable (x-a)²=x²-2ax+a² est l'outil clé pour faire apparaître cette décomposition.", "Le terme en 1/(x-a) s'intègre toujours en un logarithme, jamais autrement."]}
+  ]
+}

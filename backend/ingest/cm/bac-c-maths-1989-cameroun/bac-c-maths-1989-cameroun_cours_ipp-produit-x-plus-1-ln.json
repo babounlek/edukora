@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-integration-parties-produit-x-plus-1-ln-x-plus-1-terminale-c",
+  "meta": {"titre": "Intégrer par parties un produit (x+a)ln(x+a) et évaluer entre deux bornes variables", "cours_id": "cours-integration-parties-produit-x-plus-1-ln-x-plus-1-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Calcul intégral — intégration par parties d'un produit affine-logarithme", "tags": ["intégration par parties", "primitive", "calcul d'intégrale"], "duree_estimee_minutes": 6, "epreuve_source": "bac-c-maths-1989-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-c-maths-1989-cameroun-probleme-partieA-q4a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour intégrer un produit affine × logarithme, poser u=ln(...) (qui se dérive simplement) plutôt que dv=ln(...) (qui n'a pas de primitive immédiate) est le choix systématiquement gagnant en intégration par parties."},
+    {"type": "prerequis", "items_markdown": ["Intégration par parties : ∫u v' = [uv] - ∫u' v", "Dérivée de ln(x+a) : 1/(x+a)"]},
+    {"type": "regle", "titre": "Poser u=ln(x+a), v'=(x+a) pour une intégration par parties directe", "contenu_markdown": "Pour $\\int(x+a)\\ln(x+a)\\,dx$, on pose $u=\\ln(x+a)$, $v'=x+a$, d'où $u'=\\dfrac1{x+a}$ et $v=\\dfrac{(x+a)^2}2$. La formule $\\int uv'=[uv]-\\int u'v$ donne $\\dfrac{(x+a)^2}2\\ln(x+a)-\\int\\dfrac{x+a}2\\,dx=\\dfrac{(x+a)^2}2\\ln(x+a)-\\dfrac{(x+a)^2}4+C$. Pour évaluer entre deux bornes variables (dépendant d'un paramètre), on calcule la primitive $F$ une seule fois, puis on l'évalue à chaque borne séparément avant de soustraire.", "formule_principale": "∫(x+a)ln(x+a)dx = (x+a)²/2 · ln(x+a) - (x+a)²/4 + C", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫(x-1)ln(x-1)dx.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Poser u,v'", "justification": "u=ln(x-1), v'=x-1", "resultat_markdown": "u'=1/(x-1), v=(x-1)²/2"},
+      {"numero": 2, "action": "Appliquer IPP", "justification": "[uv]-∫u'v", "resultat_markdown": "(x-1)²/2·ln(x-1) - ∫(x-1)/2 dx"},
+      {"numero": 3, "action": "Conclure", "justification": "∫(x-1)/2 dx=(x-1)²/4", "resultat_markdown": "(x-1)²/2·ln(x-1) - (x-1)²/4 + C"}
+    ], "conclusion_markdown": "Primitive obtenue par le même schéma que pour (x+1)ln(x+1)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Poser v'=ln(x+a) au lieu de u=ln(x+a) dans l'intégration par parties, ce qui exigerait de connaître une primitive du logarithme dès la première étape", "pourquoi_faux": "Le rôle de u et v' n'est pas interchangeable arbitrairement : poser v'=ln(x+a) oblige à connaître une primitive du logarithme AVANT même de commencer, ce qui complique inutilement le calcul par rapport au choix u=ln(x+a).", "correction_markdown": "Toujours poser u=ln(...) (fonction dont la dérivée est simple) et v'=facteur polynomial (fonction dont la primitive est immédiate) lors d'une intégration par parties impliquant un logarithme."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer ∫(x+2)ln(x+2)dx.", "solution_markdown": "u=ln(x+2), v'=x+2, u'=1/(x+2), v=(x+2)²/2. ∫(x+2)ln(x+2)dx=(x+2)²/2·ln(x+2)-∫(x+2)/2 dx=(x+2)²/2·ln(x+2)-(x+2)²/4+C."}
+    ]},
+    {"type": "synthese", "items_markdown": ["L'intégration par parties d'un produit (x+a)ln(x+a) s'effectue systématiquement en posant u=ln(x+a) et v'=(x+a).", "Pour évaluer une intégrale entre des bornes dépendant d'un paramètre, on calcule d'abord la primitive une seule fois, puis on l'évalue séparément à chaque borne."]}
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-aire-integrale-changement-variable-limite-suite-terminale-c",
+  "meta": {
+    "titre": "Calculer une aire par changement de variable et étudier sa limite selon un paramètre",
+    "cours_id": "cours-aire-integrale-changement-variable-limite-suite-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Calcul intégral - changement de variable, limite d'une suite d'aires",
+    "tags": ["aire", "changement de variable", "limite", "suite géométrique"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_4_qB4"
+  },
+  "sections": {
+    "accroche": "Une aire dépendant d'un paramètre entier n se calcule d'abord par changement de variable pour obtenir une expression explicite en n, puis sa limite s'étudie en comparant la base d'une puissance à 1.",
+    "prerequis": ["Changement de variable dans une intégrale définie", "Primitive de uⁿ", "Comportement d'une suite géométrique kⁿ selon |k|<1 ou |k|>1"],
+    "regle": {
+      "titre": "Aire par changement de variable, limite en n",
+      "contenu_markdown": "Pour calculer $\\mathcal A_n=\\displaystyle\\int_a^b\\dfrac{(1+\\ln x)^n}x\\,dx$, poser $u=1+\\ln x$ ($du=dx/x$), ce qui transforme l'intégrale en $\\displaystyle\\int u^n\\,du=\\dfrac{u^{n+1}}{n+1}$, évaluée entre les nouvelles bornes. Le résultat obtenu contient typiquement un terme constant divisé par $(n+1)$, et un terme en $k^{n+1}$ (avec $k$ une constante réelle) : si $|k|<1$, ce dernier terme tend vers $0$ (suite géométrique convergente), et la limite globale de $\\mathcal A_n$ se détermine en comparant la croissance du numérateur (borné) à celle du dénominateur $(n+1)\\to+\\infty$.",
+      "formule_principale": "$\\mathcal A_n=\\dfrac{1-k^{n+1}}{n+1}$, avec $|k|<1\\Rightarrow k^{n+1}\\to0\\Rightarrow\\mathcal A_n\\to0$",
+      "variantes": ["Si |k|>1, le terme k^(n+1) diverge et il faut comparer plus finement sa croissance à celle de (n+1) pour conclure sur la limite"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer $\\mathcal A_n=\\displaystyle\\int_{1/2}^1\\dfrac{(1+\\ln x)^n}x\\,dx$ et sa limite quand $n\\to+\\infty$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser u=1+ln x", "justification": "du=dx/x", "resultat_markdown": "bornes : x=1/2→u=1-ln2 ; x=1→u=1"},
+        {"numero": 2, "action": "Intégrer u^n", "justification": "primitive standard", "resultat_markdown": "$\\mathcal A_n=\\left[\\dfrac{u^{n+1}}{n+1}\\right]_{1-\\ln2}^1=\\dfrac{1-(1-\\ln2)^{n+1}}{n+1}$"},
+        {"numero": 3, "action": "Étudier la limite", "justification": "|1-ln2|≈0,31<1", "resultat_markdown": "$(1-\\ln2)^{n+1}\\to0$, donc $\\mathcal A_n\\to0/(n+1)\\to0$"}
+      ],
+      "conclusion_markdown": "La limite de l'aire est 0."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de recalculer les nouvelles bornes en fonction de la variable u après le changement de variable", "pourquoi_faux": "les bornes de l'intégrale doivent être exprimées dans la nouvelle variable, pas conservées telles quelles", "correction_markdown": "Toujours substituer les bornes de x dans l'expression de u=1+ln x pour obtenir les nouvelles bornes."},
+      {"erreur_markdown": "Conclure hâtivement que la limite est 0 sans vérifier que |k|<1 pour le terme géométrique", "pourquoi_faux": "si |k|≥1, le terme k^(n+1) ne tend pas vers 0 (ou diverge), changeant complètement la nature de la limite", "correction_markdown": "Toujours vérifier numériquement (ou algébriquement) que |k|<1 avant d'affirmer que k^(n+1)→0."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant Aₙ=(1-(0,5)^(n+1))/(n+1), donner la limite quand n→+∞.", "solution_markdown": "|0,5|<1, donc (0,5)^(n+1)→0 ; numérateur→1, dénominateur→+∞ : Aₙ→0."}
+    ],
+    "synthese": "Pour calculer une aire dépendant d'un paramètre n, le changement de variable u=1+ln x ramène l'intégrale à une primitive de uⁿ ; la limite en n s'obtient ensuite en comparant la base d'un terme géométrique à 1 (tend vers 0 si <1) face au dénominateur (n+1) qui diverge."
+  }
+}

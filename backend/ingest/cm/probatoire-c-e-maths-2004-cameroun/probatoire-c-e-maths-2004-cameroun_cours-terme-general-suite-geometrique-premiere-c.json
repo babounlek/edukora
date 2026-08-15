@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-terme-general-suite-geometrique-premiere-c",
+  "meta": {
+    "titre": "Calculer le terme général d'une suite géométrique",
+    "cours_id": "cours-terme-general-suite-geometrique-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Suites géométriques - terme général",
+    "tags": ["suite géométrique", "terme général", "puissance"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_3_q2b"
+  },
+  "sections": {
+    "accroche": "Une fois qu'une suite est reconnue géométrique, plus besoin de calculer terme après terme jusqu'au rang voulu : une seule formule donne directement n'importe quel terme, même très éloigné.",
+    "prerequis": ["Définition d'une suite géométrique (raison constante)", "Calcul de puissances"],
+    "regle": {
+      "titre": "Formule du terme général",
+      "contenu_markdown": "Pour une suite géométrique de premier terme $p_1$ et de raison $q$, le terme de rang $n$ est $p_n=p_1\\times q^{n-1}$. Cette formule s'obtient en composant $(n-1)$ fois la relation de récurrence $p_n=q\\,p_{n-1}$ en partant de $p_1$ : chaque étape multiplie par $q$, et il y a exactement $n-1$ étapes pour aller de $p_1$ à $p_n$.",
+      "formule_principale": "$p_n=p_1\\times q^{\\,n-1}$",
+      "variantes": ["Si le premier terme indexé est $p_0$ plutôt que $p_1$, la formule devient $p_n=p_0\\times q^n$ (attention à l'indexation choisie par l'énoncé)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Une suite géométrique a pour premier terme u1=3 et raison q=2. Calculer u6.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier n", "justification": "u6 correspond à n=6", "resultat_markdown": "n=6, donc exposant n-1=5"},
+        {"numero": 2, "action": "Appliquer la formule", "justification": "un=u1×q^(n-1)", "resultat_markdown": "u6=3×2^5=3×32=96"}
+      ],
+      "conclusion_markdown": "u6=96."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Utiliser l'exposant n au lieu de n-1 dans la formule, par exemple écrire p_n=p_1×q^n", "pourquoi_faux": "cela décale tous les résultats d'un facteur q, car il n'y a que n-1 multiplications par q entre p_1 et p_n, pas n", "correction_markdown": "Toujours vérifier sur un petit cas simple (n=1 doit redonner p_1, donc l'exposant doit être 0 quand n=1) que la formule utilisée donne bien q^0=1 pour n=1."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Suite géométrique v1=5, raison 3. Calculer v4.", "solution_markdown": "v4=5×3³=5×27=135."}
+    ],
+    "synthese": "Le terme général d'une suite géométrique de premier terme p1 et de raison q est p_n=p1×q^(n-1), formule qui permet de calculer directement n'importe quel terme sans passer par tous les termes intermédiaires."
+  }
+}

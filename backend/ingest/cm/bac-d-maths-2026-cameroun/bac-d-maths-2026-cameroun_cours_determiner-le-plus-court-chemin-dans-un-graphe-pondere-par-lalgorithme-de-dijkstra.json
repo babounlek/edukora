@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-determiner-le-plus-court-chemin-dans-un-graphe-pondere-par-lalgorithme-de-dijkstra-terminale-d",
+  "meta": {
+    "titre": "Déterminer le plus court chemin dans un graphe pondéré par l'algorithme de Dijkstra",
+    "cours_id": "cours-determiner-le-plus-court-chemin-dans-un-graphe-pondere-par-lalgorithme-de-dijkstra-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Graphes — plus court chemin",
+    "tags": [
+      "algorithme de Dijkstra",
+      "graphe pondéré",
+      "plus court chemin"
+    ],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex5-tache1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'algorithme de Dijkstra construit, étape par étape, la distance minimale certaine vers chaque sommet d'un graphe, en ne se trompant jamais tant que tous les poids sont positifs."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Vocabulaire de base des graphes (sommets, arêtes, poids)",
+        "Notion de distance minimale entre deux sommets"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe de l'algorithme de Dijkstra",
+      "contenu_markdown": "Depuis un sommet de départ, on initialise sa distance à 0 et toutes les autres à $+\\infty$. À chaque étape, on choisit le sommet non encore fixé de distance minimale, on le fixe définitivement, puis on relâche (met à jour si plus petit) les distances de ses voisins via $d(\\text{voisin})=\\min\\big(d(\\text{voisin})\\,,\\,d(\\text{sommet fixé})+\\text{poids de l'arête}\\big)$. On répète jusqu'à ce que tous les sommets soient fixés, puis on reconstitue le chemin en remontant les prédécesseurs.",
+      "formule_principale": "d(voisin) = min(d(voisin), d(sommet fixé) + poids de l'arête)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Graphe : A-B (4), A-C (2), B-D (5), C-B (1), C-D (8). Trouver le plus court chemin de A à D.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser",
+          "justification": "d(A)=0, tous les autres à +∞.",
+          "resultat_markdown": "d(A)=0, d(B)=d(C)=d(D)=+∞"
+        },
+        {
+          "numero": 2,
+          "action": "Fixer A, relâcher ses voisins",
+          "justification": "d(B)=min(∞,0+4)=4 ; d(C)=min(∞,0+2)=2.",
+          "resultat_markdown": "d(B)=4, d(C)=2"
+        },
+        {
+          "numero": 3,
+          "action": "Fixer C (distance minimale non fixée), relâcher ses voisins",
+          "justification": "d(B)=min(4,2+1)=3 ; d(D)=min(∞,2+8)=10.",
+          "resultat_markdown": "d(B)=3, d(D)=10"
+        },
+        {
+          "numero": 4,
+          "action": "Fixer B, relâcher ses voisins",
+          "justification": "d(D)=min(10,3+5)=8.",
+          "resultat_markdown": "d(D)=8"
+        }
+      ],
+      "conclusion_markdown": "Le plus court chemin de A à D est A→C→B→D, de longueur 8."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Fixer un sommet sans avoir vérifié qu'il a bien la plus petite distance provisoire parmi les sommets non fixés",
+          "pourquoi_faux": "L'algorithme de Dijkstra repose sur le fait de toujours fixer en premier le sommet le plus proche parmi ceux restants ; fixer un autre sommet peut conduire à une distance finale incorrecte.",
+          "correction_markdown": "À chaque étape, comparer explicitement toutes les distances provisoires des sommets non encore fixés avant de choisir lequel fixer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "d(X)=7, une arête X-Y de poids 3. Que devient d(Y) si d(Y) était à +∞ ?",
+          "solution_markdown": "d(Y)=min(∞,7+3)=10."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "d(Y)=10 déjà connu, une autre arête Z-Y de poids 2 avec d(Z)=6. Y est-il mis à jour ?",
+          "solution_markdown": "min(10,6+2)=8<10, donc oui, d(Y) est mis à jour à 8."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi l'algorithme de Dijkstra ne fonctionne-t-il pas correctement si le graphe contient des poids négatifs ?",
+          "solution_markdown": "L'algorithme fixe définitivement la distance d'un sommet dès qu'il est choisi, en supposant qu'aucun chemin plus court ne pourra jamais être découvert plus tard ; avec un poids négatif, un chemin plus long en nombre d'arêtes mais traversant une arête négative pourrait pourtant s'avérer plus court, ce que l'algorithme ne peut pas anticiper."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dijkstra construit les distances minimales sommet par sommet, en fixant à chaque étape le plus proche sommet restant.",
+        "On relâche les voisins du sommet fixé via d(voisin)=min(d(voisin), d(fixé)+poids).",
+        "Le chemin final se reconstitue en remontant les prédécesseurs depuis le sommet d'arrivée."
+      ]
+    }
+  ]
+}

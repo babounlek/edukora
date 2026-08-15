@@ -1,0 +1,111 @@
+{
+  "type": "cours",
+  "cours_id": "cours-esperance-transformation-affine-variable-aleatoire",
+  "meta": {
+    "titre": "Espérance d'une variable aléatoire définie comme fonction affine d'une autre",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Probabilités",
+    "duree_estimee_min": 15,
+    "tags": [
+      "espérance mathématique"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un gain, un coût ou une pénalité s'exprime comme $aX+b$ à partir d'une variable aléatoire $X$ dont l'espérance est déjà connue, il n'est jamais nécessaire de reconstruire toute la loi de probabilité : la linéarité de l'espérance donne le résultat en une ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de l'espérance mathématique d'une variable aléatoire discrète",
+        "Loi de probabilité d'une variable aléatoire déjà établie",
+        "Calcul algébrique sur les expressions affines"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Linéarité de l'espérance",
+      "contenu_markdown": "Si $Y=aX+b$, où $a$ et $b$ sont deux constantes réelles et $X$ une variable aléatoire d'espérance $E(X)$ connue, alors $E(Y)=aE(X)+b$. Cela découle directement de la définition : $E(Y)=\\sum_i(ax_i+b)p_i=a\\sum_i x_ip_i+b\\sum_i p_i=aE(X)+b$ (puisque $\\sum_i p_i=1$).",
+      "formule_principale": "E(aX+b) = a\\,E(X) + b"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une variable aléatoire $X$ a pour espérance $E(X)=1{,}4$. Un jeu attribue à chaque partie un gain $Y$ (en francs CFA) défini par $Y=200X-50$ (200 F par point marqué, moins un droit d'entrée de 50 F). Calculer $E(Y)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier $a$ et $b$ dans $Y=aX+b$",
+          "justification": "Par identification directe avec l'énoncé.",
+          "resultat_markdown": "$a=200$, $b=-50$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de linéarité",
+          "justification": "$E(X)$ est déjà connue, inutile de reconstruire la loi de $Y$.",
+          "resultat_markdown": "$E(Y)=200\\times E(X)-50$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement",
+          "justification": "On remplace $E(X)$ par sa valeur.",
+          "resultat_markdown": "$E(Y)=200\\times1{,}4-50=280-50=230$"
+        }
+      ],
+      "conclusion_markdown": "$E(Y)=230$ F CFA : le joueur gagne en moyenne 230 F CFA par partie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Reconstruire toute la loi de $Y$ (toutes ses valeurs et probabilités) avant de calculer son espérance.",
+          "pourquoi_faux": "C'est un travail inutile dès que $E(X)$ est déjà connue : la linéarité donne directement $E(Y)$.",
+          "correction_markdown": "Identifier $a$ et $b$ dans $Y=aX+b$, puis appliquer $E(Y)=aE(X)+b$."
+        },
+        {
+          "erreur_markdown": "Oublier le terme constant $b$, en écrivant $E(Y)=aE(X)$ seul.",
+          "pourquoi_faux": "La constante $b$ ne disparaît pas dans l'espérance : $E(b)=b$ pour une constante.",
+          "correction_markdown": "Toujours reporter le $+b$ intégralement dans le résultat final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "$X$ a pour espérance $E(X)=2$. On pose $Y=3X$. Calculer $E(Y)$.",
+          "solution_markdown": "$E(Y)=3\\times2=6$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "$X$ a pour espérance $E(X)=0{,}6$. On pose $Y=-100X+150$. Calculer $E(Y)$.",
+          "solution_markdown": "$E(Y)=-100\\times0{,}6+150=-60+150=90$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Une variable aléatoire $X$ a pour espérance $E(X)=\\dfrac73$. Un opérateur facture $Z=1200-450X$ francs CFA. Calculer $E(Z)$ et dire si ce coût moyen est positif.",
+          "solution_markdown": "$E(Z)=1200-450\\times\\dfrac73=1200-1050=150$. Ce montant est positif : le coût moyen facturé est de 150 F CFA."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si $Y=aX+b$, alors $E(Y)=aE(X)+b$ : pas besoin de reconstruire la loi de $Y$.",
+        "La constante $b$ se retrouve intacte dans l'espérance.",
+        "Cette propriété découle directement de la définition de l'espérance et de la linéarité de la somme.",
+        "Elle s'applique quel que soit le nombre de valeurs prises par $X$.",
+        "Utile dès qu'un énoncé traduit un gain, un coût ou une pénalité comme fonction affine d'un comptage aléatoire déjà étudié."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "epreuve_source": "bac-c-maths-1988-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 1988,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "titre_exercice": "Problème — Partie A : endomorphismes vérifiant $f\\circ f=-\\mathrm{Id}_E$ et symétrie vectorielle associée",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "**Problème — Partie A**\n\nSoit $E$ un plan vectoriel rapporté à une base $(\\vec i,\\vec j)$, $\\text{End}(E)$ l'ensemble des endomorphismes de $E$, et $Q=\\{f\\in\\text{End}(E)\\ :\\ f\\circ f=-\\text{Id}_E\\}$. Soit $f\\in Q$. On note $\\sigma$ la symétrie vectorielle de base $D_{\\vec i+f(\\vec i)}$ et de direction $D_{\\vec i-f(\\vec i)}$.",
+  "questions": [
+    {
+      "numero": "A1",
+      "points": 0.5,
+      "enonce_markdown": "A.1) Montrer que $f$ est bijective et préciser $f^{-1}$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-bijectivite-endomorphisme-involutif-inverse-terminale-c",
+          "texte": "Pour montrer qu'un endomorphisme $f$ est bijectif, il suffit d'exhiber un endomorphisme $g$ tel que $f\\circ g=g\\circ f=\\text{Id}_E$ : $f$ est alors automatiquement bijectif, d'inverse $f^{-1}=g$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'un endomorphisme $f$ est bijectif, il suffit d'exhiber un endomorphisme $g$ tel que $f\\circ g=g\\circ f=\\text{Id}_E$ : $f$ est alors automatiquement bijectif, d'inverse $f^{-1}=g$.\n\nPuisque $f\\in Q$, on a $f\\circ f=-\\text{Id}_E$. Considérons l'endomorphisme $-f$ et calculons $f\\circ(-f)$ et $(-f)\\circ f$ :\n$$f\\circ(-f)=-(f\\circ f)=-(-\\text{Id}_E)=\\text{Id}_E \\qquad\\qquad (-f)\\circ f=-(f\\circ f)=-(-\\text{Id}_E)=\\text{Id}_E$$\n\nL'endomorphisme $-f$ est donc à la fois inverse à droite et à gauche de $f$ : **$f$ est bijective, et $f^{-1}=-f$.**\n\n### Piège à éviter\nNe pas confondre $f\\circ f=-\\text{Id}_E$ (qui définit $Q$) avec $f\\circ f=\\text{Id}_E$ (qui définirait une involution) : ici $f$ n'est pas son propre inverse, c'est $-f$ qui l'est."
+    },
+    {
+      "numero": "A2a",
+      "points": 0.75,
+      "enonce_markdown": "A.2) a) Montrer que, pour tout réel $\\lambda$, $f(\\vec u)=\\lambda\\vec u \\iff \\vec u=\\vec0$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-absence-valeur-propre-reelle-f-f-moins-id-terminale-c",
+          "texte": "Si $f\\circ f=-\\text{Id}_E$, alors $f$ n'a aucune valeur propre réelle : supposer $f(\\vec u)=\\lambda\\vec u$ avec $\\vec u\\neq\\vec0$ mène, en appliquant $f$ une seconde fois, à $-\\vec u=\\lambda^2\\vec u$, donc $(\\lambda^2+1)\\vec u=\\vec0$ ; comme $\\lambda^2+1>0$ pour tout réel $\\lambda$, cela impose $\\vec u=\\vec0$, contradiction."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $f\\circ f=-\\text{Id}_E$, alors $f$ n'a aucune valeur propre réelle : supposer $f(\\vec u)=\\lambda\\vec u$ avec $\\vec u\\neq\\vec0$ mène, en appliquant $f$ une seconde fois, à $-\\vec u=\\lambda^2\\vec u$, donc $(\\lambda^2+1)\\vec u=\\vec0$ ; comme $\\lambda^2+1>0$ pour tout réel $\\lambda$, cela impose $\\vec u=\\vec0$, contradiction.\n\n**Sens direct.** Si $\\vec u=\\vec0$, alors $f(\\vec0)=\\vec0=\\lambda\\vec0$ pour tout réel $\\lambda$ (linéarité de $f$) : l'implication réciproque est triviale.\n\n**Sens réciproque.** Supposons $f(\\vec u)=\\lambda\\vec u$ pour un certain réel $\\lambda$, et montrons $\\vec u=\\vec0$. Appliquons $f$ aux deux membres :\n$$f(f(\\vec u))=f(\\lambda\\vec u)=\\lambda f(\\vec u)=\\lambda(\\lambda\\vec u)=\\lambda^2\\vec u$$\n\nOr $f(f(\\vec u))=(f\\circ f)(\\vec u)=-\\text{Id}_E(\\vec u)=-\\vec u$ (car $f\\in Q$). Donc :\n$$-\\vec u=\\lambda^2\\vec u \\iff (\\lambda^2+1)\\vec u=\\vec0$$\n\nComme $\\lambda$ est réel, $\\lambda^2\\geqslant0$, donc $\\lambda^2+1\\geqslant1>0$ : le scalaire $\\lambda^2+1$ est non nul. On peut donc diviser par $\\lambda^2+1$ :\n$$\\vec u=\\vec0$$\n\n**Conclusion.** Pour tout réel $\\lambda$, $f(\\vec u)=\\lambda\\vec u \\iff \\vec u=\\vec0$ : **$f$ n'admet aucune valeur propre réelle** (aucun vecteur non nul n'est envoyé sur un multiple réel de lui-même).\n\n### Piège à éviter\nL'étape clé est $\\lambda^2+1>0$ pour **tout** réel $\\lambda$ : c'est parce que $\\lambda$ est réel (et non complexe) que cette quantité ne s'annule jamais, ce qui n'aurait pas été le cas si l'on autorisait $\\lambda=\\pm i$."
+    },
+    {
+      "numero": "A2b",
+      "points": 0.5,
+      "enonce_markdown": "b) En déduire que, pour tout vecteur $\\vec u\\neq\\vec0$ de $E$, $\\big(\\vec u,f(\\vec u)\\big)$ est une base de $E$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-base-formee-vecteur-image-non-colineaire-terminale-c",
+          "texte": "Dans un plan vectoriel, deux vecteurs non colinéaires forment automatiquement une base. Pour $(\\vec u,f(\\vec u))$ avec $\\vec u\\neq\\vec0$, la non-colinéarité découle de l'absence de valeur propre réelle de $f$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nDans un plan vectoriel, deux vecteurs non colinéaires forment automatiquement une base. Pour $(\\vec u,f(\\vec u))$ avec $\\vec u\\neq\\vec0$, la non-colinéarité découle de l'absence de valeur propre réelle de $f$.\n\nSoit $\\vec u\\neq\\vec0$. Montrons que $\\vec u$ et $f(\\vec u)$ ne sont pas colinéaires. Par l'absurde, supposons-les colinéaires : il existerait un réel $\\lambda$ tel que $f(\\vec u)=\\lambda\\vec u$ (car $\\vec u\\neq\\vec0$, on peut exprimer la colinéarité sous cette forme). D'après la question A.2.a, cela entraînerait $\\vec u=\\vec0$, ce qui contredit l'hypothèse $\\vec u\\neq\\vec0$.\n\nDonc $\\vec u$ et $f(\\vec u)$ ne sont **pas** colinéaires. Dans le plan vectoriel $E$ (de dimension $2$), deux vecteurs non colinéaires forment automatiquement une famille libre de $2$ vecteurs, donc une base de $E$.\n\n**$\\big(\\vec u,f(\\vec u)\\big)$ est donc une base de $E$**, pour tout $\\vec u\\neq\\vec0$.\n\n### Piège à éviter\nCette démonstration réutilise directement le résultat de la question A.2.a par contraposée (colinéaire $\\Rightarrow$ valeur propre réelle $\\Rightarrow \\vec u=\\vec0$) : ne pas refaire le calcul, mais citer explicitement le résultat déjà établi."
+    },
+    {
+      "numero": "A2c",
+      "points": 0.5,
+      "enonce_markdown": "c) Écrire la matrice de $f$ dans la base $\\big(\\vec u,f(\\vec u)\\big)$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-matrice-endomorphisme-base-adaptee-terminale-c",
+          "texte": "La matrice d'un endomorphisme dans une base donnée s'obtient en lisant, colonne par colonne, les coordonnées de l'image de chaque vecteur de base dans cette même base."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa matrice d'un endomorphisme dans une base donnée s'obtient en lisant, colonne par colonne, les coordonnées de l'image de chaque vecteur de base dans cette même base.\n\nDans la base $(\\vec u,f(\\vec u))$, calculons l'image de chaque vecteur de base par $f$ :\n\n**Image du premier vecteur $\\vec u$.** $f(\\vec u)$ est, par définition, le second vecteur de la base : ses coordonnées dans $(\\vec u,f(\\vec u))$ sont donc $(0,1)$.\n\n**Image du second vecteur $f(\\vec u)$.** $f(f(\\vec u))=(f\\circ f)(\\vec u)=-\\text{Id}_E(\\vec u)=-\\vec u$ (car $f\\in Q$). Ses coordonnées dans $(\\vec u,f(\\vec u))$ sont donc $(-1,0)$.\n\nEn plaçant ces coordonnées en colonnes, la matrice de $f$ dans la base $(\\vec u,f(\\vec u))$ est :\n$$\\text{Mat}_{(\\vec u,f(\\vec u))}(f)=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$$\n\n### Piège à éviter\nCette matrice est valable dans la base $(\\vec u,f(\\vec u))$ **spécifiquement adaptée à $f$**, pas dans une base quelconque : dans une autre base, la matrice de $f$ prendrait une forme différente (bien que semblable à celle-ci)."
+    },
+    {
+      "numero": "A3a",
+      "points": 0.75,
+      "enonce_markdown": "A.3) a) Justifier l'existence de la symétrie vectorielle $\\sigma$ de base $D_{\\vec i+f(\\vec i)}$ et de direction $D_{\\vec i-f(\\vec i)}$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-existence-symetrie-vectorielle-base-direction-terminale-c",
+          "texte": "Une symétrie vectorielle de base $D_1$ et de direction $D_2$ n'est bien définie que si $D_1$ et $D_2$ sont deux droites vectorielles distinctes (non confondues), c'est-à-dire si un vecteur directeur de $D_1$ et un vecteur directeur de $D_2$ ne sont pas colinéaires."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne symétrie vectorielle de base $D_1$ et de direction $D_2$ n'est bien définie que si $D_1$ et $D_2$ sont deux droites vectorielles distinctes (non confondues), c'est-à-dire si un vecteur directeur de $D_1$ et un vecteur directeur de $D_2$ ne sont pas colinéaires.\n\nIl s'agit de montrer que $\\vec i+f(\\vec i)$ et $\\vec i-f(\\vec i)$ ne sont pas colinéaires (donc dirigent deux droites distinctes).\n\nPar l'absurde, supposons $\\vec i+f(\\vec i)$ et $\\vec i-f(\\vec i)$ colinéaires. Comme $\\vec i\\neq\\vec0$ et $f(\\vec i)\\neq\\vec0$ (car $f$ est bijective d'après A.1, donc $f(\\vec i)=\\vec0 \\Rightarrow \\vec i=\\vec0$, exclu), et comme $\\vec i$ et $f(\\vec i)$ ne sont pas colinéaires (question A.2.b appliquée à $\\vec u=\\vec i$), les deux vecteurs $\\vec i+f(\\vec i)$ et $\\vec i-f(\\vec i)$ sont non nuls (sinon $\\vec i=\\mp f(\\vec i)$ contredirait leur non-colinéarité). S'ils étaient colinéaires, il existerait un réel $k$ tel que :\n$$\\vec i-f(\\vec i)=k\\big(\\vec i+f(\\vec i)\\big) \\iff (1-k)\\vec i=(1+k)f(\\vec i)$$\n\nComme $\\vec i$ et $f(\\vec i)$ forment une base de $E$ (A.2.b), cette égalité impose $1-k=0$ et $1+k=0$ simultanément, soit $k=1$ et $k=-1$ : contradiction ($1\\neq-1$).\n\nDonc $\\vec i+f(\\vec i)$ et $\\vec i-f(\\vec i)$ ne sont **pas** colinéaires : ils dirigent deux droites vectorielles distinctes $D_{\\vec i+f(\\vec i)}$ et $D_{\\vec i-f(\\vec i)}$, dont la somme directe est $E$ tout entier (deux droites distinctes d'un plan vectoriel sont toujours supplémentaires). **La symétrie vectorielle $\\sigma$ de base $D_{\\vec i+f(\\vec i)}$ et de direction $D_{\\vec i-f(\\vec i)}$ est donc bien définie.**\n\n### Piège à éviter\nNe pas se contenter d'affirmer que les deux droites sont distinctes « parce que $f(\\vec i)\\neq\\vec i$ » : il faut bien montrer l'absence de colinéarité entre les deux vecteurs $\\vec i+f(\\vec i)$ et $\\vec i-f(\\vec i)$ eux-mêmes, pas seulement entre $\\vec i$ et $f(\\vec i)$."
+    },
+    {
+      "numero": "A3b",
+      "points": 0.5,
+      "enonce_markdown": "b) Écrire la matrice de $\\sigma$ dans la base $\\big(\\vec i,f(\\vec i)\\big)$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-matrice-symetrie-vectorielle-systeme-lineaire-terminale-c",
+          "texte": "Pour déterminer $\\sigma(\\vec i)$ et $\\sigma(f(\\vec i))$ à partir des relations définissant $\\sigma$ (invariance sur la base, opposition sur la direction), on additionne et on soustrait ces deux relations pour isoler chaque image séparément, par linéarité de $\\sigma$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer $\\sigma(\\vec i)$ et $\\sigma(f(\\vec i))$ à partir des relations définissant $\\sigma$ (invariance sur la base, opposition sur la direction), on additionne et on soustrait ces deux relations pour isoler chaque image séparément, par linéarité de $\\sigma$.\n\nPar définition de la symétrie vectorielle $\\sigma$ de base $D_{\\vec i+f(\\vec i)}$ et de direction $D_{\\vec i-f(\\vec i)}$ :\n$$\\sigma\\big(\\vec i+f(\\vec i)\\big)=\\vec i+f(\\vec i) \\qquad\\qquad \\sigma\\big(\\vec i-f(\\vec i)\\big)=-\\big(\\vec i-f(\\vec i)\\big)=-\\vec i+f(\\vec i)$$\n\n**Addition des deux relations.** Par linéarité de $\\sigma$ :\n$$\\sigma\\big(\\vec i+f(\\vec i)\\big)+\\sigma\\big(\\vec i-f(\\vec i)\\big)=\\sigma\\big(2\\vec i\\big)=2\\sigma(\\vec i)$$\n\net le membre de droite vaut $\\big(\\vec i+f(\\vec i)\\big)+\\big(-\\vec i+f(\\vec i)\\big)=2f(\\vec i)$. Donc $2\\sigma(\\vec i)=2f(\\vec i)$, soit :\n$$\\sigma(\\vec i)=f(\\vec i)$$\n\n**Soustraction des deux relations.**\n$$\\sigma\\big(\\vec i+f(\\vec i)\\big)-\\sigma\\big(\\vec i-f(\\vec i)\\big)=\\sigma\\big(2f(\\vec i)\\big)=2\\sigma(f(\\vec i))$$\n\net le membre de droite vaut $\\big(\\vec i+f(\\vec i)\\big)-\\big(-\\vec i+f(\\vec i)\\big)=2\\vec i$. Donc $2\\sigma(f(\\vec i))=2\\vec i$, soit :\n$$\\sigma(f(\\vec i))=\\vec i$$\n\n**Matrice de $\\sigma$.** Dans la base $(\\vec i,f(\\vec i))$, $\\sigma(\\vec i)=f(\\vec i)$ a pour coordonnées $(0,1)$, et $\\sigma(f(\\vec i))=\\vec i$ a pour coordonnées $(1,0)$. En colonnes :\n$$\\text{Mat}_{(\\vec i,f(\\vec i))}(\\sigma)=\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$$\n\n### Piège à éviter\nNe pas confondre cette matrice de $\\sigma$, exprimée dans la base $(\\vec i,f(\\vec i))$, avec la matrice de $\\sigma$ qui serait diagonale $\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$ dans la base adaptée $\\big(\\vec i+f(\\vec i),\\,\\vec i-f(\\vec i)\\big)$ (base propre de $\\sigma$) : ce sont deux représentations différentes du même endomorphisme, dans deux bases différentes."
+    },
+    {
+      "numero": "A3c",
+      "points": 0.75,
+      "enonce_markdown": "c) Montrer que $S=f\\circ\\sigma$ est une symétrie vectorielle et préciser ses éléments caractéristiques.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-composee-endomorphismes-produit-matriciel-nature-terminale-c",
+          "texte": "Pour identifier la nature d'une composée de deux endomorphismes, on calcule sa matrice comme produit des deux matrices (dans une base commune), puis on vérifie si cette matrice vérifie $M^2=I$ (caractéristique des symétries vectorielles) ; ses sous-espaces propres associés aux valeurs propres $+1$ et $-1$ donnent alors la base et la direction de la symétrie."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour identifier la nature d'une composée de deux endomorphismes, on calcule sa matrice comme produit des deux matrices (dans une base commune), puis on vérifie si cette matrice vérifie $M^2=I$ (caractéristique des symétries vectorielles) ; ses sous-espaces propres associés aux valeurs propres $+1$ et $-1$ donnent alors la base et la direction de la symétrie.\n\nTravaillons dans la base $(\\vec i,f(\\vec i))$. On y connaît déjà la matrice de $\\sigma$ (question A.3.b) : $\\text{Mat}(\\sigma)=\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$. Il faut aussi la matrice de $f$ dans cette base : $f(\\vec i)$ a pour coordonnées $(0,1)$ (c'est le second vecteur de base), et $f(f(\\vec i)))=-\\vec i$ (car $f\\circ f=-\\text{Id}_E$) a pour coordonnées $(-1,0)$. Donc $\\text{Mat}(f)=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ (même forme qu'en question A.2.c, cohérent puisque $(\\vec i,f(\\vec i))$ est bien une base du type $(\\vec u,f(\\vec u))$).\n\n**Calcul de $\\text{Mat}(S)=\\text{Mat}(f)\\times\\text{Mat}(\\sigma)$** :\n$$\\text{Mat}(S)=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}=\\begin{pmatrix}0\\times0+(-1)\\times1 & 0\\times1+(-1)\\times0\\\\ 1\\times0+0\\times1 & 1\\times1+0\\times0\\end{pmatrix}=\\begin{pmatrix}-1&0\\\\0&1\\end{pmatrix}$$\n\n**Vérification que $S$ est une symétrie vectorielle.** $\\text{Mat}(S)^2=\\begin{pmatrix}-1&0\\\\0&1\\end{pmatrix}^2=\\begin{pmatrix}(-1)^2&0\\\\0&1^2\\end{pmatrix}=\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}=I$ : donc $S\\circ S=\\text{Id}_E$, ce qui caractérise une symétrie vectorielle (application involutive linéaire).\n\n**Éléments caractéristiques.** La matrice $\\begin{pmatrix}-1&0\\\\0&1\\end{pmatrix}$ étant déjà diagonale dans la base $(\\vec i,f(\\vec i))$ :\n- le vecteur $f(\\vec i)$ (coordonnées $(0,1)$, valeur propre $1$) est invariant par $S$ : $S$ a pour **base** $D_{f(\\vec i)}$ ;\n- le vecteur $\\vec i$ (coordonnées $(1,0)$, valeur propre $-1$) est transformé en son opposé par $S$ : $S$ a pour **direction** $D_{\\vec i}$.\n\n**$S=f\\circ\\sigma$ est donc la symétrie vectorielle de base $D_{f(\\vec i)}$ et de direction $D_{\\vec i}$.**\n\n### Piège à éviter\nL'ordre de composition compte : $\\text{Mat}(f\\circ\\sigma)=\\text{Mat}(f)\\times\\text{Mat}(\\sigma)$ (et non l'inverse) - inverser l'ordre du produit matriciel donnerait un résultat différent et une identification erronée des éléments caractéristiques."
+    },
+    {
+      "numero": "A3d",
+      "points": 0.75,
+      "enonce_markdown": "d) En déduire que $f=S\\circ\\sigma$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-decomposition-endomorphisme-composition-symetries-terminale-c",
+          "texte": "Si $\\sigma$ est une symétrie vectorielle (donc involutive, $\\sigma^{-1}=\\sigma$) et $S=f\\circ\\sigma$, alors composer à droite par $\\sigma$ donne $S\\circ\\sigma=f\\circ\\sigma\\circ\\sigma=f\\circ\\text{Id}_E=f$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $\\sigma$ est une symétrie vectorielle (donc involutive, $\\sigma^{-1}=\\sigma$) et $S=f\\circ\\sigma$, alors composer à droite par $\\sigma$ donne $S\\circ\\sigma=f\\circ\\sigma\\circ\\sigma=f\\circ\\text{Id}_E=f$.\n\nUne symétrie vectorielle est, par définition, une application involutive : $\\sigma\\circ\\sigma=\\text{Id}_E$, c'est-à-dire $\\sigma^{-1}=\\sigma$.\n\nPar définition, $S=f\\circ\\sigma$. Composons les deux membres à droite par $\\sigma$ :\n$$S\\circ\\sigma=(f\\circ\\sigma)\\circ\\sigma=f\\circ(\\sigma\\circ\\sigma)=f\\circ\\text{Id}_E=f$$\n\n**On a donc bien $f=S\\circ\\sigma$.**\n\n**Vérification indépendante par le calcul matriciel** (contrôle de cohérence, dans la base $(\\vec i,f(\\vec i))$) :\n$$\\text{Mat}(S)\\times\\text{Mat}(\\sigma)=\\begin{pmatrix}-1&0\\\\0&1\\end{pmatrix}\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}=\\begin{pmatrix}-1\\times0+0\\times1 & -1\\times1+0\\times0\\\\ 0\\times0+1\\times1 & 0\\times1+1\\times0\\end{pmatrix}=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$$\n\nCe résultat coïncide exactement avec $\\text{Mat}(f)=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ trouvée à la question A.3.c : la relation $f=S\\circ\\sigma$ est confirmée par le calcul matriciel direct.\n\n**Conclusion d'ensemble.** Tout endomorphisme $f$ vérifiant $f\\circ f=-\\text{Id}_E$ se décompose donc comme la composée de deux symétries vectorielles $S$ et $\\sigma$ dont les bases et directions sont liées par $f$ lui-même.\n\n### Conseil\nCette décomposition $f=S\\circ\\sigma$ éclaire la nature géométrique de $f$ : la composée de deux symétries vectorielles d'axes distincts dans un plan est toujours une rotation vectorielle - $f$ se comporte donc, géométriquement, comme une rotation, ce qui est cohérent avec l'absence de valeur propre réelle établie en A.2.a."
+    }
+  ]
+}

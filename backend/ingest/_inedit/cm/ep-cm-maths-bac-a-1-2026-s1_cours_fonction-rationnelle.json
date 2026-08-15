@@ -1,0 +1,114 @@
+{
+  "type": "cours",
+  "cours_id": "cours-etude-fonction-rationnelle-bac-a",
+  "meta": {
+    "titre": "Étude d'une fonction rationnelle",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Analyse - fonctions rationnelles",
+    "duree_estimee_min": 25,
+    "tags": ["fonction rationnelle"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-1-2026-s1-ex3-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction rationnelle simple (un quotient de deux expressions du premier degré) se laisse entièrement décrire en trois temps : où est-elle définie, vers quoi tend-elle aux bornes (ses asymptotes), et comment évolue-t-elle entre ces bornes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'une équation du premier degré",
+        "Notion de limite d'une fonction en un point ou à l'infini",
+        "Lecture d'un tableau de variations"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Domaine, limites/asymptotes, variations",
+      "contenu_markdown": "**Ensemble de définition** : une fraction n'est définie que si son dénominateur est non nul - on résout l'équation \"dénominateur $=0$\" et on l'exclut de l'ensemble de définition.\n\n**Asymptote verticale** : au voisinage de la valeur qui annule le dénominateur, la fonction tend vers $+\\infty$ ou $-\\infty$ - la droite verticale correspondante est asymptote à la courbe.\n\n**Asymptote horizontale** : pour les limites en $+\\infty$/$-\\infty$, on divise numérateur et dénominateur par la plus haute puissance de $x$ du dénominateur ; la limite obtenue donne l'ordonnée de l'asymptote horizontale.\n\n**Variations** : à partir du signe de la dérivée $f'(x)$ (souvent donnée directement pour ce niveau), on en déduit le sens de variation de $f$ sur chaque intervalle de son ensemble de définition.",
+      "formule_principale": "f(x)=\\dfrac{ax+b}{cx+d} \\;\\Rightarrow\\; D_f=\\mathbb R\\setminus\\left\\{-\\dfrac dc\\right\\}, \\quad \\lim_{x\\to\\pm\\infty}f(x)=\\dfrac ac"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $g(x)=\\dfrac{3x-2}{x+1}$, avec $g'(x)=\\dfrac{5}{(x+1)^2}$ pour tout $x\\neq-1$. Détermine l'ensemble de définition de $g$, ses asymptotes, et son sens de variation.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer l'ensemble de définition",
+          "justification": "On résout dénominateur $=0$ et on exclut cette valeur.",
+          "resultat_markdown": "$x+1=0 \\iff x=-1$, donc $D_g=\\mathbb R\\setminus\\{-1\\}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier la limite en $x=-1$",
+          "justification": "On regarde le signe du numérateur (non nul en $-1$) et le signe du dénominateur de part et d'autre de $-1$.",
+          "resultat_markdown": "En $x=-1$, numérateur $\\to3(-1)-2=-5\\neq0$. Quand $x\\to-1^+$, $x+1\\to0^+$, donc $g(x)\\to-\\infty$. Quand $x\\to-1^-$, $x+1\\to0^-$, donc $g(x)\\to+\\infty$. La droite $x=-1$ est asymptote verticale."
+        },
+        {
+          "numero": 3,
+          "action": "Étudier les limites en $\\pm\\infty$",
+          "justification": "On divise numérateur et dénominateur par $x$.",
+          "resultat_markdown": "$g(x)=\\dfrac{3-\\frac2x}{1+\\frac1x}\\to\\dfrac31=3$ quand $x\\to\\pm\\infty$. La droite $y=3$ est asymptote horizontale."
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de $g'(x)$",
+          "justification": "$(x+1)^2>0$ pour tout $x\\neq-1$, et le numérateur $5$ est positif.",
+          "resultat_markdown": "$g'(x)>0$ pour tout $x\\neq-1$ : $g$ est strictement croissante sur $]-\\infty\\,;\\,-1[$ et sur $]-1\\,;\\,+\\infty[$."
+        }
+      ],
+      "conclusion_markdown": "$D_g=\\mathbb R\\setminus\\{-1\\}$, asymptotes $x=-1$ et $y=3$, $g$ strictement croissante sur chacun des deux intervalles de son ensemble de définition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'étudier la limite au point exclu de l'ensemble de définition, en ne traitant que les limites en $\\pm\\infty$.",
+          "pourquoi_faux": "L'asymptote verticale (souvent la plus visible sur un graphique) provient justement de cette limite au point exclu - l'oublier, c'est perdre la moitié de l'étude.",
+          "correction_markdown": "Traite systématiquement DEUX familles de limites : au point qui annule le dénominateur, et en $+\\infty$/$-\\infty$."
+        },
+        {
+          "erreur_markdown": "Confondre le signe du numérateur constant d'une dérivée $f'(x)=\\dfrac{k}{(\\ldots)^2}$ avec le signe de $(\\ldots)^2$ lui-même.",
+          "pourquoi_faux": "Un carré est toujours positif ou nul (jamais négatif) : c'est uniquement le signe de $k$ (le numérateur) qui détermine le signe de toute la fraction.",
+          "correction_markdown": "Quand le dénominateur d'une dérivée est un carré, le signe de la dérivée entière est simplement celui de son numérateur - inutile d'étudier davantage le dénominateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Détermine l'ensemble de définition de $h(x)=\\dfrac{x+4}{x-2}$.",
+          "solution_markdown": "$x-2=0 \\iff x=2$, donc $D_h=\\mathbb R\\setminus\\{2\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Calcule la limite de $h(x)=\\dfrac{x+4}{x-2}$ quand $x\\to+\\infty$, et déduis-en l'asymptote horizontale.",
+          "solution_markdown": "En divisant par $x$ : $h(x)=\\dfrac{1+\\frac4x}{1-\\frac2x}\\to\\dfrac11=1$ quand $x\\to+\\infty$. La droite $y=1$ est asymptote horizontale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $k(x)=\\dfrac{-2x+5}{x-1}$, avec $k'(x)=\\dfrac{-3}{(x-1)^2}$ pour tout $x\\neq1$. Détermine l'ensemble de définition de $k$, l'asymptote horizontale, et le sens de variation de $k$.",
+          "solution_markdown": "$D_k=\\mathbb R\\setminus\\{1\\}$. En divisant par $x$ : $k(x)=\\dfrac{-2+\\frac5x}{1-\\frac1x}\\to\\dfrac{-2}1=-2$, donc $y=-2$ est asymptote horizontale. Pour la dérivée : $(x-1)^2>0$ pour tout $x\\neq1$, et le numérateur $-3$ est négatif, donc $k'(x)<0$ pour tout $x\\neq1$ : $k$ est strictement décroissante sur chacun des deux intervalles de $D_k$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ensemble de définition : exclure la valeur qui annule le dénominateur.",
+        "Deux familles de limites à étudier : au point exclu (asymptote verticale) et en $\\pm\\infty$ (asymptote horizontale, en divisant par la plus haute puissance de $x$).",
+        "Le signe d'une dérivée $f'(x)=\\dfrac{k}{(\\ldots)^2}$ est simplement celui de $k$ : un carré au dénominateur est toujours positif.",
+        "Toujours présenter les deux intervalles de variation séparément quand la fonction n'est pas définie en un point."
+      ]
+    }
+  ]
+}

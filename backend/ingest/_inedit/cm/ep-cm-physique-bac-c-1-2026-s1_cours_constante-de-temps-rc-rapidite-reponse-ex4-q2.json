@@ -1,0 +1,105 @@
+{
+  "type": "cours",
+  "cours_id": "cours-constante-de-temps-rc-rapidite-reponse-bacc1-ex4-q2",
+  "meta": {
+    "titre": "Calculer la constante de temps d'un circuit RC et évaluer sa rapidité de réponse face à un phénomène physique donné",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime transitoire, capteurs",
+    "duree_estimee_min": 15,
+    "tags": ["Circuit RC"]
+  },
+  "source": {"rappel_id": "rdi-ep-cm-physique-bac-c-1-2026-s1-ex4-q2-0"},
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une constante de temps τ=RC n'est que la moitié du travail : encore faut-il savoir juger si cette valeur rend un capteur \"assez rapide\" pour le phénomène qu'il doit détecter - un détecteur de fumée trop lent est aussi inutile qu'un détecteur trop sensible qui se déclenche pour rien."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Constante de temps d'un circuit RC : $\\tau=RC$",
+        "Notion d'ordre de grandeur et de comparaison de durées"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer τ au temps caractéristique d'un phénomène",
+      "contenu_markdown": "Un capteur électronique construit autour d'un circuit RC (chambre d'ionisation, jauge de contrainte, etc.) ne peut détecter correctement une variation physique que si sa constante de temps τ est du même ordre de grandeur, ou plus petite, que la durée caractéristique du phénomène à détecter.\n\nSi τ est très supérieure à cette durée caractéristique, le capteur réagit trop lentement et peut manquer l'événement (ou le détecter très en retard). Si τ est très inférieure, le capteur est certes réactif, mais risque de répondre à des variations parasites très brèves (bruit), provoquant de fausses alertes. Un bon dimensionnement vise donc une constante de temps du même ordre de grandeur que le phénomène surveillé.",
+      "formule_principale": "\\tau=RC \\quad;\\quad \\tau\\sim t_{phénomène} \\Rightarrow \\text{capteur bien dimensionné}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une jauge de contrainte utilisée pour détecter les vibrations d'un pont lors du passage d'un véhicule est associée à un circuit RC de résistance $R=5{,}0\\times10^9\\,\\Omega$ et de capacité $C=2{,}0\\,pF$. Sachant qu'un véhicule met environ 0,5 seconde à traverser la zone surveillée, évaluer si ce circuit est correctement dimensionné pour cette application.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les données en unités SI",
+          "justification": "Le calcul de τ en secondes exige R en ohms et C en farads.",
+          "resultat_markdown": "$R=5{,}0\\times10^9\\,\\Omega$, $C=2{,}0\\times10^{-12}\\,F$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la constante de temps",
+          "justification": "τ=RC, produit direct des deux valeurs converties.",
+          "resultat_markdown": "$\\tau=RC=5{,}0\\times10^9\\times2{,}0\\times10^{-12}=1{,}0\\times10^{-2}\\,s=10\\,ms$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer τ à la durée caractéristique du phénomène",
+          "justification": "On compare τ (10ms) à la durée du passage du véhicule (0,5s=500ms).",
+          "resultat_markdown": "$\\tau=10\\,ms \\ll 500\\,ms=t_{passage}$"
+        }
+      ],
+      "conclusion_markdown": "La constante de temps (10ms) est très inférieure à la durée du phénomène à détecter (500ms) : le circuit est largement assez réactif pour suivre les variations liées au passage du véhicule, sans risque de \"manquer\" l'événement par lenteur de réponse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se contenter de calculer τ sans jamais le comparer à une durée caractéristique du phénomène étudié.",
+          "pourquoi_faux": "Une valeur de τ n'a de sens \"physique\" (rapide ou lent) que par comparaison : 10ms est extrêmement rapide pour surveiller un pont, mais serait beaucoup trop lent pour capter une onde acoustique de quelques microsecondes.",
+          "correction_markdown": "Toujours conclure un calcul de constante de temps par une comparaison explicite à la durée caractéristique du phénomène étudié, jamais laisser la valeur de τ seule sans interprétation."
+        },
+        {
+          "erreur_markdown": "Penser qu'une constante de temps la plus petite possible est toujours préférable, quelle que soit l'application.",
+          "pourquoi_faux": "Une constante de temps extrêmement petite rend le capteur sensible à des variations parasites très brèves (bruit électronique, vibrations non pertinentes), provoquant des fausses détections.",
+          "correction_markdown": "Rechercher une constante de temps du même ordre de grandeur que le phénomène à détecter, ni trop grande (perte de réactivité), ni trop petite (sensibilité excessive au bruit)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un circuit RC a pour résistance $R=1{,}0\\times10^8\\,\\Omega$ et capacité $C=50\\,pF$. Calculer sa constante de temps τ (en ms).",
+          "solution_markdown": "$\\tau=RC=1{,}0\\times10^8\\times50\\times10^{-12}=5{,}0\\times10^{-3}\\,s=5{,}0\\,ms$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un capteur tactile d'écran doit répondre en moins de 20ms pour paraître instantané à l'utilisateur. Son circuit RC associé a pour constante de temps τ=2,0ms. Ce capteur est-il correctement dimensionné pour cette application ?",
+          "solution_markdown": "τ=2,0ms est bien inférieur à la durée de réponse maximale tolérée (20ms) : le capteur réagit largement assez vite pour paraître instantané à l'utilisateur, avec même une marge confortable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un ingénieur souhaite concevoir un circuit RC pour détecter un phénomène dont la durée caractéristique est d'environ 200µs. Il dispose d'un condensateur fixe C=10pF. Déterminer l'ordre de grandeur de la résistance R à choisir pour que τ soit du même ordre de grandeur que ce phénomène, et commenter le résultat obtenu.",
+          "solution_markdown": "On veut $\\tau\\approx200\\,\\mu s=2{,}0\\times10^{-4}\\,s$. Comme $\\tau=RC$ : $R=\\dfrac{\\tau}{C}=\\dfrac{2{,}0\\times10^{-4}}{10\\times10^{-12}}=2{,}0\\times10^7\\,\\Omega=20\\,M\\Omega$. Une résistance de l'ordre de 20MΩ, très élevée mais courante en électronique de précision, est donc nécessaire pour obtenir une constante de temps aussi courte avec une capacité aussi faible."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La constante de temps τ=RC seule ne suffit pas : il faut toujours la comparer à la durée caractéristique du phénomène surveillé.",
+        "τ ≪ durée du phénomène : capteur largement assez réactif.",
+        "τ ≫ durée du phénomène : capteur trop lent, risque de manquer l'événement.",
+        "Un bon dimensionnement recherche τ du même ordre de grandeur que le phénomène, ni trop rapide (sensibilité au bruit), ni trop lent."
+      ]
+    }
+  ]
+}

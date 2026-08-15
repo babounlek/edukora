@@ -1,0 +1,100 @@
+{
+  "cours_id": "cours-lire-l-adresse-ip-d-un-ordinateur-a-partir-de-la-sortie-d-une-commande-de-configuration-reseau-ipconfig-ifconfig-terminale-c",
+  "meta": {
+    "titre": "Lire l'adresse IP d'un ordinateur à partir de la sortie d'une commande de configuration réseau (ipconfig/ifconfig)",
+    "cours_id": "cours-lire-l-adresse-ip-d-un-ordinateur-a-partir-de-la-sortie-d-une-commande-de-configuration-reseau-ipconfig-ifconfig-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Diagnostic réseau",
+    "tags": [
+      "adresse IP",
+      "lecture configuration"
+    ],
+    "duree_estimee_minutes": 6,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB3b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la configuration réseau affichée, encore faut-il savoir repérer, parmi toutes les lignes, celle qui donne précisément l'adresse IP de la machine."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire l'adresse IP dans une sortie de configuration réseau",
+      "contenu_markdown": "Dans la sortie d'une commande ipconfig /all (ou équivalent), l'adresse IP de la machine figure sur la ligne intitulée **\"IP Address\"** (ou \"Adresse IPv4\" en français).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier l'adresse IP de l'ordinateur à partir de la sortie ipconfig /all fournie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne \"IP Address\" dans la sortie",
+          "justification": "C'est la ligne dédiée à l'adresse IP de la machine.",
+          "resultat_markdown": "IP Address...: 192.168.0.23"
+        },
+        {
+          "numero": 2,
+          "action": "Extraire la valeur associée",
+          "justification": "La valeur après les deux-points est l'adresse recherchée.",
+          "resultat_markdown": "192.168.0.23"
+        }
+      ],
+      "conclusion_markdown": "L'adresse IP se lit directement sur la ligne \"IP Address\" de la sortie de configuration réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'adresse IP avec l'adresse physique (MAC), qui apparaît juste au-dessus dans la même sortie",
+          "pourquoi_faux": "L'adresse physique (Physical Address / MAC), au format hexadécimal (ex. 0001.43BD.E70E), identifie la carte réseau elle-même ; l'adresse IP, au format décimal pointé (ex. 192.168.0.23), identifie la machine sur le réseau logique. Ce sont deux adresses de nature différente.",
+          "correction_markdown": "Repère bien le format : l'adresse IP est en notation décimale pointée (4 nombres séparés par des points), l'adresse MAC est en notation hexadécimale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une sortie ipconfig affichant \"IP Address: 10.0.0.5\", quelle est l'adresse IP de la machine ?",
+          "solution_markdown": "10.0.0.5"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre l'adresse IP et le masque de sous-réseau affichés dans la même sortie ?",
+          "solution_markdown": "L'adresse IP identifie la machine de façon individuelle sur le réseau ; le masque de sous-réseau (ex. 255.255.255.0) indique quelle portion de cette adresse désigne le réseau et quelle portion désigne l'hôte, permettant de déterminer l'adresse réseau et la plage d'adresses disponibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si l'adresse IP affichée était 169.254.x.x, que cela indiquerait-il généralement ?",
+          "solution_markdown": "Une adresse commençant par 169.254 est une adresse APIPA (Automatic Private IP Addressing), attribuée automatiquement par le système lorsque celui-ci ne parvient PAS à obtenir d'adresse d'un serveur DHCP ; elle signale généralement un problème de connectivité avec le serveur DHCP ou le réseau, la machine n'étant alors pas correctement configurée pour communiquer au-delà de son segment local."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'adresse IP se lit sur la ligne \"IP Address\" de la sortie ipconfig.",
+        "Elle est au format décimal pointé (4 nombres séparés par des points).",
+        "Ne pas la confondre avec l'adresse physique (MAC), au format hexadécimal.",
+        "Une adresse en 169.254.x.x signale généralement un échec d'obtention d'adresse DHCP."
+      ]
+    }
+  ]
+}

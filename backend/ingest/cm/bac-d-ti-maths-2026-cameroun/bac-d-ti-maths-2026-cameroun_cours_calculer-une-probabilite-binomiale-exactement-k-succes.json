@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-binomiale-exactement-k-succes-terminale-d-ti",
+  "meta": {
+    "titre": "Calculer une probabilité binomiale exactement k succès",
+    "cours_id": "cours-calculer-une-probabilite-binomiale-exactement-k-succes-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Probabilités — loi binomiale",
+    "tags": [
+      "loi binomiale",
+      "exactement k succès",
+      "répétitions indépendantes"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex4-I2b"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La formule binomiale répond directement à la question 'exactement k succès sur n répétitions', sans avoir à lister tous les cas favorables un par un."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Conditions d'une loi binomiale (répétitions indépendantes, probabilité de succès constante)",
+        "Formule des combinaisons"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule de la loi binomiale",
+      "contenu_markdown": "Si $X$ suit une loi binomiale $\\mathcal B(n,p)$, alors $P(X=k)=\\binom nk p^k(1-p)^{n-k}$, pour $k=0,1,\\dots,n$. Le facteur $\\binom nk$ compte le nombre de façons de placer les $k$ succès parmi les $n$ répétitions, $p^k$ la probabilité des succès, $(1-p)^{n-k}$ celle des échecs.",
+      "formule_principale": "P(X=k) = C(n,k)×p^k×(1-p)^(n-k)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "X suit B(4;0,2). Calculer P(X=1).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier n,p,k",
+          "justification": "n=4,p=0,2,k=1.",
+          "resultat_markdown": "n=4,p=0,2,k=1"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer C(4,1)",
+          "justification": "Combinaisons de 1 parmi 4.",
+          "resultat_markdown": "C(4,1)=4"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule",
+          "justification": "4×0,2¹×0,8³.",
+          "resultat_markdown": "P(X=1)=4×0,2×0,512=0,4096"
+        }
+      ],
+      "conclusion_markdown": "P(X=1)≈0,41."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le facteur combinatoire C(n,k) et ne garder que p^k×(1-p)^(n-k)",
+          "pourquoi_faux": "Sans ce facteur, on calcule seulement la probabilité d'UN ordre précis d'apparition des k succès parmi les n répétitions, pas la probabilité d'obtenir exactement k succès quel que soit leur ordre d'apparition.",
+          "correction_markdown": "Toujours inclure le facteur C(n,k), qui compte le nombre de façons distinctes de positionner les k succès parmi les n répétitions."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer C(5,2).",
+          "solution_markdown": "10."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "X~B(5;0,5). Calculer P(X=2).",
+          "solution_markdown": "C(5,2)×0,5²×0,5³=10×0,03125=0,3125."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la somme de P(X=k) pour k=0 à n vaut-elle toujours 1 ?",
+          "solution_markdown": "C'est une conséquence du binôme de Newton : Σk C(n,k)p^k(1-p)^(n-k) = (p+(1-p))^n = 1^n = 1, ce qui confirme que l'ensemble des issues possibles (0 à n succès) couvre bien tout l'univers des possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "P(X=k)=C(n,k)p^k(1-p)^(n-k) pour une loi binomiale B(n,p).",
+        "Le facteur C(n,k) compte les positionnements possibles des k succès.",
+        "La somme de toutes les probabilités P(X=k) pour k=0 à n vaut toujours 1."
+      ]
+    }
+  ]
+}

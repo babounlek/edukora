@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { ArrowLeft, BookOpenText, FileDown, GraduationCap, Lock, Unlock } from "lucide-react"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { ArrowLeft, ArrowRight, BookOpenText, Crown, FileDown, GraduationCap, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import type { Epreuve, EpreuvePreview } from "@/api/types"
@@ -8,15 +8,20 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { EpreuveSommaire, exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { ParrainageHint } from "@/components/ParrainageHint"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { formatCursusGroups } from "@/lib/cursus"
+import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { catalogueHomePath, coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
-  const { slug } = useParams<{ slug: string }>()
+  const { country, slug } = useParams<{ country?: string; slug: string }>()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [preview, setPreview] = useState<EpreuvePreview | null>(null)
@@ -34,12 +39,36 @@ export function EpreuveDetailPage() {
   }, [slug])
 
   useEffect(() => {
+    // ?ref=pdf_sujet : posé par le PDF du sujet généré (voir backend
+    // catalog.sujet_pdf._lesson_deep_link) sur son propre CTA - seule façon de
+    // mesurer combien de visites viennent réellement d'un PDF partagé hors
+    // plateforme, plutôt que de le supposer sans donnée.
+    if (!epreuve) return
+    if (searchParams.get("ref") !== "pdf_sujet") return
+    trackEvent("pdf_sujet_landing", { subject_code: epreuve.subject.code })
+  }, [epreuve, searchParams])
+
+  useEffect(() => {
     // Le sujet (preview_markdown) est public - voir access.views.preview_lesson
     // côté backend - donc récupéré pour tout le monde, abonné ou non : un abonné
     // doit pouvoir consulter l'épreuve sans passer par la lecture du corrigé.
     if (!epreuve) return
-    previewEpreuve(epreuve.slug).then(setPreview).catch(() => {})
+    // getEpreuve(slug) (effet ci-dessus) ne renvoie jamais qu'une Lesson classique -
+    // cette page n'est jamais atteinte pour une inédite (voir EpreuveInediteDetailPage).
+    previewEpreuve(epreuve.slug as string).then(setPreview).catch(() => {})
   }, [epreuve])
+
+  useEffect(() => {
+    // Recanonicalise vers /{pays}/epreuves/{slug} dès que le pays réel de l'épreuve
+    // est connu - couvre à la fois les anciens liens sans préfixe pays (voir
+    // App.tsx) et un préfixe pays incorrect dans l'URL visitée (jamais deux URLs
+    // différentes indexables pour le même contenu).
+    if (!epreuve) return
+    const canonicalCountry = epreuve.subject.country.code.toLowerCase()
+    if (country !== canonicalCountry) {
+      navigate(epreuveDetailPath(canonicalCountry, epreuve.slug as string), { replace: true })
+    }
+  }, [epreuve, country, navigate])
 
   if (!epreuve) {
     return (
@@ -53,8 +82,15 @@ export function EpreuveDetailPage() {
     )
   }
 
+  // Décidé sur exercises_count (déjà là avec l'épreuve) et non sur preview.exercises,
+  // qui arrive une requête plus tard : sinon la page se réagence sous les yeux du
+  // visiteur une fois le sujet chargé. Même seuil et même grille que le lecteur
+  // (EpreuveReaderPage) - un sommaire d'une seule entrée ne ferait que rétrécir la
+  // colonne de lecture.
+  const hasSommaire = epreuve.exercises_count > 1
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className={`mx-auto px-4 py-8 sm:px-6 ${hasSommaire ? "max-w-5xl" : "max-w-3xl"}`}>
       <Link
         to={catalogueHomePath(epreuve.subject.country.code.toLowerCase())}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -68,7 +104,16 @@ export function EpreuveDetailPage() {
           <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{epreuve.title}</h1>
           <div className="mt-3 flex flex-wrap gap-1.5">
             <CountryBadge code={epreuve.subject.country.code} label={epreuve.subject.country.label} />
+            {epreuve.est_vitrine && (
+              <Badge variant="success">
+                <Sparkles className="mr-1 size-3" />
+                Corrigé en accès libre
+              </Badge>
+            )}
             <Badge variant="secondary">{epreuve.subject.label}</Badge>
+            {epreuve.nature_epreuve_display && (
+              <Badge variant="outline">{epreuve.nature_epreuve_display}</Badge>
+            )}
             {formatCursusGroups(epreuve.cursus).map((group) => (
               <Badge key={group.key} variant="outline">{group.label}</Badge>
             ))}
@@ -99,9 +144,18 @@ export function EpreuveDetailPage() {
           )}
           {epreuve.has_access && (
             <Button asChild size="lg">
-              <Link to={`/epreuves/${epreuve.slug}/lire`}>
-                <BookOpenText />
-                Lire le corrigé
+              <Link to={epreuveReaderPath(epreuve.subject.country.code.toLowerCase(), epreuve.slug as string)}>
+                {epreuve.lesson_type === "FICHE" ? (
+                  <>
+                    <Zap />
+                    Réviser cette fiche
+                  </>
+                ) : (
+                  <>
+                    <BookOpenText />
+                    Lire le corrigé
+                  </>
+                )}
               </Link>
             </Button>
           )}
@@ -112,9 +166,47 @@ export function EpreuveDetailPage() {
         {preview && (
           <div className="mt-2 border-t border-border pt-5">
             <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Sujet</h2>
-            <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
-              <EpreuveMarkdown markdown={preview.preview_markdown} />
-            </article>
+            {preview.exercises.length > 0 ? (
+              <div
+                className={
+                  hasSommaire
+                    ? "lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start lg:gap-10"
+                    : undefined
+                }
+              >
+                {hasSommaire && <EpreuveSommaire exercises={preview.exercises} />}
+                <div className="flex min-w-0 flex-col gap-8">
+                  {preview.exercises.map((exercise) => (
+                    <div
+                      key={exercise.numero_exercice}
+                      id={exerciceAnchorId(exercise.numero_exercice)}
+                      className="scroll-mt-24"
+                    >
+                      <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                        <EpreuveMarkdown markdown={exercise.enonce_markdown} />
+                      </article>
+                      {/* Bloqué sur cet exercice précisément : on renvoie vers SON corrigé,
+                          pas vers le haut d'un corrigé qu'il faudrait re-défiler. Réservé aux
+                          abonnés - sinon c'est le bloc "S'abonner" ci-dessous qui prend le relais. */}
+                      {epreuve.has_access && (
+                        <Link
+                          to={`${epreuveReaderPath(epreuve.subject.country.code.toLowerCase(), epreuve.slug as string)}#${exerciceAnchorId(exercise.numero_exercice)}`}
+                          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                        >
+                          <BookOpenText className="size-4" />
+                          Lire le corrigé de cet exercice
+                          <ArrowRight className="size-3.5" />
+                        </Link>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                <EpreuveMarkdown markdown={preview.preview_markdown} />
+              </article>
+            )}
           </div>
         )}
 
@@ -135,6 +227,7 @@ export function EpreuveDetailPage() {
                   </Button>
                 ))}
               </div>
+              <ParrainageHint />
             </div>
           </div>
         )}
@@ -146,7 +239,7 @@ export function EpreuveDetailPage() {
               {epreuve.related_cours.map((cours) => (
                 <Link
                   key={cours.id}
-                  to={cours.has_access ? `/cours/${cours.id}/lire` : `/cours/${cours.id}`}
+                  to={cours.has_access ? coursReaderPath(cours.slug) : coursDetailPath(cours.slug)}
                   className="flex items-center justify-between gap-2 rounded-lg border border-border px-3.5 py-2.5 text-sm transition-colors hover:border-primary/50 hover:bg-accent"
                 >
                   <span className="flex items-center gap-2">
@@ -163,6 +256,22 @@ export function EpreuveDetailPage() {
             </div>
           </div>
         )}
+
+        <div className="mt-2 border-t border-border pt-5">
+          <Link
+            to={`${catalogueHomePath(epreuve.subject.country.code.toLowerCase())}?origine=INEDITE#catalogue`}
+            className="group flex items-center justify-between gap-3 rounded-lg border border-dashed border-gold/40 bg-gold/5 px-4 py-3 text-sm transition-colors hover:border-gold/60 hover:bg-gold/10"
+          >
+            <span className="flex items-center gap-2">
+              <Crown className="size-4 shrink-0 text-gold" />
+              <span>
+                <span className="font-medium">Envie d'aller plus loin ?</span>{" "}
+                <span className="text-muted-foreground">Teste-toi sur une épreuve jamais vue, en conditions réelles.</span>
+              </span>
+            </span>
+            <ArrowRight className="size-3.5 shrink-0 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </div>
 
         <RelatedEpreuves
           subjectCode={epreuve.subject.code}

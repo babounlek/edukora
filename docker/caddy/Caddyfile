@@ -16,7 +16,24 @@
         file_server
     }
 
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz* /sitemap.xml /sitemap-*.xml
+    # /quiz/sessions*, /quiz/revisions* et /quiz/maitrise* (API DRF, voir quiz/urls.py)
+    # et pas /quiz* : le frontend a aussi ses propres routes sous /quiz (page de
+    # démarrage "/quiz", pages de session "/quiz/session/:id") - un simple préfixe
+    # /quiz* les envoyait toutes à Django, qui n'a pourtant aucune route pour elles
+    # (404 constaté en prod après rebuild), au lieu de laisser le handler générique
+    # ci-dessous servir la SPA. Même piège reproduit puis corrigé pour /inedit* : le
+    # frontend a ses propres routes sous /inedit ("/inedit", "/inedit/tentative/:id",
+    # ".../resultat", volontairement au singulier "tentative") - seuls les sous-chemins
+    # d'API réels de inedit/urls.py (au pluriel "tentatives") sont routés vers Django.
+    # /fiches/* (avec le slash final, pas /fiches*) : le frontend a sa propre page à
+    # "/fiches" (sans slash, voir App.tsx) tandis que toute l'API fiches.urls vit sous
+    # "/fiches/..." (avec slash, y compris la création "POST /fiches/") - même trailing
+    # slash qui distingue déjà "/quiz"/"/inedit" (pages) de leurs sous-chemins d'API,
+    # ici c'est le seul signal disponible puisque page et API partagent le même mot.
+    # /whatsapp* sans cette subtilité : contrairement à /quiz, /inedit, /fiches, le
+    # frontend n'a AUCUNE page sous ce mot (l'opt-in vit dans /compte) - rien à
+    # distinguer, tout /whatsapp* va à Django.
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }

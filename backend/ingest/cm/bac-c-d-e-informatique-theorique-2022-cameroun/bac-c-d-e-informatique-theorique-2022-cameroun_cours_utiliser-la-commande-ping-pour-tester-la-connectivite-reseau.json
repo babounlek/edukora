@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-utiliser-la-commande-ping-pour-tester-la-connectivite-reseau-terminale-c",
+  "meta": {
+    "titre": "Utiliser la commande ping pour tester la connectivité réseau",
+    "cours_id": "cours-utiliser-la-commande-ping-pour-tester-la-connectivite-reseau-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Diagnostic réseau",
+    "tags": [
+      "ping",
+      "connectivité",
+      "diagnostic"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex1-q2d-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "\"Est-ce que ça communique ?\" est la toute première question à se poser face à un problème réseau. La commande ping y répond en quelques secondes, sans aucun outil supplémentaire."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande ping : tester la connectivité réseau",
+      "contenu_markdown": "La commande **ping <adresse_IP>** envoie des paquets de test (requêtes ICMP Echo) vers l'adresse indiquée et affiche si des réponses sont reçues, avec le temps de réponse. Elle permet de vérifier rapidement si deux machines communiquent correctement sur un réseau.",
+      "formule_principale": "ping <adresse_IP_ou_nom_de_machine>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Indiquer la commande complète à saisir sur Sec1 pour vérifier sa communication avec le serveur (192.168.10.102).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'adresse cible à tester",
+          "justification": "Il faut vérifier la communication avec le serveur, dont l'adresse est 192.168.10.102.",
+          "resultat_markdown": "192.168.10.102"
+        },
+        {
+          "numero": 2,
+          "action": "Construire la commande complète",
+          "justification": "La commande ping se fait suivre de l'adresse cible.",
+          "resultat_markdown": "`ping 192.168.10.102`"
+        }
+      ],
+      "conclusion_markdown": "La commande ping <adresse> teste la connectivité en envoyant des requêtes vers l'adresse indiquée et en affichant les réponses reçues."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire uniquement \"ping\" sans préciser d'adresse cible",
+          "pourquoi_faux": "Sans adresse ou nom de machine à contacter, la commande ping ne sait pas vers où envoyer ses requêtes ; elle n'est donc pas complète.",
+          "correction_markdown": "Fais toujours suivre \"ping\" de l'adresse IP (ou du nom) de la machine à tester."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande pour tester la connectivité vers l'adresse 10.0.0.1.",
+          "solution_markdown": "`ping 10.0.0.1`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si la commande ping ne reçoit aucune réponse (\"délai d'attente dépassé\"), que peut-on en déduire ?",
+          "solution_markdown": "Cela peut indiquer une absence de connectivité réseau entre les deux machines (câble débranché, mauvaise configuration IP, équipement intermédiaire en panne), ou que la machine cible bloque explicitement les requêtes ping via un pare-feu configuré pour les ignorer."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En quoi le temps de réponse affiché par ping peut-il être une information utile, au-delà du simple \"ça répond / ça ne répond pas\" ?",
+          "solution_markdown": "Le temps de réponse (en millisecondes) renseigne sur la qualité de la connexion : un temps élevé ou très variable peut indiquer une congestion du réseau, une distance importante, ou un équipement intermédiaire surchargé, même lorsque la connectivité de base fonctionne ; c'est un premier indicateur de performance réseau, utile en complément du simple test de présence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La commande ping <adresse> teste la connectivité réseau vers une adresse donnée.",
+        "Elle envoie des requêtes et affiche les réponses reçues (ou l'absence de réponse).",
+        "Elle nécessite toujours une adresse (ou un nom de machine) cible.",
+        "Le temps de réponse affiché donne une première indication de qualité de la connexion."
+      ]
+    }
+  ]
+}

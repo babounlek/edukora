@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-monotonie-suite-integrale-c",
+  "meta": {
+    "titre": "Étude de la monotonie d'une suite définie par une intégrale",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Suites définies par une intégrale",
+    "duree_estimee_min": 20,
+    "tags": ["monotonie", "suite", "intégrale", "signe d'une différence"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment savoir si une suite définie par $u_n=\\int_a^b f_n(x)\\,dx$ est croissante, sans pouvoir calculer $u_n$ explicitement pour chaque $n$ ? La réponse tient dans une seule idée : étudier directement le signe de $u_{n+1}-u_n$ en la réécrivant comme une unique intégrale, plutôt que de comparer deux intégrales séparées."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Linéarité de l'intégrale", "Signe d'une intégrale de fonction continue", "Croissance de la fonction exponentielle"]
+    },
+    {
+      "type": "regle",
+      "titre": "Étudier le signe de u_{n+1} - u_n comme une seule intégrale",
+      "contenu_markdown": "Pour une suite $u_n=\\displaystyle\\int_a^b f_n(x)\\,dx$, on a par linéarité de l'intégrale :\n$$u_{n+1}-u_n=\\int_a^b \\big(f_{n+1}(x)-f_n(x)\\big)\\,dx$$\n\nSi l'on parvient à montrer que $f_{n+1}(x)-f_n(x)\\geq0$ pour tout $x\\in[a;b]$ (avec inégalité stricte sauf en un nombre fini de points), alors l'intégrale d'une fonction continue positive non identiquement nulle est strictement positive, donc $u_{n+1}-u_n>0$ : la suite $(u_n)$ est strictement croissante. Le raisonnement est symétrique pour une suite décroissante (il suffit que $f_{n+1}(x)-f_n(x)\\leq0$).",
+      "formule_principale": "u_{n+1}-u_n=\\int_a^b\\big(f_{n+1}(x)-f_n(x)\\big)dx",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $f_n(x)=\\dfrac{e^{nx}}{1+e^x}$ et $u_n=\\displaystyle\\int_0^1 f_n(x)\\,dx$, démontrer que $(u_n)$ est croissante.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire u_{n+1}-u_n comme une seule intégrale",
+          "justification": "Linéarité de l'intégrale.",
+          "resultat_markdown": "$u_{n+1}-u_n=\\displaystyle\\int_0^1 \\left(\\dfrac{e^{(n+1)x}}{1+e^x}-\\dfrac{e^{nx}}{1+e^x}\\right)dx=\\displaystyle\\int_0^1 \\dfrac{e^{nx}(e^x-1)}{1+e^x}\\,dx$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de l'intégrande sur [0;1]",
+          "justification": "e^{nx}>0, 1+e^x>0, et e^x-1>=0 pour x>=0.",
+          "resultat_markdown": "Pour $x\\in[0;1]$ : $e^{nx}>0$, $1+e^x>0$, et $x\\geq0\\Rightarrow e^x\\geq1\\Rightarrow e^x-1\\geq0$ (égalité seulement en $x=0$)."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le signe de l'intégrande",
+          "justification": "Produit et quotient de facteurs positifs.",
+          "resultat_markdown": "L'intégrande $\\dfrac{e^{nx}(e^x-1)}{1+e^x}$ est positif ou nul sur $[0;1]$, strictement positif sauf en $x=0$."
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le signe de u_{n+1}-u_n",
+          "justification": "Intégrale d'une fonction continue positive, non identiquement nulle.",
+          "resultat_markdown": "$u_{n+1}-u_n>0$"
+        }
+      ],
+      "conclusion_markdown": "La suite $(u_n)$ est donc strictement croissante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer de comparer u_{n+1} et u_n en calculant explicitement chaque intégrale séparément.",
+          "pourquoi_faux": "Ce calcul est souvent impossible ou beaucoup plus long que nécessaire, car les primitives de $f_{n+1}$ et $f_n$ pris séparément ne s'expriment pas toujours simplement.",
+          "correction_markdown": "Regroupe systématiquement les deux intégrales en une seule (par linéarité) avant de chercher à simplifier : c'est souvent la différence $f_{n+1}-f_n$, et non $f_{n+1}$ ou $f_n$ isolément, qui se factorise proprement."
+        },
+        {
+          "erreur_markdown": "Oublier de restreindre l'étude du signe de e^x-1 à l'intervalle d'intégration considéré.",
+          "pourquoi_faux": "$e^x-1$ n'est positif que pour $x\\geq0$ ; sur un intervalle contenant des valeurs négatives de $x$, le signe serait différent, et le raisonnement ne s'appliquerait pas tel quel.",
+          "correction_markdown": "Précise toujours sur quel intervalle tu établis le signe de chaque facteur, et vérifie qu'il correspond bien à l'intervalle d'intégration de l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $v_n=\\displaystyle\\int_0^1 x^n\\,dx$. Démontrer que $(v_n)$ est décroissante.",
+          "solution_markdown": "$v_{n+1}-v_n=\\displaystyle\\int_0^1(x^{n+1}-x^n)\\,dx=\\int_0^1 x^n(x-1)\\,dx$. Pour $x\\in[0;1]$ : $x^n\\geq0$ et $x-1\\leq0$, donc le produit est négatif ou nul (strictement négatif sauf en $x=0$ et $x=1$). Donc $v_{n+1}-v_n<0$ (intégrale d'une fonction continue négative non identiquement nulle) : $(v_n)$ est strictement décroissante."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $w_n=\\displaystyle\\int_1^2 \\dfrac{x^n}{n+1}\\,dx$ pour $n\\geq1$. Étudier la monotonie de $(w_n)$ (on admettra que comparer $w_{n+1}$ et $w_n$ nécessite d'étudier $\\dfrac{x^{n+1}}{n+2}-\\dfrac{x^n}{n+1}=x^n\\left(\\dfrac{x}{n+2}-\\dfrac{1}{n+1}\\right)$).",
+          "solution_markdown": "$w_{n+1}-w_n=\\displaystyle\\int_1^2 x^n\\left(\\dfrac{x}{n+2}-\\dfrac{1}{n+1}\\right)dx$. Sur $[1;2]$, $x^n>0$. Le facteur $\\dfrac{x}{n+2}-\\dfrac1{n+1}$ s'annule pour $x=\\dfrac{n+2}{n+1}$, qui appartient à $]1;2[$ pour $n\\geq1$ (car $1<\\frac{n+2}{n+1}<2$) : le facteur change donc de signe sur l'intervalle, et l'intégrande n'a pas un signe constant sur $[1;2]$. On ne peut pas conclure directement sur le signe de $w_{n+1}-w_n$ par ce seul argument : il faudrait ici une étude plus fine (découpage de l'intégrale en deux parties selon le signe du facteur), la méthode du signe constant ne suffisant pas dans ce cas particulier."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $t_n=\\displaystyle\\int_0^1 \\dfrac{dx}{1+x^n}$ pour $n\\in\\mathbb{N}^*$. Démontrer que $(t_n)$ est croissante.",
+          "solution_markdown": "$t_{n+1}-t_n=\\displaystyle\\int_0^1\\left(\\dfrac{1}{1+x^{n+1}}-\\dfrac{1}{1+x^n}\\right)dx=\\int_0^1 \\dfrac{(1+x^n)-(1+x^{n+1})}{(1+x^{n+1})(1+x^n)}\\,dx=\\int_0^1 \\dfrac{x^n-x^{n+1}}{(1+x^{n+1})(1+x^n)}\\,dx=\\int_0^1 \\dfrac{x^n(1-x)}{(1+x^{n+1})(1+x^n)}\\,dx$.\n\nSur $[0;1]$ : $x^n\\geq0$, $1-x\\geq0$, et les deux facteurs au dénominateur sont strictement positifs (sommes de $1$ et d'une quantité positive). L'intégrande est donc positif ou nul, strictement positif sauf en $x=0$ et $x=1$. Donc $t_{n+1}-t_n>0$ : $(t_n)$ est strictement croissante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour étudier la monotonie d'une suite définie par une intégrale, regroupe $u_{n+1}-u_n$ en une seule intégrale grâce à la linéarité, plutôt que de comparer deux intégrales séparément.",
+        "Cherche ensuite à factoriser l'intégrande de façon à en isoler clairement le signe sur l'intervalle d'intégration.",
+        "Une intégrale de fonction continue positive (ou négative) sur un intervalle, non identiquement nulle, est strictement positive (ou négative) : c'est ce théorème qui permet de conclure sur le signe de $u_{n+1}-u_n$ dès que celui de l'intégrande est établi.",
+        "Si l'intégrande change de signe sur l'intervalle, la méthode du signe constant ne suffit plus : il faut alors une analyse plus fine, parfois un découpage de l'intégrale.",
+        "Ce type de raisonnement se combine presque toujours, au BAC C, avec l'étude d'un encadrement de la suite pour en déterminer ensuite le comportement à l'infini."
+      ]
+    }
+  ]
+}

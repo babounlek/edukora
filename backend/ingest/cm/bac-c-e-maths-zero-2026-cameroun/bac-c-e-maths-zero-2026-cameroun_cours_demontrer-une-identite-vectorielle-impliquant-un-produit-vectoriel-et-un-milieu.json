@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-demontrer-une-identite-vectorielle-impliquant-un-produit-vectoriel-et-un-milieu-terminale-c",
+  "meta": {
+    "titre": "Démontrer une identité vectorielle impliquant un produit vectoriel et un milieu",
+    "cours_id": "cours-demontrer-une-identite-vectorielle-impliquant-un-produit-vectoriel-et-un-milieu-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Géométrie vectorielle",
+    "tags": [
+      "produit vectoriel",
+      "relation de Chasles",
+      "identité valable pour tout point"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex3-4.a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une identité vectorielle vraie pour n'importe quel point de l'espace se démontre toujours de la même manière : introduire un point fixe pratique par la relation de Chasles, puis laisser la bilinéarité du produit vectoriel faire disparaître les termes indésirables."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la bilinéarité et l'antisymétrie du produit vectoriel : u∧v=-v∧u, u∧u=0",
+        "Savoir utiliser la relation de Chasles pour décomposer un vecteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode pour établir une identité vectorielle universelle",
+      "contenu_markdown": "Pour montrer qu'une égalité vectorielle du type $\\overrightarrow{MI}\\wedge\\overrightarrow{ML}=\\overrightarrow{MA}\\wedge\\overrightarrow{IL}$ est vraie pour tout point $M$, on introduit le point fixe pertinent (souvent un milieu, ici $A$) par la relation de Chasles dans chaque vecteur du membre à transformer, on développe en utilisant la bilinéarité du produit vectoriel, on élimine les termes de la forme $\\vec u\\wedge\\vec u=\\vec 0$, et on regroupe pour faire apparaître le second membre.",
+      "formule_principale": "MI∧ML = MA∧IL, valable pour tout M, dès que A est le milieu de [IL]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que pour tout point M de l'espace, MI∧ML = MA∧IL, sachant que A est le milieu de [IL].",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer MI et ML via A par Chasles",
+          "justification": "MI=MA+AI, ML=MA+AL.",
+          "resultat_markdown": "MI∧ML=(MA+AI)∧(MA+AL)"
+        },
+        {
+          "numero": 2,
+          "action": "Développer par bilinéarité",
+          "justification": "Distribution du produit vectoriel sur la somme.",
+          "resultat_markdown": "= MA∧MA + MA∧AL + AI∧MA + AI∧AL"
+        },
+        {
+          "numero": 3,
+          "action": "Éliminer les termes nuls",
+          "justification": "MA∧MA=0, et AI∧AL=0 car A milieu de [IL] donne AI=-AL, donc AI∧AL=-AL∧AL=0.",
+          "resultat_markdown": "MI∧ML = MA∧AL + AI∧MA = MA∧AL - MA∧AI = MA∧(AL-AI)"
+        },
+        {
+          "numero": 4,
+          "action": "Reconnaître IL dans AL-AI",
+          "justification": "AL-AI=AL+IA=IL par Chasles.",
+          "resultat_markdown": "MI∧ML = MA∧IL"
+        }
+      ],
+      "conclusion_markdown": "L'identité est établie pour tout point M, en n'utilisant que le fait que A est le milieu de [IL]."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier que le produit vectoriel n'est pas commutatif lors du développement",
+          "pourquoi_faux": "Contrairement au produit scalaire, u∧v≠v∧u en général (on a u∧v=-v∧u) : intervertir l'ordre des facteurs sans changer de signe fait perdre l'identité recherchée.",
+          "correction_markdown": "Toujours garder une trace explicite de l'ordre des facteurs dans chaque produit vectoriel, et appliquer l'antisymétrie u∧v=-v∧u chaque fois que l'ordre doit être inversé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Simplifier u∧u pour un vecteur u quelconque.",
+          "solution_markdown": "u∧u=0 (produit vectoriel d'un vecteur avec lui-même toujours nul)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si A est le milieu de [IL], exprimer AI en fonction de AL.",
+          "solution_markdown": "AI=-AL, car A équidistant de I et L, sur la médiatrice/le milieu du segment."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Cette identité MI∧ML=MA∧IL reste-t-elle vraie si A n'est pas le milieu de [IL] mais un point quelconque de la droite (IL) ?",
+          "solution_markdown": "Non en général : la démonstration utilise explicitement AI=-AL (propriété du milieu) pour annuler le terme AI∧AL ; si A est un point quelconque de (IL) mais pas le milieu, ce terme ne s'annule plus nécessairement et l'identité prend une forme différente."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une identité vectorielle universelle se démontre en introduisant un point fixe par Chasles, puis en développant par bilinéarité.",
+        "Les termes u∧u s'annulent systématiquement ; l'antisymétrie u∧v=-v∧u doit être appliquée avec soin.",
+        "La propriété spécifique du milieu (AI=-AL) est ce qui rend cette identité particulière possible."
+      ]
+    }
+  ]
+}

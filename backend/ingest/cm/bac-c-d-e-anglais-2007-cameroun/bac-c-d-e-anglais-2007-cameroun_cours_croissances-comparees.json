@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-croissances-comparees-log-puissance-c",
+  "meta": {
+    "titre": "Croissances comparées logarithme-puissance",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Limites de fonctions",
+    "duree_estimee_min": 20,
+    "tags": ["croissances comparées", "limite en l'infini", "logarithme", "forme indéterminée"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qB3a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le logarithme grandit indéfiniment, mais si lentement qu'il finit toujours par se faire distancer par n'importe quelle puissance de x, aussi petite soit-elle. Ce fait, contre-intuitif au premier abord, est l'un des résultats de limite les plus utiles du programme de Terminale C : il permet de lever instantanément des formes indéterminées qui semblaient bloquées."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Limite de ln(x) en +infini", "Notion de forme indéterminée", "Équivalents simples en +infini"]
+    },
+    {
+      "type": "regle",
+      "titre": "Le logarithme est négligeable devant toute puissance positive",
+      "contenu_markdown": "Pour tout réel $\\alpha>0$ :\n$$\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^\\alpha}=0$$\n\nCe résultat s'énonce aussi \"le logarithme est négligeable devant $x^\\alpha$ en $+\\infty$\". Il permet de lever directement les formes indéterminées $\\dfrac{\\infty}{\\infty}$ dans lesquelles un logarithme est au numérateur et une puissance de $x$ (même $x^{0,01}$) est au dénominateur : on peut alors remplacer, dans un quotient plus complexe, le dénominateur par son équivalent en $+\\infty$ pour simplifier avant de conclure.",
+      "formule_principale": "\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^\\alpha}=0 \\quad (\\alpha>0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer $\\displaystyle\\lim_{x\\to+\\infty}\\frac{2\\ln x}{x^2+1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la forme indéterminée",
+          "justification": "Numérateur et dénominateur tendent tous deux vers +infini.",
+          "resultat_markdown": "$2\\ln x\\to+\\infty$ et $x^2+1\\to+\\infty$ : forme indéterminée $\\infty/\\infty$."
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer le dénominateur par son équivalent en +infini",
+          "justification": "x²+1 ~ x² au voisinage de +infini (le terme dominant l'emporte).",
+          "resultat_markdown": "$\\dfrac{2\\ln x}{x^2+1}\\sim\\dfrac{2\\ln x}{x^2}$ quand $x\\to+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le résultat de croissances comparées",
+          "justification": "Avec alpha=2>0.",
+          "resultat_markdown": "$\\dfrac{\\ln x}{x^2}\\to0$, donc $\\dfrac{2\\ln x}{x^2}=2\\times\\dfrac{\\ln x}{x^2}\\to2\\times0=0$"
+        }
+      ],
+      "conclusion_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{2\\ln x}{x^2+1}=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que ln(x) tend vers 0 en +infini parce qu'il apparaît au dénominateur d'un résultat de limite nulle.",
+          "pourquoi_faux": "$\\ln x$ tend bien vers $+\\infty$ en $+\\infty$ (bien que lentement) : ce n'est pas $\\ln x$ qui tend vers $0$, mais le quotient $\\dfrac{\\ln x}{x^\\alpha}$, parce que $x^\\alpha$ croît beaucoup plus vite.",
+          "correction_markdown": "Distingue bien la limite de $\\ln x$ seul (toujours $+\\infty$ en $+\\infty$) de la limite d'un quotient impliquant $\\ln x$ : c'est la comparaison des vitesses de croissance qui détermine le résultat du quotient, pas le comportement de chaque terme isolément."
+        },
+        {
+          "erreur_markdown": "Appliquer le résultat de croissances comparées sans vérifier que l'exposant de x est strictement positif.",
+          "pourquoi_faux": "Pour $\\alpha\\leq0$, le résultat est différent, voire faux tel quel (pour $\\alpha=0$, le quotient devient simplement $\\ln x$, qui tend vers $+\\infty$, pas vers $0$).",
+          "correction_markdown": "Vérifie toujours que la puissance de $x$ au dénominateur est strictement positive avant d'invoquer ce résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x}$.",
+          "solution_markdown": "Application directe du résultat avec $\\alpha=1>0$ : $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x}=0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{3x^2-\\ln x}{x^2+5}$.",
+          "solution_markdown": "On factorise par $x^2$ au numérateur et au dénominateur : $\\dfrac{3x^2-\\ln x}{x^2+5}=\\dfrac{x^2\\left(3-\\frac{\\ln x}{x^2}\\right)}{x^2\\left(1+\\frac{5}{x^2}\\right)}=\\dfrac{3-\\frac{\\ln x}{x^2}}{1+\\frac{5}{x^2}}$. Par croissances comparées, $\\dfrac{\\ln x}{x^2}\\to0$, et $\\dfrac{5}{x^2}\\to0$. Donc la limite vaut $\\dfrac{3-0}{1+0}=3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer $\\displaystyle\\lim_{x\\to0^+} x^2\\ln x$ (changement de variable conseillé : poser $t=1/x$).",
+          "solution_markdown": "On pose $t=\\dfrac1x$, avec $t\\to+\\infty$ quand $x\\to0^+$. Alors $x=\\dfrac1t$ et $\\ln x=\\ln\\dfrac1t=-\\ln t$. Donc $x^2\\ln x=\\dfrac{1}{t^2}\\times(-\\ln t)=-\\dfrac{\\ln t}{t^2}$.\n\nPar croissances comparées (avec $\\alpha=2>0$), $\\dfrac{\\ln t}{t^2}\\to0$ quand $t\\to+\\infty$, donc $-\\dfrac{\\ln t}{t^2}\\to0$.\n\nDonc $\\displaystyle\\lim_{x\\to0^+}x^2\\ln x=0$ (ce résultat, tout aussi classique que celui en $+\\infty$, montre que $\\ln x$ est également \"dominé\" par $1/x^2$ au voisinage de $0^+$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Retiens le résultat central : ln(x)/x^alpha tend vers 0 en +infini pour tout alpha strictement positif, aussi petit soit-il.",
+        "Face à une forme indéterminée infini/infini mêlant logarithme et puissance de x, remplace systématiquement chaque terme par son équivalent dominant en +infini avant de conclure.",
+        "Ne confonds jamais le comportement de ln(x) seul (qui diverge vers +infini) avec celui d'un quotient impliquant ln(x) au numérateur d'une puissance de x (qui tend vers 0).",
+        "Le même type de résultat existe en 0+ avec un changement de variable t=1/x, ce qui permet de retrouver des limites de la forme x^n ln(x) en 0+.",
+        "Ce résultat est l'un des outils de limite les plus rentables du BAC C : il permet de conclure en une ligne des limites qui semblaient bloquées, sans recourir à des développements limités hors programme."
+      ]
+    }
+  ]
+}

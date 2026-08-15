@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse
 
-from .models import Cours, Country, Lesson
+from inedit.models import EpreuveInedite
+
+from .models import Cours, Country, Lesson, StatutContenu
 
 # django.contrib.sitemaps résout le domaine via request.get_host() ou le framework
 # Sites - les deux donneraient le domaine de CETTE API, pas celui du frontend où les
@@ -25,10 +27,9 @@ _STATIC_PAGES = [
 ]
 
 # Catalogue et liste des cours existent une fois par pays (/cm, /cm/cours, /sn, ...) -
-# voir CataloguePage/CoursListPage côté frontend, qui filtrent par pays via l'URL.
-# Contrairement aux fiches Lesson/Cours (URL plate, contenu unique quel que soit le
-# pays), ces deux pages affichent un résultat différent selon le pays : chacune
-# mérite sa propre entrée indexable plutôt qu'une seule version mélangée.
+# voir CataloguePage/CoursListPage côté frontend, qui filtrent par pays via l'URL :
+# chacune affiche un résultat différent selon le pays, donc mérite sa propre entrée
+# indexable plutôt qu'une seule version mélangée.
 _PER_COUNTRY_PAGES = [
     ("", "1.0", "daily"),
     ("/cours", "0.8", "daily"),
@@ -59,11 +60,32 @@ def _all_entries():
             for path, priority, changefreq in _PER_COUNTRY_PAGES
         )
 
-    for lesson in Lesson.objects.visibles().only("slug", "updated_at"):
-        entries.append(_url_entry(f"{base}/epreuves/{lesson.slug}", lastmod=lesson.updated_at, priority="0.7"))
+    for lesson in Lesson.objects.visibles().select_related("subject__country").only("slug", "updated_at", "subject__country__code"):
+        country_code = lesson.subject.country.code.lower()
+        entries.append(_url_entry(f"{base}/{country_code}/epreuves/{lesson.slug}", lastmod=lesson.updated_at, priority="0.7"))
 
-    for cours in Cours.objects.visibles().only("id", "updated_at"):
-        entries.append(_url_entry(f"{base}/cours/{cours.id}", lastmod=cours.updated_at, priority="0.7"))
+    # cursus__country__actif (pas subject__country__actif comme pour Lesson ci-dessus) :
+    # même filtre que catalog.inedit_bridge.build_inedit_queryset - EpreuveInedite.cursus
+    # est un M2M (comme Lesson.cursus) mais toujours non-vide (imposé par
+    # inedit.ingestion), donc .first().country reste un chemin fiable vers Country.
+    # distinct() : indispensable depuis que EpreuveInedite.cursus est un M2M - le
+    # filtre cursus__country__actif traverse la table M2M, donc une épreuve commune à
+    # plusieurs séries (ex. BAC C/E) produirait un <url> par cursus sans ce distinct()
+    # (même correctif que catalog.inedit_bridge.build_inedit_queryset).
+    epreuves_inedites = (
+        EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus__country__actif=True)
+        .prefetch_related("cursus__country")
+        .only("slug", "updated_at")
+        .distinct()
+    )
+    for epreuve in epreuves_inedites:
+        country_code = epreuve.cursus.first().country.code.lower()
+        entries.append(
+            _url_entry(f"{base}/{country_code}/epreuves-inedites/{epreuve.slug}", lastmod=epreuve.updated_at, priority="0.7"),
+        )
+
+    for cours in Cours.objects.visibles().only("slug", "updated_at"):
+        entries.append(_url_entry(f"{base}/cours/{cours.slug}", lastmod=cours.updated_at, priority="0.7"))
 
     return entries
 

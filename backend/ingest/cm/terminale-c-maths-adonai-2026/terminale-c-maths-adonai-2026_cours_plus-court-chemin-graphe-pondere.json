@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-determiner-le-plus-court-chemin-dans-un-graphe-pondere-terminale-c",
+  "meta": {"titre": "Déterminer le plus court chemin entre deux sommets d'un graphe pondéré", "cours_id": "cours-determiner-le-plus-court-chemin-dans-un-graphe-pondere-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Graphes — plus court chemin", "tags": ["graphe pondéré", "plus court chemin", "modélisation"], "duree_estimee_minutes": 12, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex4-t1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un tableau de distances entre villes se modélise naturellement comme un graphe pondéré : trouver le trajet le plus court revient à comparer systématiquement toutes les combinaisons de tronçons reliant le départ à l'arrivée."},
+    {"type": "prerequis", "items_markdown": ["Lecture d'un tableau de distances symétrique comme graphe non orienté", "Addition des poids le long d'un chemin"]},
+    {"type": "regle", "titre": "Lister tous les chemins raisonnables et comparer leurs longueurs totales", "contenu_markdown": "Pour trouver le plus court chemin entre deux sommets d'un petit graphe (peu de sommets), on liste tous les chemins simples (sans répétition de sommet) reliant le départ à l'arrivée, on additionne les poids des arêtes empruntées pour chacun, puis on retient le chemin de somme minimale.", "formule_principale": "Longueur d'un chemin = somme des poids des arêtes empruntées ; retenir le minimum sur tous les chemins", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Graphe : A-B=3, B-C=4, A-C=8. Plus court chemin de A à C ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Chemin direct", "justification": "A-C=8", "resultat_markdown": "8 km"},
+      {"numero": 2, "action": "Chemin via B", "justification": "A-B-C=3+4=7", "resultat_markdown": "7 km"}
+    ], "conclusion_markdown": "Le plus court chemin est A-B-C, de longueur 7 (plus court que le trajet direct A-C=8)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Se contenter du trajet direct ou du premier trajet trouvé intuitivement, sans comparer systématiquement toutes les alternatives raisonnables", "pourquoi_faux": "Comme le montre l'exemple, un détour par un sommet intermédiaire peut être plus court que le trajet direct : ignorer cette possibilité mène à une réponse fausse.", "correction_markdown": "Toujours lister méthodiquement tous les chemins simples reliant les deux sommets avant de conclure, même si un trajet semble évident au premier abord."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Graphe : P-Q=5, Q-R=2, P-R=6. Plus court chemin de P à R ?", "solution_markdown": "Direct P-R=6. Via Q : P-Q-R=5+2=7. Le plus court est le trajet direct, 6."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pourquoi, dans un petit graphe (4-6 sommets), l'énumération exhaustive des chemins est-elle une méthode acceptable, contrairement à un grand réseau ?", "solution_markdown": "Le nombre de chemins simples possibles croît très vite avec le nombre de sommets ; pour un petit graphe, ce nombre reste gérable manuellement, alors que pour un grand réseau, un algorithme systématique (comme celui de Dijkstra) devient indispensable."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un tableau de distances symétrique se modélise comme un graphe non orienté pondéré.", "Le plus court chemin s'obtient en comparant la somme des poids de tous les chemins simples raisonnables.", "Un détour par un sommet intermédiaire peut être plus court qu'un trajet direct : il ne faut jamais l'exclure sans vérification."]}
+  ]
+}

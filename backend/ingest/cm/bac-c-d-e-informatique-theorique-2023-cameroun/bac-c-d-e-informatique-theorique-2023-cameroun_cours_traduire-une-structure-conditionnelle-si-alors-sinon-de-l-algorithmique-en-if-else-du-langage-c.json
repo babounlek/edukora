@@ -1,0 +1,114 @@
+{
+  "cours_id": "cours-traduire-une-structure-conditionnelle-si-alors-sinon-de-l-algorithmique-en-if-else-du-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire une structure conditionnelle Si...Alors...Sinon de l'algorithmique en if...else du langage C",
+    "cours_id": "cours-traduire-une-structure-conditionnelle-si-alors-sinon-de-l-algorithmique-en-if-else-du-langage-c-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Traduction algorithme vers C",
+    "tags": [
+      "if else",
+      "structure conditionnelle",
+      "langage C"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex5-q1b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La structure Si...Alors...Sinon, omniprésente en algorithmique, a un équivalent direct et tout aussi fréquent en C : if...else, avec ses accolades qui délimitent chaque bloc d'instructions."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la structure conditionnelle Si...Alors...Sinon...Finsi en algorithmique",
+        "Connaître les opérateurs de comparaison du C (==, !=, <, >)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire Si...Alors...Sinon en if...else du langage C",
+      "contenu_markdown": "En pseudocode, `Si (condition) alors ... sinon ... finsi` se traduit en C par `if (condition) { ... } else { ... }`. Les accolades `{ }` délimitent chaque bloc d'instructions (obligatoires dès que le bloc contient plusieurs instructions), et la condition s'écrit avec les opérateurs C (`==` pour l'égalité, et non `=` qui est l'opérateur d'affectation).",
+      "formule_principale": "if (condition) { ... } else { ... }",
+      "variantes": [
+        {
+          "nom": "Si sans Sinon",
+          "quand_utiliser": "Quand la structure algorithmique n'a pas de branche \"sinon\".",
+          "contenu_markdown": "`Si (condition) alors ... finsi` (sans sinon) se traduit simplement par `if (condition) { ... }`, sans clause else."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en C : Si (numero[i]=x) alors trouve <- vrai; sinon i <- i+1; finsi (avec faux=0, vrai=1).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la condition avec l'opérateur d'égalité C",
+          "justification": "L'égalité s'écrit == en C, jamais = (réservé à l'affectation).",
+          "resultat_markdown": "if (numero[i] == x)"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire le bloc \"alors\" entre accolades",
+          "justification": "trouve<-vrai devient trouve=1 (vrai remplacé par 1, comme demandé).",
+          "resultat_markdown": "{ trouve = 1; }"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire le bloc \"sinon\" entre accolades",
+          "justification": "i<-i+1 devient i=i+1 en C.",
+          "resultat_markdown": "else { i = i + 1; }"
+        }
+      ],
+      "conclusion_markdown": "Si...alors...sinon...finsi se traduit par if (condition) { ... } else { ... }, avec == pour l'égalité et = réservé à l'affectation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `if (numero[i] = x)` avec un seul signe égal",
+          "pourquoi_faux": "En C, `=` est l'opérateur d'AFFECTATION (il modifierait numero[i] en lui donnant la valeur de x), tandis que `==` est l'opérateur de COMPARAISON D'ÉGALITÉ ; confondre les deux est une des erreurs de syntaxe C les plus fréquentes et les plus sournoises, car le code compile souvent quand même.",
+          "correction_markdown": "Utilise systématiquement == pour comparer deux valeurs dans une condition, et réserve = à l'affectation d'une valeur à une variable."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C : \"Si (age >= 18) alors majeur <- vrai; sinon majeur <- faux; finsi\" (vrai=1, faux=0).",
+          "solution_markdown": "```c\nif (age >= 18) {\n    majeur = 1;\n} else {\n    majeur = 0;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C une structure \"Si (note<10) alors décision <- \"échec\"; finsi\" (sans sinon).",
+          "solution_markdown": "```c\nif (note < 10) {\n    // décision = \"échec\"; (affectation d'une chaîne, nécessite strcpy en C pur)\n}\n```\nSans clause sinon, seul le bloc if est traduit, aucun else n'est ajouté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Les accolades sont-elles strictement obligatoires en C lorsque le bloc if ou else ne contient qu'une seule instruction ?",
+          "solution_markdown": "Non, le C autorise techniquement d'omettre les accolades lorsque le bloc ne contient qu'une seule instruction (celle-ci est alors implicitement associée au if ou au else) ; cependant, il est fortement recommandé de toujours les inclure par bonne pratique, car leur omission est une source classique de bugs difficiles à repérer lorsqu'une instruction est ajoutée plus tard par erreur en pensant qu'elle fait partie du bloc conditionnel, alors qu'elle s'exécute en réalité inconditionnellement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si...alors...sinon...finsi se traduit par if (condition) { ... } else { ... }.",
+        "L'égalité s'écrit == en C ; = est réservé à l'affectation, une confusion fréquente et dangereuse.",
+        "Sans clause \"sinon\", seul le bloc if (sans else) est traduit.",
+        "Les accolades restent recommandées même pour un bloc d'une seule instruction, par bonne pratique."
+      ]
+    }
+  ]
+}

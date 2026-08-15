@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-determiner-une-droite-dajustement-affine-par-moindres-carres-terminale-d-ti",
+  "meta": {
+    "titre": "Déterminer une droite d'ajustement affine par la méthode des moindres carrés",
+    "cours_id": "cours-determiner-une-droite-dajustement-affine-par-moindres-carres-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Statistiques — ajustement affine",
+    "tags": [
+      "moindres carrés",
+      "droite d'ajustement",
+      "régression linéaire"
+    ],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex4-I1b"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La méthode des moindres carrés fournit la droite qui approche au mieux un nuage de points, en minimisant la somme des carrés des écarts verticaux."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Point moyen d'une série statistique double",
+        "Calcul de sommes d'écarts à la moyenne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formules du coefficient directeur et de l'ordonnée à l'origine",
+      "contenu_markdown": "La droite d'ajustement affine de $y$ en $x$ par moindres carrés est $y=ax+b$, avec $a=\\dfrac{\\sum(x_i-\\bar x)(y_i-\\bar y)}{\\sum(x_i-\\bar x)^2}$ et $b=\\bar y-a\\bar x$.",
+      "formule_principale": "a = Σ(xi-x̄)(yi-ȳ) / Σ(xi-x̄)² ; b = ȳ-ax̄",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "x∈{1,2,3}, y∈{3,5,6}. Déterminer la droite d'ajustement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer x̄, ȳ",
+          "justification": "Moyennes simples.",
+          "resultat_markdown": "x̄=2, ȳ=14/3≈4,67"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer Σ(xi-x̄)(yi-ȳ) et Σ(xi-x̄)²",
+          "justification": "Écarts à la moyenne, produits et carrés.",
+          "resultat_markdown": "numérateur≈3, dénominateur=2"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer a et b",
+          "justification": "a=numérateur/dénominateur ; b=ȳ-ax̄.",
+          "resultat_markdown": "a≈1,5, b≈4,67-3=1,67"
+        }
+      ],
+      "conclusion_markdown": "y≈1,5x+1,67."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser Σ(xi-x̄)² au numérateur au lieu du dénominateur (ou inverser numérateur et dénominateur de la formule de a)",
+          "pourquoi_faux": "La formule a un ordre précis : le numérateur mesure la covariation conjointe de x et y, le dénominateur mesure uniquement la dispersion de x ; les inverser change complètement (et fausse) la pente calculée.",
+          "correction_markdown": "Toujours vérifier que le numérateur contient le produit (xi-x̄)(yi-ȳ) et le dénominateur uniquement (xi-x̄)², jamais l'inverse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Si a=2 et b=3, quelle est l'équation de la droite ?",
+          "solution_markdown": "y=2x+3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "a=0,5, x̄=10, ȳ=8. Calculer b.",
+          "solution_markdown": "b=8-0,5×10=8-5=3."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que signifie un coefficient directeur a négatif dans un contexte de régression ?",
+          "solution_markdown": "Un coefficient a négatif indique une relation décroissante entre les deux variables : quand x augmente, la valeur prédite de y diminue en moyenne, selon la tendance linéaire observée sur les données."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "a=Σ(xi-x̄)(yi-ȳ)/Σ(xi-x̄)² et b=ȳ-ax̄ définissent la droite de régression par moindres carrés.",
+        "Le numérateur mesure la covariation conjointe, le dénominateur la dispersion de x seule.",
+        "Le signe de a indique le sens (croissant ou décroissant) de la relation entre les deux variables."
+      ]
+    }
+  ]
+}

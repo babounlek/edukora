@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-traduire-la-declaration-d-un-tableau-algorithmique-en-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire la déclaration d'un tableau algorithmique en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Traduction algorithme vers C",
+    "duree_estimee_min": 10,
+    "tags": [
+      "tableau",
+      "langage C",
+      "déclaration"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex5-q2.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Déclarer un tableau algorithmique en C suit une syntaxe précise, différente du pseudocode : le type précède le nom, suivi de la taille entre crochets."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de tableau en algorithmique",
+        "Connaître les types de base du langage C (int, float)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire la déclaration d'un tableau en langage C",
+      "contenu_markdown": "En pseudocode, un tableau se déclare généralement sous la forme `nom : tableau de n éléments de type T`. En langage C, la syntaxe équivalente est `T nom[n];`, où T est le type des éléments (ex. int, float) et n la taille (nombre d'éléments) du tableau.",
+      "formule_principale": "type nom[taille];",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C la déclaration d'un tableau d'entiers de taille n donnée en pseudocode.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type des éléments et la taille en pseudocode",
+          "justification": "Le pseudocode précise le type (entier) et la taille (n) du tableau.",
+          "resultat_markdown": "tableau de n entiers"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire en syntaxe C",
+          "justification": "Le type C correspondant à \"entier\" est int, suivi du nom et de la taille entre crochets.",
+          "resultat_markdown": "`int tab[n];`"
+        }
+      ],
+      "conclusion_markdown": "La déclaration C d'un tableau suit la forme type nom[taille]; — ex. int tab[n]; pour un tableau de n entiers."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `tab[n] int;` ou `int tab(n);` au lieu de `int tab[n];`",
+          "pourquoi_faux": "La syntaxe C impose l'ordre type puis nom, avec la taille entre crochets [] (et non des parenthèses, réservées aux fonctions).",
+          "correction_markdown": "Mémorise l'ordre fixe : type, puis nom, puis taille entre crochets — `int tab[n];`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C la déclaration d'un tableau de 10 réels nommé notes.",
+          "solution_markdown": "`float notes[10];`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Peut-on utiliser une variable non constante pour la taille d'un tableau statique classique en C (ex. int tab[n]; où n est une variable) ?",
+          "solution_markdown": "En C standard historique (C89), la taille doit être une constante connue à la compilation. Le standard C99 a introduit les tableaux à taille variable (VLA), permettant `int tab[n];` avec n une variable, mais cette pratique reste sensible (dépassement de la pile possible) et moins portable ; en pratique académique, on utilise souvent une taille fixe ou une allocation dynamique (malloc) pour plus de sûreté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle est l'alternative à un tableau de taille fixe si la taille n'est connue qu'à l'exécution du programme ?",
+          "solution_markdown": "L'allocation dynamique de mémoire via la fonction `malloc` (ou `calloc`), qui réserve un bloc mémoire de la taille voulue à l'exécution : par exemple `int *tab = malloc(n * sizeof(int));`. Cette approche offre plus de flexibilité que le tableau statique, au prix d'une gestion manuelle de la mémoire (il faut libérer la mémoire avec `free(tab);` une fois le tableau inutile, sous peine de fuite mémoire)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La déclaration C d'un tableau suit la forme type nom[taille];",
+        "Le type (int, float...) précède toujours le nom, la taille est entre crochets.",
+        "En C standard classique, la taille doit être une constante connue à la compilation.",
+        "Pour une taille connue seulement à l'exécution, on utilise l'allocation dynamique (malloc)."
+      ]
+    }
+  ]
+}

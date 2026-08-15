@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-dimension-sous-espace-engendre-id-f-terminale-c",
+  "meta": {
+    "titre": "Déterminer la dimension d'un sous-espace engendré par Id et f",
+    "cours_id": "cours-dimension-sous-espace-engendre-id-f-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - dimension d'un sous-espace de L(E)",
+    "tags": ["sous-espace vectoriel", "famille libre", "dimension"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_5_qPIII-3a"
+  },
+  "sections": {
+    "accroche": "Le sous-espace de L(E) engendré par l'identité et un endomorphisme f n'est de dimension 2 que si f n'est pas un simple multiple de l'identité : une vérification souvent immédiate grâce à une relation algébrique déjà connue sur f.",
+    "prerequis": ["Un sous-espace engendré par deux éléments a pour dimension 2 s'ils sont indépendants, 1 sinon", "Raisonnement par l'absurde"],
+    "regle": {
+      "titre": "Dimension de Vect(Id,f)",
+      "contenu_markdown": "$L_f=\\mathrm{Vect}(Id,f)$ est de dimension $2$ si et seulement si $Id$ et $f$ sont linéairement indépendants dans $L(E)$, c'est-à-dire si aucun réel $\\lambda$ ne vérifie $f=\\lambda\\,Id$. Si f vérifie une relation du type $f\\circ f=-c\\,Id$ ($c>0$), on exclut cette colinéarité par l'absurde : si $f=\\lambda Id$, alors $f\\circ f=\\lambda^2Id=-cId$, donnant $\\lambda^2=-c<0$, impossible pour un réel.",
+      "formule_principale": "$f\\circ f=-c\\,Id\\ (c>0) \\;\\Longrightarrow\\; f\\neq\\lambda Id\\ \\forall\\lambda\\in\\mathbb{R} \\;\\Longrightarrow\\; \\dim\\mathrm{Vect}(Id,f)=2$",
+      "variantes": ["Ce même argument prouve simultanément que f n'a aucune valeur propre réelle (aucun vecteur propre associé à un réel)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit g avec g∘g=-4Id. Montrer que Vect(Id,g) est de dimension 2.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Supposer g=λId par l'absurde", "justification": "négation de l'indépendance", "resultat_markdown": "g=λId"},
+        {"numero": 2, "action": "Élever au carré", "justification": "composition", "resultat_markdown": "g∘g=λ²Id"},
+        {"numero": 3, "action": "Comparer à la relation connue", "justification": "g∘g=-4Id", "resultat_markdown": "λ²=-4, impossible pour λ réel"}
+      ],
+      "conclusion_markdown": "La contradiction prouve que g n'est colinéaire à Id pour aucun réel : {Id,g} est libre, Vect(Id,g) est de dimension 2."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Affirmer la dimension 2 sans preuve, en invoquant simplement 'Id et f sont deux éléments distincts'", "pourquoi_faux": "deux éléments distincts d'un espace vectoriel ne sont pas nécessairement indépendants (f pourrait être un multiple non trivial de Id)", "correction_markdown": "Toujours démontrer explicitement l'absence de colinéarité, typiquement par un raisonnement par l'absurde utilisant une relation algébrique connue sur f."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Soit h avec h∘h=-Id. Montrer que Vect(Id,h) est de dimension 2.", "solution_markdown": "Si h=λId, h∘h=λ²Id=-Id donne λ²=-1, impossible : {Id,h} libre, dimension 2."}
+    ],
+    "synthese": "Pour montrer que le sous-espace engendré par Id et f est de dimension 2, il suffit d'exclure, par un raisonnement par l'absurde utilisant une relation algébrique connue sur f (comme f∘f=-cId), que f puisse être un multiple scalaire de Id."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cours_id": "cours-recurrence-suite-terminale-d",
+  "meta": {"titre": "Rédiger une démonstration par récurrence sur une suite", "matiere": "Mathématiques", "niveau": "Terminale", "serie": "D-TI", "sous_theme": "Suites — raisonnement par récurrence", "duree_estimee_min": 15, "tags": ["récurrence", "suite récurrente", "stabilité d'intervalle"], "statut": "brouillon"},
+  "source": {"epreuve_id": "bac-d-maths-2021-cameroun", "epreuve_titre": "BAC D-TI Maths 2021 Cameroun", "exercice_numero": 3, "rappel_id": "5.a", "correction_id": "5.a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Le raisonnement par récurrence transforme une propriété vraie « un cran plus loin à chaque fois » en une propriété vraie pour tout rang, à partir d'une seule vérification de départ."},
+    {"type": "prerequis", "items": ["Principe de récurrence", "Définition d'une suite par récurrence U_{n+1}=f(U_n)"]},
+    {"type": "regle", "titre": "Structure d'une démonstration par récurrence", "contenu_markdown": "On démontre une propriété P(n) pour tout entier n en deux étapes : l'initialisation (vérifier P(0), ou le premier rang concerné) et l'hérédité (supposer P(n) vraie pour un n quelconque et en déduire P(n+1)). Pour une suite U_{n+1}=f(U_n), la stabilité d'un intervalle par f (f(I)⊂I) permet de montrer par récurrence que tous les termes de la suite restent dans I ; cette même structure permet aussi de propager une inégalité de contraction d'un rang à tous les rangs suivants.", "formule_principale": null, "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Montrer par récurrence que U_n∈[3;4] pour tout n, avec U₀=3 et U_{n+1}=h(U_n), sachant h([3;4])⊂[3;4].", "epreuve_source": true, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "Vérifier au rang 0.", "resultat_markdown": "U₀=3∈[3;4] : vrai"},
+      {"numero": 2, "action": "Hérédité : supposer U_n∈[3;4]", "justification": "Hypothèse de récurrence.", "resultat_markdown": "U_{n+1}=h(U_n)∈h([3;4])⊂[3;4]"},
+      {"numero": 3, "action": "Conclure par récurrence", "justification": "Initialisation + hérédité établies.", "resultat_markdown": "Pour tout n, U_n∈[3;4]"}
+    ], "conclusion_markdown": "La propriété est vraie pour tout entier naturel n."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Omettre la phrase de conclusion citant explicitement le principe de récurrence.", "pourquoi_faux": "Sans cette formalisation, la démonstration paraît incomplète aux yeux d'un correcteur, même si le raisonnement mathématique est correct.", "correction_markdown": "Toujours conclure par une phrase du type « par le principe de récurrence, P(n) est vraie pour tout entier naturel n »."}]},
+    {"type": "exercices_application", "items": [{"numero": 1, "difficulte": "facile", "enonce_markdown": "Montrer par récurrence que pour tout n, 2^n ≥ n+1.", "solution_markdown": "Initialisation n=0 : 1≥1 vrai. Hérédité : 2^{n+1}=2×2^n≥2(n+1)=2n+2≥n+2, donc 2^{n+1}≥n+2. Conclusion par récurrence."}]},
+    {"type": "synthese", "items_markdown": ["Initialisation puis hérédité, toujours dans cet ordre", "La stabilité d'un intervalle par f se démontre par récurrence", "Une inégalité de contraction se propage aussi par récurrence"]}
+  ]
+}

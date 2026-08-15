@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-traduire-une-boucle-pour-finpour-de-l-algorithmique-en-boucle-for-du-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire une boucle 'pour...finpour' de l'algorithmique en boucle for du langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Programmation - traduction algorithme vers C",
+    "tags": ["boucle for", "langage C", "traduction"],
+    "duree_estimee_min": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex5-q2-2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La boucle « Pour...Finpour » de l'algorithmique et la boucle `for` du langage C répètent exactement la même idée - un compteur qui progresse d'une valeur de départ à une valeur d'arrivée - mais la syntaxe C regroupe les trois ingrédients de la boucle sur une seule ligne, ce qui déroute au premier abord."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Comprendre le fonctionnement d'une boucle Pour en algorithmique", "Connaître la syntaxe de base d'une instruction C (point-virgule, accolades)"]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire une boucle Pour en boucle for",
+      "contenu_markdown": "La boucle algorithmique `Pour i allant de a à b faire ... Finpour` se traduit en C par `for (i = a; i <= b; i++) { ... }`. Les trois éléments de la parenthèse du `for` correspondent chacun à une phase précise de la boucle algorithmique : `i = a` est l'**initialisation** (exécutée une seule fois, avant le premier tour), `i <= b` est la **condition de poursuite** (testée avant chaque tour, la boucle continue tant qu'elle est vraie), `i++` est l'**incrémentation** (exécutée après chaque tour, pas avant). Le corps de la boucle (les instructions à répéter) se place entre accolades `{ }` juste après la parenthèse.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C la boucle algorithmique : `Pour i allant de 1 à 5 faire ... Finpour`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la valeur de départ et l'écrire comme initialisation",
+          "justification": "« i allant de 1 » signifie que i démarre à 1 avant le premier tour.",
+          "resultat_markdown": "i = 1"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la valeur d'arrivée et l'écrire comme condition de poursuite",
+          "justification": "« à 5 » signifie que la boucle continue tant que i reste inférieur ou égal à 5.",
+          "resultat_markdown": "i <= 5"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter l'incrémentation qui fait progresser i à chaque tour",
+          "justification": "Une boucle Pour progresse toujours de 1 en 1 par défaut, sauf mention contraire.",
+          "resultat_markdown": "i++"
+        }
+      ],
+      "conclusion_markdown": "`Pour i allant de 1 à 5 faire ... Finpour` se traduit par `for (i = 1; i <= 5; i++) { ... }`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser `<` au lieu de `<=` alors que la boucle algorithmique inclut explicitement la borne haute",
+          "pourquoi_faux": "`for (i = 1; i < 5; i++)` s'arrête à i = 4, sautant le dernier tour attendu pour i = 5 - une simple inattention sur l'opérateur de comparaison change le nombre de tours exécutés.",
+          "correction_markdown": "Relis toujours la formulation algorithmique : « allant de a à b » (b inclus) se traduit par `i <= b`, jamais `i < b`."
+        },
+        {
+          "erreur_markdown": "Placer l'incrémentation `i++` en début de boucle plutôt qu'en troisième position dans le `for`",
+          "pourquoi_faux": "L'incrémentation d'un `for` C s'exécute toujours APRÈS chaque tour du corps de la boucle, jamais avant - la placer ailleurs (par exemple en première ligne du corps) change complètement l'ordre des opérations et décale les valeurs traitées.",
+          "correction_markdown": "Laisse toujours l'incrémentation à sa place naturelle, la troisième position dans la parenthèse du `for` - c'est le langage C qui se charge de l'exécuter au bon moment."
+        },
+        {
+          "erreur_markdown": "Oublier les accolades `{ }` autour du corps de la boucle quand celui-ci contient plusieurs instructions",
+          "pourquoi_faux": "Sans accolades, un `for` en C ne répète que la toute première instruction qui le suit ; toutes les instructions suivantes s'exécutent une seule fois, après la boucle, et non à chaque tour.",
+          "correction_markdown": "Encadre systématiquement le corps de la boucle par des accolades dès qu'il contient plus d'une instruction - une seule instruction peut s'en passer, mais l'habitude de toujours les mettre évite l'oubli le jour où il y en a plusieurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C la boucle algorithmique : `Pour j allant de 0 à 9 faire ... Finpour`.",
+          "solution_markdown": "`for (j = 0; j <= 9; j++) { ... }`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C la boucle algorithmique : `Pour k allant de 10 à 1, pas de -1, faire ... Finpour` (une boucle qui décompte de 10 jusqu'à 1).",
+          "solution_markdown": "`for (k = 10; k >= 1; k--) { ... }` - l'initialisation démarre à la borne haute (10), la condition de poursuite utilise `>=` puisque k décroît, et l'incrémentation devient une décrémentation (`k--`, équivalent à un pas de -1)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève traduit `Pour i allant de 1 à n faire Tab[i] <- 0 Finpour` (initialisation d'un tableau algorithmique 1..n) par le code C suivant : `for (i = 1; i <= n; i++) { Tab[i] = 0; }`, où `Tab` a été déclaré par `int Tab[n];`. Ce code compile mais provoque un comportement incorrect en C. Identifie précisément le problème et corrige-le.",
+          "solution_markdown": "Le problème vient d'un décalage d'indexation : `int Tab[n];` réserve en C les indices 0 à n-1, jamais l'indice n. La boucle `for (i = 1; i <= n; i++)` accède donc à `Tab[n]`, un indice HORS des limites du tableau (comportement indéfini, bug potentiellement invisible à la compilation), tout en ne traitant jamais `Tab[0]`, qui existe pourtant et reste non initialisé. La traduction correcte pour parcourir tout le tableau C doit respecter l'indexation 0 à n-1 : `for (i = 0; i <= n - 1; i++) { Tab[i] = 0; }` (ou de façon équivalente `i < n`), même si la version algorithmique d'origine utilisait la convention 1..n."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`Pour i allant de a à b faire ... Finpour` se traduit par `for (i = a; i <= b; i++) { ... }`.",
+        "Les trois parties du `for` correspondent chacune à un rôle précis : initialisation, condition de poursuite, incrémentation - dans cet ordre, jamais mélangées.",
+        "« Allant de a à b » inclut la borne b : utilise `<=`, jamais `<`, sauf si l'énoncé précise explicitement une borne exclue.",
+        "N'oublie jamais les accolades dès que le corps de la boucle contient plus d'une instruction.",
+        "Au BAC, cette traduction se combine presque toujours avec un tableau déclaré en C : vérifie systématiquement que les indices utilisés dans la boucle restent compatibles avec l'indexation 0 à taille-1 du tableau."
+      ]
+    }
+  ]
+}

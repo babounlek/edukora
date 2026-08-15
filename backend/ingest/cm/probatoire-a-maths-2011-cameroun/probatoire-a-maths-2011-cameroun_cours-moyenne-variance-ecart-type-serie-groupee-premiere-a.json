@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-moyenne-variance-ecart-type-serie-groupee-premiere-a",
+  "meta": {
+    "titre": "Calculer moyenne, variance et écart-type d'une série statistique groupée",
+    "cours_id": "cours-moyenne-variance-ecart-type-serie-groupee-premiere-a",
+    "matiere": "Mathématiques",
+    "niveau": "Première A (Probatoire)",
+    "sous_theme": "Statistiques - moyenne, variance, écart-type",
+    "tags": ["moyenne", "variance", "écart-type", "König-Huygens"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "probatoire-a-maths-2011-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-a-maths-2011-cameroun_exercice_2_q3"
+  },
+  "sections": {
+    "accroche": "Moyenne, variance et écart-type d'une série groupée se calculent toujours dans le même ordre : la moyenne d'abord, puis la moyenne des carrés, et enfin leur différence pour obtenir la variance, avant la racine carrée finale.",
+    "prerequis": ["Centre de classe", "Moyenne pondérée", "Racine carrée"],
+    "regle": {
+      "titre": "Formules de la moyenne, de la variance et de l'écart-type",
+      "contenu_markdown": "Pour une série groupée en classes de centres $c_i$ et d'effectifs $n_i$ (effectif total $N=\\sum n_i$) : la moyenne est $\\bar x=\\dfrac{\\sum n_ic_i}{N}$ ; la variance, par la formule de König-Huygens, est $V=\\dfrac{\\sum n_ic_i^2}{N}-\\bar x^2$ (moyenne des carrés moins carré de la moyenne) ; l'écart-type est $\\sigma=\\sqrt V$.",
+      "formule_principale": "$\\bar x=\\dfrac{\\sum n_ic_i}{N}$ ; $V=\\dfrac{\\sum n_ic_i^2}{N}-\\bar x^2$ ; $\\sigma=\\sqrt V$",
+      "variantes": ["Un tableau à colonnes (ni, ci, nici, ci², nici²) structure efficacement ce calcul en plusieurs étapes et réduit le risque d'erreur"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer moyenne, variance, écart-type de : [0;4[ (effectif 6, centre 2), [4;8[ (effectif 10, centre 6).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Moyenne", "justification": "Σnici/N", "resultat_markdown": "(6×2+10×6)/16=(12+60)/16=72/16=4,5"},
+        {"numero": 2, "action": "Moyenne des carrés", "justification": "Σnici²/N", "resultat_markdown": "(6×4+10×36)/16=(24+360)/16=384/16=24"},
+        {"numero": 3, "action": "Variance et écart-type", "justification": "König-Huygens", "resultat_markdown": "V=24-4,5²=24-20,25=3,75 ; σ=√3,75≈1,94"}
+      ],
+      "conclusion_markdown": "Moyenne=4,5 ; variance≈3,75 ; écart-type≈1,94."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Élever la somme Σnici au carré au lieu de calculer séparément Σnici² (somme des ni×ci² individuels)", "pourquoi_faux": "(Σnici)² et Σ(nici²) sont deux quantités totalement différentes ; la formule de König-Huygens exige la seconde (somme des produits ni×ci² calculés un par un), pas le carré de la première", "correction_markdown": "Toujours calculer Σnici² en élevant chaque CENTRE DE CLASSE au carré individuellement (ci²) avant de multiplier par l'effectif ni et de sommer, jamais en élevant la somme globale Σnici au carré."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer la variance de : [0;2[ (effectif 4, centre 1), [2;4[ (effectif 6, centre 3), sachant que la moyenne est 2,2.", "solution_markdown": "Σnici²=4×1+6×9=4+54=58 ; 58/10=5,8 ; V=5,8-2,2²=5,8-4,84=0,96."}
+    ],
+    "synthese": "Le calcul de la moyenne, de la variance et de l'écart-type d'une série groupée suit un enchaînement fixe : moyenne pondérée des centres de classe, puis moyenne pondérée des carrés des centres, dont on soustrait le carré de la moyenne (formule de König-Huygens) pour obtenir la variance, avant de prendre sa racine carrée pour l'écart-type."
+  }
+}

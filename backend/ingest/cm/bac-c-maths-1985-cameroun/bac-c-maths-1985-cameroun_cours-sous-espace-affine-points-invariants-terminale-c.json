@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-sous-espace-affine-points-invariants-terminale-c",
+  "meta": {
+    "titre": "Vérifier qu'un autre point reste invariant par la même application",
+    "cours_id": "cours-sous-espace-affine-points-invariants-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - ensemble des points invariants",
+    "tags": ["points invariants", "sous-espace affine", "application affine"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_4_qA2c"
+  },
+  "sections": {
+    "accroche": "Une fois qu'on sait qu'une application affine ψ admet un point invariant, vérifier qu'un second point construit à partir du premier (via un vecteur de F) l'est également revient souvent à une simple relecture des propriétés déjà établies sur F.",
+    "prerequis": ["Définition d'un point invariant", "Propriété d'une application affine dont l'endomorphisme associé fixe un vecteur", "Ensemble F des vecteurs invariants"],
+    "regle": {
+      "titre": "Un second point invariant via un vecteur de F",
+      "contenu_markdown": "Si $\\psi$ admet $B$ comme point invariant et si son endomorphisme associé $f$ fixe un vecteur $\\vec u\\in F$ (c'est-à-dire $f(\\vec u)=\\vec u$), alors le point $B'=B+\\vec u$ est également invariant par $\\psi$ : en effet $\\psi(B')=\\psi(B+\\vec u)=\\psi(B)+f(\\vec u)=B+\\vec u=B'$ (propriété d'une application affine : $\\psi(M+\\vec v)=\\psi(M)+f(\\vec v)$).",
+      "formule_principale": "$\\psi(B)=B$ et $f(\\vec u)=\\vec u\\Rightarrow\\psi(B+\\vec u)=B+\\vec u$",
+      "variantes": ["Plus généralement, l'ensemble des points invariants d'une application affine dont l'endomorphisme associé n'est pas injectif est un sous-espace affine de direction ker(f-Id)=F"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $\\psi$ admettant $B(1,2)$ comme point invariant, d'endomorphisme associé $f(x,y)=(x,y)$ (identité, donc $F=\\mathbb R^2$ tout entier). Vérifier que $B'=B+(3,0)$ est aussi invariant.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer $B'$", "justification": "translation de B par (3,0)", "resultat_markdown": "$B'=(4,2)$"},
+        {"numero": 2, "action": "Appliquer la propriété", "justification": "$f=\\mathrm{Id}$ fixe tout vecteur, donc $(3,0)\\in F$", "resultat_markdown": "$\\psi(B')=\\psi(B)+f(3,0)=B+(3,0)=B'$"}
+      ],
+      "conclusion_markdown": "$B'$ est bien invariant par $\\psi$ (cas cohérent puisque si $f=\\mathrm{Id}$, $\\psi$ est une translation ou l'identité, dont tous les points, ou aucun, sont invariants selon le vecteur de translation)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de vérifier que le vecteur ajouté appartient bien à F avant de conclure à l'invariance du nouveau point", "pourquoi_faux": "seuls les vecteurs de F=ker(f-Id) préservent l'invariance quand on translate un point invariant", "correction_markdown": "Toujours vérifier explicitement $f(\\vec u)=\\vec u$ (donc $\\vec u\\in F$) avant d'affirmer que $B+\\vec u$ reste invariant."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Si f est une symétrie orthogonale d'axe D, quel est l'ensemble F des vecteurs invariants par f, et que peut-on en déduire pour l'ensemble des points invariants d'une application affine associée à f admettant un point fixe ?", "solution_markdown": "F est la direction de l'axe D (droite vectorielle). L'ensemble des points invariants de l'application affine associée, s'il en existe un, est alors la droite affine passant par ce point et de direction F, c'est-à-dire l'axe de symétrie lui-même."}
+    ],
+    "synthese": "Si un point B est invariant par ψ et si un vecteur u appartient à F=ker(f-Id), alors B+u est aussi invariant : l'ensemble des points invariants d'une application affine forme, quand il est non réduit à un point, un sous-espace affine de direction F."
+  }
+}

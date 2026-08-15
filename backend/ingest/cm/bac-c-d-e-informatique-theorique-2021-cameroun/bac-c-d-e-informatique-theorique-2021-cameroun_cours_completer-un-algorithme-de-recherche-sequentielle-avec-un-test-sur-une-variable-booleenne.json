@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-completer-un-algorithme-de-recherche-sequentielle-avec-un-test-sur-une-variable-booleenne-terminale-c",
+  "meta": {
+    "titre": "Compléter un algorithme de recherche séquentielle avec un test sur une variable booléenne",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Algorithmique — algorithmes de recherche",
+    "duree_estimee_min": 12,
+    "tags": [
+      "recherche séquentielle",
+      "variable booléenne",
+      "algorithme"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex4-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chercher une valeur précise dans un tableau, élément par élément, en s'arrêtant dès qu'on la trouve (ou en concluant à son absence si on arrive au bout) : c'est le principe de la recherche séquentielle, l'un des algorithmes fondamentaux à maîtriser."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir manipuler un tableau et une boucle 'pour'"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'algorithme de recherche séquentielle",
+      "contenu_markdown": "La **recherche séquentielle** parcourt un tableau élément par élément, du début à la fin (ou jusqu'à trouver la valeur cherchée), en comparant chaque élément à la valeur recherchée. Une variable booléenne (souvent appelée \"drapeau\" ou \"trouve\") indique si la valeur a été trouvée : elle vaut Faux au départ, puis passe à Vrai dès que la valeur est localisée.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Compléter l'algorithme de recherche séquentielle en ajoutant le test conditionnel manquant sur la variable booléenne.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le rôle de la variable booléenne dans l'algorithme donné",
+          "justification": "Elle indique si la valeur cherchée a déjà été trouvée.",
+          "resultat_markdown": "drapeau initialisé à Faux (ou 0), passe à Vrai si trouvé"
+        },
+        {
+          "numero": 2,
+          "action": "Compléter le test conditionnel manquant",
+          "justification": "Il faut comparer l'élément courant du tableau à la valeur recherchée, à l'intérieur de la boucle.",
+          "resultat_markdown": "`Si tab[i] = valeurCherchee Alors drapeau ← vrai FinSi`"
+        }
+      ],
+      "conclusion_markdown": "La recherche séquentielle compare chaque élément du tableau à la valeur cherchée, en utilisant une variable booléenne pour mémoriser si elle a été trouvée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'arrêter ou d'ignorer la suite du parcours une fois la valeur trouvée (recherche non optimisée)",
+          "pourquoi_faux": "Continuer à parcourir tout le tableau après avoir trouvé la valeur n'est pas une erreur de logique en soi, mais une occasion manquée d'optimisation ; dans une version optimisée, on arrête la boucle dès que drapeau devient vrai.",
+          "correction_markdown": "Pour une version optimisée, ajoute une condition d'arrêt anticipé de la boucle (ex. boucle Tant Que i < n ET NON drapeau) plutôt que de toujours parcourir tout le tableau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que vaut la variable drapeau si la valeur cherchée n'existe dans aucune case du tableau ?",
+          "solution_markdown": "Elle reste à Faux (ou 0) jusqu'à la fin du parcours, puisqu'aucune correspondance n'a été trouvée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire en pseudocode la boucle complète de recherche séquentielle d'une valeur x dans un tableau tab de taille n.",
+          "solution_markdown": "```\ndrapeau ← faux\nPour i allant de 0 à n-1 Faire\n    Si tab[i] = x Alors\n        drapeau ← vrai\n    FinSi\nFinPour\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle est la complexité (nombre d'opérations dans le pire des cas) de la recherche séquentielle sur un tableau de n éléments, et existe-t-il une méthode plus rapide sur un tableau trié ?",
+          "solution_markdown": "Dans le pire des cas (valeur absente, ou trouvée en dernière position), la recherche séquentielle effectue n comparaisons, soit une complexité en O(n). Sur un tableau **trié**, la recherche dichotomique (par dichotomie) est bien plus rapide, avec une complexité en O(log n), car elle élimine la moitié des éléments restants à chaque comparaison au lieu de les parcourir un par un."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La recherche séquentielle parcourt le tableau élément par élément.",
+        "Une variable booléenne (drapeau) mémorise si la valeur a été trouvée.",
+        "Le test conditionnel Si tab[i] = valeur Alors drapeau ← vrai est au cœur de l'algorithme.",
+        "Sa complexité est O(n) ; la recherche dichotomique (O(log n)) est plus rapide sur un tableau trié."
+      ]
+    }
+  ]
+}

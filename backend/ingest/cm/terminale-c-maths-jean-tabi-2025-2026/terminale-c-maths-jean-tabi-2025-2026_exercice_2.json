@@ -1,0 +1,80 @@
+{
+  "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "devoir_harmonise",
+  "origine": "etablissement",
+  "etablissement": "Collège Jean Tabi d'Étoudi (Département de Mathématiques) - Devoir Harmonisé de Mathématiques, Période 5",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "7",
+  "numero_exercice": 2,
+  "titre_exercice": "Loi de probabilité, événements et coniques (ellipse)",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "Dans le plan muni d'un repère orthonormé direct $(\\Omega\\,;\\vec u,\\vec v)$, on considère les deux courbes d'équations $(\\Gamma_1):\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ et $(\\Gamma_2):\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$, où $a,b>0$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "points": "1,5pt",
+      "enonce_markdown": "Une urne contient 10 boules indiscernables au toucher : 3 boules marquées « 4 », 4 boules marquées « 9 » et 3 boules marquées « 16 ». On effectue deux tirages successifs **avec remise**. On note $X$ le numéro du premier tirage et $Y$ celui du deuxième tirage. On pose $a^2=X$ et $b^2=Y$. En admettant que les valeurs de $X\\in\\{4,9,16\\}$, donner la loi de probabilité de $X$ sous forme d'un tableau, puis calculer $E(X)$ et $V(X)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-une-loi-de-probabilite-et-calculer-esperance-variance-tirage-avec-remise-terminale-c",
+          "texte": "Pour une urne à composition fixe avec tirage avec remise, $P(X=k)=\\dfrac{\\text{nombre de boules marquées }k}{\\text{nombre total de boules}}$. L'espérance est $E(X)=\\sum_k k\\,P(X=k)$ et la variance se calcule par la formule de König-Huygens $V(X)=E(X^2)-\\left(E(X)\\right)^2$, avec $E(X^2)=\\sum_k k^2\\,P(X=k)$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour une urne à composition fixe avec tirage avec remise, $P(X=k)=\\dfrac{\\text{nombre de boules marquées }k}{\\text{nombre total de boules}}$. L'espérance est $E(X)=\\sum_k k\\,P(X=k)$ et la variance se calcule par $V(X)=E(X^2)-\\left(E(X)\\right)^2$.\n\n**Loi de probabilité de $X$.** L'urne contient $10$ boules au total ($3+4+3=10$), donc :\n\n$$\\begin{array}{|c|c|c|c|}\\hline x_i & 4 & 9 & 16\\\\\\hline P(X=x_i) & \\dfrac{3}{10} & \\dfrac{4}{10} & \\dfrac{3}{10}\\\\\\hline\\end{array}$$\n\n**Calcul de $E(X)$.** $E(X)=4\\times\\dfrac{3}{10}+9\\times\\dfrac{4}{10}+16\\times\\dfrac{3}{10}=\\dfrac{12}{10}+\\dfrac{36}{10}+\\dfrac{48}{10}=\\dfrac{96}{10}=9,6$\n\n**Calcul de $E(X^2)$.** $E(X^2)=4^2\\times\\dfrac{3}{10}+9^2\\times\\dfrac{4}{10}+16^2\\times\\dfrac{3}{10}=16\\times\\dfrac{3}{10}+81\\times\\dfrac{4}{10}+256\\times\\dfrac{3}{10}=\\dfrac{48}{10}+\\dfrac{324}{10}+\\dfrac{768}{10}=\\dfrac{1140}{10}=114$\n\n**Calcul de $V(X)$.** $V(X)=E(X^2)-\\left(E(X)\\right)^2=114-(9,6)^2=114-92,16=21,84$\n\n**Conclusion.** $E(X)=9,6$ et $V(X)=21,84$.\n\n### Piège à éviter\nNe pas confondre $E(X^2)$ (espérance du carré, obtenue en pondérant $x_i^2$ par $P(X=x_i)$) avec $\\left(E(X)\\right)^2$ (carré de l'espérance) : ce sont deux nombres différents, et la formule de König-Huygens exige de calculer les deux séparément avant de soustraire."
+    },
+    {
+      "numero": "1.b",
+      "points": "1pt",
+      "enonce_markdown": "Calculer la probabilité de l'événement $E$ : « les deux boules tirées portent le même numéro ».",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-la-probabilite-que-deux-tirages-independants-donnent-la-meme-valeur-terminale-c",
+          "texte": "Avec deux tirages indépendants et remise (donc $X$ et $Y$ suivent la même loi et sont indépendantes), l'événement « $X=Y$ » se décompose en union disjointe des événements « $X=Y=k$ » pour chaque valeur possible $k$, et par indépendance $P(X=k\\text{ et }Y=k)=P(X=k)\\times P(Y=k)=\\left(P(X=k)\\right)^2$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nAvec deux tirages indépendants et remise, l'événement « $X=Y$ » se décompose en union disjointe des événements « $X=Y=k$ », et par indépendance $P(X=k\\text{ et }Y=k)=\\left(P(X=k)\\right)^2$.\n\nComme le tirage se fait avec remise, $Y$ suit la même loi que $X$ et les deux tirages sont indépendants. L'événement $E=$ « $X=Y$ » est la réunion disjointe de $\\{X=Y=4\\}$, $\\{X=Y=9\\}$, $\\{X=Y=16\\}$ :\n\n$$P(E)=\\left(\\dfrac{3}{10}\\right)^2+\\left(\\dfrac{4}{10}\\right)^2+\\left(\\dfrac{3}{10}\\right)^2=\\dfrac{9}{100}+\\dfrac{16}{100}+\\dfrac{9}{100}=\\dfrac{34}{100}=\\dfrac{17}{50}$$\n\n**Conclusion.** $P(E)=\\dfrac{17}{50}=0,34$.\n\n### Conseil\nRéflexe utile : pour deux tirages indépendants et identiquement distribués, $P(X=Y)=\\displaystyle\\sum_k \\left(P(X=k)\\right)^2$ est une formule à retenir directement, plus rapide que de reconstituer un tableau à double entrée à 9 cases pour n'en garder que 3 (la diagonale)."
+    },
+    {
+      "numero": "1.c",
+      "points": "0,5pt",
+      "enonce_markdown": "Quelle est la nature exacte des courbes $(\\Gamma_1)$ et $(\\Gamma_2)$ lorsque l'événement $E$ est réalisé ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-identifier-la-nature-dune-conique-x2-a2-plus-ou-moins-y2-b2-1-quand-a-egale-b-terminale-c",
+          "texte": "L'équation $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ décrit une ellipse en général, mais un **cercle de rayon $a$** dans le cas particulier $a=b$. De même $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$ décrit une hyperbole en général, mais une **hyperbole équilatère** (asymptotes perpendiculaires $y=\\pm x$) dans le cas particulier $a=b$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ décrit une ellipse en général, mais un cercle de rayon $a$ si $a=b$. De même $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$ décrit une hyperbole en général, mais une hyperbole équilatère si $a=b$.\n\nLorsque $E$ est réalisé, $X=Y$, donc $a^2=X=Y=b^2$, soit $a=b$ (car $a,b>0$).\n\n**Nature de $(\\Gamma_1)$.** L'équation devient $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{a^2}=1$, soit $x^2+y^2=a^2$ : $(\\Gamma_1)$ est alors un **cercle de centre $\\Omega$ et de rayon $a=\\sqrt X$**.\n\n**Nature de $(\\Gamma_2)$.** L'équation devient $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{a^2}=1$, soit $x^2-y^2=a^2$ : $(\\Gamma_2)$ est alors une **hyperbole équilatère** (à asymptotes perpendiculaires $y=x$ et $y=-x$), de sommets $(\\pm a,0)$.\n\n**Conclusion.** Quand $E$ est réalisé, $(\\Gamma_1)$ est un cercle de rayon $\\sqrt X$ et $(\\Gamma_2)$ est une hyperbole équilatère."
+    },
+    {
+      "numero": "2.a",
+      "points": "1,5pt",
+      "enonce_markdown": "On considère la courbe d'équation $(\\Gamma):\\dfrac{x^2}{9}+\\dfrac{y^2}{4}=1$ dans le repère orthonormé $(\\Omega\\,;\\vec u,\\vec v)$. Déterminer la nature et les éléments caractéristiques (Foyers, sommets, excentricité et directrices) de $(\\Gamma)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-les-elements-caracteristiques-dune-ellipse-x2-a2-plus-y2-b2-1-terminale-c",
+          "texte": "Pour $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ avec $a>b>0$ (grand axe horizontal), on identifie $a=\\sqrt{\\text{dénominateur de }x^2}$, $b=\\sqrt{\\text{dénominateur de }y^2}$, puis $c=\\sqrt{a^2-b^2}$. Les sommets sont $(\\pm a,0)$ et $(0,\\pm b)$, les foyers $(\\pm c,0)$, l'excentricité $e=\\dfrac ca$ (avec $0<e<1$), et les directrices les droites $x=\\pm\\dfrac{a^2}{c}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ avec $a>b>0$, on a $c=\\sqrt{a^2-b^2}$, sommets $(\\pm a,0)$ et $(0,\\pm b)$, foyers $(\\pm c,0)$, excentricité $e=\\dfrac ca$, directrices $x=\\pm\\dfrac{a^2}{c}$.\n\n**Identification de $a$ et $b$.** $(\\Gamma):\\dfrac{x^2}{9}+\\dfrac{y^2}{4}=1$, donc $a^2=9$ soit $a=3$, et $b^2=4$ soit $b=2$. Comme $a=3>b=2$, le grand axe est porté par l'axe des abscisses : $(\\Gamma)$ est une **ellipse**.\n\n**Calcul de $c$.** $c=\\sqrt{a^2-b^2}=\\sqrt{9-4}=\\sqrt5$\n\n**Sommets.** $A(3,0)$, $A'(-3,0)$ (sommets principaux), $B(0,2)$, $B'(0,-2)$ (sommets secondaires).\n\n**Foyers.** $F(\\sqrt5,0)$ et $F'(-\\sqrt5,0)$.\n\n**Excentricité.** $e=\\dfrac ca=\\dfrac{\\sqrt5}{3}$ (on vérifie $0<e<1$ : $\\sqrt5\\approx2,236<3$, cohérent avec une ellipse).\n\n**Directrices.** $x=\\pm\\dfrac{a^2}{c}=\\pm\\dfrac{9}{\\sqrt5}=\\pm\\dfrac{9\\sqrt5}{5}$ (en rationalisant le dénominateur : $\\dfrac{9}{\\sqrt5}=\\dfrac{9\\sqrt5}{5}$).\n\n**Conclusion.** $(\\Gamma)$ est une ellipse de centre $\\Omega$, de sommets $(\\pm3,0)$ et $(0,\\pm2)$, de foyers $(\\pm\\sqrt5,0)$, d'excentricité $\\dfrac{\\sqrt5}{3}$, et de directrices $x=\\pm\\dfrac{9\\sqrt5}{5}$."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "On choisit un point $M$ uniformément dans le rectangle $R$ de côtés $2a=6$ et $2b=4$, centré en $\\Omega$. On admet que l'aire de $(\\Gamma)$ est donnée par la relation $\\pi ab$. Calculer la probabilité $p$ que $M$ appartienne au disque elliptique de $(\\Gamma)$ (intérieur fermé de l'ellipse).",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-geometrique-par-rapport-daires-terminale-c",
+          "texte": "Pour un point choisi uniformément dans une région du plan, la probabilité qu'il appartienne à une sous-région donnée est le rapport de l'aire de la sous-région à l'aire de la région totale : $p=\\dfrac{\\text{aire favorable}}{\\text{aire totale}}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour un point choisi uniformément dans une région du plan, $p=\\dfrac{\\text{aire favorable}}{\\text{aire totale}}$.\n\n**Aire du rectangle $R$.** Le rectangle a pour côtés $2a=6$ et $2b=4$ (avec $a=3,b=2$ trouvés en 2.a), donc son aire est $\\text{Aire}(R)=2a\\times2b=6\\times4=24$.\n\n**Aire du disque elliptique.** D'après l'énoncé, $\\text{Aire}(\\Gamma)=\\pi ab=\\pi\\times3\\times2=6\\pi$.\n\n**Calcul de la probabilité.** Le disque elliptique est entièrement contenu dans le rectangle $R$ (l'ellipse est inscrite dans le rectangle de côtés $2a$ et $2b$), donc :\n\n$$p=\\dfrac{\\text{Aire}(\\Gamma)}{\\text{Aire}(R)}=\\dfrac{6\\pi}{24}=\\dfrac{\\pi}{4}$$\n\n**Conclusion.** $p=\\dfrac{\\pi}{4}\\approx0,785$.\n\n### Conseil\nOn peut vérifier que ce résultat $p=\\frac\\pi4$ est en réalité indépendant des valeurs numériques précises de $a$ et $b$ : pour toute ellipse inscrite dans son rectangle circonscrit $2a\\times2b$, $p=\\dfrac{\\pi ab}{4ab}=\\dfrac\\pi4$ toujours. Un résultat aussi épuré est un bon indice qu'aucune erreur de calcul ne s'est glissée dans la simplification."
+    }
+  ]
+}

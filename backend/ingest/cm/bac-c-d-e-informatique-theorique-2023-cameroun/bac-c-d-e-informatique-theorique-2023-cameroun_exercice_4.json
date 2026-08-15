@@ -1,0 +1,94 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2023,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 4,
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 pts) — Exercice 1 : Algorithmique (3 pts)**\n\nLe bout de code suivant permet de rechercher le numéro d'un candidat dans un tableau de taille N contenant les numéros (nombres entiers) des admis à un examen.\n\n```\n 1  lire(x) ;\n 2  trouve <- faux ;\n 3  i <- 1 ;\n 4  Tant que ((i<=N) et (trouve=faux)) Faire\n 5      Si (numero[i]=x) alors\n 6          trouve <- vrai ;\n 7      sinon\n 8          i <- i+1 ;\n 9      finsi\n10  FinTantque\n```\n\nTRAVAIL À FAIRE",
+  "mots_cles_recherche": [
+    "variable drapeau",
+    "structure de contrôle",
+    "boucle TantQue",
+    "boucle Répéter...Jusqu'à",
+    "recherche séquentielle"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Identifier dans ce code la variable drapeau. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne variable drapeau (ou booléenne) sert à mémoriser si un événement recherché s'est produit ; elle est initialisée à faux et passe à vrai dès que la condition recherchée est satisfaite, ce qui permet souvent d'arrêter une boucle plus tôt.\n\n### Corrigé\nLa variable drapeau est **trouve** : initialisée à `faux` (ligne 2), elle passe à `vrai` (ligne 6) dès que l'élément recherché est localisé, et sert de condition d'arrêt de la boucle Tant que.",
+      "themes": [
+        "variable booléenne",
+        "drapeau"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q1-0",
+          "competence": "Identifier la variable drapeau (booléenne) dans un algorithme de recherche",
+          "contenu_markdown": "Une variable drapeau (ou booléenne) sert à mémoriser si un événement recherché s'est produit ; elle est initialisée à faux et passe à vrai dès que la condition recherchée est satisfaite, ce qui permet souvent d'arrêter une boucle plus tôt.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-la-variable-drapeau-booleenne-dans-un-algorithme-de-recherche-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Identifier une structure de contrôle utilisée dans ce code. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn algorithme combine généralement plusieurs structures de contrôle : la structure itérative (boucle) répète un traitement tant qu'une condition est vraie ; la structure conditionnelle (Si...Alors...Sinon) exécute un traitement différent selon qu'une condition est vraie ou fausse.\n\n### Corrigé\nCe code utilise la structure **itérative** **Tant que...Faire...FinTantque** (lignes 4 à 10), qui répète la recherche tant que la fin du tableau n'est pas atteinte et que l'élément n'est pas trouvé.\n\n*(Également présente : la structure conditionnelle Si...Alors...Sinon...Finsi, lignes 5 à 9.)*",
+      "themes": [
+        "structures de contrôle",
+        "boucle"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q2-0",
+          "competence": "Identifier les structures de contrôle utiles à un problème donné (séquentielle, conditionnelle)",
+          "contenu_markdown": "Un algorithme combine généralement plusieurs structures de contrôle : la structure itérative (boucle) répète un traitement tant qu'une condition est vraie ; la structure conditionnelle (Si...Alors...Sinon) exécute un traitement différent selon qu'une condition est vraie ou fausse.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-structures-de-controle-utiles-a-un-probleme-donne-sequentielle-conditionnelle-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Réécrire ce bout de code en remplaçant la boucle « Tant que » par la boucle « Répéter...Jusqu'à ». (1,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa boucle Répéter...Jusqu'à teste sa condition d'arrêt APRÈS avoir exécuté le corps (elle s'exécute donc toujours au moins une fois), et continue tant que la condition indiquée après \"Jusqu'à\" est FAUSSE, contrairement à TantQue qui teste AVANT et continue tant que sa condition est VRAIE. Pour convertir, il faut donc inverser la condition (NON logique) et la placer en fin de boucle.\n\n### Corrigé\n```\nlire(x) ;\ntrouve <- faux ;\ni <- 1 ;\nRépéter\n    Si (numero[i]=x) alors\n        trouve <- vrai ;\n    sinon\n        i <- i+1 ;\n    finsi\nJusqu'à ((i>N) ou (trouve=vrai))\n```\n\nLa condition d'arrêt \"Jusqu'à\" est l'inverse logique de la condition de poursuite du Tant que d'origine : NON((i<=N) et (trouve=faux)) équivaut, par les lois de De Morgan, à (i>N) ou (trouve=vrai).\n\n### Piège à éviter\nNe pas recopier telle quelle la condition du Tant que après \"Jusqu'à\" : la boucle Répéter continue tant que sa condition est FAUSSE (elle s'arrête quand elle devient VRAIE), il faut donc bien inverser la condition, pas la garder identique.",
+      "themes": [
+        "boucle Répéter...Jusqu'à",
+        "transformation de boucle"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q3-0",
+          "competence": "Transformer une boucle 'TantQue...Faire' en boucle 'Répéter...Jusqu'à' en algorithmique",
+          "contenu_markdown": "La boucle Répéter...Jusqu'à teste sa condition d'arrêt APRÈS avoir exécuté le corps (elle s'exécute donc toujours au moins une fois), et continue tant que la condition indiquée après \"Jusqu'à\" est FAUSSE, contrairement à TantQue qui teste AVANT et continue tant que sa condition est VRAIE. Pour convertir, il faut donc inverser la condition (NON logique) et la placer en fin de boucle.",
+          "cours_genere": true,
+          "cours_id": "cours-transformer-une-boucle-tantque-faire-en-boucle-repeter-jusqu-a-en-algorithmique-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

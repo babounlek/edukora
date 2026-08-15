@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-encadrement-integrale-monotonie-fonction-terminale-c",
+  "meta": {
+    "titre": "Encadrer une intégrale via la monotonie de la fonction intégrée",
+    "cours_id": "cours-encadrement-integrale-monotonie-fonction-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Intégration - encadrement par monotonie",
+    "tags": ["encadrement d'intégrale", "monotonie", "intégration"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_2_q3a"
+  },
+  "sections": {
+    "accroche": "Sans jamais calculer explicitement une primitive compliquée, la seule monotonie d'une fonction sur un petit intervalle suffit à encadrer son intégrale entre deux valeurs simples aux bornes.",
+    "prerequis": ["Monotonie et comparaison de fonctions", "Croissance de l'intégrale (conservation des inégalités larges)"],
+    "regle": {
+      "titre": "Encadrement d'intégrale par monotonie",
+      "contenu_markdown": "Si $\\varphi$ est décroissante sur $[k,k+1]$, alors pour tout $t\\in[k,k+1]$, $\\varphi(k+1)\\leqslant\\varphi(t)\\leqslant\\varphi(k)$. En intégrant ces trois membres sur $[k,k+1]$ (intervalle de longueur 1), et sachant que l'intégration conserve les inégalités larges et que l'intégrale d'une constante c sur un intervalle de longueur L vaut cL : $\\varphi(k+1)\\leqslant\\displaystyle\\int_k^{k+1}\\varphi(t)\\,dt\\leqslant\\varphi(k)$.",
+      "formule_principale": "φ décroissante sur [k,k+1] $\\Rightarrow \\varphi(k+1)\\leqslant\\int_k^{k+1}\\varphi(t)\\,dt\\leqslant\\varphi(k)$",
+      "variantes": ["Pour φ croissante, l'encadrement s'inverse : φ(k)≤∫≤φ(k+1)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Encadrer $\\displaystyle\\int_2^3\\dfrac{dt}{t^2}$ en utilisant la décroissance de $t\\mapsto1/t^2$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Encadrer 1/t² sur [2,3]", "justification": "décroissance", "resultat_markdown": "$\\dfrac19\\leqslant\\dfrac1{t^2}\\leqslant\\dfrac14$"},
+        {"numero": 2, "action": "Intégrer sur un intervalle de longueur 1", "justification": "croissance de l'intégrale", "resultat_markdown": "$\\dfrac19\\leqslant\\int_2^3\\dfrac{dt}{t^2}\\leqslant\\dfrac14$"}
+      ],
+      "conclusion_markdown": "La valeur exacte de l'intégrale (1/2-1/3=1/6≈0,167) est bien comprise entre 1/9≈0,111 et 1/4=0,25, confirmant l'encadrement."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Inverser les bornes de l'encadrement en cas de fonction décroissante (écrire φ(k)≤∫≤φ(k+1))", "pourquoi_faux": "pour une fonction décroissante, la plus grande valeur est atteinte au point le plus petit de l'intervalle, donc φ(k) est le majorant, pas le minorant", "correction_markdown": "Toujours vérifier le sens de variation avant d'écrire l'encadrement : décroissante → φ(borne droite)≤φ(t)≤φ(borne gauche)."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Encadrer ∫₅⁶ dt/t en utilisant la décroissance de 1/t.", "solution_markdown": "1/6 ≤ ∫₅⁶ dt/t ≤ 1/5."}
+    ],
+    "synthese": "Pour encadrer l'intégrale d'une fonction monotone sur un intervalle de longueur 1, on encadre d'abord la fonction elle-même par ses valeurs aux bornes (dans l'ordre dicté par le sens de variation), puis on intègre ces inégalités, l'intégrale d'une constante sur un intervalle de longueur 1 valant simplement cette constante."
+  }
+}

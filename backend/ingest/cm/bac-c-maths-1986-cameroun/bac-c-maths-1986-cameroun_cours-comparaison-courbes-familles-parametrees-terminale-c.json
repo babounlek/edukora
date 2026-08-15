@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-comparaison-courbes-familles-parametrees-terminale-c",
+  "meta": {
+    "titre": "Comparer deux membres d'une famille de courbes paramétrées",
+    "cours_id": "cours-comparaison-courbes-familles-parametrees-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Famille de courbes - positions relatives, comparaison par différence",
+    "tags": ["famille de courbes", "positions relatives", "factorisation", "tangente en un point commun"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_4_qB3b"
+  },
+  "sections": {
+    "accroche": "Comparer deux membres fₚ et fq d'une même famille paramétrée se ramène toujours à étudier le signe de leur différence, factorisée par le terme commun élevé à la plus petite puissance.",
+    "prerequis": ["Factorisation d'une différence de puissances aⁿ-aᵖ", "Étude de signe d'un produit", "Calcul de la dérivée en un point commun"],
+    "regle": {
+      "titre": "Comparer fₚ et fq par factorisation de leur différence",
+      "contenu_markdown": "Pour comparer $f_p(x)=g(x)^p\\times h(x)$ et $f_q(x)=g(x)^q\\times h(x)$ avec $p<q$, étudier le signe de $f_q(x)-f_p(x)=g(x)^p\\times h(x)\\times[g(x)^{q-p}-1]$ (factorisation par la plus petite puissance $p$). Le signe se ramène alors à l'étude, souvent bien plus simple, de $g(x)^{q-p}-1$.",
+      "formule_principale": "$f_q(x)-f_p(x)=g(x)^p h(x)[g(x)^{q-p}-1]$",
+      "variantes": ["Les tangentes en un point commun aux deux courbes s'obtiennent en évaluant séparément fₚ'(x₀) et fq'(x₀) via la formule générale de la dérivée de la famille"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Comparer $f_1(x)=x$ et $f_3(x)=x^3$ sur $\\mathbb R$ (ici g(x)=x, h(x)=1, p=1, q=3).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Factoriser la différence", "justification": "f_3-f_1=x^3-x=x(x^2-1)", "resultat_markdown": "$f_3(x)-f_1(x)=x(x-1)(x+1)$"},
+        {"numero": 2, "action": "Étudier le signe", "justification": "produit de trois facteurs linéaires", "resultat_markdown": "négatif sur ]-∞,-1[, positif sur ]-1,0[, négatif sur ]0,1[, positif sur ]1,+∞["}
+      ],
+      "conclusion_markdown": "f₃ est au-dessus de f₁ sur ]-1,0[∪]1,+∞[, en dessous sur ]-∞,-1[∪]0,1[, et elles se croisent en -1, 0 et 1."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Factoriser par la plus grande puissance au lieu de la plus petite", "pourquoi_faux": "cela laisse un facteur négatif (g(x)^{p-q}-1 avec exposant négatif), plus difficile à étudier", "correction_markdown": "Toujours factoriser par la puissance la plus petite des deux (p si p<q), pour obtenir un facteur g(x)^{q-p}-1 à exposant positif."},
+      {"erreur_markdown": "Oublier qu'aux points où g(x)^p=0, la différence s'annule quel que soit le signe du second facteur", "pourquoi_faux": "un produit nul l'est dès qu'un seul facteur est nul, indépendamment des autres", "correction_markdown": "Toujours identifier séparément les zéros de chaque facteur de la différence factorisée."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Comparer f₂(x)=x² et f₄(x)=x⁴ pour x réel.", "solution_markdown": "f₄-f₂=x²(x²-1)=x²(x-1)(x+1). Signe : positif si |x|>1 ou x=0, négatif si 0<|x|<1. f₄ au-dessus pour |x|>1, en dessous pour 0<|x|<1, égales en x=-1,0,1."}
+    ],
+    "synthese": "Pour comparer deux membres d'une famille de courbes gⁿ×h, factoriser leur différence par la plus petite puissance commune : le signe se ramène à celui de g^(q-p)-1, généralement simple à étudier."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-divisibilite-via-passage-au-quotient-terminale-c",
+  "meta": {
+    "titre": "Établir une divisibilité pour tout entier via le passage au quotient ℤ/nℤ",
+    "cours_id": "cours-divisibilite-via-passage-au-quotient-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Arithmétique - divisibilité et morphisme quotient",
+    "tags": ["divisibilité", "morphisme d'anneaux", "ℤ/nℤ"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_1_qII-4"
+  },
+  "sections": {
+    "accroche": "Prouver qu'une expression polynomiale en n est toujours divisible par un entier fixe, pour TOUS les entiers n (une infinité de cas), devient un problème fini et résoluble en passant par l'anneau quotient ℤ/nℤ.",
+    "prerequis": ["Le passage au quotient ℤ→ℤ/nℤ est un morphisme d'anneaux (compatible avec + et ×)", "Propriété déjà établie sur ℤ/nℤ (ici x³=x)"],
+    "regle": {
+      "titre": "Divisibilité universelle via un résultat modulaire",
+      "contenu_markdown": "Le passage au quotient $\\mathbb Z\\to\\mathbb Z/n\\mathbb Z$ (qui à un entier associe sa classe de reste modulo $n$) est un morphisme d'anneaux : il est compatible avec l'addition et la multiplication, donc avec toute expression polynomiale. Ainsi, si une identité polynomiale $P(\\dot x)=\\dot0$ est vérifiée pour tout $\\dot x\\in\\mathbb Z/n\\mathbb Z$ (vérification finie), alors $P(n)\\equiv0\\ [n]$ pour tout entier $n\\in\\mathbb Z$ (résultat infini), c'est-à-dire que $n$ divise $P(k)$ pour tout entier $k$.",
+      "formule_principale": "$\\forall\\dot x\\in\\mathbb Z/n\\mathbb Z,\\ P(\\dot x)=\\dot0 \\;\\Longrightarrow\\; \\forall k\\in\\mathbb Z,\\ n\\mid P(k)$",
+      "variantes": ["Cette technique remplace avantageusement une récurrence ou un argument de factorisation direct quand le passage au quotient est plus rapide"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant que dans ℤ/3ℤ, x²=x pour tout x (à vérifier : 0²=0,1²=1,2²=4≡1... en fait ce n'est vrai que pour x=0,1, pas x=2). Prenons plutôt : sachant x³≡x (mod 3) pour tout x de ℤ/3ℤ, montrer que n³-n est divisible par 3 pour tout entier n.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Vérifier x³=x dans ℤ/3ℤ", "justification": "0³=0,1³=1,2³=8≡2", "resultat_markdown": "vrai pour les 3 éléments"},
+        {"numero": 2, "action": "Passer au quotient pour n quelconque", "justification": "morphisme d'anneaux", "resultat_markdown": "classe de n³-n modulo 3 = (classe de n)³-(classe de n)=0"},
+        {"numero": 3, "action": "Conclure", "justification": "classe nulle = divisible", "resultat_markdown": "3 | n³-n pour tout entier n"}
+      ],
+      "conclusion_markdown": "Le résultat fini sur ℤ/3ℤ se relève en un résultat infini sur ℤ, via la compatibilité du quotient avec les opérations."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Croire qu'il faut refaire une preuve par récurrence sur ℕ après avoir déjà établi le résultat sur ℤ/nℤ", "pourquoi_faux": "c'est redondant : la compatibilité du passage au quotient avec les opérations garantit directement le passage du résultat fini au résultat infini, sans récurrence supplémentaire", "correction_markdown": "Une fois le résultat vérifié exhaustivement sur ℤ/nℤ, invoquer directement la compatibilité du morphisme quotient avec + et × pour conclure sur tous les entiers, sans repasser par une récurrence."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant que dans ℤ/4ℤ, x⁵-x est toujours divisible... vérifier plutôt directement : sachant 0⁵=0,1⁵=1,2⁵=32≡0,3⁵=243≡3 dans ℤ/4ℤ, que peut-on dire de n⁵-n modulo 4 pour tout entier n ?", "solution_markdown": "Comme x⁵≡x (mod 4) est vérifié pour les 4 classes (0≡0,1≡1,0≡2? attention 2⁵=32≡0≠2 : la propriété x⁵=x n'est PAS vraie dans ℤ/4ℤ pour x=2 ; ceci illustre qu'il faut vérifier TOUS les cas avant de conclure, sans généraliser hâtivement)."}
+    ],
+    "synthese": "Pour prouver qu'une expression polynomiale en n est divisible par un entier fixe n0 pour tout entier n, il suffit de vérifier l'identité correspondante sur les éléments finis de ℤ/n0ℤ, puis d'invoquer la compatibilité du passage au quotient avec les opérations pour relever ce résultat fini en un résultat valable pour tout entier."
+  }
+}

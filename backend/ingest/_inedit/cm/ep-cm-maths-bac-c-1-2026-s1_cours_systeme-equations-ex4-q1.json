@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-systeme-trois-equations-trois-inconnues-bac-c",
+  "meta": {
+    "titre": "Résoudre un système de trois équations à trois inconnues",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algèbre - systèmes linéaires",
+    "duree_estimee_min": 20,
+    "tags": ["systemes d'equations"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois équations, trois inconnues, aucune méthode magique : juste de la substitution méthodique, une inconnue à la fois. C'est un grand classique des sujets « Évaluation des compétences », toujours contextualisé dans une situation concrète (devis, mélange, budget)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'un système de deux équations à deux inconnues",
+        "Substitution et combinaison linéaire d'équations",
+        "Mise en équation d'une situation concrète"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de substitution en cascade",
+      "contenu_markdown": "Pour résoudre un système $\\begin{cases}(1)\\\\(2)\\\\(3)\\end{cases}$ à trois inconnues :\n1. Choisir l'équation la plus simple (peu de termes, ou une inconnue absente) et en isoler une inconnue.\n2. Substituer cette expression dans les deux autres équations : on obtient un système de DEUX équations à DEUX inconnues.\n3. Résoudre ce sous-système par substitution ou combinaison.\n4. Revenir en arrière pour retrouver la troisième inconnue.\n5. **Vérifier** la solution complète dans l'équation qui n'a servi à aucune étape de la résolution.",
+      "formule_principale": "\\begin{cases}(1)\\\\(2)\\\\(3)\\end{cases} \\xrightarrow{\\text{isoler + substituer}} \\begin{cases}(1')\\\\(2')\\end{cases} \\xrightarrow{\\text{résoudre}} \\text{solution} \\xrightarrow{\\text{vérifier dans } (3)} \\text{confirmée}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre le système $\\begin{cases}5a+3b=85\\,000 & (1)\\\\2b+10c=150\\,000 & (2)\\\\a+b+6c=95\\,000 & (3)\\end{cases}$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler $b$ dans l'équation $(2)$",
+          "justification": "$(2)$ ne fait intervenir que $b$ et $c$, la plus simple à traiter en premier.",
+          "resultat_markdown": "$b=75\\,000-5c$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $a$ dans $(1)$ puis substituer $b$",
+          "justification": "On exprime $a$ en fonction de $b$, puis on remplace $b$ par son expression en $c$.",
+          "resultat_markdown": "$a=-28\\,000+3c$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer $a$ et $b$ dans $(3)$",
+          "justification": "$(3)$ est la seule équation restante à exploiter, elle ne dépend plus que de $c$.",
+          "resultat_markdown": "$4c+47\\,000=95\\,000 \\Rightarrow c=12\\,000$"
+        },
+        {
+          "numero": 4,
+          "action": "Remonter pour trouver $b$ puis $a$",
+          "justification": "On réutilise les expressions obtenues aux étapes 1 et 2.",
+          "resultat_markdown": "$b=15\\,000$, $a=8\\,000$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier dans $(3)$",
+          "justification": "$(3)$ a servi à trouver $c$ mais pas à vérifier la cohérence globale — on recontrôle malgré tout par calcul direct.",
+          "resultat_markdown": "$8\\,000+15\\,000+6(12\\,000)=95\\,000$ ✓"
+        }
+      ],
+      "conclusion_markdown": "$a=8\\,000$, $b=15\\,000$, $c=12\\,000$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer dans une équation déjà utilisée pour isoler une inconnue.",
+          "pourquoi_faux": "Cela ne donne aucune information nouvelle (identité toujours vraie) au lieu de faire progresser la résolution.",
+          "correction_markdown": "Toujours substituer dans les équations qui n'ont PAS encore servi à isoler une inconnue."
+        },
+        {
+          "erreur_markdown": "Faire une erreur de calcul dans une substitution et ne jamais s'en apercevoir faute de vérification finale.",
+          "pourquoi_faux": "Une erreur de signe ou de calcul se propage silencieusement dans toute la suite de la résolution.",
+          "correction_markdown": "Toujours terminer par une vérification numérique complète dans une équation du système, idéalement une qui n'a pas directement servi à isoler une variable."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+y=10\\\\2x-y=2\\end{cases}$.",
+          "solution_markdown": "En additionnant les deux équations : $3x=12\\Rightarrow x=4$, puis $y=10-4=6$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+y+z=6\\\\x-y=1\\\\2y+z=7\\end{cases}$.",
+          "solution_markdown": "De la 2e équation : $x=y+1$. En substituant dans la 1re équation : $(y+1)+y+z=6$, soit $2y+z=5$. Or la 3e équation impose $2y+z=7$. Ces deux résultats ($2y+z=5$ et $2y+z=7$) sont incompatibles pour les mêmes $y$ et $z$ : le système n'admet donc **aucune solution**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Trois articles $A$, $B$, $C$ sont vendus par lots. Un lot de $2A+1B$ coûte $2\\,500$ FCFA, un lot de $1B+3C$ coûte $5\\,000$ FCFA, et un lot de $1A+2B+1C$ coûte $3\\,500$ FCFA. Déterminer le prix unitaire de chaque article.",
+          "solution_markdown": "Système : $\\begin{cases}2a+b=2\\,500 & (1)\\\\b+3c=5\\,000 & (2)\\\\a+2b+c=3\\,500 & (3)\\end{cases}$. De $(1)$ : $b=2\\,500-2a$. De $(2)$ : $c=\\dfrac{5\\,000-b}{3}=\\dfrac{2\\,500+2a}{3}$. En substituant dans $(3)$ multipliée par $3$ : $3a+6(2\\,500-2a)+(2\\,500+2a)=10\\,500$, soit $-7a+17\\,500=10\\,500$, donc $a=1\\,000$. On en déduit $b=2\\,500-2\\,000=500$ et $c=\\dfrac{2\\,500+2\\,000}{3}=1\\,500$. **Vérification dans $(3)$** : $1\\,000+2(500)+1\\,500=3\\,500$ ✓. L'article $A$ coûte $1\\,000$ FCFA, $B$ coûte $500$ FCFA et $C$ coûte $1\\,500$ FCFA."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Isoler une inconnue dans l'équation la plus simple, en premier.",
+        "Substituer en cascade pour réduire le système à deux inconnues, puis à une seule.",
+        "Remonter les substitutions pour retrouver toutes les inconnues.",
+        "Toujours vérifier la solution complète dans une équation, de préférence celle qui n'a pas servi directement à isoler une variable.",
+        "Un système sans solution ou avec une infinité de solutions se repère par une égalité impossible (ex. $7=5$) ou toujours vraie (ex. $0=0$) lors de la substitution.",
+        "Au BAC : ces systèmes sont presque toujours issus d'une situation concrète (devis, mélange, budget) — bien identifier ce que représente chaque inconnue avant de commencer."
+      ]
+    }
+  ]
+}

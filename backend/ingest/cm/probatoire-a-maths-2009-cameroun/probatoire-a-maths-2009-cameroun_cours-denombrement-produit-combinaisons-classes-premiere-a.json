@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-denombrement-produit-combinaisons-classes-premiere-a",
+  "meta": {
+    "titre": "Dénombrer un choix réparti sur plusieurs groupes distincts (produit de combinaisons)",
+    "cours_id": "cours-denombrement-produit-combinaisons-classes-premiere-a",
+    "matiere": "Mathématiques",
+    "niveau": "Première A (Probatoire)",
+    "sous_theme": "Dénombrement - principe multiplicatif",
+    "tags": ["combinaison", "principe multiplicatif", "choix indépendants"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-a-maths-2009-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-a-maths-2009-cameroun_exercice_2_q2a"
+  },
+  "sections": {
+    "accroche": "Dès qu'un choix se décompose en plusieurs étapes indépendantes (ici, choisir des articles dans chacune des 5 tranches de prix séparément), le nombre total de possibilités est le PRODUIT du nombre de choix possibles à chaque étape, jamais leur somme.",
+    "prerequis": ["Formule de la combinaison C(n,k)", "Principe multiplicatif du dénombrement"],
+    "regle": {
+      "titre": "Principe multiplicatif pour des choix indépendants",
+      "contenu_markdown": "Si un dénombrement se décompose en plusieurs étapes ou groupes indépendants (ici, choisir $k_1$ éléments dans un premier groupe de $n_1$, $k_2$ dans un second groupe de $n_2$, etc.), le nombre total de possibilités est le produit des nombres de choix à chaque étape : $\\binom{n_1}{k_1}\\times\\binom{n_2}{k_2}\\times\\cdots$. Ce principe multiplicatif s'applique dès que les choix dans chaque groupe n'influencent pas les choix possibles dans les autres groupes.",
+      "formule_principale": "Choix indépendants dans plusieurs groupes $\\;\\Longrightarrow\\;$ produit des combinaisons de chaque groupe",
+      "variantes": ["Si au contraire un même élément pouvait appartenir à plusieurs groupes (choix non indépendants), le principe multiplicatif simple ne s'appliquerait plus directement et une analyse plus fine serait nécessaire"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Une urne contient 3 groupes de billes : 6 rouges, 4 vertes, 5 bleues. On choisit 2 billes de chaque couleur. Combien de tirages possibles ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Combinaisons par groupe", "justification": "choix indépendant dans chaque couleur", "resultat_markdown": "C(6,2)=15, C(4,2)=6, C(5,2)=10"},
+        {"numero": 2, "action": "Produit", "justification": "principe multiplicatif", "resultat_markdown": "15×6×10=900"}
+      ],
+      "conclusion_markdown": "Il existe 900 tirages possibles."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Additionner les combinaisons de chaque groupe au lieu de les multiplier", "pourquoi_faux": "additionner reviendrait à compter les cas où l'on choisit dans UN SEUL groupe à la fois (choix alternatifs), alors que l'énoncé demande un choix simultané dans TOUS les groupes ensemble (choix combinés), ce qui correspond au principe multiplicatif, pas additif", "correction_markdown": "Se demander si les choix dans les différents groupes se font simultanément (« et » logique, donc produit) ou de façon alternative (« ou » logique, donc somme) avant de choisir l'opération à appliquer."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Un jury doit choisir 2 personnes parmi 8 candidats de catégorie X et 3 personnes parmi 12 candidats de catégorie Y. Combien de compositions du jury sont possibles ?", "solution_markdown": "C(8,2)×C(12,3)=28×220=6160."}
+    ],
+    "synthese": "Quand un dénombrement se décompose en choix indépendants répartis sur plusieurs groupes distincts, le nombre total de possibilités s'obtient en multipliant entre elles les combinaisons calculées séparément pour chaque groupe."
+  }
+}

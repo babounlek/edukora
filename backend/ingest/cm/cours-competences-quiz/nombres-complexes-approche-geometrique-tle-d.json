@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-nombres-complexes-approche-geometrique-tle-d",
+  "meta": {
+    "titre": "Nombres complexes : approche géométrique du plan (Terminale D)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Nombres complexes - interprétation géométrique (affixes, distances, angles, lieux géométriques, transformations élémentaires)",
+    "duree_estimee_min": 45,
+    "tags": ["Nombres complexes - approche géométrique (Tle D)", "nombres complexes", "affixe", "plan complexe", "vecteur", "module et argument", "lieu géométrique", "médiatrice", "rotation", "transformation du plan"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "D", "module_numero": "27", "savoir_numero": "I"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-2017-MATHS",
+    "epreuve_titre": "Mathématiques BAC D et TI 2017",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bacdtimaths2017cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Prouver qu'un triangle est rectangle et isocèle avec les seuls outils de la géométrie vectorielle demande de calculer deux longueurs puis un produit scalaire, trois résultats séparés pour une seule conclusion. Avec les nombres complexes, un unique quotient d'affixes suffit : son module donne directement le rapport des longueurs, son argument donne directement l'angle entre les deux vecteurs. Ce cours montre comment le plan complexe transforme des questions de géométrie pure - nature d'un triangle, ensemble de points vérifiant une condition, image d'un point par une rotation - en simples calculs sur des nombres. C'est exactement le type de raisonnement attendu à l'épreuve de mathématiques du BAC série D dès qu'un exercice mêle plan complexe et figures géométriques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir écrire un nombre complexe sous forme algébrique $x+iy$ et calculer son module $|z|=\\sqrt{x^2+y^2}$.",
+        "Tu dois savoir déterminer un argument d'un nombre complexe non nul en calculant $\\cos\\theta=\\dfrac{\\text{Re}(z)}{|z|}$ et $\\sin\\theta=\\dfrac{\\text{Im}(z)}{|z|}$, puis en identifiant $\\theta$ à partir des valeurs remarquables du cercle trigonométrique.",
+        "Tu dois savoir mettre un quotient de deux nombres complexes sous forme algébrique en multipliant numérateur et dénominateur par le conjugué du dénominateur.",
+        "Tu dois connaître la notion de vecteur du plan, ses coordonnées à partir de celles de ses extrémités, et la notion d'angle orienté entre deux vecteurs."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le quotient d'affixes de vecteurs : module, argument et applications",
+      "contenu_markdown": "Dans un repère orthonormé $(O\\,;\\vec u,\\vec v)$, tout point $M(x\\,;y)$ du plan est représenté par son affixe $z=x+iy$ : la partie réelle donne l'abscisse, la partie imaginaire donne l'ordonnée. Pour deux points $P$ et $Q$ d'affixes $z_P$ et $z_Q$, le vecteur $\\overrightarrow{PQ}$ est représenté par l'affixe de sa différence, $z_Q-z_P$ : c'est cette affixe de vecteur, et non l'affixe des points eux-mêmes, qui porte l'information de longueur et de direction.\n\nLe quotient de deux affixes de vecteurs non nuls condense en une seule opération deux informations géométriques distinctes. Pour des points $P,Q,R,S$ du plan avec $P\\neq Q$ et $R\\neq S$, le quotient $\\dfrac{z_S-z_R}{z_Q-z_P}$ a pour module le rapport des longueurs $\\dfrac{RS}{PQ}$ et pour argument une mesure de l'angle orienté $(\\overrightarrow{PQ},\\overrightarrow{RS})$.\n\nCette double lecture se déduit directement des deux propriétés du quotient de deux nombres complexes non nuls : $\\left|\\dfrac{z_1}{z_2}\\right|=\\dfrac{|z_1|}{|z_2|}$ et $\\arg\\left(\\dfrac{z_1}{z_2}\\right)\\equiv\\arg(z_1)-\\arg(z_2)\\ [2\\pi]$, appliquées ici aux affixes des deux vecteurs plutôt qu'à des nombres complexes quelconques.\n\nCette méthode permet de caractériser un triangle sans tracer aucune figure précise. Pour un triangle $PQR$, on calcule le quotient $\\dfrac{z_R-z_P}{z_Q-z_P}$ :\n\n- un module égal à $1$ signifie $PR=PQ$ (triangle isocèle en $P$) ;\n- un argument égal à $\\dfrac{\\pi}{2}\\ [\\pi]$ signifie que $(\\overrightarrow{PQ},\\overrightarrow{PR})$ est un angle droit (triangle rectangle en $P$) ;\n- les deux conditions réunies (module $1$ et argument $\\pm\\dfrac{\\pi}{2}$) caractérisent un triangle rectangle et isocèle en $P$.",
+      "formule_principale": "\\left|\\dfrac{z_S-z_R}{z_Q-z_P}\\right|=\\dfrac{RS}{PQ}\\quad\\text{et}\\quad \\arg\\!\\left(\\dfrac{z_S-z_R}{z_Q-z_P}\\right)\\equiv(\\overrightarrow{PQ},\\overrightarrow{RS})\\ [2\\pi]",
+      "variantes": [
+        {
+          "nom": "Caractériser un lieu géométrique par une condition sur le module ou l'argument",
+          "quand_utiliser": "Quand l'énoncé demande l'ensemble des points M d'affixe z vérifiant une condition portant sur |z-a| ou sur arg(z-a), pour une ou deux affixes fixes a (et éventuellement b).",
+          "contenu_markdown": "Une condition sur le module d'une différence d'affixes traduit toujours une distance : $|z-a|=r$ (avec $r>0$ fixé) décrit le cercle de centre $A(a)$ et de rayon $r$ ; $|z-a|=|z-b|$ décrit l'ensemble des points équidistants de $A$ et $B$, c'est-à-dire la médiatrice du segment $[AB]$.\n\nUne condition sur l'argument traduit toujours une direction : $\\arg(z-a)\\equiv\\theta\\ [2\\pi]$ décrit la demi-droite d'origine $A$ (exclue) dirigée par l'angle $\\theta$ ; $\\arg\\!\\left(\\dfrac{z-a}{b-a}\\right)\\equiv 0\\ [\\pi]$ décrit la droite $(AB)$ elle-même, privée de $A$ (points $M$, $A$, $B$ alignés) ; $\\arg\\!\\left(\\dfrac{z-a}{b-a}\\right)\\equiv\\dfrac{\\pi}{2}\\ [\\pi]$ décrit la droite passant par $A$ et perpendiculaire à $(AB)$, privée de $A$."
+        },
+        {
+          "nom": "Les transformations élémentaires du plan par leur écriture complexe",
+          "quand_utiliser": "Quand l'énoncé définit un point M' comme l'image de M par une translation, une rotation ou une homothétie, et demande de calculer une affixe ou de caractériser la transformation à partir de sa formule complexe.",
+          "contenu_markdown": "Trois transformations élémentaires ont chacune leur écriture complexe caractéristique. La translation de vecteur $\\vec w$ d'affixe $\\omega$ transforme $M(z)$ en $M'(z')$ avec $z'=z+\\omega$ : elle ne change ni les longueurs ni les directions.\n\nLa rotation de centre $\\Omega$ (affixe $\\omega$) et d'angle $\\theta$ transforme $M(z)$ en $M'(z')$ avec $z'-\\omega=e^{i\\theta}(z-\\omega)$ : on calcule toujours $e^{i\\theta}$ en revenant à $\\cos\\theta$ et $\\sin\\theta$, jamais en le récitant de mémoire.\n\nL'homothétie de centre $\\Omega$ et de rapport $k$ (réel non nul) transforme $M(z)$ en $M'(z')$ avec $z'-\\omega=k(z-\\omega)$ : contrairement à la rotation, $k$ est réel, donc $\\overrightarrow{\\Omega M'}$ garde la même direction que $\\overrightarrow{\\Omega M}$ (ou la direction opposée si $k<0$), seule la longueur change.\n\nDans les trois cas, le principe reste identique : isoler d'abord $(z-\\omega)$, le vecteur recentré sur le centre de la transformation, avant d'appliquer le facteur multiplicatif."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé $(O\\,;\\vec u,\\vec v)$. On considère les points $A$, $B$, $C$ d'affixes respectives $a=1+5i$, $b=4+i$ et $c=5+8i$.\n\n1. Calculer le quotient $\\dfrac{c-a}{b-a}$ sous forme algébrique, puis donner son module et son argument.\n2. En déduire la nature précise du triangle $ABC$.\n3. Soit $r$ la rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$. Déterminer l'affixe du point $D$, image de $B$ par $r$, et comparer $D$ et $C$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les affixes des vecteurs AB et AC",
+          "justification": "Le quotient à étudier porte sur des affixes de vecteurs, pas sur les affixes des points eux-mêmes : il faut d'abord calculer $b-a$ et $c-a$.",
+          "resultat_markdown": "$$b-a=(4+i)-(1+5i)=3-4i \\qquad\\qquad c-a=(5+8i)-(1+5i)=4+3i$$"
+        },
+        {
+          "numero": 2,
+          "action": "Mettre le quotient (c-a)/(b-a) sous forme algébrique",
+          "justification": "On multiplie numérateur et dénominateur par le conjugué du dénominateur, $3+4i$, pour faire disparaître le $i$ du dénominateur.",
+          "resultat_markdown": "$$\\frac{c-a}{b-a}=\\frac{4+3i}{3-4i}=\\frac{(4+3i)(3+4i)}{(3-4i)(3+4i)}$$\n\nNumérateur : $(4+3i)(3+4i)=12+16i+9i+12i^2=12+25i-12=25i$ (car $i^2=-1$).\n\nDénominateur : $(3-4i)(3+4i)=3^2-(4i)^2=9-16i^2=9+16=25$.\n\n$$\\frac{c-a}{b-a}=\\frac{25i}{25}=i$$"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer le module et l'argument de ce quotient",
+          "justification": "Le quotient obtenu, $i$, est une valeur remarquable, mais on justifie son argument en revenant à $\\cos\\theta$ et $\\sin\\theta$ plutôt que de le réciter.",
+          "resultat_markdown": "$|i|=\\sqrt{0^2+1^2}=1$. En écrivant $i=\\cos\\theta+i\\sin\\theta$, on identifie $\\cos\\theta=0$ et $\\sin\\theta=1$, donc $\\theta=\\dfrac{\\pi}{2}$.\n\n$$\\left|\\frac{c-a}{b-a}\\right|=1 \\qquad\\qquad \\arg\\left(\\frac{c-a}{b-a}\\right)=\\frac{\\pi}{2}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter géométriquement ces deux résultats",
+          "justification": "D'après la méthode du quotient d'affixes de vecteurs, le module de $(c-a)/(b-a)$ vaut $AC/AB$ et son argument est une mesure de l'angle orienté $(\\overrightarrow{AB},\\overrightarrow{AC})$.",
+          "resultat_markdown": "Module $1$ : $AC=AB$, le triangle est isocèle en $A$. Argument $\\dfrac{\\pi}{2}$ : $(\\overrightarrow{AB},\\overrightarrow{AC})=\\dfrac{\\pi}{2}$, l'angle en $A$ est droit. Le triangle $ABC$ est donc rectangle et isocèle en $A$."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier ce résultat par la rotation de centre A et d'angle π/2",
+          "justification": "La rotation $r$ transforme $B$ en un point $D$ vérifiant $z_D-a=e^{i\\pi/2}(z_B-a)$. Calculer $z_D$ permet de confirmer indépendamment la relation trouvée entre $B$ et $C$.",
+          "resultat_markdown": "$e^{i\\pi/2}=\\cos\\dfrac{\\pi}{2}+i\\sin\\dfrac{\\pi}{2}=0+i=i$.\n\n$$z_D-a=i\\times(b-a)=i\\times(3-4i)=3i-4i^2=3i+4=4+3i$$\n\n$$z_D=a+(4+3i)=(1+5i)+(4+3i)=5+8i$$"
+        }
+      ],
+      "conclusion_markdown": "$z_D=5+8i=c$ : le point $D$, image de $B$ par la rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$, est exactement le point $C$. Cette vérification confirme par une méthode indépendante que $AC=AB$ et que l'angle en $A$ vaut $\\dfrac{\\pi}{2}$, puisqu'une rotation conserve les longueurs et transforme un angle en un angle de même mesure que l'angle de rotation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le quotient : calculer $\\dfrac{z_Q-z_P}{z_R-z_P}$ à la place de $\\dfrac{z_R-z_P}{z_Q-z_P}$, en pensant que l'ordre des deux vecteurs n'a pas d'importance.",
+          "pourquoi_faux": "Le quotient $\\dfrac{z_S-z_R}{z_Q-z_P}$ a pour module $RS/PQ$ dans ce sens précis et pour argument l'angle orienté $(\\overrightarrow{PQ},\\overrightarrow{RS})$, pas l'inverse. Inverser le quotient remplace ce rapport par son inverse $PQ/RS$ et change le signe de l'angle obtenu, puisque $\\arg(1/z)=-\\arg(z)$. Sur un exercice où le rapport de longueurs n'est pas égal à $1$, cette inversion transforme une conclusion du type « $PR=2PQ$ » en « $PQ=2PR$ », un résultat numérique complètement différent.",
+          "correction_markdown": "Avant de calculer, identifier précisément quel vecteur est visé par la question et le placer systématiquement au numérateur. Écrire explicitement à quel vecteur correspond chaque affixe avant de substituer les valeurs numériques."
+        },
+        {
+          "erreur_markdown": "Affirmer directement $\\arg(i)=\\pi/2$, ou toute autre valeur remarquable, sans revenir au calcul de $\\cos\\theta$ et $\\sin\\theta$.",
+          "pourquoi_faux": "Cette habitude devient risquée dès que la valeur trouvée est proche d'une autre valeur remarquable : confondre $\\pi/2$ et $-\\pi/2$ (pour $-i$), ou $\\pi/3$ et $\\pi/6$ dès qu'un $\\sqrt3$ apparaît, est une erreur fréquente qu'aucune relecture rapide du calcul ne permet de détecter, puisque le résultat obtenu paraît familier.",
+          "correction_markdown": "Calculer systématiquement $\\cos\\theta=\\text{Re}(z)/|z|$ et $\\sin\\theta=\\text{Im}(z)/|z|$ séparément, puis identifier $\\theta$ à partir de ce couple de valeurs. Le cosinus seul ne distingue pas $\\pi/3$ de $-\\pi/3$ ; il faut toujours les deux."
+        },
+        {
+          "erreur_markdown": "Appliquer la formule de rotation en oubliant de soustraire l'affixe du centre, c'est-à-dire écrire $z'=e^{i\\theta}z$ au lieu de $z'-\\omega=e^{i\\theta}(z-\\omega)$, dès que le centre de la rotation n'est pas l'origine $O$.",
+          "pourquoi_faux": "La formule $z'=e^{i\\theta}z$ ne décrit que la rotation de centre $O$. Dès que le centre $\\Omega$ est un point quelconque, il faut d'abord recentrer en $\\Omega$ (calculer $z-\\omega$), appliquer la rotation à ce vecteur recentré, puis redécentrer en ajoutant à nouveau $\\omega$. Omettre cette étape place l'image à une distance et dans une direction de $O$ qui n'ont plus aucun rapport avec le centre réel de la rotation.",
+          "correction_markdown": "Avant d'appliquer la formule, identifier explicitement le centre $\\Omega$ et écrire l'équation complète $z'-\\omega=e^{i\\theta}(z-\\omega)$, jamais une version abrégée, même quand $\\omega$ semble simple ou nul en apparence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé. On considère les points $P$, $Q$, $R$ d'affixes respectives $p=1+2i$, $q=4+2i$ et $r=1+8i$.\n\n1. Calculer le quotient $\\dfrac{r-p}{q-p}$ sous forme algébrique.\n2. En déduire la nature précise du triangle $PQR$.",
+          "solution_markdown": "$q-p=(4+2i)-(1+2i)=3$ et $r-p=(1+8i)-(1+2i)=6i$.\n\n$$\\frac{r-p}{q-p}=\\frac{6i}{3}=2i$$\n\nCe quotient est déjà sous forme algébrique ($2i=0+2i$) : aucune multiplication par un conjugué n'est nécessaire, le dénominateur $3$ étant déjà réel.\n\n$|2i|=2$. En écrivant $2i=2(\\cos\\theta+i\\sin\\theta)$, on identifie $\\cos\\theta=0$ et $\\sin\\theta=1$, donc $\\theta=\\dfrac{\\pi}{2}$.\n\n$$\\left|\\frac{r-p}{q-p}\\right|=2 \\qquad\\qquad \\arg\\left(\\frac{r-p}{q-p}\\right)=\\frac{\\pi}{2}$$\n\nLe module vaut $2$, donc $PR=2\\,PQ$. L'argument vaut $\\dfrac{\\pi}{2}$, donc $(\\overrightarrow{PQ},\\overrightarrow{PR})=\\dfrac{\\pi}{2}$ : l'angle en $P$ est droit. Le triangle $PQR$ est rectangle en $P$, avec $PR=2\\,PQ$ ; il n'est pas isocèle, puisque les deux côtés de l'angle droit n'ont pas la même longueur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé. On donne les points $A$ et $B$ d'affixes respectives $a=1+i$ et $b=4+5i$. Déterminer l'ensemble $(\\mathcal D)$ des points $M$ d'affixe $z$ (avec $z\\neq a$) tels que $\\dfrac{z-a}{b-a}$ soit un nombre imaginaire pur non nul.",
+          "solution_markdown": "On calcule d'abord l'affixe du vecteur $\\overrightarrow{AB}$ : $b-a=(4+5i)-(1+i)=3+4i$.\n\nPosons $z=x+iy$. Le quotient $\\dfrac{z-a}{b-a}$ est un nombre imaginaire pur non nul si et seulement si sa partie réelle est nulle et $z\\neq a$. Pour étudier le signe de cette partie réelle, on multiplie numérateur et dénominateur par le conjugué du dénominateur $\\overline{b-a}=3-4i$ :\n\n$$\\frac{z-a}{b-a}=\\frac{(z-a)(3-4i)}{(3+4i)(3-4i)}=\\frac{(z-a)(3-4i)}{25}$$\n\nLe dénominateur $25$ est réel positif : le signe de la partie réelle du quotient est donc le même que celui de la partie réelle de $(z-a)(3-4i)$. On développe, avec $z-a=(x-1)+(y-1)i$ :\n\n$$(z-a)(3-4i)=\\big[(x-1)+(y-1)i\\big](3-4i)$$\n\n$$=3(x-1)-4(x-1)i+3(y-1)i-4(y-1)i^2$$\n\n$$=\\big[3(x-1)+4(y-1)\\big]+i\\big[3(y-1)-4(x-1)\\big]$$\n\nLa partie réelle de ce produit est $3(x-1)+4(y-1)$. Le quotient est imaginaire pur si et seulement si cette partie réelle est nulle :\n\n$$3(x-1)+4(y-1)=0 \\;\\Longrightarrow\\; 3x+4y-7=0 \\;\\Longrightarrow\\; 3x+4y=7$$\n\nOn vérifie que le point $A(1\\,;1)$ appartient bien à cette droite ($3\\times1+4\\times1=7$), ce qui est cohérent puisqu'une droite perpendiculaire à $(AB)$ passant par $A$ contient nécessairement $A$ ; il faut donc l'exclure conformément à la condition $z\\neq a$.\n\n$(\\mathcal D)$ est la droite d'équation $3x+4y=7$, privée du point $A$. Géométriquement, c'est la droite passant par $A$ et perpendiculaire à $(AB)$ : le vecteur directeur de $(AB)$, d'affixe $3+4i$, a pour coordonnées $(3\\,;4)$, exactement le vecteur normal à la droite trouvée, ce qui confirme la perpendicularité."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé. On considère les points $A$ et $B$ d'affixes respectives $a=2+i$ et $b=6+i$. Soit $r$ la rotation de centre $A$ et d'angle $\\dfrac{\\pi}{3}$. Pour tout point $M$ d'affixe $z$, on note $M'$ d'affixe $z'$ son image par $r$. Déterminer l'ensemble $(\\Gamma)$ des points $M$ tels que $M'$ appartienne au cercle de centre $B$ et de rayon $4$.",
+          "solution_markdown": "La rotation $r$ transforme $M(z)$ en $M'(z')$ avec $z'-a=e^{i\\pi/3}(z-a)$, donc $z'=a+e^{i\\pi/3}(z-a)$.\n\nLa condition « $M'$ appartient au cercle de centre $B$ et de rayon $4$ » s'écrit $|z'-b|=4$. On substitue l'expression de $z'$ :\n\n$$\\big|a+e^{i\\pi/3}(z-a)-b\\big|=4$$\n\nOn regroupe $a-b$ en $-(b-a)$ :\n\n$$\\big|e^{i\\pi/3}(z-a)-(b-a)\\big|=4$$\n\nOn factorise $e^{i\\pi/3}$ à l'intérieur du module, en écrivant $(b-a)=e^{i\\pi/3}\\times e^{-i\\pi/3}(b-a)$ :\n\n$$\\Big|e^{i\\pi/3}\\big[(z-a)-e^{-i\\pi/3}(b-a)\\big]\\Big|=4$$\n\nLe module d'un produit est le produit des modules, et $|e^{i\\pi/3}|=\\sqrt{\\cos^2(\\pi/3)+\\sin^2(\\pi/3)}=1$ :\n\n$$\\big|(z-a)-e^{-i\\pi/3}(b-a)\\big|=4 \\;\\Longleftrightarrow\\; \\Big|z-\\big[a+e^{-i\\pi/3}(b-a)\\big]\\Big|=4$$\n\nCette égalité décrit un cercle de rayon $4$ centré au point $C$ d'affixe $c=a+e^{-i\\pi/3}(b-a)$. Il reste à calculer $c$.\n\n$b-a=(6+i)-(2+i)=4$.\n\n$e^{-i\\pi/3}=\\cos\\left(-\\dfrac{\\pi}{3}\\right)+i\\sin\\left(-\\dfrac{\\pi}{3}\\right)=\\cos\\dfrac{\\pi}{3}-i\\sin\\dfrac{\\pi}{3}=\\dfrac{1}{2}-i\\dfrac{\\sqrt3}{2}$ (cosinus pair, sinus impair, et $\\cos(\\pi/3)=1/2$, $\\sin(\\pi/3)=\\sqrt3/2$ sont des valeurs remarquables connues).\n\n$$e^{-i\\pi/3}(b-a)=4\\left(\\frac12-i\\frac{\\sqrt3}{2}\\right)=2-2\\sqrt3\\,i$$\n\n$$c=a+\\big(2-2\\sqrt3\\,i\\big)=(2+i)+(2-2\\sqrt3\\,i)=4+(1-2\\sqrt3)\\,i$$\n\n$(\\Gamma)$ est le cercle de centre $C\\big(4\\,;\\,1-2\\sqrt3\\big)$ et de rayon $4$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un point $M(x;y)$ a pour affixe $z=x+iy$ ; un vecteur $\\overrightarrow{PQ}$ a pour affixe la différence $z_Q-z_P$, jamais l'affixe d'un des deux points pris isolément.",
+        "Le quotient de deux affixes de vecteurs donne à la fois un rapport de longueurs (son module) et un angle orienté entre eux (son argument) : c'est l'outil de base pour prouver qu'un triangle est rectangle, isocèle ou équilatéral sans dessiner de figure précise.",
+        "Une condition sur le module d'une affixe caractérise une distance (cercle, médiatrice) ; une condition sur son argument caractérise une direction (droite, demi-droite).",
+        "La translation, la rotation et l'homothétie s'écrivent chacune avec une formule complexe propre - $z'=z+\\omega$, $z'-\\omega=e^{i\\theta}(z-\\omega)$, $z'-\\omega=k(z-\\omega)$ - et toutes les trois exigent de recentrer en $\\Omega$ avant d'appliquer le facteur multiplicatif.",
+        "Identifie toujours un argument en calculant $\\cos\\theta$ et $\\sin\\theta$ séparément, jamais en récitant une valeur de mémoire : une confusion entre deux angles voisins passe inaperçue tant qu'on ne revient pas à ce couple de valeurs.",
+        "Au BAC série D, ce savoir alimente des questions isolées (nature d'un triangle, lieu géométrique, image par une rotation) et sert de socle avant d'aborder les similitudes directes du plan, qui combinent rotation et homothétie en une seule transformation."
+      ]
+    }
+  ]
+}

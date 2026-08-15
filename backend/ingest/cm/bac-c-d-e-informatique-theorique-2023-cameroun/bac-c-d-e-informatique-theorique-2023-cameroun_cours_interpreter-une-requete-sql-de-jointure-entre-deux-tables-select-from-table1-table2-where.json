@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-interpreter-une-requete-sql-de-jointure-entre-deux-tables-select-from-table1-table2-where-terminale-c",
+  "meta": {
+    "titre": "Interpréter une requête SQL de jointure entre deux tables (SELECT... FROM table1, table2 WHERE...)",
+    "cours_id": "cours-interpreter-une-requete-sql-de-jointure-entre-deux-tables-select-from-table1-table2-where-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Langage SQL — Jointures",
+    "tags": [
+      "jointure",
+      "SELECT FROM plusieurs tables",
+      "SQL"
+    ],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'information recherchée n'habite pas toujours dans une seule table : trouver le nom d'un professeur à partir de la matière qu'il enseigne suppose de croiser deux tables distinctes. C'est le rôle de la jointure SQL."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir écrire une requête SELECT... WHERE simple sur une seule table",
+        "Connaître la notion de clé primaire et de clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Interpréter une requête de jointure SQL (SELECT... FROM table1, table2 WHERE...)",
+      "contenu_markdown": "Lorsqu'une clause FROM mentionne **plusieurs tables séparées par une virgule**, et que la clause WHERE contient une **égalité entre la clé primaire de l'une et la clé étrangère correspondante de l'autre**, la requête réalise une **jointure** : elle associe chaque ligne d'une table à la (ou les) ligne(s) correspondante(s) de l'autre table, avant d'appliquer d'éventuels filtres supplémentaires et d'afficher les colonnes demandées.",
+      "formule_principale": "SELECT colonnes FROM tableA, tableB WHERE tableA.cle = tableB.cle_etrangere [AND autres_conditions];",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la signification de : SELECT Nom FROM PROFESSEUR, MATIERE WHERE PROFESSEUR.IdProf = MATIERE.IdProf AND MATIERE.Intitule=\"Informatique\";",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les deux tables dans le FROM",
+          "justification": "PROFESSEUR et MATIERE sont toutes deux mentionnées, séparées par une virgule.",
+          "resultat_markdown": "Jointure entre PROFESSEUR et MATIERE"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la condition de jointure",
+          "justification": "PROFESSEUR.IdProf = MATIERE.IdProf relie chaque matière à son professeur.",
+          "resultat_markdown": "Association matière ↔ professeur via IdProf"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le filtre supplémentaire et la colonne affichée",
+          "justification": "AND MATIERE.Intitule=\"Informatique\" restreint aux lignes concernant cette matière ; SELECT Nom n'affiche que le nom du professeur.",
+          "resultat_markdown": "Nom du (des) professeur(s) enseignant l'Informatique"
+        }
+      ],
+      "conclusion_markdown": "Une jointure combine deux tables via l'égalité clé primaire/clé étrangère, puis applique les filtres et colonnes demandés comme une requête ordinaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire cette requête comme \"affichant tous les professeurs et toutes les matières\"",
+          "pourquoi_faux": "La clause WHERE ne se contente pas de lister : elle FILTRE les associations valides (via l'égalité des clés) ET restreint aux lignes où MATIERE.Intitule=\"Informatique\", donc le résultat est précisément ciblé, pas une liste générale.",
+          "correction_markdown": "Analyse chaque condition du WHERE séparément : d'abord la condition de jointure (qui relie les tables), puis les éventuels filtres supplémentaires (qui restreignent le résultat)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que ferait la requête SELECT Nom FROM PROFESSEUR, MATIERE WHERE PROFESSEUR.IdProf = MATIERE.IdProf; (sans la condition sur Intitule) ?",
+          "solution_markdown": "Elle afficherait le nom de chaque professeur, répété autant de fois qu'il enseigne de matières différentes (une ligne par association professeur-matière), sans aucun filtre sur la matière."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire cette requête en affichant plutôt l'intitulé des matières enseignées par le professeur nommé \"KAMGA\".",
+          "solution_markdown": "`SELECT Intitule FROM PROFESSEUR, MATIERE WHERE PROFESSEUR.IdProf = MATIERE.IdProf AND PROFESSEUR.Nom = \"KAMGA\";`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle est l'écriture SQL moderne équivalente à cette jointure \"à l'ancienne\" (FROM table1, table2 WHERE...) ?",
+          "solution_markdown": "L'écriture moderne utilise le mot-clé explicite JOIN : `SELECT Nom FROM PROFESSEUR JOIN MATIERE ON PROFESSEUR.IdProf = MATIERE.IdProf WHERE MATIERE.Intitule=\"Informatique\";`. Cette syntaxe est généralement préférée car elle sépare clairement la condition de jointure (après ON) des conditions de filtrage (après WHERE), ce qui améliore la lisibilité, surtout lorsque plusieurs tables et plusieurs conditions sont combinées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "FROM table1, table2 avec une égalité de clés dans WHERE réalise une jointure.",
+        "La jointure associe chaque ligne d'une table à la ligne correspondante de l'autre via la clé.",
+        "Les conditions supplémentaires du WHERE filtrent ensuite le résultat de la jointure.",
+        "La syntaxe moderne JOIN... ON... sépare plus clairement la jointure du filtrage."
+      ]
+    }
+  ]
+}

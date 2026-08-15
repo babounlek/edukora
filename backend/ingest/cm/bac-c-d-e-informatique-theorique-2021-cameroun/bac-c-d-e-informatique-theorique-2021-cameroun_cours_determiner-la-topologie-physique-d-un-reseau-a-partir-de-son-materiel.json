@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-determiner-la-topologie-physique-d-un-reseau-a-partir-de-son-materiel-terminale-c",
+  "meta": {
+    "titre": "Déterminer la topologie physique d'un réseau à partir de son matériel",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Topologies de réseaux",
+    "duree_estimee_min": 10,
+    "tags": [
+      "topologie en étoile",
+      "topologie physique"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex1-q4.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Câbler un réseau, ce n'est pas seulement choisir des équipements : c'est aussi choisir comment les relier physiquement. La topologie en étoile, autour d'un switch central, est la plus répandue aujourd'hui."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un switch et son rôle central dans un réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La topologie en étoile",
+      "contenu_markdown": "La topologie physique décrit la disposition matérielle des câbles et équipements d'un réseau. Dans la topologie en étoile, tous les équipements sont reliés individuellement à un point central (un switch ou un hub), qui gère la communication entre eux. C'est la topologie la plus utilisée dans les réseaux locaux modernes.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Topologie en bus",
+          "quand_utiliser": "Réseaux anciens où tous les équipements partagent un même câble linéaire unique.",
+          "contenu_markdown": "Un seul câble dessert tous les équipements ; une coupure du câble principal isole l'ensemble du réseau, ce qui la rend peu fiable et aujourd'hui obsolète."
+        },
+        {
+          "nom": "Topologie en anneau",
+          "quand_utiliser": "Réseaux où les équipements sont reliés en boucle fermée.",
+          "contenu_markdown": "Chaque équipement est relié à ses deux voisins immédiats, formant une boucle ; les données circulent dans un sens autour de l'anneau."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la topologie physique du réseau, sachant que le matériel comprend un switch.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'équipement central du matériel",
+          "justification": "Un switch 16 ports figure dans le matériel reçu.",
+          "resultat_markdown": "Un switch central"
+        },
+        {
+          "numero": 2,
+          "action": "Associer cet équipement à la topologie correspondante",
+          "justification": "Un switch central auquel se connectent tous les postes définit une topologie en étoile.",
+          "resultat_markdown": "Topologie en étoile"
+        }
+      ],
+      "conclusion_markdown": "La présence d'un switch central relié individuellement à chaque équipement définit une topologie en étoile."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"topologie en bus\" par réflexe, sans tenir compte du switch mentionné dans l'énoncé",
+          "pourquoi_faux": "La topologie en bus ne comporte aucun équipement central comme un switch : tous les équipements partagent un câble unique. La présence explicite d'un switch dans le matériel exclut cette réponse.",
+          "correction_markdown": "Vérifie toujours quel équipement central (switch, hub) figure dans le matériel avant de conclure à une topologie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est l'avantage principal de la topologie en étoile en cas de panne d'un câble ?",
+          "solution_markdown": "Si le câble d'un seul équipement est coupé, seul cet équipement est isolé du réseau : les autres continuent de fonctionner normalement, contrairement à la topologie en bus où une coupure du câble principal isole tout le réseau."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que se passe-t-il pour tout le réseau si le switch central tombe en panne, dans une topologie en étoile ?",
+          "solution_markdown": "Tout le réseau est interrompu, puisque tous les équipements communiquent via ce point central unique : c'est le principal inconvénient de la topologie en étoile, qui crée un point unique de défaillance (single point of failure)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment pourrait-on réduire le risque de panne totale lié au switch central dans une topologie en étoile ?",
+          "solution_markdown": "On peut ajouter un second switch redondant, relié en parallèle au premier, avec un mécanisme de basculement automatique (failover) qui active le switch de secours en cas de panne du premier ; cette solution, plus coûteuse, est utilisée dans les réseaux d'entreprise critiques pour éliminer le point unique de défaillance."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La topologie en étoile relie tous les équipements à un point central (switch).",
+        "Une panne d'un câble n'isole qu'un seul équipement, pas tout le réseau.",
+        "Une panne du switch central, en revanche, interrompt tout le réseau.",
+        "C'est la topologie la plus utilisée dans les réseaux locaux modernes."
+      ]
+    }
+  ]
+}

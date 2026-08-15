@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-etablir-loi-probabilite-somme-tirage-simultane-plusieurs-chemins-terminale-d-ti",
+  "meta": {"titre": "Établir la loi de probabilité d'une somme quand plusieurs tirages donnent la même valeur", "cours_id": "cours-etablir-loi-probabilite-somme-tirage-simultane-plusieurs-chemins-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D/TI", "sous_theme": "Probabilités — loi de probabilité", "tags": ["loi de probabilité", "tirage simultané", "dénombrement"], "duree_estimee_minutes": 12, "epreuve_source": "bac-d-ti-maths-2024-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2024-cameroun-ex2-2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand une même valeur de la variable aléatoire peut être obtenue par plusieurs tirages différents, il faut compter TOUTES les combinaisons qui y mènent, pas une seule."},
+    {"type": "prerequis", "items_markdown": ["Combinaisons Ck n", "Univers image déjà déterminé"]},
+    {"type": "regle", "titre": "Dénombrer les combinaisons favorables pour chaque valeur", "contenu_markdown": "Pour chaque valeur $x_i$ de $X(\\Omega)$, on dénombre le nombre de tirages (combinaisons) qui donnent cette somme, puis $P(X=x_i)=\\dfrac{\\text{nombre de tirages favorables}}{\\text{nombre total de tirages possibles}}$, ce dernier étant $C_n^k$ pour un tirage simultané de $k$ éléments parmi $n$.", "formule_principale": "P(X=xi) = (nombre de combinaisons donnant xi) / Cnk", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Urne à 4 boules 1,2,3,4, tirage simultané de 2, X=somme. Établir la loi de X.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Total des tirages", "justification": "C(4,2)=6", "resultat_markdown": "6 tirages équiprobables"},
+      {"numero": 2, "action": "Compter les tirages par valeur", "justification": "3:(1,2) ; 4:(1,3) ; 5:(1,4),(2,3) ; 6:(2,4) ; 7:(3,4)", "resultat_markdown": "1,1,2,1,1 tirage(s) respectivement"},
+      {"numero": 3, "action": "Calculer les probabilités", "justification": "diviser chaque effectif par 6", "resultat_markdown": "P(3)=1/6, P(4)=1/6, P(5)=2/6=1/3, P(6)=1/6, P(7)=1/6"}
+    ], "conclusion_markdown": "Somme des probabilités = 1/6+1/6+2/6+1/6+1/6=6/6=1 ✓."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier une combinaison qui mène à la même valeur (ex. compter seulement (1,4) et oublier (2,3) pour la valeur 5)", "pourquoi_faux": "Chaque combinaison distincte compte comme un tirage équiprobable séparé ; en omettre une sous-estime la probabilité de la valeur concernée et fait échouer la vérification finale Σ P=1.", "correction_markdown": "Lister systématiquement TOUTES les paires (ou n-uplets) possibles avant de les répartir par valeur de somme, plutôt que de les deviner au fil de l'eau."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Urne à 3 boules 1,2,3, tirage simultané de 2, X=somme. Établir la loi de X.", "solution_markdown": "C(3,2)=3 tirages : (1,2)→3, (1,3)→4, (2,3)→5. P(3)=1/3, P(4)=1/3, P(5)=1/3."},
+      {"numero": 2, "difficulte": "difficile", "enonce_markdown": "Urne à 5 boules 1,2,3,4,5, tirage simultané de 2, X=somme. Calculer P(X=6).", "solution_markdown": "C(5,2)=10 tirages totaux. Combinaisons donnant 6 : (1,5),(2,4). Soit 2 tirages. P(X=6)=2/10=1/5."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Toujours dénombrer le nombre total de tirages possibles via Cnk avant de calculer les probabilités individuelles.", "Lister exhaustivement toutes les combinaisons menant à chaque valeur, sans en omettre aucune.", "Vérifier systématiquement que la somme des probabilités obtenues vaut 1."]}
+  ]
+}

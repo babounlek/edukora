@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-determiner-la-primitive-d-une-fonction-qui-s-annule-en-un-point-donne-terminale-c",
+  "meta": {
+    "titre": "Déterminer la primitive d'une fonction qui s'annule en un point donné",
+    "cours_id": "cours-determiner-la-primitive-d-une-fonction-qui-s-annule-en-un-point-donne-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Analyse — primitives et intégrales",
+    "tags": [
+      "primitive",
+      "identification de coefficients",
+      "condition initiale"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-A.2.b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver LA primitive vérifiant une condition précise (par exemple s'annuler en un point donné) se fait en deux temps : deviner la bonne forme générale par identification, puis fixer la constante grâce à la condition imposée."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir dériver un produit polynôme-exponentielle",
+        "Savoir résoudre un système en identifiant des coefficients"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de recherche par identification",
+      "contenu_markdown": "Pour trouver une primitive de $f(x)=P(x)e^{-x}$ (P polynôme de degré n), on cherche $F$ sous la forme $F(x)=-Q(x)e^{-x}$ avec Q polynôme de même degré n, à coefficients indéterminés. On calcule $F'$, on l'identifie à $f$ pour déterminer les coefficients de Q. La primitive générale $F+K$ ($K\\in\\mathbb{R}$) est alors connue ; la condition $F(x_0)=0$ donnée par l'énoncé permet de déterminer la constante K précise.",
+      "formule_principale": "F(x)=-Q(x)e^(-x)+K, identification des coefficients de Q via F'=f, puis K fixé par F(x0)=0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la primitive de f(x)=(x+1)²e^(-x) qui s'annule pour x=1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la forme générale F(x)=-(ax²+bx+c)e^(-x)",
+          "justification": "P est de degré 2, donc Q aussi.",
+          "resultat_markdown": "F(x)=-(ax²+bx+c)e^(-x)"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer F' et identifier avec f",
+          "justification": "F'(x)=e^(-x)[ax²+(b-2a)x+(c-b)], à égaler à (x+1)²e^(-x)=e^(-x)(x²+2x+1).",
+          "resultat_markdown": "a=1, b=4, c=5"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la primitive générale",
+          "justification": "F0(x)=-(x²+4x+5)e^(-x), primitive générale F=F0+K.",
+          "resultat_markdown": "F(x)=-(x²+4x+5)e^(-x)+K"
+        },
+        {
+          "numero": 4,
+          "action": "Fixer K par la condition F(1)=0",
+          "justification": "F(1)=-10/e+K=0.",
+          "resultat_markdown": "K=10/e"
+        }
+      ],
+      "conclusion_markdown": "F(x)=-(x²+4x+5)e^(-x)+10/e."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher Q de degré différent de P",
+          "pourquoi_faux": "Pour une fonction P(x)e^(-x), la primitive s'écrit toujours -Q(x)e^(-x) avec Q de même degré que P (le terme exponentiel ne change pas le degré du polynôme lors de la dérivation d'un tel produit) ; choisir un degré différent rend l'identification impossible.",
+          "correction_markdown": "Toujours choisir Q de même degré que P avant de commencer l'identification des coefficients."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Trouver une primitive de f(x)=e^(-x) sous la forme F(x)=Ke^(-x).",
+          "solution_markdown": "F'(x)=-Ke^(-x), on veut -Ke^(-x)=e^(-x), donc K=-1 : F(x)=-e^(-x)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trouver la primitive de f(x)=xe^(-x) sous la forme F(x)=-(ax+b)e^(-x).",
+          "solution_markdown": "F'(x)=e^(-x)[ax+(b-a)], identifié à xe^(-x) : a=1, b-a=0 donc b=1. F(x)=-(x+1)e^(-x)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi impose-t-on une condition comme F(x0)=0 pour déterminer 'la' primitive plutôt que 'une' primitive ?",
+          "solution_markdown": "Une fonction continue admet une infinité de primitives, différant toutes d'une constante additive ; sans condition supplémentaire, on ne peut décrire que la famille de primitives F+K. Une condition comme F(x0)=0 fixe cette constante de façon unique, désignant ainsi une seule primitive précise parmi l'infinité de possibilités."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chercher la primitive sous forme -Q(x)e^(-x) avec Q de même degré que P, puis identifier les coefficients.",
+        "La primitive générale s'écrit F0(x)+K ; la condition donnée par l'énoncé fixe K.",
+        "Vérifier systématiquement en dérivant F et en évaluant la condition initiale."
+      ]
+    }
+  ]
+}

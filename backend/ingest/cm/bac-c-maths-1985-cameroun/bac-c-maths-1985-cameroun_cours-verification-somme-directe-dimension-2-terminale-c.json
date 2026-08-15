@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-verification-somme-directe-dimension-2-terminale-c",
+  "meta": {
+    "titre": "Vérifier E = ker g ⊕ Im g en dimension 2 à partir de formules explicites",
+    "cours_id": "cours-verification-somme-directe-dimension-2-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - vérification concrète d'une somme directe",
+    "tags": ["somme directe", "déterminant", "vecteurs directeurs", "endomorphisme du plan"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_6_q2a"
+  },
+  "sections": {
+    "accroche": "Dans le plan (dimension 2), vérifier E=ker g⊕Im g à partir de formules explicites se résume à un calcul de déterminant : deux droites vectorielles sont supplémentaires si et seulement si leurs vecteurs directeurs sont non colinéaires.",
+    "prerequis": ["Calcul du noyau et de l'image d'un endomorphisme donné par formules", "Déterminant de deux vecteurs du plan", "Critère de colinéarité par déterminant nul"],
+    "regle": {
+      "titre": "Vérification par déterminant en dimension 2",
+      "contenu_markdown": "Pour $g:\\mathbb R^2\\to\\mathbb R^2$ donné explicitement : 1) calculer $\\ker g$ en résolvant $g(x,y)=(0,0)$, obtenir un vecteur directeur $\\vec d_1$, 2) calculer $\\mathrm{Im}\\,g$ en factorisant $g(x,y)$, obtenir un vecteur directeur $\\vec d_2$, 3) calculer le déterminant $\\det(\\vec d_1,\\vec d_2)$ : s'il est non nul, les deux droites sont supplémentaires dans $\\mathbb R^2$ (base du plan), donc $E=\\ker g\\oplus\\mathrm{Im}\\,g$.",
+      "formule_principale": "$\\det(\\vec d_1,\\vec d_2)\\neq0\\iff\\mathrm{Vect}(\\vec d_1)\\oplus\\mathrm{Vect}(\\vec d_2)=\\mathbb R^2$",
+      "variantes": ["Si le déterminant est nul, les deux droites sont confondues ou parallèles, et la somme n'est pas directe (ou n'est pas égale à E)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g(x,y)=(x+y,2x+2y)$. Vérifier si $E=\\ker g\\oplus\\mathrm{Im}\\,g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Déterminer $\\ker g$", "justification": "$x+y=0$ et $2x+2y=0$ sont équivalentes", "resultat_markdown": "$\\ker g=\\{(x,-x)\\}=\\mathrm{Vect}(1,-1)$"},
+        {"numero": 2, "action": "Déterminer $\\mathrm{Im}\\,g$", "justification": "$g(x,y)=(x+y)(1,2)$, colinéaire à $(1,2)$", "resultat_markdown": "$\\mathrm{Im}\\,g=\\mathrm{Vect}(1,2)$"},
+        {"numero": 3, "action": "Calculer le déterminant", "justification": "critère de supplémentarité", "resultat_markdown": "$\\det\\big((1,-1),(1,2)\\big)=1\\times2-(-1)\\times1=2+1=3\\neq0$"}
+      ],
+      "conclusion_markdown": "Le déterminant est non nul : $E=\\ker g\\oplus\\mathrm{Im}\\,g$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Se contenter de vérifier que les deux vecteurs directeurs semblent 'visuellement différents' sans calculer le déterminant", "pourquoi_faux": "deux vecteurs peuvent sembler différents tout en étant colinéaires (proportionnels)", "correction_markdown": "Toujours calculer explicitement le déterminant pour trancher rigoureusement la question de la colinéarité."},
+      {"erreur_markdown": "Se tromper dans l'ordre des coordonnées lors du calcul du déterminant $ad-bc$", "pourquoi_faux": "une inversion de l'ordre change le signe (sans incidence sur la nullité, mais source de confusion)", "correction_markdown": "Toujours écrire clairement $\\det\\big((a,b),(c,d)\\big)=ad-bc$ avant de substituer les valeurs numériques."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit $\\ker g=\\mathrm{Vect}(3,1)$ et $\\mathrm{Im}\\,g=\\mathrm{Vect}(6,2)$. Ces deux droites sont-elles supplémentaires ?", "solution_markdown": "$\\det\\big((3,1),(6,2)\\big)=3\\times2-1\\times6=6-6=0$ : les vecteurs sont colinéaires (proportionnels), donc les droites ne sont pas supplémentaires."}
+    ],
+    "synthese": "En dimension 2, E=ker g⊕Im g se vérifie en calculant le déterminant des vecteurs directeurs de ker g et Im g : non nul, les droites sont supplémentaires."
+  }
+}

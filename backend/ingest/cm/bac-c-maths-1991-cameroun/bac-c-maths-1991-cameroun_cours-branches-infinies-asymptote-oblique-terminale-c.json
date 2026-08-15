@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-branches-infinies-asymptote-oblique-terminale-c",
+  "meta": {
+    "titre": "Étudier les branches infinies et déterminer une asymptote oblique",
+    "cours_id": "cours-branches-infinies-asymptote-oblique-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Étude de fonctions - branches infinies, asymptote oblique",
+    "tags": ["asymptote oblique", "branche infinie", "changement de variable", "division euclidienne"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1991-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1991-cameroun_exercice_2_q3"
+  },
+  "sections": {
+    "accroche": "Prouver l'existence d'une asymptote oblique demande de deviner sa pente probable (souvent via un équivalent), puis de vérifier rigoureusement que f(x)-(pente×x) tend vers une limite finie.",
+    "prerequis": ["Définition d'une asymptote oblique", "Division euclidienne de polynômes", "Changement de variable dans une limite"],
+    "regle": {
+      "titre": "Prouver une asymptote oblique",
+      "contenu_markdown": "Pour une fonction $f$ tendant vers $\\pm\\infty$ en $a$ (fini ou infini), la droite $y=\\alpha x+\\beta$ est asymptote oblique si $\\lim_{x\\to a}[f(x)-\\alpha x]=\\beta$ (limite finie). En pratique : deviner $\\alpha$ (souvent via un équivalent de $f$), calculer $f(x)-\\alpha x$, simplifier (division euclidienne si $f$ est une fraction rationnelle, ou changement de variable si $f$ contient une exponentielle/logarithme), et identifier la limite $\\beta$.",
+      "formule_principale": "$y=\\alpha x+\\beta$ asymptote $\\iff\\lim_{x\\to a}[f(x)-\\alpha x]=\\beta$ (fini)",
+      "variantes": ["Si f(x)-αx tend vers ±∞, il n'y a pas d'asymptote oblique mais une branche parabolique de direction αx"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Étudier la branche infinie de $g(x)=\\dfrac{2x^2+1}{x-1}$ en $+\\infty$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Effectuer la division euclidienne", "justification": "2x²+1=(x-1)(2x+2)+3", "resultat_markdown": "$g(x)=2x+2+\\dfrac3{x-1}$"},
+        {"numero": 2, "action": "Identifier la partie tendant vers 0", "justification": "3/(x-1)→0 quand x→+∞", "resultat_markdown": "$g(x)-(2x+2)=\\dfrac3{x-1}\\to0$"}
+      ],
+      "conclusion_markdown": "La droite y=2x+2 est asymptote oblique en +∞."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Deviner une pente α incorrecte et ne pas vérifier que f(x)-αx tend bien vers une limite finie", "pourquoi_faux": "une mauvaise pente donnerait une limite infinie, signe qu'il n'y a pas d'asymptote pour cette pente-là", "correction_markdown": "Toujours vérifier explicitement que la limite obtenue est finie avant de conclure à une asymptote oblique."},
+      {"erreur_markdown": "Oublier d'étudier séparément chaque branche infinie (en -∞ et en +∞) si la fonction a un comportement différent de chaque côté", "pourquoi_faux": "certaines fonctions ont des asymptotes différentes ou pas d'asymptote du tout selon le côté", "correction_markdown": "Toujours traiter séparément chaque branche infinie du domaine de définition."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Étudier la branche infinie de h(x)=x+ln(x)/x en +∞.", "solution_markdown": "h(x)-x=ln(x)/x→0 (croissance comparée) : la droite y=x est asymptote oblique en +∞."}
+    ],
+    "synthese": "Pour prouver une asymptote oblique y=αx+β, deviner α, calculer f(x)-αx (via division euclidienne ou changement de variable), et vérifier que cette différence tend vers une limite finie β."
+  }
+}

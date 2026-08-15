@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-ecriture-complexe-similitude-directe-c",
+  "meta": {
+    "titre": "Écriture complexe d'une similitude directe",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Transformations complexes du plan",
+    "duree_estimee_min": 15,
+    "tags": ["similitude directe", "nombres complexes", "rotation", "homothétie"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qA2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Faire tourner une figure du plan tout en l'agrandissant, en une seule transformation : c'est exactement ce que fait une similitude directe. Avec les nombres complexes, cette double action (rotation + homothétie) se code dans une seule multiplication, ce qui rend ces transformations remarquablement simples à manipuler par le calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Forme exponentielle d'un nombre complexe", "Angle et module d'un nombre complexe", "Composition d'une rotation et d'une homothétie de même centre"]
+    },
+    {
+      "type": "regle",
+      "titre": "Multiplier par k fois e à la puissance i-thêta",
+      "contenu_markdown": "Une similitude directe plane de centre $O$ (origine du repère), de rapport $k>0$ et d'angle $\\theta$, a pour écriture complexe :\n$$z\\longmapsto k\\,e^{i\\theta}\\,z$$\n\nSi le centre $\\Omega$ n'est pas l'origine, d'affixe $\\omega$, l'écriture devient $z\\mapsto \\omega+k e^{i\\theta}(z-\\omega)$. Le rapport $k$ correspond au facteur d'agrandissement (homothétie), et $\\theta$ à l'angle de rotation ; les deux effets sont appliqués simultanément par la multiplication complexe.",
+      "formule_principale": "z \\mapsto k\\,e^{i\\theta} z \\quad (\\text{centre } O)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner l'écriture complexe de la similitude directe $f$ de centre $O$, d'angle $\\dfrac{\\pi}{2}$ et de rapport $2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier k et thêta",
+          "justification": "Ce sont les données de l'énoncé.",
+          "resultat_markdown": "$k=2$, $\\theta=\\dfrac{\\pi}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer e^{i*thêta}",
+          "justification": "On utilise les valeurs remarquables du cosinus et du sinus.",
+          "resultat_markdown": "$e^{i\\pi/2}=\\cos\\dfrac{\\pi}{2}+i\\sin\\dfrac{\\pi}{2}=0+i\\times1=i$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule générale",
+          "justification": "Centre O, donc pas de terme de translation.",
+          "resultat_markdown": "$f(z)=2\\times i\\times z=2iz$"
+        }
+      ],
+      "conclusion_markdown": "La similitude $f$ a pour écriture complexe $z\\mapsto 2iz$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire l'angle et le rapport dans le mauvais ordre ou oublier l'un des deux facteurs.",
+          "pourquoi_faux": "L'écriture complexe combine à la fois le rapport (module) et l'angle (argument) dans un seul facteur multiplicatif $k e^{i\\theta}$ : oublier le rapport revient à ne coder qu'une rotation, oublier l'angle ne code qu'une homothétie.",
+          "correction_markdown": "Vérifie systématiquement que ton facteur multiplicatif a le bon module (le rapport $k$) et le bon argument (l'angle $\\theta$) en le récrivant sous forme algébrique si besoin."
+        },
+        {
+          "erreur_markdown": "Utiliser la formule du centre O alors que le centre de la similitude n'est pas l'origine.",
+          "pourquoi_faux": "Si le centre est un point $\\Omega\\neq O$, il faut ajouter un terme de translation : $z\\mapsto \\omega+ke^{i\\theta}(z-\\omega)$, sinon l'image du centre lui-même ne serait pas invariante.",
+          "correction_markdown": "Avant d'écrire la formule, vérifie toujours quel est le centre annoncé dans l'énoncé - la formule simplifiée $z\\mapsto ke^{i\\theta}z$ ne vaut que pour un centre à l'origine."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner l'écriture complexe de la similitude directe de centre O, d'angle $\\pi$ et de rapport $3$.",
+          "solution_markdown": "$e^{i\\pi}=-1$. L'écriture est $z\\mapsto 3\\times(-1)\\times z=-3z$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner l'écriture complexe de la similitude directe de centre O, d'angle $\\dfrac{\\pi}{3}$ et de rapport $\\dfrac12$.",
+          "solution_markdown": "$e^{i\\pi/3}=\\cos\\dfrac{\\pi}{3}+i\\sin\\dfrac{\\pi}{3}=\\dfrac12+i\\dfrac{\\sqrt3}{2}$. L'écriture est $z\\mapsto \\dfrac12\\left(\\dfrac12+i\\dfrac{\\sqrt3}{2}\\right)z=\\left(\\dfrac14+i\\dfrac{\\sqrt3}{4}\\right)z$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La similitude directe $g$ de centre $\\Omega(1;1)$ (affixe $\\omega=1+i$), d'angle $\\dfrac{\\pi}{2}$ et de rapport $2$ a pour écriture $z\\mapsto \\omega+2i(z-\\omega)$. Développer cette écriture sous la forme $z\\mapsto az+b$ et vérifier que $g(\\omega)=\\omega$.",
+          "solution_markdown": "$g(z)=\\omega+2i(z-\\omega)=\\omega+2iz-2i\\omega=2iz+\\omega(1-2i)$.\n\nAvec $\\omega=1+i$ : $\\omega(1-2i)=(1+i)(1-2i)=1-2i+i-2i^2=1-i+2=3-i$.\n\nDonc $g(z)=2iz+3-i$, soit $a=2i$, $b=3-i$.\n\nVérification : $g(\\omega)=2i(1+i)+3-i=2i+2i^2+3-i=2i-2+3-i=i+1=1+i=\\omega$. Le centre est bien invariant, comme attendu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'écriture complexe d'une similitude directe de centre O, de rapport k et d'angle thêta est z ↦ k e^{i theta} z : un seul facteur multiplicatif code à la fois l'agrandissement et la rotation.",
+        "Pour un centre différent de l'origine, ajoute le terme de translation approprié : z ↦ ω + k e^{i theta}(z-ω).",
+        "Convertis toujours l'angle donné en sa forme algébrique (cosinus + i sinus) avant de simplifier, surtout pour les angles remarquables.",
+        "Le centre d'une similitude directe est toujours son unique point invariant : c'est le test de vérification le plus rapide une fois la formule développée.",
+        "Cette écriture est la porte d'entrée systématique, au BAC C, pour étudier l'image d'une courbe ou d'un ensemble de points par une similitude, en substituant l'expression réciproque z=... dans l'équation de départ."
+      ]
+    }
+  ]
+}

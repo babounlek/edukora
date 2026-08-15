@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-calculer-l-aire-d-une-conique-par-diagonalisation-d-une-forme-quadratique-terminale-c",
+  "meta": {
+    "titre": "Calculer l'aire d'une conique par diagonalisation d'une forme quadratique",
+    "cours_id": "cours-calculer-l-aire-d-une-conique-par-diagonalisation-d-une-forme-quadratique-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Applications — coniques et aires",
+    "tags": [
+      "valeurs propres",
+      "diagonalisation",
+      "aire d'une ellipse",
+      "invariance par rotation"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex4-Tache2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation quadratique à terme croisé xy, même sans jamais la ramener explicitement au repère cartésien d'origine, révèle son aire dès que l'on connaît les valeurs propres de la matrice qui l'encode."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir calculer les valeurs propres d'une matrice symétrique 2×2",
+        "Connaître la formule de l'aire d'une ellipse πab",
+        "Savoir qu'une rotation (changement de repère orthonormé) préserve les aires"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Diagonaliser pour trouver l'aire d'une conique",
+      "contenu_markdown": "Une équation $Ax^2+By^2+Cxy=D$ dans un repère orthonormé correspond à la matrice symétrique $\\begin{pmatrix}A&C/2\\\\C/2&B\\end{pmatrix}$. Ses valeurs propres $\\lambda_1,\\lambda_2$ donnent l'équation réduite $\\lambda_1x''^2+\\lambda_2y''^2=D$ (ellipse si $\\lambda_1,\\lambda_2>0$), de demi-axes $a=\\sqrt{D/\\lambda_1}$, $b=\\sqrt{D/\\lambda_2}$. L'aire $\\pi ab$ ainsi obtenue est valable dans le repère physique d'origine, car une rotation entre repères orthonormés préserve les aires.",
+      "formule_principale": "λ1,λ2 valeurs propres ; a=√(D/λ1), b=√(D/λ2) ; Aire=πab (invariante par rotation)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "13X²+7Y²+6√3XY-16=0 dans un repère orthonormé. Calculer l'aire de cette conique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la matrice associée",
+          "justification": "Coefficient du terme croisé divisé également entre les deux positions symétriques.",
+          "resultat_markdown": "M = [[13, 3√3],[3√3, 7]]"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les valeurs propres",
+          "justification": "(13-λ)(7-λ)-27=0 ⟹ λ²-20λ+64=0.",
+          "resultat_markdown": "Δ=400-256=144=12², λ=(20±12)/2 ⟹ λ1=16, λ2=4"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer les demi-axes",
+          "justification": "16x''²+4y''²=16, soit x''²/1+y''²/4=1.",
+          "resultat_markdown": "a=1 (=√(16/16)), b=2 (=√(16/4))"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'aire",
+          "justification": "Aire=πab.",
+          "resultat_markdown": "Aire = π×1×2 = 2π unités d'aire"
+        }
+      ],
+      "conclusion_markdown": "L'aire de la conique vaut 2π unités d'aire, valable directement dans le repère physique après conversion d'unité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'il faut revenir au repère cartésien (i,j) d'origine avant de pouvoir calculer l'aire",
+          "pourquoi_faux": "Puisque le repère (u,v) donné est déjà orthonormé (une simple rotation de (i,j)), l'aire calculée dans ce repère est directement valable dans le repère physique, sans conversion supplémentaire liée au changement de base ; seule une conversion d'unité de longueur (si l'énoncé la précise) reste nécessaire.",
+          "correction_markdown": "Vérifier que le repère de départ est bien orthonormé (normes 1, produit scalaire nul) : dans ce cas, aucune correction d'aire liée au changement de base n'est nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'aire de l'ellipse x²/9+y²/4=1 (repère orthonormé déjà diagonal).",
+          "solution_markdown": "a=3,b=2, Aire=π×3×2=6π."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trouver les valeurs propres de [[5,2],[2,5]] (sans terme croisé mixte, matrice déjà quasi-diagonale).",
+          "solution_markdown": "(5-λ)²-4=0 ⟹ λ=5±2 ⟹ λ1=7, λ2=3."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la trace et le déterminant de la matrice (13+7=20 et 13×7-27=64) permettent-ils de vérifier les valeurs propres trouvées sans refaire tout le calcul ?",
+          "solution_markdown": "La somme des valeurs propres égale toujours la trace de la matrice (λ1+λ2=20=13+7) et leur produit égale toujours le déterminant (λ1×λ2=64=91-27) : vérifier 16+4=20 et 16×4=64 confirme immédiatement, sans recalcul complet, que les valeurs propres trouvées sont correctes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une équation quadratique à terme croisé se diagonalise via les valeurs propres de sa matrice symétrique associée.",
+        "L'aire de l'ellipse résultante, πab, est invariante par changement de repère orthonormé (rotation).",
+        "Vérifier trace=somme des valeurs propres et déterminant=produit des valeurs propres confirme rapidement un calcul de valeurs propres."
+      ]
+    }
+  ]
+}

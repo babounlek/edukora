@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-probabilite-evenement-au-moins-complementaire-terminale-d",
+  "meta": {"titre": "Calculer P(X≥k) via l'événement complémentaire", "cours_id": "cours-probabilite-evenement-au-moins-complementaire-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Probabilités — événement au moins / au plus", "tags": ["probabilité", "événement contraire", "loi binomiale"], "duree_estimee_minutes": 3, "epreuve_source": "bac-d-maths-2011-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2011-cameroun-ex1-q2c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Calculer P(X≥k) directement demanderait de sommer un grand nombre de termes ; passer par l'événement contraire P(X<k), généralement composé de moins de termes, est presque toujours plus rapide."},
+    {"type": "prerequis", "items_markdown": ["Formule P(X=j) de la loi binomiale", "P(A)+P(non A)=1"]},
+    {"type": "regle", "titre": "P(X≥k) = 1 - P(X<k)", "contenu_markdown": "Pour une variable discrète $X$ à valeurs entières, $P(X\\geqslant k)=1-P(X<k)=1-\\big[P(X=0)+P(X=1)+\\cdots+P(X=k-1)\\big]$. Cette méthode est avantageuse quand $k-1$ est petit devant le nombre total de valeurs possibles de $X$.", "formule_principale": "P(X≥k) = 1 - [P(X=0)+...+P(X=k-1)]", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "X suit B(6;0,1). Calculer P(X≥2) sachant P(X=0)≈0,5314 et P(X=1)≈0,3543.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Sommer les termes complémentaires", "justification": "P(X<2)=P(X=0)+P(X=1)", "resultat_markdown": "0,5314+0,3543=0,8857"},
+      {"numero": 2, "action": "Compléter à 1", "justification": "1-0,8857", "resultat_markdown": "0,1143"}
+    ], "conclusion_markdown": "P(X≥2)≈0,1143."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Omettre un terme de la somme complémentaire (par exemple oublier P(X=0)) lors du calcul de P(X<k)", "pourquoi_faux": "P(X<k) doit inclure absolument TOUTES les valeurs entières de 0 à k-1 : oublier ne serait-ce qu'un seul terme fausse tout le résultat final.", "correction_markdown": "Lister explicitement toutes les valeurs de j de 0 à k-1 avant de sommer, pour s'assurer qu'aucune n'est omise."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "X suit B(5;0,3). P(X=0)≈0,168, P(X=1)≈0,360. Calculer P(X≥2).", "solution_markdown": "P(X<2)=0,168+0,360=0,528. P(X≥2)=1-0,528=0,472."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Pour P(X≥k), il est presque toujours plus rapide de calculer 1-P(X<k) que de sommer directement tous les termes de k à la valeur maximale.", "Bien lister tous les termes complémentaires de 0 à k-1 sans en omettre aucun."]}
+  ]
+}

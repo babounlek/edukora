@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-recurrence-encadrement-suite-via-monotonie-fonction-terminale-d",
+  "meta": {"titre": "Démontrer par récurrence qu'une suite reste dans un intervalle stable grâce à la monotonie de f", "cours_id": "cours-recurrence-encadrement-suite-via-monotonie-fonction-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Suites numériques — stabilité d'un intervalle par récurrence", "tags": ["récurrence", "intervalle stable", "monotonie"], "duree_estimee_minutes": 4, "epreuve_source": "bac-d-maths-2011-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2011-cameroun-ex3-q8bi"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un intervalle dont les bornes sont des valeurs fixes de f, sur lequel f est strictement monotone, reste stable par la relation de récurrence : c'est la clé pour démontrer un encadrement valable à tout rang."},
+    {"type": "prerequis", "items_markdown": ["Monotonie de f sur l'intervalle considéré (tableau de variation)", "Valeurs de f aux bornes de l'intervalle", "Principe de récurrence"]},
+    {"type": "regle", "titre": "f strictement croissante sur [a;b] avec f(a)=a, f(b)=b ⟹ ]a;b[ stable", "contenu_markdown": "Si $f$ est strictement croissante sur $[a;b]$ avec $f(a)=a$ et $f(b)=b$, alors pour tout $x\\in\\,]a;b[$, $f(x)\\in\\,]a;b[$ (car $f(a)<f(x)<f(b)$, c'est-à-dire $a<f(x)<b$). On en déduit par récurrence que si $u_n\\in\\,]a;b[$, alors $u_{n+1}=f(u_n)\\in\\,]a;b[$ également : l'intervalle $]a;b[$ est stable pour la suite.", "formule_principale": "f croissante sur [a;b], f(a)=a, f(b)=b ⟹ un∈]a;b[ pour tout n (récurrence)", "variantes": ["Si f est décroissante sur [a;b] avec f(a)=b et f(b)=a, le raisonnement s'adapte de façon symétrique"]},
+    {"type": "exemple_resolu", "enonce_markdown": "f croissante sur [0;4], f(0)=0, f(4)=4, u0∈]0;4[. Montrer que un∈]0;4[ pour tout n.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "u0∈]0;4[ donné", "resultat_markdown": "vrai au rang 0"},
+      {"numero": 2, "action": "Hérédité", "justification": "un∈]0;4[ ⟹ f(0)<f(un)<f(4)", "resultat_markdown": "0<u(n+1)<4"}
+    ], "conclusion_markdown": "Par récurrence, un∈]0;4[ pour tout n."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Appliquer la monotonie de f sur un intervalle qui n'est pas celui où elle a réellement été établie dans le tableau de variation", "pourquoi_faux": "Si f change de sens de variation à l'intérieur de l'intervalle considéré, l'implication f(a)<f(x)<f(b) pour x∈]a;b[ n'est plus valide, et le raisonnement par récurrence s'effondre.", "correction_markdown": "Toujours vérifier, à l'aide du tableau de variation déjà établi, que l'intervalle utilisé pour la récurrence est bien inclus dans une SEULE branche de stricte monotonie de f."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "f décroissante sur [1;5], f(1)=5, f(5)=1, u0∈]1;5[. Montrer que un∈]1;5[ pour tout n.", "solution_markdown": "Initialisation : u0∈]1;5[ donné. Hérédité : un∈]1;5[, f décroissante donc f(5)<f(un)<f(1), soit 1<u(n+1)<5. Par récurrence, un∈]1;5[ pour tout n."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un intervalle dont les bornes sont des valeurs fixes de f, où f est strictement monotone, est stable par la relation de récurrence.", "Toujours vérifier que l'intervalle utilisé correspond exactement à une branche de monotonie déjà établie dans le tableau de variation."]}
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "epreuve_source": "probatoire-c-maths-2014-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "C",
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2014,
+  "duree_epreuve": "3h (estimation)",
+  "coefficient": 6,
+  "numero_exercice": 2,
+  "titre_exercice": "Statistiques à deux variables (covariance, corrélation, régression) et dénombrement",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\nOn s'est intéressé au nombre de personnes qui ont visité un site touristique sur 7 ans. Les résultats de cette enquête sont consignés dans le tableau ci-dessous :\n\n| Rang de l'année ($X$) | 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n|---|---|---|---|---|---|---|---|\n| Nombre de personnes en milliers ($Y$) | 1,5 | 2 | 3,5 | 1 | 6 | 8 | 10 |",
+  "questions": [
+    {
+      "numero": "1",
+      "points": 0.5,
+      "enonce_markdown": "1. Représenter le nuage de points de la série statistique ainsi définie.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-nuage-points-serie-statistique-deux-variables-premiere-c",
+          "texte": "Le nuage de points d'une série statistique à deux variables (X,Y) se construit en plaçant, dans un repère, un point de coordonnées (xi,yi) pour chaque couple d'observations, sans les relier entre eux."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe nuage de points d'une série statistique à deux variables $(X,Y)$ se construit en plaçant, dans un repère orthogonal, un point de coordonnées $(x_i;y_i)$ pour chaque couple d'observations, sans relier ces points entre eux.\n\nOn place les 7 points : $(1;1{,}5)$, $(2;2)$, $(3;3{,}5)$, $(4;1)$, $(5;6)$, $(6;8)$, $(7;10)$, dans un repère où l'axe des abscisses représente le rang de l'année et l'axe des ordonnées le nombre de personnes (en milliers).\n\nLe nuage ainsi obtenu montre une tendance globalement croissante (malgré une irrégularité visible au point $(4;1)$, en retrait par rapport à la tendance générale), suggérant une corrélation positive entre $X$ et $Y$."
+    },
+    {
+      "numero": "2a",
+      "points": 0.75,
+      "enonce_markdown": "2.(a) Calculer la covariance de la série statistique $(X;Y)$. On donnera le résultat à $10^{-2}$ près par excès.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-covariance-serie-statistique-deux-variables-premiere-c",
+          "texte": "La covariance d'une série statistique à deux variables est Cov(X,Y) = (1/n)Σ(xi×yi) - x̄×ȳ, c'est-à-dire la moyenne des produits moins le produit des moyennes."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa covariance d'une série statistique à deux variables est $\\text{Cov}(X,Y)=\\dfrac{1}{n}\\sum x_iy_i-\\bar x\\times\\bar y$ (moyenne des produits moins produit des moyennes).\n\n**Calcul de $\\bar x$** : $\\bar x=\\dfrac{1+2+3+4+5+6+7}{7}=\\dfrac{28}{7}=4$.\n\n**Calcul de $\\bar y$** : $\\bar y=\\dfrac{1{,}5+2+3{,}5+1+6+8+10}{7}=\\dfrac{32}{7}\\approx4{,}5714$.\n\n**Calcul de $\\sum x_iy_i$** :\n$$1\\times1{,}5+2\\times2+3\\times3{,}5+4\\times1+5\\times6+6\\times8+7\\times10$$\n$$=1{,}5+4+10{,}5+4+30+48+70=168$$\n\n**Calcul de la covariance** :\n$$\\text{Cov}(X,Y)=\\frac{168}{7}-4\\times\\frac{32}{7}=\\frac{168}{7}-\\frac{128}{7}=\\frac{40}{7}\\approx5{,}714285\\ldots$$\n\n**Arrondi à $10^{-2}$ près par excès** (c'est-à-dire arrondi au centième supérieur, quel que soit le chiffre suivant) : $5{,}714285\\ldots$ se situe entre $5{,}71$ et $5{,}72$ ; l'arrondi par excès donne :\n\n$$\\text{Cov}(X,Y)\\approx5{,}72$$"
+    },
+    {
+      "numero": "2bi",
+      "points": 0.5,
+      "enonce_markdown": "2.(b) En prenant la moyenne de $Y$ égale à $4{,}57$ ; la variance de $X$ égale à $4$ et la variance de $Y$ égale à $10{,}46$ :\n\ni. Calculer le coefficient de corrélation linéaire entre $X$ et $Y$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-coefficient-correlation-lineaire-premiere-c",
+          "texte": "Le coefficient de corrélation linéaire entre X et Y est r = Cov(X,Y)/(σX×σY), où σX et σY sont les écarts-types (racines carrées des variances) de chaque série."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe coefficient de corrélation linéaire entre $X$ et $Y$ est $r=\\dfrac{\\text{Cov}(X,Y)}{\\sigma_X\\times\\sigma_Y}$, où $\\sigma_X$ et $\\sigma_Y$ sont les écarts-types (racines carrées des variances) de chaque série.\n\n**Écarts-types** : $\\sigma_X=\\sqrt{4}=2$ ; $\\sigma_Y=\\sqrt{10{,}46}\\approx3{,}234$.\n\n**Calcul du coefficient de corrélation** (avec $\\text{Cov}(X,Y)\\approx5{,}714$, valeur non arrondie de la question 2.a) :\n$$r=\\frac{5{,}714}{2\\times3{,}234}=\\frac{5{,}714}{6{,}468}\\approx0{,}88$$\n\n**Le coefficient de corrélation linéaire est $r\\approx0{,}88$**, proche de $1$ : cela indique une forte corrélation linéaire positive entre le rang de l'année et le nombre de visiteurs."
+    },
+    {
+      "numero": "2bii",
+      "points": 0.75,
+      "enonce_markdown": "ii. Justifier qu'une équation de la droite de régression de $Y$ en $X$ est : $y=1{,}43x-1{,}15$.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-droite-regression-y-en-x-premiere-c",
+          "texte": "La droite de régression de Y en X passe par le point moyen (x̄,ȳ) et a pour coefficient directeur a=Cov(X,Y)/Var(X) ; son équation est y=ax+b avec b=ȳ-a×x̄."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa droite de régression de $Y$ en $X$ passe par le point moyen $(\\bar x,\\bar y)$ et a pour coefficient directeur $a=\\dfrac{\\text{Cov}(X,Y)}{\\text{Var}(X)}$ ; son équation est $y=ax+b$, avec $b=\\bar y-a\\bar x$.\n\n**Calcul du coefficient directeur** (en utilisant $\\text{Cov}(X,Y)\\approx5{,}72$, valeur arrondie de la question 2.a, et $\\text{Var}(X)=4$ donnée) :\n$$a=\\frac{5{,}72}{4}=1{,}43$$\n\n**Calcul de l'ordonnée à l'origine** (en utilisant $\\bar y=4{,}57$ et $\\bar x=4$, valeurs données) :\n$$b=\\bar y-a\\bar x=4{,}57-1{,}43\\times4=4{,}57-5{,}72=-1{,}15$$\n\n**On retrouve exactement l'équation annoncée : $y=1{,}43x-1{,}15$.**\n\n### Piège à éviter\nCe calcul utilise volontairement les valeurs déjà arrondies (covariance à $5{,}72$, moyenne de $Y$ à $4{,}57$) fournies ou calculées dans les questions précédentes, comme l'indique l'énoncé lui-même (« en prenant la moyenne de Y égale à 4,57... »). Utiliser des valeurs non arrondies donnerait une ordonnée à l'origine légèrement différente (environ $-1{,}14$ au lieu de $-1{,}15$) : ce n'est pas une erreur de calcul, mais une conséquence normale du choix (imposé par l'énoncé) de travailler avec des valeurs déjà arrondies."
+    },
+    {
+      "numero": "2biii",
+      "points": 0.5,
+      "enonce_markdown": "En déduire une estimation du nombre de personnes qui visiteront ce site en l'année de rang 31.",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-estimation-regression-lineaire-premiere-c",
+          "texte": "Pour estimer une valeur de Y à partir d'une valeur de X à l'aide d'une droite de régression déjà établie, on substitue simplement la valeur de X dans l'équation de la droite."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour estimer une valeur de $Y$ à partir d'une valeur de $X$ à l'aide d'une droite de régression déjà établie, on substitue simplement la valeur de $X$ dans l'équation de la droite.\n\nEn substituant $x=31$ dans $y=1{,}43x-1{,}15$ :\n$$y=1{,}43\\times31-1{,}15=44{,}33-1{,}15=43{,}18$$\n\n**On peut estimer qu'environ $43{,}18$ milliers de personnes, soit environ $43\\,180$ personnes, visiteront ce site l'année de rang $31$.**\n\n### Conseil\nCette estimation reste une extrapolation risquée : le rang $31$ est très éloigné de la plage des données observées (rangs $1$ à $7$), et rien ne garantit que la tendance linéaire observée sur 7 ans se maintienne sur une aussi longue période."
+    },
+    {
+      "numero": "3a",
+      "points": 0.5,
+      "enonce_markdown": "3. Ce site comporte 5 escales distinctes nommées $A$, $B$, $C$, $D$ et $E$. Elles sont obligatoires pour tous les visiteurs qui y passent une seule fois par escale. De combien de façons distinctes peut-on :\n\n(a) Parcourir les 5 escales ?",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-permutation-nombre-arrangements-total-premiere-c",
+          "texte": "Le nombre de façons d'ordonner n éléments distincts (une permutation) est n! (factorielle de n)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe nombre de façons d'ordonner $n$ éléments distincts (une permutation) est $n!$ (factorielle de $n$).\n\nParcourir les 5 escales dans un certain ordre revient à choisir une permutation des 5 escales :\n$$5!=5\\times4\\times3\\times2\\times1=120$$\n\n**Il existe $120$ façons distinctes de parcourir les 5 escales.**"
+    },
+    {
+      "numero": "3b",
+      "points": 0.5,
+      "enonce_markdown": "(b) Parcourir les 5 escales si on commence par l'escale $A$ ?",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-permutation-premier-element-fixe-premiere-c",
+          "texte": "Si un élément est fixé en première position, le nombre de façons d'ordonner les n éléments restants (les n-1 autres éléments) est (n-1)!."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi un élément est fixé en première position (ici, l'escale $A$ toujours visitée en premier), le nombre de façons d'ordonner les éléments restants est $(n-1)!$, où $n$ est le nombre total d'éléments.\n\nL'escale $A$ étant fixée en première position, il reste à ordonner les 4 escales restantes ($B$, $C$, $D$, $E$) :\n$$4!=4\\times3\\times2\\times1=24$$\n\n**Il existe $24$ façons distinctes de parcourir les 5 escales en commençant par l'escale $A$.**"
+    }
+  ]
+}

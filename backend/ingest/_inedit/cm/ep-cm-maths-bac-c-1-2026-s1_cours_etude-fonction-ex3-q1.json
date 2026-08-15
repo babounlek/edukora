@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-etude-complete-fonction-exponentielle-bac-c",
+  "meta": {
+    "titre": "Étude complète d'une fonction exponentielle",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Analyse - étude de fonctions",
+    "duree_estimee_min": 35,
+    "tags": ["étude de fonction"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex3-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Limites, dérivée, tableau de variations, branches infinies, tangente : une étude de fonction complète, c'est presque toujours le même enchaînement de cinq étapes, appliqué à des fonctions différentes. Maîtriser l'ordre et les outils de chaque étape te permet de traiter n'importe quelle fonction du programme sans jamais te demander « par quoi je commence ? »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée d'un produit de fonctions",
+        "Théorème des croissances comparées ($x^n$ contre $e^x$)",
+        "Signe d'un produit de facteurs, tableau de signes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les cinq étapes d'une étude de fonction complète",
+      "contenu_markdown": "1. **Limites aux bornes du domaine** : en présence d'une exponentielle et d'une puissance de $x$, une forme indéterminée se lève avec le théorème des croissances comparées ($\\lim_{x\\to+\\infty}\\dfrac{x^n}{e^x}=0$, $\\lim_{x\\to-\\infty}x^ne^x=0$).\n2. **Dérivée et signe** : dériver (formule du produit si besoin), puis étudier le signe de chaque facteur séparément dans un tableau de signes.\n3. **Tableau de variations** : en déduire le sens de variation, avec les valeurs aux bornes et aux points où $f'$ s'annule.\n4. **Branches infinies** : limite finie de $f$ → asymptote horizontale ; sinon, étudier $\\lim\\dfrac{f(x)}{x}$ (infinie → branche parabolique de direction $(Oy)$ ; finie non nulle → étudier ensuite $f(x)-ax$).\n5. **Tangente en un point** : équation $y=f'(x_0)(x-x_0)+f(x_0)$.",
+      "formule_principale": "y = f'(x_0)(x-x_0) + f(x_0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier complètement la fonction $f(x)=x^2e^{-x}$ sur $\\mathbb R$ : limites, dérivée et variations, branches infinies, tangente au point d'abscisse $0$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les limites en $-\\infty$ et $+\\infty$",
+          "justification": "En $-\\infty$, produit de deux termes tendant vers $+\\infty$ ; en $+\\infty$, croissances comparées sur $\\dfrac{x^2}{e^x}$.",
+          "resultat_markdown": "$\\lim_{-\\infty}f=+\\infty$, $\\lim_{+\\infty}f=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $f'$ et étudier son signe",
+          "justification": "Formule du produit $u'v+uv'$ avec $u=x^2$, $v=e^{-x}$, puis signe de $x(2-x)$ (car $e^{-x}>0$ toujours).",
+          "resultat_markdown": "$f'(x)=x(2-x)e^{-x}$ ; négative sur $]-\\infty;0[$, positive sur $]0;2[$, négative sur $]2;+\\infty[$"
+        },
+        {
+          "numero": 3,
+          "action": "Construire le tableau de variations",
+          "justification": "On en déduit directement le sens de variation à partir du signe de $f'$.",
+          "resultat_markdown": "$f$ décroît de $+\\infty$ à $0$ sur $]-\\infty;0]$, croît de $0$ à $4e^{-2}$ sur $[0;2]$, décroît de $4e^{-2}$ à $0$ sur $[2;+\\infty[$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier les branches infinies",
+          "justification": "En $+\\infty$, limite finie ($0$) → asymptote horizontale. En $-\\infty$, $\\dfrac{f(x)}{x}=xe^{-x}\\to-\\infty$ → branche parabolique.",
+          "resultat_markdown": "Asymptote $y=0$ en $+\\infty$ ; branche parabolique de direction $(Oy)$ en $-\\infty$"
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer la tangente au point d'abscisse $0$",
+          "justification": "$f(0)=0$ et $f'(0)=0$ (calculés à l'étape 2).",
+          "resultat_markdown": "$y=0$"
+        }
+      ],
+      "conclusion_markdown": "$f$ admet un minimum local $0$ en $x=0$ et un maximum local $4e^{-2}$ en $x=2$, une asymptote horizontale $y=0$ en $+\\infty$, une branche parabolique de direction $(Oy)$ en $-\\infty$, et une tangente horizontale $y=0$ au point d'abscisse $0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre asymptote horizontale (limite finie de $f$) et branche parabolique (limite infinie de $\\dfrac{f(x)}{x}$).",
+          "pourquoi_faux": "Ce sont deux conclusions différentes obtenues à partir de deux calculs de limites différents — les mélanger fait perdre des points même si le calcul lui-même est correct.",
+          "correction_markdown": "Toujours préciser QUELLE limite a été calculée ($f(x)$ ou $\\dfrac{f(x)}{x}$) avant d'énoncer la conclusion correspondante."
+        },
+        {
+          "erreur_markdown": "Étudier le signe de $f'(x)$ « de tête » sans tableau de signes structuré.",
+          "pourquoi_faux": "Avec plusieurs facteurs (ici $x$, $(2-x)$ et $e^{-x}$), une erreur de signe sur un seul intervalle passe facilement inaperçue sans support écrit.",
+          "correction_markdown": "Toujours construire un vrai tableau de signes, facteur par facteur, avant de conclure sur le signe global."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Calculer $\\lim_{x\\to+\\infty}xe^{-x}$ et $\\lim_{x\\to-\\infty}xe^{-x}$.",
+          "solution_markdown": "En $+\\infty$ : croissances comparées, $\\lim\\dfrac{x}{e^x}=0$. En $-\\infty$ : $x\\to-\\infty$ et $e^{-x}\\to+\\infty$, produit qui tend vers $-\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Soit $g(x)=(x+1)e^{-x}$. Calculer $g'(x)$ et étudier son signe sur $\\mathbb R$.",
+          "solution_markdown": "$g'(x)=e^{-x}+(x+1)(-e^{-x})=e^{-x}(1-(x+1))=-xe^{-x}$. Comme $e^{-x}>0$ toujours, $g'(x)$ est du signe de $-x$ : positive sur $]-\\infty;0[$, négative sur $]0;+\\infty[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $h(x)=x^3e^{-x}$ sur $\\mathbb R$. Déterminer les limites de $h$ en $\\pm\\infty$, calculer $h'(x)$, et étudier le signe de $h'$.",
+          "solution_markdown": "En $-\\infty$ : $x^3\\to-\\infty$, $e^{-x}\\to+\\infty$, produit $\\to-\\infty$. En $+\\infty$ : croissances comparées, $\\dfrac{x^3}{e^x}\\to0$. Dérivée : $h'(x)=3x^2e^{-x}+x^3(-e^{-x})=x^2(3-x)e^{-x}$. Comme $x^2\\geqslant0$ et $e^{-x}>0$, le signe de $h'$ est celui de $(3-x)$ : positive sur $]-\\infty;3[$ (sauf en $x=0$ où $h'(0)=0$), négative sur $]3;+\\infty[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toujours suivre le même enchaînement : limites → dérivée/signe → tableau de variations → branches infinies → tangente si demandée.",
+        "Croissances comparées : $\\lim_{x\\to+\\infty}\\dfrac{x^n}{e^x}=0$ et $\\lim_{x\\to-\\infty}x^ne^x=0$, pour tout entier $n$.",
+        "Pour dériver un produit $u\\times v$ : $(uv)'=u'v+uv'$, puis factoriser pour simplifier l'étude du signe.",
+        "Limite finie de $f$ → asymptote horizontale ; limite infinie de $\\dfrac{f(x)}{x}$ → branche parabolique.",
+        "Équation de tangente : $y=f'(x_0)(x-x_0)+f(x_0)$, jamais l'inverse (ne pas confondre $f'(x_0)$ et $f(x_0)$).",
+        "Au BAC : cette étude complète revient chaque année, presque toujours sur une fonction du type $P(x)e^{\\pm x}$ avec $P$ polynôme."
+      ]
+    }
+  ]
+}

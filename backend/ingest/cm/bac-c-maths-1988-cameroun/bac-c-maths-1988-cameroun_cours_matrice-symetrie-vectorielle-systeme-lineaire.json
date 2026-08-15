@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-matrice-symetrie-vectorielle-systeme-lineaire-terminale-c",
+  "meta": {"titre": "Déterminer les images des vecteurs de base par addition/soustraction des relations définissant une symétrie", "cours_id": "cours-matrice-symetrie-vectorielle-systeme-lineaire-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — symétries vectorielles et systèmes", "tags": ["symétrie vectorielle", "matrice", "addition-soustraction de relations"], "duree_estimee_minutes": 6, "epreuve_source": "bac-c-maths-1988-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1988-pA-3b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand une symétrie est définie par son action sur des combinaisons de deux vecteurs (et non directement sur eux), additionner et soustraire ces relations isole chaque image individuellement, par simple linéarité."},
+    {"type": "prerequis", "items_markdown": ["Linéarité d'un endomorphisme : σ(a+b)=σ(a)+σ(b)", "Une symétrie fixe sa base et inverse sa direction"]},
+    {"type": "regle", "titre": "Additionner et soustraire pour isoler chaque image", "contenu_markdown": "Si $\\sigma(v_1+v_2)=v_1+v_2$ (base) et $\\sigma(v_1-v_2)=-(v_1-v_2)$ (direction), alors en additionnant : $2\\sigma(v_1)=(v_1+v_2)+(-v_1+v_2)=2v_2$, donc $\\sigma(v_1)=v_2$. En soustrayant : $2\\sigma(v_2)=(v_1+v_2)-(-v_1+v_2)=2v_1$, donc $\\sigma(v_2)=v_1$. On obtient ainsi la matrice de $\\sigma$ dans la base $(v_1,v_2)$.", "formule_principale": "σ(v1+v2)=v1+v2, σ(v1-v2)=-(v1-v2) ⟹ σ(v1)=v2, σ(v2)=v1", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "σ de base D_(a+b) et direction D_(a-b). Déterminer σ(a) et σ(b) et la matrice dans (a,b).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Additionner", "justification": "σ(a+b)+σ(a-b)=(a+b)+(-(a-b))=2b=2σ(a)", "resultat_markdown": "σ(a)=b"},
+      {"numero": 2, "action": "Soustraire", "justification": "σ(a+b)-σ(a-b)=(a+b)-(-(a-b))=2a=2σ(b)", "resultat_markdown": "σ(b)=a"}
+    ], "conclusion_markdown": "Mat_(a,b)(σ)=[[0,1],[1,0]]."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Essayer de calculer directement σ(v1) sans passer par l'addition/soustraction, en supposant à tort que σ(v1)=v1 ou σ(v1)=-v1", "pourquoi_faux": "v1 seul n'est ni un vecteur de base ni un vecteur de direction de σ : seule la combinaison (v1+v2) l'est. On ne peut PAS appliquer directement la définition de σ à v1 isolément.", "correction_markdown": "Ne jamais appliquer directement les propriétés « base » ou « direction » à v1 ou v2 isolément : passer systématiquement par l'addition et la soustraction des deux relations données sur v1+v2 et v1-v2."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "τ de base D_(p+2q) et direction D_(p-2q). Déterminer τ(p) et τ(q).", "solution_markdown": "τ(p+2q)+τ(p-2q)=(p+2q)-(p-2q)=4q=2τ(p) ⟹ τ(p)=2q. τ(p+2q)-τ(p-2q)=(p+2q)+(p-2q)=2p=4τ(q) ⟹ τ(q)=p/2."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Pour une symétrie définie sur des combinaisons v1+v2 et v1-v2, additionner et soustraire les deux relations isole σ(v1) et σ(v2) séparément.", "Cette méthode évite toute confusion sur ce qui est réellement fixe ou inversé par la symétrie."]}
+  ]
+}

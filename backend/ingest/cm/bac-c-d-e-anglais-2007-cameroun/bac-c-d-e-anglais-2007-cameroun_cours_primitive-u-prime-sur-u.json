@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-primitive-u-prime-sur-u-c",
+  "meta": {
+    "titre": "Primitive de la forme u'/u",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Calcul intégral - primitives usuelles",
+    "duree_estimee_min": 20,
+    "tags": ["primitive", "logarithme népérien", "forme u'/u"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q1b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une fraction à intégrer, le réflexe le plus rentable est de se demander si le numérateur n'est pas, tout simplement, la dérivée du dénominateur. Quand c'est le cas, l'intégrale se calcule en une ligne grâce au logarithme népérien, sans aucune technique élaborée."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Dérivée du logarithme népérien", "Dérivée de l'exponentielle", "Calcul d'une intégrale à l'aide d'une primitive"]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître la forme u'/u",
+      "contenu_markdown": "Si $u$ est une fonction dérivable et strictement positive sur un intervalle $I$, alors la fonction $\\dfrac{u'}{u}$ admet pour primitive sur $I$ :\n$$\\int \\frac{u'(x)}{u(x)}\\,dx = \\ln(u(x)) + C$$\n\n(Si $u$ peut changer de signe mais ne s'annule pas, la primitive générale est $\\ln|u(x)|+C$.) Pour appliquer cette formule, il faut repérer que le numérateur de la fraction à intégrer est exactement, ou à une constante multiplicative près, la dérivée du dénominateur.",
+      "formule_principale": "\\int \\frac{u'(x)}{u(x)}\\,dx = \\ln(u(x)) + C \\quad (u>0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $\\displaystyle\\int_0^1 \\frac{e^x}{1+e^x}\\,dx$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier u(x) et vérifier que u'(x) est bien le numérateur",
+          "justification": "On pose u(x)=1+e^x, dont la dérivée est u'(x)=e^x, qui est exactement le numérateur de la fraction à intégrer.",
+          "resultat_markdown": "$u(x)=1+e^x,\\quad u'(x)=e^x$"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que u est strictement positive sur l'intervalle",
+          "justification": "Condition nécessaire pour utiliser ln(u) sans valeur absolue.",
+          "resultat_markdown": "$1+e^x>0$ pour tout $x$ réel, en particulier sur $[0;1]$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la primitive",
+          "justification": "Application directe de la formule u'/u.",
+          "resultat_markdown": "Une primitive de $\\dfrac{e^x}{1+e^x}$ est $x\\mapsto \\ln(1+e^x)$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'intégrale à l'aide de cette primitive",
+          "justification": "Théorème fondamental du calcul intégral.",
+          "resultat_markdown": "$\\displaystyle\\int_0^1 \\frac{e^x}{1+e^x}\\,dx=\\Big[\\ln(1+e^x)\\Big]_0^1=\\ln(1+e)-\\ln(2)$"
+        }
+      ],
+      "conclusion_markdown": "L'intégrale vaut $\\ln(1+e)-\\ln2=\\ln\\!\\left(\\dfrac{1+e}{2}\\right)$, en utilisant la propriété $\\ln a-\\ln b=\\ln\\dfrac{a}{b}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre u'/u avec 1/u et intégrer 1/u comme si c'était toujours ln(u), même quand le numérateur n'est pas la dérivée du dénominateur.",
+          "pourquoi_faux": "La formule ne s'applique que si le numérateur est exactement la dérivée du dénominateur (à une constante multiplicative près). Par exemple, $\\dfrac{1}{1+e^x}$ n'a pas $\\ln(1+e^x)$ comme primitive, car le numérateur $1$ n'est pas la dérivée de $1+e^x$ (qui est $e^x$).",
+          "correction_markdown": "Avant d'appliquer la formule, dérive explicitement le dénominateur pressenti et compare le résultat au numérateur : ce n'est que si les deux coïncident (à une constante près) que la formule s'applique."
+        },
+        {
+          "erreur_markdown": "Oublier la constante multiplicative quand le numérateur est un multiple de la dérivée du dénominateur, plutôt qu'exactement égal à elle.",
+          "pourquoi_faux": "Si le numérateur vaut $k\\times u'(x)$ pour une constante $k\\neq1$, la primitive est $k\\ln(u(x))$ et non $\\ln(u(x))$ : le facteur $k$ doit être sorti de l'intégrale avant d'appliquer la formule, ou multiplié après coup.",
+          "correction_markdown": "Écris explicitement le rapport entre le numérateur donné et la dérivée réelle du dénominateur pressenti ; s'il ne vaut pas exactement $1$, ajuste la primitive par ce facteur constant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^1 \\frac{2x}{x^2+1}\\,dx$.",
+          "solution_markdown": "$u(x)=x^2+1$, $u'(x)=2x$, qui est exactement le numérateur. $u(x)>0$ pour tout $x$. Une primitive est $\\ln(x^2+1)$. L'intégrale vaut $\\big[\\ln(x^2+1)\\big]_0^1=\\ln2-\\ln1=\\ln2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_1^2 \\frac{3x^2}{x^3+5}\\,dx$.",
+          "solution_markdown": "$u(x)=x^3+5$, $u'(x)=3x^2$, qui est exactement le numérateur. Sur $[1;2]$, $u(x)=x^3+5\\geq6>0$. Une primitive est $\\ln(x^3+5)$. L'intégrale vaut $\\big[\\ln(x^3+5)\\big]_1^2=\\ln13-\\ln6=\\ln\\!\\left(\\dfrac{13}{6}\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\ln2} \\frac{e^x-e^{-x}}{e^x+e^{-x}}\\,dx$.",
+          "solution_markdown": "On pose $u(x)=e^x+e^{-x}$, alors $u'(x)=e^x-e^{-x}$, exactement le numérateur. De plus $u(x)=e^x+e^{-x}>0$ pour tout $x$ (somme de deux exponentielles). Une primitive est $\\ln(e^x+e^{-x})$. L'intégrale vaut $\\big[\\ln(e^x+e^{-x})\\big]_0^{\\ln2}=\\ln\\!\\left(e^{\\ln2}+e^{-\\ln2}\\right)-\\ln(e^0+e^0)=\\ln\\!\\left(2+\\dfrac12\\right)-\\ln2=\\ln\\!\\left(\\dfrac52\\right)-\\ln2=\\ln\\!\\left(\\dfrac54\\right)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'intégrer une fraction, demande-toi toujours si le numérateur n'est pas la dérivée du dénominateur : si oui, la primitive est immédiatement $\\ln(\\text{dénominateur})$.",
+        "Vérifie explicitement le signe du dénominateur sur l'intervalle d'intégration pour savoir si tu peux omettre la valeur absolue dans le logarithme.",
+        "Si le numérateur est un multiple constant de la dérivée du dénominateur, n'oublie pas d'ajuster la primitive par ce facteur.",
+        "Cette forme apparaît très fréquemment avec des dénominateurs en $1+e^x$, $e^x+e^{-x}$, ou des polynômes : entraîne-toi à repérer le motif rapidement plutôt qu'à chercher une technique plus complexe (intégration par parties, changement de variable) qui serait inutilement longue ici.",
+        "Au BAC C, cette technique est souvent la clé d'un calcul explicite dans un exercice d'analyse portant sur une suite d'intégrales : elle permet d'obtenir une valeur exacte pour un ou deux termes particuliers de la suite."
+      ]
+    }
+  ]
+}

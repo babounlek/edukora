@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-qu-une-suite-verifie-une-formule-explicite-donnee-terminale-c",
+  "meta": {
+    "titre": "Démontrer par récurrence qu'une suite vérifie une formule explicite donnée",
+    "cours_id": "cours-demontrer-par-recurrence-qu-une-suite-verifie-une-formule-explicite-donnee-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Suites numériques",
+    "tags": [
+      "récurrence",
+      "formule explicite",
+      "vérification d'une conjecture"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-B.2.b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand l'énoncé fournit déjà la formule explicite à démontrer, la récurrence devient un exercice de vérification méthodique : initialiser, puis substituer la formule conjecturée dans la relation de récurrence pour voir si elle 'tient' au rang suivant."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Maîtriser le principe de démonstration par récurrence",
+        "Connaître la relation de récurrence liant les termes de la suite étudiée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Démontrer qu'une formule explicite h(n) est valide pour tout n",
+      "contenu_markdown": "Pour démontrer par récurrence qu'une suite $(v_n)$ définie par une relation $v_{n+1}=v_n+g(n)$ vérifie une formule explicite donnée $v_n=h(n)$, on vérifie l'initialisation ($v_1=h(1)$), puis on suppose $v_n=h(n)$ au rang $n$ et on calcule $v_{n+1}=v_n+g(n)=h(n)+g(n)$, qu'il faut alors montrer être égal à $h(n+1)$ (calculé indépendamment à partir de la formule).",
+      "formule_principale": "Initialisation : v1=h(1). Hérédité : v_n=h(n) ⟹ h(n)+g(n)=h(n+1)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La suite (v_n) vérifie v_(n+1)=v_n-u_n (avec u_n=2-2n) et v_1=-1. Montrer que v_n=n²-3n+1 pour tout n≥1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'initialisation au rang n=1",
+          "justification": "Calculer h(1)=1²-3×1+1.",
+          "resultat_markdown": "h(1)=1-3+1=-1=v1 : initialisation vérifiée"
+        },
+        {
+          "numero": 2,
+          "action": "Supposer v_n=n²-3n+1 (hypothèse de récurrence)",
+          "justification": "Hypothèse à un rang n quelconque.",
+          "resultat_markdown": "v_n=n²-3n+1 supposé"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer v_(n+1) via la relation de récurrence",
+          "justification": "v_(n+1)=v_n-u_n=(n²-3n+1)-(2-2n).",
+          "resultat_markdown": "v_(n+1)=n²-3n+1-2+2n=n²-n-1"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer avec h(n+1) calculé indépendamment",
+          "justification": "h(n+1)=(n+1)²-3(n+1)+1.",
+          "resultat_markdown": "h(n+1)=n²+2n+1-3n-3+1=n²-n-1 : identique au résultat de l'étape 3"
+        }
+      ],
+      "conclusion_markdown": "La formule v_n=n²-3n+1 est vraie au rang 1 et héréditaire : elle est donc vraie pour tout n∈ℕ* par le principe de récurrence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer directement n par n+1 dans la formule sans passer par la relation de récurrence",
+          "pourquoi_faux": "Cela ne démontrerait rien : il faut impérativement calculer v_(n+1) à partir de la relation de récurrence ET de l'hypothèse de récurrence, puis vérifier que ce calcul redonne bien h(n+1) — substituer directement n+1 dans h ne fait que recopier la formule à démontrer, sans preuve.",
+          "correction_markdown": "Toujours calculer v_(n+1) de deux façons indépendantes (via la relation de récurrence utilisant l'hypothèse, et via la formule conjecturée évaluée en n+1), puis vérifier que les deux résultats coïncident."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Vérifier l'initialisation pour montrer que w_n=3n-2 vérifie w_1=1.",
+          "solution_markdown": "h(1)=3×1-2=1 : initialisation vérifiée si w_1=1 est bien la valeur donnée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si w_(n+1)=w_n+3 et w_n=3n-2 (hypothèse), calculer w_(n+1) via la relation puis via la formule, et comparer.",
+          "solution_markdown": "Via la relation : w_(n+1)=(3n-2)+3=3n+1. Via la formule : h(n+1)=3(n+1)-2=3n+1. Les deux coïncident : la formule est validée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la vérification de l'initialisation est-elle indispensable, même si l'hérédité est démontrée correctement ?",
+          "solution_markdown": "Sans initialisation vérifiée, l'hérédité seule prouve seulement que 'si la formule est vraie à un rang, elle l'est au suivant', mais ne garantit jamais qu'elle est vraie à un rang de départ : la chaîne de dominos ne tombe que si le premier domino est effectivement poussé, c'est-à-dire si l'initialisation est vérifiée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Démontrer qu'une formule explicite donnée h(n) est valide se fait par récurrence classique : initialisation puis hérédité.",
+        "L'étape d'hérédité doit calculer v_(n+1) par la relation de récurrence ET par la formule, puis vérifier leur coïncidence.",
+        "L'initialisation et l'hérédité sont toutes deux indispensables ; l'une sans l'autre ne prouve rien."
+      ]
+    }
+  ]
+}

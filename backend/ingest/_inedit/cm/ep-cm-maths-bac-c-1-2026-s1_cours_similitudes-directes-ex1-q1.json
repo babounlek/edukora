@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-similitudes-directes-complexes-bac-c",
+  "meta": {
+    "titre": "Similitudes directes complexes : reconnaissance et propriétés",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Nombres complexes et transformations planes",
+    "duree_estimee_min": 25,
+    "tags": ["Nombres complexes", "similitude directe"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex1-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une rotation, un agrandissement, ou les deux combinés : au BAC C, presque toutes les transformations planes données par une écriture complexe $z'=az+b$ sont en réalité des similitudes directes. Savoir reconnaître leur centre, leur rapport et leur angle en quelques lignes de calcul te fait gagner un temps précieux le jour de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Module et argument d'un nombre complexe",
+        "Affixe d'un point, opérations sur les affixes",
+        "Résolution d'une équation du premier degré dans $\\mathbb C$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nature d'une transformation complexe $z'=az+b$",
+      "contenu_markdown": "Toute transformation du plan complexe d'écriture $z'=az+b$ (avec $a\\neq0$) est :\n- une **translation** de vecteur d'affixe $b$ si $a=1$ ;\n- une **similitude directe** dans tous les autres cas ($a\\neq1$), de centre $\\Omega$ le point invariant, de rapport $k=|a|$ et d'angle $\\theta=\\arg(a)$.\n\nLe point invariant $\\Omega$, d'affixe $\\omega$, est l'unique solution de l'équation $\\omega=a\\omega+b$, soit $\\omega(1-a)=b$, donc $\\omega=\\dfrac{b}{1-a}$.",
+      "formule_principale": "z' = a(z-\\omega) + \\omega, \\quad \\omega=\\dfrac{b}{1-a},\\quad k=|a|,\\quad \\theta=\\arg(a)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la nature et les éléments caractéristiques de la transformation $S$ d'écriture complexe $z'=2i\\,z+1-2i$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier $a$ et $b$",
+          "justification": "L'écriture $z'=az+b$ donne directement $a=2i$ et $b=1-2i$.",
+          "resultat_markdown": "$a=2i$, $b=1-2i$"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que $a\\neq1$ puis calculer le centre $\\Omega$",
+          "justification": "$a=2i\\neq1$ donc $S$ est bien une similitude directe (pas une translation) ; le centre vérifie $\\omega=2i\\omega+1-2i$, soit $\\omega(1-2i)=1-2i$.",
+          "resultat_markdown": "$\\omega=1$, donc $\\Omega(1\\,;\\,0)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le rapport $k=|a|$",
+          "justification": "Le rapport de la similitude est le module de $a$.",
+          "resultat_markdown": "$k=|2i|=2$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'angle $\\theta=\\arg(a)$",
+          "justification": "$2i$ est un imaginaire pur positif, son argument est $\\dfrac{\\pi}{2}$.",
+          "resultat_markdown": "$\\theta=\\dfrac{\\pi}{2}$"
+        }
+      ],
+      "conclusion_markdown": "$S$ est la similitude directe de centre $\\Omega(1\\,;\\,0)$, de rapport $2$ et d'angle $\\dfrac{\\pi}{2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le rapport $k=|a|$ avec le coefficient $a$ lui-même, et écrire par exemple « rapport $2i$ ».",
+          "pourquoi_faux": "Le rapport d'une similitude est toujours un réel positif (un facteur d'échelle sur les longueurs), jamais un nombre complexe.",
+          "correction_markdown": "Le rapport est $k=|a|$ (un module, donc un réel $\\geqslant0$), et l'angle est $\\theta=\\arg(a)$ séparément."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier $a\\neq1$ avant de chercher un point invariant.",
+          "pourquoi_faux": "Si $a=1$, l'équation $\\omega=a\\omega+b$ devient $0=b$ : elle n'a pas de solution unique (translation si $b\\neq0$, identité si $b=0$).",
+          "correction_markdown": "Toujours commencer par identifier $a$ et vérifier explicitement $a\\neq1$ avant de résoudre l'équation du point invariant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Déterminer la nature et les éléments caractéristiques de la transformation d'écriture $z'=3z-2$.",
+          "solution_markdown": "$a=3\\neq1$ : similitude directe. Centre : $\\omega=3\\omega-2\\Rightarrow\\omega=1$, soit $\\Omega(1\\,;\\,0)$. Rapport $k=|3|=3$. Angle $\\theta=\\arg(3)=0$ ($3$ est réel positif) : c'est en fait une **homothétie** de centre $\\Omega(1\\,;\\,0)$ et de rapport $3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Déterminer la nature et les éléments caractéristiques de la transformation d'écriture $z'=(1+i)z$.",
+          "solution_markdown": "$a=1+i\\neq1$ : similitude directe. Centre : $\\omega(1-(1+i))=0\\Rightarrow-i\\omega=0\\Rightarrow\\omega=0$, donc $\\Omega=O$. Rapport $k=|1+i|=\\sqrt2$. Angle $\\theta=\\arg(1+i)=\\dfrac{\\pi}{4}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "On considère $S$ d'écriture $z'=-i\\,z+2+i$. Déterminer ses éléments caractéristiques, puis calculer l'image du point $A$ d'affixe $3$.",
+          "solution_markdown": "$a=-i\\neq1$. Centre : $\\omega=-i\\omega+2+i\\Rightarrow\\omega(1+i)=2+i\\Rightarrow\\omega=\\dfrac{2+i}{1+i}=\\dfrac{(2+i)(1-i)}{2}=\\dfrac{2-2i+i+1}{2}=\\dfrac{3-i}{2}$. Rapport $k=|-i|=1$, angle $\\theta=\\arg(-i)=-\\dfrac{\\pi}{2}$ : c'est une **rotation** de centre $\\Omega\\left(\\dfrac32\\,;\\,-\\dfrac12\\right)$ et d'angle $-\\dfrac{\\pi}{2}$. Image de $A(3)$ : $z_{A'}=-i(3)+2+i=2-2i$, donc $A'(2\\,;\\,-2)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$z'=az+b$ avec $a\\neq0$ : translation si $a=1$, similitude directe sinon.",
+        "Le centre $\\Omega$ est l'unique point invariant, solution de $\\omega=a\\omega+b$.",
+        "Le rapport $k=|a|$ est toujours un réel positif ; l'angle $\\theta=\\arg(a)$ est indépendant du rapport.",
+        "Si $a$ est réel positif, la similitude est une homothétie (angle nul) ; si $|a|=1$, c'est une rotation (rapport $1$).",
+        "Une similitude directe conserve les angles orientés et multiplie toutes les longueurs par $k$.",
+        "Au BAC : ce type de question tombe systématiquement dans les exercices sur les nombres complexes et transformations, souvent en ouverture d'un exercice à plusieurs parties."
+      ]
+    }
+  ]
+}

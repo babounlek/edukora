@@ -1,0 +1,165 @@
+{
+  "epreuve_source": "bac-c-physique-2020-cameroun.pdf",
+  "numero_exercice": "2",
+  "matiere": "Physique",
+  "serie": "C",
+  "examen": "Baccalauréat",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2020,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "points": 6,
+  "figures": [
+    {
+      "id": "fig-circuit-lc-2020",
+      "type": "schema",
+      "description": "Circuit fermé comprenant, montés en série, un condensateur de capacité C=0,10µF (armatures A et B, charge q portée par l'armature reliée à A) et une bobine d'inductance L=1,0H de résistance négligeable."
+    },
+    {
+      "id": "fig-graphe-energies-lc-2020",
+      "type": "graphique",
+      "description": "Allure des trois courbes E(t), Ec(t) et EL(t) sur une période : Ec(t) et EL(t) oscillent en opposition (l'une décroît en cos², l'autre croît en sin², période T/2) tandis que E(t)=Ec(t)+EL(t) reste constante."
+    }
+  ],
+  "enonce_intro_markdown": "**EXERCICE 2 : SYSTÈMES OSCILLANTS — 6 points**\n\nLe montage comprend, montés en série, un condensateur de capacité C=0,10µF et une bobine d'inductance L=1,0H et de résistance négligeable. À la date t=0, le condensateur, initialement chargé sous une tension U0=12V, est connecté à la bobine. On note i(t) la valeur algébrique de l'intensité du courant qui traverse le circuit à une date t>0, et q(t) la charge portée par l'armature reliée au point A.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Établir l'équation différentielle qui régit l'évolution de la charge q(t) pour t>0.",
+      "corrige_markdown": "### Rappel de méthode\nDans un circuit LC série sans résistance, la loi des mailles combinée aux relations charge-tension du condensateur et tension-courant de la bobine donne une équation différentielle harmonique en q.\n\n### Corrigé\nLoi des mailles : $u_C + u_L = 0$ (circuit fermé, pas d'autre générateur).\n\n$$u_C = \\dfrac{q}{C} \\qquad u_L = L\\dfrac{di}{dt} = L\\dfrac{d^2q}{dt^2} \\quad(\\text{avec } i=\\dfrac{dq}{dt})$$\n\n$$\\dfrac{q}{C} + L\\ddot q = 0 \\quad\\Longrightarrow\\quad \\ddot q + \\dfrac{1}{LC}q = 0$$\n\n### Piège à éviter\nBien vérifier le sens conventionnel choisi pour i par rapport à q (i=dq/dt si le courant charge l'armature A), sous peine d'introduire un signe erroné dans uL.\n\n### Conseil\nCette équation q̈+ω0²q=0 avec ω0²=1/(LC) est identique en structure à celle d'un oscillateur mécanique harmonique : à retenir comme résultat systématique pour tout circuit LC libre sans résistance.",
+      "themes": [
+        "Circuit LC",
+        "Équation différentielle"
+      ],
+      "difficulte_estimee": 4,
+      "type_reponse": "demonstration",
+      "choix": null,
+      "reponse_correcte": "q̈ + (1/LC)q = 0",
+      "figures": [
+        "fig-circuit-lc-2020"
+      ],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "Dans un circuit LC série sans résistance, la loi des mailles combinée aux relations charge-tension du condensateur et tension-courant de la bobine donne une équation différentielle harmonique en q.",
+          "id": "cours-etablir-l-equation-differentielle-de-q-t-pour-le-circuit-lc"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Vérifier que les solutions à cette équation différentielle sont de la forme q(t)=Qm cos(ωt+φ) où Qm, ω et φ sont des constantes dépendant des conditions initiales et de la structure du circuit qu'on déterminera.",
+      "corrige_markdown": "### Rappel de méthode\nInjecter la forme proposée dans l'équation différentielle permet de déterminer ω ; les conditions initiales (charge et courant à t=0) déterminent Qm et φ.\n\n### Corrigé\nEn posant $q(t)=Q_m\\cos(\\omega t+\\varphi)$, on a $\\ddot q=-\\omega^2Q_m\\cos(\\omega t+\\varphi)=-\\omega^2 q$. En substituant dans l'équation différentielle :\n$$-\\omega^2q + \\dfrac{1}{LC}q = 0 \\quad\\Longrightarrow\\quad \\omega^2=\\dfrac{1}{LC} \\quad\\Longrightarrow\\quad \\omega=\\dfrac{1}{\\sqrt{LC}}$$\n\nCette forme est donc bien solution, quels que soient Qm et φ, à condition que $\\omega=1/\\sqrt{LC}$.\n\n**Conditions initiales :** à t=0, le condensateur est chargé sous U0, donc $q(0)=CU_0$ ; le courant est nul à l'instant de la connexion (pas de discontinuité brutale), donc $\\dot q(0)=i(0)=0$.\n\n$$q(0)=Q_m\\cos\\varphi=CU_0 \\qquad \\dot q(0)=-Q_m\\omega\\sin\\varphi=0 \\;\\Rightarrow\\; \\varphi=0$$\n$$\\Rightarrow\\quad Q_m=CU_0$$\n\n$$\\omega = \\dfrac{1}{\\sqrt{LC}} = \\dfrac{1}{\\sqrt{1{,}0\\times0{,}10\\times10^{-6}}} \\approx 3162\\ \\text{rad/s} \\qquad Q_m=CU_0=1{,}2\\ \\mu\\text{C} \\qquad \\varphi=0$$\n\n### Piège à éviter\nNe pas oublier de vérifier également la condition sur la dérivée (le courant initial), pas seulement sur la charge initiale : les deux conditions sont nécessaires pour fixer Qm ET φ.\n\n### Conseil\nLa pulsation propre ω=1/√(LC) est indépendante des conditions initiales : elle ne dépend que de la structure du circuit (L et C), contrairement à Qm et φ qui dépendent de l'état initial.",
+      "themes": [
+        "Circuit LC",
+        "Oscillations électriques libres",
+        "Conditions initiales"
+      ],
+      "difficulte_estimee": 5,
+      "type_reponse": "demonstration",
+      "choix": null,
+      "reponse_correcte": "ω=1/√(LC)≈3162rad/s ; Qm=CU0=1,2µC ; φ=0",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "Injecter la forme proposée dans l'équation différentielle permet de déterminer ω ; les conditions initiales (charge et courant à t=0) déterminent Qm et φ.",
+          "id": "cours-verifier-la-solution-q-t-qm-cos-omega-t-plus-phi"
+        }
+      ]
+    },
+    {
+      "numero": "3.1",
+      "enonce_markdown": "Déterminer l'expression littérale de l'intensité i(t) du courant électrique en fonction du temps.",
+      "corrige_markdown": "### Rappel de méthode\nL'intensité est la dérivée de la charge par rapport au temps : i(t)=dq(t)/dt.\n\n### Corrigé\n$$i(t) = \\dfrac{dq}{dt} = -Q_m\\omega\\sin(\\omega t+\\varphi) = -CU_0\\,\\omega\\sin(\\omega t)$$\n\nNumériquement : $I_m=CU_0\\omega\\approx3{,}79\\times10^{-3}$A, soit :\n$$i(t) \\approx -3{,}79\\times10^{-3}\\sin(3162\\,t)\\ \\text{(A)}$$\n\n### Piège à éviter\nBien dériver l'expression complète de q(t) (avec φ=0 déjà substitué) plutôt que de repartir d'une forme générique.\n\n### Conseil\nRetenir que i(t) est toujours déphasée de π/2 par rapport à q(t) dans un circuit LC libre (cosinus devient -sinus par dérivation), ce qui traduit le décalage entre charge maximale (courant nul) et courant maximal (charge nulle).",
+      "themes": [
+        "Circuit LC",
+        "Intensité du courant"
+      ],
+      "difficulte_estimee": 3,
+      "type_reponse": "demonstration",
+      "choix": null,
+      "reponse_correcte": "i(t) = -3,79×10⁻³ sin(3162t) A",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "L'intensité est la dérivée de la charge par rapport au temps : i(t)=dq(t)/dt.",
+          "id": "cours-determiner-l-expression-litterale-de-i-t"
+        }
+      ]
+    },
+    {
+      "numero": "3.2",
+      "enonce_markdown": "Déterminer les expressions de l'énergie Ec(t) emmagasinée dans le condensateur et l'énergie EL(t) emmagasinée dans la bobine en fonction du temps.",
+      "corrige_markdown": "### Rappel de méthode\nL'énergie électrique emmagasinée dans un condensateur est q²/(2C) ; l'énergie magnétique emmagasinée dans une bobine est ½Li² ; substituer les expressions de q(t) et i(t) trouvées précédemment.\n\n### Corrigé\n$$E_C(t) = \\dfrac{q(t)^2}{2C} = \\dfrac{(CU_0)^2\\cos^2(\\omega t)}{2C} = \\dfrac{1}{2}CU_0^2\\cos^2(\\omega t)$$\n\n$$E_L(t) = \\dfrac{1}{2}Li(t)^2 = \\dfrac{1}{2}L\\,(CU_0\\omega)^2\\sin^2(\\omega t)$$\n\nEn utilisant $L\\omega^2=1/C$ (car $\\omega^2=1/(LC)$) :\n$$E_L(t) = \\dfrac{1}{2}C^2U_0^2\\,(L\\omega^2)\\sin^2(\\omega t) = \\dfrac{1}{2}CU_0^2\\sin^2(\\omega t)$$\n\n### Piège à éviter\nNe pas laisser l'expression de EL(t) sous une forme contenant encore ω² explicitement : la simplification via Lω²=1/C est nécessaire pour obtenir une expression comparable directement à Ec(t).\n\n### Conseil\nRemarquer dès cette étape que Ec(t) et EL(t) ont la même amplitude ½CU0² : c'est ce qui permettra de montrer simplement que leur somme est constante à la question suivante.",
+      "themes": [
+        "Circuit LC",
+        "Énergie électrique",
+        "Énergie magnétique"
+      ],
+      "difficulte_estimee": 4,
+      "type_reponse": "demonstration",
+      "choix": null,
+      "reponse_correcte": "Ec(t)=½CU0²cos²(ωt) ; EL(t)=½CU0²sin²(ωt)",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "L'énergie électrique emmagasinée dans un condensateur est q²/(2C) ; l'énergie magnétique emmagasinée dans une bobine est ½Li² ; substituer les expressions de q(t) et i(t) trouvées précédemment.",
+          "id": "cours-determiner-les-expressions-de-ec-t-et-el-t"
+        }
+      ]
+    },
+    {
+      "numero": "3.3",
+      "enonce_markdown": "Montrer qu'à chaque instant l'énergie totale E(t)=Ec(t)+EL(t) est constante.",
+      "corrige_markdown": "### Rappel de méthode\nLa somme des deux expressions trouvées fait apparaître l'identité remarquable cos²+sin²=1, éliminant toute dépendance temporelle.\n\n### Corrigé\n$$E(t) = E_C(t)+E_L(t) = \\dfrac{1}{2}CU_0^2\\cos^2(\\omega t) + \\dfrac{1}{2}CU_0^2\\sin^2(\\omega t) = \\dfrac{1}{2}CU_0^2\\big[\\cos^2(\\omega t)+\\sin^2(\\omega t)\\big]$$\n$$E(t) = \\dfrac{1}{2}CU_0^2 = \\text{constante} \\approx 7{,}2\\ \\mu\\text{J}$$\n\nL'énergie totale est donc bien indépendante du temps : ceci traduit la **conservation de l'énergie électromagnétique** dans un circuit LC idéal (sans résistance, donc sans dissipation).\n\n### Piège à éviter\nNe pas oublier de conclure physiquement (conservation de l'énergie, absence de dissipation car R négligeable) après le calcul purement mathématique.\n\n### Conseil\nCette propriété (E constante) est spécifique aux circuits LC SANS résistance : en présence d'une résistance, l'énergie totale décroîtrait progressivement (oscillations amorties), comme pour un oscillateur mécanique avec frottements.",
+      "themes": [
+        "Circuit LC",
+        "Conservation de l'énergie"
+      ],
+      "difficulte_estimee": 3,
+      "type_reponse": "demonstration",
+      "choix": null,
+      "reponse_correcte": "E(t) = ½CU0² ≈ 7,2 µJ, constante",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "La somme des deux expressions trouvées fait apparaître l'identité remarquable cos²+sin²=1, éliminant toute dépendance temporelle.",
+          "id": "cours-montrer-que-e-t-ec-t-plus-el-t-est-constante"
+        }
+      ]
+    },
+    {
+      "numero": "3.4",
+      "enonce_markdown": "Donner les allures des trois courbes représentatives de E, Ec et EL sur la première période.",
+      "corrige_markdown": "### Rappel de méthode\nEc(t) et EL(t) oscillent chacune à la pulsation 2ω (car cos² et sin² ont une période T/2, moitié de la période T de q(t)), en opposition l'une de l'autre, alors que leur somme E(t) reste une droite horizontale constante.\n\n### Corrigé\nSur une période T=2π/ω de q(t) (soit T≈1,99ms) :\n\n- **Ec(t)** : vaut ½CU0² (maximum) à t=0, décroît en cos²(ωt) jusqu'à s'annuler à t=T/4, remonte à son maximum à t=T/2, et ainsi de suite (deux oscillations complètes sur la période T de q).\n- **EL(t)** : vaut 0 à t=0, croît en sin²(ωt) jusqu'à son maximum ½CU0² à t=T/4, redescend à 0 à t=T/2 (en opposition avec Ec, la somme restant constante).\n- **E(t)** : droite horizontale constante, de valeur ½CU0²≈7,2µJ, sur toute la durée.\n\nLes courbes Ec(t) et EL(t) sont donc deux « bosses » sinusoïdales de période T/2, symétriques l'une de l'autre par rapport à la droite horizontale E, se croisant à mi-hauteur (E/2) à t=T/4 et t=3T/4.\n\n### Piège à éviter\nNe pas tracer Ec(t) et EL(t) avec la même période T que q(t) : leur période réelle est T/2, car elles dépendent du carré (cos² et sin²) de fonctions de période T.\n\n### Conseil\nVérifier la cohérence du tracé en un point clé : à t=T/4, Ec=EL=E/2 (les deux courbes se croisent exactement à mi-hauteur de la droite E).",
+      "themes": [
+        "Circuit LC",
+        "Représentation graphique",
+        "Énergie"
+      ],
+      "difficulte_estimee": 4,
+      "type_reponse": "graphique",
+      "choix": null,
+      "reponse_correcte": "Ec et EL oscillent en cos²/sin² (période T/2) autour de E/2 ; E constante = ½CU0²",
+      "figures": [
+        "fig-graphe-energies-lc-2020"
+      ],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "Ec(t) et EL(t) oscillent chacune à la pulsation 2ω (car cos² et sin² ont une période T/2, moitié de la période T de q(t)), en opposition l'une de l'autre, alors que leur somme E(t) reste une droite horizontale constante.",
+          "id": "cours-donner-les-allures-des-courbes-e-ec-et-el-sur-la-premiere-periode"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "circuit LC",
+    "oscillations électriques libres",
+    "énergie électrique",
+    "énergie magnétique",
+    "conservation de l'énergie",
+    "équation différentielle"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

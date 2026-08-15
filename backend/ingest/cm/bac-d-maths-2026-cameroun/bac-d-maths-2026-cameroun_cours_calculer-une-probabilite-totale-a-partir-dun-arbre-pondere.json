@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-totale-a-partir-dun-arbre-pondere-terminale-d",
+  "meta": {
+    "titre": "Calculer une probabilité totale à partir d'un arbre pondéré",
+    "cours_id": "cours-calculer-une-probabilite-totale-a-partir-dun-arbre-pondere-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Probabilités — probabilités conditionnelles",
+    "tags": [
+      "probabilité totale",
+      "arbre pondéré",
+      "partition de l'univers"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex3-1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un événement peut se réaliser par plusieurs chemins distincts (via différentes causes), la formule des probabilités totales additionne les contributions de chaque chemin de l'arbre."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Notion de probabilité conditionnelle P(B|A)",
+        "Notion de partition de l'univers"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule des probabilités totales",
+      "contenu_markdown": "Si $A_1,\\dots,A_k$ forment une partition de l'univers (événements deux à deux incompatibles et de réunion l'univers entier), alors pour tout événement $B$ : $P(B)=\\sum_{i=1}^{k}P(A_i)\\times P(B\\mid A_i)$. Dans le cas le plus fréquent d'une partition en deux événements $A$ et $\\overline A$ : $P(B)=P(A)P(B\\mid A)+P(\\overline A)P(B\\mid\\overline A)$.",
+      "formule_principale": "P(B) = P(A)P(B|A) + P(Ā)P(B|Ā)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une urne, 30% des boules sont rouges. Si une boule est rouge, elle est numérotée pair dans 60% des cas ; si elle n'est pas rouge, elle est numérotée pair dans 20% des cas. Calculer la probabilité qu'une boule tirée soit numérotée pair.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la partition et les probabilités conditionnelles",
+          "justification": "R=rouge, P(R)=0,3, P(pair|R)=0,6, P(pair|R̄)=0,2, P(R̄)=0,7.",
+          "resultat_markdown": "Données réunies"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule des probabilités totales",
+          "justification": "P(pair)=P(R)P(pair|R)+P(R̄)P(pair|R̄).",
+          "resultat_markdown": "P(pair)=0,3×0,6+0,7×0,2=0,18+0,14=0,32"
+        }
+      ],
+      "conclusion_markdown": "La probabilité qu'une boule tirée soit numérotée pair est 0,32."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier une des branches de l'arbre dans la somme",
+          "pourquoi_faux": "La formule des probabilités totales exige de sommer sur TOUTE la partition ; oublier une cause sous-estime systématiquement la probabilité de l'événement B.",
+          "correction_markdown": "Toujours vérifier que la somme des probabilités des causes (P(A1)+...+P(Ak)) vaut 1 avant d'appliquer la formule, pour s'assurer qu'aucune branche n'est oubliée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "P(A)=0,4, P(B|A)=0,5, P(B|Ā)=0,1. Calculer P(B).",
+          "solution_markdown": "P(B)=0,4×0,5+0,6×0,1=0,2+0,06=0,26."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Vérifier que P(A)+P(Ā)=1 est bien utilisé implicitement dans la formule.",
+          "solution_markdown": "Oui, P(Ā)=1-P(A) est utilisé pour la deuxième branche : c'est la propriété qui garantit que A et Ā forment bien une partition complète de l'univers."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment généraliser la formule à une partition en 3 causes A1,A2,A3 ?",
+          "solution_markdown": "P(B)=P(A1)P(B|A1)+P(A2)P(B|A2)+P(A3)P(B|A3), à condition que A1,A2,A3 soient deux à deux incompatibles et que leur réunion soit l'univers entier (P(A1)+P(A2)+P(A3)=1)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule des probabilités totales somme les contributions de chaque cause d'une partition de l'univers.",
+        "P(B)=ΣP(Ai)×P(B|Ai).",
+        "Vérifier que la somme des P(Ai) vaut 1 garantit qu'aucune branche de l'arbre n'a été oubliée."
+      ]
+    }
+  ]
+}

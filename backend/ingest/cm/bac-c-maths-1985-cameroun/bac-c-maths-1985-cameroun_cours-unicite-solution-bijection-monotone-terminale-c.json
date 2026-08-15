@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-unicite-solution-bijection-monotone-terminale-c",
+  "meta": {
+    "titre": "Prouver l'unicité d'une solution par le théorème de la bijection monotone",
+    "cours_id": "cours-unicite-solution-bijection-monotone-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Théorème de la bijection (valeurs intermédiaires strictement monotone)",
+    "tags": ["théorème de la bijection", "existence et unicité", "monotonie", "équation f(x)=0"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_1_q1b"
+  },
+  "sections": {
+    "accroche": "Montrer qu'une équation admet une unique solution ne nécessite presque jamais de la résoudre explicitement : la continuité et la stricte monotonie, combinées à un changement de signe, suffisent à le garantir.",
+    "prerequis": ["Théorème des valeurs intermédiaires", "Notion de fonction strictement monotone", "Lecture d'un tableau de variations"],
+    "regle": {
+      "titre": "Théorème de la bijection",
+      "contenu_markdown": "Si une fonction $f$ est continue et strictement monotone sur un intervalle $I$, alors $f$ réalise une bijection de $I$ vers $f(I)$. En particulier, si $0\\in f(I)$, l'équation $f(x)=0$ admet une unique solution dans $I$. Pour l'appliquer : vérifier la continuité (souvent immédiate, somme/produit/composée de fonctions usuelles), vérifier la stricte monotonie (à l'aide du signe de la dérivée), puis calculer les limites aux bornes de $I$ pour vérifier que $0$ appartient bien à l'intervalle image.",
+      "formule_principale": "$f$ continue et strictement monotone sur $I$ $\\Rightarrow$ $f$ bijective de $I$ sur $f(I)$",
+      "variantes": ["S'applique aussi pour montrer qu'une équation $f(x)=k$ admet une unique solution, en remplaçant $0$ par $k$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que l'équation $x^3+x-1=0$ admet une unique solution réelle.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser $\\varphi(x)=x^3+x-1$, continue et dérivable sur $\\mathbb R$", "justification": "polynôme", "resultat_markdown": "$\\varphi'(x)=3x^2+1>0$ pour tout $x$"},
+        {"numero": 2, "action": "Conclure à la stricte croissance", "justification": "dérivée strictement positive sur $\\mathbb R$", "resultat_markdown": "$\\varphi$ est strictement croissante sur $\\mathbb R$"},
+        {"numero": 3, "action": "Calculer les limites en $\\pm\\infty$", "justification": "détermine l'intervalle image", "resultat_markdown": "$\\lim_{-\\infty}\\varphi=-\\infty$, $\\lim_{+\\infty}\\varphi=+\\infty$, donc $\\varphi(\\mathbb R)=\\mathbb R\\ni0$"}
+      ],
+      "conclusion_markdown": "$\\varphi$ réalise une bijection de $\\mathbb R$ sur $\\mathbb R$ : l'équation $\\varphi(x)=0$ admet une unique solution réelle."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure à l'unicité sans avoir vérifié la stricte monotonie sur tout l'intervalle", "pourquoi_faux": "une fonction non monotone peut recouper l'axe plusieurs fois même si elle change de signe", "correction_markdown": "Toujours établir le signe de la dérivée sur l'intervalle entier avant de conclure."},
+      {"erreur_markdown": "Oublier de vérifier que 0 appartient bien à l'intervalle image $f(I)$", "pourquoi_faux": "sans cette vérification, on ne sait pas si une solution existe du tout", "correction_markdown": "Toujours calculer les limites aux bornes pour encadrer l'intervalle image et vérifier qu'il contient 0."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Montrer que $\\psi(x)=e^x-2$ admet une unique solution sur $\\mathbb R$ à l'équation $\\psi(x)=0$.", "solution_markdown": "$\\psi$ continue, strictement croissante ($\\psi'(x)=e^x>0$), $\\lim_{-\\infty}\\psi=-2$, $\\lim_{+\\infty}\\psi=+\\infty$ : $0\\in\\psi(\\mathbb R)$, donc unique solution ($x=\\ln2$)."}
+    ],
+    "synthese": "Pour prouver l'unicité d'une solution : continuité + stricte monotonie (via le signe de la dérivée) + vérification que la valeur cherchée appartient à l'intervalle image (via les limites aux bornes)."
+  }
+}

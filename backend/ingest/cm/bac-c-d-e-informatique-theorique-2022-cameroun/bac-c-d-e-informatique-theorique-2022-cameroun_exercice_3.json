@@ -1,0 +1,121 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2022,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 3,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (4 pts)**\n\nOn voudrait implémenter la table Eleve d'une base de données de gestion des élèves d'un lycée. On dispose également de la requête SQL ci-après.\n\n**Table : Eleve**\n\n| Matricule | Nom    | Prenoms  | Age | Sexe |\n|-----------|--------|----------|-----|------|\n| 10Y125    | YANN W | MVONDO   | 18  | M    |\n| 09T145    | Ebode  | Ernest   | 17  | M    |\n| 10C124    | Seke   | Danielle | 18  | F    |\n\n```sql\nSELECT Nom, Prenoms, Sexe\nFROM Eleve\nWHERE Sexe <> 'F' AND Age = 18\n```\n\nObservez attentivement cette table et la requête, puis répondez aux questions suivantes :",
+  "mots_cles_recherche": [
+    "SQL",
+    "LDD",
+    "LMD",
+    "ALTER TABLE",
+    "SELECT WHERE",
+    "VARCHAR"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Donner deux commandes SQL de définition de données, et deux commandes SQL de manipulation de données de votre choix. (0,25×4 = 1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe LDD (Langage de Définition de Données) regroupe les commandes qui créent/modifient/suppriment la structure (CREATE, ALTER, DROP). Le LMD (Langage de Manipulation de Données) regroupe les commandes qui agissent sur le contenu des tables (SELECT, INSERT, UPDATE, DELETE).\n\n### Corrigé\n**Commandes SQL de définition de données (LDD)** : `CREATE TABLE`, `ALTER TABLE` (également valables : `DROP TABLE`, `CREATE DATABASE`).\n\n**Commandes SQL de manipulation de données (LMD)** : `SELECT`, `INSERT INTO` (également valables : `UPDATE`, `DELETE`).\n\n### Piège à éviter\nNe pas classer ALTER TABLE parmi les commandes de manipulation : bien qu'elle porte sur une table déjà créée, elle modifie la **structure** (ajout/suppression de colonne), donc elle appartient au LDD, pas au LMD.",
+      "themes": [
+        "SQL",
+        "LDD",
+        "LMD"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q1-0",
+          "competence": "Distinguer les commandes SQL de définition (LDD) et de manipulation (LMD) de données",
+          "contenu_markdown": "Le LDD (Langage de Définition de Données) regroupe les commandes qui créent/modifient/suppriment la structure (CREATE, ALTER, DROP). Le LMD (Langage de Manipulation de Données) regroupe les commandes qui agissent sur le contenu des tables (SELECT, INSERT, UPDATE, DELETE).",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-les-commandes-sql-de-definition-ldd-et-de-manipulation-lmd-de-donnees-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Écrire une requête SQL permettant d'ajouter la colonne Classe (de taille variable et maximale 12). (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nALTER TABLE table ADD nomColonne type; ajoute une nouvelle colonne à une table déjà existante, sans toucher aux lignes déjà présentes (qui recevront une valeur NULL pour cette colonne).\n\n### Corrigé\n```sql\nALTER TABLE Eleve ADD Classe VARCHAR(12);\n```\n\nVARCHAR(12) désigne une chaîne de caractères de longueur **variable**, avec une taille **maximale** de 12 caractères, conformément à l'énoncé.\n\n### Piège à éviter\nNe pas utiliser CHAR(12) : ce type réserve une longueur **fixe** de 12 caractères (avec complément d'espaces), alors que l'énoncé demande explicitement une taille **variable**.",
+      "themes": [
+        "SQL",
+        "ALTER TABLE",
+        "VARCHAR"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q2-0",
+          "competence": "Écrire une requête SQL d'ajout de colonne à une table existante (ALTER TABLE... ADD)",
+          "contenu_markdown": "ALTER TABLE table ADD nomColonne type; ajoute une nouvelle colonne à une table déjà existante, sans toucher aux lignes déjà présentes (qui recevront une valeur NULL pour cette colonne).",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-d-ajout-de-colonne-a-une-table-existante-alter-table-add-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Donner sous forme de tableau, le résultat de la requête ci-dessus (SELECT Nom, Prenoms, Sexe FROM Eleve WHERE Sexe <> 'F' AND Age = 18). (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nIl faut examiner chaque ligne de la table et ne conserver que celles qui vérifient **simultanément** les deux conditions (AND), puis n'afficher que les colonnes demandées dans le SELECT.\n\n### Corrigé\nExaminons les 3 lignes :\n- 10Y125 (YANN W / MVONDO, 18, M) : Sexe ≠ 'F' ✓ et Age = 18 ✓ → **retenue**.\n- 09T145 (Ebode / Ernest, 17, M) : Sexe ≠ 'F' ✓ mais Age = 18 ✗ (Age=17) → rejetée.\n- 10C124 (Seke / Danielle, 18, F) : Sexe ≠ 'F' ✗ (Sexe='F') → rejetée.\n\nRésultat :\n\n| Nom    | Prenoms | Sexe |\n|--------|---------|------|\n| YANN W | MVONDO  | M    |\n\n### Piège à éviter\nNe pas afficher les colonnes Matricule ou Age dans le résultat : seules Nom, Prenoms et Sexe figurent dans la clause SELECT.",
+      "themes": [
+        "SQL",
+        "SELECT WHERE",
+        "interprétation de requête"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q3-0",
+          "competence": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT... WHERE)",
+          "contenu_markdown": "Il faut examiner chaque ligne de la table et ne conserver que celles qui vérifient **simultanément** les deux conditions (AND), puis n'afficher que les colonnes demandées dans le SELECT.",
+          "cours_genere": true,
+          "cours_id": "cours-interpreter-le-resultat-d-une-requete-sql-de-selection-avec-condition-select-where-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Écrire une requête qui affiche la liste de tous les élèves de sexe féminin, ayant moins de 18 ans. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour combiner deux conditions qui doivent être vraies simultanément, on les relie par l'opérateur AND dans la clause WHERE.\n\n### Corrigé\n```sql\nSELECT * FROM Eleve\nWHERE Sexe = 'F' AND Age < 18;\n```\n\n*(Remarque : sur les trois lignes de la table Eleve, aucune ne vérifie actuellement ces deux conditions à la fois — Seke Danielle est de sexe F mais a 18 ans, pas moins de 18 ans. La requête reste néanmoins correcte et s'appliquerait à toute ligne future vérifiant ces conditions.)*\n\n### Piège à éviter\nNe pas écrire Age <= 18 : l'énoncé demande \"moins de 18 ans\", ce qui correspond strictement à Age < 18 (18 ans exclus).",
+      "themes": [
+        "SQL",
+        "SELECT WHERE",
+        "opérateur AND"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q4-0",
+          "competence": "Écrire une requête SQL de sélection combinant plusieurs conditions avec AND (SELECT... WHERE... AND...)",
+          "contenu_markdown": "Pour combiner deux conditions qui doivent être vraies simultanément, on les relie par l'opérateur AND dans la clause WHERE.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-combinant-plusieurs-conditions-avec-and-select-where-and-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

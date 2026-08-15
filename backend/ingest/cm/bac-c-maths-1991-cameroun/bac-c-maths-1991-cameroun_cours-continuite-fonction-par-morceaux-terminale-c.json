@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-continuite-fonction-par-morceaux-terminale-c",
+  "meta": {
+    "titre": "Étudier la continuité d'une fonction définie par morceaux",
+    "cours_id": "cours-continuite-fonction-par-morceaux-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Continuité - fonctions définies par morceaux",
+    "tags": ["continuité", "fonction par morceaux", "limites latérales", "croissances comparées"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1991-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1991-cameroun_exercice_2_q1a"
+  },
+  "sections": {
+    "accroche": "Une fonction définie par morceaux est automatiquement continue sur chaque morceau ouvert (composée de fonctions usuelles) ; seul le point de raccordement demande une vérification explicite via les limites latérales.",
+    "prerequis": ["Continuité des fonctions usuelles (composées, produits, quotients)", "Limites latérales", "Croissances comparées exponentielle/puissance"],
+    "regle": {
+      "titre": "Continuité en un point de raccordement",
+      "contenu_markdown": "Pour une fonction définie différemment de part et d'autre d'un point $a$ (avec $f(a)$ donné), $f$ est continue en $a$ si et seulement si $\\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x)=f(a)$. Les trois valeurs doivent coïncider exactement. Sur chaque morceau ouvert, la continuité découle des théorèmes usuels (composée, produit, quotient de fonctions continues), sous réserve d'un domaine de définition correct.",
+      "formule_principale": "$f$ continue en $a\\iff\\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x)=f(a)$",
+      "variantes": ["Si l'une des limites latérales est infinie ou n'existe pas, f n'est pas continue en a, quelle que soit la valeur de f(a)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g(x)=x^2\\sin(1/x)$ si $x\\neq0$, $g(0)=0$. Étudier la continuité en 0.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Encadrer g(x) près de 0", "justification": "|sin(1/x)|≤1", "resultat_markdown": "$-x^2\\leqslant g(x)\\leqslant x^2$"},
+        {"numero": 2, "action": "Appliquer le théorème des gendarmes", "justification": "x²→0", "resultat_markdown": "$\\lim_{x\\to0}g(x)=0$"}
+      ],
+      "conclusion_markdown": "lim g(x)=0=g(0) : g est continue en 0."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Ne vérifier qu'une seule limite latérale et en déduire la continuité", "pourquoi_faux": "les deux limites latérales doivent coïncider entre elles ET avec la valeur au point", "correction_markdown": "Toujours calculer séparément la limite à gauche et la limite à droite avant de conclure."},
+      {"erreur_markdown": "Oublier d'invoquer explicitement la croissance comparée quand elle intervient dans le calcul d'une limite latérale", "pourquoi_faux": "un correcteur attend la justification nommée, pas seulement le résultat numérique", "correction_markdown": "Toujours citer le résultat de croissance comparée utilisé (par exemple eᵘ/u→0 quand u→-∞)."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit h(x)=x/|x| pour x≠0, h(0)=1. h est-elle continue en 0 ?", "solution_markdown": "lim à gauche = -1, lim à droite = 1, valeurs différentes : h n'est pas continue en 0."}
+    ],
+    "synthese": "Pour une fonction par morceaux, la continuité au point de raccordement exige l'égalité stricte des limites à gauche, à droite, et de la valeur en ce point."
+  }
+}

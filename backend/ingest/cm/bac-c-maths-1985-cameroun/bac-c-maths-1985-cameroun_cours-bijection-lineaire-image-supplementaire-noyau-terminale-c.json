@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-bijection-lineaire-image-supplementaire-noyau-terminale-c",
+  "meta": {
+    "titre": "Construire une bijection linéaire entre G et Im(g) pour un supplémentaire du noyau",
+    "cours_id": "cours-bijection-lineaire-image-supplementaire-noyau-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - applications linéaires, noyau et image",
+    "tags": ["application linéaire", "noyau", "image", "bijection", "supplémentaire"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_3_q1a"
+  },
+  "sections": {
+    "accroche": "Le théorème du rang repose sur un fait plus profond qu'une simple égalité de dimensions : n'importe quel supplémentaire du noyau est en bijection linéaire avec l'image, via la restriction de l'application elle-même.",
+    "prerequis": ["Définition d'un supplémentaire (E=A⊕B)", "Définition du noyau et de l'image d'une application linéaire", "Notion de bijection (injectivité + surjectivité)"],
+    "regle": {
+      "titre": "Bijection entre un supplémentaire du noyau et l'image",
+      "contenu_markdown": "Soit $g:E\\to E$ linéaire et $G$ un supplémentaire de $\\ker g$ dans $E$ (c'est-à-dire $E=\\ker g\\oplus G$). Alors la restriction $\\theta=g_{|G}:G\\to\\mathrm{Im}\\,g$ est une bijection linéaire. **Surjectivité** : tout $y\\in\\mathrm{Im}\\,g$ s'écrit $y=g(x)$ pour un $x\\in E$ ; en décomposant $x=x_1+x_2$ avec $x_1\\in\\ker g$, $x_2\\in G$, on a $y=g(x_1)+g(x_2)=0+g(x_2)=\\theta(x_2)$, donc $y\\in\\theta(G)$. **Injectivité** : si $\\theta(x_2)=0$ avec $x_2\\in G$, alors $x_2\\in\\ker g\\cap G=\\{0\\}$ (car $G$ est un supplémentaire du noyau), donc $x_2=0$.",
+      "formule_principale": "$E=\\ker g\\oplus G\\Rightarrow g_{|G}:G\\to\\mathrm{Im}\\,g$ est une bijection linéaire",
+      "variantes": ["Cette bijection est le cœur de la preuve du théorème du rang : $\\dim G=\\dim\\mathrm{Im}\\,g$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g:\\mathbb R^2\\to\\mathbb R^2$, $g(x,y)=(x-y,0)$. Vérifier que $G=\\mathrm{Vect}(1,0)$ est un supplémentaire de $\\ker g$ et que $g_{|G}$ réalise une bijection vers $\\mathrm{Im}\\,g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Déterminer $\\ker g$", "justification": "$g(x,y)=(0,0)\\iff x=y$", "resultat_markdown": "$\\ker g=\\mathrm{Vect}(1,1)$"},
+        {"numero": 2, "action": "Vérifier $E=\\ker g\\oplus G$", "justification": "$(1,1)$ et $(1,0)$ non colinéaires en dimension 2", "resultat_markdown": "$\\mathbb R^2=\\mathrm{Vect}(1,1)\\oplus\\mathrm{Vect}(1,0)$"},
+        {"numero": 3, "action": "Restreindre $g$ à $G$", "justification": "évaluer $g$ sur un vecteur générique de $G$", "resultat_markdown": "$g(t,0)=(t,0)$ : $\\theta(t,0)=(t,0)$, clairement bijective de $G$ vers $\\mathrm{Im}\\,g=\\mathrm{Vect}(1,0)$"}
+      ],
+      "conclusion_markdown": "$\\theta=g_{|G}$ est bien une bijection linéaire de $G$ vers $\\mathrm{Im}\\,g$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre la restriction de $g$ à $G$ avec $g$ elle-même sur tout $E$", "pourquoi_faux": "$g$ globale n'est en général ni injective ni surjective ; c'est bien sa restriction à un supplémentaire du noyau qui devient bijective", "correction_markdown": "Toujours préciser qu'on travaille avec $\\theta=g_{|G}$, la restriction, et pas $g$ prise sur tout $E$."},
+      {"erreur_markdown": "Oublier de vérifier $\\ker g\\cap G=\\{0\\}$ pour l'injectivité", "pourquoi_faux": "c'est précisément cette propriété du supplémentaire qui garantit l'injectivité de la restriction", "correction_markdown": "Toujours citer explicitement $\\ker g\\cap G=\\{0\\}$ (définition du supplémentaire) au moment de prouver l'injectivité."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Pourquoi la restriction $g_{|G}$ est-elle automatiquement linéaire si $g$ l'est ?", "solution_markdown": "La restriction d'une application linéaire à un sous-espace vectoriel reste linéaire : les propriétés $g(x+y)=g(x)+g(y)$ et $g(\\lambda x)=\\lambda g(x)$ restent vraies pour tout $x,y\\in G\\subset E$."}
+    ],
+    "synthese": "Pour tout supplémentaire G du noyau d'une application linéaire g, la restriction de g à G est une bijection linéaire vers Im g : c'est le mécanisme central derrière le théorème du rang."
+  }
+}

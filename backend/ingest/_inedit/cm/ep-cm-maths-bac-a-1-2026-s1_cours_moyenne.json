@@ -1,0 +1,107 @@
+{
+  "type": "cours",
+  "cours_id": "cours-moyenne-serie-statistique-bac-a",
+  "meta": {
+    "titre": "Moyenne d'une série statistique",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques descriptives",
+    "duree_estimee_min": 15,
+    "tags": ["moyenne"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-1-2026-s1-ex2-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'un tableau donne des valeurs ET leurs effectifs, la moyenne ne s'obtient jamais en additionnant simplement les valeurs et en divisant par leur nombre : chaque valeur doit être pondérée par son propre effectif."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau statistique (valeurs, effectifs)",
+        "Addition et division de nombres décimaux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne pondérée d'une série à effectifs",
+      "contenu_markdown": "Pour une série statistique donnée par un tableau de valeurs $x_i$ associées à des effectifs $n_i$, la moyenne est $\\bar x=\\dfrac{\\sum n_ix_i}{N}$, où $N=\\sum n_i$ est l'effectif total (la somme de tous les effectifs, pas le nombre de lignes du tableau).",
+      "formule_principale": "\\bar x=\\dfrac{\\sum n_ix_i}{N}, \\quad N=\\sum n_i"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un tableau donne les valeurs $x_i$ (1, 2, 3, 4) avec les effectifs $n_i$ correspondants (5, 8, 4, 3). Calcule la moyenne $\\bar x$ de cette série.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'effectif total $N$",
+          "justification": "$N$ est la somme de tous les effectifs du tableau.",
+          "resultat_markdown": "$N=5+8+4+3=20$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme pondérée $\\sum n_ix_i$",
+          "justification": "Chaque valeur est multipliée par son propre effectif avant d'être additionnée.",
+          "resultat_markdown": "$1\\times5+2\\times8+3\\times4+4\\times3=5+16+12+12=45$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser la somme pondérée par l'effectif total",
+          "justification": "C'est la définition de la moyenne pondérée.",
+          "resultat_markdown": "$\\bar x=\\dfrac{45}{20}=2{,}25$"
+        }
+      ],
+      "conclusion_markdown": "La moyenne de la série est $\\bar x=2{,}25$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser par le nombre de lignes du tableau (le nombre de valeurs distinctes) au lieu de l'effectif total.",
+          "pourquoi_faux": "La moyenne pondère chaque valeur par sa fréquence réelle d'apparition : le dénominateur doit être l'effectif total, pas le nombre de valeurs différentes.",
+          "correction_markdown": "Toujours calculer $N=\\sum n_i$ séparément avant de diviser, et vérifier qu'il correspond à l'effectif total annoncé dans l'énoncé s'il est donné."
+        },
+        {
+          "erreur_markdown": "Ajouter une valeur $x_i$ directement à la somme sans la multiplier par son effectif $n_i$.",
+          "pourquoi_faux": "Chaque terme de la somme au numérateur doit être un produit $n_i\\times x_i$, jamais $x_i$ seul.",
+          "correction_markdown": "Écris explicitement chaque produit $n_i\\times x_i$ avant de les additionner."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un tableau donne les valeurs $2$, $4$, $6$ avec effectifs respectifs $3$, $5$, $2$. Calcule la moyenne.",
+          "solution_markdown": "$N=3+5+2=10$. $\\sum n_ix_i=2\\times3+4\\times5+6\\times2=6+20+12=38$. $\\bar x=\\dfrac{38}{10}=3{,}8$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une coopérative recense le nombre de sacs de cacao récoltés par 30 planteurs : 8 planteurs en ont récolté 10 sacs, 14 planteurs en ont récolté 12 sacs, et le reste en a récolté 15 sacs. Calcule le nombre moyen de sacs récoltés par planteur.",
+          "solution_markdown": "Effectif restant : $30-8-14=8$ planteurs à 15 sacs. $\\sum n_ix_i=8\\times10+14\\times12+8\\times15=80+168+120=368$. $\\bar x=\\dfrac{368}{30}\\approx12{,}27$ sacs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Deux groupes de 15 et 25 élèves ont respectivement pour moyennes 11 et 14 à un même devoir. Calcule la moyenne globale des 40 élèves réunis.",
+          "solution_markdown": "La moyenne globale est la moyenne pondérée des deux moyennes de groupe, pondérées par leurs effectifs : $\\bar x=\\dfrac{15\\times11+25\\times14}{15+25}=\\dfrac{165+350}{40}=\\dfrac{515}{40}=12{,}875$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Moyenne pondérée : $\\bar x=\\dfrac{\\sum n_ix_i}{N}$, avec $N=\\sum n_i$ l'effectif TOTAL.",
+        "Ne jamais diviser par le nombre de lignes/valeurs distinctes du tableau.",
+        "Chaque terme du numérateur est un produit valeur × effectif, jamais la valeur seule.",
+        "La moyenne de deux groupes réunis se calcule comme une moyenne pondérée des deux moyennes, pondérée par les effectifs de chaque groupe."
+      ]
+    }
+  ]
+}

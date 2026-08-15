@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-recherche-base-par-encadrement-terminale-c",
+  "meta": {
+    "titre": "Déterminer une base numérique inconnue par encadrement et test de valeurs",
+    "cours_id": "cours-recherche-base-par-encadrement-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Numération - recherche de base sous contrainte",
+    "tags": ["numération", "encadrement", "monotonie", "validité des chiffres"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_2_q2"
+  },
+  "sections": {
+    "accroche": "Déterminer une base numérique inconnue sous une contrainte d'inégalité est un problème de monotonie déguisé : dès que la valeur en base dix croît strictement avec la base, un simple test successif des entiers valides suffit à trouver l'unique solution.",
+    "prerequis": ["Écriture polynomiale d'un nombre en base a", "Notion de fonction strictement croissante", "Contrainte de validité des chiffres (chiffre < base)"],
+    "regle": {
+      "titre": "Recherche de base par encadrement",
+      "contenu_markdown": "Pour trouver une base $a$ vérifiant une contrainte numérique (ex. $X(a)\\leqslant N$) : 1) déterminer la contrainte de validité minimale sur $a$ (le plus grand chiffre utilisé doit être strictement inférieur à $a$), 2) exprimer $X$ en base dix comme un polynôme en $a$, 3) remarquer que ce polynôme est strictement croissant pour $a$ positif (somme de termes en $a^k$ à coefficients positifs), 4) tester successivement les entiers $a$ à partir de la borne minimale, jusqu'à ce que la contrainte cesse d'être vérifiée, 5) conclure grâce à la stricte croissance que c'est la dernière valeur testée qui vérifie la contrainte, et qu'aucune valeur supérieure ne peut convenir.",
+      "formule_principale": "Si $a\\mapsto X(a)$ est strictement croissante et $X(a_0)\\leqslant N<X(a_0+1)$, alors $a_0$ est l'unique solution parmi les entiers valides",
+      "variantes": ["Si la contrainte est une inégalité stricte, adapter le test en conséquence (vérifier $<$ ou $\\leqslant$)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Le nombre $\\overline{23}$ est écrit en base $a$. Déterminer $a$ sachant que sa valeur en base dix est inférieure ou égale à $20$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Contrainte de validité", "justification": "le plus grand chiffre utilisé est 3", "resultat_markdown": "$a\\geqslant4$"},
+        {"numero": 2, "action": "Exprimer $X(a)$", "justification": "définition de l'écriture en base a", "resultat_markdown": "$X(a)=2a+3$, fonction strictement croissante de $a$"},
+        {"numero": 3, "action": "Tester $a=4$ puis $a=5$", "justification": "recherche successive à partir de la borne minimale", "resultat_markdown": "$X(4)=11\\leqslant20$ ✓ ; $X(5)=13\\leqslant20$ ✓ ; $X(6)=15\\leqslant20$ ✓ ; $X(7)=17\\leqslant20$ ✓ ; $X(8)=19\\leqslant20$ ✓ ; $X(9)=21>20$ ✗"}
+      ],
+      "conclusion_markdown": "Ici plusieurs valeurs conviennent ($4\\leqslant a\\leqslant8$) : contrairement au cas de l'exercice source (où le test aboutissait à une unique valeur), une contrainte large peut laisser plusieurs bases valides — la méthode reste la même, seule la conclusion diffère selon la marge laissée par l'inégalité."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier la contrainte de validité des chiffres avant de commencer les tests", "pourquoi_faux": "on risque de tester des valeurs de $a$ qui ne correspondent à aucune écriture valide", "correction_markdown": "Toujours déterminer d'abord la borne minimale de $a$ à partir du plus grand chiffre utilisé."},
+      {"erreur_markdown": "Arrêter les tests dès qu'une valeur convient, sans vérifier si d'autres valeurs plus grandes conviennent aussi", "pourquoi_faux": "si l'énoncé attend une valeur unique, il faut vérifier où la contrainte cesse réellement d'être satisfaite, pas s'arrêter au premier succès", "correction_markdown": "Continuer les tests jusqu'à la première valeur qui viole la contrainte, pour délimiter précisément l'ensemble des solutions."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Le nombre $\\overline{31}$ est écrit en base $a$. Déterminer les valeurs de $a$ pour lesquelles sa valeur en base dix est strictement inférieure à $20$.", "solution_markdown": "Validité : $a\\geqslant4$. $X(a)=3a+1$. $X(4)=13<20$, $X(5)=16<20$, $X(6)=19<20$, $X(7)=22\\geqslant20$. Donc $a\\in\\{4,5,6\\}$."}
+    ],
+    "synthese": "Pour trouver une base sous contrainte numérique : fixer la borne de validité des chiffres, exprimer X(a) en base dix (fonction croissante de a), puis tester successivement les entiers valides jusqu'à cerner précisément les valeurs qui vérifient la contrainte."
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "cours_id": "cours-produit-vectoriel-tle-c-e",
+  "meta": {
+    "titre": "Produit vectoriel dans l'espace (Terminale C/E)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Produit vectoriel : définition, propriétés et applications en géométrie dans l'espace",
+    "duree_estimee_min": 35,
+    "tags": ["Produit vectoriel (Tle C/E)", "produit vectoriel", "géométrie dans l'espace", "vecteur normal à un plan", "aire d'un triangle dans l'espace", "équation cartésienne d'un plan", "colinéarité de vecteurs"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "II"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2015-MATHS",
+    "epreuve_titre": "Mathématiques BAC C 2015",
+    "exercice_numero": "Probleme-B",
+    "rappel_id": "rdm-2015c-pb-4",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver une direction perpendiculaire à tout un plan de l'espace, sans rapporteur, sans résoudre de système à trois inconnues, juste à partir des coordonnées de deux vecteurs de ce plan : c'est exactement ce que permet le produit vectoriel. Tu connais déjà le produit scalaire, qui associe à deux vecteurs un nombre - ici, l'opération associe à deux vecteurs un troisième vecteur, automatiquement orthogonal aux deux premiers. Cette seule propriété déverrouille trois calculs qui reviennent sans cesse dans les problèmes de géométrie dans l'espace en Terminale C et E : l'aire d'un triangle ou d'un parallélogramme, une équation cartésienne de plan à partir de trois points, et un test rapide de colinéarité entre deux vecteurs. Le calcul lui-même tient en une formule à trois coordonnées, vérifiable systématiquement par un produit scalaire nul - de quoi transformer un exercice qui semblait exiger plusieurs pages de résolution de système en trois lignes de calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir calculer les coordonnées d'un vecteur $\\vec{AB}$ à partir des coordonnées de deux points $A$ et $B$ de l'espace.",
+        "Tu dois connaître le produit scalaire de deux vecteurs en coordonnées, $\\vec u\\cdot\\vec v=xx'+yy'+zz'$, et son critère d'orthogonalité $\\vec u\\cdot\\vec v=0$.",
+        "Tu dois savoir calculer la norme d'un vecteur à partir de ses coordonnées, $\\|\\vec u\\|=\\sqrt{x^2+y^2+z^2}$.",
+        "Tu dois savoir ce que signifie deux vecteurs colinéaires (l'existence d'un réel $k$ tel que $\\vec v=k\\vec u$).",
+        "Tu dois savoir manipuler un repère orthonormé direct de l'espace $(O,\\vec\\imath,\\vec\\jmath,\\vec k)$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le produit vectoriel : définition, formule et applications",
+      "contenu_markdown": "Dans l'espace muni d'un repère orthonormé direct $(O,\\vec\\imath,\\vec\\jmath,\\vec k)$, soient $\\vec u$ et $\\vec v$ deux vecteurs. Le produit vectoriel de $\\vec u$ par $\\vec v$, noté $\\vec u\\wedge\\vec v$, est l'unique vecteur défini ainsi :\n\n- si $\\vec u$ et $\\vec v$ sont colinéaires (l'un des deux étant éventuellement nul), $\\vec u\\wedge\\vec v=\\vec 0$ ;\n- sinon, $\\vec u\\wedge\\vec v$ est le vecteur orthogonal à la fois à $\\vec u$ et à $\\vec v$, de norme $\\|\\vec u\\wedge\\vec v\\|=\\|\\vec u\\|\\times\\|\\vec v\\|\\times\\sin(\\widehat{\\vec u,\\vec v})$, orienté de sorte que le triplet $(\\vec u,\\vec v,\\vec u\\wedge\\vec v)$ forme une base directe de l'espace (règle des trois doigts de la main droite).\n\nEn pratique, on ne revient presque jamais à cette définition géométrique pour calculer : on utilise la formule en coordonnées. Si $\\vec u(x,y,z)$ et $\\vec v(x',y',z')$ dans le repère $(O,\\vec\\imath,\\vec\\jmath,\\vec k)$, alors\n\n$$\\vec u\\wedge\\vec v=(yz'-zy',\\ zx'-xz',\\ xy'-yx')$$\n\nUn moyen mnémotechnique classique consiste à écrire ce résultat comme un déterminant formel :\n\n$$\\vec u\\wedge\\vec v=\\begin{vmatrix}\\vec\\imath&\\vec\\jmath&\\vec k\\\\x&y&z\\\\x'&y'&z'\\end{vmatrix}$$\n\nPropriétés à connaître :\n\n- Antisymétrie : $\\vec v\\wedge\\vec u=-(\\vec u\\wedge\\vec v)$ - inverser l'ordre des deux vecteurs change le signe des trois coordonnées.\n- Bilinéarité : $(\\lambda\\vec u+\\mu\\vec u')\\wedge\\vec v=\\lambda(\\vec u\\wedge\\vec v)+\\mu(\\vec u'\\wedge\\vec v)$, et de même à droite.\n- $\\vec u\\wedge\\vec u=\\vec 0$ pour tout vecteur $\\vec u$.\n- Le vecteur $\\vec u\\wedge\\vec v$ est toujours orthogonal à $\\vec u$ et à $\\vec v$ : $\\vec u\\cdot(\\vec u\\wedge\\vec v)=0$ et $\\vec v\\cdot(\\vec u\\wedge\\vec v)=0$. Ce double produit scalaire nul est le moyen le plus rapide de vérifier un calcul de produit vectoriel.\n\nDeux applications directes complètent cette règle. Pour trois points $A$, $B$, $C$ de l'espace non alignés :\n\n$$\\text{Aire du parallélogramme construit sur }\\vec{AB}\\text{ et }\\vec{AC}=\\|\\vec{AB}\\wedge\\vec{AC}\\|\\qquad\\text{Aire du triangle }ABC=\\dfrac12\\|\\vec{AB}\\wedge\\vec{AC}\\|$$\n\nLe vecteur $\\vec{AB}\\wedge\\vec{AC}$ est également un vecteur normal au plan $(ABC)$ : il suffit ensuite d'un point du plan (par exemple $A$) pour écrire une équation cartésienne $ax+by+cz+d=0$, où $(a,b,c)$ sont les coordonnées de ce vecteur normal.",
+      "formule_principale": "\\vec u\\wedge\\vec v=(yz'-zy',\\ zx'-xz',\\ xy'-yx')",
+      "variantes": [
+        {
+          "nom": "Test de colinéarité par produit vectoriel nul",
+          "quand_utiliser": "Pour vérifier rapidement si deux vecteurs sont colinéaires (ou si trois points sont alignés), sans chercher un coefficient de proportionnalité à la main",
+          "contenu_markdown": "Deux vecteurs $\\vec u$ et $\\vec v$ sont colinéaires si et seulement si $\\vec u\\wedge\\vec v=\\vec 0$, c'est-à-dire si les TROIS coordonnées du produit vectoriel sont simultanément nulles. Pour trois points $A$, $B$, $C$, cela revient à calculer $\\vec{AB}\\wedge\\vec{AC}$ : un résultat nul signifie que $A$, $B$, $C$ sont alignés ; un résultat non nul signifie qu'ils déterminent un plan, et ce résultat en est alors un vecteur normal."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'espace muni d'un repère orthonormé direct $(O,\\vec\\imath,\\vec\\jmath,\\vec k)$, on considère les points $A(1,2,0)$, $B(3,1,-2)$ et $C(2,4,1)$. Calculer l'aire du triangle $ABC$, puis déterminer une équation cartésienne du plan $(ABC)$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les coordonnées de deux vecteurs du plan (ABC)",
+          "justification": "Le produit vectoriel se calcule à partir de deux vecteurs non colinéaires du plan étudié ; on choisit naturellement les deux vecteurs issus du même sommet $A$.",
+          "resultat_markdown": "$\\vec{AB}=B-A=(3-1,\\,1-2,\\,-2-0)=(2,-1,-2)$ et $\\vec{AC}=C-A=(2-1,\\,4-2,\\,1-0)=(1,2,1)$."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du produit vectoriel à $\\vec{AB}$ et $\\vec{AC}$",
+          "justification": "Avec $\\vec{AB}(x,y,z)=(2,-1,-2)$ et $\\vec{AC}(x',y',z')=(1,2,1)$, on applique $\\vec u\\wedge\\vec v=(yz'-zy',\\,zx'-xz',\\,xy'-yx')$.",
+          "resultat_markdown": "Première coordonnée : $yz'-zy'=(-1)\\times1-(-2)\\times2=-1+4=3$.\n\nDeuxième coordonnée : $zx'-xz'=(-2)\\times1-2\\times1=-2-2=-4$.\n\nTroisième coordonnée : $xy'-yx'=2\\times2-(-1)\\times1=4+1=5$.\n\n$$\\vec{AB}\\wedge\\vec{AC}=(3,-4,5)$$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le résultat par un produit scalaire nul",
+          "justification": "Le produit vectoriel est toujours orthogonal aux deux vecteurs de départ : cette vérification systématique permet de détecter une erreur de calcul avant de poursuivre.",
+          "resultat_markdown": "$\\vec{AB}\\cdot(3,-4,5)=2\\times3+(-1)\\times(-4)+(-2)\\times5=6+4-10=0$ et $\\vec{AC}\\cdot(3,-4,5)=1\\times3+2\\times(-4)+1\\times5=3-8+5=0$ : les deux produits scalaires sont nuls, le calcul est confirmé."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la norme du produit vectoriel et en déduire l'aire du triangle",
+          "justification": "La norme de $\\vec{AB}\\wedge\\vec{AC}$ donne l'aire du parallélogramme construit sur $\\vec{AB}$ et $\\vec{AC}$ ; le triangle $ABC$ en occupe exactement la moitié.",
+          "resultat_markdown": "$\\|\\vec{AB}\\wedge\\vec{AC}\\|=\\sqrt{3^2+(-4)^2+5^2}=\\sqrt{9+16+25}=\\sqrt{50}=5\\sqrt2$.\n\n$$\\text{Aire}(ABC)=\\dfrac12\\times5\\sqrt2=\\dfrac{5\\sqrt2}{2}$$"
+        },
+        {
+          "numero": 5,
+          "action": "Utiliser $\\vec{AB}\\wedge\\vec{AC}$ comme vecteur normal pour écrire l'équation du plan (ABC)",
+          "justification": "$\\vec{AB}\\wedge\\vec{AC}$ est orthogonal à deux vecteurs non colinéaires du plan $(ABC)$ : c'est donc un vecteur normal à ce plan. Une équation cartésienne s'obtient en écrivant que $\\vec{AM}$ est orthogonal à ce vecteur normal, pour $M(x,y,z)$ un point courant du plan et $A$ un point connu du plan.",
+          "resultat_markdown": "$3(x-1)-4(y-2)+5(z-0)=0$\n\n$$3x-4y+5z+5=0$$\n\n(en développant : $3x-3-4y+8+5z=0$, soit $3x-4y+5z+5=0$)"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier l'équation avec les deux autres points",
+          "justification": "Une équation de plan correctement établie doit être satisfaite par les trois points qui l'ont définie ; vérifier avec $B$ et $C$ confirme le résultat sans recalcul du produit vectoriel.",
+          "resultat_markdown": "Pour $B(3,1,-2)$ : $3\\times3-4\\times1+5\\times(-2)+5=9-4-10+5=0$. Pour $C(2,4,1)$ : $3\\times2-4\\times4+5\\times1+5=6-16+5+5=0$. Les deux vérifications sont correctes."
+        }
+      ],
+      "conclusion_markdown": "L'aire du triangle $ABC$ vaut $\\dfrac{5\\sqrt2}{2}$ unités d'aire, et le plan $(ABC)$ admet pour équation cartésienne $3x-4y+5z+5=0$ : un seul calcul de produit vectoriel a permis d'obtenir les deux résultats."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $\\vec u\\wedge\\vec v$ avec la formule du produit scalaire, $xx'+yy'+zz'$, en pensant qu'il s'agit de la même opération sous un nom différent.",
+          "pourquoi_faux": "Le produit scalaire renvoie un nombre, le produit vectoriel renvoie un vecteur à trois coordonnées : ce sont deux opérations distinctes, avec deux formules distinctes et deux usages distincts (le produit scalaire teste l'orthogonalité ou calcule une longueur projetée, le produit vectoriel construit une direction perpendiculaire à deux vecteurs). Appliquer la mauvaise formule ne donne jamais un vecteur normal exploitable, seulement un nombre sans rapport avec le plan cherché.",
+          "correction_markdown": "Avant de calculer, identifier ce que la question demande : un nombre (angle, orthogonalité, longueur projetée) appelle le produit scalaire ; un vecteur (normale à un plan, direction perpendiculaire, aire par la norme) appelle le produit vectoriel et sa formule à trois coordonnées $(yz'-zy',\\,zx'-xz',\\,xy'-yx')$."
+        },
+        {
+          "erreur_markdown": "Conclure que deux vecteurs sont colinéaires dès qu'une seule des trois coordonnées du produit vectoriel s'annule, sans calculer les deux autres.",
+          "pourquoi_faux": "Le critère de colinéarité exige que les TROIS coordonnées de $\\vec u\\wedge\\vec v$ soient nulles simultanément. Il est tout à fait possible qu'une seule coordonnée s'annule par coïncidence numérique alors que les deux autres restent non nulles : les vecteurs ne sont alors pas colinéaires, et le résultat du produit vectoriel est un vecteur normal exploitable, pas le vecteur nul.",
+          "correction_markdown": "Calculer systématiquement les trois coordonnées du produit vectoriel jusqu'au bout, puis vérifier que le triplet obtenu est bien $(0,0,0)$ avant de conclure à une colinéarité."
+        },
+        {
+          "erreur_markdown": "Répondre \"aire du triangle $=\\|\\vec{AB}\\wedge\\vec{AC}\\|$\", en oubliant le facteur $\\dfrac12$.",
+          "pourquoi_faux": "La norme du produit vectoriel donne directement l'aire du PARALLÉLOGRAMME construit sur $\\vec{AB}$ et $\\vec{AC}$, pas celle du triangle $ABC$. Le triangle $ABC$ est exactement la moitié de ce parallélogramme (la diagonale $BC$ le partage en deux triangles superposables) : oublier la division par 2 double systématiquement le résultat.",
+          "correction_markdown": "Retenir les deux formules côte à côte et bien identifier ce que demande l'énoncé : $\\text{Aire du parallélogramme}=\\|\\vec{AB}\\wedge\\vec{AC}\\|$ et $\\text{Aire du triangle}=\\dfrac12\\|\\vec{AB}\\wedge\\vec{AC}\\|$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'espace muni d'un repère orthonormé, on donne les vecteurs $\\vec u(2,1,-1)$ et $\\vec v(1,3,2)$. Calculer $\\vec u\\wedge\\vec v$, puis vérifier que ce vecteur est orthogonal à $\\vec u$.",
+          "solution_markdown": "Avec $\\vec u(x,y,z)=(2,1,-1)$ et $\\vec v(x',y',z')=(1,3,2)$, on applique la formule $\\vec u\\wedge\\vec v=(yz'-zy',\\,zx'-xz',\\,xy'-yx')$.\n\nPremière coordonnée : $yz'-zy'=1\\times2-(-1)\\times3=2+3=5$.\n\nDeuxième coordonnée : $zx'-xz'=(-1)\\times1-2\\times2=-1-4=-5$.\n\nTroisième coordonnée : $xy'-yx'=2\\times3-1\\times1=6-1=5$.\n\n$$\\vec u\\wedge\\vec v=(5,-5,5)$$\n\nVérification de l'orthogonalité avec $\\vec u$ : $\\vec u\\cdot(5,-5,5)=2\\times5+1\\times(-5)+(-1)\\times5=10-5-5=0$.\n\nLe produit scalaire est nul : $\\vec u\\wedge\\vec v$ est bien orthogonal à $\\vec u$ (et, de la même façon, $\\vec v\\cdot(5,-5,5)=1\\times5+3\\times(-5)+2\\times5=5-15+10=0$ confirme qu'il est aussi orthogonal à $\\vec v$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'espace muni d'un repère orthonormé, on considère les points $P(1,1,1)$, $Q(3,2,1)$ et $R(2,4,2)$. Calculer l'aire du triangle $PQR$.",
+          "solution_markdown": "$\\vec{PQ}=Q-P=(3-1,\\,2-1,\\,1-1)=(2,1,0)$ et $\\vec{PR}=R-P=(2-1,\\,4-1,\\,2-1)=(1,3,1)$.\n\nProduit vectoriel, avec $\\vec{PQ}(x,y,z)=(2,1,0)$ et $\\vec{PR}(x',y',z')=(1,3,1)$ :\n\nPremière coordonnée : $yz'-zy'=1\\times1-0\\times3=1$.\n\nDeuxième coordonnée : $zx'-xz'=0\\times1-2\\times1=-2$.\n\nTroisième coordonnée : $xy'-yx'=2\\times3-1\\times1=6-1=5$.\n\n$$\\vec{PQ}\\wedge\\vec{PR}=(1,-2,5)$$\n\nNorme : $\\|\\vec{PQ}\\wedge\\vec{PR}\\|=\\sqrt{1^2+(-2)^2+5^2}=\\sqrt{1+4+25}=\\sqrt{30}$.\n\n$$\\text{Aire}(PQR)=\\dfrac{\\sqrt{30}}2$$\n\nLe résultat ne tombe pas sur un entier : c'est une valeur exacte parfaitement recevable, à laisser sous forme de racine plutôt qu'à arrondir sans que l'énoncé le demande (environ $2{,}74$ unités d'aire)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans l'espace muni d'un repère orthonormé, on considère les points $A(1,-1,2)$, $B(2,1,0)$, $C(-1,0,3)$ et $D(3,2,-1)$.\n\na) Vérifier que $A$, $B$ et $C$ ne sont pas alignés.\n\nb) Déterminer une équation cartésienne du plan $(ABC)$.\n\nc) Le point $D$ appartient-il au plan $(ABC)$ ? Justifier.",
+          "solution_markdown": "**a)** $\\vec{AB}=B-A=(2-1,\\,1-(-1),\\,0-2)=(1,2,-2)$ et $\\vec{AC}=C-A=(-1-1,\\,0-(-1),\\,3-2)=(-2,1,1)$.\n\nCalculons $\\vec{AB}\\wedge\\vec{AC}$, avec $\\vec{AB}(x,y,z)=(1,2,-2)$ et $\\vec{AC}(x',y',z')=(-2,1,1)$ :\n\nPremière coordonnée : $yz'-zy'=2\\times1-(-2)\\times1=2+2=4$.\n\nDeuxième coordonnée : $zx'-xz'=(-2)\\times(-2)-1\\times1=4-1=3$.\n\nTroisième coordonnée : $xy'-yx'=1\\times1-2\\times(-2)=1+4=5$.\n\n$$\\vec{AB}\\wedge\\vec{AC}=(4,3,5)$$\n\nLe triplet $(4,3,5)$ n'est pas $(0,0,0)$ : $\\vec{AB}$ et $\\vec{AC}$ ne sont pas colinéaires, donc $A$, $B$, $C$ ne sont pas alignés. Ils déterminent un plan, et $\\vec{AB}\\wedge\\vec{AC}=(4,3,5)$ en est un vecteur normal.\n\n**b)** Le plan $(ABC)$ passe par $A(1,-1,2)$ et admet $(4,3,5)$ pour vecteur normal :\n\n$$4(x-1)+3(y+1)+5(z-2)=0$$\n\nEn développant : $4x-4+3y+3+5z-10=0$, soit :\n\n$$4x+3y+5z-11=0$$\n\nVérification avec $B(2,1,0)$ : $4\\times2+3\\times1+5\\times0-11=8+3+0-11=0$. Vérification avec $C(-1,0,3)$ : $4\\times(-1)+3\\times0+5\\times3-11=-4+0+15-11=0$. Les deux vérifications confirment l'équation.\n\n**c)** On substitue les coordonnées de $D(3,2,-1)$ dans le membre de gauche de l'équation du plan :\n\n$$4\\times3+3\\times2+5\\times(-1)-11=12+6-5-11=2$$\n\nLe résultat vaut $2$, non nul : $D$ ne vérifie pas l'équation du plan $(ABC)$, donc $D$ n'appartient pas à ce plan."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le produit vectoriel de deux vecteurs de l'espace est un VECTEUR (jamais un nombre), orthogonal aux deux vecteurs de départ - ne le confonds jamais avec le produit scalaire.",
+        "Formule à connaître par cœur : $\\vec u\\wedge\\vec v=(yz'-zy',\\,zx'-xz',\\,xy'-yx')$ - reproduis-la toujours dans le même ordre pour éviter les erreurs de signe, et vérifie-la par $\\vec u\\cdot(\\vec u\\wedge\\vec v)=0$.",
+        "$\\vec u\\wedge\\vec v=\\vec 0$ (les TROIS coordonnées nulles à la fois) équivaut à $\\vec u$ et $\\vec v$ colinéaires : c'est le test de colinéarité le plus rapide en coordonnées.",
+        "La norme du produit vectoriel donne directement l'aire d'un parallélogramme ; divise-la par 2 pour l'aire du triangle correspondant - ne mélange jamais les deux.",
+        "$\\vec{AB}\\wedge\\vec{AC}$ est toujours un vecteur normal au plan $(ABC)$ : c'est le moyen le plus rapide d'écrire une équation cartésienne de plan à partir de trois points, sans résoudre de système.",
+        "Au BAC, séries C et E, le produit vectoriel apparaît presque systématiquement dans les problèmes de géométrie dans l'espace : calcul d'aire, équation de plan, test d'alignement ou de coplanarité - une compétence qui revient d'exercice en exercice, à automatiser."
+      ]
+    }
+  ]
+}

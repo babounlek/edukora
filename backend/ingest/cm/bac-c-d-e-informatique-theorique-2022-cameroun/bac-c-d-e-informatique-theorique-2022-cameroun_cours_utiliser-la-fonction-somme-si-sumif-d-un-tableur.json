@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-utiliser-la-fonction-somme-si-sumif-d-un-tableur-terminale-c",
+  "meta": {
+    "titre": "Utiliser la fonction SOMME.SI (SUMIF) d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Tableur - fonctions conditionnelles",
+    "tags": ["SOMME.SI", "SUMIF", "tableur"],
+    "duree_estimee_min": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner uniquement les ventes d'un vendeur précis parmi des centaines de lignes, sans filtrer manuellement : c'est exactement ce que fait SOMME.SI en une seule formule, la fonction conditionnelle la plus utilisée d'un tableur."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Maîtriser la fonction SOMME() simple"]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction SOMME.SI (SUMIF) d'un tableur",
+      "contenu_markdown": "SOMME.SI(plage_test; critère; plage_somme) additionne les valeurs de plage_somme uniquement pour les lignes où la cellule correspondante de plage_test respecte le critère indiqué. Les trois plages doivent porter sur le même nombre de lignes, comparées ligne par ligne : la ligne 1 de plage_test correspond à la ligne 1 de plage_somme, et ainsi de suite. Si plage_somme est omise, SOMME.SI additionne directement les valeurs de plage_test qui vérifient le critère.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une feuille de calcul contient en A1:A3 les valeurs 12, 20, 8. Que fait la formule `=SOMME.SI(A1:A3, \"<17\")` saisie en B1 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les trois éléments de la formule",
+          "justification": "Ici, plage_test = A1:A3, critère = \"<17\", et plage_somme est absente (donc identique à plage_test).",
+          "resultat_markdown": "Test sur A1:A3, critère « strictement inférieur à 17 »."
+        },
+        {
+          "numero": 2,
+          "action": "Tester chaque valeur de la plage contre le critère",
+          "justification": "On compare une par une les valeurs de A1:A3 à 17.",
+          "resultat_markdown": "A1 = 12 < 17 ✓ ; A2 = 20 < 17 ✗ ; A3 = 8 < 17 ✓."
+        },
+        {
+          "numero": 3,
+          "action": "Additionner uniquement les valeurs qui vérifient le critère",
+          "justification": "Seules A1 et A3 respectent la condition ; A2 est ignorée.",
+          "resultat_markdown": "12 + 8 = 20"
+        }
+      ],
+      "conclusion_markdown": "La formule additionne uniquement les valeurs de A1:A3 strictement inférieures à 17, et affiche 20 dans la cellule B1. La valeur A2 (20), supérieure ou égale à 17, est ignorée dans le calcul."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner la plage testée (plage_test) au lieu de la plage de résultats (plage_somme) quand les deux plages sont différentes",
+          "pourquoi_faux": "SOMME.SI additionne toujours la troisième plage (plage_somme), jamais la plage testée elle-même, sauf si les deux plages sont volontairement identiques (comme dans le cas où plage_somme est omise).",
+          "correction_markdown": "Repère bien laquelle des trois plages de la formule est la plage_somme (la dernière argument) avant de calculer, surtout quand elles sont différentes."
+        },
+        {
+          "erreur_markdown": "Oublier les guillemets autour d'un critère textuel ou d'une comparaison (ex. écrire `<17` au lieu de `\"<17\"`)",
+          "pourquoi_faux": "Un critère de comparaison ou une chaîne de caractères doit toujours être placé entre guillemets dans SOMME.SI, sans quoi le tableur ne l'interprète pas comme un critère valide.",
+          "correction_markdown": "Vérifie systématiquement que ton critère est entouré de guillemets, qu'il s'agisse d'un texte (\"Yaoundé\") ou d'une comparaison (\">=2\")."
+        },
+        {
+          "erreur_markdown": "Décaler la plage_somme par rapport à plage_test (nombre de lignes différent, ou plages non alignées)",
+          "pourquoi_faux": "SOMME.SI compare les deux plages ligne par ligne, dans l'ordre - si elles n'ont pas exactement le même nombre de lignes ou ne démarrent pas à la même ligne, le résultat associe les mauvaises valeurs entre elles.",
+          "correction_markdown": "Vérifie toujours que plage_test et plage_somme ont exactement le même nombre de lignes et démarrent à la même ligne du tableau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une colonne C1:C5 contient les valeurs 30, 45, 10, 60, 25. Que renvoie `=SOMME.SI(C1:C5, \">=30\")` ?",
+          "solution_markdown": "30 + 45 + 60 = 135. Seules les valeurs supérieures ou égales à 30 (30, 45, 60) sont additionnées ; 10 et 25 sont exclues."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une feuille contient en colonne A des noms de villes (A2:A5 : \"Douala\", \"Yaoundé\", \"Douala\", \"Bafoussam\") et en colonne B les montants de vente correspondants (B2:B5 : 500, 300, 700, 200). Écrire la formule qui calcule le total des ventes réalisées à Douala.",
+          "solution_markdown": "`=SOMME.SI(A2:A5, \"Douala\", B2:B5)` → 500 + 700 = 1200. plage_test = A2:A5 (les villes), critère = \"Douala\", plage_somme = B2:B5 (les montants) : les deux lignes où A vaut \"Douala\" (lignes 2 et 4) voient leurs montants additionnés."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les mêmes données que l'exercice précédent, un élève écrit `=SOMME.SI(A2:A5, \"Douala\", A2:A5)` au lieu de la bonne formule. Explique pourquoi ce résultat diffère de celui attendu, et ce qu'il calcule réellement.",
+          "solution_markdown": "En remplaçant plage_somme par A2:A5 (la plage des villes elle-même, au lieu de B2:B5, les montants), la formule additionne des valeurs textuelles (\"Douala\") plutôt que des montants numériques - la plupart des tableurs renvoient alors 0 ou une erreur, puisqu'un texte ne peut pas être additionné comme un nombre. Cette formule ne calcule donc rien de significatif : elle illustre que changer la troisième plage change entièrement la nature du résultat, même si le critère de test reste identique. La formule correcte doit impérativement pointer plage_somme vers la colonne contenant les valeurs NUMÉRIQUES à additionner (ici B2:B5), jamais vers la plage testée elle-même quand celle-ci contient du texte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SOMME.SI(plage_test; critère; plage_somme) additionne conditionnellement, en testant chaque ligne avant de décider si elle contribue au total.",
+        "La somme porte toujours sur plage_somme, jamais sur plage_test, sauf quand les deux sont volontairement identiques.",
+        "Un critère textuel ou de comparaison s'écrit toujours entre guillemets (ex. \">=2\", \"Douala\").",
+        "plage_test et plage_somme doivent avoir le même nombre de lignes, alignées une à une.",
+        "Au BAC, cette fonction s'évalue soit en donnant le résultat d'une formule fournie, soit en demandant d'écrire la formule à partir d'un besoin exprimé en français."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-demontrer-suite-geometrique-changement-variable-log-racine-terminale-d",
+  "meta": {"titre": "Démontrer qu'une suite auxiliaire logarithmique est géométrique quand un vérifie une récurrence en racine carrée", "cours_id": "cours-demontrer-suite-geometrique-changement-variable-log-racine-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Suites numériques — changement de variable logarithmique", "tags": ["suite géométrique", "changement de variable", "logarithme", "récurrence racine carrée"], "duree_estimee_minutes": 5, "epreuve_source": "bac-d-maths-2012-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2012-cameroun-ex5-q2a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une suite définie par une récurrence en racine carrée cache souvent une suite géométrique révélée par un changement de variable logarithmique : la racine carrée devient un facteur 1/2 après passage au logarithme."},
+    {"type": "prerequis", "items_markdown": ["ln(√x)=(1/2)ln(x)", "ln(ab)=ln(a)+ln(b)", "Définition d'une suite géométrique : v(n+1)=q×vn"]},
+    {"type": "regle", "titre": "Exprimer v(n+1) en fonction de vn via les propriétés du logarithme", "contenu_markdown": "Pour une suite auxiliaire $v_n=\\ln(u_n)-c$ associée à $u_{n+1}=k\\sqrt{u_n}$, on exprime $v_{n+1}=\\ln(u_{n+1})-c=\\ln(k\\sqrt{u_n})-c=\\ln k+\\frac12\\ln(u_n)-c$, puis on factorise pour faire apparaître $\\frac12\\big[\\ln(u_n)-c\\big]=\\frac12v_n$ (en choisissant $c$ de sorte que $\\ln k-\\frac12c=0$, c'est-à-dire $c=2\\ln k$, ce qui explique pourquoi le décalage $c$ prend souvent la forme $2\\ln(\\text{constante})$).", "formule_principale": "v(n+1)=(1/2)ln(un)+lnk-c ; si c=2lnk, v(n+1)=(1/2)vn", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "un+1=3√un. Poser vn=ln(un)-2ln3 et démontrer que (vn) est géométrique.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Exprimer v(n+1)", "justification": "vn+1=ln(un+1)-2ln3=ln(3√un)-2ln3", "resultat_markdown": "vn+1=ln3+(1/2)ln(un)-2ln3=(1/2)ln(un)-ln3"},
+      {"numero": 2, "action": "Factoriser", "justification": "(1/2)[ln(un)-2ln3]", "resultat_markdown": "vn+1=(1/2)vn"}
+    ], "conclusion_markdown": "(vn) géométrique de raison 1/2."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Choisir arbitrairement la constante c de la suite auxiliaire vn=ln(un)-c, sans vérifier qu'elle est bien celle qui fait effectivement apparaître un facteur constant devant vn", "pourquoi_faux": "Seule une valeur précise de c (généralement 2ln(k) où k est le coefficient devant la racine) permet d'annuler les termes constants et de révéler la structure géométrique ; un autre choix de c laisse un terme constant résiduel qui empêche (vn) d'être géométrique.", "correction_markdown": "Si la constante c n'est pas donnée par l'énoncé, la déterminer en imposant que les termes constants s'annulent exactement dans l'expression de v(n+1) en fonction de vn."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "un+1=2√un. On pose vn=ln(un)-c. Déterminer c pour que (vn) soit géométrique, puis donner la raison.", "solution_markdown": "vn+1=ln2+(1/2)ln(un)-c=(1/2)[ln(un)-2ln2]+[ln2-c+ln2] nécessite c=2ln2 pour annuler le terme constant résiduel. Avec c=2ln2, vn+1=(1/2)vn : raison 1/2."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une récurrence en racine carrée un+1=k√un se linéarise systématiquement via vn=ln(un)-2ln(k), révélant une suite géométrique de raison 1/2.", "Toujours vérifier que la constante c choisie annule bien les termes constants résiduels."]}
+  ]
+}

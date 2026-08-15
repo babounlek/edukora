@@ -1,0 +1,105 @@
+{
+  "type": "cours",
+  "cours_id": "cours-autosome-x-genotype-svtbacc1-ex4-q2",
+  "meta": {
+    "titre": "Déterminer si un gène est autosomique ou lié à X, et les génotypes des individus, à partir d'un arbre généalogique",
+    "matiere": "svt",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Le monde vivant - hérédité",
+    "duree_estimee_min": 18,
+    "tags": ["arbre généalogique", "maladie récessive"]
+  },
+  "source": {"rappel_id": "rdi-ep-cm-svt-bac-c-1-2026-s1-ex4-q2-0"},
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Localiser un gène sur un chromosome sexuel ou sur un autosome, puis écrire avec certitude le génotype de chaque individu d'une famille : deux étapes qui, combinées, transforment un simple arbre généalogique en un véritable outil de diagnostic génétique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Hémizygotie masculine : un homme ne possède qu'un seul chromosome X, donc un seul allèle pour un gène qui y est porté",
+        "Distinction entre génotype certain (déduit d'une observation directe) et génotype seulement possible (probabiliste)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Localisation du gène et détermination des génotypes",
+      "contenu_markdown": "Pour déterminer si un gène récessif est porté par un autosome ou par le chromosome X, on cherche dans l'arbre généalogique une **fille atteinte dont le père est sain** : si le gène était lié à X, cette fille (génotype $X^aX^a$) aurait dû recevoir un chromosome $X^a$ de son père, qui serait alors nécessairement atteint (hémizygote). Un père sain rend cette hypothèse impossible : le gène est donc porté par un **autosome**.\n\nPour déterminer les génotypes : des parents sains ayant un enfant atteint sont nécessairement tous deux hétérozygotes (certain). Un individu sain SANS information sur sa propre descendance a un génotype seulement POSSIBLE (probabiliste). Mais si cet individu sain a lui-même un enfant atteint, son génotype hétérozygote devient CERTAIN, car il a nécessairement transmis l'allèle muté.",
+      "formule_principale": "\\text{Fille atteinte + père sain} \\Rightarrow \\text{autosome} \\quad;\\quad \\text{parent sain + enfant atteint} \\Rightarrow \\text{génotype Aa certain}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une famille, I1 (homme sain) et I2 (femme saine) ont un fils atteint, II1. II2 (fille saine, sœur de II1) épouse II3 (homme sain, extérieur à la famille) ; ils ont une fille, III1, atteinte de la même maladie. Déterminer la localisation du gène et le génotype de II2.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher une fille atteinte dont le père est sain",
+          "justification": "C'est le test décisif pour exclure une transmission liée à X.",
+          "resultat_markdown": "III1 (fille atteinte) a pour père II3, décrit comme sain"
+        },
+        {
+          "numero": 2,
+          "action": "Tester l'hypothèse d'une transmission liée à X",
+          "justification": "Si liée à X, III1 aurait dû recevoir un X muté de son père, qui serait alors hémizygote atteint.",
+          "resultat_markdown": "Contradiction : II3 est sain, il ne peut être atteint ($X^aY$)"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la localisation, puis sur le génotype de II2",
+          "justification": "L'hypothèse liée à X étant exclue, le gène est autosomique ; III1 atteinte prouve que ses deux parents sont hétérozygotes.",
+          "resultat_markdown": "Gène porté par un autosome ; II2 est certainement hétérozygote (Aa), puisqu'elle a transmis un allèle a à III1"
+        }
+      ],
+      "conclusion_markdown": "Le gène est porté par un autosome (la fille atteinte III1 a un père sain, ce qui exclut une transmission liée à X), et le génotype de II2 est désormais CERTAIN (Aa), cette certitude provenant directement de la naissance de sa fille atteinte III1, qui prouve qu'elle a transmis l'allèle muté."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher un FILS atteint pour tester l'hypothèse liée à X, plutôt qu'une FILLE atteinte.",
+          "pourquoi_faux": "Un fils atteint ($X^aY$ si lié à X) reçoit son unique chromosome X de sa MÈRE, qui peut être une simple porteuse hétérozygote saine, sans aucune contradiction possible : ce raisonnement décisif ne s'applique qu'à une FILLE atteinte examinée par rapport à son PÈRE, jamais à un fils par rapport à sa mère.",
+          "correction_markdown": "Réserver ce test spécifiquement à une FILLE atteinte dont on examine le phénotype du PÈRE."
+        },
+        {
+          "erreur_markdown": "Affirmer qu'un individu sain reste de génotype \"seulement possible\" même après la naissance d'un de ses propres enfants atteint.",
+          "pourquoi_faux": "La naissance d'un enfant atteint (homozygote récessif) chez un parent sain prouve DÉFINITIVEMENT que ce parent est hétérozygote : son génotype devient alors CERTAIN, et non plus seulement probable.",
+          "correction_markdown": "Toujours réexaminer si une information sur la PROPRE descendance de l'individu étudié est disponible : elle transforme un génotype possible en génotype certain."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Pourquoi une fille atteinte d'une maladie récessive, née d'un père sain, exclut-elle une transmission liée au chromosome X ?",
+          "solution_markdown": "Parce que si le gène était lié à X, cette fille (génotype $X^aX^a$) aurait dû recevoir un chromosome $X^a$ de son père, qui serait alors nécessairement lui-même atteint (hémizygote) - un père sain rend cette hypothèse impossible."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un individu sain, issu de parents tous deux hétérozygotes (Aa), n'a lui-même aucune descendance connue. Que peut-on dire de son génotype ?",
+          "solution_markdown": "Son génotype reste seulement POSSIBLE : parmi les enfants sains issus d'un croisement Aa×Aa, la probabilité est de 1/3 AA et 2/3 Aa - en l'absence d'information sur sa propre descendance, on ne peut pas trancher avec certitude entre ces deux génotypes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Expliquer pourquoi la détermination du mode de transmission (autosome ou X) DOIT précéder la détermination des génotypes individuels dans un exercice de génétique, et non l'inverse.",
+          "solution_markdown": "L'écriture correcte des génotypes dépend directement du mode de transmission établi : pour un gène autosomique, chaque individu possède deux allèles (AA, Aa ou aa), quel que soit son sexe ; pour un gène lié à X, les hommes sont hémizygotes (un seul allèle, $X^AY$ ou $X^aY$) tandis que les femmes en possèdent deux ($X^AX^A$, $X^AX^a$ ou $X^aX^a$) - une notation entièrement différente selon le cas. Écrire les génotypes avant d'avoir déterminé le mode de transmission risquerait d'utiliser une notation incorrecte (par exemple noter un génotype masculin avec deux allèles alors que le gène est en réalité lié à X), d'où la nécessité de toujours résoudre la question de la localisation en premier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Fille atteinte + père sain ⇒ preuve décisive d'une transmission AUTOSOMIQUE (incompatible avec le chromosome X).",
+        "Ce test s'applique spécifiquement à une FILLE atteinte examinée par rapport à son PÈRE, jamais l'inverse.",
+        "Parents sains + enfant atteint ⇒ génotype hétérozygote CERTAIN pour les deux parents.",
+        "Toujours déterminer le mode de transmission (autosome/X) AVANT d'écrire les génotypes, la notation différant selon le cas."
+      ]
+    }
+  ]
+}

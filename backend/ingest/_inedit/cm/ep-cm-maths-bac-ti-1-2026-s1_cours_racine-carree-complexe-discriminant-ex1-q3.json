@@ -1,0 +1,118 @@
+{
+  "type": "cours",
+  "cours_id": "cours-racine-carree-complexe-discriminant-ti",
+  "meta": {
+    "titre": "Racine carrée d'un nombre complexe et résolution d'une équation du second degré à discriminant non réel",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Nombres complexes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "Nombres complexes",
+      "factorisation d'un polynôme complexe"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex1-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand le discriminant $\\Delta$ d'une équation du second degré n'est pas un nombre réel, la formule habituelle $\\sqrt\\Delta$ n'a plus de sens : il faut chercher une racine carrée complexe de $\\Delta$ par un système d'équations sur ses parties réelle et imaginaire. Une méthode systématique, à connaître par cœur, qui revient très souvent après une factorisation de polynôme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Forme algébrique d'un nombre complexe et opérations associées",
+        "Résolution d'une équation du second degré à coefficients réels",
+        "Identification de deux nombres complexes égaux (parties réelle et imaginaire séparément)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Racine carrée d'un nombre complexe non réel",
+      "contenu_markdown": "Pour résoudre $az^2+bz+c=0$ ($a,b,c\\in\\mathbb C$, $a\\neq0$) dans $\\mathbb C$, on calcule d'abord $\\Delta=b^2-4ac$. Si $\\Delta$ n'est pas réel, on cherche $\\delta=x+iy$ (avec $x,y$ réels) tel que $\\delta^2=\\Delta$, en résolvant le système obtenu en identifiant les parties réelle et imaginaire de $\\delta^2=x^2-y^2+2ixy$ avec celles de $\\Delta$. Une fois $\\delta$ trouvé, les solutions sont $z=\\dfrac{-b\\pm\\delta}{2a}$, exactement comme dans le cas réel.",
+      "formule_principale": "\\delta=x+iy,\\ \\delta^2=\\Delta \\iff \\begin{cases}x^2-y^2=\\mathrm{Re}(\\Delta)\\\\2xy=\\mathrm{Im}(\\Delta)\\end{cases}, \\qquad z=\\dfrac{-b\\pm\\delta}{2a}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb C$ l'équation $z^2-(1+i)z+i=0$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients",
+          "justification": "L'équation est de la forme $az^2+bz+c=0$ avec $a=1$, $b=-(1+i)$, $c=i$.",
+          "resultat_markdown": "$a=1$, $b=-(1+i)$, $c=i$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le discriminant",
+          "justification": "$\\Delta=b^2-4ac=(1+i)^2-4i=(1+2i-1)-4i=2i-4i$.",
+          "resultat_markdown": "$\\Delta=-2i$"
+        },
+        {
+          "numero": 3,
+          "action": "Chercher $\\delta=x+iy$ tel que $\\delta^2=\\Delta$",
+          "justification": "$\\Delta$ n'est pas réel : on résout $x^2-y^2=0$ et $2xy=-2$. La première donne $x=\\pm y$ ; comme $xy=-1<0$, $x$ et $y$ sont de signes opposés, donc $x=-y$, d'où $-x^2=-1$, $x=\\pm1$.",
+          "resultat_markdown": "$\\delta=1-i$ convient ($(1-i)^2=1-2i-1=-2i$ ✓)"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les deux solutions",
+          "justification": "$z=\\dfrac{-b\\pm\\delta}{2a}=\\dfrac{(1+i)\\pm(1-i)}{2}$.",
+          "resultat_markdown": "$z_1=\\dfrac{2}{2}=1$ et $z_2=\\dfrac{2i}{2}=i$"
+        }
+      ],
+      "conclusion_markdown": "L'équation admet deux solutions distinctes : $z_1=1$ et $z_2=i$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire directement $\\sqrt\\Delta$ avec un radical, comme dans $\\mathbb R$, alors que $\\Delta$ n'est pas réel.",
+          "pourquoi_faux": "Le symbole $\\sqrt{\\ }$ n'est défini que pour un réel positif : un nombre complexe non réel n'a pas de racine carrée notée ainsi, il faut en calculer une par le système $x,y$.",
+          "correction_markdown": "Poser $\\delta=x+iy$ et résoudre le système $x^2-y^2=\\mathrm{Re}(\\Delta)$, $2xy=\\mathrm{Im}(\\Delta)$."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier $\\delta^2=\\Delta$ après avoir trouvé $x$ et $y$.",
+          "pourquoi_faux": "Une erreur de signe lors de la résolution du système passe facilement inaperçue sans cette vérification.",
+          "correction_markdown": "Toujours recalculer $\\delta^2$ et le comparer à $\\Delta$ avant de poursuivre vers les solutions $z$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Résoudre dans $\\mathbb C$ : $z^2-2iz-1-2i=0$.",
+          "solution_markdown": "$\\Delta=(2i)^2-4(-1-2i)=-4+4+8i=8i$. On cherche $\\delta=x+iy$ avec $x^2-y^2=0$ et $2xy=8$ : $x=y=2$ convient, $\\delta=2+2i$. $z=\\dfrac{2i\\pm(2+2i)}{2}$, soit $z_1=1+2i$ et $z_2=-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Résoudre dans $\\mathbb C$ : $z^2-(4+2i)z+3+6i=0$.",
+          "solution_markdown": "$\\Delta=(4+2i)^2-4(3+6i)=(16+16i-4)-12-24i=-8i$. On trouve $\\delta=2-2i$ (car $(2-2i)^2=4-8i-4=-8i$). $z=\\dfrac{(4+2i)\\pm(2-2i)}{2}$, soit $z_1=3$ et $z_2=1+2i$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Résoudre dans $\\mathbb C$ : $2z^2-(3+i)z+1+i=0$.",
+          "solution_markdown": "$\\Delta=(3+i)^2-8(1+i)=(9+6i-1)-8-8i=-2i$, donc $\\delta=1-i$ (comme dans l'exemple du cours). $z=\\dfrac{(3+i)\\pm(1-i)}{4}$, soit $z_1=1$ et $z_2=\\dfrac{1+i}{2}$. On vérifie $z_1=1$ dans l'équation d'origine : $2-3-i+1+i=0$ ✓."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si $\\Delta$ n'est pas réel, il n'existe pas de racine carrée immédiate : on résout $x^2-y^2=\\mathrm{Re}(\\Delta)$, $2xy=\\mathrm{Im}(\\Delta)$.",
+        "Les deux racines carrées complexes de $\\Delta$ sont toujours opposées l'une de l'autre.",
+        "Les solutions de $az^2+bz+c=0$ restent $z=\\dfrac{-b\\pm\\delta}{2a}$, formule inchangée par rapport au cas réel.",
+        "Vérifier systématiquement $\\delta^2=\\Delta$ avant de poursuivre : c'est le contrôle le plus rapide contre une erreur de signe.",
+        "Cette méthode revient très souvent juste après une factorisation de polynôme de degré 3 à coefficients complexes."
+      ]
+    }
+  ]
+}

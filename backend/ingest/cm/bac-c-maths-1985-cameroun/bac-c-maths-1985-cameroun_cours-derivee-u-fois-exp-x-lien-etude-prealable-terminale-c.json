@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-derivee-u-fois-exp-x-lien-etude-prealable-terminale-c",
+  "meta": {
+    "titre": "Dériver un produit u(x)·e^x et réutiliser une étude préalable",
+    "cours_id": "cours-derivee-u-fois-exp-x-lien-etude-prealable-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Dérivation - produit avec l'exponentielle, réinvestissement d'un résultat",
+    "tags": ["dérivée d'un produit", "exponentielle", "réinvestissement de résultat", "signe de la dérivée"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_1_q2a"
+  },
+  "sections": {
+    "accroche": "Un exercice en plusieurs questions enchaîne souvent une fonction auxiliaire $g$ étudiée d'abord, puis une fonction $f$ dont la dérivée se factorise par $g$ : reconnaître ce lien évite de refaire toute une étude de signe à zéro.",
+    "prerequis": ["Formule de dérivation d'un produit $(uv)'=u'v+uv'$", "Dérivée de $e^x$", "Lecture d'un tableau de signes déjà établi"],
+    "regle": {
+      "titre": "Dériver $f(x)=u(x)e^x$ et relier à une étude de $g$ déjà faite",
+      "contenu_markdown": "Pour $f(x)=u(x)e^x$, la formule du produit donne $f'(x)=u'(x)e^x+u(x)e^x=e^x\\big(u'(x)+u(x)\\big)$. Si l'exercice a fait étudier au préalable une fonction $g(x)=u'(x)+u(x)$ (ou une fonction proportionnelle), on peut directement écrire $f'(x)=e^x\\,g(x)$, et comme $e^x>0$ toujours, le signe de $f'$ est exactement celui de $g$ : toute l'étude de signe déjà faite pour $g$ se transporte immédiatement à $f'$.",
+      "formule_principale": "$f(x)=u(x)e^x\\Rightarrow f'(x)=e^x\\big(u(x)+u'(x)\\big)$, et $e^x>0$ donc $\\mathrm{signe}(f')=\\mathrm{signe}(u+u')$",
+      "variantes": ["S'applique de la même façon à $f(x)=u(x)e^{-x}$ en adaptant le signe : $f'(x)=e^{-x}(u'(x)-u(x))$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "On a étudié $g(x)=x-1$ (signe négatif sur $]-\\infty,1[$, positif sur $]1,+\\infty[$). Soit $f(x)=xe^x$. Calculer $f'$ et en déduire son signe.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Dériver $f=u\\cdot e^x$ avec $u(x)=x$", "justification": "formule du produit, $u'(x)=1$", "resultat_markdown": "$f'(x)=1\\cdot e^x+x\\cdot e^x=e^x(1+x)$"},
+        {"numero": 2, "action": "Remarquer que $1+x$ n'est pas exactement $g(x)=x-1$", "justification": "vérification de correspondance avant de réutiliser l'étude", "resultat_markdown": "Ici $f'(x)=e^x(x+1)$, distinct de $g$ : on étudie directement le signe de $x+1$"},
+        {"numero": 3, "action": "Conclure via $e^x>0$", "justification": "produit d'un facteur toujours positif et d'un facteur de signe connu", "resultat_markdown": "$f'(x)<0$ sur $]-\\infty,-1[$, $f'(x)>0$ sur $]-1,+\\infty[$"}
+      ],
+      "conclusion_markdown": "$f$ décroît sur $]-\\infty,-1[$ et croît sur $]-1,+\\infty[$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Réutiliser aveuglément le signe d'une étude préalable de $g$ sans vérifier que $f'$ s'écrit exactement $e^x g(x)$", "pourquoi_faux": "une erreur d'identification de l'expression fait porter une conclusion fausse", "correction_markdown": "Toujours factoriser explicitement $f'(x)$ pour vérifier qu'elle correspond bien, terme à terme, à $e^x$ multiplié par la fonction déjà étudiée."},
+      {"erreur_markdown": "Oublier que $e^x$ ne s'annule jamais et chercher à tort des valeurs où $e^x=0$", "pourquoi_faux": "l'exponentielle est strictement positive sur tout $\\mathbb R$, jamais nulle", "correction_markdown": "Le signe de $f'(x)=e^x g(x)$ dépend uniquement de $g(x)$ : ne jamais chercher de racine du côté de $e^x$."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer la dérivée de $f(x)=(x^2-2)e^x$ et la factoriser.", "solution_markdown": "$f'(x)=2xe^x+(x^2-2)e^x=e^x(x^2+2x-2)$."}
+    ],
+    "synthese": "Pour $f(x)=u(x)e^x$ : $f'(x)=e^x(u+u')$ ; comme $e^x>0$ toujours, le signe de $f'$ est celui de $u+u'$, ce qui permet de réutiliser directement une étude de signe déjà faite pour cette expression."
+  }
+}

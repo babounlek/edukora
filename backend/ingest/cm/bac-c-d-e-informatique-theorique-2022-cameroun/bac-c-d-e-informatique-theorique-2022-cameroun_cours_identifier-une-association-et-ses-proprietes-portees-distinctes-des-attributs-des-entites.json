@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-identifier-une-association-et-ses-proprietes-portees-distinctes-des-attributs-des-entites-terminale-c",
+  "meta": {
+    "titre": "Identifier une association et ses propriétés portées, distinctes des attributs des entités",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Modélisation de données (Merise)",
+    "tags": ["association", "propriété portée", "MCD"],
+    "duree_estimee_min": 18,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La quantité commandée d'un produit n'appartient ni au client, ni au produit seul : elle n'a de sens que pour un couple précis (cette commande, ce produit). C'est exactement ce que capture une propriété portée par une association plutôt qu'un attribut d'entité."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Identifier une entité et ses attributs", "Connaître la définition d'une association"]
+    },
+    {
+      "type": "regle",
+      "titre": "Propriété portée par une association",
+      "contenu_markdown": "Une propriété est portée par une **association** (et non par une entité) lorsqu'elle dépend simultanément de PLUSIEURS entités liées, et non d'une seule entité isolément. Le test décisif : si la valeur de cette propriété ne peut être connue qu'en précisant à la fois quelle occurrence de la première entité ET quelle occurrence de la seconde sont concernées, alors la propriété appartient à l'association qui les relie, jamais à l'une des deux entités seule.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cahier des charges précise qu'une commande est passée par un client, contient plusieurs produits, et que pour chaque produit d'une commande, on enregistre la quantité commandée. Identifier l'association entre COMMANDE et PRODUIT, et dire si « quantité » est un attribut d'entité ou une propriété portée par l'association.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le lien entre COMMANDE et PRODUIT",
+          "justification": "Le texte relie explicitement une commande à ses produits : c'est une association, nommée par exemple CONCERNER.",
+          "resultat_markdown": "Association CONCERNER entre COMMANDE et PRODUIT."
+        },
+        {
+          "numero": 2,
+          "action": "Tester si « quantité » dépend d'une seule entité ou des deux à la fois",
+          "justification": "Un même produit peut avoir une quantité de 3 dans une commande et de 10 dans une autre : la quantité ne se fixe qu'en connaissant à la fois LA commande précise ET LE produit précis.",
+          "resultat_markdown": "La quantité dépend simultanément d'une occurrence de COMMANDE et d'une occurrence de PRODUIT."
+        }
+      ],
+      "conclusion_markdown": "« Quantité » est une propriété portée par l'association CONCERNER, pas un attribut de COMMANDE ni de PRODUIT : elle ne prend son sens que pour un couple (commande, produit) précis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affecter la quantité comme attribut de l'entité PRODUIT",
+          "pourquoi_faux": "Un produit n'a pas UNE quantité fixe qui lui appartient : sa quantité varie selon la commande dans laquelle il apparaît, ce qui prouve qu'elle ne dépend pas de PRODUIT seul.",
+          "correction_markdown": "Teste systématiquement : « cette valeur change-t-elle si je change l'autre entité liée, à entité de départ fixée ? » Si oui, c'est une propriété portée par l'association."
+        },
+        {
+          "erreur_markdown": "Créer une propriété portée pour une information qui, en réalité, ne dépend que d'une seule des deux entités",
+          "pourquoi_faux": "Placer une propriété sur l'association alors qu'elle appartient réellement à une seule entité duplique inutilement la donnée et complique le modèle sans raison.",
+          "correction_markdown": "Avant de porter une propriété par l'association, vérifie qu'elle varie réellement selon le COUPLE d'entités, pas seulement selon l'une d'elles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un élève passe un examen dans une matière donnée, et on enregistre la note obtenue à cet examen précis. La note est-elle un attribut de ÉLÈVE, de MATIÈRE, ou une propriété portée par l'association PASSER entre ÉLÈVE et MATIÈRE ?",
+          "solution_markdown": "C'est une propriété portée par l'association PASSER : la note dépend à la fois de l'élève précis ET de la matière précise (un même élève a des notes différentes selon la matière)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une location relie un CLIENT à un VÉHICULE, avec une date de début et une date de fin de location propres à chaque location. Ces deux dates sont-elles des attributs d'entité, ou des propriétés portées par l'association LOUER ?",
+          "solution_markdown": "Ce sont des propriétés portées par l'association LOUER : les dates ne dépendent ni du client seul (il peut louer plusieurs véhicules à des dates différentes) ni du véhicule seul (il peut être loué par plusieurs clients à des dates différentes), mais du couple précis (ce client, ce véhicule, cette location)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi une propriété portée par une association N,N (plusieurs-à-plusieurs) DEVIENT presque toujours obligatoire à modéliser ainsi, alors qu'une propriété semblable sur une association 1,N peut parfois être ramenée à un attribut d'entité.",
+          "solution_markdown": "Sur une association N,N (ex. COMMANDE-PRODUIT via CONCERNER, où une commande contient plusieurs produits et un produit apparaît dans plusieurs commandes), une même paire d'entités (ex. un produit) est concernée par PLUSIEURS occurrences de l'association à la fois, chacune avec sa propre valeur de la propriété (quantité différente selon la commande) : il est alors impossible de ramener cette propriété à un attribut d'une seule entité sans perdre de l'information, la propriété doit obligatoirement être portée par l'association elle-même. Sur une association 1,N (ex. un employé dirige un seul service, un service a un seul directeur), chaque entité du côté « 1 » n'est liée qu'à UNE occurrence de l'association à la fois : une propriété qui semble portée par l'association peut alors parfois, selon le sens réel de la donnée, être ramenée sans perte à un attribut de l'entité côté « 1 » - ce n'est cependant pas systématique, cela dépend toujours du sens exact de la propriété dans les règles de gestion."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une propriété portée par une association dépend simultanément des deux entités liées, jamais d'une seule.",
+        "Teste chaque propriété candidate : sa valeur change-t-elle selon le couple d'entités concerné, à une entité fixée ?",
+        "Sur une association N,N en particulier, une propriété qui varie par occurrence de l'association ne peut être portée que par l'association elle-même.",
+        "Une propriété mal placée (sur une entité plutôt que sur l'association) duplique la donnée et complique inutilement le modèle.",
+        "Au BAC, cette compétence apparaît dès qu'un cahier des charges mentionne une valeur (quantité, note, date) liée à DEUX objets à la fois."
+      ]
+    }
+  ]
+}

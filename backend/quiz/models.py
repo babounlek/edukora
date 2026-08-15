@@ -205,3 +205,38 @@ class QuizAnswer(models.Model):
         if contenu.type_reponse == TypeReponse.QCM:
             return bool(self.reponse_choisie) and self.reponse_choisie == contenu.reponse_correcte
         return self.resultat_declare == ResultatDeclare.REUSSI
+
+
+class RevisionSchedule(models.Model):
+    """
+    Prochaine échéance de révision d'un thème pour un utilisateur, sur un cursus donné -
+    algorithme Leitner à 3 paliers (J+1, J+3, J+7, voir LEITNER_INTERVALS_JOURS dans
+    quiz.services) déclenché par les réponses en Quiz (voir
+    quiz.services.enregistrer_resultat_pour_revision, appelé depuis
+    quiz.views.answer_question, seul appelant).
+
+    N'existe QUE pour un thème actuellement en difficulté : un thème jamais raté n'a
+    jamais de ligne ici (rien à corriger), et une ligne est supprimée dès que l'élève
+    l'a retraversé avec succès jusqu'au dernier palier - thème "gradué", plus besoin de
+    révision programmée (voir enregistrer_resultat_pour_revision).
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="revision_schedules")
+    cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="revision_schedules")
+    subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="revision_schedules")
+    theme = models.ForeignKey("catalog.Tag", on_delete=models.CASCADE, related_name="revision_schedules")
+
+    palier = models.PositiveSmallIntegerField(
+        default=0, help_text="Index dans LEITNER_INTERVALS_JOURS - remis à 0 à chaque échec.",
+    )
+    due_at = models.DateField(help_text="Prochaine date à laquelle ce thème doit être re-proposé en révision.")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["due_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["user", "cursus", "theme"], name="unique_revision_schedule"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.theme} ({self.due_at})"

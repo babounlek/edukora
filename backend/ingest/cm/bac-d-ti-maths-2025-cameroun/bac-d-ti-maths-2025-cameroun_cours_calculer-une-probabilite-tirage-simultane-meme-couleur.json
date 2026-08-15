@@ -1,0 +1,30 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-toutes-boules-de-meme-couleur-terminale-d-ti",
+  "meta": {
+    "titre": "Calculer la probabilité d'un tirage simultané où toutes les boules ont la même couleur",
+    "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-toutes-boules-de-meme-couleur-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Probabilités — dénombrement, tirage simultané",
+    "tags": ["combinaisons", "tirage simultané", "urne"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf"
+  },
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2025-cameroun-ex1-1a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Le tirage simultané (« au hasard, en une seule poignée ») exclut toute notion d'ordre : il se traite exclusivement avec des combinaisons, jamais des arrangements."},
+    {"type": "prerequis", "items_markdown": ["Coefficient binomial (n choisir k)", "Principe additif pour des événements incompatibles"]},
+    {"type": "regle", "titre": "Sommer les combinaisons par catégorie", "contenu_markdown": "Pour un tirage simultané de $n$ objets dans une population de taille $N$ répartie en catégories, le nombre total de tirages est $\\binom{N}{n}$. L'événement « toutes les boules tirées sont de la même couleur » se dénombre en sommant, pour chaque couleur, $\\binom{\\text{effectif de cette couleur}}{n}$ (les événements étant deux à deux incompatibles).", "formule_principale": "Card(même couleur) = Σ C(effectif_couleur, n)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Urne de 10 boules : 6 rouges, 4 vertes. Tirage simultané de 2 boules. Probabilité que les 2 soient de même couleur ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Total des tirages", "justification": "C(10,2)=45", "resultat_markdown": "45"},
+      {"numero": 2, "action": "Dénombrer même couleur", "justification": "C(6,2)+C(4,2)=15+6", "resultat_markdown": "21"},
+      {"numero": 3, "action": "Probabilité", "justification": "21/45", "resultat_markdown": "7/15"}
+    ], "conclusion_markdown": "La méthode reste identique quel que soit le nombre de couleurs présentes."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser des arrangements (avec ordre) au lieu de combinaisons pour un tirage simultané", "pourquoi_faux": "Un tirage simultané ne distingue pas l'ordre d'obtention des boules : seules les combinaisons (non ordonnées) sont pertinentes.", "correction_markdown": "Toujours vérifier que le tirage est bien « simultané » (sans ordre, avec le mot « poignée » ou « simultanément ») avant d'utiliser des combinaisons."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Urne de 8 boules : 3 jaunes, 5 noires. Tirage simultané de 2. P(même couleur) ?", "solution_markdown": "C(8,2)=28. C(3,2)+C(5,2)=3+10=13. P=13/28."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Même urne, tirage de 3 boules. P(même couleur) ?", "solution_markdown": "C(8,3)=56. C(3,3)+C(5,3)=1+10=11. P=11/56."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un tirage simultané se dénombre exclusivement par combinaisons.", "L'événement « même couleur » est une réunion disjointe sur chaque couleur, dénombrée en sommant les combinaisons.", "Toujours vérifier la somme totale des cas favorables par rapport au total pour détecter une erreur."]}
+  ]
+}

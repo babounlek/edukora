@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-taux-accroissement-relatif-constant-premiere-c",
+  "meta": {
+    "titre": "Traduire un taux d'accroissement relatif constant en relation de récurrence",
+    "cours_id": "cours-taux-accroissement-relatif-constant-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Suites - modèles de croissance à taux constant",
+    "tags": ["taux d'accroissement", "suite géométrique", "modèle de production"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_3_q1"
+  },
+  "sections": {
+    "accroche": "Un taux d'accroissement relatif constant («chaque année, +10% par rapport à l'année précédente») est la signature d'une suite géométrique : reconnaître cette structure permet d'appliquer directement tout l'arsenal des suites géométriques.",
+    "prerequis": ["Notion de pourcentage d'accroissement", "Définition d'une suite géométrique"],
+    "regle": {
+      "titre": "De taux constant à relation de récurrence géométrique",
+      "contenu_markdown": "Si le taux d'accroissement relatif d'une suite $(p_i)$ est constant et vaut $t$, cela signifie $\\dfrac{p_{i+1}-p_i}{p_i}=t$ pour tout indice $i$ considéré. Cette égalité se réécrit $p_{i+1}-p_i=t\\,p_i$, puis $p_{i+1}=(1+t)\\,p_i$ : chaque terme s'obtient en multipliant le précédent par le facteur constant $(1+t)$, ce qui est exactement la définition d'une suite géométrique de raison $q=1+t$.",
+      "formule_principale": "$\\dfrac{p_{i+1}-p_i}{p_i}=t$ (constant) $\\;\\Longleftrightarrow\\; p_{i+1}=(1+t)p_i$, suite géométrique de raison $q=1+t$",
+      "variantes": ["Un taux négatif (décroissance) donne de la même façon une suite géométrique de raison $q=1+t<1$, avec $t<0$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Une population croît de 5% par an, population initiale 200. Exprimer la relation de récurrence et calculer les deux premiers termes suivants.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier le taux", "justification": "5% = 0,05", "resultat_markdown": "t=0,05, donc q=1,05"},
+        {"numero": 2, "action": "Écrire la relation de récurrence", "justification": "définition de suite géométrique", "resultat_markdown": "p_{n+1}=1,05×p_n"},
+        {"numero": 3, "action": "Calculer les termes", "justification": "application numérique", "resultat_markdown": "p1=200×1,05=210 ; p2=210×1,05=220,5"}
+      ],
+      "conclusion_markdown": "La population suit une suite géométrique de raison 1,05."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Utiliser directement le taux t comme raison de la suite géométrique, en écrivant p_{n+1}=t×p_n au lieu de (1+t)×p_n", "pourquoi_faux": "le taux t ne représente que l'ACCROISSEMENT relatif, pas le facteur multiplicatif total : oublier le «+1» ferait décroître ou même annuler la suite au lieu de la faire croître de t%", "correction_markdown": "Toujours vérifier que la raison de la suite géométrique est bien 1+t (et non t seul) avant d'appliquer les formules du terme général ou de la somme."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Un capital croît de 8% par an, capital initial 1000. Donner la relation de récurrence et calculer le capital après 1 an.", "solution_markdown": "C_{n+1}=1,08×C_n ; C1=1000×1,08=1080."}
+    ],
+    "synthese": "Un taux d'accroissement relatif constant t se traduit toujours par une relation de récurrence géométrique p_{n+1}=(1+t)p_n, de raison q=1+t : reconnaître cette structure permet d'appliquer directement les formules du terme général et de la somme d'une suite géométrique."
+  }
+}

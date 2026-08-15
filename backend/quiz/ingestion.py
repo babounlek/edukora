@@ -27,16 +27,19 @@ from django.db.models import Count
 from catalog.ingestion import (
     DIFFICULTE_MAP,
     IngestionError,
+    _link_tags_to_savoir,
     _normalize,
     _normalize_qcm_choix,
     _repair_double_json_escaping,
     _repair_missing_matrix_row_separators,
     _resolve_country,
     _resolve_cursus_list,
+    _resolve_savoir_officiel,
     _resolve_subject,
     _strip_em_dash,
 )
 from catalog.models import Exercise, Question, StatutContenu, Subject, Tag, TypeReponse
+from programme.models import Savoir
 
 from .models import CompetenceItem
 
@@ -63,12 +66,19 @@ def _country_code_from_quiz_ingest_path(path):
     return parts[idx + 1]
 
 
-def _resolve_theme(theme_name):
+def _resolve_theme(theme_name, allow_create=False):
     """
     Correspondance exacte d'abord (Tag.name est sensible à la casse en base), repli
     insensible à la casse ensuite - le skill est censé recopier le nom exact d'un Tag
     existant, mais une dérive mineure de casse est un risque réaliste à ne pas traiter
     comme une erreur bloquante quand une correspondance non ambiguë existe.
+
+    `allow_create` : par défaut, ce pipeline n'invente jamais un Tag - il doit déjà
+    exister (créé via correction-experte). Seule exception : un `theme` accompagné d'un
+    `savoir_officiel` qui a résolu avec succès (voir ingest_competence_item) - la
+    compétence est alors ancrée à une entrée réelle du référentiel programme, ce n'est
+    plus une invention libre, juste un nom qui n'a jamais encore été utilisé côté
+    catalog.Tag (cas normal pour un savoir jusqu'ici sans aucun contenu).
     """
     name = _strip_em_dash(str(theme_name or "")).strip()
     if not name:
@@ -82,6 +92,9 @@ def _resolve_theme(theme_name):
         return candidats[0]
     if len(candidats) > 1:
         raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
+    if allow_create:
+        tag, _ = Tag.objects.get_or_create(name=name)
+        return tag
     raise IngestionError(
         f"Compétence (Tag) introuvable : {name!r} - doit déjà exister en base (créée via "
         "correction-experte), jamais inventée par ce pipeline.",
@@ -194,11 +207,120 @@ def _build_generation_request(country, theme, subject, gap):
 
     nombre_items = min(gap, sum(SELECTION_REPARTITION.values()))
 
+    # Si ce thème est déjà rattaché à un savoir officiel (curation antérieure, ou item
+    # déjà généré via _build_generation_request_from_savoir ci-dessous), transmet la
+    # référence dans la requête plutôt que de laisser le skill la redécouvrir - voir
+    # ingest_competence_item, qui la revalidera de toute façon à l'ingestion.
+    savoir_officiel = None
+    if theme.savoir_officiel_id:
+        s = theme.savoir_officiel
+        savoir_officiel = {
+            "classe": s.module.classe, "serie_label": s.module.serie_label,
+            "module_numero": s.module.numero, "savoir_numero": s.numero,
+        }
+
     return {
         "competence": theme.name,
         "pays": country.code.lower(),
         "matiere": subject.label,
         "cursus": cursus_entries,
+        "savoir_officiel": savoir_officiel,
+        "cible": {
+            "nombre_items": nombre_items,
+            "repartition_difficulte": SELECTION_REPARTITION,
+        },
+        "materiel_reference": materiel_reference,
+    }
+
+
+def _find_undercovered_savoirs_officiels(country, floor):
+    """
+    Complète _find_undercovered_competencies, qui ne peut jamais voir un savoir du
+    référentiel programme officiel (voir programme.models.Savoir) tant qu'aucun Tag/
+    Question n'y a encore été rattaché - elle ne fait que grouper du contenu déjà
+    existant, jamais le référentiel lui-même. Un savoir fraîchement ajouté (ou jamais
+    encore couvert par le moindre item de quiz) reste donc invisible pour elle, aussi
+    sous-couvert soit-il en réalité.
+
+    Part ici du référentiel (programme.Savoir), pas du contenu : rend visibles les
+    trous de couverture totale, pas seulement les trous dans ce qui a déjà été entamé.
+    Uniquement pour un pays qui a un référentiel programme (aujourd'hui CM+MATHS) -
+    liste vide sinon, jamais d'erreur.
+
+    Retourne une liste de (savoir, subject, gap), même tri que la fonction sœur.
+    """
+    savoirs = (
+        Savoir.objects.filter(module__cursus__country=country)
+        .select_related("module", "module__subject")
+        .distinct()
+    )
+
+    candidates = []
+    for savoir in savoirs:
+        subject = savoir.module.subject
+        covered = CompetenceItem.objects.filter(
+            theme__savoir_officiel=savoir, subject=subject, statut=StatutContenu.VALIDE,
+        ).count()
+        gap = floor - covered
+        if gap <= 0:
+            continue
+        candidates.append((savoir, subject, gap))
+
+    candidates.sort(key=lambda c: c[2], reverse=True)
+    return candidates
+
+
+def _build_generation_request_from_savoir(country, savoir, subject, gap):
+    """
+    Pendant de _build_generation_request, mais pour un savoir qui n'a - par
+    construction (voir _find_undercovered_savoirs_officiels) - pas forcément de Tag ni
+    de Question existante à grouper. `materiel_reference` reste peuplé en best-effort
+    (via tout Tag déjà rattaché à ce savoir), `competence` est dérivé du référentiel lui
+    -même plutôt que d'un nom de Tag.
+    """
+    questions = list(
+        Question.objects.filter(
+            themes__savoir_officiel=savoir,
+            exercise__lesson__subject=subject,
+            exercise__statut=StatutContenu.VALIDE,
+            exercise__lesson__statut=StatutContenu.VALIDE,
+            exercise__lesson__cursus__country=country,
+        )
+        .select_related("exercise__lesson")
+        .distinct()
+        .order_by("exercise_id", "ordre")
+    )
+
+    materiel_reference = []
+    seen_exercises = set()
+    for question in questions:
+        if question.exercise_id in seen_exercises:
+            continue
+        seen_exercises.add(question.exercise_id)
+        materiel_reference.append({
+            "exercise_id": question.exercise_id,
+            "enonce_markdown": question.enonce_markdown,
+            "corrige_markdown": question.corrige_markdown,
+        })
+        if len(materiel_reference) >= SELECTION_MAX_REFERENCE_QUESTIONS:
+            break
+
+    cursus_entries = [
+        {"examen": c.examen.lower(), "serie": c.series.code if c.series else ""}
+        for c in savoir.module.cursus.filter(country=country)
+    ]
+
+    nombre_items = min(gap, sum(SELECTION_REPARTITION.values()))
+
+    return {
+        "competence": f"{savoir.module.titre} - {savoir.intitule}",
+        "pays": country.code.lower(),
+        "matiere": subject.label,
+        "cursus": cursus_entries,
+        "savoir_officiel": {
+            "classe": savoir.module.classe, "serie_label": savoir.module.serie_label,
+            "module_numero": savoir.module.numero, "savoir_numero": savoir.numero,
+        },
         "cible": {
             "nombre_items": nombre_items,
             "repartition_difficulte": SELECTION_REPARTITION,
@@ -214,12 +336,39 @@ def select_quiz_batch(country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR):
     quiz-competence (voir sa section "Entrée attendue") - pure sélection déterministe,
     aucun jugement éditorial, jamais le contenu du quiz lui-même.
 
+    Combine deux sources depuis 2026-08-12 : les compétences (Tag) déjà entamées mais
+    sous la barre (_find_undercovered_competencies), et les savoirs du référentiel
+    programme officiel encore invisibles à celle-ci faute de tout contenu existant
+    (_find_undercovered_savoirs_officiels - voir sa docstring). Un Tag déjà rattaché à
+    un des savoirs retenus est retiré du premier lot : le signal savoir (granularité
+    officielle) prime, pas la peine de le redemander deux fois sous deux formes.
+
     Fonction partagée par la commande `select_quiz_batch` (CLI) et
     `quiz.admin.CompetenceItemAdmin.select_batch_view` (bouton admin) - un seul
     endroit à faire évoluer si le critère de sélection change.
     """
-    candidates = _find_undercovered_competencies(country, floor)[:limit]
-    return [_build_generation_request(country, theme, subject, gap) for theme, subject, gap in candidates]
+    savoir_candidates = _find_undercovered_savoirs_officiels(country, floor)
+    savoir_ids_in_play = {savoir.pk for savoir, _, _ in savoir_candidates}
+
+    tag_candidates = [
+        (theme, subject, gap) for theme, subject, gap in _find_undercovered_competencies(country, floor)
+        if theme.savoir_officiel_id not in savoir_ids_in_play
+    ]
+
+    combined = sorted(
+        [("tag", c) for c in tag_candidates] + [("savoir", c) for c in savoir_candidates],
+        key=lambda item: item[1][2], reverse=True,
+    )[:limit]
+
+    requests = []
+    for kind, candidate in combined:
+        if kind == "tag":
+            theme, subject, gap = candidate
+            requests.append(_build_generation_request(country, theme, subject, gap))
+        else:
+            savoir, subject, gap = candidate
+            requests.append(_build_generation_request_from_savoir(country, savoir, subject, gap))
+    return requests
 
 
 def ingest_competence_item(data, country):
@@ -249,9 +398,11 @@ def ingest_competence_item(data, country):
         if existing:
             return existing, False
 
-    theme = _resolve_theme(data["theme"])
     subject = _resolve_subject(data["matiere"], country)
+    savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
+    theme = _resolve_theme(data["theme"], allow_create=bool(savoir))
     cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    _link_tags_to_savoir([theme], savoir)
 
     type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
     if type_reponse == TypeReponse.QCM:

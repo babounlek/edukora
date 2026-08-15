@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-interpreter-le-resultat-d-une-requete-sql-de-selection-avec-condition-select-where-terminale-c",
+  "meta": {
+    "titre": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT... WHERE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL : interrogation de données",
+    "duree_estimee_min": 12,
+    "tags": [
+      "SELECT",
+      "WHERE",
+      "filtrage"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Interroger une base de données, c'est presque toujours écrire un SELECT... WHERE : afficher certaines colonnes, de certaines lignes seulement, celles qui remplissent une condition. C'est la commande SQL la plus utilisée, et celle qu'il faut savoir tracer à la main."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un tableau de données en lignes et colonnes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SELECT ... FROM ... WHERE ... : filtrer les lignes d'une table",
+      "contenu_markdown": "SELECT * FROM table WHERE condition renvoie toutes les colonnes (le symbole *) des lignes de la table qui respectent la condition indiquée. Pour l'appliquer à la main, il faut parcourir la table ligne par ligne et ne garder que celles où la condition est vraie.",
+      "formule_principale": "SELECT * FROM table WHERE condition;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Présenter sous forme de tableau le résultat de : SELECT * FROM tissu WHERE (tissu.typeTissu = 'wax');",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la colonne testée et la valeur attendue",
+          "justification": "La condition porte sur typeTissu, qui doit valoir exactement 'wax'.",
+          "resultat_markdown": "Colonne testée : typeTissu, valeur attendue : 'wax'"
+        },
+        {
+          "numero": 2,
+          "action": "Parcourir chaque ligne de la table et tester la condition",
+          "justification": "On compare la valeur de typeTissu de chaque ligne à 'wax'.",
+          "resultat_markdown": "Lignes retenues : 0111, 0112, 0115, 0116 (wax) ; lignes exclues : 0113 (mohair), 0114 (tergal), 0117 (super cent)"
+        },
+        {
+          "numero": 3,
+          "action": "Présenter les lignes retenues, toutes colonnes, sous forme de tableau",
+          "justification": "SELECT * renvoie toutes les colonnes des lignes retenues.",
+          "resultat_markdown": "4 lignes, colonnes ref, typeTissu, modele, numCNI"
+        }
+      ],
+      "conclusion_markdown": "Le résultat comporte les quatre lignes de tissus en wax, avec toutes leurs colonnes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "N'afficher qu'une seule colonne (ex. seulement ref) alors que la requête utilise SELECT *",
+          "pourquoi_faux": "Le symbole * signifie \"toutes les colonnes\" : le résultat doit reproduire ref, typeTissu, modele et numCNI pour chaque ligne retenue, pas une seule colonne.",
+          "correction_markdown": "Associe toujours SELECT * à \"toutes les colonnes de la table\", jamais à une sélection partielle."
+        },
+        {
+          "erreur_markdown": "Inclure une ligne dont typeTissu ressemble à 'wax' sans être identique (ex. une valeur mal orthographiée)",
+          "pourquoi_faux": "La condition WHERE typeTissu = 'wax' teste une égalité stricte, caractère pour caractère : toute variation (majuscule, espace, orthographe) exclurait la ligne.",
+          "correction_markdown": "Vérifie l'égalité stricte de chaque valeur avant de l'inclure dans le résultat, ne te fie pas à une ressemblance approximative."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de lignes retournerait SELECT * FROM tissu WHERE (tissu.typeTissu = 'mohair') ?",
+          "solution_markdown": "Une seule ligne : 0113 (mohair, costume, 11750032)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris et résous la requête qui affiche les tissus appartenant au client de numCNI '11750802'.",
+          "solution_markdown": "```sql\nSELECT * FROM tissu WHERE (tissu.numCNI = '11750802');\n```\nRésultat : les lignes 0112, 0115 et 0117 (les trois lignes où numCNI vaut 11750802)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment écrire une requête qui affiche les tissus en wax appartenant au client '11750802' uniquement (deux conditions à la fois) ?",
+          "solution_markdown": "On combine les deux conditions avec l'opérateur logique AND, qui exige que les deux soient vraies simultanément. Réponse : ```sql\nSELECT * FROM tissu\nWHERE (tissu.typeTissu = 'wax') AND (tissu.numCNI = '11750802');\n```\nRésultat : seule la ligne 0112 (wax, kaba ngondo, 11750802) et la ligne 0115 (wax, jupe, 11750802) satisfont les deux conditions à la fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT * FROM table WHERE condition affiche toutes les colonnes des lignes qui vérifient la condition.",
+        "Il faut parcourir chaque ligne et tester la condition une par une pour construire le résultat à la main.",
+        "L'égalité dans WHERE est stricte : une valeur légèrement différente est exclue.",
+        "Plusieurs conditions peuvent se combiner avec AND (les deux vraies) ou OR (au moins une vraie)."
+      ]
+    }
+  ]
+}

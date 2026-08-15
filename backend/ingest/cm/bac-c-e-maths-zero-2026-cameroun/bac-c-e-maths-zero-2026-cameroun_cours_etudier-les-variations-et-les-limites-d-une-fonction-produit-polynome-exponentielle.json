@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-etudier-les-variations-et-les-limites-d-une-fonction-produit-polynome-exponentielle-terminale-c",
+  "meta": {
+    "titre": "Étudier les variations et les limites d'une fonction produit polynôme-exponentielle",
+    "cours_id": "cours-etudier-les-variations-et-les-limites-d-une-fonction-produit-polynome-exponentielle-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Analyse — étude de fonction",
+    "tags": [
+      "fonction exponentielle",
+      "tableau de variations",
+      "croissances comparées"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-A.1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction combinant un polynôme et une exponentielle décroissante finit toujours par s'aplatir contre l'axe des abscisses : c'est l'exponentielle qui l'emporte, quel que soit le degré du polynôme qui l'accompagne."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la dérivée du produit uv : (uv)'=u'v+uv'",
+        "Connaître les limites de croissances comparées : lim x^n·e^(-x)=0 en +∞"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode d'étude complète d'une fonction P(x)e^(-x)",
+      "contenu_markdown": "Pour étudier une fonction $f(x)=P(x)e^{-x}$ (P polynôme), on dérive avec la formule du produit, on factorise systématiquement par $e^{-x}$ (toujours strictement positif), on étudie le signe du facteur polynomial restant pour dresser le tableau de variations, puis on calcule les limites aux bornes : en $-\\infty$, $e^{-x}\\to+\\infty$ l'emporte souvent ; en $+\\infty$, on utilise les croissances comparées ($x^ne^{-x}\\to0$) pour lever l'indétermination $\\infty\\times0$.",
+      "formule_principale": "f(x)=P(x)e^(-x) ⟹ f'(x)=e^(-x)[P'(x)-P(x)], signe déterminé par le facteur polynomial P'(x)-P(x)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les variations et les limites de f(x)=(x+1)²e^(-x).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver avec la formule du produit",
+          "justification": "u=(x+1)², v=e^(-x).",
+          "resultat_markdown": "f'(x)=2(x+1)e^(-x)-(x+1)²e^(-x)=e^(-x)(x+1)(1-x)"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de f'",
+          "justification": "e^(-x)>0 toujours ; signe de (x+1)(1-x).",
+          "resultat_markdown": "f'>0 sur ]-1;1[, f'<0 ailleurs"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite en -∞",
+          "justification": "(x+1)²→+∞ et e^(-x)→+∞.",
+          "resultat_markdown": "lim f(x) = +∞ en -∞"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la limite en +∞ par croissances comparées",
+          "justification": "(x+1)²e^(-x)=x²e^(-x)(1+1/x)², avec x²e^(-x)→0.",
+          "resultat_markdown": "lim f(x) = 0 en +∞"
+        }
+      ],
+      "conclusion_markdown": "f décroît sur ]-∞;-1], croît sur [-1;1], décroît sur [1;+∞[, de +∞ à 0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de factoriser par e^(-x) avant d'étudier le signe de la dérivée",
+          "pourquoi_faux": "Sans factorisation, l'expression de f' mélange termes polynomiaux et exponentiels, rendant l'étude du signe beaucoup plus difficile ; factoriser par e^(-x) (toujours positif) réduit le problème à l'étude du signe d'un simple polynôme.",
+          "correction_markdown": "Toujours factoriser la dérivée par le facteur exponentiel avant d'étudier son signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de g(x)=xe^(-x).",
+          "solution_markdown": "g'(x)=e^(-x)-xe^(-x)=e^(-x)(1-x)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la limite de x²e^(-x) en +∞ ?",
+          "solution_markdown": "0, par croissance comparée (l'exponentielle décroissante l'emporte toujours sur toute puissance de x)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi une fonction P(x)e^(-x) (P polynôme non nul) tend-elle toujours vers 0 en +∞, quel que soit le degré de P ?",
+          "solution_markdown": "Le théorème des croissances comparées établit que pour tout entier n, x^n·e^(-x)→0 quand x→+∞ : l'exponentielle décroissante décroît 'plus vite' que n'importe quelle puissance de x ne croît, donc leur produit tend vers 0, quel que soit le degré du polynôme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dériver avec la formule du produit, puis factoriser systématiquement par le terme exponentiel (toujours positif).",
+        "Le signe de la dérivée se réduit à l'étude du signe du facteur polynomial restant.",
+        "En +∞, les croissances comparées garantissent que P(x)e^(-x)→0 quel que soit le degré de P."
+      ]
+    }
+  ]
+}

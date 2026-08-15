@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-derivabilite-raccordement-calcul-f-prime-terminale-c",
+  "meta": {
+    "titre": "Étudier la dérivabilité en un point de raccordement et calculer f'",
+    "cours_id": "cours-derivabilite-raccordement-calcul-f-prime-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Dérivabilité - fonctions définies par morceaux",
+    "tags": ["dérivabilité", "taux d'accroissement", "nombre dérivé", "raccordement"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1991-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1991-cameroun_exercice_2_q1b"
+  },
+  "sections": {
+    "accroche": "La dérivabilité en un point de raccordement d'une fonction par morceaux se teste toujours via les taux d'accroissement latéraux, jamais en dérivant formellement chaque morceau puis en évaluant au point limite (ce qui peut être trompeur si f' elle-même n'est pas continue).",
+    "prerequis": ["Définition du nombre dérivé via le taux d'accroissement", "Limites latérales d'un quotient", "Règles de dérivation usuelles"],
+    "regle": {
+      "titre": "Dérivabilité en un point de raccordement",
+      "contenu_markdown": "Pour tester la dérivabilité de $f$ en $a$ : calculer $\\lim_{x\\to a^-}\\dfrac{f(x)-f(a)}{x-a}$ et $\\lim_{x\\to a^+}\\dfrac{f(x)-f(a)}{x-a}$ séparément (en utilisant les expressions de $f$ propres à chaque morceau). Si les deux limites existent, sont finies, et coïncident, $f$ est dérivable en $a$ avec $f'(a)$ égal à cette valeur commune.",
+      "formule_principale": "$f'_g(a)=\\lim_{x\\to a^-}\\dfrac{f(x)-f(a)}{x-a}$, $f'_d(a)=\\lim_{x\\to a^+}\\dfrac{f(x)-f(a)}{x-a}$ ; dérivable si $f'_g(a)=f'_d(a)$",
+      "variantes": ["Une fonction peut être continue en a sans y être dérivable (ex. valeur absolue en 0), la continuité étant nécessaire mais non suffisante"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $k(x)=x^2$ si $x\\leqslant1$, $k(x)=2x-1$ si $x>1$. Étudier la dérivabilité en $x=1$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Vérifier la continuité d'abord", "justification": "k(1)=1, lim à droite=2(1)-1=1", "resultat_markdown": "continue en 1, k(1)=1"},
+        {"numero": 2, "action": "Taux d'accroissement à gauche", "justification": "(x²-1)/(x-1)=x+1→2", "resultat_markdown": "$k'_g(1)=2$"},
+        {"numero": 3, "action": "Taux d'accroissement à droite", "justification": "(2x-1-1)/(x-1)=2(x-1)/(x-1)=2", "resultat_markdown": "$k'_d(1)=2$"}
+      ],
+      "conclusion_markdown": "k est dérivable en 1, k'(1)=2."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Dériver formellement chaque morceau et comparer les valeurs de f' au point limite, sans passer par la définition du taux d'accroissement", "pourquoi_faux": "cette méthode fonctionne dans la plupart des cas usuels mais n'est rigoureusement justifiée que si f' est elle-même continue en ce point ; le taux d'accroissement est la définition rigoureuse", "correction_markdown": "Toujours privilégier le calcul direct de la limite du taux d'accroissement, en particulier dans un cadre d'examen où la rigueur est évaluée."},
+      {"erreur_markdown": "Oublier de vérifier d'abord la continuité avant d'étudier la dérivabilité", "pourquoi_faux": "la dérivabilité implique la continuité ; si la fonction n'est pas continue en un point, elle ne peut pas y être dérivable", "correction_markdown": "Toujours établir la continuité avant de passer à l'étude de la dérivabilité."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "La fonction valeur absolue |x| est-elle dérivable en 0 ?", "solution_markdown": "Taux d'accroissement à gauche : -1. À droite : 1. Différents : non dérivable en 0 (point anguleux), bien que continue."}
+    ],
+    "synthese": "La dérivabilité en un point de raccordement se teste via les limites latérales du taux d'accroissement ; si elles coïncident, f est dérivable avec cette valeur commune pour dérivée."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "epreuve_source": "bac-c-physique-2024-cameroun.pdf",
+  "numero_exercice": "4",
+  "matiere": "Physique",
+  "serie": "C",
+  "examen": "Baccalauréat",
+  "origine": "Cameroun",
+  "etablissement": null,
+  "annee": 2024,
+  "duree_epreuve": "4h",
+  "coefficient": 3,
+  "points": 8,
+  "figures": [
+    "fig-circuit-rlc-libre-amorti-2024",
+    "fig-circuit-rlc-force-resonance-2024"
+  ],
+  "enonce_intro_markdown": "**PARTIE II : ÉVALUATION DES COMPÉTENCES — 16 points**\n\n**Situation problème 1 — 8 points**\n\nDeux élèves étudient deux montages avec une même bobine réelle (résistance interne r=5Ω) : le circuit 1 (RLC libre, avec R=295Ω) présente des oscillations amorties visibles sur un graphe 1 ; le circuit 2 (RLC forcé par un GBF) présente une résonance d'intensité, avec I=0,35sin(100πt) (A) à la résonance sur le graphe 2. L'élève NGANDO affirme que l'amortissement des oscillations du circuit 1 provient uniquement de la dissipation d'énergie dans R, selon la relation dET/dt=-Ri². Document 1 : ET=Econdensateur+Ebobine, avec le rappel mathématique d(x²)/dt=2x(dx/dt). Document 2 propose 4 GBF au choix : A (u=105sin(100πt)), B (u=105sin(200πt)), C (u=105sin(100πt+π/2)), D (u=100sin(100πt)).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Examiner la déclaration de l'élève NGANDO selon laquelle l'amortissement des oscillations du circuit 1 s'explique par la relation dET/dt=-Ri².",
+      "corrige_markdown": "### Rappel de méthode\nDans un circuit RLC réel, la bobine possède elle-même une résistance interne r qui dissipe également de l'énergie par effet Joule ; la puissance totale dissipée doit donc tenir compte de R **et** de r, et se retrouve en dérivant l'énergie totale ET=Econdensateur+Ebobine à l'aide de la loi des mailles du circuit.\n\n### Corrigé\n**Énergie totale du circuit :**\n$$E_T = \\dfrac{1}{2}Cu_C^2 + \\dfrac{1}{2}Li^2$$\n\n**Dérivée par rapport au temps** (en utilisant le rappel d(x²)/dt=2x(dx/dt)) :\n$$\\dfrac{dE_T}{dt} = Cu_C\\dfrac{du_C}{dt} + Li\\dfrac{di}{dt}$$\n\nOr $i=C\\dfrac{du_C}{dt}$, donc $Cu_C\\dfrac{du_C}{dt}=u_C i$. De plus, la loi des mailles du circuit RLC série (R, bobine (L,r), condensateur C) donne : $u_C + L\\dfrac{di}{dt} + ri = -Ri$, soit $L\\dfrac{di}{dt} = -u_C - ri - Ri$. En remplaçant :\n$$\\dfrac{dE_T}{dt} = u_C i + i\\left(-u_C - ri - Ri\\right) = -ri^2 - Ri^2 = -(R+r)i^2$$\n\n**Conclusion :** la déclaration de NGANDO est **incomplète, donc fausse en l'état**. La relation correcte est $\\dfrac{dE_T}{dt}=-(R+r)i^2$ et non $-Ri^2$ : la bobine réelle utilisée possède sa propre résistance interne r=5Ω qui dissipe également de l'énergie par effet Joule, en plus de la résistance R du circuit. Négliger r reviendrait à sous-estimer l'amortissement réel observé sur le graphe 1.\n\n### Piège à éviter\nNe pas oublier que \"bobine réelle\" signifie systématiquement une bobine possédant une résistance interne non nulle r, qui doit apparaître dans le bilan énergétique au même titre que R.\n\n### Conseil\nToujours partir de l'énergie totale ET et la dériver rigoureusement à l'aide de la loi des mailles, plutôt que d'affirmer directement une formule de dissipation : cette méthode permet de détecter immédiatement les termes de dissipation manquants (ici, celui associé à r).",
+      "themes": [
+        "Circuit RLC",
+        "Bilan énergétique",
+        "Amortissement"
+      ],
+      "difficulte_estimee": 4,
+      "type_reponse": "analyse_critique",
+      "choix": null,
+      "reponse_correcte": "Déclaration incomplète : dET/dt = -(R+r)i², la résistance interne r de la bobine doit être prise en compte",
+      "figures": [
+        "fig-circuit-rlc-libre-amorti-2024"
+      ],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-examiner-la-declaration-de-l-eleve-ngando",
+          "contenu_markdown": "Dans un circuit RLC réel, la bobine possède elle-même une résistance interne r qui dissipe également de l'énergie par effet Joule ; la puissance totale dissipée doit donc tenir compte de R **et** de r, et se retrouve en dérivant l'énergie totale ET=Econdensateur+Ebobine à l'aide de la loi des mailles du circuit."
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Aider les élèves à choisir, parmi les 4 GBF proposés dans le document 2, celui qui correspond au régime de résonance d'intensité observé sur le graphe 2, sachant que R=295Ω, r=5Ω et que le courant à la résonance est i=0,35sin(100πt) (A).",
+      "corrige_markdown": "### Rappel de méthode\nÀ la résonance d'intensité d'un circuit RLC série, la tension du générateur et le courant sont en phase, et leur amplitude sont reliées par la loi d'Ohm généralisée Um=Im×(R+r) (l'impédance totale se réduisant à la résistance totale du circuit à la résonance).\n\n### Corrigé\n**Calcul de l'amplitude de tension attendue à la résonance :**\n$$U_m = I_m\\times(R+r) = 0{,}35\\times(295+5) = 0{,}35\\times300 = 105\\ \\text{V}$$\n\n**Comparaison avec le courant donné :** i=0,35sin(100πt) a pour pulsation ω=100π rad/s et pour phase à l'origine 0 (pas de déphasage).\n\nÀ la résonance, le GBF doit donc délivrer une tension de même pulsation (100π rad/s), de même phase (en phase avec i, donc phase nulle également puisque i n'a pas de phase), et d'amplitude Um=105V.\n\n**Examen des 4 propositions :**\n- A : u=105sin(100πt) → amplitude 105V ✓, pulsation 100π rad/s ✓, phase nulle (en phase avec i) ✓ → **convient**\n- B : pulsation 200π rad/s ✗ (ne correspond pas à la résonance observée)\n- C : déphasage +π/2 ✗ (ne serait pas en phase avec i, incompatible avec la résonance)\n- D : amplitude 100V ✗ (ne correspond pas à Um=105V calculé)\n\n**Conclusion :** le générateur à choisir est le **GBF A** (u=105sin(100πt)), seul compatible simultanément avec l'amplitude, la pulsation et la phase attendues à la résonance.\n\n### Piège à éviter\nNe pas se contenter de vérifier un seul critère (par exemple l'amplitude) : il faut impérativement vérifier la cohérence simultanée des trois grandeurs (amplitude, pulsation, phase) pour valider le choix du GBF.\n\n### Conseil\nÀ la résonance d'intensité, retenir le triptyque de vérification : même pulsation que i, tension et courant en phase, et Um=Im×(R+r) — ces trois conditions permettent d'éliminer efficacement les propositions incorrectes.",
+      "themes": [
+        "Résonance d'intensité",
+        "Circuit RLC forcé"
+      ],
+      "difficulte_estimee": 3,
+      "type_reponse": "choix_justifie",
+      "choix": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "reponse_correcte": "GBF A : u=105sin(100πt)",
+      "figures": [
+        "fig-circuit-rlc-force-resonance-2024"
+      ],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-aider-les-eleves-a-choisir-le-gbf",
+          "contenu_markdown": "À la résonance d'intensité d'un circuit RLC série, la tension du générateur et le courant sont en phase, et leur amplitude sont reliées par la loi d'Ohm généralisée Um=Im×(R+r) (l'impédance totale se réduisant à la résistance totale du circuit à la résonance)."
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "circuit RLC",
+    "amortissement",
+    "bilan énergétique",
+    "résonance d'intensité",
+    "GBF",
+    "bobine réelle"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

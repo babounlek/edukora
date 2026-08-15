@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-suite-auxiliaire-geometrique-un-moins-constante-premiere-d",
+  "meta": {
+    "titre": "Montrer qu'une suite auxiliaire vn = un - α est géométrique",
+    "cours_id": "cours-suite-auxiliaire-geometrique-un-moins-constante-premiere-d",
+    "matiere": "Mathématiques",
+    "niveau": "Première D (Probatoire)",
+    "sous_theme": "Suites - suite auxiliaire géométrique",
+    "tags": ["suite auxiliaire", "point fixe", "suite arithmético-géométrique"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "probatoire-d-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-d-maths-2004-cameroun_exercice_3_q3a"
+  },
+  "sections": {
+    "accroche": "Une suite de la forme u_{n+1}=au_n+b (avec a≠1) n'est ni arithmétique ni géométrique, mais elle le devient toujours après un simple changement de variable : soustraire le point fixe de la relation transforme systématiquement cette suite en une suite géométrique pure.",
+    "prerequis": ["Notion de point fixe d'une relation affine", "Définition d'une suite géométrique"],
+    "regle": {
+      "titre": "Méthode de la suite auxiliaire vn = un - α",
+      "contenu_markdown": "Pour une suite $u_{n+1}=au_n+b$ (avec $a\\neq1$), on pose $v_n=u_n-\\alpha$, où $\\alpha$ est le point fixe de la relation (solution de $\\alpha=a\\alpha+b$, soit $\\alpha=\\dfrac{b}{1-a}$). On calcule alors $v_{n+1}=u_{n+1}-\\alpha=(au_n+b)-\\alpha$, et en utilisant $b=\\alpha-a\\alpha=\\alpha(1-a)$, cette expression se simplifie systématiquement en $v_{n+1}=a(u_n-\\alpha)=av_n$ : $(v_n)$ est donc géométrique de raison $a$.",
+      "formule_principale": "$u_{n+1}=au_n+b,\\ \\alpha=\\dfrac{b}{1-a}\\ \\text{(point fixe)} \\;\\Longrightarrow\\; v_n=u_n-\\alpha$ est géométrique de raison $a$",
+      "variantes": ["En pratique, il n'est pas nécessaire de recalculer le point fixe par la formule : si l'énoncé donne directement vn=un-α, il suffit de substituer et de factoriser pour retrouver vn+1=a×vn"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit wn+1=0,5wn+3, w0=2. Montrer que xn=wn-6 est géométrique.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Exprimer xn+1", "justification": "définition de la suite auxiliaire", "resultat_markdown": "xn+1=wn+1-6=(0,5wn+3)-6=0,5wn-3"},
+        {"numero": 2, "action": "Factoriser", "justification": "faire apparaître xn=wn-6", "resultat_markdown": "0,5wn-3=0,5(wn-6)=0,5xn"},
+        {"numero": 3, "action": "Conclure", "justification": "relation de récurrence géométrique obtenue", "resultat_markdown": "xn+1=0,5xn, donc (xn) géométrique de raison 0,5"}
+      ],
+      "conclusion_markdown": "(xn) est géométrique de raison 0,5, de premier terme x0=w0-6=2-6=-4."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Après avoir substitué la relation de récurrence de (un) dans l'expression de vn+1, ne pas réussir à factoriser correctement pour faire apparaître exactement vn=un-α, et conclure à tort que la suite n'est pas géométrique", "pourquoi_faux": "la factorisation doit toujours réussir si α est bien le point fixe correct de la relation ; un échec de factorisation signale presque toujours une erreur de calcul du point fixe ou une erreur arithmétique dans la simplification, pas une réelle absence de structure géométrique", "correction_markdown": "Si la factorisation ne semble pas aboutir, vérifier d'abord le calcul du point fixe α (résoudre à nouveau α=aα+b), puis refaire la simplification terme à terme sans sauter d'étape."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit yn+1=(1/4)yn+3/4, y0=5. Montrer que zn=yn-1 est géométrique et donner sa raison.", "solution_markdown": "zn+1=yn+1-1=(1/4)yn+3/4-1=(1/4)yn-1/4=(1/4)(yn-1)=(1/4)zn : géométrique de raison 1/4."}
+    ],
+    "synthese": "Pour une suite u_{n+1}=au_n+b, la suite auxiliaire vn=un-α (où α est le point fixe de la relation, α=b/(1-a)) est toujours géométrique de raison a, ce qui se démontre en substituant la relation de récurrence de (un) dans vn+1 puis en factorisant par a pour faire réapparaître vn."
+  }
+}

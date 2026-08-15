@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-image-cercle-application-affine-substitution-inverse-terminale-c",
+  "meta": {
+    "titre": "Trouver l'équation de l'image d'une courbe par une bijection via substitution avec f⁻¹",
+    "cours_id": "cours-image-cercle-application-affine-substitution-inverse-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - image d'une courbe par une application affine",
+    "tags": ["image d'une courbe", "application affine", "substitution", "réciproque"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_2_q3a"
+  },
+  "sections": {
+    "accroche": "Trouver l'équation de l'image d'une courbe par une application bijective f suit toujours la même logique : un point de l'image vérifie l'équation de la courbe de départ une fois transporté en arrière par f⁻¹.",
+    "prerequis": ["Bijection et application réciproque", "Équation cartésienne d'un cercle", "Substitution dans une équation"],
+    "regle": {
+      "titre": "Méthode de la substitution par f⁻¹",
+      "contenu_markdown": "Pour trouver l'image $f(\\mathcal C)$ d'une courbe $\\mathcal C$ d'équation $E(x,y)=0$ par une bijection $f$ : un point $M'(x',y')$ appartient à $f(\\mathcal C)$ si et seulement si $M=f^{-1}(M')$ appartient à $\\mathcal C$, c'est-à-dire $E(x,y)=0$ où $(x,y)=f^{-1}(x',y')$. On substitue donc les expressions de $f^{-1}$ dans l'équation de départ, puis on simplifie pour obtenir l'équation en $(x',y')$ (souvent renommées $(x,y)$ pour l'équation finale).",
+      "formule_principale": "$M'\\in f(\\mathcal C)\\iff f^{-1}(M')\\in\\mathcal C$",
+      "variantes": ["Si f est directement donnée par des formules simples (sans besoin d'inverser), on peut aussi exprimer x',y' en fonction de x,y et éliminer x,y du système, mais la méthode par f⁻¹ est en général la plus directe"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $f(x,y)=(2x,y)$ (donc $f^{-1}(x,y)=(x/2,y)$). Trouver l'image du cercle $x^2+y^2=1$ par $f$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Exprimer x,y en fonction de x',y' via f⁻¹", "justification": "définition de la méthode", "resultat_markdown": "$x=x'/2$, $y=y'$"},
+        {"numero": 2, "action": "Substituer dans l'équation du cercle", "justification": "M(x,y) doit vérifier x²+y²=1", "resultat_markdown": "$(x'/2)^2+y'^2=1$"},
+        {"numero": 3, "action": "Simplifier", "justification": "développer le carré", "resultat_markdown": "$\\dfrac{x'^2}4+y'^2=1$"}
+      ],
+      "conclusion_markdown": "L'image est l'ellipse $\\dfrac{x^2}4+y^2=1$ (en renommant x',y' en x,y)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Substituer directement les formules de f (et non de f⁻¹) dans l'équation de la courbe de départ", "pourquoi_faux": "c'est l'inverse de la bonne direction : il faut exprimer les coordonnées du point de départ (x,y) en fonction des coordonnées de l'image (x',y'), donc utiliser f⁻¹", "correction_markdown": "Toujours vérifier que l'on utilise bien f⁻¹ (pas f) pour exprimer x,y en fonction de x',y' avant de substituer."},
+      {"erreur_markdown": "Ne pas simplifier complètement l'expression développée, laissant une équation avec des dénominateurs multiples", "pourquoi_faux": "une équation de conique doit être présentée sous forme réduite (entiers si possible) pour être exploitable", "correction_markdown": "Toujours multiplier par le plus petit dénominateur commun pour obtenir une équation à coefficients entiers."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit f(x,y)=(x+1,y) (translation), f⁻¹(x,y)=(x-1,y). Trouver l'image du cercle x²+y²=4 par f.", "solution_markdown": "Substituer x=x'-1, y=y' dans x²+y²=4 : (x'-1)²+y'²=4, soit un cercle de centre (1,0) et rayon 2."}
+    ],
+    "synthese": "Pour trouver l'équation de l'image d'une courbe par une bijection f, exprimer les coordonnées (x,y) du point de départ en fonction de celles de l'image (x',y') via f⁻¹, puis substituer dans l'équation de la courbe de départ."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-equivalence-noyau-compose-intersection-triviale-terminale-c",
+  "meta": {
+    "titre": "Équivalence entre ker(g∘g) ⊂ ker g et Im g ∩ ker g = {0}",
+    "cours_id": "cours-equivalence-noyau-compose-intersection-triviale-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - noyau d'une composée, endomorphismes",
+    "tags": ["endomorphisme", "composée g∘g", "noyau", "image", "double implication"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_3_q2a"
+  },
+  "sections": {
+    "accroche": "Une condition sur le noyau de la composée $g\\circ g$ se traduit en une condition purement structurelle sur $\\ker g$ et $\\mathrm{Im}\\,g$ : une double implication à démontrer séparément dans chaque sens, chacune reposant sur la définition même du noyau et de l'image.",
+    "prerequis": ["Définition du noyau et de l'image", "Composée d'applications linéaires", "Raisonnement par double implication"],
+    "regle": {
+      "titre": "Équivalence ker(g∘g)⊂ker g ⟺ Im g∩ker g={0}",
+      "contenu_markdown": "Pour un endomorphisme $g:E\\to E$ : $\\ker(g\\circ g)\\subset\\ker g\\iff\\mathrm{Im}\\,g\\cap\\ker g=\\{0\\}$. **Sens direct** : soit $y\\in\\mathrm{Im}\\,g\\cap\\ker g$. Alors $y=g(x)$ pour un $x\\in E$, et $g(y)=0$, donc $g(g(x))=0$, c'est-à-dire $x\\in\\ker(g\\circ g)$. Par hypothèse, $x\\in\\ker g$, donc $y=g(x)=0$. **Réciproque** : soit $x\\in\\ker(g\\circ g)$, donc $g(g(x))=0$. Posons $y=g(x)$ : $y\\in\\mathrm{Im}\\,g$ et $g(y)=0$ donc $y\\in\\ker g$, donc $y\\in\\mathrm{Im}\\,g\\cap\\ker g=\\{0\\}$ par hypothèse, donc $y=g(x)=0$, c'est-à-dire $x\\in\\ker g$.",
+      "formule_principale": "$\\ker(g\\circ g)\\subset\\ker g\\iff\\mathrm{Im}\\,g\\cap\\ker g=\\{0\\}$",
+      "variantes": ["Combiné au théorème du rang, cette condition équivaut aussi à $E=\\ker g\\oplus\\mathrm{Im}\\,g$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g(x,y)=(y,0)$ sur $\\mathbb R^2$. Vérifier que $\\mathrm{Im}\\,g\\cap\\ker g=\\{0\\}$ et en déduire (sans calcul direct) que $\\ker(g\\circ g)\\subset\\ker g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Déterminer $\\ker g$ et $\\mathrm{Im}\\,g$", "justification": "$g(x,y)=(0,0)\\iff y=0$ ; $g(\\mathbb R^2)=\\{(t,0):t\\in\\mathbb R\\}$", "resultat_markdown": "$\\ker g=\\mathrm{Vect}(1,0)$, $\\mathrm{Im}\\,g=\\mathrm{Vect}(1,0)$"},
+        {"numero": 2, "action": "Comparer", "justification": "les deux droites sont en fait identiques ici", "resultat_markdown": "$\\ker g=\\mathrm{Im}\\,g=\\mathrm{Vect}(1,0)$, donc $\\mathrm{Im}\\,g\\cap\\ker g=\\mathrm{Vect}(1,0)\\neq\\{0\\}$"}
+      ],
+      "conclusion_markdown": "Ici l'intersection n'est pas triviale : on en déduit, par contraposée du théorème, que $\\ker(g\\circ g)\\not\\subset\\ker g$ (on peut le vérifier directement : $g\\circ g=0$, donc $\\ker(g\\circ g)=\\mathbb R^2\\not\\subset\\ker g=\\mathrm{Vect}(1,0)$)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Traiter les deux sens de l'équivalence comme un seul raisonnement symétrique", "pourquoi_faux": "chaque sens utilise l'hypothèse de départ à un moment différent de la chaîne logique ; les fusionner masque une étape", "correction_markdown": "Toujours rédiger séparément le sens direct et la réciproque, chacun avec son point de départ propre."},
+      {"erreur_markdown": "Oublier de vérifier que $y=g(x)$ appartient bien à $\\mathrm{Im}\\,g$ avant d'utiliser l'hypothèse d'intersection triviale", "pourquoi_faux": "l'hypothèse ne s'applique qu'à des éléments simultanément dans le noyau ET dans l'image", "correction_markdown": "Toujours vérifier explicitement les deux appartenances ($y\\in\\mathrm{Im}\\,g$ et $y\\in\\ker g$) avant de conclure $y=0$ par hypothèse d'intersection triviale."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Pourquoi la condition $\\ker(g\\circ g)\\subset\\ker g$ implique-t-elle automatiquement l'inclusion réciproque $\\ker g\\subset\\ker(g\\circ g)$ ?", "solution_markdown": "Si $x\\in\\ker g$, alors $g(x)=0$, donc $g(g(x))=g(0)=0$ (linéarité), donc $x\\in\\ker(g\\circ g)$ : cette inclusion est toujours vraie, indépendamment de toute hypothèse, donc la condition de l'énoncé revient en réalité à l'égalité $\\ker(g\\circ g)=\\ker g$."}
+    ],
+    "synthese": "L'inclusion ker(g∘g)⊂ker g équivaut à Im g∩ker g={0}, par une double implication utilisant à chaque fois la définition du noyau et de l'image ; c'est une condition-clé pour la décomposition E=ker g⊕Im g."
+  }
+}

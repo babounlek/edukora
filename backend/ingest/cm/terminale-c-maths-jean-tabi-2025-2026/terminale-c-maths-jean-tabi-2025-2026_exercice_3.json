@@ -1,0 +1,104 @@
+{
+  "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "devoir_harmonise",
+  "origine": "etablissement",
+  "etablissement": "Collège Jean Tabi d'Étoudi (Département de Mathématiques) - Devoir Harmonisé de Mathématiques, Période 5",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "7",
+  "numero_exercice": 3,
+  "titre_exercice": "Similitude directe barycentrique et étude d'une fonction logarithmique",
+  "points": 5,
+  "figures": [],
+  "enonce_intro_markdown": "Dans le plan complexe, on considère les points $A$ d'affixe $z_A=1$, $M$ d'affixe $z$ et $N$ d'affixe $z_N=iz-1-i$. Pour tout réel non nul $\\alpha$, on désigne par $T_\\alpha$ l'application qui à tout point $M$ associe le point $M'$, barycentre du système $\\{(M,\\alpha)\\,;(N,-\\alpha)\\,;(A,1)\\}$. On pose $z=x+iy$ avec $x,y\\in\\mathbb R$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1pt",
+      "enonce_markdown": "En calculant le poids total du système barycentrique, montrer que $T_\\alpha$ est bien définie pour tout réel $\\alpha$ non nul, puis établir que l'affixe $z'$ de $M'$ vérifie : $z'=\\alpha(1-i)z+\\alpha(1+i)+1$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-laffixe-du-barycentre-de-points-ponderes-terminale-c",
+          "texte": "Un barycentre de points pondérés $\\{(P_1,m_1);\\dots;(P_k,m_k)\\}$ n'est défini que si le poids total $m_1+\\dots+m_k$ est non nul. Dans ce cas, son affixe est $z=\\dfrac{m_1z_{P_1}+\\dots+m_kz_{P_k}}{m_1+\\dots+m_k}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUn barycentre de points pondérés n'est défini que si le poids total est non nul. Dans ce cas, son affixe est $z=\\dfrac{\\sum m_iz_{P_i}}{\\sum m_i}$.\n\n**Calcul du poids total.** Le système est $\\{(M,\\alpha)\\,;(N,-\\alpha)\\,;(A,1)\\}$, de poids total $\\alpha+(-\\alpha)+1=1$.\n\n**Conclusion sur l'existence.** Ce poids total vaut $1$, quel que soit $\\alpha$ (en particulier pour tout $\\alpha$ réel non nul) : il est donc toujours non nul, et $M'=T_\\alpha(M)$ est bien défini pour tout réel $\\alpha$ non nul.\n\n**Calcul de l'affixe $z'$.** Puisque le poids total vaut $1$ :\n\n$$z'=\\dfrac{\\alpha\\,z+(-\\alpha)\\,z_N+1\\times z_A}{1}=\\alpha z-\\alpha z_N+z_A$$\n\nOn remplace $z_N=iz-1-i$ et $z_A=1$ :\n\n$$z'=\\alpha z-\\alpha(iz-1-i)+1=\\alpha z-\\alpha iz+\\alpha+\\alpha i+1$$\n\nEn factorisant $z$ dans les deux premiers termes :\n\n$$z'=\\alpha(1-i)z+\\alpha(1+i)+1$$\n\n**Conclusion.** $T_\\alpha$ est bien définie pour tout réel $\\alpha$ non nul, et $z'=\\alpha(1-i)z+\\alpha(1+i)+1$, conformément à l'énoncé.\n\n### Piège à éviter\nLe poids total du système barycentrique ($=1$) ne dépend pas de $\\alpha$ : ce n'est donc pas ce calcul qui justifie la restriction $\\alpha\\neq0$ de l'énoncé. Cette restriction sert plutôt à garantir que $T_\\alpha$ dépend effectivement de $M$ (le coefficient de $z$ dans $z'$ est $\\alpha(1-i)$, qui s'annule si $\\alpha=0$, rendant $T_\\alpha$ constante)."
+    },
+    {
+      "numero": "2.a",
+      "points": "1pt",
+      "enonce_markdown": "Montrer que $T_\\alpha$ est une similitude directe. Préciser son rapport $k$, son angle $\\theta$ et déterminer son centre $\\Omega$ en fonction de $\\alpha$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-caracteriser-une-similitude-directe-par-son-ecriture-complexe-terminale-c",
+          "texte": "Une application du plan complexe d'écriture $z'=az+b$ avec $a\\in\\mathbb C^{*}$ est une similitude directe de rapport $k=|a|$, d'angle $\\theta=\\arg(a)$, et de centre $\\Omega$ le point fixe de l'application (solution de $z_\\Omega=az_\\Omega+b$), à condition que $a\\neq1$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne application d'écriture $z'=az+b$ avec $a\\in\\mathbb C^{*}$ est une similitude directe de rapport $k=|a|$, d'angle $\\theta=\\arg(a)$, et de centre $\\Omega$ solution de $z_\\Omega=az_\\Omega+b$ (si $a\\neq1$).\n\nD'après la question 1, $z'=az+b$ avec $a=\\alpha(1-i)$ et $b=\\alpha(1+i)+1$. Comme $\\alpha\\neq0$ et $1-i\\neq0$, on a $a\\neq0$ : $T_\\alpha$ est donc bien une similitude directe.\n\n**Rapport $k$.** $k=|a|=|\\alpha(1-i)|=|\\alpha|\\times|1-i|=|\\alpha|\\times\\sqrt{1^2+(-1)^2}=|\\alpha|\\sqrt2$.\n\n**Angle $\\theta$.** $\\theta=\\arg(a)=\\arg\\left(\\alpha(1-i)\\right)$. On calcule séparément $\\cos\\theta$ et $\\sin\\theta$ à partir de la forme trigonométrique de $1-i=\\sqrt2\\left(\\cos\\left(-\\frac\\pi4\\right)+i\\sin\\left(-\\frac\\pi4\\right)\\right)$ (car $\\cos\\left(-\\frac\\pi4\\right)=\\frac{\\sqrt2}2$ et $\\sin\\left(-\\frac\\pi4\\right)=-\\frac{\\sqrt2}2$, ce qui redonne bien $\\sqrt2\\left(\\frac{\\sqrt2}2-i\\frac{\\sqrt2}2\\right)=1-i$) :\n\n- si $\\alpha>0$ : $\\alpha$ est un réel positif, il ne modifie pas l'argument, donc $\\theta=-\\dfrac\\pi4\\ [2\\pi]$\n- si $\\alpha<0$ : multiplier par un réel négatif ajoute $\\pi$ à l'argument, donc $\\theta=-\\dfrac\\pi4+\\pi=\\dfrac{3\\pi}4\\ [2\\pi]$\n\n**Centre $\\Omega$.** $\\Omega$ est le point fixe : $z_\\Omega=az_\\Omega+b\\iff z_\\Omega(1-a)=b\\iff z_\\Omega=\\dfrac{b}{1-a}$ (possible car $a\\neq1$, puisque $k=|\\alpha|\\sqrt2=1$ nécessiterait $|\\alpha|=\\frac1{\\sqrt2}$, mais même dans ce cas $a=\\alpha(1-i)\\ne1$ car $a$ n'est jamais réel pur égal à $1$ ici sauf cas particulier écarté ci-dessous).\n\n$$z_\\Omega=\\dfrac{\\alpha(1+i)+1}{1-\\alpha(1-i)}=\\dfrac{\\alpha+\\alpha i+1}{1-\\alpha+\\alpha i}$$\n\nOn rationalise en multipliant numérateur et dénominateur par le conjugué du dénominateur, $1-\\alpha-\\alpha i$ :\n\n**Dénominateur.** $(1-\\alpha+\\alpha i)(1-\\alpha-\\alpha i)=(1-\\alpha)^2-(\\alpha i)^2=(1-\\alpha)^2+\\alpha^2=1-2\\alpha+\\alpha^2+\\alpha^2=2\\alpha^2-2\\alpha+1$\n\n**Numérateur.** $(\\alpha+1+\\alpha i)(1-\\alpha-\\alpha i)$. On développe terme à terme :\n\n$(\\alpha+1)(1-\\alpha)=1-\\alpha^2$\n\n$(\\alpha+1)(-\\alpha i)=-\\alpha i(\\alpha+1)=-\\alpha^2i-\\alpha i$\n\n$\\alpha i(1-\\alpha)=\\alpha i-\\alpha^2i$\n\n$\\alpha i\\times(-\\alpha i)=-\\alpha^2i^2=\\alpha^2$\n\nEn sommant : $(1-\\alpha^2)+\\alpha^2 + \\left(-\\alpha^2i-\\alpha i+\\alpha i-\\alpha^2i\\right)=1-2\\alpha^2i$\n\nDonc $z_\\Omega=\\dfrac{1-2\\alpha^2i}{2\\alpha^2-2\\alpha+1}$.\n\n**Conclusion.** $k=|\\alpha|\\sqrt2$ ; $\\theta=-\\dfrac\\pi4\\ [2\\pi]$ si $\\alpha>0$, $\\theta=\\dfrac{3\\pi}4\\ [2\\pi]$ si $\\alpha<0$ ; et $\\Omega$ a pour affixe $z_\\Omega=\\dfrac{1-2\\alpha^2i}{2\\alpha^2-2\\alpha+1}=\\dfrac{1}{2\\alpha^2-2\\alpha+1}-\\dfrac{2\\alpha^2}{2\\alpha^2-2\\alpha+1}\\,i$.\n\n### Conseil\nLe dénominateur $2\\alpha^2-2\\alpha+1$ a pour discriminant $\\Delta=4-8=-4<0$ : il ne s'annule donc jamais pour $\\alpha$ réel, ce qui confirme que $\\Omega$ est bien défini pour tout $\\alpha\\neq0$ (cohérence avec la question 1)."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer les valeurs de $\\alpha$ pour lesquelles $T_\\alpha$ est une rotation, puis préciser pour chacune le centre et l'angle de cette rotation.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-quand-une-similitude-directe-est-une-rotation-terminale-c",
+          "texte": "Une similitude directe de rapport $k$ est une rotation si et seulement si $k=1$ ; son centre et son angle sont alors ceux de la similitude."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne similitude directe de rapport $k$ est une rotation si et seulement si $k=1$.\n\n**Condition sur $\\alpha$.** $k=1\\iff|\\alpha|\\sqrt2=1\\iff|\\alpha|=\\dfrac1{\\sqrt2}=\\dfrac{\\sqrt2}2\\iff\\alpha=\\dfrac{\\sqrt2}2\\ \\text{ou}\\ \\alpha=-\\dfrac{\\sqrt2}2$\n\n**Cas $\\alpha=\\dfrac{\\sqrt2}2$ (positif).** L'angle est $\\theta=-\\dfrac\\pi4$ (question 2.a, cas $\\alpha>0$). Pour le centre, $\\alpha^2=\\dfrac12$ donc $2\\alpha^2-2\\alpha+1=1-\\sqrt2+1=2-\\sqrt2$ :\n\n$$z_\\Omega=\\dfrac{1-i}{2-\\sqrt2}=\\dfrac{(1-i)(2+\\sqrt2)}{(2-\\sqrt2)(2+\\sqrt2)}=\\dfrac{(1-i)(2+\\sqrt2)}{4-2}=\\dfrac{(1-i)(2+\\sqrt2)}{2}=\\dfrac{2+\\sqrt2}{2}(1-i)$$\n\nsoit $\\Omega\\left(\\dfrac{2+\\sqrt2}2\\,;-\\dfrac{2+\\sqrt2}2\\right)$.\n\n**Cas $\\alpha=-\\dfrac{\\sqrt2}2$ (négatif).** L'angle est $\\theta=\\dfrac{3\\pi}4$ (question 2.a, cas $\\alpha<0$). Le dénominateur devient $2\\alpha^2-2\\alpha+1=1+\\sqrt2+1=2+\\sqrt2$ :\n\n$$z_\\Omega=\\dfrac{1-i}{2+\\sqrt2}=\\dfrac{(1-i)(2-\\sqrt2)}{(2+\\sqrt2)(2-\\sqrt2)}=\\dfrac{(1-i)(2-\\sqrt2)}{2}=\\dfrac{2-\\sqrt2}{2}(1-i)$$\n\nsoit $\\Omega\\left(\\dfrac{2-\\sqrt2}2\\,;-\\dfrac{2-\\sqrt2}2\\right)$.\n\n**Conclusion.** $T_\\alpha$ est une rotation pour $\\alpha=\\dfrac{\\sqrt2}2$ (angle $-\\dfrac\\pi4$, centre $\\left(\\frac{2+\\sqrt2}2,-\\frac{2+\\sqrt2}2\\right)$) et pour $\\alpha=-\\dfrac{\\sqrt2}2$ (angle $\\dfrac{3\\pi}4$, centre $\\left(\\frac{2-\\sqrt2}2,-\\frac{2-\\sqrt2}2\\right)$)."
+    },
+    {
+      "numero": "3.a",
+      "points": "0,5pt",
+      "enonce_markdown": "On suppose $\\alpha$ strictement positif. On lui associe le point $B(-\\ln\\alpha\\,;\\ln\\alpha)$ et on pose $B'=T_\\alpha(B)$. Calculer les coordonnées de $B'$ en fonction de $\\alpha$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-limage-dun-point-par-une-similitude-decriture-complexe-connue-terminale-c",
+          "texte": "Pour calculer l'image d'un point par une application d'écriture complexe $z'=az+b$, on remplace $z$ par l'affixe du point de départ, on développe complètement, puis on identifie partie réelle et partie imaginaire du résultat pour obtenir les coordonnées de l'image."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer l'image d'un point par $z'=az+b$, on remplace $z$ par l'affixe du point de départ, on développe, puis on identifie partie réelle et partie imaginaire.\n\nL'affixe de $B$ est $z_B=-\\ln\\alpha+i\\ln\\alpha=\\ln\\alpha\\,(-1+i)$.\n\n**Calcul de $(1-i)z_B$.** $(1-i)\\times\\ln\\alpha\\,(-1+i)=\\ln\\alpha\\times(1-i)(-1+i)$\n\n$(1-i)(-1+i)=-1+i+i-i^2=-1+2i+1=2i$\n\nDonc $(1-i)z_B=2i\\ln\\alpha$.\n\n**Calcul de $z_{B'}$.** $z_{B'}=\\alpha(1-i)z_B+\\alpha(1+i)+1=\\alpha\\times2i\\ln\\alpha+\\alpha+\\alpha i+1=(\\alpha+1)+i(\\alpha+2\\alpha\\ln\\alpha)$\n\n**Identification des coordonnées.** $X=\\text{Re}(z_{B'})=\\alpha+1$ et $Y=\\text{Im}(z_{B'})=\\alpha+2\\alpha\\ln\\alpha=\\alpha(1+2\\ln\\alpha)$.\n\n**Conclusion.** $B'\\big(\\alpha+1\\,;\\,\\alpha(1+2\\ln\\alpha)\\big)$."
+    },
+    {
+      "numero": "3.b",
+      "points": "0,5pt",
+      "enonce_markdown": "En notant $X$ et $Y$ les coordonnées de $B'$, exprimer $Y$ en fonction de $X$, puis en déduire que l'ensemble décrit par $B'$ lorsque $\\alpha$ décrit $]0;+\\infty[$ est la courbe représentative de la fonction $f$ de la question 4.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-eliminer-le-parametre-dune-representation-parametrique-pour-obtenir-y-fonction-de-x-terminale-c",
+          "texte": "Pour éliminer le paramètre d'une courbe donnée sous forme paramétrique $(X(\\alpha),Y(\\alpha))$, on exprime $\\alpha$ en fonction de $X$ à partir de la première relation, puis on substitue dans la seconde pour obtenir directement $Y$ en fonction de $X$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour éliminer le paramètre, on exprime $\\alpha$ en fonction de $X$, puis on substitue dans l'expression de $Y$.\n\nD'après la question 3.a, $X=\\alpha+1$, donc $\\alpha=X-1$.\n\nEn substituant dans $Y=\\alpha(1+2\\ln\\alpha)$ :\n\n$$Y=(X-1)\\big(1+2\\ln(X-1)\\big)$$\n\n**Comparaison avec $f$.** La fonction de la question 4 est $f(x)=2(x-1)\\ln(x-1)+x-1$. En factorisant par $(x-1)$ : $f(x)=(x-1)\\big[2\\ln(x-1)+1\\big]$, qui est exactement l'expression obtenue pour $Y$ en fonction de $X$ ci-dessus (avec $x=X$) : $Y=(X-1)\\big[1+2\\ln(X-1)\\big]=f(X)$.\n\n**Cohérence des domaines.** $\\alpha$ décrit $]0;+\\infty[$, donc $X=\\alpha+1$ décrit $]1;+\\infty[$, qui est exactement le domaine de définition de $f$ donné à la question 4.\n\n**Conclusion.** $Y=f(X)$ pour tout $X\\in\\,]1;+\\infty[$ : l'ensemble décrit par $B'$ lorsque $\\alpha$ parcourt $]0;+\\infty[$ est donc exactement la courbe représentative $(C_f)$ de la fonction $f$."
+    },
+    {
+      "numero": "4.a",
+      "points": "0,75pt",
+      "enonce_markdown": "On considère la fonction $f$ définie sur $]1;+\\infty[$ par $f(x)=2(x-1)\\ln(x-1)+x-1$ et $(C_f)$ sa courbe représentative. Montrer que $f$ admet un minimum en $x_0=1+e^{-3/2}$, dresser le tableau de variations complet et tracer $(C_f)$ (unité : 2 cm).",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-les-variations-dune-fonction-du-type-x-1lnx-1-terminale-c",
+          "texte": "Pour une fonction du type $g(t)=2t\\ln t+t$ après changement de variable $t=x-1$, on dérive avec la formule du produit ($\\left(t\\ln t\\right)'=\\ln t+1$), on résout $g'(t)=0$ par exponentiation, puis on étudie le signe de $g'$ en utilisant la croissance stricte de $\\ln$. Aux bornes, on utilise la limite classique $\\lim_{t\\to0^+}t\\ln t=0$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour dériver un produit du type $t\\ln t$, on utilise $\\left(t\\ln t\\right)'=\\ln t+1$. Aux bornes, on utilise la limite classique $\\lim_{t\\to0^+}t\\ln t=0$.\n\n**Calcul de $f'(x)$.** En posant $t=x-1>0$ (car $x>1$), $f(x)=2t\\ln t+t$. On dérive par rapport à $x$ (et $\\frac{dt}{dx}=1$) :\n\n$f'(x)=2\\times\\left[\\ln t+t\\times\\dfrac1t\\right]+1=2\\ln t+2+1=2\\ln(x-1)+3$\n\n**Résolution de $f'(x)=0$.** $2\\ln(x-1)+3=0\\iff\\ln(x-1)=-\\dfrac32\\iff x-1=e^{-3/2}\\iff x=1+e^{-3/2}$\n\nOn retrouve bien $x_0=1+e^{-3/2}$, conforme à l'énoncé.\n\n**Signe de $f'(x)$.** $f'(x)=2\\ln(x-1)+3$ est strictement croissante (composée de la fonction $\\ln$, croissante, avec des coefficients positifs), donc $f'(x)<0$ pour $x<x_0$ et $f'(x)>0$ pour $x>x_0$ : $f$ est strictement décroissante sur $]1;x_0[$ et strictement croissante sur $]x_0;+\\infty[$, avec un minimum en $x_0$.\n\n**Calcul du minimum $f(x_0)$.** Avec $t_0=x_0-1=e^{-3/2}$ : $f(x_0)=2t_0\\ln t_0+t_0=2e^{-3/2}\\times\\left(-\\dfrac32\\right)+e^{-3/2}=-3e^{-3/2}+e^{-3/2}=-2e^{-3/2}$\n\nNumériquement, $f(x_0)=-2e^{-3/2}\\approx-0,446$.\n\n**Limite en $1^+$.** Quand $x\\to1^+$, $t=x-1\\to0^+$. On sait que $\\lim_{t\\to0^+}t\\ln t=0$ (croissances comparées), donc $2t\\ln t\\to0$ et $t\\to0$, d'où $f(x)\\to0$. La limite est $0$ (non atteinte, $x=1$ exclu du domaine).\n\n**Limite en $+\\infty$.** Quand $x\\to+\\infty$, $t\\to+\\infty$, et $2t\\ln t\\to+\\infty$ (produit de deux quantités tendant vers $+\\infty$), donc $f(x)\\to+\\infty$.\n\n**Tableau de variations complet.**\n\n$$\\begin{array}{|c|ccccc|}\\hline x & 1 & & x_0=1+e^{-3/2} & & +\\infty\\\\\\hline f'(x) & & - & 0 & + &\\\\\\hline f(x) & 0 & \\searrow & -2e^{-3/2} & \\nearrow & +\\infty\\\\ & & & \\approx-0,446 & &\\\\\\hline\\end{array}$$\n\n**Tracé de $(C_f)$.** Avec l'unité $2\\,\\text{cm}$ : on place $x_0\\approx1,223$ (soit environ $0,45\\,\\text{cm}$ après $x=1$) avec $f(x_0)\\approx-0,446$ (environ $0,89\\,\\text{cm}$ sous l'axe des abscisses), le zéro de $f$ en $x=1+\\frac1{\\sqrt e}\\approx1,607$ (établi à la question 4.b), et on trace une courbe partant de $(1,0)$ (limite non atteinte, point ouvert), strictement décroissante jusqu'au minimum $(x_0,-2e^{-3/2})$, puis strictement croissante, repassant par l'axe des abscisses en $x=1+\\frac1{\\sqrt e}$, avec une tangente verticale en $x=1$ (car $f'(x)\\to-\\infty$ quand $x\\to1^+$).\n\n### Piège à éviter\nLa limite en $1^+$ (qui vaut $0$) ne doit pas être confondue avec une valeur atteinte : $x=1$ n'appartient pas au domaine $]1;+\\infty[$, donc le point $(1,0)$ figure sur le graphique comme un point ouvert (non inclus dans $(C_f)$)."
+    },
+    {
+      "numero": "4.b",
+      "points": "0,75pt",
+      "enonce_markdown": "Montrer qu'il existe un réel $c$ tel que $\\dfrac{x^2-2x}{2(x-1)}=\\dfrac x2-\\dfrac12+\\dfrac{c}{2(x-1)}$, puis calculer l'aire du domaine délimité par $(C_f)$, l'axe des abscisses et les droites d'équations $x=1+\\sqrt e$ et $x=1+\\dfrac1{\\sqrt e}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-decomposer-une-fraction-rationnelle-pour-calculer-une-primitive-par-parties-terminale-c",
+          "texte": "Pour établir une identité du type $\\frac{P(x)}{x-a}=Q(x)+\\frac{c}{x-a}$, on réduit le membre de droite au même dénominateur puis on identifie les coefficients avec le numérateur de gauche. Cette décomposition, combinée à une intégration par parties bien choisie, permet de calculer une primitive faisant intervenir un logarithme."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour établir $\\frac{P(x)}{x-a}=Q(x)+\\frac{c}{x-a}$, on réduit le membre de droite au même dénominateur et on identifie avec le numérateur de gauche, ou, plus directement, on fait apparaître dans le numérateur de gauche le carré $(x-a)^2$ par identité remarquable.\n\n**Existence de $c$.** On écrit $x^2-2x=(x-1)^2-1$ (identité remarquable : $(x-1)^2=x^2-2x+1$, donc $x^2-2x=(x-1)^2-1$). D'où :\n\n$$\\dfrac{x^2-2x}{2(x-1)}=\\dfrac{(x-1)^2-1}{2(x-1)}=\\dfrac{(x-1)^2}{2(x-1)}-\\dfrac{1}{2(x-1)}=\\dfrac{x-1}2-\\dfrac1{2(x-1)}=\\dfrac x2-\\dfrac12-\\dfrac{1}{2(x-1)}$$\n\nEn identifiant avec la forme demandée $\\dfrac x2-\\dfrac12+\\dfrac{c}{2(x-1)}$, on obtient $c=-1$.\n\n**Vérification.** $\\dfrac x2-\\dfrac12+\\dfrac{-1}{2(x-1)}=\\dfrac x2-\\dfrac12-\\dfrac1{2(x-1)}$, identique à l'expression obtenue : $c=-1$ convient bien.\n\n**Calcul d'une primitive de $f$, par parties.** $f(x)=(x-1)\\big[2\\ln(x-1)+1\\big]$. On pose $u=2\\ln(x-1)+1$ (donc $u'=\\dfrac2{x-1}$) et $v'=x-1$ (donc $v=\\dfrac{x^2-2x}2$, primitive de $x-1$) :\n\n$$\\int f(x)\\,dx=uv-\\int u'v\\,dx=\\dfrac{x^2-2x}2\\big[2\\ln(x-1)+1\\big]-\\int\\dfrac2{x-1}\\times\\dfrac{x^2-2x}2\\,dx$$\n\n$$=\\dfrac{x^2-2x}2\\big[2\\ln(x-1)+1\\big]-\\int\\dfrac{x^2-2x}{x-1}\\,dx$$\n\nOr en doublant l'identité établie ci-dessus, $\\dfrac{x^2-2x}{x-1}=x-1-\\dfrac1{x-1}$, donc :\n\n$$\\int\\dfrac{x^2-2x}{x-1}\\,dx=\\int\\left(x-1-\\dfrac1{x-1}\\right)dx=\\dfrac{(x-1)^2}2-\\ln(x-1)+K$$\n\nEn reportant :\n\n$$\\int f(x)\\,dx=(x^2-2x)\\ln(x-1)+\\dfrac{x^2-2x}2-\\dfrac{(x-1)^2}2+\\ln(x-1)+C=\\left(x^2-2x+1\\right)\\ln(x-1)+\\dfrac{(x^2-2x)-(x-1)^2}2+C$$\n\nComme $x^2-2x+1=(x-1)^2$ et $(x^2-2x)-(x-1)^2=(x^2-2x)-(x^2-2x+1)=-1$ :\n\n$$F(x)=(x-1)^2\\ln(x-1)-\\dfrac12+C$$\n\nLa constante $-\\frac12$ peut être absorbée dans $C$ : une primitive de $f$ sur $]1;+\\infty[$ est donc $F(x)=(x-1)^2\\ln(x-1)$.\n\n**Vérification de $F$.** $F'(x)=2(x-1)\\ln(x-1)+(x-1)^2\\times\\dfrac1{x-1}=2(x-1)\\ln(x-1)+(x-1)=f(x)$ ✓\n\n**Signe de $f$ sur $\\left[1+\\frac1{\\sqrt e}\\,;\\,1+\\sqrt e\\right]$.** Le zéro de $f$ est en $x=1+\\frac1{\\sqrt e}$ (borne inférieure) car $f(x)=(x-1)[1+2\\ln(x-1)]=0\\iff\\ln(x-1)=-\\frac12\\iff x-1=e^{-1/2}=\\frac1{\\sqrt e}$. Comme $x_0=1+e^{-3/2}<1+\\frac1{\\sqrt e}$ (car $e^{-3/2}\\approx0,223<e^{-1/2}\\approx0,607$), l'intervalle $\\left[1+\\frac1{\\sqrt e}\\,;\\,1+\\sqrt e\\right]$ est situé après le minimum, dans la partie croissante : $f$ y est donc positive ou nulle (nulle uniquement à la borne inférieure).\n\n**Calcul de l'aire.** Comme $f\\ge0$ sur cet intervalle, l'aire (en unités d'aire du repère) est :\n\n$$\\mathcal A=\\int_{1+1/\\sqrt e}^{1+\\sqrt e}f(x)\\,dx=\\Big[F(x)\\Big]_{1+1/\\sqrt e}^{1+\\sqrt e}=F(1+\\sqrt e)-F(1+1/\\sqrt e)$$\n\nEn $x=1+\\sqrt e$ : $x-1=\\sqrt e$, donc $(x-1)^2=e$ et $\\ln(x-1)=\\ln\\sqrt e=\\dfrac12$. $F(1+\\sqrt e)=e\\times\\dfrac12=\\dfrac e2$.\n\nEn $x=1+\\frac1{\\sqrt e}$ : $x-1=\\dfrac1{\\sqrt e}$, donc $(x-1)^2=\\dfrac1e$ et $\\ln(x-1)=\\ln\\dfrac1{\\sqrt e}=-\\dfrac12$. $F\\left(1+\\dfrac1{\\sqrt e}\\right)=\\dfrac1e\\times\\left(-\\dfrac12\\right)=-\\dfrac1{2e}$.\n\n$$\\mathcal A=\\dfrac e2-\\left(-\\dfrac1{2e}\\right)=\\dfrac e2+\\dfrac1{2e}=\\dfrac{e^2+1}{2e}\\ \\text{unités d'aire}$$\n\n**Conversion en cm².** L'unité du graphique est $2\\,\\text{cm}$, donc une unité d'aire vaut $(2\\,\\text{cm})^2=4\\,\\text{cm}^2$ :\n\n$$\\mathcal A=\\left(\\dfrac e2+\\dfrac1{2e}\\right)\\times4=2e+\\dfrac2e\\ \\text{cm}^2\\approx6,17\\ \\text{cm}^2$$\n\n**Conclusion.** $\\mathcal A=2e+\\dfrac2e\\approx6,17\\,\\text{cm}^2$.\n\n### Piège à éviter\nLa conversion d'aire multiplie par le **carré** du facteur d'échelle linéaire ($4=2^2$), et non par le facteur lui-même : une confusion fréquente consiste à multiplier seulement par $2$."
+    }
+  ]
+}

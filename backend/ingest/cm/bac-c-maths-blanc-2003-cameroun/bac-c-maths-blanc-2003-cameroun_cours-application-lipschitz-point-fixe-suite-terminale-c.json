@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-application-lipschitz-point-fixe-suite-terminale-c",
+  "meta": {
+    "titre": "Appliquer l'inégalité lipschitzienne pour majorer l'écart d'une suite à son point fixe",
+    "cours_id": "cours-application-lipschitz-point-fixe-suite-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques - suites de type point fixe",
+    "tags": ["point fixe", "inégalité lipschitzienne", "suite récurrente"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_6_q4b"
+  },
+  "sections": {
+    "accroche": "Une fois qu'on sait que h(α)=α (α est un point fixe) et que h vérifie une inégalité lipschitzienne, la distance de chaque terme de la suite récurrente à α se majore automatiquement en fonction de la distance du terme précédent.",
+    "prerequis": ["Point fixe d'une fonction (h(α)=α)", "Inégalité |h(x)-h(y)|≤k|x-y| déjà établie sur l'intervalle contenant Un et α"],
+    "regle": {
+      "titre": "Majoration de |Un+1-α| via l'inégalité lipschitzienne",
+      "contenu_markdown": "Si $\\alpha$ est un point fixe de $h$ ($h(\\alpha)=\\alpha$) et si $|h(x)-h(y)|\\leqslant k|x-y|$ est valable pour tous $x,y$ d'un intervalle contenant $U_n$ et $\\alpha$, on applique cette inégalité au couple $(U_n,\\alpha)$ : $|h(U_n)-h(\\alpha)|\\leqslant k|U_n-\\alpha|$, soit, en reconnaissant $h(U_n)=U_{n+1}$ et $h(\\alpha)=\\alpha$ : $|U_{n+1}-\\alpha|\\leqslant k|U_n-\\alpha|$.",
+      "formule_principale": "$h(\\alpha)=\\alpha$, $U_{n+1}=h(U_n)$, $|h(x)-h(y)|\\leqslant k|x-y| \\;\\Longrightarrow\\; |U_{n+1}-\\alpha|\\leqslant k|U_n-\\alpha|$",
+      "variantes": ["Cette relation de récurrence sur les écarts est le point de départ de toute preuve de convergence géométrique d'une suite point-fixe"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant β point fixe de φ, |φ(x)-φ(y)|≤0,5|x-y| sur un intervalle contenant Tn et β, et Tn+1=φ(Tn), établir la relation de récurrence sur |Tn-β|.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Appliquer l'inégalité au couple (Tn,β)", "justification": "les deux dans l'intervalle", "resultat_markdown": "|φ(Tn)-φ(β)|≤0,5|Tn-β|"},
+        {"numero": 2, "action": "Substituer", "justification": "φ(Tn)=Tn+1, φ(β)=β", "resultat_markdown": "|Tn+1-β|≤0,5|Tn-β|"}
+      ],
+      "conclusion_markdown": "La relation |Tn+1-β|≤0,5|Tn-β| est établie."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de vérifier que le point fixe α appartient bien à l'intervalle où l'inégalité lipschitzienne est valable", "pourquoi_faux": "sans cette appartenance, on ne peut pas appliquer l'inégalité au couple (Un,α), car l'inégalité n'est garantie que pour des points de l'intervalle spécifié", "correction_markdown": "Toujours vérifier explicitement, en citant la question qui l'établit, que le point fixe α appartient à l'intervalle où l'inégalité |h(x)-h(y)|≤k|x-y| a été démontrée."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Sachant γ point fixe de ψ, |ψ(x)-ψ(y)|≤0,8|x-y| sur [0,1] contenant Sn et γ, Sn+1=ψ(Sn), écrire la relation de récurrence sur les écarts.", "solution_markdown": "|Sn+1-γ|≤0,8|Sn-γ|."}
+    ],
+    "synthese": "Connaissant un point fixe α de h et une inégalité lipschitzienne |h(x)-h(y)|≤k|x-y| valable sur un intervalle contenant à la fois Un et α, on obtient directement une relation de récurrence sur les écarts |Un+1-α|≤k|Un-α|, première étape vers la preuve de la convergence de la suite vers α."
+  }
+}

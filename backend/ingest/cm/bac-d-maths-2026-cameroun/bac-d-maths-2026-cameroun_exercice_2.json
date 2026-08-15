@@ -1,0 +1,116 @@
+{
+  "epreuve_source": "bac-d-maths-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": "DRES Nord (Évaluations Harmonisées Régionales N°1) - Épreuve zéro",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 2,
+  "titre_exercice": "Étude d'une suite définie par une fonction homographique itérée",
+  "points": 3.5,
+  "figures": [],
+  "enonce_intro_markdown": "Soit $(U_n)$ la suite définie par $\\begin{cases}U_0=3\\\\U_{n+1}=f(U_n)\\end{cases}$, $\\forall n\\in\\mathbb{N}$, où $f(x)=\\dfrac{4x-2}{x+1}$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "0,25pt",
+      "enonce_markdown": "Démontrer que $f$ est strictement croissante sur l'intervalle $[2;3]$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-le-sens-de-variation-dune-fonction-homographique-terminale-d",
+          "texte": "Une fonction homographique $f(x)=\\dfrac{ax+b}{cx+d}$ (avec $cx+d\\neq0$) se dérive par la formule du quotient : $f'(x)=\\dfrac{a(cx+d)-c(ax+b)}{(cx+d)^2}=\\dfrac{ad-bc}{(cx+d)^2}$. Le numérateur $ad-bc$ étant une constante, le signe de $f'(x)$ est constant sur tout intervalle où $f$ est définie : il suffit donc de calculer le signe de $ad-bc$ une seule fois."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne fonction homographique $f(x)=\\dfrac{ax+b}{cx+d}$ (avec $cx+d\\neq0$) se dérive par la formule du quotient : $f'(x)=\\dfrac{a(cx+d)-c(ax+b)}{(cx+d)^2}=\\dfrac{ad-bc}{(cx+d)^2}$. Le numérateur $ad-bc$ étant une constante, le signe de $f'(x)$ est constant sur tout intervalle où $f$ est définie : il suffit donc de calculer le signe de $ad-bc$ une seule fois.\n\n$f(x)=\\dfrac{4x-2}{x+1}$, avec $a=4,b=-2,c=1,d=1$.\n\n$f'(x) = \\dfrac{4(x+1)-1\\times(4x-2)}{(x+1)^2} = \\dfrac{4x+4-4x+2}{(x+1)^2} = \\dfrac{6}{(x+1)^2}$\n\nSur $[2;3]$, $x+1\\in[3;4]$, donc $(x+1)^2>0$. Le numérateur $6$ est strictement positif. Par conséquent $f'(x)>0$ pour tout $x\\in[2;3]$.\n\n**Conclusion.** $f$ est strictement croissante sur $[2;3]$."
+    },
+    {
+      "numero": "2",
+      "points": "0,5pt",
+      "enonce_markdown": "En utilisant la croissance de $f$, démontrer par récurrence que pour tout $n\\in\\mathbb{N}$, $2\\le U_n\\le3$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-par-une-fonction-croissante-terminale-d",
+          "texte": "Pour démontrer par récurrence qu'une suite reste dans un intervalle stable $[a;b]$ par une fonction $f$ croissante sur cet intervalle, on montre d'abord que $f([a;b])\\subset[a;b]$ (en calculant $f(a)$ et $f(b)$), puis on utilise la croissance de $f$ : si $a\\le U_n\\le b$, alors $f(a)\\le f(U_n)\\le f(b)$, c'est-à-dire $f(a)\\le U_{n+1}\\le f(b)$, ce qui redonne $a\\le U_{n+1}\\le b$ dès que $f(a)\\ge a$ et $f(b)\\le b$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence qu'une suite reste dans un intervalle stable $[a;b]$ par une fonction $f$ croissante sur cet intervalle, on montre d'abord que $f([a;b])\\subset[a;b]$ (en calculant $f(a)$ et $f(b)$), puis on utilise la croissance de $f$ : si $a\\le U_n\\le b$, alors $f(a)\\le f(U_n)\\le f(b)$, c'est-à-dire $f(a)\\le U_{n+1}\\le f(b)$, ce qui redonne $a\\le U_{n+1}\\le b$ dès que $f(a)\\ge a$ et $f(b)\\le b$.\n\n**Initialisation.** $U_0=3$, donc $2\\le U_0\\le3$ : la propriété est vraie au rang $0$.\n\n**Hérédité.** Supposons que pour un entier $n$ donné, $2\\le U_n\\le3$.\n\nComme $f$ est strictement croissante sur $[2;3]$ (question 1) et que $U_n\\in[2;3]$, on a : $f(2)\\le f(U_n)\\le f(3)$\n\nCalculons les bornes : $f(2)=\\dfrac{4\\times2-2}{2+1}=\\dfrac{6}{3}=2$ et $f(3)=\\dfrac{4\\times3-2}{3+1}=\\dfrac{10}{4}=\\dfrac52=2,5$\n\nDonc $2\\le f(U_n)\\le2,5$, c'est-à-dire $2\\le U_{n+1}\\le2,5$. Or $2,5\\le3$, donc en particulier $2\\le U_{n+1}\\le3$ : la propriété est vraie au rang $n+1$.\n\n**Conclusion.** Par le principe de récurrence, pour tout $n\\in\\mathbb{N}$, $2\\le U_n\\le3$."
+    },
+    {
+      "numero": "3",
+      "points": "0,75pt",
+      "enonce_markdown": "Montrer que $U_{n+1}-U_n=\\dfrac{-(U_n-2)(U_n-1)}{U_n+1}$. En déduire le sens de variation de la suite $(U_n)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-le-signe-de-un1-moins-un-pour-une-suite-recurrente-homographique-terminale-d",
+          "texte": "Pour étudier le sens de variation d'une suite récurrente $U_{n+1}=f(U_n)$ sans exhiber la fonction $f$ à chaque étape, on calcule et on factorise l'expression $U_{n+1}-U_n=f(U_n)-U_n$ en fonction de $U_n$ seul ; le signe de cette expression (établi grâce à l'encadrement de $U_n$ obtenu précédemment) donne directement le sens de variation."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour étudier le sens de variation d'une suite récurrente $U_{n+1}=f(U_n)$ sans exhiber la fonction $f$ à chaque étape, on calcule et on factorise l'expression $U_{n+1}-U_n=f(U_n)-U_n$ en fonction de $U_n$ seul ; le signe de cette expression (établi grâce à l'encadrement de $U_n$ obtenu précédemment) donne directement le sens de variation.\n\n**Calcul de $U_{n+1}-U_n$.** $U_{n+1}-U_n = f(U_n)-U_n = \\dfrac{4U_n-2}{U_n+1}-U_n = \\dfrac{4U_n-2-U_n(U_n+1)}{U_n+1}$\n\n$U_n(U_n+1) = U_n^2+U_n$, donc le numérateur devient : $4U_n-2-U_n^2-U_n = -U_n^2+3U_n-2$\n\n$U_{n+1}-U_n = \\dfrac{-U_n^2+3U_n-2}{U_n+1} = \\dfrac{-(U_n^2-3U_n+2)}{U_n+1}$\n\n**Factorisation du trinôme $U_n^2-3U_n+2$.** Ses racines sont $1$ et $2$ (somme $=3$, produit $=2$), donc $U_n^2-3U_n+2=(U_n-1)(U_n-2)$.\n\n**Conclusion (identité).** $U_{n+1}-U_n = \\dfrac{-(U_n-1)(U_n-2)}{U_n+1}$, ce qui est bien l'expression demandée.\n\n**Sens de variation.** D'après la question 2, pour tout $n$, $2\\le U_n\\le3$. Donc :\n\n$U_n-2\\ge0$ (positif ou nul) ; $U_n-1\\ge1>0$ (strictement positif) ; $U_n+1\\ge3>0$ (strictement positif)\n\nLe produit $(U_n-2)(U_n-1)$ est donc positif ou nul, et $U_n+1$ est strictement positif, donc $\\dfrac{(U_n-2)(U_n-1)}{U_n+1}\\ge0$, donc $U_{n+1}-U_n=-\\dfrac{(U_n-2)(U_n-1)}{U_n+1}\\le0$.\n\n**Conclusion.** La suite $(U_n)$ est décroissante."
+    },
+    {
+      "numero": "4",
+      "points": "0,25pt",
+      "enonce_markdown": "Justifier que la suite $(U_n)$ est convergente.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-justifier-la-convergence-dune-suite-monotone-et-bornee-terminale-d",
+          "texte": "Une suite décroissante et minorée converge, d'après le théorème de la limite monotone : toute suite monotone bornée est convergente."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne suite décroissante et minorée converge, d'après le théorème de la limite monotone : toute suite monotone bornée est convergente.\n\nD'après la question 3, la suite $(U_n)$ est décroissante. D'après la question 2, elle est minorée par $2$ (on a $U_n\\ge2$ pour tout $n$).\n\n**Conclusion.** Une suite décroissante et minorée est convergente (théorème de la limite monotone), donc $(U_n)$ converge."
+    },
+    {
+      "numero": "5",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer que pour tout $x\\in[2;3]$, $|f'(x)|\\le\\dfrac23$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-majorer-la-valeur-absolue-de-la-derivee-dune-fonction-homographique-sur-un-intervalle-terminale-d",
+          "texte": "Pour majorer $|f'(x)|$ sur un intervalle $[a;b]$ lorsque $f'(x)=\\dfrac{k}{(x+1)^2}$ avec $k>0$ constant, on remarque que $|f'(x)|$ est une fonction décroissante de $x$ sur $[a;b]$ (car $(x+1)^2$ croît avec $x$), donc son maximum est atteint à la borne inférieure de l'intervalle."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour majorer $|f'(x)|$ sur un intervalle $[a;b]$ lorsque $f'(x)=\\dfrac{k}{(x+1)^2}$ avec $k>0$ constant, on remarque que $|f'(x)|$ est une fonction décroissante de $x$ sur $[a;b]$ (car $(x+1)^2$ croît avec $x$), donc son maximum est atteint à la borne inférieure de l'intervalle.\n\nD'après la question 1, $f'(x)=\\dfrac{6}{(x+1)^2}$, qui est strictement positive sur $[2;3]$ : donc $|f'(x)|=f'(x)$ sur cet intervalle.\n\nLa fonction $x\\mapsto(x+1)^2$ est strictement croissante sur $[2;3]$ (car $x+1>0$), donc $x\\mapsto\\dfrac{6}{(x+1)^2}$ est strictement décroissante sur $[2;3]$.\n\nLe maximum de $f'(x)$ sur $[2;3]$ est donc atteint en $x=2$ : $f'(2) = \\dfrac{6}{(2+1)^2} = \\dfrac{6}{9} = \\dfrac23$\n\n**Conclusion.** Pour tout $x\\in[2;3]$, $f'(x)\\le f'(2)=\\dfrac23$, donc $|f'(x)|\\le\\dfrac23$."
+    },
+    {
+      "numero": "6",
+      "points": "0,5pt",
+      "enonce_markdown": "En utilisant l'inégalité des accroissements finis, montrer que pour tout $n\\in\\mathbb{N}$, $|U_{n+1}-2|\\le\\dfrac23|U_n-2|$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-appliquer-linegalite-des-accroissements-finis-a-une-suite-recurrente-terminale-d",
+          "texte": "L'inégalité des accroissements finis énonce que si $f$ est dérivable sur un intervalle $I$ et si $|f'(x)|\\le k$ pour tout $x\\in I$, alors pour tous $a,b\\in I$, $|f(b)-f(a)|\\le k|b-a|$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'inégalité des accroissements finis énonce que si $f$ est dérivable sur un intervalle $I$ et si $|f'(x)|\\le k$ pour tout $x\\in I$, alors pour tous $a,b\\in I$, $|f(b)-f(a)|\\le k|b-a|$.\n\nD'après la question 2, $U_n\\in[2;3]$ pour tout $n$, et $2\\in[2;3]$. D'après la question 5, $|f'(x)|\\le\\dfrac23$ sur $[2;3]$.\n\nEn appliquant l'inégalité des accroissements finis entre $U_n$ et $2$ (tous deux dans $[2;3]$) : $|f(U_n)-f(2)|\\le\\dfrac23|U_n-2|$\n\nOr $f(U_n)=U_{n+1}$ et $f(2)=2$ (calculé à la question 2).\n\n**Conclusion.** $|U_{n+1}-2|\\le\\dfrac23|U_n-2|$."
+    },
+    {
+      "numero": "7",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer par récurrence que pour tout $n\\in\\mathbb{N}$, $|U_n-2|\\le\\left(\\dfrac23\\right)^n$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-par-recurrence-une-majoration-geometrique-de-lecart-a-la-limite-terminale-d",
+          "texte": "Pour démontrer par récurrence une majoration du type $|U_n-\\ell|\\le k^n$ à partir d'une relation de contraction $|U_{n+1}-\\ell|\\le k|U_n-\\ell|$, on initialise en vérifiant le rang 0, puis on enchaîne la relation de contraction avec l'hypothèse de récurrence à chaque étape."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence une majoration du type $|U_n-\\ell|\\le k^n$ à partir d'une relation de contraction $|U_{n+1}-\\ell|\\le k|U_n-\\ell|$, on initialise en vérifiant le rang 0, puis on enchaîne la relation de contraction avec l'hypothèse de récurrence à chaque étape.\n\n**Initialisation.** $|U_0-2|=|3-2|=1$ et $\\left(\\dfrac23\\right)^0=1$. On a bien $|U_0-2|\\le\\left(\\dfrac23\\right)^0$ : la propriété est vraie au rang $0$.\n\n**Hérédité.** Supposons que pour un entier $n$ donné, $|U_n-2|\\le\\left(\\dfrac23\\right)^n$.\n\nD'après la question 6, $|U_{n+1}-2|\\le\\dfrac23|U_n-2|$. En utilisant l'hypothèse de récurrence : $|U_{n+1}-2|\\le\\dfrac23\\left(\\dfrac23\\right)^n = \\left(\\dfrac23\\right)^{n+1}$\n\nLa propriété est donc vraie au rang $n+1$.\n\n**Conclusion.** Par le principe de récurrence, pour tout $n\\in\\mathbb{N}$, $|U_n-2|\\le\\left(\\dfrac23\\right)^n$."
+    },
+    {
+      "numero": "8",
+      "points": "0,25pt",
+      "enonce_markdown": "En déduire la limite de la suite $(U_n)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-la-limite-dune-suite-par-encadrement-geometrique-terminale-d",
+          "texte": "Le théorème des gendarmes (ou théorème d'encadrement) permet de conclure qu'une suite converge vers $\\ell$ dès que $0\\le|U_n-\\ell|\\le v_n$ avec $v_n\\to0$. Une suite géométrique $q^n$ de raison $|q|<1$ tend toujours vers $0$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe théorème des gendarmes (ou théorème d'encadrement) permet de conclure qu'une suite converge vers $\\ell$ dès que $0\\le|U_n-\\ell|\\le v_n$ avec $v_n\\to0$. Une suite géométrique $q^n$ de raison $|q|<1$ tend toujours vers $0$.\n\nD'après la question 7, pour tout $n\\in\\mathbb{N}$ : $0\\le|U_n-2|\\le\\left(\\dfrac23\\right)^n$\n\nOr $\\left|\\dfrac23\\right|<1$, donc $\\left(\\dfrac23\\right)^n\\to0$ quand $n\\to+\\infty$.\n\nPar le théorème des gendarmes, $|U_n-2|\\to0$, c'est-à-dire $U_n\\to2$.\n\n**Conclusion.** $\\displaystyle\\lim_{n\\to+\\infty}U_n=2$. Ce résultat est cohérent avec la question 4 (convergence déjà justifiée par monotonie et minoration) : la limite obtenue est bien un point fixe de $f$, puisque $f(2)=2$."
+    }
+  ]
+}

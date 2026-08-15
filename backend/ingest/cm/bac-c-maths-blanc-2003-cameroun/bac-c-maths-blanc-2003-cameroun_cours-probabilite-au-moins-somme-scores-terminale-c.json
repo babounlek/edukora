@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-probabilite-au-moins-somme-scores-terminale-c",
+  "meta": {
+    "titre": "Calculer une probabilité du type « au moins » pour une somme de scores",
+    "cours_id": "cours-probabilite-au-moins-somme-scores-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Probabilités - inégalités sur une somme de scores",
+    "tags": ["probabilité au moins", "somme de variables", "événements incompatibles"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_1_qI-2b"
+  },
+  "sections": {
+    "accroche": "Une probabilité « au moins » sur une somme de scores demande de recenser TOUTES les combinaisons vérifiant l'inégalité, et pas seulement le cas d'égalité déjà traité — mais cette recherche peut souvent s'appuyer sur le travail déjà fait.",
+    "prerequis": ["Décomposition d'un événement 'au moins' en une réunion d'événements 'exactement'", "Somme de scores sur épreuves indépendantes"],
+    "regle": {
+      "titre": "Probabilité d'un total au moins égal à une valeur",
+      "contenu_markdown": "$P(\\text{somme}\\geqslant S_0)=\\displaystyle\\sum_{S\\geqslant S_0}P(\\text{somme}=S)$, où la somme porte sur toutes les valeurs $S$ atteignables supérieures ou égales à $S_0$. Chaque terme $P(\\text{somme}=S)$ se calcule par la méthode habituelle (énumération des combinaisons et arrangements). Les différentes valeurs de $S$ étant deux à deux incompatibles (la somme ne peut prendre qu'une seule valeur à la fois), on peut les additionner directement.",
+      "formule_principale": "$P(\\text{somme}\\geqslant S_0)=\\sum_{S\\geqslant S_0}P(\\text{somme}=S)$",
+      "variantes": ["Pour une valeur maximale atteignable connue, borner soigneusement l'énumération évite d'oublier ou de dupliquer des cas"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Avec les données de l'exemple précédent (P(6)=1/4, P(autre)=3/4, 2 lancers), quelle est la probabilité d'obtenir au moins un 6 ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier les cas 'au moins un 6'", "justification": "un 6 exactement, ou deux 6", "resultat_markdown": "1 seul 6 (2 arrangements) ou 2 6 (1 arrangement)"},
+        {"numero": 2, "action": "Calculer chaque probabilité", "justification": "combinatoire", "resultat_markdown": "P(1 six)=2×(1/4)(3/4)=3/8 ; P(2 six)=(1/4)²=1/16"},
+        {"numero": 3, "action": "Additionner", "justification": "événements incompatibles", "resultat_markdown": "P=3/8+1/16=6/16+1/16=7/16"}
+      ],
+      "conclusion_markdown": "La probabilité d'obtenir au moins un 6 est 7/16 (on peut vérifier via le complémentaire : 1-P(aucun 6)=1-(3/4)²=1-9/16=7/16, cohérent)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier une ou plusieurs valeurs de somme atteignables entre S0 et le maximum possible", "pourquoi_faux": "une valeur oubliée fait sous-estimer la probabilité finale", "correction_markdown": "Lister systématiquement, du maximum atteignable jusqu'à S0, toutes les valeurs de somme possibles avant de calculer chaque probabilité individuelle."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Avec un dé truqué (P(6)=1/4 par lancer), 3 lancers indépendants. Quelle est la probabilité d'obtenir au moins deux 6 ?", "solution_markdown": "P(exactement 2)=3×(1/4)²×(3/4)=9/64 ; P(exactement 3)=(1/4)³=1/64 ; total=10/64=5/32."}
+    ],
+    "synthese": "Pour une probabilité 'au moins S0', on additionne les probabilités de chaque valeur de somme atteignable supérieure ou égale à S0, chacune calculée par énumération des combinaisons de résultats et de leurs arrangements, en s'appuyant si possible sur des calculs de valeurs déjà effectués dans une question précédente."
+  }
+}

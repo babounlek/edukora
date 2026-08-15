@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-distance-decomposition-vectorielle-al-kashi-terminale-c",
+  "meta": {
+    "titre": "Calculer une distance via décomposition vectorielle et le théorème d'Al-Kashi",
+    "cours_id": "cours-distance-decomposition-vectorielle-al-kashi-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie vectorielle - produit scalaire dans un triangle",
+    "tags": ["théorème d'Al-Kashi", "produit scalaire", "décomposition vectorielle"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_1_q2"
+  },
+  "sections": {
+    "accroche": "Quand un triangle n'est donné que par ses trois longueurs de côtés, sans repère ni angle, le théorème d'Al-Kashi est le pont indispensable entre ces longueurs et le produit scalaire nécessaire à tout calcul vectoriel ultérieur.",
+    "prerequis": ["Théorème d'Al-Kashi (loi des cosinus vectorielle)", "Norme au carré d'une combinaison linéaire de vecteurs"],
+    "regle": {
+      "titre": "Produit scalaire via Al-Kashi puis décomposition vectorielle",
+      "contenu_markdown": "Dans un triangle PQR de côtés connus, le produit scalaire $\\overrightarrow{QP}\\cdot\\overrightarrow{QR}$ s'obtient via $PR^2=QP^2+QR^2-2\\overrightarrow{QP}\\cdot\\overrightarrow{QR}$ (car $\\overrightarrow{PR}=\\overrightarrow{QR}-\\overrightarrow{QP}$), soit $\\overrightarrow{QP}\\cdot\\overrightarrow{QR}=\\dfrac{QP^2+QR^2-PR^2}2$. Une fois ce produit scalaire connu, la distance à tout point défini par une combinaison vectorielle de $\\overrightarrow{QP}$ et $\\overrightarrow{QR}$ se calcule en développant sa norme au carré $\\|\\alpha\\overrightarrow{QP}+\\beta\\overrightarrow{QR}\\|^2=\\alpha^2QP^2+2\\alpha\\beta\\,\\overrightarrow{QP}\\cdot\\overrightarrow{QR}+\\beta^2QR^2$.",
+      "formule_principale": "$\\overrightarrow{QP}\\cdot\\overrightarrow{QR}=\\dfrac{QP^2+QR^2-PR^2}2$",
+      "variantes": ["Cette méthode évite tout repère orthonormé explicite : elle reste purement vectorielle et algébrique"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Triangle ABC avec AB=3, AC=4, BC=5. Calculer AB·AC (produit scalaire).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Appliquer Al-Kashi", "justification": "BC²=AB²+AC²-2AB·AC", "resultat_markdown": "$25=9+16-2\\overrightarrow{AB}\\cdot\\overrightarrow{AC}$"},
+        {"numero": 2, "action": "Isoler le produit scalaire", "justification": "résolution", "resultat_markdown": "$\\overrightarrow{AB}\\cdot\\overrightarrow{AC}=\\dfrac{9+16-25}2=0$"}
+      ],
+      "conclusion_markdown": "Le produit scalaire est nul : le triangle est rectangle en A (cohérent avec 3-4-5, triplet pythagoricien)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre l'ordre des sommets dans la formule d'Al-Kashi (utiliser PQ²=... au lieu de PR²=... selon le vecteur qu'on veut isoler)", "pourquoi_faux": "le côté isolé dans la formule doit être celui opposé aux deux vecteurs dont on cherche le produit scalaire", "correction_markdown": "Identifier d'abord les deux vecteurs dont on veut le produit scalaire (ici partant du même sommet), puis écrire la formule d'Al-Kashi pour le troisième côté, qui relie leur différence."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Triangle XYZ avec XY=6, XZ=8, YZ=10. Le point M vérifie XM=(1/2)XY+(1/2)XZ (M est le milieu de [YZ]). Calculer XM.", "solution_markdown": "XY·XZ=(36+64-100)/2=0 (triangle rectangle en X) ; XM²=(1/4)(36)+(1/4)(64)=25, donc XM=5 (résultat cohérent avec la médiane issue de l'angle droit, égale à la moitié de l'hypoténuse)."}
+    ],
+    "synthese": "Pour calculer une distance dans un triangle donné par ses côtés, on détermine d'abord le produit scalaire utile via le théorème d'Al-Kashi, puis on exprime le vecteur cherché comme combinaison des deux vecteurs de référence et on développe sa norme au carré."
+  }
+}

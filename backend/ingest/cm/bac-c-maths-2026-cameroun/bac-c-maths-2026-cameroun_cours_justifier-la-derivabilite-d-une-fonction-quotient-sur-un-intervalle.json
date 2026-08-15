@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-justifier-la-derivabilite-d-une-fonction-quotient-sur-un-intervalle-terminale-c",
+  "meta": {
+    "titre": "Justifier la dérivabilité d'une fonction quotient sur un intervalle",
+    "cours_id": "cours-justifier-la-derivabilite-d-une-fonction-quotient-sur-un-intervalle-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse — dérivabilité",
+    "tags": [
+      "fonction quotient",
+      "dérivabilité par composition",
+      "dénominateur non nul"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex3-II.5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La dérivabilité d'un quotient de fonctions usuelles s'établit presque toujours par un simple argument de composition, sans calcul explicite, à condition que le dénominateur ne s'annule jamais sur l'intervalle considéré."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître les théorèmes de dérivabilité par somme, produit, quotient, composée de fonctions usuelles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Justifier la dérivabilité d'un quotient sans calcul",
+      "contenu_markdown": "Une fonction $\\dfrac{u(x)}{v(x)}$ est dérivable sur tout intervalle où $u$ et $v$ sont dérivables et où $v$ ne s'annule pas. Il suffit d'invoquer la dérivabilité de $u$ et $v$ (souvent par composition de fonctions usuelles) et l'absence de zéro de $v$ sur l'intervalle considéré, sans calculer explicitement la dérivée.",
+      "formule_principale": "u,v dérivables sur I, v≠0 sur I ⟹ u/v dérivable sur I",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f(x)=ln(x+1)/x. Montrer que f est dérivable sur ]0;+∞[.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Justifier la dérivabilité du numérateur",
+          "justification": "ln(x+1) est composée de x↦x+1 (affine, dérivable) et ln (dérivable sur ]0;+∞[, or x+1>0 pour x>0).",
+          "resultat_markdown": "x↦ln(x+1) dérivable sur ]0;+∞["
+        },
+        {
+          "numero": 2,
+          "action": "Justifier la dérivabilité et la non-annulation du dénominateur",
+          "justification": "x↦x est dérivable partout, et x≠0 sur ]0;+∞[.",
+          "resultat_markdown": "x↦x dérivable, non nul sur ]0;+∞["
+        },
+        {
+          "numero": 3,
+          "action": "Conclure par le théorème du quotient",
+          "justification": "Quotient de deux fonctions dérivables, dénominateur non nul.",
+          "resultat_markdown": "f dérivable sur ]0;+∞["
+        }
+      ],
+      "conclusion_markdown": "f est dérivable sur ]0;+∞[ comme quotient de deux fonctions dérivables dont le dénominateur ne s'annule pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer explicitement f' pour justifier la dérivabilité, alors qu'un simple argument théorique suffit",
+          "pourquoi_faux": "La question demande de justifier l'existence de la dérivée, pas son expression ; calculer f' explicitement pour cette question est une perte de temps qui n'apporte rien de plus que l'argument théorique direct.",
+          "correction_markdown": "Distinguer clairement les questions qui demandent de 'montrer la dérivabilité' (argument théorique suffisant) de celles qui demandent 'de déterminer la dérivée' (calcul explicite requis)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "g(x)=(x²+1)/(x-3) est-elle dérivable sur ]3;+∞[ ?",
+          "solution_markdown": "Oui : numérateur et dénominateur sont des polynômes (dérivables partout), et x-3≠0 sur ]3;+∞[."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "h(x)=√x/x est-elle dérivable en x=0 ?",
+          "solution_markdown": "Non, on ne peut pas conclure par ce théorème car x=0 annule le dénominateur (et n'est même pas dans le domaine de h, qui exige x>0 de toute façon)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi ce théorème ne peut-il pas être utilisé pour justifier la dérivabilité de f en x=0 dans l'exemple résolu ?",
+          "solution_markdown": "En x=0, le dénominateur x s'annule, ce qui rend le quotient ln(x+1)/x indéterminé (forme 0/0) à ce point précis ; le théorème du quotient exige explicitement que le dénominateur soit non nul, donc il ne s'applique pas en x=0, ce qui explique pourquoi une méthode différente (encadrement et théorème des gendarmes, question II.4) a été nécessaire pour ce point particulier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un quotient de fonctions dérivables est dérivable là où le dénominateur ne s'annule pas.",
+        "Cet argument théorique suffit pour 'montrer la dérivabilité', sans calcul explicite de la dérivée.",
+        "Ce théorème ne s'applique jamais au(x) point(s) où le dénominateur s'annule : une méthode différente y est nécessaire."
+      ]
+    }
+  ]
+}

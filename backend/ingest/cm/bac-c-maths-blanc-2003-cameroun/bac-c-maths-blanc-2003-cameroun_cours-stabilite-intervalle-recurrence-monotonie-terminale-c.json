@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-stabilite-intervalle-recurrence-monotonie-terminale-c",
+  "meta": {
+    "titre": "Montrer par récurrence qu'une suite reste dans un intervalle stable par h",
+    "cours_id": "cours-stabilite-intervalle-recurrence-monotonie-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques - stabilité d'un intervalle",
+    "tags": ["suite récurrente", "intervalle stable", "récurrence"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_6_q4a"
+  },
+  "sections": {
+    "accroche": "Pour garantir qu'une suite récurrente Un+1=h(Un) reste toujours dans un intervalle donné, il suffit de vérifier deux choses : le point de départ y est, et la fonction h renvoie cet intervalle en lui-même.",
+    "prerequis": ["Principe de récurrence", "Image d'un intervalle par une fonction monotone"],
+    "regle": {
+      "titre": "Stabilité d'un intervalle par récurrence",
+      "contenu_markdown": "Pour montrer que $U_n\\in[a,b]$ pour tout $n$, où $U_{n+1}=h(U_n)$ : (1) vérifier $U_0\\in[a,b]$ (initialisation) ; (2) montrer que $h([a,b])\\subset[a,b]$ (hérédité) — si $h$ est strictement décroissante, $h([a,b])=[h(b),h(a)]$, qu'il faut vérifier inclus dans $[a,b]$ ; si $h$ est strictement croissante, $h([a,b])=[h(a),h(b)]$.",
+      "formule_principale": "$U_0\\in[a,b]$, $h([a,b])\\subset[a,b]$ $\\;\\Longrightarrow\\; \\forall n,\\ U_n\\in[a,b]$ (récurrence)",
+      "variantes": ["Si h n'est pas monotone sur [a,b], il faut étudier son minimum et son maximum sur l'intervalle séparément pour déterminer h([a,b])"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit V0=1, Vn+1=√(Vn+2). Montrer que Vn∈[1,2] pour tout n.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Initialisation", "justification": "V0=1", "resultat_markdown": "1∈[1,2] ✓"},
+        {"numero": 2, "action": "Étudier h(x)=√(x+2) sur [1,2]", "justification": "croissante", "resultat_markdown": "h([1,2])=[√3,2]⊂[1,2] (car √3≈1,73≥1)"},
+        {"numero": 3, "action": "Conclure par récurrence", "justification": "stabilité établie", "resultat_markdown": "Vn∈[1,2] pour tout n"}
+      ],
+      "conclusion_markdown": "La suite reste dans [1,2] pour tout n, par récurrence."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de préciser le sens de variation de h avant de calculer h([a,b]), risquant d'inverser les bornes de l'image", "pourquoi_faux": "si h est décroissante, h([a,b])=[h(b),h(a)] et non [h(a),h(b)] : une inversion donnerait un intervalle image incorrect", "correction_markdown": "Toujours établir explicitement le sens de variation de h sur [a,b] avant de calculer l'image de l'intervalle, pour placer les bornes dans le bon ordre."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit W0=3, Wn+1=6/Wn. Sachant x↦6/x est décroissante sur [2,3], et que 6/3=2, 6/2=3, montrer que Wn∈[2,3] pour tout n.", "solution_markdown": "Initialisation : W0=3∈[2,3]. h([2,3])=[h(3),h(2)]=[2,3]⊂[2,3] (décroissante). Par récurrence, Wn∈[2,3] pour tout n."}
+    ],
+    "synthese": "Pour montrer par récurrence qu'une suite Un+1=h(Un) reste dans un intervalle [a,b], il faut vérifier l'initialisation (U0∈[a,b]) puis établir que h envoie cet intervalle dans lui-même, en tenant compte précisément du sens de variation de h pour déterminer correctement l'image de l'intervalle."
+  }
+}

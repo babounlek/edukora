@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-identifier-les-entites-attributs-et-identifiants-d-un-mcd-a-partir-d-un-cahier-des-charges-terminale-c",
+  "meta": {
+    "titre": "Identifier les entités, attributs et identifiants d'un MCD à partir d'un cahier des charges",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Modélisation de données (Merise)",
+    "tags": ["entité", "attribut", "identifiant", "MCD"],
+    "duree_estimee_min": 20,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cahier des charges est écrit en français courant, pas en langage de modélisation. La première compétence à maîtriser en base de données, c'est de savoir traduire ce texte en objets structurés : quels sont les « choses » à mémoriser, et qu'est-ce qui les caractérise ?"
+    },
+    {
+      "type": "prerequis",
+      "items": ["Lire et comprendre un cahier des charges simple"]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier entités, attributs et identifiant",
+      "contenu_markdown": "Une **entité** représente un objet ou un concept du monde réel dont on veut mémoriser des informations (une personne, un produit, un lieu...). Un **attribut** est une information élémentaire décrivant une entité (nom, prix, date...). L'**identifiant** est l'attribut particulier qui garantit qu'on ne confond jamais deux occurrences différentes de la même entité (un numéro unique, jamais un nom qui peut se répéter). Pour extraire ces trois éléments d'un texte : repérer chaque nom commun désignant un objet à mémoriser (candidat entité), lister pour chacun les informations élémentaires citées à son sujet (candidats attributs), puis repérer celui qui garantit l'unicité - souvent introduit par « identifié par », un numéro, un code, un matricule.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "« Chaque client est identifié par un numéro de client, et possède un nom et un numéro de téléphone. Chaque produit est identifié par un code, et possède un libellé et un prix unitaire. » Identifier les entités décrites, avec leurs attributs et leur identifiant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les objets du monde réel à mémoriser",
+          "justification": "Le texte introduit deux catégories d'objets distinctes, chacune avec ses propres caractéristiques.",
+          "resultat_markdown": "Deux entités candidates : CLIENT et PRODUIT."
+        },
+        {
+          "numero": 2,
+          "action": "Lister, pour chaque entité, les informations élémentaires citées",
+          "justification": "Chaque phrase du texte associe des caractéristiques précises à l'entité concernée.",
+          "resultat_markdown": "CLIENT : numéro de client, nom, téléphone. PRODUIT : code, libellé, prix unitaire."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer l'identifiant de chaque entité",
+          "justification": "Le texte introduit explicitement chaque identifiant par la formule « est identifié par ».",
+          "resultat_markdown": "Identifiant de CLIENT : numéro de client. Identifiant de PRODUIT : code."
+        }
+      ],
+      "conclusion_markdown": "Deux entités : **CLIENT** (numClient identifiant, nom, telephone) et **PRODUIT** (code identifiant, libelle, prixUnitaire)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir le nom comme identifiant d'une entité",
+          "pourquoi_faux": "Deux personnes ou deux produits différents peuvent porter le même nom - un identifiant doit garantir l'unicité absolue, ce que le nom ne peut jamais assurer seul.",
+          "correction_markdown": "Cherche toujours un numéro, un code ou un matricule explicitement introduit par le texte comme identifiant ; le nom reste un simple attribut."
+        },
+        {
+          "erreur_markdown": "Créer une entité pour une simple caractéristique qui devrait rester un attribut",
+          "pourquoi_faux": "Une entité doit avoir une existence autonome et pouvoir posséder plusieurs attributs propres - une simple valeur ponctuelle (une couleur, une date isolée) reste un attribut de l'entité qu'elle décrit.",
+          "correction_markdown": "Demande-toi si l'élément a lui-même des caractéristiques propres à mémoriser (alors c'est une entité) ou s'il n'est qu'une valeur décrivant autre chose (alors c'est un attribut)."
+        },
+        {
+          "erreur_markdown": "Oublier une entité mentionnée discrètement dans le texte, sans phrase dédiée qui la présente clairement",
+          "pourquoi_faux": "Un cahier des charges introduit parfois une entité en une seule phrase courte, noyée dans la description d'une autre entité, ce qui la rend facile à manquer à une lecture rapide.",
+          "correction_markdown": "Relis le texte une seconde fois en cherchant spécifiquement tout nom commun qui n'a pas encore été rattaché à une entité identifiée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Chaque employé est identifié par un matricule, et possède un nom et un salaire. » Identifier l'entité, ses attributs et son identifiant.",
+          "solution_markdown": "Entité EMPLOYÉ : matricule (identifiant), nom, salaire."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Chaque livre est identifié par un ISBN, et possède un titre et un nombre de pages. Chaque auteur est identifié par un code auteur, et possède un nom et une nationalité. » Identifier les entités décrites, avec leurs attributs et leur identifiant.",
+          "solution_markdown": "Entité LIVRE : ISBN (identifiant), titre, nombre de pages. Entité AUTEUR : code auteur (identifiant), nom, nationalité."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Chaque ville est caractérisée par un code unique et un intitulé. Chaque site touristique est identifié par un code, possède un nom, et est localisé dans une ville. » Combien d'entités ce texte décrit-il ? Justifier, notamment le cas de la ville, facile à manquer.",
+          "solution_markdown": "Deux entités. **VILLE** (code ville identifiant, intitulé) : bien que mentionnée en une seule phrase courte et discrète, en tant qu'objet à mémoriser avec son propre identifiant et son propre attribut (l'intitulé), elle est bien une entité à part entière, distincte de SITE. **SITE TOURISTIQUE** (code identifiant, nom) : la « localisation dans une ville » n'est pas un attribut de SITE, mais traduit une association entre SITE et VILLE, deux entités distinctes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une entité représente un objet du monde réel dont on mémorise des informations ; un attribut est une information élémentaire le décrivant.",
+        "L'identifiant est l'attribut qui garantit l'unicité, jamais le nom - c'est presque toujours un numéro ou un code.",
+        "Repère l'identifiant grâce à la formule « identifié par » ou équivalente, explicitement présente dans le texte.",
+        "Une entité mentionnée discrètement, en une seule phrase, reste une entité à part entière si elle a ses propres attributs.",
+        "Au BAC, cette compétence ouvre systématiquement l'exercice de modélisation de données : une erreur ici se propage à tout le MCD qui suit."
+      ]
+    }
+  ]
+}

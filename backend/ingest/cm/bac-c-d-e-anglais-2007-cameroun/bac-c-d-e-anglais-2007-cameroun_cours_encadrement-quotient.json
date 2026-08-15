@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-encadrement-quotient-denominateur-c",
+  "meta": {
+    "titre": "Encadrement d'un quotient par encadrement du dénominateur",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Inégalités et encadrements",
+    "duree_estimee_min": 20,
+    "tags": ["encadrement", "passage à l'inverse", "inégalités"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Encadrer une expression compliquée comme $\\dfrac{e^{nx}}{1+e^x}$ paraît difficile tant qu'on l'attaque de front. La bonne stratégie consiste presque toujours à isoler la partie variable la plus simple à encadrer - ici le dénominateur - puis à propager cet encadrement, étape par étape, jusqu'à l'expression complète."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Croissance d'une fonction (exponentielle, en particulier)", "Passage à l'inverse dans une inégalité entre quantités positives", "Multiplication d'une inégalité par une quantité positive"]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois étapes : encadrer, inverser, multiplier",
+      "contenu_markdown": "Pour encadrer une expression de la forme $\\dfrac{A(x)}{B(x)}$ où $A(x)>0$ est simple et $B(x)>0$ varie dans un intervalle connu :\n\n1. **Encadrer $B(x)$** sur l'intervalle d'étude, en utilisant la monotonie d'une fonction usuelle (souvent l'exponentielle).\n2. **Passer à l'inverse.** Pour des quantités strictement positives, $m\\leq B(x)\\leq M \\Rightarrow \\dfrac1M\\leq\\dfrac{1}{B(x)}\\leq\\dfrac1m$ : le sens des inégalités s'inverse.\n3. **Multiplier par $A(x)$**, qui est positif, ce qui conserve le sens des inégalités obtenu à l'étape 2 :\n$$A(x)\\times\\frac1M \\leq \\frac{A(x)}{B(x)} \\leq A(x)\\times\\frac1m$$",
+      "formule_principale": "m\\leq B(x)\\leq M \\ (m,M>0) \\Rightarrow\\ \\frac{A(x)}{M}\\leq\\frac{A(x)}{B(x)}\\leq\\frac{A(x)}{m}\\quad (A(x)>0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Démontrer que pour tout $n\\in\\mathbb{N}$ et tout $x\\in[0;1]$, $\\dfrac{e^{nx}}{e+1}\\leq \\dfrac{e^{nx}}{1+e^x}\\leq \\dfrac12 e^{nx}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Encadrer e^x sur [0;1]",
+          "justification": "L'exponentielle est strictement croissante.",
+          "resultat_markdown": "$0\\leq x\\leq1 \\Rightarrow e^0\\leq e^x\\leq e^1 \\Rightarrow 1\\leq e^x\\leq e$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire un encadrement de 1+e^x",
+          "justification": "On ajoute 1 à chaque membre.",
+          "resultat_markdown": "$2\\leq 1+e^x\\leq 1+e$"
+        },
+        {
+          "numero": 3,
+          "action": "Passer à l'inverse",
+          "justification": "Toutes les quantités sont strictement positives : le passage à l'inverse inverse le sens des inégalités.",
+          "resultat_markdown": "$\\dfrac{1}{1+e}\\leq \\dfrac{1}{1+e^x}\\leq \\dfrac12$"
+        },
+        {
+          "numero": 4,
+          "action": "Multiplier par e^{nx}, qui est strictement positif",
+          "justification": "Multiplier une inégalité par une quantité positive conserve son sens.",
+          "resultat_markdown": "$\\dfrac{e^{nx}}{1+e}\\leq \\dfrac{e^{nx}}{1+e^x}\\leq \\dfrac{e^{nx}}{2}$"
+        }
+      ],
+      "conclusion_markdown": "On retrouve exactement l'encadrement demandé : $\\dfrac{e^{nx}}{e+1}\\leq f_n(x)\\leq \\dfrac12 e^{nx}$, valable pour tout $n\\in\\mathbb{N}$ et tout $x\\in[0;1]$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'inverser le sens des inégalités lors du passage à l'inverse.",
+          "pourquoi_faux": "Pour des quantités strictement positives, plus une quantité est grande, plus son inverse est petit : passer à l'inverse inverse donc systématiquement le sens de l'inégalité.",
+          "correction_markdown": "Teste toujours ta mémoire avec un exemple numérique simple avant de continuer : $2\\leq3$ mais $\\frac12\\geq\\frac13$."
+        },
+        {
+          "erreur_markdown": "Multiplier une inégalité par une expression dont on n'a pas vérifié le signe (ici $e^{nx}$).",
+          "pourquoi_faux": "Multiplier par une quantité négative inverserait le sens de l'inégalité ; multiplier sans vérifier le signe risque d'introduire une erreur silencieuse.",
+          "correction_markdown": "Justifie explicitement, même en une courte phrase, que la quantité par laquelle tu multiplies est positive (ici, $e^{nx}>0$ pour tout réel $x$ et tout entier $n$) avant de conserver le sens de l'inégalité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Démontrer que pour tout $x\\in[0;2]$, $\\dfrac{1}{3}\\leq \\dfrac{1}{1+x}\\leq 1$.",
+          "solution_markdown": "Pour $x\\in[0;2]$ : $0\\leq x\\leq2 \\Rightarrow 1\\leq 1+x\\leq3$. En passant à l'inverse (quantités strictement positives) : $\\dfrac13\\leq\\dfrac{1}{1+x}\\leq1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Démontrer que pour tout $x\\in[1;2]$ et tout $n\\in\\mathbb{N}^*$, $\\dfrac{x^n}{5}\\leq \\dfrac{x^n}{1+x^2}\\leq \\dfrac{x^n}{2}$.",
+          "solution_markdown": "Pour $x\\in[1;2]$ : $1\\leq x\\leq2 \\Rightarrow 1\\leq x^2\\leq4$ (la fonction carré est croissante sur $[0;+\\infty[$), donc $2\\leq1+x^2\\leq5$. En passant à l'inverse : $\\dfrac15\\leq\\dfrac{1}{1+x^2}\\leq\\dfrac12$. En multipliant par $x^n>0$ : $\\dfrac{x^n}{5}\\leq\\dfrac{x^n}{1+x^2}\\leq\\dfrac{x^n}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Démontrer que pour tout $x\\in[0;1]$ et tout $n\\in\\mathbb{N}$, $\\dfrac{e^{-x}}{2}e^{nx}\\leq \\dfrac{e^{nx}}{e^x+e^{-x}}\\leq \\dfrac{e^{-x}}{1+e^{-2x}}e^{nx}$ n'est pas la forme la plus simple : donner plutôt un encadrement de $\\dfrac{e^{nx}}{e^x+e^{-x}}$ en encadrant directement $e^x+e^{-x}$ sur $[0;1]$.",
+          "solution_markdown": "Sur $[0;1]$, la fonction $x\\mapsto e^x+e^{-x}$ est strictement croissante (dérivée $e^x-e^{-x}\\geq0$ pour $x\\geq0$, car $e^x\\geq1\\geq e^{-x}$). Donc pour $x\\in[0;1]$ : $e^0+e^0\\leq e^x+e^{-x}\\leq e^1+e^{-1}$, soit $2\\leq e^x+e^{-x}\\leq e+\\dfrac1e$.\n\nEn passant à l'inverse : $\\dfrac{1}{e+\\frac1e}\\leq\\dfrac{1}{e^x+e^{-x}}\\leq\\dfrac12$. En multipliant par $e^{nx}>0$ :\n$$\\frac{e^{nx}}{e+\\frac1e}\\leq \\frac{e^{nx}}{e^x+e^{-x}}\\leq \\frac{e^{nx}}{2}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour encadrer un quotient $\\dfrac{A(x)}{B(x)}$ avec $A(x)>0$ simple, encadre d'abord le dénominateur $B(x)$ en utilisant la monotonie d'une fonction usuelle sur l'intervalle donné.",
+        "Passe ensuite à l'inverse : cette étape inverse systématiquement le sens des inégalités, à condition que toutes les quantités concernées soient strictement positives.",
+        "Multiplie enfin par $A(x)$, en ayant vérifié son signe : positif conserve le sens, négatif l'inverserait.",
+        "Prends l'habitude de vérifier chaque étape avec un exemple numérique simple si un doute subsiste sur le sens d'une inégalité.",
+        "Cette technique en trois étapes est l'un des outils les plus rentables du BAC C pour préparer un encadrement de suite ou de fonction, car elle transforme un problème complexe en une succession de manipulations élémentaires et sûres."
+      ]
+    }
+  ]
+}

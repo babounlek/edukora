@@ -1,0 +1,138 @@
+[
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-faible-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x)=4x^3-6x^2+5$. Déterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(1)=2$.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour une fonction polynôme, une primitive s'obtient terme à terme grâce à la formule $\\int x^n\\,dx=\\dfrac{x^{n+1}}{n+1}+C$ : chaque monôme $ax^n$ admet pour primitive $\\dfrac{a}{n+1}x^{n+1}$. La constante $C$ ne se fixe qu'ensuite, en exploitant la condition supplémentaire imposée à $F$.\n\n### Corrigé\nOn primitive terme à terme : une primitive de $4x^3$ est $x^4$, une primitive de $-6x^2$ est $-2x^3$, une primitive de $5$ est $5x$. Les primitives de $f$ sur $\\mathbb{R}$ sont donc les fonctions :\n$$F(x)=x^4-2x^3+5x+C,\\qquad C\\in\\mathbb{R}$$\n\nLa condition $F(1)=2$ donne $1^4-2\\times1^3+5\\times1+C=2$, soit $1-2+5+C=2$, c'est-à-dire $4+C=2$, donc $C=-2$.\n\n$$\\boxed{F(x)=x^4-2x^3+5x-2}$$\n\n**Vérification** : $F'(x)=4x^3-6x^2+5=f(x)$ pour tout $x$, et $F(1)=1-2+5-2=2$. Les deux conditions demandées sont satisfaites.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-faible-1",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Quelle expression est une primitive sur $\\mathbb{R}$ de la fonction $f$ définie par $f(x)=\\sin(2x)$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour une fonction de la forme $x\\mapsto\\sin(kx)$ avec $k\\ne0$, la primitive générale est $x\\mapsto-\\dfrac1k\\cos(kx)+C$ : le facteur $-\\dfrac1k$ compense la dérivée de l'argument $kx$ qu'introduit la dérivation d'une fonction composée.\n\n### Corrigé\nPour une fonction de la forme $x\\mapsto\\sin(kx)$ (avec $k\\ne0$), une primitive est $x\\mapsto-\\dfrac1k\\cos(kx)$ : on divise par $k$ et on change le signe, car c'est ce qu'introduit la dérivation de $\\cos(kx)$ par la règle de dérivation des fonctions composées. Ici $k=2$, donc une primitive de $f$ sur $\\mathbb{R}$ est :\n$$F(x)=-\\dfrac12\\cos(2x)$$\n\n**Vérification** : $F'(x)=-\\dfrac12\\times(-2\\sin(2x))=\\sin(2x)=f(x)$.\n\n**Réponse correcte : A.**\n\nLes distracteurs correspondent à des erreurs classiques : (B) oublie le changement de signe ; (C) multiplie par $2$ au lieu de diviser par $2$ ; (D) confond avec la primitive de $\\cos(2x)$, qui est $\\dfrac12\\sin(2x)$, en l'appliquant à tort à $\\sin(2x)$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$-\\dfrac12\\cos(2x)$" },
+      { "lettre": "B", "texte": "$\\dfrac12\\cos(2x)$" },
+      { "lettre": "C", "texte": "$-2\\cos(2x)$" },
+      { "lettre": "D", "texte": "$\\dfrac12\\sin(2x)$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-moyenne-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Soit $g$ la fonction définie sur $\\mathbb{R}$ par $g(x)=\\dfrac{4x-1}{2x^2-x+3}$. Justifier que $g$ est continue sur $\\mathbb{R}$, puis déterminer la primitive $G$ de $g$ sur $\\mathbb{R}$ telle que $G(0)=1$.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne fonction rationnelle est continue sur tout intervalle où son dénominateur ne s'annule pas, ce qu'on établit par exemple via le signe du discriminant du trinôme au dénominateur. Pour primitiver ensuite une expression rationnelle, on cherche à la faire apparaître sous la forme $\\dfrac{u'}{u}$ avec $u$ de signe constant : une primitive est alors $\\ln(u)$, sans valeur absolue si $u>0$.\n\n### Corrigé\n**Continuité de $g$ sur $\\mathbb{R}$.** Le dénominateur $2x^2-x+3$ a pour discriminant $\\Delta=(-1)^2-4\\times2\\times3=1-24=-23<0$. Comme $\\Delta<0$ et que le coefficient dominant ($2$) est positif, $2x^2-x+3>0$ pour tout $x\\in\\mathbb{R}$ : le dénominateur ne s'annule jamais, donc $g$ est définie et continue sur $\\mathbb{R}$ entier (quotient de deux fonctions polynomiales continues, dont le dénominateur ne s'annule pas).\n\n**Reconnaissance de la forme $u'/u$.** Posons $u(x)=2x^2-x+3$. Alors $u'(x)=4x-1$, qui est exactement le numérateur de $g$. On a donc $g=\\dfrac{u'}{u}$ avec $u>0$ sur $\\mathbb{R}$ : les primitives de $g$ sur $\\mathbb{R}$ sont les fonctions $x\\mapsto\\ln(u(x))+C$ (pas besoin de valeur absolue puisque $u$ reste strictement positif) :\n$$G(x)=\\ln(2x^2-x+3)+C,\\qquad C\\in\\mathbb{R}$$\n\n**Détermination de $C$.** La condition $G(0)=1$ donne $\\ln(2\\times0^2-0+3)+C=1$, soit $\\ln3+C=1$, donc $C=1-\\ln3$.\n\n$$\\boxed{G(x)=\\ln(2x^2-x+3)+1-\\ln3}$$\n\n**Vérification** : $G'(x)=\\dfrac{4x-1}{2x^2-x+3}=g(x)$ pour tout $x$ réel, et $G(0)=\\ln3+1-\\ln3=1$. Les deux conditions sont satisfaites.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7141, 7147]
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-moyenne-1",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Quelle expression est une primitive sur $\\mathbb{R}$ de la fonction $f$ définie par $f(x)=(3x^2+2)e^{x^3+2x-1}$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une expression se présente sous la forme $u'(x)e^{u(x)}$, on reconnaît directement la dérivée de $e^{u(x)}$ : une primitive est donc $e^{u(x)}$ elle-même, à condition de vérifier soigneusement que le facteur qui multiplie l'exponentielle est bien exactement $u'$, et non une autre expression qui lui ressemble.\n\n### Corrigé\nPosons $u(x)=x^3+2x-1$, de sorte que $u'(x)=3x^2+2$, exactement le facteur qui multiplie l'exponentielle dans $f$. On reconnaît donc la forme $f=u'e^u$, dont une primitive est $e^u$ :\n$$F(x)=e^{x^3+2x-1}$$\n\n**Vérification** : $F'(x)=(3x^2+2)\\times e^{x^3+2x-1}=f(x)$ pour tout $x$ réel.\n\n**Réponse correcte : A.**\n\nLes distracteurs correspondent à des erreurs classiques : (B) multiplie l'exponentielle par $u(x)$ au lieu de garder $e^{u(x)}$ seul, en confondant avec la formule de dérivation d'un produit ; (C) commet une erreur de signe ; (D) recopie $f(x)$ lui-même, en croyant à tort qu'une primitive d'une fonction de cette forme reproduit l'expression de départ.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$e^{x^3+2x-1}$" },
+      { "lettre": "B", "texte": "$(x^3+2x-1)e^{x^3+2x-1}$" },
+      { "lettre": "C", "texte": "$-e^{x^3+2x-1}$" },
+      { "lettre": "D", "texte": "$(3x^2+2)e^{x^3+2x-1}$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-moyenne-2",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Soit $h$ la fonction définie sur $]2;+\\infty[$ par $h(x)=\\dfrac{5}{(x-2)^2}$.\n\n1. Justifier que $h$ admet des primitives sur $]2;+\\infty[$.\n2. Déterminer la primitive $H$ de $h$ sur cet intervalle telle que $H(3)=-1$.",
+    "corrige_markdown": "### Rappel de méthode\n\nToute fonction continue sur un intervalle y admet des primitives (théorème d'existence) : il faut donc d'abord justifier la continuité, typiquement en vérifiant que le dénominateur ne s'annule pas sur l'intervalle considéré. Pour calculer ensuite une primitive d'une expression de la forme $u'u^n$ (ici $n=-2$), on applique $\\displaystyle\\int u'u^n=\\dfrac{u^{n+1}}{n+1}+C$.\n\n### Corrigé\n**1. Existence des primitives.** Sur $]2;+\\infty[$, on a $x-2\\ne0$, donc $(x-2)^2\\ne0$ : le dénominateur ne s'annule jamais sur cet intervalle. La fonction $h$ est donc le quotient de la fonction constante $5$ (continue) par la fonction polynomiale $(x-2)^2$ (continue et non nulle) : $h$ est continue sur $]2;+\\infty[$. Or toute fonction continue sur un intervalle admet des primitives sur cet intervalle. Donc $h$ admet des primitives sur $]2;+\\infty[$.\n\n**2. Calcul de $H$.** Écrivons $h(x)=5(x-2)^{-2}$. Une primitive de $(x-2)^{-2}$ est $-(x-2)^{-1}=-\\dfrac1{x-2}$ (primitive d'une puissance $u^n$ avec $u(x)=x-2$, $u'=1$, $n=-2$). Donc les primitives de $h$ sur $]2;+\\infty[$ sont les fonctions :\n$$H(x)=-\\frac{5}{x-2}+C,\\qquad C\\in\\mathbb{R}$$\n\n**Détermination de $C$.** La condition $H(3)=-1$ donne $-\\dfrac5{3-2}+C=-1$, soit $-5+C=-1$, donc $C=4$.\n\n$$\\boxed{H(x)=-\\frac{5}{x-2}+4}$$\n\n**Vérification** : $H'(x)=\\dfrac{5}{(x-2)^2}=h(x)$ pour tout $x\\in\\,]2;+\\infty[$, et $H(3)=-5+4=-1$. Les deux conditions demandées sont satisfaites.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7141]
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-d-elevee-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle D)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "D" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x)=x\\cos x$. En utilisant une intégration par parties, déterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(0)=3$.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour primitiver un produit d'une fonction polynomiale et d'une fonction trigonométrique ou exponentielle qu'aucune formule directe ne couvre, on utilise l'intégration par parties $\\displaystyle\\int uv'=uv-\\int u'v$, en choisissant $u$ comme le facteur qui se simplifie par dérivation et $v'$ comme celui qu'on sait primitiver directement.\n\n### Corrigé\n**Intégration par parties.** On pose $u(x)=x$ et $v'(x)=\\cos x$, donc $u'(x)=1$ et $v(x)=\\sin x$. La formule d'intégration par parties $\\displaystyle\\int u v'=uv-\\int u'v$ donne, pour une primitive de $f$ :\n$$\\int x\\cos x\\,dx=x\\sin x-\\int1\\times\\sin x\\,dx=x\\sin x-(-\\cos x)+C=x\\sin x+\\cos x+C$$\n\nLes primitives de $f$ sur $\\mathbb{R}$ sont donc les fonctions :\n$$F(x)=x\\sin x+\\cos x+C,\\qquad C\\in\\mathbb{R}$$\n\n**Détermination de $C$.** La condition $F(0)=3$ donne $0\\times\\sin0+\\cos0+C=3$, soit $0+1+C=3$, donc $C=2$.\n\n$$\\boxed{F(x)=x\\sin x+\\cos x+2}$$\n\n**Vérification** : en dérivant un produit, $\\dfrac{d}{dx}\\left[x\\sin x\\right]=\\sin x+x\\cos x$, et $\\dfrac{d}{dx}\\left[\\cos x\\right]=-\\sin x$. Donc $F'(x)=\\sin x+x\\cos x-\\sin x=x\\cos x=f(x)$ pour tout $x$, et $F(0)=0+1+2=3$. Les deux conditions demandées sont satisfaites.\n\n### Conseil\nDans une intégration par parties $\\int uv'$, choisir $u$ comme le facteur polynomial (qui se simplifie par dérivation, ici $x\\to1$) et $v'$ comme le facteur qu'on sait primitiver directement (ici $\\cos x\\to\\sin x$) : ce choix évite de complexifier l'intégrale restante.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6859]
+  }
+]

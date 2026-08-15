@@ -1,0 +1,107 @@
+{
+  "type": "cours",
+  "cours_id": "cours-suites-arithmetiques-bac-a",
+  "meta": {
+    "titre": "Suites arithmétiques",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 20,
+    "tags": ["suite arithmétique"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-1-2026-s1-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une quantité qui augmente (ou diminue) chaque mois, chaque année ou chaque étape d'une MÊME valeur fixe se modélise toujours par une suite arithmétique — épargne mensuelle, production qui croît régulièrement, salaire avec augmentation fixe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de suite numérique et de terme d'une suite",
+        "Résolution d'une équation du premier degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Terme général et somme d'une suite arithmétique",
+      "contenu_markdown": "Une suite $(u_n)$ est arithmétique de raison $r$ si chaque terme s'obtient en ajoutant la même valeur $r$ au terme précédent : $u_{n+1}=u_n+r$.\n\nLe terme général, en fonction du premier terme $u_1$, est $u_n=u_1+(n-1)r$ pour tout $n\\geqslant1$.\n\nLa somme des $n$ premiers termes (de $u_1$ à $u_n$) est $S_n=\\dfrac n2(u_1+u_n)$ - la moyenne du premier et du dernier terme, multipliée par le nombre de termes.",
+      "formule_principale": "u_n=u_1+(n-1)r, \\quad S_n=\\dfrac n2(u_1+u_n)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un producteur de miel récolte 20 litres la première année de son exploitation. Chaque année suivante, sa récolte augmente de 4 litres par rapport à l'année précédente. Calcule sa récolte la 8ᵉ année, puis sa récolte totale cumulée sur ces 8 premières années.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le premier terme et la raison",
+          "justification": "La récolte de la 1re année est le premier terme, et l'augmentation annuelle constante est la raison.",
+          "resultat_markdown": "$u_1=20$, $r=4$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $u_8$ (récolte de la 8ᵉ année)",
+          "justification": "On applique la formule du terme général avec $n=8$.",
+          "resultat_markdown": "$u_8=u_1+(8-1)\\times r=20+7\\times4=20+28=48$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la somme des 8 premiers termes",
+          "justification": "On applique la formule de la somme avec $n=8$.",
+          "resultat_markdown": "$S_8=\\dfrac82(u_1+u_8)=4\\times(20+48)=4\\times68=272$"
+        }
+      ],
+      "conclusion_markdown": "La récolte de la 8ᵉ année est de $48$ litres, et la récolte totale cumulée sur les 8 premières années est de $272$ litres."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $u_n=u_1+n\\times r$ au lieu de $u_n=u_1+(n-1)\\times r$.",
+          "pourquoi_faux": "Le premier terme $u_1$ correspond à $n=1$, donc il faut ajouter la raison $r$ exactement $(n-1)$ fois pour atteindre le terme de rang $n$, pas $n$ fois.",
+          "correction_markdown": "Vérifie toujours sur un petit cas : pour $n=1$, la formule doit redonner $u_1$ exactement - $u_1+(1-1)\\times r=u_1$ ✓, alors que $u_1+1\\times r\\neq u_1$."
+        },
+        {
+          "erreur_markdown": "Confondre le rang du terme ($n$) avec le nombre de fois où la raison a été ajoutée.",
+          "pourquoi_faux": "Entre le 1er et le 8e terme, la raison n'est ajoutée que 7 fois (8 termes, donc 7 \"écarts\" entre eux), pas 8 fois.",
+          "correction_markdown": "Écris toujours la correspondance \"terme de rang $n$ = premier terme + $(n-1)$ fois la raison\" avant de substituer une valeur numérique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Une suite arithmétique a pour premier terme $u_1=12$ et pour raison $r=3$. Calcule $u_6$.",
+          "solution_markdown": "$u_6=u_1+(6-1)\\times r=12+5\\times3=12+15=27$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un employé perçoit un salaire mensuel de 60 000 FCFA la première année. Chaque année suivante, son salaire mensuel augmente de 5 000 FCFA. Calcule son salaire mensuel la 5ᵉ année.",
+          "solution_markdown": "$u_1=60\\,000$, $r=5\\,000$. $u_5=60\\,000+(5-1)\\times5\\,000=60\\,000+20\\,000=80\\,000$ FCFA."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Une entreprise produit 150 unités le premier mois. Chaque mois suivant, la production augmente de 25 unités. Calcule la production cumulée sur les 10 premiers mois.",
+          "solution_markdown": "$u_1=150$, $r=25$. $u_{10}=150+(10-1)\\times25=150+225=375$. $S_{10}=\\dfrac{10}2(u_1+u_{10})=5\\times(150+375)=5\\times525=2\\,625$ unités."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Suite arithmétique : chaque terme s'obtient en ajoutant une même raison $r$ au précédent.",
+        "Terme général : $u_n=u_1+(n-1)r$ - toujours $(n-1)$, jamais $n$.",
+        "Somme des $n$ premiers termes : $S_n=\\dfrac n2(u_1+u_n)$.",
+        "Face à une situation d'augmentation ou de diminution CONSTANTE (même valeur ajoutée à chaque étape), penser immédiatement suite arithmétique."
+      ]
+    }
+  ]
+}

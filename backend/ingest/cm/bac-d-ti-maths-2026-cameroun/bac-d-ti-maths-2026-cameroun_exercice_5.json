@@ -1,0 +1,75 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D et TI",
+  "examen": "bac_blanc",
+  "origine": "etablissement",
+  "etablissement": "Inspection Générale des Enseignements - Inspection de Pédagogie chargée de l'Enseignement des Sciences (Baccalauréat Blanc ESG)",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 5,
+  "titre_exercice": "Situation-problème : logistique agricole (livraison, plantation, ravitaillement en eau)",
+  "points": 5,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-d-ti-maths-2026-cameroun_exercice_5_fig_1.png",
+      "page_source": 2,
+      "type": "graphique",
+      "legende": "Graphe pondéré du réseau routier reliant le champ (A) au marché de Dédo (D), en passant par les jonctions B et C. Les poids représentent des distances en km.",
+      "indispensable": true,
+      "lisibilite": "bonne"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-d-ti-maths-2026-cameroun_exercice_5_fig_2.png",
+      "page_source": 2,
+      "type": "courbe",
+      "legende": "Zone favorable au projet de plantation de tomates, délimitée par la droite y=4 et la courbe x↦e^(x-1)+1 sur [1;2] (zone hachurée en vert), avec échelle 1/2000 et 1cm par unité d'axe.",
+      "indispensable": true,
+      "lisibilite": "bonne"
+    }
+  ],
+  "enonce_intro_markdown": "**Situation.** Pago est un cultivateur de tomates. Pour livrer ses tomates au marché Dédo (D), il doit les transporter de son champ (A), dans un camion qui consomme 1 litre de carburant au kilomètre. Le réseau routier de la ville est représenté par le graphe ci-dessous, sur lequel les arêtes sont pondérées par la distance en km qui sépare deux sommets. Le réservoir du camion contient au départ du champ, 52 litres de carburant.\n\n![fig-1](bac-d-ti-maths-2026-cameroun_exercice_5_fig_1.png)\n\nPago possède une grande surface plane de terre traversée par un cours d'eau. Il projette d'y planter des semences de tomate qui, dans des conditions bien décrites, produisent une tonne au dam². Pour rendre maximale sa production, il a confié à un ingénieur agricole l'étude de la faisabilité de ce projet. Après avoir mené cette étude, l'ingénieur a représenté la zone favorable au projet, dans le repère orthonormé ci-dessous. Ladite zone est délimitée par une route modélisée par la droite d'équation $y=4$ et un tronçon du cours d'eau, modélisé par la courbe de la fonction $x\\mapsto e^{x-1}+1$ sur l'intervalle $[1;2]$.\n\n![fig-2](bac-d-ti-maths-2026-cameroun_exercice_5_fig_2.png)\n\nPago estime sur cette zone, sa récolte à plus de 10 tonnes et voudrait s'en rassurer. Une pompe à eau doit être placée à la jonction de la route et du cours d'eau pour ravitailler la maison des employés dont l'emplacement est assimilé au point $O$, origine du repère.\n\n**Tâches :**",
+  "questions": [
+    {
+      "numero": "Tâche 1",
+      "points": "1,5pt",
+      "enonce_markdown": "Le camion pourra-t-il livrer ses tomates sans carburant ajouté ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-le-plus-court-chemin-dans-un-graphe-pondere-par-lalgorithme-de-dijkstra-terminale-d",
+          "texte": "Pour minimiser une distance totale dans un graphe pondéré (donc le carburant consommé, proportionnel à la distance), on calcule le plus court chemin entre les deux sommets d'intérêt, par exemple par l'algorithme de Dijkstra (comparaison systématique de tous les trajets possibles via les distances cumulées)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour minimiser une distance totale dans un graphe pondéré (donc le carburant consommé, proportionnel à la distance), on calcule le plus court chemin entre les deux sommets d'intérêt, par exemple par l'algorithme de Dijkstra (comparaison systématique de tous les trajets possibles via les distances cumulées).\n\n**Lecture du graphe.** Arêtes et distances (en km) : $AB=35$, $AC=20$, $AD=55$, $CB=10$, $CD=35$, $BD=20$.\n\n**Recensement des trajets possibles de A à D.**\n\nTrajet direct $A\\to D$ : $55$ km\n\nTrajet $A\\to C\\to D$ : $20+35=55$ km\n\nTrajet $A\\to B\\to D$ : $35+20=55$ km\n\nTrajet $A\\to C\\to B\\to D$ : $20+10+20=50$ km\n\nTrajet $A\\to B\\to C\\to D$ : $35+10+35=80$ km\n\n**Comparaison.** Le trajet le plus court est $A\\to C\\to B\\to D$, de longueur $50$ km.\n\n**Carburant nécessaire.** Le camion consomme 1 litre par km, donc le trajet le plus économique nécessite $50$ litres de carburant.\n\n**Comparaison avec le réservoir.** Le réservoir contient $52$ litres au départ, et $52\\ge50$.\n\n**Conclusion.** Oui, le camion pourra livrer ses tomates sans carburant ajouté, en empruntant le trajet $A\\to C\\to B\\to D$ (50 km, donc 50 litres), puisque son réservoir de 52 litres est suffisant (il lui restera même 2 litres)."
+    },
+    {
+      "numero": "Tâche 2",
+      "points": "1,5pt",
+      "enonce_markdown": "Pago s'est-il trompé sur son estimation ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-aire-sous-une-courbe-et-convertir-via-une-echelle-pour-verifier-une-estimation-terminale-d-ti",
+          "texte": "L'aire d'une zone délimitée par une droite $y=k$ (au-dessus) et une courbe $y=f(x)$ (en dessous) sur un intervalle $[a;b]$ où $f(x)\\le k$ se calcule par $\\int_a^b\\big(k-f(x)\\big)dx$. Le résultat, exprimé dans l'unité du repère, doit ensuite être converti en unité réelle à l'aide de l'échelle donnée avant d'être comparé à une estimation de production."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'aire d'une zone délimitée par une droite $y=k$ (au-dessus) et une courbe $y=f(x)$ (en dessous) sur un intervalle $[a;b]$ où $f(x)\\le k$ se calcule par $\\int_a^b\\big(k-f(x)\\big)dx$. Le résultat, exprimé dans l'unité du repère, doit ensuite être converti en unité réelle à l'aide de l'échelle donnée avant d'être comparé à une estimation de production.\n\n**Mise en place de l'intégrale.** Sur $[1;2]$, la courbe $x\\mapsto e^{x-1}+1$ prend les valeurs $e^0+1=2$ (en $x=1$) à $e^1+1=e+1\\approx3{,}72$ (en $x=2$), toujours inférieures à $4$ : la zone est donc bien délimitée par $y=4$ au-dessus et la courbe en dessous sur tout $[1;2]$.\n\n$\\text{Aire (en unités du repère)} = \\displaystyle\\int_1^2\\left[4-\\left(e^{x-1}+1\\right)\\right]dx = \\int_1^2\\left(3-e^{x-1}\\right)dx$\n\n**Calcul de la primitive.** Une primitive de $3-e^{x-1}$ est $3x-e^{x-1}$.\n\n$\\text{Aire} = \\left[3x-e^{x-1}\\right]_1^2 = \\left(3\\times2-e^{1}\\right)-\\left(3\\times1-e^{0}\\right) = (6-e)-(3-1) = 6-e-2 = 4-e$\n\n**Valeur numérique.** $4-e\\approx4-2{,}718=1{,}282$ unités d'aire (unités du repère).\n\n**Conversion via l'échelle.** L'échelle $\\frac1{2000}$ combinée à l'indication « 1 cm » sur l'axe signifie que 1 unité du repère (dessinée sur 1 cm) représente $2000$ cm $=20$ m dans la réalité. Donc 1 unité d'aire du repère représente $20^2=400$ m² réels.\n\n$\\text{Aire réelle} \\approx 1{,}282\\times400 \\approx512{,}7 \\text{ m}^2$\n\n**Conversion en dam².** $1$ dam²$=100$ m², donc $\\text{Aire réelle} \\approx \\dfrac{512{,}7}{100} \\approx5{,}13$ dam².\n\n**Estimation de la récolte.** À raison d'une tonne par dam², la récolte estimée est d'environ $5{,}13\\times1\\approx5{,}13$ tonnes.\n\n**Conclusion.** Pago a annoncé une récolte de plus de 10 tonnes, mais le calcul rigoureux donne environ $5{,}13$ tonnes, soit moins de la moitié de son estimation. **Pago s'est donc trompé** : sa récolte réelle sera bien inférieure aux 10 tonnes annoncées.\n\n### Piège à éviter\nNe pas oublier la conversion d'échelle : l'aire calculée par l'intégrale (environ $1{,}28$) est exprimée en unités abstraites du repère, pas en m² ni en dam² ; oublier cette conversion mènerait à une comparaison incohérente avec l'estimation de Pago exprimée en tonnes réelles."
+    },
+    {
+      "numero": "Tâche 3",
+      "points": "1,5pt",
+      "enonce_markdown": "Détermine la longueur minimale du tuyau à acheter pour ce ravitaillement.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-distance-euclidienne-et-convertir-via-une-echelle-pour-une-longueur-de-tuyau-terminale-d-ti",
+          "texte": "La distance entre l'origine du repère et un point de coordonnées connues (le point de jonction cherché) se calcule par la formule de la distance euclidienne $\\sqrt{x^2+y^2}$, en veillant à convertir le résultat en unité réelle via l'échelle avant de conclure sur une longueur physique de tuyau."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa distance entre l'origine du repère et un point de coordonnées connues (le point de jonction cherché) se calcule par la formule de la distance euclidienne $\\sqrt{x^2+y^2}$, en veillant à convertir le résultat en unité réelle via l'échelle avant de conclure sur une longueur physique de tuyau.\n\n**Recherche du point de jonction.** La pompe doit être placée à la jonction entre la route ($y=4$) et le cours d'eau (courbe $x\\mapsto e^{x-1}+1$, prolongée au-delà de $[1;2]$ jusqu'à son intersection effective avec la route). On résout :\n\n$e^{x-1}+1=4 \\iff e^{x-1}=3 \\iff x-1=\\ln3 \\iff x=1+\\ln3$\n\nLe point de jonction a donc pour coordonnées $J_0(1+\\ln3\\,;\\,4)$, avec $1+\\ln3\\approx2{,}099$.\n\n**Distance de $O$ à $J_0$ (en unités du repère).** La maison des employés est au point $O(0;0)$, origine du repère.\n\n$OJ_0 = \\sqrt{(1+\\ln3)^2+4^2} = \\sqrt{(1+\\ln3)^2+16}$\n\n$(1+\\ln3)^2 \\approx (2{,}099)^2 \\approx4{,}404$\n\n$OJ_0 \\approx\\sqrt{4{,}404+16} = \\sqrt{20{,}404} \\approx4{,}517$ unités du repère.\n\n**Conversion en mètres.** Comme établi à la Tâche 2, 1 unité du repère représente $20$ m dans la réalité.\n\n$OJ_0 \\text{ (réel)} \\approx 4{,}517\\times20 \\approx90{,}3$ m\n\n**Conclusion.** La longueur minimale du tuyau à acheter pour ce ravitaillement est d'environ $90{,}3$ mètres (correspondant à la distance en ligne droite entre la maison des employés en $O$ et le point de jonction de la route et du cours d'eau).\n\n### Conseil\nUne pompe reliée par un tuyau rectiligne suppose que la distance minimale à parcourir est la distance euclidienne directe $OJ_0$ ; si le tuyau devait suivre un chemin le long des axes ou contourner un obstacle, un calcul différent (distance de Manhattan ou plus complexe) serait nécessaire — toujours vérifier cette hypothèse implicite avant d'appliquer la formule de distance directe."
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-existence-signe-integrale-continuite-c",
+  "meta": {
+    "titre": "Existence et signe d'une intégrale par continuité et positivité de l'intégrande",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Calcul intégral - fondements",
+    "duree_estimee_min": 15,
+    "tags": ["continuité", "intégrabilité", "signe d'une intégrale"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q1a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de calculer une intégrale, encore faut-il être sûr qu'elle existe, et avant d'en étudier les propriétés (croissance, limite), encore faut-il connaître son signe. Ces deux vérifications, souvent expédiées en une ou deux lignes, reposent sur des arguments précis qu'un correcteur du BAC attend de voir formulés explicitement, pas seulement sous-entendus."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Continuité d'une fonction usuelle (somme, produit, quotient, composée)", "Définition de l'intégrale d'une fonction continue sur un segment", "Signe de l'exponentielle"]
+    },
+    {
+      "type": "regle",
+      "titre": "Continuité pour l'existence, positivité pour le signe",
+      "contenu_markdown": "**Existence.** Toute fonction continue sur un segment $[a;b]$ y est intégrable : l'intégrale $\\displaystyle\\int_a^b g(x)\\,dx$ existe alors nécessairement. Pour une fonction définie comme quotient, il faut en particulier vérifier que le dénominateur ne s'annule jamais sur $[a;b]$.\n\n**Signe.** Si $g$ est continue et positive (resp. strictement positive, sauf éventuellement en un nombre fini de points) sur $[a;b]$ avec $a<b$, alors $\\displaystyle\\int_a^b g(x)\\,dx \\geq 0$ (resp. $>0$). Ce résultat découle de l'interprétation de l'intégrale comme aire algébrique : une fonction positive délimite une aire positive.",
+      "formule_principale": "g \\text{ continue et } >0 \\text{ sur } [a;b],\\ a<b \\ \\Rightarrow\\ \\int_a^b g(x)\\,dx > 0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour $n\\in\\mathbb{N}$, on pose $f_n(x)=\\dfrac{e^{nx}}{1+e^x}$ et $u_n=\\displaystyle\\int_0^1 f_n(x)\\,dx$. Démontrer que $(u_n)$ est bien définie et à termes strictement positifs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Justifier la continuité de f_n sur [0;1]",
+          "justification": "Numérateur et dénominateur continus, dénominateur non nul.",
+          "resultat_markdown": "$e^{nx}$ et $1+e^x$ sont continues sur $\\mathbb{R}$ ; comme $e^x>0$, $1+e^x>1>0$ ne s'annule jamais. Le quotient $f_n$ est donc continu sur $\\mathbb{R}$, en particulier sur $[0;1]$."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire l'existence de u_n",
+          "justification": "Une fonction continue sur un segment y est intégrable.",
+          "resultat_markdown": "$f_n$ continue sur $[0;1]$ $\\Rightarrow$ $u_n=\\int_0^1 f_n(x)\\,dx$ existe."
+        },
+        {
+          "numero": 3,
+          "action": "Justifier la positivité de f_n sur [0;1]",
+          "justification": "Quotient de deux quantités strictement positives.",
+          "resultat_markdown": "Pour tout $x\\in[0;1]$ : $e^{nx}>0$ et $1+e^x>0$, donc $f_n(x)>0$."
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le signe de u_n",
+          "justification": "Intégrale d'une fonction continue strictement positive sur un intervalle non réduit à un point.",
+          "resultat_markdown": "$u_n=\\int_0^1 f_n(x)\\,dx > 0$"
+        }
+      ],
+      "conclusion_markdown": "La suite $(u_n)$ est donc bien définie pour tout $n\\in\\mathbb{N}$, et tous ses termes sont strictement positifs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer la positivité de l'intégrale sans avoir d'abord établi la positivité de l'intégrande sur tout l'intervalle.",
+          "pourquoi_faux": "Une intégrale peut être positive même si la fonction change de signe (les aires positives l'emportant sur les négatives), mais dans ce cas l'argument \"fonction positive donc intégrale positive\" ne s'applique pas directement : il faudrait un calcul plus fin.",
+          "correction_markdown": "Établis toujours explicitement le signe de la fonction sur tout l'intervalle avant de conclure sur le signe de l'intégrale par ce théorème simple."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que le dénominateur ne s'annule pas avant d'affirmer la continuité d'un quotient.",
+          "pourquoi_faux": "Un quotient de deux fonctions continues n'est continu que là où le dénominateur ne s'annule pas : ignorer ce point peut conduire à affirmer l'existence d'une intégrale sur un intervalle où la fonction n'est en réalité pas définie.",
+          "correction_markdown": "Pour tout quotient, vérifie explicitement (même en une ligne) que le dénominateur reste non nul sur tout l'intervalle d'intégration considéré."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Justifier que $\\displaystyle\\int_0^2 \\dfrac{1}{x^2+1}\\,dx$ existe et est strictement positive.",
+          "solution_markdown": "$x\\mapsto x^2+1$ est continue sur $\\mathbb{R}$ et ne s'annule jamais ($x^2+1\\geq1>0$), donc $x\\mapsto\\dfrac{1}{x^2+1}$ est continue sur $[0;2]$ : l'intégrale existe. De plus $\\dfrac{1}{x^2+1}>0$ pour tout $x$, donc par intégration d'une fonction continue strictement positive sur $[0;2]$ (intervalle non réduit à un point), l'intégrale est strictement positive."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On pose $v_n=\\displaystyle\\int_0^1 \\dfrac{x^n}{1+x}\\,dx$ pour $n\\in\\mathbb{N}$. Justifier que $(v_n)$ est bien définie et à termes positifs (préciser si strictement).",
+          "solution_markdown": "$x\\mapsto x^n$ et $x\\mapsto 1+x$ sont continues sur $[0;1]$, et $1+x\\geq1>0$ sur cet intervalle, donc le quotient est continu sur $[0;1]$ : $v_n$ existe. Pour $x\\in[0;1]$, $x^n\\geq0$ et $1+x>0$, donc l'intégrande est positif ou nul (nul seulement en $x=0$). L'intégrale d'une fonction continue positive, non identiquement nulle sur $[0;1]$, est strictement positive : $v_n>0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $w_n=\\displaystyle\\int_0^1 (x^n-x^{n+1})\\,dx$ pour $n\\in\\mathbb{N}^*$. Cette intégrale existe-t-elle ? Quel est son signe ? Justifier avec soin.",
+          "solution_markdown": "$x\\mapsto x^n-x^{n+1}$ est une fonction polynomiale, donc continue sur $\\mathbb{R}$, en particulier sur $[0;1]$ : l'intégrale $w_n$ existe.\n\nPour le signe, on factorise l'intégrande : $x^n-x^{n+1}=x^n(1-x)$. Pour $x\\in[0;1]$ : $x^n\\geq0$ (positif ou nul) et $1-x\\geq0$ (car $x\\leq1$), donc le produit $x^n(1-x)\\geq0$ sur tout $[0;1]$, avec égalité seulement en $x=0$ et $x=1$ (deux points isolés). L'intégrande n'est pas identiquement nulle sur l'intervalle, donc $w_n>0$ (l'argument \"fonction continue positive, non nulle en dehors d'un ensemble fini de points\" s'applique encore, l'intégrale restant strictement positive)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour justifier qu'une intégrale existe, invoque la continuité de l'intégrande sur l'intervalle considéré - c'est une condition suffisante, à énoncer explicitement, jamais à sous-entendre.",
+        "Pour un quotient, vérifie toujours que le dénominateur ne s'annule pas sur l'intervalle avant de conclure à la continuité.",
+        "Une fonction continue et positive (ou strictement positive) sur $[a;b]$ avec $a<b$ a une intégrale positive (ou strictement positive) : c'est un théorème à citer, pas une évidence à sauter.",
+        "Une fonction positive qui s'annule seulement en un nombre fini de points garde une intégrale strictement positive - retiens ce cas limite qui revient souvent (borne d'intégration incluse dans le domaine d'annulation).",
+        "Cette double vérification (existence puis signe) est presque toujours la première étape d'un exercice sur une suite définie par une intégrale : elle conditionne la légitimité de tout ce qui suit (croissance, limite, encadrement)."
+      ]
+    }
+  ]
+}

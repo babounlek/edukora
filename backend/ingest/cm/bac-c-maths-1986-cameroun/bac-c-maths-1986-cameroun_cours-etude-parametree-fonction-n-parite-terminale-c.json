@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-etude-parametree-fonction-n-parite-terminale-c",
+  "meta": {
+    "titre": "Étudier les variations d'une famille de fonctions paramétrée par n, selon sa parité",
+    "cours_id": "cours-etude-parametree-fonction-n-parite-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Étude de fonctions - famille paramétrée, dérivée d'une puissance composée",
+    "tags": ["famille de fonctions", "paramètre n", "parité", "dérivée d'une puissance composée"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_4_qB2"
+  },
+  "sections": {
+    "accroche": "Étudier une famille entière de fonctions fₙ(x)=(1+ln x)ⁿ/x d'un seul coup demande de factoriser la dérivée pour isoler les facteurs dont le signe dépend de n, et de traiter séparément les cas où l'exposant résiduel est pair ou impair.",
+    "prerequis": ["Dérivée d'une puissance composée (uⁿ)'=nu'uⁿ⁻¹", "Formule du quotient", "Factorisation par le facteur commun de plus bas degré"],
+    "regle": {
+      "titre": "Dériver et factoriser une famille (1+ln x)ⁿ/x",
+      "contenu_markdown": "Pour $f_n(x)=\\dfrac{(1+\\ln x)^n}x$, la dérivée $f_n'(x)=\\dfrac{n(1+\\ln x)^{n-1}-(1+\\ln x)^n}{x^2}$ se factorise par $(1+\\ln x)^{n-1}$ (facteur commun de plus bas degré), donnant $f_n'(x)=\\dfrac{(1+\\ln x)^{n-1}(n-1-\\ln x)}{x^2}$. Le signe de $f_n'$ dépend alors de la parité de $n-1$ (donc de $n$) pour le premier facteur, et du signe de $(n-1-\\ln x)$ pour le second : si $n-1$ est pair, le premier facteur est toujours positif ou nul ; s'il est impair, il change de signe.",
+      "formule_principale": "$f_n'(x)=\\dfrac{(1+\\ln x)^{n-1}(n-1-\\ln x)}{x^2}$",
+      "variantes": ["Cette technique de factorisation par le facteur de plus bas degré s'applique à toute dérivée de la forme n·uⁿ⁻¹u'v-uⁿv'"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Étudier le signe de $f_4'(x)=\\dfrac{(1+\\ln x)^3(3-\\ln x)}{x^2}$ ($n=4$, pair).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier la parité de n-1", "justification": "n=4, n-1=3, impair", "resultat_markdown": "$(1+\\ln x)^3$ a le même signe que $(1+\\ln x)$"},
+        {"numero": 2, "action": "Déterminer les valeurs critiques", "justification": "1+lnx=0 en x=1/e, 3-lnx=0 en x=e³", "resultat_markdown": "x=1/e et x=e³"},
+        {"numero": 3, "action": "Étudier le signe par intervalles", "justification": "produit des deux facteurs", "resultat_markdown": "négatif sur ]0,1/e[, positif sur ]1/e,e³[, négatif sur ]e³,+∞["}
+      ],
+      "conclusion_markdown": "f₄ décroît, croît, puis décroît, avec minimum local en 1/e et maximum local en e³."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Factoriser par (1+ln x)ⁿ au lieu de (1+ln x)ⁿ⁻¹ (facteur de plus bas degré)", "pourquoi_faux": "cela laisserait un terme constant au lieu d'un facteur en (n-1-lnx), rendant l'étude du signe impossible", "correction_markdown": "Toujours factoriser par la puissance la plus petite commune aux deux termes du numérateur avant de simplifier."},
+      {"erreur_markdown": "Traiter le cas n pair et n impair de façon identique, sans distinguer le comportement du facteur (1+ln x)^(n-1)", "pourquoi_faux": "la parité de n-1 change fondamentalement le comportement de ce facteur (change de signe ou reste positif)", "correction_markdown": "Toujours vérifier explicitement la parité de n-1 (donc de n) avant de conclure sur le signe global de la dérivée."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Pour n=5 (impair), en quoi le point x=1/e diffère-t-il d'un extremum classique ?", "solution_markdown": "n-1=4 est pair, donc (1+lnx)^4≥0 ne change pas de signe autour de 1/e : f₅'(1/e)=0 mais sans changement de monotonie, c'est un point stationnaire non extremal (tangente horizontale sans inflexion du sens de variation)."}
+    ],
+    "synthese": "Pour étudier une famille fₙ(x)=(1+ln x)ⁿ/x, factoriser la dérivée par (1+ln x)^(n-1), puis distinguer selon la parité de n-1 : pair (facteur toujours positif) ou impair (facteur changeant de signe), ce qui détermine si x=1/e est un extremum ou un simple point stationnaire."
+  }
+}

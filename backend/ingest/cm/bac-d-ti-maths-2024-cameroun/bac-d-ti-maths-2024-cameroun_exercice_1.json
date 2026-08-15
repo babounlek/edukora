@@ -1,0 +1,68 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D et TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2024,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 1,
+  "titre_exercice": "Équation du second degré complexe et similitude directe",
+  "points": 3.5,
+  "figures": [],
+  "enonce_intro_markdown": "Le plan complexe est muni d'un repère orthonormé $(O\\,;\\vec e_1,\\vec e_2)$. On considère les points $A$, $B$ et $C$ d'affixes respectives $z_A=2-i$, $z_B=3-2i$ et $z_C=1-2i$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1,5pt",
+      "enonce_markdown": "Résoudre dans $\\mathbb C$ l'équation $z^2-(5-3i)z+4-7i=0$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-resoudre-une-equation-du-second-degre-complexe-discriminant-imaginaire-pur-terminale-d-ti",
+          "texte": "Pour résoudre $az^2+bz+c=0$ à coefficients complexes, on calcule $\\Delta=b^2-4ac$ ; si $\\Delta$ est imaginaire pur (ou complexe non réel), on cherche une racine carrée $\\delta=x+iy$ de $\\Delta$ en résolvant le système $x^2-y^2=\\text{Re}(\\Delta)$ et $2xy=\\text{Im}(\\Delta)$, puis $z=\\dfrac{-b\\pm\\delta}{2a}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour résoudre $az^2+bz+c=0$, on calcule $\\Delta=b^2-4ac$ ; si $\\Delta$ n'est pas réel, on cherche une racine carrée $\\delta=x+iy$ en résolvant $x^2-y^2=\\text{Re}(\\Delta)$ et $2xy=\\text{Im}(\\Delta)$.\n\n**Calcul du discriminant.** $\\Delta=(5-3i)^2-4(4-7i)$\n\n$(5-3i)^2=25-30i+9i^2=25-30i-9=16-30i$\n\n$4(4-7i)=16-28i$\n\n$\\Delta=(16-30i)-(16-28i)=-30i+28i=-2i$\n\n**Recherche d'une racine carrée $\\delta=x+iy$ de $\\Delta=-2i$.** On résout $x^2-y^2=0$ et $2xy=-2$.\n\nDe $x^2-y^2=0$ : $x=y$ ou $x=-y$. Le cas $x=y$ donnerait $2xy=2x^2\\ge0$, incompatible avec $2xy=-2<0$. Donc $x=-y$, d'où $2xy=2x(-x)=-2x^2=-2\\iff x^2=1\\iff x=\\pm1$.\n\nAvec $x=1$, $y=-1$ : $\\delta=1-i$. Vérification : $(1-i)^2=1-2i+i^2=1-2i-1=-2i=\\Delta$ ✓\n\n**Résolution.** $z=\\dfrac{(5-3i)\\pm(1-i)}2$\n\n$z_1=\\dfrac{(5-3i)+(1-i)}2=\\dfrac{6-4i}2=3-2i$\n\n$z_2=\\dfrac{(5-3i)-(1-i)}2=\\dfrac{4-2i}2=2-i$\n\n**Conclusion.** $S=\\{2-i\\,;\\,3-2i\\}$.\n\n### Conseil\nOn remarque que les deux solutions trouvées sont exactement $z_A=2-i$ et $z_B=3-2i$ : une coïncidence qui n'en est pas une, puisque ces mêmes points $A$ et $B$ réapparaissent dans les questions suivantes de l'exercice — un signe de cohérence interne à vérifier systématiquement."
+    },
+    {
+      "numero": "2",
+      "points": "1pt",
+      "enonce_markdown": "Déterminer l'expression complexe de la similitude directe $s$ de centre $C$ et qui transforme $A$ en $B$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-lexpression-complexe-similitude-centre-et-couple-point-image-terminale-d-ti",
+          "texte": "Une similitude directe de centre $\\Omega$ s'écrit $z'-z_\\Omega=a(z-z_\\Omega)$. Si $S(P)=P'$ pour un couple connu, $a=\\dfrac{z_{P'}-z_\\Omega}{z_P-z_\\Omega}$, puis on développe pour obtenir $z'=az+b$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$z'-z_\\Omega=a(z-z_\\Omega)$, avec $a=\\dfrac{z_{P'}-z_\\Omega}{z_P-z_\\Omega}$.\n\n**Calcul de $a$.** Ici $\\Omega=C$, $P=A$, $P'=B$ : $a=\\dfrac{z_B-z_C}{z_A-z_C}$.\n\n$z_B-z_C=(3-2i)-(1-2i)=2$\n\n$z_A-z_C=(2-i)-(1-2i)=1+i$\n\n$a=\\dfrac2{1+i}=\\dfrac{2(1-i)}{(1+i)(1-i)}=\\dfrac{2(1-i)}{1+1}=\\dfrac{2(1-i)}2=1-i$\n\n**Écriture complexe.** $z'-z_C=(1-i)(z-z_C)\\iff z'=(1-i)z-(1-i)z_C+z_C=(1-i)z+z_C\\big[1-(1-i)\\big]=(1-i)z+i\\,z_C$\n\n$i\\,z_C=i(1-2i)=i-2i^2=i+2=2+i$\n\n$z'=(1-i)z+2+i$\n\n**Vérification.** $s(A)$ doit redonner $B$ : $(1-i)(2-i)+2+i=2-i-2i+i^2+2+i=2-i-2i-1+2+i=3-2i=z_B$ ✓\n\n**Conclusion.** $s:\\ z'=(1-i)z+2+i$."
+    },
+    {
+      "numero": "3",
+      "points": "0,5pt",
+      "enonce_markdown": "Préciser les éléments caractéristiques de $s$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-preciser-elements-caracteristiques-similitude-rapport-angle-centre-terminale-d-ti",
+          "texte": "Pour $z'=az+b$, le rapport est $k=|a|$, l'angle $\\theta=\\arg(a)$, et le centre est le point $\\Omega$ déjà connu (ou calculable par $z_\\Omega=b/(1-a)$)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour $z'=az+b$, $k=|a|$, $\\theta=\\arg(a)$, centre déjà connu ou $z_\\Omega=b/(1-a)$.\n\nD'après la question 2, $a=1-i$.\n\n**Rapport.** $k=|1-i|=\\sqrt{1^2+(-1)^2}=\\sqrt2$\n\n**Angle.** $1-i=\\sqrt2\\left(\\cos\\left(-\\frac\\pi4\\right)+i\\sin\\left(-\\frac\\pi4\\right)\\right)$ (car $\\cos(-\\pi/4)=\\frac{\\sqrt2}2$ et $\\sin(-\\pi/4)=-\\frac{\\sqrt2}2$, ce qui redonne bien $\\sqrt2\\times\\frac{\\sqrt2}2(1-i)=1-i$), donc $\\theta=\\arg(a)=-\\dfrac\\pi4$.\n\n**Centre.** Donné dès l'énoncé : $\\Omega=C$, d'affixe $1-2i$, soit $C(1,-2)$.\n\n**Conclusion.** $s$ est la similitude directe de centre $C(1,-2)$, de rapport $\\sqrt2$ et d'angle $-\\dfrac\\pi4$."
+    },
+    {
+      "numero": "4",
+      "points": "0,5pt",
+      "enonce_markdown": "Quelle est l'image de la droite $(AC)$ par la similitude $s$ ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-limage-dune-droite-par-une-similitude-via-limage-de-deux-points-terminale-d-ti",
+          "texte": "L'image d'une droite par une similitude directe est une droite, entièrement déterminée par les images de deux points quelconques de la droite de départ. Si l'un des deux points est le centre de la similitude, il est fixe et son image est lui-même."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'image d'une droite par une similitude est une droite, déterminée par les images de deux quelconques de ses points. Le centre d'une similitude est toujours un point fixe.\n\nLa droite $(AC)$ passe par les points $A$ et $C$.\n\n**Image de $A$.** $s(A)=B$ (donné dans l'énoncé de la question 2).\n\n**Image de $C$.** $C$ est le centre de $s$, donc $s(C)=C$ (point fixe).\n\n**Conclusion.** L'image de la droite $(AC)$ par $s$ est la droite passant par $s(A)=B$ et $s(C)=C$, c'est-à-dire la droite $(BC)$.\n\n### Conseil\nDès qu'une droite passe par le centre d'une similitude, son image se détermine sans aucun calcul supplémentaire : il suffit de connaître l'image d'un seul autre point de la droite, le centre restant fixe."
+    }
+  ]
+}

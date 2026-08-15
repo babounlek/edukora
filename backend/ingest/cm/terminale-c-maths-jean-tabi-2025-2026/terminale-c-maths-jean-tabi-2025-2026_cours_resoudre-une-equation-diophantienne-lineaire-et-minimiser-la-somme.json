@@ -1,0 +1,31 @@
+{
+  "cours_id": "cours-resoudre-une-equation-diophantienne-lineaire-a-deux-inconnues-et-minimiser-la-somme-des-solutions-terminale-c",
+  "meta": {
+    "titre": "Résoudre une équation diophantienne linéaire à deux inconnues et minimiser la somme des solutions",
+    "cours_id": "cours-resoudre-une-equation-diophantienne-lineaire-a-deux-inconnues-et-minimiser-la-somme-des-solutions-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Arithmétique — équations diophantiennes",
+    "tags": ["diophantienne", "congruence", "pgcd", "optimisation entière"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex4-tache1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Le problème classique « combien de billets/lots/timbres de chaque valeur pour atteindre un total donné, en en utilisant le moins possible » se résout entièrement par arithmétique : congruences puis étude d'une expression affine en un paramètre entier."},
+    {"type": "prerequis", "items_markdown": ["Congruences et inversion modulaire", "PGCD de deux entiers, théorème de Bézout"]},
+    {"type": "regle", "titre": "Paramétrer par congruence, puis minimiser", "contenu_markdown": "Pour résoudre $an+bm=N$ en entiers avec $\\text{pgcd}(a,b)=1$, on établit d'abord la congruence que doit vérifier $m$ (ou $n$) modulo $a$ (ou $b$), on paramètre les solutions par un entier $k$ (ex. $m=a\\cdot k$ ou une forme équivalente selon le pivot choisi), on exprime $n$ en fonction de $k$, puis on étudie le sens de variation de $n+m$ en fonction de $k$ sous les contraintes de positivité pour trouver le minimum ou le maximum.", "formule_principale": "an+bm=N, m≡0[a] si pgcd(a,b)=1 et N≡0[a] ; n+m = fonction affine de k à optimiser", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Trouver n,m entiers ≥1 tels que 3n+5m=50, en minimisant n+m.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Congruence", "justification": "50≡2[3], 5≡2[3], donc 2m≡2[3] ⟺ m≡1[3] (car 2 est son propre inverse mod 3).", "resultat_markdown": "m≡1 [3]"},
+      {"numero": 2, "action": "Paramétrer", "justification": "m=1+3k, k≥0.", "resultat_markdown": "m=1+3k, n=(50-5m)/3=(45-15k)/3=15-5k"},
+      {"numero": 3, "action": "Contrainte n≥1", "justification": "15-5k≥1 ⟺ k≤2,8, donc k≤2.", "resultat_markdown": "k∈{0,1,2}"},
+      {"numero": 4, "action": "Minimiser n+m", "justification": "n+m=(15-5k)+(1+3k)=16-2k, décroissante en k.", "resultat_markdown": "minimum à k=2 : m=7, n=5, total=12"}
+    ], "conclusion_markdown": "Vérification : 3×5+5×7=15+35=50 ✓. Le minimum de n+m s'obtient en poussant le paramètre k à sa valeur maximale admissible, car n+m est décroissante en k dans cet exemple."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Chercher les solutions par tâtonnement sur de petites valeurs plutôt que par la congruence complète", "pourquoi_faux": "Le tâtonnement risque de rater la solution optimale, surtout quand la plage de valeurs admissibles pour le paramètre est grande ; seule l'étude complète de n+m en fonction de k garantit d'avoir trouvé le minimum global.", "correction_markdown": "Toujours ramener le problème à un unique paramètre entier via la congruence, puis étudier explicitement le sens de variation de la quantité à optimiser sur tout l'intervalle admissible."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Résoudre 2n+3m=100 en minimisant n+m (n,m≥1 entiers).", "solution_markdown": "100≡0[2] toujours donc pas de contrainte de congruence stricte, mais 3m doit être pair : m pair. m=2k, k≥1 ; n=(100-6k)/2=50-3k. n+m=50-3k+2k=50-k, minimal pour k maximal (n≥1 ⟹ k≤16,3 donc k=16) : m=32,n=2,total=34."},
+      {"numero": 2, "difficulte": "approfondissement", "enonce_markdown": "Pourquoi la condition pgcd(a,b)=1 est-elle essentielle pour garantir l'existence de solutions entières à an+bm=N pour un N quelconque multiple de ce pgcd ?", "solution_markdown": "C'est le théorème de Bézout : an+bm=N a des solutions entières si et seulement si pgcd(a,b) divise N. Si pgcd(a,b)=1, cette condition est automatiquement vérifiée pour tout N entier."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La résolution passe par une congruence (souvent obtenue par inversion modulaire), puis un paramétrage par un entier k.", "La quantité à minimiser (souvent n+m) s'exprime comme fonction affine de k : son sens de variation détermine s'il faut prendre k minimal ou maximal.", "Les contraintes de positivité (n≥1, m≥1) bornent l'intervalle admissible de k et donnent la solution optimale exacte."]}
+  ]
+}

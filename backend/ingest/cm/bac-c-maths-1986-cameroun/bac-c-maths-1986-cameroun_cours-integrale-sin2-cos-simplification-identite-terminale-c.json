@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-integrale-sin2-cos-simplification-identite-terminale-c",
+  "meta": {
+    "titre": "Simplifier sin²x/(1+cos x) via l'identité pythagoricienne avant d'intégrer",
+    "cours_id": "cours-integrale-sin2-cos-simplification-identite-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Calcul intégral - intégrandes trigonométriques",
+    "tags": ["intégrale", "trigonométrie", "identité pythagoricienne", "simplification"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_1_q1"
+  },
+  "sections": {
+    "accroche": "Face à un quotient trigonométrique qui semble compliqué à intégrer directement, chercher d'abord une simplification algébrique via une identité connue (ici sin²x=1-cos²x) transforme souvent l'intégrande en une expression élémentaire.",
+    "prerequis": ["Identité pythagoricienne sin²x+cos²x=1", "Factorisation d'une différence de carrés", "Primitives de 1 et de cos x"],
+    "regle": {
+      "titre": "Simplifier avant d'intégrer",
+      "contenu_markdown": "Quand un intégrande contient $\\sin^2x$ divisé par $(1+\\cos x)$ (ou une expression apparentée), toujours essayer de factoriser $\\sin^2x=1-\\cos^2x=(1-\\cos x)(1+\\cos x)$ avant de chercher une primitive complexe. Le facteur $(1+\\cos x)$ se simplifie alors directement avec le dénominateur, laissant une expression polynomiale trigonométrique élémentaire, immédiatement primitivable.",
+      "formule_principale": "$\\dfrac{\\sin^2x}{1+\\cos x}=1-\\cos x$ (pour $1+\\cos x\\neq0$)",
+      "variantes": ["De même, $\\dfrac{\\sin^2x}{1-\\cos x}=1+\\cos x$ (pour $1-\\cos x\\neq0$)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi}\\dfrac{\\sin^2x}{1+\\cos x}\\,dx$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Simplifier l'intégrande", "justification": "sin²x=(1-cosx)(1+cosx)", "resultat_markdown": "$\\dfrac{\\sin^2x}{1+\\cos x}=1-\\cos x$"},
+        {"numero": 2, "action": "Intégrer terme à terme", "justification": "primitives usuelles", "resultat_markdown": "$\\int_0^\\pi(1-\\cos x)dx=[x-\\sin x]_0^\\pi=(\\pi-0)-(0-0)=\\pi$"}
+      ],
+      "conclusion_markdown": "L'intégrale vaut $\\pi$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Se lancer directement dans une intégration par parties ou un changement de variable trigonométrique complexe (ex. t=tan(x/2))", "pourquoi_faux": "c'est beaucoup plus lourd et source d'erreur alors qu'une simple factorisation suffit", "correction_markdown": "Toujours vérifier d'abord si le numérateur peut se factoriser avec le dénominateur via une identité pythagoricienne."},
+      {"erreur_markdown": "Oublier de vérifier que le dénominateur ne s'annule pas sur l'intervalle d'intégration avant de simplifier", "pourquoi_faux": "la simplification n'est valide que là où 1+cos x≠0", "correction_markdown": "Toujours vérifier le signe/la non-nullité du dénominateur sur l'intervalle considéré avant de simplifier la fraction."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Simplifier $\\dfrac{1-\\cos^2x}{1+\\cos x}$.", "solution_markdown": "$1-\\cos^2x=(1-\\cos x)(1+\\cos x)$, donc l'expression vaut $1-\\cos x$."}
+    ],
+    "synthese": "Avant d'intégrer un quotient trigonométrique contenant sin²x ou cos²x, chercher une factorisation via l'identité pythagoricienne : elle élimine souvent le dénominateur et ramène à une primitive élémentaire."
+  }
+}

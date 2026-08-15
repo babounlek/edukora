@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-iteration-inegalite-contraction-convergence-terminale-c",
+  "meta": {
+    "titre": "Itérer une inégalité de contraction pour prouver la convergence d'une suite point-fixe",
+    "cours_id": "cours-iteration-inegalite-contraction-convergence-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques - convergence géométrique",
+    "tags": ["suite contractante", "convergence", "théorème du point fixe"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_6_q4c"
+  },
+  "sections": {
+    "accroche": "Une inégalité de récurrence liant l'écart au rang n+1 à l'écart au rang n se transforme, par itération répétée, en une majoration exponentiellement décroissante — le cœur de la méthode du point fixe pour prouver la convergence.",
+    "prerequis": ["Relation de récurrence |Un+1-α|≤k|Un-α| déjà établie", "k∈]0,1[ entraîne k^n→0"],
+    "regle": {
+      "titre": "Itération de l'inégalité de contraction et convergence",
+      "contenu_markdown": "Si $|U_{n+1}-\\alpha|\\leqslant k|U_n-\\alpha|$ pour tout $n$ (avec $k\\in\\,]0,1[$ constant), on montre par récurrence immédiate que $|U_n-\\alpha|\\leqslant k^n|U_0-\\alpha|$ pour tout $n$ (chaque itération multiplie la majoration par $k$). Comme $k\\in\\,]0,1[$, $k^n\\to0$ quand $n\\to+\\infty$, donc par encadrement (théorème des gendarmes, sachant $0\\leqslant|U_n-\\alpha|\\leqslant k^n|U_0-\\alpha|$), $|U_n-\\alpha|\\to0$, c'est-à-dire $U_n\\to\\alpha$.",
+      "formule_principale": "$|U_{n+1}-\\alpha|\\leqslant k|U_n-\\alpha|,\\ k\\in\\,]0,1[ \\;\\Longrightarrow\\; |U_n-\\alpha|\\leqslant k^n|U_0-\\alpha| \\to 0$",
+      "variantes": ["Cette technique constitue une preuve constructive du théorème du point fixe de Banach, avec une vitesse de convergence explicitement géométrique (contrôlée par k)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant |Tn+1-β|≤0,5|Tn-β| et T0=10, β=3, montrer que Tn→β et estimer T5.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Itérer la relation", "justification": "récurrence", "resultat_markdown": "|Tn-3|≤0,5^n×|10-3|=0,5^n×7"},
+        {"numero": 2, "action": "Évaluer en n=5", "justification": "substitution", "resultat_markdown": "|T5-3|≤0,5^5×7=7/32≈0,22"},
+        {"numero": 3, "action": "Conclure sur la limite", "justification": "0,5^n→0", "resultat_markdown": "Tn→3"}
+      ],
+      "conclusion_markdown": "T5 est à moins de 0,22 de β=3, et la suite converge vers 3."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure la convergence sans vérifier explicitement que k appartient bien à ]0,1[ (et non, par exemple, à [1,+∞[)", "pourquoi_faux": "si k≥1, k^n ne tend pas vers 0 (il diverge ou reste constant), et l'argument de convergence s'effondre entièrement", "correction_markdown": "Toujours vérifier et rappeler explicitement que k∈]0,1[ avant d'invoquer k^n→0 pour conclure à la convergence de la suite."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant |Rn+1-δ|≤0,9|Rn-δ|, R0=100, δ=50, à partir de quel rang peut-on garantir |Rn-δ|<1 ?", "solution_markdown": "|Rn-50|≤0,9^n×50<1 ⟺ 0,9^n<1/50 ⟺ n>ln(1/50)/ln(0,9)≈37,1, donc à partir de n=38."}
+    ],
+    "synthese": "Une inégalité de récurrence contractante |Un+1-α|≤k|Un-α| (k∈]0,1[) s'itère pour obtenir |Un-α|≤k^n|U0-α|, majoration qui tend vers 0 (car k^n→0), établissant ainsi rigoureusement, via le théorème des gendarmes, la convergence de la suite vers son point fixe α."
+  }
+}

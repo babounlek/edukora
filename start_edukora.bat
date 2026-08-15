@@ -1,0 +1,1 @@
+d: & cd edukora & docker compose down & docker compose up -d --build caddy backend

@@ -1,0 +1,18 @@
+{
+  "cours_id": "cours-probabilite-parent-albinos-normal-terminale-c",
+  "meta": {"titre": "Probabilité conditionnelle : un parent atteint, l'autre normal (Bayes appliqué à la génétique)", "matiere": "SVT", "niveau": "Terminale", "serie": "D", "sous_theme": "Génétique — probabilités bayésiennes", "duree_estimee_min": 20, "tags": ["probabilité conditionnelle", "théorème de Bayes", "génétique"], "statut": "brouillon"},
+  "source": {"epreuve_id": "bac-c-svt-2015-cameroun", "epreuve_titre": "BAC D SVT 2015 Cameroun", "exercice_numero": 6, "rappel_id": "3a", "correction_id": "3a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand un parent est atteint et l'autre seulement « normal » (génotype incertain), il faut pondérer chaque génotype possible par sa fréquence avant de calculer le risque pour l'enfant."},
+    {"type": "prerequis", "items": ["Fréquence des hétérozygotes dans une population", "Probabilités conditionnelles"]},
+    {"type": "regle", "titre": "Calcul avec un parent de génotype incertain", "contenu_markdown": "Lorsqu'un parent est albinos (aa, certain) et l'autre a un phénotype normal (génotype AA ou Aa, incertain), la probabilité qu'un enfant soit albinos se calcule en pondérant chaque génotype possible du parent normal par sa fréquence dans la population et par la probabilité mendélienne du croisement correspondant.", "formule_principale": "P(enfant aa) = P(parent2=AA)×P(aa|AA×aa) + P(parent2=Aa)×P(aa|Aa×aa)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Un parent albinos (aa) et un parent normal (99% AA, 1% Aa) : quelle est la probabilité que leur enfant soit albinos ?", "epreuve_source": true, "etapes": [
+      {"numero": 1, "action": "Calculer la contribution du cas AA", "justification": "Croisement aa×AA ne donne jamais d'enfant aa.", "resultat_markdown": "0,99 × 0 = 0"},
+      {"numero": 2, "action": "Calculer la contribution du cas Aa", "justification": "Croisement aa×Aa donne 1/2 d'enfants aa.", "resultat_markdown": "0,01 × 0,5 = 0,005"},
+      {"numero": 3, "action": "Sommer les deux contributions", "justification": "Additionner les probabilités des deux scénarios exclusifs.", "resultat_markdown": "0 + 0,005 = 0,005"}
+    ], "conclusion_markdown": "P(enfant albinos) = 0,005, soit 0,5%."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de pondérer chaque scénario (AA ou Aa) par sa probabilité avant de sommer.", "pourquoi_faux": "Le génotype du parent normal est incertain : il faut calculer la probabilité de chaque scénario possible, multiplier par la probabilité de l'événement dans ce scénario, puis sommer sur tous les scénarios.", "correction_markdown": "Toujours décomposer en scénarios exhaustifs et mutuellement exclusifs (ici AA ou Aa), pondérer chacun par sa probabilité, puis sommer."}]},
+    {"type": "exercices_application", "items": [{"numero": 1, "difficulte": "difficile", "enonce_markdown": "Comment la probabilité change-t-elle si l'on sait que le premier enfant du couple n'est PAS albinos ?", "solution_markdown": "Il faut réviser la probabilité que le parent normal soit Aa via le théorème de Bayes, en tenant compte de cette nouvelle information, avant de recalculer la probabilité pour le deuxième enfant."}]},
+    {"type": "synthese", "items_markdown": ["Décomposer selon les génotypes possibles du parent incertain", "Pondérer chaque scénario par sa fréquence, puis sommer les contributions"]}
+  ]
+}

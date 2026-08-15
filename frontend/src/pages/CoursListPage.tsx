@@ -5,6 +5,7 @@ import { ArrowRight, GraduationCap, LayoutGrid, List, Loader2, Search, X } from 
 import { getMyProgression, listCours, listCursus, listSubjects } from "@/api/endpoints"
 import type { Cours, Cursus, Progression, Subject } from "@/api/types"
 import { useSeo } from "@/lib/seo"
+import { coursReaderPath } from "@/lib/countryPath"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
@@ -207,7 +208,7 @@ export function CoursListPage() {
       {progression && progression.cours.length > 0 && (
         <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
           <Link
-            to={`/cours/${progression.cours[0].id}/lire`}
+            to={coursReaderPath(progression.cours[0].slug)}
             className="flex animate-fade-up items-center justify-between gap-3 rounded-lg border border-border bg-accent/40 px-4 py-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent"
           >
             <span className="min-w-0">
@@ -290,7 +291,7 @@ export function CoursListPage() {
                 <Button
                   variant={viewMode === "cards" ? "secondary" : "ghost"}
                   size="icon"
-                  className="size-7"
+                  className="size-7 tap-target-44"
                   aria-label="Affichage en cartes"
                   aria-pressed={viewMode === "cards"}
                   onClick={() => setViewMode("cards")}
@@ -300,7 +301,7 @@ export function CoursListPage() {
                 <Button
                   variant={viewMode === "list" ? "secondary" : "ghost"}
                   size="icon"
-                  className="size-7"
+                  className="size-7 tap-target-44"
                   aria-label="Affichage en liste"
                   aria-pressed={viewMode === "list"}
                   onClick={() => setViewMode("list")}

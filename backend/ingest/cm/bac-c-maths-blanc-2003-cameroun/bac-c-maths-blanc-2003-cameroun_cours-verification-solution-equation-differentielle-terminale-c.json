@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-verification-solution-equation-differentielle-terminale-c",
+  "meta": {
+    "titre": "Vérifier qu'une fonction est solution d'une équation différentielle",
+    "cours_id": "cours-verification-solution-equation-differentielle-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Équations différentielles - vérification de solution",
+    "tags": ["équation différentielle", "vérification de solution", "dérivées successives"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_7_q1"
+  },
+  "sections": {
+    "accroche": "Vérifier qu'une fonction donnée résout une équation différentielle est un pur exercice de calcul de dérivées et de substitution — aucune inspiration n'est nécessaire, seulement de la rigueur dans le développement.",
+    "prerequis": ["Calcul des dérivées successives d'une fonction", "Substitution dans une expression et simplification algébrique"],
+    "regle": {
+      "titre": "Méthode de vérification d'une solution",
+      "contenu_markdown": "Pour vérifier qu'une fonction $f$ est solution d'une équation différentielle du type $F(y,y',y'',\\ldots)=0$ (ou $=g(x)$), on calcule explicitement toutes les dérivées de $f$ requises par l'équation, on les substitue dans le membre de gauche, puis on simplifie algébriquement (factorisation, réduction au même dénominateur) jusqu'à obtenir exactement le membre de droite. Aucune étape de simplification ne doit être omise, chaque regroupement de termes devant être justifié.",
+      "formule_principale": "Calculer $f',f'',\\ldots$, substituer dans l'équation, simplifier jusqu'à l'égalité annoncée",
+      "variantes": ["Pour une équation homogène (second membre nul), la simplification doit aboutir exactement à 0, tous les termes devant s'annuler mutuellement"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Vérifier que g(x)=xe^{2x} est solution de y''-4y'+4y=0.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer g'", "justification": "produit", "resultat_markdown": "g'(x)=e^{2x}+2xe^{2x}=(1+2x)e^{2x}"},
+        {"numero": 2, "action": "Calculer g''", "justification": "dérivée du produit précédent", "resultat_markdown": "g''(x)=2e^{2x}+2(1+2x)e^{2x}=(4+4x)e^{2x}"},
+        {"numero": 3, "action": "Substituer et simplifier", "justification": "combinaison linéaire", "resultat_markdown": "g''-4g'+4g=(4+4x)e^{2x}-4(1+2x)e^{2x}+4xe^{2x}=[(4+4x)-(4+8x)+4x]e^{2x}=0×e^{2x}=0 ✓"}
+      ],
+      "conclusion_markdown": "g est bien solution de l'équation homogène."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Arrêter la simplification avant d'avoir regroupé tous les termes semblables, laissant une expression apparemment non nulle alors qu'elle devrait s'annuler", "pourquoi_faux": "une simplification incomplète peut faire croire à tort que la fonction n'est pas solution, alors que le regroupement final donnerait bien 0 ou l'expression attendue", "correction_markdown": "Toujours pousser la simplification jusqu'au bout, en regroupant explicitement tous les termes de même nature (même facteur exponentiel, même puissance), avant de conclure sur le résultat final."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Vérifier que h(x)=cos(x) est solution de y''+y=0.", "solution_markdown": "h'(x)=-sin(x), h''(x)=-cos(x) ; h''+h=-cos(x)+cos(x)=0 ✓."}
+    ],
+    "synthese": "Vérifier qu'une fonction est solution d'une équation différentielle consiste à calculer méthodiquement ses dérivées successives requises, à les substituer dans l'équation, puis à simplifier algébriquement sans sauter d'étape jusqu'à retrouver exactement le résultat annoncé (0 pour une équation homogène, ou le second membre pour une équation avec second membre)."
+  }
+}

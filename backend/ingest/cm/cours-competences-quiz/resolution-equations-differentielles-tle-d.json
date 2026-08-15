@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-resolution-equations-differentielles-tle-d",
+  "meta": {
+    "titre": "Résolution des équations différentielles (Terminale D)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Équations différentielles linéaires à coefficients constants (premier et second ordre)",
+    "duree_estimee_min": 40,
+    "tags": ["Équations différentielles (Tle D)", "équation différentielle", "équation caractéristique", "solution particulière", "discriminant", "Terminale D"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "D", "module_numero": "25", "savoir_numero": "VIII"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-2003-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 2003",
+    "exercice_numero": "Probleme",
+    "rappel_id": "rdm-2003d-pb-C4c",
+    "rappels_lies": ["rdm-2003d-pb-C4a", "rdm-2003d-pb-C4b", "rdm-2003d-pb-C4d"],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La vitesse d'un objet qui freine, la charge électrique d'un condensateur qui se décharge, l'évolution d'une population ou d'un capital placé à intérêts continus : toutes ces situations relient une grandeur à sa propre vitesse de variation, pas directement à une formule explicite. Une équation différentielle exprime justement cette relation entre une fonction inconnue et ses dérivées, et la résoudre consiste à retrouver l'expression de cette fonction à partir de la loi qui régit son évolution. Ce cours traite les équations différentielles linéaires à coefficients constants, du premier ordre puis surtout du second ordre, un classique du programme de Terminale D régulièrement posé au BAC sous forme de problème à plusieurs parties : une équation différentielle sert souvent, en fin de sujet, à retrouver ou à confirmer l'expression d'une fonction étudiée juste avant. Maîtriser cette méthode, c'est transformer une relation entre une fonction et ses dérivées en une famille de fonctions explicites, puis fixer les constantes de cette famille grâce à des conditions initiales."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir dériver un produit de la forme $u(x)e^{rx}$ et calculer sa dérivée seconde, à l'aide de la formule $(ue^{rx})'=(u'+ru)e^{rx}$, vue dans le cours sur la fonction exponentielle.",
+        "Tu dois savoir calculer le discriminant $\\Delta=b^2-4ac$ d'un trinôme du second degré et distinguer les trois cas $\\Delta>0$, $\\Delta=0$, $\\Delta<0$, vus en classe de Première.",
+        "Tu dois savoir résoudre un système de deux équations linéaires à deux inconnues, utilisé ici pour déterminer les deux constantes $A$ et $B$ à partir de conditions initiales sur $y(0)$ et $y'(0)$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre une équation différentielle linéaire à coefficients constants",
+      "contenu_markdown": "Une équation différentielle linéaire du second ordre à coefficients constants s'écrit $(E): y''+py'+qy=f(x)$, où $p$ et $q$ sont des réels fixés et $f$ une fonction donnée, appelée second membre - souvent une constante ou un polynôme de faible degré dans les exercices de Terminale D. L'équation associée sans second membre, $(E'): y''+py'+qy=0$, est dite homogène.\n\nLa résolution complète de $(E)$ suit toujours le même schéma en deux volets. On cherche d'abord une solution particulière $h$ de $(E)$ elle-même, en essayant une fonction de la même forme que le second membre $f$ : si $f$ est constante, on essaie $h$ constante ; si $f$ est affine ($f(x)=mx+n$), on essaie $h(x)=ax+b$ et on identifie $a$ et $b$ en substituant dans $(E)$. On résout ensuite l'équation homogène $(E')$ à l'aide de son équation caractéristique $r^2+pr+q=0$, dont le discriminant $\\Delta=p^2-4q$ détermine la forme des solutions :\n\n- si $\\Delta>0$, deux racines réelles distinctes $r_1$ et $r_2$, et les solutions de $(E')$ sont $y(x)=Ae^{r_1x}+Be^{r_2x}$, $(A,B)\\in\\mathbb{R}^2$ ;\n- si $\\Delta=0$, une racine double $r_0=-\\dfrac{p}{2}$, et les solutions de $(E')$ sont $y(x)=(Ax+B)e^{r_0x}$, $(A,B)\\in\\mathbb{R}^2$ ;\n- si $\\Delta<0$, deux racines complexes conjuguées $\\alpha\\pm i\\beta$, et les solutions de $(E')$ sont $y(x)=(A\\cos(\\beta x)+B\\sin(\\beta x))e^{\\alpha x}$, $(A,B)\\in\\mathbb{R}^2$.\n\nUne fois $h$ et les solutions de $(E')$ connues, le principe de superposition donne directement toutes les solutions de $(E)$ : une fonction $\\varphi$, au moins deux fois dérivable, est solution de $(E)$ si et seulement si $\\varphi-h$ est solution de $(E')$. Ce principe se démontre en une ligne grâce à la linéarité de la dérivation :\n\n$$(\\varphi-h)''+p(\\varphi-h)'+q(\\varphi-h)=(\\varphi''+p\\varphi'+q\\varphi)-(h''+ph'+qh)$$\n\nSi $\\varphi$ et $h$ sont toutes deux solutions de $(E)$, le membre de droite vaut $f(x)-f(x)=0$, donc $\\varphi-h$ est solution de $(E')$ ; la réciproque se démontre en remontant les mêmes calculs. Les solutions de $(E)$ sont donc exactement les fonctions $\\varphi=h+y$, où $y$ parcourt l'ensemble des solutions de $(E')$.\n\nQuand une condition initiale porte sur $y(0)$ et $y'(0)$, on substitue $x=0$ dans l'expression générale de la solution et dans sa dérivée : on obtient un système de deux équations aux deux constantes $A$ et $B$, qui se résout par substitution.",
+      "formule_principale": "r^2+pr+q=0",
+      "variantes": [
+        {
+          "nom": "Cas du premier ordre : $y'=ay+b$",
+          "quand_utiliser": "Quand l'équation ne fait intervenir que la dérivée première $y'$ (ordre 1), pas $y''$ - un cas plus simple, souvent vu juste avant le second ordre.",
+          "contenu_markdown": "L'équation homogène $y'=ay$ (avec $a\\in\\mathbb{R}$) a pour solutions $y(x)=Ce^{ax}$, $C\\in\\mathbb{R}$ : l'exponentielle $e^{ax}$ est, à une constante multiplicative près, l'unique fonction dont la dérivée est proportionnelle à elle-même avec le coefficient $a$. Pour $y'=ay+b$ avec $a\\neq0$, une solution particulière constante $h(x)=-\\dfrac{b}{a}$ existe toujours : en cherchant $h$ constante, $h'=0$, donc l'équation devient $0=ah+b$, d'où $h=-b/a$. Le même principe de superposition donne alors les solutions générales $y(x)=Ce^{ax}-\\dfrac{b}{a}$, $C\\in\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'équation différentielle $(E): y''-4y'+4y=4x-4$, définie sur $\\mathbb{R}$, et son équation homogène associée $(E'): y''-4y'+4y=0$. Résoudre $(E')$, déterminer une solution particulière affine de $(E)$, en déduire l'ensemble des solutions de $(E)$, puis déterminer la solution $f$ de $(E)$ telle que $f(0)=2$ et $f'(0)=3$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'équation caractéristique associée à $(E')$ et calculer son discriminant",
+          "justification": "$(E')$ est une équation différentielle linéaire du second ordre à coefficients constants ; sa résolution passe par l'équation caractéristique $r^2+pr+q=0$ associée, avec ici $p=-4$ et $q=4$.",
+          "resultat_markdown": "$$r^2-4r+4=0,\\qquad \\Delta=(-4)^2-4\\times1\\times4=16-16=0$$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre $(E')$",
+          "justification": "Un discriminant nul donne une racine double $r_0=-p/2$, et les solutions de l'équation homogène sont alors de la forme $(Ax+B)e^{r_0x}$.",
+          "resultat_markdown": "$$r_0=-\\frac{-4}{2}=2,\\qquad y(x)=(Ax+B)e^{2x},\\ (A,B)\\in\\mathbb{R}^2$$"
+        },
+        {
+          "numero": 3,
+          "action": "Chercher une solution particulière affine $h$ de $(E)$",
+          "justification": "Le second membre $4x-4$ est une fonction affine ; on essaie donc $h(x)=ax+b$, de dérivées $h'(x)=a$ et $h''(x)=0$, et on identifie $a$ et $b$ en substituant dans $(E)$.",
+          "resultat_markdown": "$$h''-4h'+4h=0-4a+4(ax+b)=4ax+(4b-4a)$$\n\nEn identifiant avec $4x-4$ : $4a=4$ donne $a=1$, et $4b-4a=-4$ donne $4b=-4+4=0$, donc $b=0$.\n\n$$h(x)=x$$"
+        },
+        {
+          "numero": 4,
+          "action": "Combiner $h$ et la solution générale de $(E')$ pour obtenir la solution générale de $(E)$",
+          "justification": "D'après le principe de superposition établi dans la Règle, une fonction $\\varphi$ est solution de $(E)$ si et seulement si $\\varphi-h$ est solution de $(E')$ : la solution générale de $(E)$ s'obtient en ajoutant $h$ à la solution générale de $(E')$.",
+          "resultat_markdown": "$$y(x)=(Ax+B)e^{2x}+x,\\qquad (A,B)\\in\\mathbb{R}^2$$"
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer $A$ et $B$ à l'aide des conditions $f(0)=2$ et $f'(0)=3$",
+          "justification": "On dérive la solution générale, puis on calcule ses valeurs en $x=0$ pour obtenir un système en $A$ et $B$.",
+          "resultat_markdown": "On dérive : $f'(x)=\\big[A+2(Ax+B)\\big]e^{2x}+1=(2Ax+A+2B)e^{2x}+1$.\n\n$$f(0)=B=2\\ \\Longrightarrow\\ B=2$$\n\n$$f'(0)=A+2B+1=A+5=3\\ \\Longrightarrow\\ A=-2$$\n\n$$f(x)=(-2x+2)e^{2x}+x$$"
+        }
+      ],
+      "conclusion_markdown": "La solution de $(E)$ qui vérifie $f(0)=2$ et $f'(0)=3$ est $f(x)=(-2x+2)e^{2x}+x$, ou encore $f(x)=2(1-x)e^{2x}+x$ : une fonction unique, obtenue en fixant les deux constantes de la famille de solutions à l'aide des deux conditions initiales."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Résoudre uniquement l'équation homogène $(E')$ et donner $y(x)=(Ax+B)e^{2x}$ comme solution de $(E)$, en oubliant le second membre.",
+          "pourquoi_faux": "$(Ax+B)e^{2x}$ vérifie $(E')$, pas $(E)$ : en la substituant dans $(E)$, on obtient $y''-4y'+4y=0$, alors que $(E)$ impose que cette expression vaille $4x-4$, pas $0$. Une solution de $(E')$ n'est en général pas solution de $(E)$ dès que le second membre n'est pas nul.",
+          "correction_markdown": "Vérifie systématiquement si $(E)$ a un second membre non nul avant de conclure. Si oui, il manque toujours une solution particulière $h$ à ajouter à la solution générale de $(E')$."
+        },
+        {
+          "erreur_markdown": "Pour une racine double $r_0$, écrire la solution générale $y(x)=Ce^{r_0x}$ (une seule constante), comme pour une équation du premier ordre.",
+          "pourquoi_faux": "Une équation du second ordre a deux degrés de liberté (par exemple $y(0)$ et $y'(0)$ à fixer), donc sa solution générale doit contenir deux constantes indépendantes. La forme $Ce^{r_0x}$ n'en contient qu'une : elle ne permet de satisfaire qu'une seule condition initiale, jamais deux à la fois.",
+          "correction_markdown": "Retiens que la racine double impose de multiplier l'exponentielle par un polynôme du premier degré, $(Ax+B)e^{r_0x}$, pas par une constante seule : c'est ce facteur $Ax+B$ qui fournit la deuxième constante."
+        },
+        {
+          "erreur_markdown": "Chercher une solution particulière constante $h(x)=b$ alors que le second membre de $(E)$ est affine, du type $mx+n$ avec $m\\neq0$.",
+          "pourquoi_faux": "Avec $h(x)=b$ constante, $h'=h''=0$, donc $h''-4h'+4h=4b$ : une expression constante ne peut jamais égaler $4x-4$, qui dépend de $x$. Le degré du polynôme test doit reproduire le degré du second membre, sinon l'identification est impossible dès la première ligne.",
+          "correction_markdown": "Avant de substituer, regarde le degré du second membre $f(x)$ : constant, essaie $h$ constante ; affine, essaie $h(x)=ax+b$. Le nombre de coefficients inconnus dans $h$ doit égaler le nombre d'équations obtenues par identification."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre sur $\\mathbb{R}$ l'équation différentielle $(E_1): y''-6y'+9y=0$, puis déterminer la solution $g$ de $(E_1)$ telle que $g(0)=1$ et $g'(0)=4$.",
+          "solution_markdown": "L'équation caractéristique associée à $(E_1)$ est $r^2-6r+9=0$, de discriminant $\\Delta=(-6)^2-4\\times1\\times9=36-36=0$. Le discriminant est nul : l'équation admet une racine double $r_0=-\\dfrac{-6}{2}=3$.\n\nLes solutions générales de $(E_1)$ sont donc $g(x)=(Ax+B)e^{3x}$, $(A,B)\\in\\mathbb{R}^2$.\n\nOn dérive : $g'(x)=\\big[A+3(Ax+B)\\big]e^{3x}=(3Ax+A+3B)e^{3x}$.\n\n$g(0)=B$, donc $g(0)=1$ donne $B=1$.\n\n$g'(0)=A+3B$, donc $g'(0)=4$ donne $A+3(1)=4$, soit $A=1$.\n\n$$g(x)=(x+1)e^{3x}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre sur $\\mathbb{R}$ l'équation différentielle $(E_2): y''-6y'+9y=9x+3$, sachant que l'équation homogène associée est celle de la question précédente.",
+          "solution_markdown": "L'équation homogène associée à $(E_2)$ est exactement $(E_1)$ de la question précédente, déjà résolue : ses solutions sont $(Ax+B)e^{3x}$, $(A,B)\\in\\mathbb{R}^2$.\n\nOn cherche une solution particulière affine $h(x)=ax+b$ de $(E_2)$, car le second membre $9x+3$ est affine. On a $h'(x)=a$ et $h''(x)=0$, d'où :\n\n$$h''-6h'+9h=0-6a+9(ax+b)=9ax+(9b-6a)$$\n\nEn identifiant avec $9x+3$ : $9a=9$ donne $a=1$, et $9b-6a=3$ donne $9b-6=3$, soit $9b=9$, donc $b=1$.\n\n$$h(x)=x+1$$\n\nD'après le principe de superposition, la solution générale de $(E_2)$ s'obtient en ajoutant $h$ à la solution générale de l'équation homogène :\n\n$$y(x)=(Ax+B)e^{3x}+x+1,\\qquad (A,B)\\in\\mathbb{R}^2$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère l'équation différentielle $(E_3): y''-5y'+6y=6x-5$.\n\n1) Montrer que l'équation caractéristique associée à l'équation homogène $(E_3'): y''-5y'+6y=0$ admet deux racines réelles distinctes, et résoudre $(E_3')$.\n\n2) Déterminer une solution particulière affine de $(E_3)$.\n\n3) En déduire la solution $\\varphi$ de $(E_3)$ telle que $\\varphi(0)=5$ et $\\varphi'(0)=9$.",
+          "solution_markdown": "**1) Résolution de $(E_3')$.** L'équation caractéristique associée à $(E_3'): y''-5y'+6y=0$ est $r^2-5r+6=0$, de discriminant $\\Delta=(-5)^2-4\\times1\\times6=25-24=1$. Comme $\\Delta>0$, l'équation admet deux racines réelles distinctes :\n\n$$r_1=\\frac{5-\\sqrt{1}}{2}=\\frac{5-1}{2}=2,\\qquad r_2=\\frac{5+\\sqrt{1}}{2}=\\frac{5+1}{2}=3$$\n\nLes solutions générales de $(E_3')$ sont donc $y(x)=Ae^{2x}+Be^{3x}$, $(A,B)\\in\\mathbb{R}^2$ (cas $\\Delta>0$ de la Règle, différent du cas de racine double vu dans l'exemple résolu).\n\n**2) Solution particulière de $(E_3)$.** Le second membre $6x-5$ est affine ; on essaie $h(x)=ax+b$, avec $h'(x)=a$ et $h''(x)=0$ :\n\n$$h''-5h'+6h=0-5a+6(ax+b)=6ax+(6b-5a)$$\n\nEn identifiant avec $6x-5$ : $6a=6$ donne $a=1$, et $6b-5a=-5$ donne $6b-5=-5$, soit $6b=0$, donc $b=0$.\n\n$$h(x)=x$$\n\n**3) Solution générale et détermination de $\\varphi$.** D'après le principe de superposition, la solution générale de $(E_3)$ est :\n\n$$y(x)=Ae^{2x}+Be^{3x}+x,\\qquad (A,B)\\in\\mathbb{R}^2$$\n\nOn dérive : $y'(x)=2Ae^{2x}+3Be^{3x}+1$.\n\n$\\varphi(0)=A+B$, donc $\\varphi(0)=5$ donne $A+B=5$.\n\n$\\varphi'(0)=2A+3B+1$, donc $\\varphi'(0)=9$ donne $2A+3B=8$.\n\nDe la première équation, $A=5-B$. En substituant dans la seconde : $2(5-B)+3B=8$, soit $10-2B+3B=8$, soit $B=-2$. On en déduit $A=5-(-2)=7$.\n\n$$\\varphi(x)=7e^{2x}-2e^{3x}+x$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour résoudre $(E): y''+py'+qy=f(x)$, procède toujours dans le même ordre : une solution particulière $h$ d'abord, l'équation homogène $(E')$ ensuite, puis tu additionnes les deux.",
+        "L'équation caractéristique $r^2+pr+q=0$ pilote entièrement la forme des solutions de l'équation homogène : calcule toujours son discriminant avant d'écrire la solution générale, ne la récite pas de mémoire.",
+        "Une racine double impose $(Ax+B)e^{r_0x}$, jamais $Ce^{r_0x}$ tout court : la solution générale d'une équation du second ordre a toujours deux constantes indépendantes, pas une.",
+        "La forme du polynôme test pour la solution particulière $h$ doit reproduire le degré du second membre $f$ : constant pour constant, affine pour affine.",
+        "Deux conditions initiales, $y(0)$ et $y'(0)$, suffisent toujours à déterminer les deux constantes $A$ et $B$ : ce sont elles qui transforment une famille infinie de solutions en une seule fonction précise.",
+        "Au BAC série D, ce type d'équation apparaît souvent en fin de problème, après l'étude complète d'une fonction $f$ : la question demande alors de vérifier que $f$ est solution de $(E)$, ou de retrouver son expression à partir de $(E)$ - un exercice de calcul rigoureux plus qu'un exercice de réflexion nouvelle."
+      ]
+    }
+  ]
+}

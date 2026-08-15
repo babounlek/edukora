@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-determiner-une-droite-de-regression-lineaire-simple-par-moindres-carres-a-partir-dune-serie-appariee-terminale-d",
+  "meta": {
+    "titre": "Déterminer une droite de régression linéaire simple par la méthode des moindres carrés à partir d'une série statistique appariée",
+    "cours_id": "cours-determiner-une-droite-de-regression-lineaire-simple-par-moindres-carres-a-partir-dune-serie-appariee-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Statistiques — ajustement affine",
+    "tags": [
+      "régression linéaire",
+      "moindres carrés",
+      "série statistique double",
+      "prédiction"
+    ],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex5-tache3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un nuage de points appariés (x_i,y_i) issu d'observations, la méthode des moindres carrés propose la droite qui minimise globalement l'écart entre le modèle et les données, permettant ensuite des prédictions raisonnables."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Calcul d'une moyenne arithmétique simple",
+        "Calcul d'une somme de produits et de carrés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer la droite de régression Y en X par moindres carrés",
+      "contenu_markdown": "Pour une série statistique double $(x_i,y_i)$, $i=1,\\dots,n$ (une observation par valeur, sans effectifs), la droite de régression de $y$ en $x$ par moindres carrés est $y=ax+b$, avec $a=\\dfrac{\\sum(x_i-\\bar x)(y_i-\\bar y)}{\\sum(x_i-\\bar x)^2}$ et $b=\\bar y-a\\bar x$, où $\\bar x,\\bar y$ sont les moyennes arithmétiques simples des $x_i$ et des $y_i$.",
+      "formule_principale": "a = Σ(xi-x̄)(yi-ȳ) / Σ(xi-x̄)² ; b = ȳ-ax̄",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "x∈{1,2,3}, y∈{2,4,5}. Déterminer la droite de régression de y en x.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les moyennes",
+          "justification": "x̄=(1+2+3)/3=2, ȳ=(2+4+5)/3=11/3.",
+          "resultat_markdown": "x̄=2, ȳ≈3,67"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer Σ(xi-x̄)(yi-ȳ)",
+          "justification": "(1-2)(2-3,67)+(2-2)(4-3,67)+(3-2)(5-3,67) = 1,67+0+1,33.",
+          "resultat_markdown": "somme ≈ 3"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer Σ(xi-x̄)² et en déduire a, b",
+          "justification": "(-1)²+0²+1²=2 ; a=3/2=1,5 ; b=3,67-1,5×2=0,67.",
+          "resultat_markdown": "a=1,5, b≈0,67"
+        }
+      ],
+      "conclusion_markdown": "La droite de régression est y≈1,5x+0,67."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la formule d'une régression pondérée (avec effectifs nij) alors que la série est une simple liste appariée sans effectifs",
+          "pourquoi_faux": "Quand chaque valeur de x n'apparaît qu'une seule fois avec une seule valeur de y associée, les moyennes et sommes se calculent directement sur les n couples, sans pondération par des effectifs — introduire des poids inexistants fausserait le calcul.",
+          "correction_markdown": "Vérifier la structure des données (tableau à double entrée avec effectifs, ou simple liste de couples) avant de choisir la formule de calcul des moyennes appropriée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "x∈{0,1,2}, calculer x̄.",
+          "solution_markdown": "x̄=(0+1+2)/3=1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la droite de régression passe-t-elle toujours par le point moyen (x̄,ȳ) ?",
+          "solution_markdown": "Parce que b=ȳ-ax̄, donc en substituant x=x̄ dans y=ax+b, on obtient y=ax̄+(ȳ-ax̄)=ȳ : le point (x̄,ȳ) vérifie toujours l'équation de la droite par construction."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi une prédiction obtenue par cette droite est-elle plus fiable pour une valeur de x proche de la plage observée que pour une valeur lointaine ?",
+          "solution_markdown": "La droite de régression est calibrée uniquement sur la tendance observée dans la plage des données ; rien ne garantit que cette tendance linéaire se poursuive au-delà, donc extrapoler loin de la plage observée introduit un risque d'erreur croissant avec l'éloignement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La droite de régression de y en x par moindres carrés est y=ax+b avec a=Σ(xi-x̄)(yi-ȳ)/Σ(xi-x̄)² et b=ȳ-ax̄.",
+        "Elle passe toujours exactement par le point moyen (x̄,ȳ), ce qui permet une vérification rapide.",
+        "Une prédiction reste plus fiable proche de la plage des données observées ; l'extrapoler loin comporte un risque croissant."
+      ]
+    }
+  ]
+}

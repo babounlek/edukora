@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-developpement-produit-endomorphismes-f-aid-f-bid-terminale-c",
+  "meta": {
+    "titre": "Développer un produit d'endomorphismes du type (f-aId)∘(f-bId)",
+    "cours_id": "cours-developpement-produit-endomorphismes-f-aid-f-bid-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - bilinéarité de la composition",
+    "tags": ["développement d'endomorphismes", "bilinéarité", "composition"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_4_qPII-1"
+  },
+  "sections": {
+    "accroche": "Composer deux endomorphismes de la forme f-aId se développe exactement comme un produit de deux binômes en algèbre ordinaire, à condition de bien utiliser la bilinéarité de la composition et le fait que Id est neutre pour ∘.",
+    "prerequis": ["Bilinéarité de la composition d'endomorphismes", "Id∘f=f∘Id=f"],
+    "regle": {
+      "titre": "Développement de (f-aId)∘(f-bId)",
+      "contenu_markdown": "Par bilinéarité de $\\circ$ : $(f-a\\,Id)\\circ(f-b\\,Id)=f\\circ f-b\\,f\\circ Id-a\\,Id\\circ f+ab\\,Id\\circ Id=f\\circ f-(a+b)f+ab\\,Id$ (en utilisant $Id\\circ f=f\\circ Id=f$ et $Id\\circ Id=Id$). Si cette composée est nulle par hypothèse, on en tire immédiatement $f\\circ f=(a+b)f-ab\\,Id$, une relation de type Cayley-Hamilton avec $a,b$ jouant le rôle des racines du polynôme caractéristique.",
+      "formule_principale": "$(f-a\\,Id)\\circ(f-b\\,Id)=f\\circ f-(a+b)f+ab\\,Id$",
+      "variantes": ["Ce développement est le pendant algébrique exact de (X-a)(X-b)=X²-(a+b)X+ab pour les polynômes"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Développer (f-2Id)∘(f+3Id).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier a=2, b=-3", "justification": "réécriture f+3Id=f-(-3)Id", "resultat_markdown": "a=2, b=-3"},
+        {"numero": 2, "action": "Appliquer la formule", "justification": "développement bilinéaire", "resultat_markdown": "$f\\circ f-(2-3)f+2\\times(-3)Id=f\\circ f+f-6Id$"}
+      ],
+      "conclusion_markdown": "(f-2Id)∘(f+3Id)=f∘f+f-6Id, cohérent avec le développement direct terme à terme."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier que Id∘f=f (traiter Id comme un simple scalaire sans vérifier la neutralité pour ∘)", "pourquoi_faux": "bien que Id se comporte comme un neutre, la composition n'est pas commutative en général ; il faut vérifier Id∘f=f∘Id=f explicitement (ce qui est toujours vrai pour Id, mais pas pour un endomorphisme quelconque)", "correction_markdown": "Se rappeler que Id est le neutre de ∘ dans L(E), ce qui justifie Id∘f=f∘Id=f, une propriété spécifique à Id et non généralisable à d'autres endomorphismes."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Développer (f-Id)∘(f-Id).", "solution_markdown": "f∘f-2f+Id (cas particulier a=b=1)."}
+    ],
+    "synthese": "Le développement de (f-aId)∘(f-bId) suit exactement les règles algébriques d'un produit de binômes, grâce à la bilinéarité de la composition et à la neutralité de Id ; ce développement, combiné à l'hypothèse que le produit est nul, fournit une relation exprimant f∘f en fonction de f et Id, analogue à une relation de Cayley-Hamilton."
+  }
+}

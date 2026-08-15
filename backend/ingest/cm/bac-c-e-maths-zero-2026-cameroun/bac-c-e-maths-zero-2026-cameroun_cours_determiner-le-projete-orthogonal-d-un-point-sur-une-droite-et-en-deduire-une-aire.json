@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-determiner-le-projete-orthogonal-d-un-point-sur-une-droite-et-en-deduire-une-aire-terminale-c",
+  "meta": {
+    "titre": "Déterminer le projeté orthogonal d'un point sur une droite et en déduire une aire",
+    "cours_id": "cours-determiner-le-projete-orthogonal-d-un-point-sur-une-droite-et-en-deduire-une-aire-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Géométrie dans l'espace — distances et aires",
+    "tags": [
+      "projeté orthogonal",
+      "distance point-droite",
+      "aire d'un triangle"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex3-2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le pied de la perpendiculaire abaissée d'un point sur une droite n'est pas seulement un point remarquable : sa distance au point de départ est exactement la hauteur qui permet de calculer l'aire d'un triangle sans passer par un produit vectoriel."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir paramétrer une droite (AB) et projeter un point sur elle par calcul scalaire",
+        "Connaître la formule Aire=1/2×base×hauteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Projeté orthogonal et aire via base × hauteur",
+      "contenu_markdown": "Le projeté orthogonal $H$ d'un point $O$ sur une droite $(AB)$ s'obtient par $H=A+t\\,\\overrightarrow{AB}$, avec $t=\\dfrac{\\overrightarrow{AO}\\cdot\\overrightarrow{AB}}{\\|\\overrightarrow{AB}\\|^2}$ (projection scalaire du vecteur $\\overrightarrow{AO}$ sur la direction $\\overrightarrow{AB}$). Une fois $H$ connu, l'aire du triangle $OAB$ s'obtient par $\\mathrm{Aire}=\\dfrac12\\times AB\\times OH$, $OH$ étant la hauteur issue de $O$.",
+      "formule_principale": "H=A+t·AB, t=(AO·AB)/||AB||² ; Aire(OAB)=(1/2)·AB·OH",
+      "variantes": [
+        "Alternative plus rapide : Aire(OAB) = (1/2)||OA∧OB||"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A(1;0;1/2), B(0;2/3;1). Déterminer le projeté orthogonal H de O sur (AB) et en déduire l'aire de OAB.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer AB et ||AB||²",
+          "justification": "AB=B-A.",
+          "resultat_markdown": "AB=(-1;2/3;1/2), ||AB||²=1+4/9+1/4=61/36"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer AO·AB",
+          "justification": "AO=O-A=(-1;0;-1/2).",
+          "resultat_markdown": "AO·AB=1+0-1/4=3/4"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer t puis H=A+t·AB",
+          "justification": "t=(3/4)/(61/36)=27/61.",
+          "resultat_markdown": "H=(34/61;18/61;44/61)"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'aire via le produit vectoriel (méthode équivalente et plus rapide)",
+          "justification": "Aire=1/2||OA∧OB||.",
+          "resultat_markdown": "OA∧OB=(-1/3;-1;2/3), norme=√(14)/3, Aire=√14/6"
+        }
+      ],
+      "conclusion_markdown": "H(34/61;18/61;44/61), et Aire(OAB)=√14/6 unités d'aire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer laborieusement OH puis l'aire via base×hauteur, sans remarquer qu'un produit vectoriel déjà calculé donne l'aire directement",
+          "pourquoi_faux": "Si le produit vectoriel OA∧OB a déjà été calculé dans une question précédente (par exemple pour trouver l'équation d'un plan), il est nettement plus rapide de l'utiliser directement pour l'aire (Aire=½||OA∧OB||) plutôt que de repasser par un calcul de OH potentiellement plus long et sujet à erreur.",
+          "correction_markdown": "Toujours vérifier si un résultat déjà établi dans une question précédente (ici le produit vectoriel) permet un raccourci pour la question suivante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A=(0;0;0), B=(4;0;0), C=(0;3;0). Calculer l'aire du triangle ABC directement.",
+          "solution_markdown": "AB=(4;0;0), AC=(0;3;0), AB∧AC=(0;0;12), Aire=1/2×12=6."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi le coefficient t de la projection doit-il être compris entre 0 et 1 pour que H soit entre A et B ?",
+          "solution_markdown": "H=A+t·AB : pour t=0, H=A ; pour t=1, H=B ; pour t entre 0 et 1, H est un point du segment [AB] par interpolation linéaire. Si t<0 ou t>1, H se situe sur la droite (AB) mais en dehors du segment."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment vérifier, sans recalculer entièrement, que le H trouvé est correct ?",
+          "solution_markdown": "On peut vérifier que le vecteur OH est orthogonal à AB (produit scalaire nul), condition caractéristique du projeté orthogonal ; c'est une vérification rapide indépendante du calcul initial."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le projeté orthogonal H de O sur (AB) s'obtient par H=A+t·AB avec t=(AO·AB)/||AB||².",
+        "L'aire du triangle OAB se calcule ensuite par (1/2)×AB×OH.",
+        "Le produit vectoriel OA∧OB, si déjà calculé, donne l'aire plus directement : Aire=(1/2)||OA∧OB||."
+      ]
+    }
+  ]
+}

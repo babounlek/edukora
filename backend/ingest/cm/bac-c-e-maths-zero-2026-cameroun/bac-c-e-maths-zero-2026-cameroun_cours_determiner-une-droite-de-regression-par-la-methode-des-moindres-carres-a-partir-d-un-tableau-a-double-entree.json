@@ -1,0 +1,114 @@
+{
+  "cours_id": "cours-determiner-une-droite-de-regression-par-la-methode-des-moindres-carres-a-partir-d-un-tableau-a-double-entree-terminale-c",
+  "meta": {
+    "titre": "Déterminer une droite de régression par la méthode des moindres carrés à partir d'un tableau à double entrée",
+    "cours_id": "cours-determiner-une-droite-de-regression-par-la-methode-des-moindres-carres-a-partir-d-un-tableau-a-double-entree-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Statistiques — ajustement affine",
+    "tags": [
+      "régression linéaire",
+      "moindres carrés",
+      "tableau à double entrée",
+      "extrapolation"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex4-Tache2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau à double entrée d'effectifs cache une droite qui résume au mieux la tendance entre deux variables, mais cette droite ne dit la vérité que dans les limites où les données ont réellement été observées."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir calculer une moyenne pondérée à partir d'effectifs",
+        "Connaître les formules de la droite de régression par moindres carrés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer la droite de régression à partir d'un tableau à double entrée",
+      "contenu_markdown": "Pour une série statistique à deux caractères $(x_i,y_i)$ donnée par un tableau à double entrée d'effectifs $n_{ij}$, la droite de régression de $y$ en $x$ (méthode des moindres carrés) est $y=ax+b$, avec $a=\\dfrac{\\overline{xy}-\\bar x\\bar y}{\\overline{x^2}-\\bar x^2}$ et $b=\\bar y-a\\bar x$, où $\\bar x,\\bar y,\\overline{xy},\\overline{x^2}$ sont des moyennes pondérées par les effectifs $n_{ij}$ du tableau. Cette droite ne doit être utilisée pour prédire une valeur que pour des $x$ raisonnablement proches de la plage observée : l'extrapoler loin en dehors peut produire un résultat non pertinent.",
+      "formule_principale": "a=\\dfrac{\\overline{xy}-\\bar x\\bar y}{\\overline{x^2}-\\bar x^2}, b=\\bar y-a\\bar x",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Tableau à double entrée avec x∈{1,2,3}, y∈{0,1}, effectifs n(1,0)=0,n(1,1)=4,n(2,0)=31,n(2,1)=11,n(3,0)=0,n(3,1)=3. Déterminer la droite de régression et prédire y pour x=15.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les effectifs marginaux et le total",
+          "justification": "Somme des effectifs sur chaque ligne/colonne.",
+          "resultat_markdown": "n(x=1)=4, n(x=2)=42, n(x=3)=3, N=49"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer x̄ et ȳ",
+          "justification": "Moyennes pondérées par les effectifs marginaux.",
+          "resultat_markdown": "x̄=97/49≈1,98 ; ȳ=18/49≈0,367"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer xy̅ et x²̅",
+          "justification": "Moyennes pondérées des produits/carrés.",
+          "resultat_markdown": "xy̅=35/49 ; x²̅=199/49"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer a, b, puis prédire pour x=15",
+          "justification": "Application des formules de régression, puis substitution.",
+          "resultat_markdown": "a≈-0,0906, b≈0,547, y(15)≈-0,813 (en dizaines de milliers de FCFA), soit environ -8129 FCFA"
+        }
+      ],
+      "conclusion_markdown": "La prédiction est négative et donc non pertinente : x=15 est bien trop loin de la plage observée (x∈{1,2,3}, x̄≈1,98) pour que l'extrapolation linéaire soit fiable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Présenter une prédiction issue d'une extrapolation lointaine comme un résultat fiable sans commentaire",
+          "pourquoi_faux": "Une droite de régression est calibrée sur la plage des données observées ; l'extrapoler à une valeur très éloignée (ici 15 contre une moyenne observée d'environ 2) peut produire des résultats absurdes (ici un salaire négatif), qu'il faut impérativement signaler plutôt que présenter tel quel.",
+          "correction_markdown": "Toujours comparer la valeur à prédire à l'étendue des données observées, et signaler explicitement toute extrapolation lointaine et son résultat potentiellement non pertinent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer x̄ pour x∈{1,2,3} avec effectifs 4,42,3.",
+          "solution_markdown": "x̄=(1×4+2×42+3×3)/49=97/49≈1,98."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi ne calcule-t-on la somme Σnij·xi·yi qu'en tenant compte des cellules où yi≠0 ?",
+          "solution_markdown": "Toute cellule où yi=0 contribue par un produit xi×yi×nij=0 à la somme, donc seules les cellules où yi=1 (dans cet exemple) apportent une contribution non nulle : c'est un raccourci de calcul, pas une approximation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment améliorer la fiabilité d'une estimation pour x=15 dans ce contexte ?",
+          "solution_markdown": "Il faudrait mener une nouvelle enquête statistique incluant des exploitants travaillant sur des superficies plus proches de 15 ha, afin d'obtenir des données réellement représentatives de cette plage, plutôt que d'extrapoler une droite calibrée sur des superficies de 1 à 3 ha."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La droite de régression par moindres carrés se calcule à partir des moyennes pondérées x̄,ȳ,xy̅,x²̅ tirées d'un tableau à double entrée.",
+        "a=(xy̅-x̄ȳ)/(x²̅-x̄²) et b=ȳ-ax̄.",
+        "Une prédiction obtenue par extrapolation loin de la plage observée doit toujours être questionnée avant d'être présentée comme fiable."
+      ]
+    }
+  ]
+}

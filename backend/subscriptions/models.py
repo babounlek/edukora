@@ -10,11 +10,29 @@ class DureeMode(models.TextChoices):
     JUSQUA_EXAMEN = "JUSQUA_EXAMEN", "Jusqu'à l'examen"
 
 
+class ProductType(models.TextChoices):
+    """
+    Ce que l'achat de ce Plan active - ABONNEMENT active/prolonge Subscription (accès de
+    base au Cursus), ADDON_INEDIT active/prolonge InscriptionInedite (add-on Épreuves
+    Inédites, voir sa docstring), ADDON_REPETITEUR active/prolonge InscriptionRepetiteur
+    (add-on Fiches, voir sa docstring - même patron qu'ADDON_INEDIT). Décision "C2" de
+    l'audit "Épreuves Inédites" : un type de produit supplémentaire sur le même modèle
+    Plan/Transaction/ManualPayment plutôt qu'une facturation parallèle -
+    Transaction.sync_status/ManualPayment.approve lisent ce champ pour savoir laquelle
+    des activations appeler.
+    """
+
+    ABONNEMENT = "ABONNEMENT", "Abonnement cursus"
+    ADDON_INEDIT = "ADDON_INEDIT", "Add-on Épreuves Inédites"
+    ADDON_REPETITEUR = "ADDON_REPETITEUR", "Add-on Fiches Répétiteur"
+
+
 class Plan(models.Model):
     """Offre commerciale : ce qu'un utilisateur achète (prix, durée, périmètre d'accès)."""
 
     name = models.CharField(max_length=100)
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="plans")
+    product_type = models.CharField(max_length=20, choices=ProductType.choices, default=ProductType.ABONNEMENT)
     price = models.PositiveIntegerField(help_text="Prix en FCFA.")
     duration_mode = models.CharField(max_length=20, choices=DureeMode.choices, default=DureeMode.FIXE)
     duration_days = models.PositiveSmallIntegerField(
@@ -22,6 +40,17 @@ class Plan(models.Model):
         help_text="Utilisé tel quel si duration_mode=FIXE. Ignoré (valeur de repli seulement, voir effective_duration_days) si duration_mode=JUSQUA_EXAMEN.",
     )
     is_active = models.BooleanField(default=True, help_text="Décoche pour retirer une offre du catalogue sans la supprimer.")
+    inclut_inedit = models.BooleanField(
+        default=False,
+        help_text=(
+            "Un Plan ABONNEMENT qui coche ceci active aussi l'add-on Épreuves Inédites "
+            "(InscriptionInedite) en plus de l'abonnement, pour la même durée - sans "
+            "achat séparé d'un Plan ADDON_INEDIT. Décision produit du 2026-08-09 : la "
+            "formule Max (1 an) inclut l'accès aux inédites. Sans effet sur un Plan "
+            "ADDON_INEDIT lui-même (déjà exclusivement dédié à cet accès, voir "
+            "_activer_acces) - n'a de sens que pour product_type=ABONNEMENT."
+        ),
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -111,62 +140,212 @@ class Subscription(models.Model):
         self.save(update_fields=["expires_at", "updated_at"])
 
 
+class InscriptionInediteManager(models.Manager):
+    def activate_or_extend(self, user, cursus, duration_days):
+        """Miroir exact de SubscriptionManager.activate_or_extend - même raison de
+        verrouillage (voir sa docstring), jamais dupliquée en logique divergente."""
+        with db_transaction.atomic():
+            inscription, created = self.get_or_create(
+                user=user, cursus=cursus,
+                defaults={"expires_at": timezone.now() + timezone.timedelta(days=duration_days)},
+            )
+            if not created:
+                locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
+                inscription = locked_qs.get(pk=inscription.pk)
+                inscription.extend(duration_days)
+        return inscription
+
+
+class InscriptionInedite(models.Model):
+    """
+    Accès actif d'un utilisateur à l'add-on Épreuves Inédites pour un Cursus - miroir
+    exact de Subscription (même grain user+cursus, même contrainte d'unicité, même
+    activate_or_extend), mais modèle séparé plutôt qu'un champ ajouté sur Subscription
+    (décision "C2" de l'audit "Épreuves Inédites") : ne touche aucune ligne déjà
+    exploitée par SubscriptionManager.activate_or_extend/recompenser_parrainage, et son
+    cycle de vie (expiration, renouvellement) reste indépendant de l'abonnement de base
+    sur le même cursus - un utilisateur peut laisser expirer l'un sans affecter l'autre.
+
+    Accès (voir access.services.has_access_inedite) : contrairement à Subscription (dont
+    has_access court-circuite via Lesson.est_vitrine), aucune notion de vitrine ici -
+    décision produit "corrigé gaté comme le reste" de l'audit, aucune exception.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="inscriptions_inedites")
+    cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="inscriptions_inedites")
+    expires_at = models.DateTimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = InscriptionInediteManager()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "cursus"], name="unique_inscription_inedite_per_cursus"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.cursus} inédit (expire {self.expires_at:%d/%m/%Y})"
+
+    @property
+    def is_active(self):
+        return self.expires_at > timezone.now()
+
+    def extend(self, duration_days):
+        """Voir Subscription.extend - même règle."""
+        base = self.expires_at if self.is_active else timezone.now()
+        self.expires_at = base + timezone.timedelta(days=duration_days)
+        self.save(update_fields=["expires_at", "updated_at"])
+
+
+class InscriptionRepetiteurManager(models.Manager):
+    def activate_or_extend(self, user, cursus, duration_days):
+        """Miroir exact de SubscriptionManager.activate_or_extend - même raison de
+        verrouillage (voir sa docstring), jamais dupliquée en logique divergente."""
+        with db_transaction.atomic():
+            inscription, created = self.get_or_create(
+                user=user, cursus=cursus,
+                defaults={"expires_at": timezone.now() + timezone.timedelta(days=duration_days)},
+            )
+            if not created:
+                locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
+                inscription = locked_qs.get(pk=inscription.pk)
+                inscription.extend(duration_days)
+        return inscription
+
+
+class InscriptionRepetiteur(models.Model):
+    """
+    Accès actif d'un utilisateur à l'add-on Fiches (répétiteur) pour un Cursus - miroir
+    exact d'InscriptionInedite (même grain user+cursus, même contrainte d'unicité, même
+    activate_or_extend) : accès temporel illimité en volume, pas de système de crédits
+    (décision produit du chantier "Outil Fiches pour répétiteurs") - pendant que
+    l'inscription est active, aucune limite sur le nombre de fiches générées.
+
+    Accès (voir access.services.has_access_fiches) : aucune notion de vitrine ici, même
+    choix qu'InscriptionInedite - l'outil de génération de fiches est entièrement gaté
+    par cet add-on, sans exception.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="inscriptions_repetiteur")
+    cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="inscriptions_repetiteur")
+    expires_at = models.DateTimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = InscriptionRepetiteurManager()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "cursus"], name="unique_inscription_repetiteur_per_cursus"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.cursus} répétiteur (expire {self.expires_at:%d/%m/%Y})"
+
+    @property
+    def is_active(self):
+        return self.expires_at > timezone.now()
+
+    def extend(self, duration_days):
+        """Voir Subscription.extend - même règle."""
+        base = self.expires_at if self.is_active else timezone.now()
+        self.expires_at = base + timezone.timedelta(days=duration_days)
+        self.save(update_fields=["expires_at", "updated_at"])
+
+
 PARRAINAGE_JOURS_OFFERTS = 7
 
 
 class ParrainageRecompense(models.Model):
     """
-    Trace qu'un parrainage a été récompensé, une ligne par transaction filleul ayant
-    déclenché la récompense - sert à la fois de garde-fou anti double-crédit (la
-    OneToOneField sur `transaction` empêche toute création en double) et d'historique
-    consultable (combien de jours offerts, à qui, pour quel filleul).
+    Trace qu'un parrainage a été récompensé, une ligne par paiement filleul ayant
+    déclenché la récompense - Campay (`transaction`) ou paiement manuel approuvé
+    (`manual_payment`), exactement l'un des deux étant renseigné (voir la contrainte
+    ci-dessous). Sert à la fois de garde-fou anti double-crédit (chaque
+    OneToOneField empêche toute création en double pour un même paiement) et
+    d'historique consultable (combien de jours offerts, à qui, pour quel filleul).
     """
 
     parrain = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="parrainages_recompenses")
     filleul = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="parrainage_recompense")
     transaction = models.OneToOneField(
-        "payments.Transaction", on_delete=models.CASCADE, related_name="parrainage_recompense",
+        "payments.Transaction", null=True, blank=True, on_delete=models.CASCADE, related_name="parrainage_recompense",
+    )
+    manual_payment = models.OneToOneField(
+        "payments.ManualPayment", null=True, blank=True, on_delete=models.CASCADE, related_name="parrainage_recompense",
     )
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT)
     jours_offerts = models.PositiveSmallIntegerField(default=PARRAINAGE_JOURS_OFFERTS)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(transaction__isnull=False) ^ models.Q(manual_payment__isnull=False),
+                name="parrainage_recompense_exactly_one_source",
+            ),
+        ]
+
     def __str__(self):
         return f"{self.parrain} récompensé pour le parrainage de {self.filleul} (+{self.jours_offerts}j)"
 
 
-def recompenser_parrainage(transaction):
+def recompenser_parrainage(paiement):
     """
-    Si l'utilisateur de `transaction` a été parrainé ET que cette transaction est sa
-    toute première réussie, prolonge l'abonnement du parrain (sur le même cursus que
-    l'achat du filleul) de PARRAINAGE_JOURS_OFFERTS jours. Ne récompense jamais un
-    réabonnement du filleul - seulement sa toute première conversion - pour éviter
-    qu'un parrain accumule des jours à chaque renouvellement de son filleul.
+    Si l'utilisateur de `paiement` a été parrainé ET que ce paiement est sa toute
+    première conversion réussie - tous moyens de paiement confondus (Campay
+    SUCCESSFUL ou paiement manuel APPROVED) - prolonge l'abonnement du parrain (sur
+    le même cursus que l'achat du filleul) de PARRAINAGE_JOURS_OFFERTS jours. Ne
+    récompense jamais un réabonnement du filleul - seulement sa toute première
+    conversion, peu importe le canal - pour éviter qu'un parrain accumule des jours
+    à chaque renouvellement de son filleul.
 
-    Appelée depuis Transaction.sync_status() une fois l'abonnement du filleul déjà
-    activé - l'import de StatutTransaction est local pour éviter un import circulaire
-    (payments.models importe déjà subscriptions.models au niveau module).
+    `paiement` : une instance payments.Transaction (déjà SUCCESSFUL) ou
+    payments.ManualPayment (déjà APPROVED). Appelée depuis Transaction.sync_status()
+    et ManualPayment.approve() une fois l'abonnement du filleul déjà activé -
+    les imports sont locaux pour éviter un import circulaire (payments.models
+    importe déjà subscriptions.models au niveau module).
     """
-    from payments.models import StatutTransaction
+    from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
 
-    filleul = transaction.user
+    # Portée volontairement limitée à l'abonnement de base : récompenser un parrain
+    # pour l'achat d'un add-on Épreuves Inédites par son filleul n'a jamais été demandé
+    # (voir l'audit "Épreuves Inédites", phase "Accès") - étendre le parrainage à ce
+    # second type de produit est une vraie décision produit (quel montant/durée offrir ?
+    # sur quel produit ?), pas une extension mécanique à trancher silencieusement ici.
+    if paiement.plan.product_type != ProductType.ABONNEMENT:
+        return
+
+    filleul = paiement.user
     parrain = filleul.referred_by
     if parrain is None:
         return
 
-    premiere_conversion = not filleul.transactions.filter(
-        status=StatutTransaction.SUCCESSFUL,
-    ).exclude(pk=transaction.pk).exists()
+    # Première conversion évaluée sur les DEUX canaux à la fois : un filleul qui a
+    # déjà un Transaction SUCCESSFUL ou un ManualPayment APPROVED antérieur (peu
+    # importe lequel) a déjà converti son parrain une fois.
+    reussies = filleul.transactions.filter(status=StatutTransaction.SUCCESSFUL)
+    approuves = filleul.manual_payments.filter(status=ManualPaymentStatus.APPROVED)
+    if isinstance(paiement, Transaction):
+        reussies = reussies.exclude(pk=paiement.pk)
+    elif isinstance(paiement, ManualPayment):
+        approuves = approuves.exclude(pk=paiement.pk)
+
+    premiere_conversion = not reussies.exists() and not approuves.exists()
     if not premiere_conversion:
         return
 
     Subscription.objects.activate_or_extend(
-        user=parrain, cursus=transaction.plan.cursus, duration_days=PARRAINAGE_JOURS_OFFERTS,
+        user=parrain, cursus=paiement.plan.cursus, duration_days=PARRAINAGE_JOURS_OFFERTS,
     )
+    source_field = "transaction" if isinstance(paiement, Transaction) else "manual_payment"
     ParrainageRecompense.objects.get_or_create(
-        transaction=transaction,
+        **{source_field: paiement},
         defaults={
             "parrain": parrain, "filleul": filleul,
-            "cursus": transaction.plan.cursus, "jours_offerts": PARRAINAGE_JOURS_OFFERTS,
+            "cursus": paiement.plan.cursus, "jours_offerts": PARRAINAGE_JOURS_OFFERTS,
         },
     )

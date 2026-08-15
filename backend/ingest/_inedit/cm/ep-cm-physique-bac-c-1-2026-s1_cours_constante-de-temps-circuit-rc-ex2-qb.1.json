@@ -1,0 +1,105 @@
+{
+  "type": "cours",
+  "cours_id": "cours-constante-de-temps-circuit-rc-bacc1-ex2-qb.1",
+  "meta": {
+    "titre": "Calculer la constante de temps d'un circuit RC et la durée de charge quasi totale du condensateur",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime transitoire",
+    "duree_estimee_min": 15,
+    "tags": ["Circuit RC"]
+  },
+  "source": {"rappel_id": "rdi-ep-cm-physique-bac-c-1-2026-s1-ex2-qb.1-0"},
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le clignotant d'une voiture, le flash d'un appareil photo, ou le minuteur d'une minuterie d'escalier : tous ces dispositifs exploitent le même principe physique - la charge (ou la décharge) progressive d'un condensateur à travers une résistance, à une vitesse entièrement fixée par le produit RC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Rôle d'un condensateur (stockage de charge électrique) et d'une résistance dans un circuit",
+        "Notion de régime permanent (état final stabilisé d'un circuit)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La constante de temps τ=RC",
+      "contenu_markdown": "Lorsqu'un condensateur de capacité C se charge (ou se décharge) à travers une résistance R, la tension à ses bornes n'atteint pas instantanément sa valeur finale : elle évolue selon une loi exponentielle caractérisée par la **constante de temps** $\\tau=RC$, homogène à un temps.\n\nPlus τ est petite, plus le régime transitoire est rapide. En pratique, on considère que le régime permanent (charge ou décharge quasi totale, à plus de 99% de la valeur finale) est atteint au bout d'une durée $t\\approx5\\tau$ : c'est une convention pratique très utilisée, à connaître, même si en toute rigueur la charge n'est jamais mathématiquement à 100% en temps fini.",
+      "formule_principale": "\\tau=RC \\qquad ; \\qquad t_{charge\\,quasi\\,totale}\\approx5\\tau"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un flash d'appareil photo utilise un condensateur de capacité $C=470\\,\\mu F$ qui se charge à travers une résistance $R=800\\,\\Omega$. Calculer la constante de temps du circuit, puis la durée nécessaire pour considérer le condensateur comme totalement chargé.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les données en unités SI",
+          "justification": "La constante de temps s'exprime en secondes lorsque R est en ohms et C en farads.",
+          "resultat_markdown": "$R=800\\,\\Omega$, $C=470\\times10^{-6}\\,F$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la constante de temps",
+          "justification": "τ=RC, produit direct des deux valeurs converties.",
+          "resultat_markdown": "$\\tau=RC=800\\times470\\times10^{-6}=0{,}376\\,s\\approx0{,}38\\,s$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la durée de charge quasi totale",
+          "justification": "On considère la charge quasi totale atteinte au bout de 5τ.",
+          "resultat_markdown": "$t\\approx5\\tau=5\\times0{,}38\\approx1{,}9\\,s$"
+        }
+      ],
+      "conclusion_markdown": "Le condensateur du flash se charge avec une constante de temps τ≈0,38s et atteint sa charge quasi totale au bout d'environ 1,9s - ce qui explique le court délai perçu entre l'allumage de l'appareil et la disponibilité du flash."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir R (souvent donné en kΩ ou MΩ) et C (souvent donné en µF, nF ou pF) dans les unités SI (Ω et F) avant de calculer τ.",
+          "pourquoi_faux": "Une seule grandeur laissée dans une unité non-SI fausse totalement la valeur numérique de τ, parfois de plusieurs ordres de grandeur.",
+          "correction_markdown": "Systématiquement convertir R en ohms et C en farads avant tout calcul de constante de temps."
+        },
+        {
+          "erreur_markdown": "Croire que le condensateur est totalement chargé exactement à l'instant t=τ.",
+          "pourquoi_faux": "À t=τ, le condensateur n'est chargé qu'à environ 63% de sa valeur finale (loi exponentielle) : il faut environ 5τ pour atteindre plus de 99% de charge, jamais 100% exactement en temps fini.",
+          "correction_markdown": "Retenir la convention pratique t≈5τ pour la charge \"quasi totale\", et ne jamais confondre τ lui-même avec la durée totale de charge."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un circuit RC a pour résistance $R=1\\,000\\,\\Omega$ et pour capacité $C=100\\,\\mu F$. Calculer sa constante de temps τ.",
+          "solution_markdown": "$\\tau=RC=1\\,000\\times100\\times10^{-6}=0{,}10\\,s$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un dispositif de minuterie d'éclairage d'escalier doit s'éteindre environ 60 secondes après l'appui sur l'interrupteur. On utilise un condensateur $C=1\\,000\\,\\mu F$. Quelle résistance R (en kΩ) doit-on associer pour obtenir une durée $t\\approx5\\tau$ proche de 60 secondes ?",
+          "solution_markdown": "On veut $5\\tau=60\\,s$, soit $\\tau=12\\,s$. Comme $\\tau=RC$ : $R=\\dfrac{\\tau}{C}=\\dfrac{12}{1\\,000\\times10^{-6}}=12\\,000\\,\\Omega=12\\,k\\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Deux circuits RC ont la même constante de temps τ=2s : le premier avec $R_1=200\\,\\Omega$, le second avec $R_2=2\\,000\\,\\Omega$. Comparer les capacités $C_1$ et $C_2$ des deux condensateurs.",
+          "solution_markdown": "Comme $\\tau=RC$ est fixé, $C=\\tau/R$. $C_1=2/200=0{,}01\\,F=10\\,000\\,\\mu F$. $C_2=2/2\\,000=0{,}001\\,F=1\\,000\\,\\mu F$. La résistance étant 10 fois plus grande dans le second circuit, sa capacité est 10 fois plus petite ($C_2=C_1/10$) pour conserver la même constante de temps."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La constante de temps d'un circuit RC vaut τ=RC (en secondes si R en ohms et C en farads).",
+        "Plus τ est petite, plus la charge (ou décharge) du condensateur est rapide.",
+        "On considère la charge quasi totale (>99%) atteinte au bout d'une durée t≈5τ, jamais atteinte exactement à 100% en temps fini.",
+        "Toujours vérifier la conversion d'unités de R et C avant tout calcul numérique de τ."
+      ]
+    }
+  ]
+}

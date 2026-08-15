@@ -1,0 +1,154 @@
+{
+  "cours_id": "cours-etude-variations-fonction-terminale-d",
+  "meta": {
+    "titre": "Étude des variations d'une fonction et tableau de variations",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Fonctions - dérivation et variations",
+    "duree_estimee_min": 35,
+    "tags": [
+      "dérivée",
+      "signe de la dérivée",
+      "tableau de variations",
+      "fonction quotient",
+      "limites"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-d-maths-2008-cameroun",
+    "epreuve_titre": "Baccalauréat D Mathématiques 2008 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-d-maths-2008-cameroun-ex3-qB.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois qu'un problème de BAC te demande d'étudier une fonction avant de tracer sa courbe, de démontrer une propriété de bijection ou de justifier l'existence d'une limite, tout repose sur une seule question : la fonction augmente-t-elle ou diminue-t-elle, et où ? Le tableau de variations répond à cette question de façon complète et visuelle, en un coup d'œil. C'est l'outil que tu vas utiliser dans la quasi-totalité des problèmes d'analyse du BAC, quelle que soit la série. Maîtriser sa construction, du calcul de la dérivée à la lecture des limites, te fait gagner un temps précieux sur toutes les questions qui en dépendent ensuite : bijection, asymptotes, calcul d'aire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer la dérivée d'une somme, d'un produit, d'un quotient et d'une composée de fonctions usuelles",
+        "Connaître le signe d'une expression du second degré et d'une exponentielle",
+        "Calculer une limite simple en $+\\infty$ ou $-\\infty$ (croissances comparées, formes indéterminées de base)",
+        "Savoir lire et écrire un intervalle et une inégalité stricte ou large"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le lien entre le signe de $f'$ et le sens de variation de $f$",
+      "contenu_markdown": "Soit $f$ une fonction dérivable sur un intervalle $I$. Si $f'(x) > 0$ pour tout $x$ de $I$ (sauf éventuellement en un nombre fini de points isolés où $f'$ s'annule), alors $f$ est strictement croissante sur $I$. Si $f'(x)<0$ sur $I$, $f$ est strictement décroissante sur $I$. Si $f'(x)=0$ sur $I$, $f$ est constante sur $I$. Ce théorème est l'unique fondement de toute étude de variations : une fois le signe de $f'$ déterminé, le sens de variation en découle directement, sans qu'aucune autre vérification ne soit nécessaire.\n\nLa démarche complète pour dresser un tableau de variations comporte quatre étapes, toujours dans le même ordre :\n\n1. déterminer le domaine de définition de $f$ ;\n2. calculer $f'(x)$ et la mettre sous une forme dont le signe est identifiable (fraction avec numérateur et dénominateur de signe connu, produit de facteurs de signe connu, forme canonique d'un trinôme...) ;\n3. étudier le signe de $f'(x)$ sur chaque intervalle du domaine ;\n4. calculer les limites de $f$ aux bornes de chaque intervalle (aux infinis et aux valeurs interdites), et assembler le tout dans le tableau.",
+      "formule_principale": "f'(x) > 0 \\text{ sur } I \\iff f \\text{ strictement croissante sur } I",
+      "variantes": [
+        {
+          "nom": "Étude par la forme canonique (fonctions polynômes du second degré)",
+          "quand_utiliser": "Quand $f'$ est un trinôme du second degré dont le signe se lit via son discriminant plutôt que par factorisation directe",
+          "contenu_markdown": "On calcule le discriminant $\\Delta$ du trinôme $f'(x)=aX^2+bX+c$ : si $\\Delta<0$, $f'$ garde un signe constant, celui de $a$ ; si $\\Delta\\geq0$, on factorise $f'$ à l'aide de ses racines et on étudie le signe par un tableau de signes classique, en s'appuyant sur la règle du signe d'un trinôme (signe de $a$ à l'extérieur des racines, signe opposé à l'intérieur)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les variations de la fonction $f$ définie sur $\\mathbb{R}$ par $f(x) = x - \\dfrac{e^x-1}{e^x+1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier le domaine de définition",
+          "justification": "Il faut s'assurer que le dénominateur ne s'annule jamais avant de dériver.",
+          "resultat_markdown": "Pour tout réel $x$, $e^x>0$ donc $e^x+1>1>0$ : $f$ est définie sur $\\mathbb{R}$ tout entier."
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le quotient $g(x)=\\dfrac{e^x-1}{e^x+1}$ avec $u=e^x-1$, $v=e^x+1$",
+          "justification": "On applique la formule $(u/v)' = (u'v-uv')/v^2$, avec $u'=e^x$ et $v'=e^x$.",
+          "resultat_markdown": "$g'(x) = \\dfrac{e^x(e^x+1)-(e^x-1)e^x}{(e^x+1)^2} = \\dfrac{e^x\\left[(e^x+1)-(e^x-1)\\right]}{(e^x+1)^2} = \\dfrac{2e^x}{(e^x+1)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire $f'(x) = 1-g'(x)$ et réduire au même dénominateur",
+          "justification": "$f(x)=x-g(x)$ donc $f'(x)=1-g'(x)$ ; on réduit ensuite $1$ au dénominateur $(e^x+1)^2$ pour pouvoir simplifier le numérateur.",
+          "resultat_markdown": "$f'(x) = \\dfrac{(e^x+1)^2-2e^x}{(e^x+1)^2}$, et $(e^x+1)^2-2e^x = e^{2x}+2e^x+1-2e^x = e^{2x}+1$, donc $f'(x) = \\dfrac{e^{2x}+1}{(e^x+1)^2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de $f'(x)$",
+          "justification": "Le numérateur $e^{2x}+1$ est une somme d'un terme strictement positif et de $1$ : toujours strictement positif. Le dénominateur $(e^x+1)^2$ est un carré d'un nombre strictement positif : toujours strictement positif.",
+          "resultat_markdown": "$f'(x)>0$ pour tout $x\\in\\mathbb{R}$ : $f$ est strictement croissante sur $\\mathbb{R}$."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer les limites en $+\\infty$ et en $-\\infty$",
+          "justification": "On écrit $g(x)=\\dfrac{1-e^{-x}}{1+e^{-x}}$ pour passer à la limite en $+\\infty$ : $e^{-x}\\to0$ donc $g(x)\\to1$, et $f(x)=x-g(x)\\to+\\infty-1=+\\infty$. En $-\\infty$, $e^x\\to0$ donc $g(x)\\to\\dfrac{0-1}{0+1}=-1$, et $f(x)=x-g(x)\\to-\\infty-(-1)=-\\infty$.",
+          "resultat_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}f(x)=+\\infty$ et $\\displaystyle\\lim_{x\\to-\\infty}f(x)=-\\infty$."
+        },
+        {
+          "numero": 6,
+          "action": "Dresser le tableau de variation",
+          "justification": "On rassemble le domaine, le signe de $f'$ et les limites dans un seul tableau.",
+          "resultat_markdown": "$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & -\\infty & & +\\infty \\\\\n\\hline\nf'(x) & & + & \\\\\n\\hline\n & & & +\\infty \\\\\nf(x) & & \\nearrow & \\\\\n & -\\infty & & \\\\\n\\hline\n\\end{array}\n$$"
+        }
+      ],
+      "conclusion_markdown": "On vient de démontrer que $f$ est une bijection strictement croissante de $\\mathbb{R}$ sur $\\mathbb{R}$ : c'est exactement cette propriété qui permettra, dans un problème plus long, de justifier l'existence d'une fonction réciproque."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure au signe de $f'(x)$ directement sur une expression non réduite au même dénominateur, par exemple garder $f'(x)=1-\\dfrac{2e^x}{(e^x+1)^2}$ et affirmer son signe sans réduction.",
+          "pourquoi_faux": "Le signe d'une différence de deux fractions n'est pas visible tant qu'elles ne sont pas réunies sous un même dénominateur : ici, $1$ et $\\frac{2e^x}{(e^x+1)^2}$ semblent proches en valeur, et rien ne garantit à l'œil nu que la différence reste positive pour toute valeur de $x$.",
+          "correction_markdown": "Réduire systématiquement au même dénominateur avant toute conclusion sur le signe : $f'(x)=\\dfrac{(e^x+1)^2-2e^x}{(e^x+1)^2}=\\dfrac{e^{2x}+1}{(e^x+1)^2}$, dont le signe est immédiat."
+        },
+        {
+          "erreur_markdown": "Oublier de calculer une limite aux bornes du domaine, en particulier une limite en une valeur interdite qui produit une asymptote verticale.",
+          "pourquoi_faux": "Un tableau de variation incomplet, sans les limites aux bornes, ne permet pas de savoir si la fonction est bornée, si elle admet une asymptote, ou si elle est bijective vers un intervalle donné : ces informations sont indispensables aux questions qui suivent (bijection, aire, asymptotes).",
+          "correction_markdown": "Calculer systématiquement les limites à chacune des bornes du domaine, y compris aux valeurs interdites (limites à gauche et à droite si nécessaire), avant de considérer le tableau terminé."
+        },
+        {
+          "erreur_markdown": "Confondre le signe de $f'(x)$ et la valeur de $f(x)$ dans le tableau, en écrivant par exemple la valeur de $f'$ sur la ligne de $f$.",
+          "pourquoi_faux": "Le tableau de variation a deux lignes de nature différente : la ligne du signe de $f'$ (qui contient seulement des signes $+$ ou $-$) et la ligne des valeurs de $f$ (qui contient des nombres ou des limites, avec des flèches). Les mélanger rend le tableau incompréhensible et fait perdre les points de présentation au BAC.",
+          "correction_markdown": "Toujours séparer clairement la ligne de signe de $f'$ (au-dessus) de la ligne de variation de $f$ avec ses valeurs et ses flèches (en dessous)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Étudier les variations de la fonction $g$ définie sur $\\mathbb{R}$ par $g(x) = x^2-4x+3$ et dresser son tableau de variation.",
+          "solution_markdown": "**Domaine.** $g$ est un polynôme, défini sur $\\mathbb{R}$.\n\n**Dérivée.** $g'(x) = 2x-4$.\n\n**Signe de $g'(x)$.** $g'(x)=0 \\iff 2x-4=0 \\iff x=2$. Pour $x<2$ : $2x<4$ donc $g'(x)=2x-4<0$. Pour $x>2$ : $2x>4$ donc $g'(x)=2x-4>0$. Donc $g$ est strictement décroissante sur $]-\\infty,2]$ et strictement croissante sur $[2,+\\infty[$.\n\n**Limites.** $\\displaystyle\\lim_{x\\to-\\infty}g(x) = \\lim_{x\\to-\\infty}x^2\\left(1-\\dfrac{4}{x}+\\dfrac{3}{x^2}\\right) = +\\infty$ (le terme $x^2$ domine, et $x^2\\to+\\infty$). De même, $\\displaystyle\\lim_{x\\to+\\infty}g(x)=+\\infty$.\n\n**Valeur en $x=2$.** $g(2) = 4-8+3=-1$.\n\n**Tableau de variation.**\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & -\\infty & 2 & +\\infty \\\\\n\\hline\ng'(x) & - & 0 & + \\\\\n\\hline\n & +\\infty & & +\\infty \\\\\ng(x) & \\searrow & & \\nearrow \\\\\n & & -1 & \\\\\n\\hline\n\\end{array}\n$$\n\n$g$ admet un minimum global égal à $-1$, atteint en $x=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Étudier les variations de la fonction $h$ définie sur $\\mathbb{R}\\setminus\\{2\\}$ par $h(x) = \\dfrac{x+1}{x-2}$.",
+          "solution_markdown": "**Domaine.** $h$ est définie sur $\\mathbb{R}\\setminus\\{2\\}$.\n\n**Dérivée.** Avec $u=x+1$, $v=x-2$, $u'=1$, $v'=1$ :\n$$h'(x) = \\dfrac{u'v-uv'}{v^2} = \\dfrac{1\\times(x-2)-(x+1)\\times1}{(x-2)^2} = \\dfrac{x-2-x-1}{(x-2)^2} = \\dfrac{-3}{(x-2)^2}$$\n\n**Signe de $h'(x)$.** Pour tout $x\\neq2$, $(x-2)^2>0$, donc $h'(x) = \\dfrac{-3}{(x-2)^2}<0$ : $h$ est strictement décroissante sur $]-\\infty,2[$ et sur $]2,+\\infty[$.\n\n**Limites.** En écrivant $h(x) = \\dfrac{x-2+3}{x-2} = 1+\\dfrac{3}{x-2}$ : quand $x\\to2^-$, $\\dfrac{3}{x-2}\\to-\\infty$, donc $h(x)\\to-\\infty$ ; quand $x\\to2^+$, $\\dfrac{3}{x-2}\\to+\\infty$, donc $h(x)\\to+\\infty$. Quand $x\\to\\pm\\infty$, $\\dfrac{3}{x-2}\\to0$, donc $h(x)\\to1$.\n\n**Tableaux de variation.** Sur $]-\\infty,2[$ :\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & -\\infty & & 2 \\\\\n\\hline\nh'(x) & & - & \\\\\n\\hline\n & 1 & & \\\\\nh(x) & & \\searrow & \\\\\n & & & -\\infty \\\\\n\\hline\n\\end{array}\n$$\n\nSur $]2,+\\infty[$ :\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & 2 & & +\\infty \\\\\n\\hline\nh'(x) & & - & \\\\\n\\hline\n & +\\infty & & \\\\\nh(x) & & \\searrow & \\\\\n & & & 1 \\\\\n\\hline\n\\end{array}\n$$\n\n$h$ est décroissante sur chacun des deux intervalles de son domaine, avec asymptote verticale $x=2$ et asymptote horizontale $y=1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Étudier les variations de la fonction $k$ définie sur $\\mathbb{R}$ par $k(x) = x\\,e^{-x}$ (on utilisera un résultat de croissances comparées pour la limite en $+\\infty$).",
+          "solution_markdown": "**Domaine.** $k$ est un produit de fonctions définies sur $\\mathbb{R}$, donc $k$ est définie sur $\\mathbb{R}$.\n\n**Dérivée.** $k$ est un produit $u\\times w$ avec $u(x)=x$, $w(x)=e^{-x}$, $u'(x)=1$, $w'(x)=-e^{-x}$ :\n$$k'(x) = u'(x)w(x)+u(x)w'(x) = e^{-x} + x\\times(-e^{-x}) = e^{-x}(1-x)$$\n\n**Signe de $k'(x)$.** $e^{-x}>0$ pour tout réel $x$, donc le signe de $k'(x)$ est celui de $(1-x)$. Pour $x<1$ : $1-x>0$, donc $k'(x)>0$. Pour $x>1$ : $1-x<0$, donc $k'(x)<0$. En $x=1$ : $k'(1)=0$. Donc $k$ est strictement croissante sur $]-\\infty,1]$ et strictement décroissante sur $[1,+\\infty[$.\n\n**Limite en $+\\infty$.** $k(x) = x e^{-x} = \\dfrac{x}{e^x}$. Par croissances comparées, l'exponentielle l'emporte sur toute puissance de $x$ : $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{x}{e^x}=0$. Donc $\\displaystyle\\lim_{x\\to+\\infty}k(x)=0$.\n\n**Limite en $-\\infty$.** On pose $t=-x$, donc $t\\to+\\infty$ quand $x\\to-\\infty$, et $k(x) = -t\\,e^{t}$. Comme $\\displaystyle\\lim_{t\\to+\\infty}t\\,e^t=+\\infty$ (produit de deux termes qui tendent vers $+\\infty$), on a $\\displaystyle\\lim_{t\\to+\\infty}\\left(-t\\,e^t\\right)=-\\infty$, donc $\\displaystyle\\lim_{x\\to-\\infty}k(x)=-\\infty$.\n\n**Valeur en $x=1$.** $k(1) = 1\\times e^{-1} = \\dfrac{1}{e}$.\n\n**Tableau de variation.**\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & -\\infty & 1 & +\\infty \\\\\n\\hline\nk'(x) & + & 0 & - \\\\\n\\hline\n & & \\frac{1}{e} & \\\\\nk(x) & \\nearrow & & \\searrow \\\\\n & -\\infty & & 0 \\\\\n\\hline\n\\end{array}\n$$\n\n$k$ admet un maximum global égal à $\\dfrac{1}{e}$, atteint en $x=1$, et la droite $y=0$ est asymptote horizontale à la courbe de $k$ en $+\\infty$ (sans être atteinte, car $e^{-x}>0$ donne $k(x)>0$ pour $x>0$, et $k(x)<0$ pour $x<0$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à n'importe quelle fonction, la même méthode s'applique toujours : domaine, dérivée mise sous une forme de signe lisible, signe de $f'$, limites aux bornes, tableau.",
+        "$f'(x)>0$ donne une flèche montante, $f'(x)<0$ une flèche descendante : ne mélange jamais le signe de $f'$ avec la valeur de $f$ dans le tableau.",
+        "Une fraction dont le numérateur et le dénominateur ont un signe évident (somme de carrés, carré, exponentielle) te dispense souvent d'un tableau de signes séparé pour $f'$.",
+        "Les limites aux bornes ne sont pas une formalité : elles complètent le tableau et annoncent déjà les asymptotes ou le comportement à l'infini que les questions suivantes vont exploiter.",
+        "Une fonction continue et strictement monotone sur un intervalle, dont tu connais les limites aux bornes, te donne gratuitement l'image de cet intervalle par le théorème des valeurs intermédiaires : la clé de toute question de bijection.",
+        "Au BAC, cette étude n'est presque jamais isolée : elle sert de socle à la question suivante, qu'il s'agisse de tracer une courbe, de justifier une réciproque, de calculer une aire ou d'encadrer une intégrale."
+      ]
+    }
+  ]
+}

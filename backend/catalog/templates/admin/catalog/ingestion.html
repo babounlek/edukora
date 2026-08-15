@@ -21,26 +21,48 @@
 
   {% if report %}
     <div class="module" style="padding: 12px 16px; margin: 20px 0;">
-      <h2>Résultat</h2>
-      <p>
-        {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
-        {{ report.created }} objet{{ report.created|pluralize }} créé{{ report.created|pluralize }},
-        {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
-      </p>
-      {% if report.errors %}
-        <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
-        <ul>
-          {% for error in report.errors %}
-            <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-      {% if report.pdf_en_cours %}
+      {% if report.status == "running" %}
+        <h2>Ingestion en cours</h2>
         <p>
-          PDF de sujet : génération lancée en arrière-plan pour {{ report.pdf_en_cours|length }}
-          leçon{{ report.pdf_en_cours|length|pluralize }} - actualisez cette page dans quelques
-          instants pour vérifier le résultat (liste des leçons publiées). En cas d'échec silencieux,
-          le détail est dans <code>logs/sujet_pdf_generation.log</code>.
+          Lancée le {{ report.started_at|date:"d/m/Y à H:i:s" }} en arrière-plan - un dossier
+          de plusieurs milliers de fichiers prend plusieurs minutes. Actualisez cette page
+          pour voir le rapport dès qu'elle sera terminée ; le détail en direct est dans
+          <code>logs/ingestion.log</code>.
+        </p>
+      {% elif report.status == "error" %}
+        <h2>Dernier run : échec</h2>
+        <p style="color: var(--error-fg, #ba2121);">
+          L'ingestion s'est arrêtée en cours de route : {{ report.detail }}
+          (voir <code>logs/ingestion.log</code>).
+        </p>
+      {% else %}
+        <h2>Résultat du dernier run</h2>
+        <p>
+          Terminé le {{ report.finished_at|date:"d/m/Y à H:i:s" }} :
+          {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
+          {{ report.created }} objet{{ report.created|pluralize }} créé{{ report.created|pluralize }},
+          {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
+        </p>
+        {% if report.errors %}
+          <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
+          <ul>
+            {% for error in report.errors %}
+              <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <p>
+          PDF de sujet :
+          {% if report.pdf_status == "running" %}
+            génération des PDF manquants en cours dans le même run - actualisez cette page
+            dans quelques instants.
+          {% elif report.pdf_status == "error" %}
+            <span style="color: var(--error-fg, #ba2121);">la génération a échoué</span> -
+            le détail est dans <code>logs/sujet_pdf_generation.log</code>.
+          {% else %}
+            génération des PDF manquants terminée (voir la liste des leçons publiées ;
+            en cas d'échec silencieux, le détail est dans <code>logs/sujet_pdf_generation.log</code>).
+          {% endif %}
         </p>
       {% endif %}
     </div>
@@ -61,7 +83,8 @@
 
   <form method="post">
     {% csrf_token %}
-    <input type="submit" class="default" value="Lancer l'ingestion"{% if not files %} disabled{% endif %}>
+    <input type="submit" class="default" value="Lancer l'ingestion"
+      {% if not files or report.status == "running" %} disabled{% endif %}>
   </form>
 
 </div>

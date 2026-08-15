@@ -14,6 +14,7 @@ couvrent plus que la lecture d'un historique de sessions créées avant la bascu
 """
 
 import json
+import random
 import tempfile
 from datetime import timedelta
 from io import StringIO
@@ -30,15 +31,19 @@ from rest_framework.test import APIClient
 
 from catalog.ingestion import IngestionError
 from catalog.models import (
-    Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Question, Series, StatutContenu, Subject, Tag,
-    TypeReponse,
+    Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Question, Series, StatutContenu,
+    Subject, Tag, TypeReponse,
 )
+from programme.models import Module, Savoir
 from subscriptions.models import Subscription
 from users.models import User
 
-from .ingestion import ingest_competence_item, run_ingestion
-from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare
-from .services import generer_session
+from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
+from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule
+from .services import (
+    LEITNER_INTERVALS_JOURS, _poids_par_theme, enregistrer_resultat_pour_revision, generer_session,
+    maitrise_par_theme, revisions_dues,
+)
 from .views import _clean_quiz_markdown, _question_payload
 
 
@@ -71,6 +76,19 @@ def _make_competence_item(
     )
     item.cursus.add(*(cursus if isinstance(cursus, (list, tuple)) else [cursus]))
     return item
+
+
+def _make_cours(subject, cursus=None, tags=(), titre="Cours", external_id="cours-x", **kwargs):
+    """Fixture Cours minimale - sert uniquement à vérifier que la file de révision
+    (quiz.views.list_revisions_dues) sait retrouver les cours déjà publiés pour un
+    thème donné."""
+    kwargs.setdefault("statut", StatutContenu.VALIDE)
+    cours = Cours.objects.create(external_id=external_id, titre=titre, subject=subject, **kwargs)
+    if cursus:
+        cours.cursus.add(*(cursus if isinstance(cursus, (list, tuple)) else [cursus]))
+    if tags:
+        cours.tags.add(*tags)
+    return cours
 
 
 def _item_payload(theme="dérivation", **overrides):
@@ -187,6 +205,93 @@ class IngestCompetenceItemTests(TestCase):
 
         series_codes = sorted(c.series.code for c in item.cursus.all())
         self.assertEqual(series_codes, ["C", "E"])
+
+
+class IngestCompetenceItemSavoirOfficielTests(TestCase):
+    """`savoir_officiel` (optionnel) lie le Tag `theme` résolu à son Savoir officiel -
+    voir catalog.ingestion._resolve_savoir_officiel/_link_tags_to_savoir, réutilisés
+    tels quels par quiz.ingestion.ingest_competence_item."""
+
+    def setUp(self):
+        self.country = Country.objects.get(code="CM")
+        self.tag = Tag.objects.create(name="dérivation")
+        maths = Subject.objects.get(country=self.country, code="MATHS")
+        module = Module.objects.create(subject=maths, classe="Tle", serie_label="C-E", numero="25", titre="Module test")
+        self.savoir = Savoir.objects.create(module=module, numero="III", intitule="Dérivation")
+
+    def test_links_theme_to_savoir(self):
+        payload = _item_payload(savoir_officiel={
+            "classe": "Tle", "serie_label": "C-E", "module_numero": "25", "savoir_numero": "III",
+        })
+        ingest_competence_item(payload, self.country)
+
+        self.tag.refresh_from_db()
+        self.assertEqual(self.tag.savoir_officiel_id, self.savoir.pk)
+
+    def test_absent_field_is_a_no_op(self):
+        ingest_competence_item(_item_payload(), self.country)
+
+        self.tag.refresh_from_db()
+        self.assertIsNone(self.tag.savoir_officiel_id)
+
+    def test_savoir_officiel_allows_inventing_a_brand_new_theme(self):
+        # Un savoir tout juste ajouté au référentiel n'a par construction encore aucun
+        # Tag - ce pipeline doit pouvoir le créer, mais seulement parce qu'il est ancré
+        # à une entrée réelle du programme officiel (voir _resolve_theme, allow_create).
+        payload = _item_payload(theme="Notion neuve jamais encore taguée", savoir_officiel={
+            "classe": "Tle", "serie_label": "C-E", "module_numero": "25", "savoir_numero": "III",
+        })
+
+        item, created = ingest_competence_item(payload, self.country)
+
+        self.assertTrue(created)
+        self.assertEqual(item.theme.name, "Notion neuve jamais encore taguée")
+        self.assertEqual(item.theme.savoir_officiel_id, self.savoir.pk)
+
+    def test_without_savoir_officiel_still_rejects_an_unknown_theme(self):
+        payload = _item_payload(theme="Notion neuve jamais encore taguée")
+        with self.assertRaises(IngestionError):
+            ingest_competence_item(payload, self.country)
+
+
+class SelectQuizBatchSavoirAwareTests(TestCase):
+    """select_quiz_batch rend visibles les savoirs officiels sans aucun contenu
+    existant - _find_undercovered_competencies seule ne peut jamais les voir (rien à
+    grouper) - voir quiz.ingestion._find_undercovered_savoirs_officiels."""
+
+    def setUp(self):
+        self.cm = Country.objects.get(code="CM")
+        self.subject = Subject.objects.get(country=self.cm, code="MATHS")
+        self.cursus_c = Cursus.objects.get(country=self.cm, examen=Examen.BAC, series__code="C")
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="90", titre="Module test")
+        module.cursus.set([self.cursus_c])
+        self.savoir = Savoir.objects.create(module=module, numero="I", intitule="Notion jamais couverte")
+
+    def test_zero_coverage_savoir_surfaces_in_batch(self):
+        requests = select_quiz_batch(self.cm)
+
+        self.assertEqual(len(requests), 1)
+        req = requests[0]
+        self.assertIn("Notion jamais couverte", req["competence"])
+        self.assertEqual(req["savoir_officiel"], {
+            "classe": "Tle", "serie_label": "C", "module_numero": "90", "savoir_numero": "I",
+        })
+        self.assertEqual(req["materiel_reference"], [])
+
+    def test_tag_already_linked_to_a_surfaced_savoir_is_not_duplicated(self):
+        tag = Tag.objects.create(name="notion existante", savoir_officiel=self.savoir)
+        lesson = Lesson.objects.create(
+            title="x", subject=self.subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(self.cursus_c)
+        q = _make_question(lesson, "1")
+        q.themes.add(tag)
+
+        requests = select_quiz_batch(self.cm)
+
+        # Un seul objet pour ce savoir, pas deux (un via le Tag historique, un via le
+        # Savoir référentiel) - le signal savoir prime, voir select_quiz_batch.
+        self.assertEqual(len(requests), 1)
 
 
 class RunQuizIngestionTests(TestCase):
@@ -529,6 +634,105 @@ class GenererSessionTests(TestCase):
         self.assertEqual(difficultes, {Difficulte.FAIBLE, Difficulte.MOYENNE, Difficulte.ELEVEE})
 
 
+class PoidsParThemeTests(TestCase):
+    """quiz.services._poids_par_theme - traduit l'historique QuizAnswer d'un
+    utilisateur en poids par thème, base du tirage pondéré du mode PRATIQUE (voir
+    GenererSessionPratiqueWeightingTests plus bas pour l'effet bout en bout)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200010", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        self.theme = Tag.objects.create(name="theme")
+
+    def _repondre(self, cursus, theme, correcte):
+        item = _make_competence_item(self.subject, cursus, theme=theme, numero="x")
+        session = QuizSession.objects.create(user=self.user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
+
+    def test_no_history_returns_empty_dict(self):
+        self.assertEqual(_poids_par_theme(self.user, self.cursus), {})
+
+    def test_all_failures_give_maximum_weight(self):
+        self._repondre(self.cursus, self.theme, correcte=False)
+        self._repondre(self.cursus, self.theme, correcte=False)
+
+        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 1.7)
+
+    def test_all_successes_give_minimum_weight(self):
+        self._repondre(self.cursus, self.theme, correcte=True)
+        self._repondre(self.cursus, self.theme, correcte=True)
+
+        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 0.3)
+
+    def test_mixed_results_give_intermediate_weight(self):
+        self._repondre(self.cursus, self.theme, correcte=True)
+        self._repondre(self.cursus, self.theme, correcte=False)
+
+        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 1.0)
+
+    def test_history_on_a_different_cursus_is_ignored(self):
+        # Même thème (partagé entre cursus), mais l'échec a eu lieu en Série D - ne
+        # doit jamais repondérer une pratique libre en Série C.
+        self._repondre(self.other_cursus, self.theme, correcte=False)
+
+        self.assertEqual(_poids_par_theme(self.user, self.cursus), {})
+
+
+class GenererSessionPratiqueWeightingTests(TestCase):
+    """mode=PRATIQUE pondère désormais la sélection par thème selon le taux d'échec de
+    l'utilisateur sur ce cursus (voir quiz.services._poids_par_theme et
+    _selection_ponderee_par_theme) - remplace l'ancien tirage uniforme, documenté dans
+    le code comme un raccourci temporaire en attendant de vraies données QuizAnswer."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200012", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme_faible = Tag.objects.create(name="theme-faible")
+        self.theme_fort = Tag.objects.create(name="theme-fort")
+
+    def _repondre(self, item, correcte):
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
+
+    def test_no_history_behaves_like_the_former_uniform_draw(self):
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme_faible, numero="1")
+
+        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+
+        self.assertEqual(list(session.quiz_questions.values_list("competence_item_id", flat=True)), [item.id])
+
+    def test_selection_is_biased_toward_the_theme_with_more_failures(self):
+        for i in range(20):
+            item = _make_competence_item(self.subject, self.cursus, theme=self.theme_faible, numero=f"faible-{i}")
+            self._repondre(item, correcte=False)
+        for i in range(20):
+            item = _make_competence_item(self.subject, self.cursus, theme=self.theme_fort, numero=f"fort-{i}")
+            self._repondre(item, correcte=True)
+
+        random.seed(20260807)  # tirage pondéré, probabiliste par nature - déterministe pour ce test
+        tirages_faible = 0
+        tirages_fort = 0
+        for _ in range(100):
+            session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+            theme_ids = list(session.quiz_questions.values_list("competence_item__theme_id", flat=True))
+            tirages_faible += theme_ids.count(self.theme_faible.id)
+            tirages_fort += theme_ids.count(self.theme_fort.id)
+
+        # 1000 tirages au total (100 sessions x 10). Sans pondération, ~500/500 - avec
+        # elle (poids ~1.7 contre ~0.3, ratio ~5,7x), le thème en échec doit nettement
+        # dominer sans pour autant faire disparaître l'autre (voir le plancher à 0.3
+        # dans _poids_par_theme, jamais 0).
+        self.assertGreater(tirages_faible, tirages_fort * 2)
+        self.assertGreater(tirages_fort, 0)
+
+
 class QuizQuestionDeletionTests(TestCase):
     """QuizQuestion.question et QuizQuestion.competence_item doivent être CASCADE, pas
     PROTECT : la purge admin (voir catalog.admin.LessonAdmin.purge_view) supprime tout
@@ -791,6 +995,62 @@ class QuizApiTests(TestCase):
         detail = self.client.get(f"/quiz/sessions/{session_id}/")
         self.assertNotIn("corrige_markdown", detail.data["questions"][0])
 
+    def test_reveal_corrige_injects_cours_link_after_rappel_block_when_a_cours_matches(self):
+        # Le lien n'est jamais écrit par le skill de génération (qui n'a aucun moyen
+        # fiable de connaître un slug de Cours) - recalculé à la lecture, voir
+        # quiz.views._competence_item_corrige.
+        self.item.corrige_markdown = (
+            "### Rappel de méthode\n\nOn dérive terme à terme.\n\n### Corrigé\n\nf'(x) = 2x."
+        )
+        self.item.save(update_fields=["corrige_markdown"])
+        cours = _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], external_id="cours-derivation")
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        quiz_question_id = start.data["questions"][0]["id"]
+
+        response = self.client.get(f"/quiz/sessions/{session_id}/questions/{quiz_question_id}/corrige/")
+
+        self.assertEqual(response.status_code, 200)
+        corrige = response.data["corrige_markdown"]
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", corrige)
+        # Le marqueur suit le bloc "Rappel de méthode", pas juste ajouté n'importe où.
+        self.assertLess(corrige.index("[COURS_LINK:"), corrige.index("### Corrigé"))
+
+    def test_answer_question_also_injects_cours_link_when_a_cours_matches(self):
+        self.item.corrige_markdown = (
+            "### Rappel de méthode\n\nOn dérive terme à terme.\n\n### Corrigé\n\nf'(x) = 2x."
+        )
+        self.item.save(update_fields=["corrige_markdown"])
+        cours = _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], external_id="cours-derivation")
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        quiz_question_id = start.data["questions"][0]["id"]
+
+        response = self.client.post(
+            f"/quiz/sessions/{session_id}/questions/{quiz_question_id}/answer/",
+            {"resultat_declare": ResultatDeclare.REUSSI}, format="json",
+        )
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", response.data["corrige_markdown"])
+
+    def test_reveal_corrige_omits_cours_link_when_no_cours_matches(self):
+        # self.item n'a par défaut aucun Cours correspondant (aucun créé dans setUp) -
+        # le corrigé doit rester strictement inchangé, jamais de lien inventé/cassé.
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        quiz_question_id = start.data["questions"][0]["id"]
+
+        response = self.client.get(f"/quiz/sessions/{session_id}/questions/{quiz_question_id}/corrige/")
+
+        self.assertEqual(response.data["corrige_markdown"], self.item.corrige_markdown)
+        self.assertNotIn("COURS_LINK", response.data["corrige_markdown"])
+
     def test_reveal_corrige_denied_for_another_users_session(self):
         self._subscribe()
         self.client.force_authenticate(user=self.user)
@@ -822,3 +1082,414 @@ class QuizApiTests(TestCase):
         self.assertEqual(response.data["questions_repondues"], 1)
         self.assertEqual(response.data["par_theme"], [{"theme": "dérivation", "total": 1, "reussies": 1}])
         self.assertIsNotNone(QuizSession.objects.get(pk=session_id).completed_at)
+
+
+class EnregistrerResultatPourRevisionTests(TestCase):
+    """quiz.services.enregistrer_resultat_pour_revision - moteur de la file de révision
+    espacée (RevisionSchedule) : un échec (ré)ouvre un thème au palier 0 (J+1), une
+    réussite fait avancer un thème déjà suivi, jamais un thème qui n'a jamais posé
+    problème - voir la docstring de la fonction pour la justification pédagogique."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200013", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="dérivation")
+
+    def test_failure_opens_a_schedule_at_the_first_palier(self):
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+
+        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        self.assertEqual(schedule.palier, 0)
+        self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
+
+    def test_success_without_an_existing_schedule_creates_nothing(self):
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+
+        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+
+    def test_success_advances_an_existing_schedule_to_the_next_palier(self):
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+
+        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        self.assertEqual(schedule.palier, 1)
+        self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[1]))
+
+    def test_success_at_the_last_palier_graduates_the_theme_out_of_the_queue(self):
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        for _ in range(len(LEITNER_INTERVALS_JOURS) - 1):
+            enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+
+        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+
+    def test_a_relapse_resets_an_advanced_schedule_back_to_the_first_palier(self):
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+
+        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+
+        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        self.assertEqual(schedule.palier, 0)
+        self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
+
+
+class RevisionsDuesServiceTests(TestCase):
+    """quiz.services.revisions_dues - ne renvoie que les échéances déjà atteintes,
+    triées de la plus en retard à la moins en retard (voir RevisionSchedule.Meta.ordering)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200014", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+
+    def _make_schedule(self, theme_name, due_at, cursus=None):
+        theme = Tag.objects.create(name=theme_name)
+        return RevisionSchedule.objects.create(
+            user=self.user, cursus=cursus or self.cursus, subject=self.subject, theme=theme, due_at=due_at,
+        )
+
+    def test_future_schedules_are_excluded(self):
+        self._make_schedule("pas-encore-du", timezone.localdate() + timedelta(days=3))
+
+        self.assertEqual(list(revisions_dues(self.user)), [])
+
+    def test_due_today_and_overdue_are_included_most_overdue_first(self):
+        du_aujourdhui = self._make_schedule("aujourdhui", timezone.localdate())
+        tres_en_retard = self._make_schedule("tres-en-retard", timezone.localdate() - timedelta(days=5))
+
+        self.assertEqual(list(revisions_dues(self.user)), [tres_en_retard, du_aujourdhui])
+
+    def test_scoped_to_the_requested_user(self):
+        other_user = User.objects.create_user(phone_number="677200015", password="x")
+        RevisionSchedule.objects.create(
+            user=other_user, cursus=self.cursus, subject=self.subject,
+            theme=Tag.objects.create(name="pas-le-mien"), due_at=timezone.localdate(),
+        )
+
+        self.assertEqual(list(revisions_dues(self.user)), [])
+
+
+class RevisionsDuesApiTests(TestCase):
+    """GET /quiz/revisions/ (quiz.views.list_revisions_dues) et son déclenchement via
+    POST .../answer/ (voir quiz.views.answer_question, seul appelant réel de
+    enregistrer_resultat_pour_revision côté production)."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="dérivation")
+        self.user = User.objects.create_user(phone_number="677200016", password="x")
+        self.client = APIClient()
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+        self.client.force_authenticate(user=self.user)
+
+    def test_answering_incorrectly_schedules_the_theme_for_tomorrow_not_today(self):
+        # J+1 : une notion ratée aujourd'hui ne doit pas encombrer la file "à réviser"
+        # du jour même - elle n'y entre qu'à partir de demain (voir revisions_dues,
+        # due_at__lte=aujourd'hui).
+        _make_competence_item(
+            self.subject, self.cursus, theme=self.theme, numero="1",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "x"}], reponse_correcte="b",
+        )
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        quiz_question_id = start.data["questions"][0]["id"]
+
+        self.client.post(
+            f"/quiz/sessions/{start.data['id']}/questions/{quiz_question_id}/answer/",
+            {"reponse_choisie": "a"}, format="json",  # "a" != reponse_correcte ("b") : réponse fausse
+        )
+
+        schedule = RevisionSchedule.objects.get(user=self.user, theme=self.theme)
+        self.assertEqual(schedule.palier, 0)
+        self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
+        self.assertEqual(self.client.get("/quiz/revisions/").data, [])
+
+    def test_theme_appears_in_the_queue_once_its_due_date_is_reached(self):
+        _make_competence_item(
+            self.subject, self.cursus, theme=self.theme, numero="1",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "x"}], reponse_correcte="b",
+        )
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        quiz_question_id = start.data["questions"][0]["id"]
+        self.client.post(
+            f"/quiz/sessions/{start.data['id']}/questions/{quiz_question_id}/answer/",
+            {"reponse_choisie": "a"}, format="json",
+        )
+        # Simule le passage du temps : la fenêtre J+1 posée par la réponse ci-dessus
+        # est désormais atteinte.
+        RevisionSchedule.objects.filter(user=self.user, theme=self.theme).update(
+            due_at=timezone.localdate() - timedelta(days=1),
+        )
+
+        response = self.client.get("/quiz/revisions/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+        due = response.data[0]
+        self.assertEqual(due["theme"], "dérivation")
+        self.assertEqual(due["theme_id"], self.theme.id)
+        self.assertEqual(due["subject_label"], self.subject.label)
+        self.assertEqual(due["jours_retard"], 1)
+        self.assertEqual(due["cours"], [])
+
+    def test_answering_correctly_never_creates_an_entry(self):
+        _make_competence_item(
+            self.subject, self.cursus, theme=self.theme, numero="1",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "x"}], reponse_correcte="a",
+        )
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        quiz_question_id = start.data["questions"][0]["id"]
+
+        self.client.post(
+            f"/quiz/sessions/{start.data['id']}/questions/{quiz_question_id}/answer/",
+            {"reponse_choisie": "a"}, format="json",
+        )
+
+        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+
+    def test_includes_published_cours_covering_the_same_theme(self):
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            due_at=timezone.localdate(),
+        )
+        cours = _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], titre="Dérivées : la méthode")
+
+        response = self.client.get("/quiz/revisions/")
+
+        self.assertEqual(
+            response.data[0]["cours"],
+            [{
+                "id": cours.id, "slug": cours.slug, "titre": cours.titre, "has_access": True,
+                "apercu_contenu": {"has_exemple_resolu": False, "exercices_count": 0},
+            }],
+        )
+
+    def test_excludes_cours_for_a_different_theme(self):
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            due_at=timezone.localdate(),
+        )
+        autre_theme = Tag.objects.create(name="autre-notion")
+        _make_cours(self.subject, cursus=self.cursus, tags=[autre_theme], titre="Sans rapport")
+
+        response = self.client.get("/quiz/revisions/")
+
+        self.assertEqual(response.data[0]["cours"], [])
+
+    def test_a_cours_common_to_all_series_is_still_included(self):
+        # cursus vide sur le Cours = "toutes séries" (voir Cours.cursus, blank=True) -
+        # doit rester rattaché à la file de révision d'une série précise malgré tout.
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            due_at=timezone.localdate(),
+        )
+        cours = _make_cours(self.subject, cursus=None, tags=[self.theme], titre="Notion commune")
+
+        response = self.client.get("/quiz/revisions/")
+
+        self.assertEqual(
+            response.data[0]["cours"],
+            [{
+                "id": cours.id, "slug": cours.slug, "titre": cours.titre, "has_access": True,
+                "apercu_contenu": {"has_exemple_resolu": False, "exercices_count": 0},
+            }],
+        )
+
+    def test_requires_authentication(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get("/quiz/revisions/")
+
+        self.assertIn(response.status_code, (401, 403))
+
+
+class MaitriseParThemeTests(TestCase):
+    """quiz.services.maitrise_par_theme - contrairement à RevisionSchedule (qui
+    disparaît une fois un thème gradué, voir enregistrer_resultat_pour_revision), cette
+    vue agrège la TOTALITÉ de l'historique de réponses d'un utilisateur : elle doit
+    aussi montrer ce qui est déjà maîtrisé, pas seulement les lacunes."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200017", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        self.theme = Tag.objects.create(name="dérivation")
+
+    def _repondre(self, item, correcte, cursus=None):
+        session = QuizSession.objects.create(user=self.user, cursus=cursus or self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
+
+    def test_aggregates_across_several_sessions_and_rounds_the_rate(self):
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        self._repondre(item, correcte=True)
+        self._repondre(item, correcte=True)
+        self._repondre(item, correcte=False)  # 2/3 -> 67% (arrondi, pas tronqué à 66%)
+
+        maitrise = maitrise_par_theme(self.user)
+
+        self.assertEqual(len(maitrise), 1)
+        entry = maitrise[0]
+        self.assertEqual(entry["theme"], "dérivation")
+        self.assertEqual(entry["subject_label"], self.subject.label)
+        self.assertEqual(entry["total"], 3)
+        self.assertEqual(entry["reussies"], 2)
+        self.assertEqual(entry["taux"], 67)
+
+    def test_theme_currently_in_the_revision_queue_is_flagged(self):
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        self._repondre(item, correcte=False)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            due_at=timezone.localdate() + timedelta(days=1),
+        )
+
+        entry = maitrise_par_theme(self.user)[0]
+
+        self.assertTrue(entry["en_revision"])
+
+    def test_theme_never_flagged_for_revision_is_not_marked(self):
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        self._repondre(item, correcte=True)
+
+        entry = maitrise_par_theme(self.user)[0]
+
+        self.assertFalse(entry["en_revision"])
+
+    def test_sorted_from_weakest_to_strongest(self):
+        theme_fort = Tag.objects.create(name="fort")
+        item_faible = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        item_fort = _make_competence_item(self.subject, self.cursus, theme=theme_fort, numero="2")
+        self._repondre(item_faible, correcte=False)
+        self._repondre(item_fort, correcte=True)
+
+        maitrise = maitrise_par_theme(self.user)
+
+        self.assertEqual([entry["theme"] for entry in maitrise], ["dérivation", "fort"])
+
+    def test_scoped_to_a_cursus_when_provided(self):
+        item_ici = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        item_ailleurs = _make_competence_item(self.subject, self.other_cursus, theme=self.theme, numero="2")
+        self._repondre(item_ici, correcte=True, cursus=self.cursus)
+        self._repondre(item_ailleurs, correcte=False, cursus=self.other_cursus)
+
+        maitrise = maitrise_par_theme(self.user, cursus=self.cursus)
+
+        self.assertEqual(len(maitrise), 1)
+        self.assertEqual(maitrise[0]["total"], 1)
+        self.assertEqual(maitrise[0]["reussies"], 1)
+
+    def test_scoped_to_the_requesting_user(self):
+        other_user = User.objects.create_user(phone_number="677200018", password="x")
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        session = QuizSession.objects.create(user=other_user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+        self.assertEqual(maitrise_par_theme(self.user), [])
+
+    def test_legacy_catalog_question_answers_are_excluded(self):
+        # Historique pré-bascule : plusieurs thèmes possibles par question (M2M), donc
+        # aucune agrégation fiable par thème unique - jamais inclus ici (même
+        # restriction que _poids_par_theme/enregistrer_resultat_pour_revision).
+        lesson = Lesson.objects.create(
+            title="Maths BAC C", subject=self.subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(self.cursus)
+        question = _make_question(lesson, "1")
+        question.themes.add(self.theme)
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, question=question, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+        self.assertEqual(maitrise_par_theme(self.user), [])
+
+
+class MaitriseApiTests(TestCase):
+    """GET /quiz/maitrise/ (quiz.views.maitrise)."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="dérivation")
+        self.user = User.objects.create_user(phone_number="677200019", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+    def test_requires_authentication(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get("/quiz/maitrise/")
+
+        self.assertIn(response.status_code, (401, 403))
+
+    def test_returns_aggregated_payload(self):
+        response = self.client.get("/quiz/maitrise/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["theme"], "dérivation")
+        self.assertEqual(response.data[0]["taux"], 100)
+
+    def test_cursus_query_param_filters_the_result(self):
+        other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+
+        response = self.client.get(f"/quiz/maitrise/?cursus={other_cursus.id}")
+
+        self.assertEqual(response.data, [])
+
+
+class QuizSubjectsApiTests(TestCase):
+    """GET /quiz/subjects/ (quiz.views.list_quiz_subjects) - ne doit proposer que les
+    matières ayant déjà une banque de quiz pour le cursus demandé, contrairement à
+    catalog.SubjectListView (tout le référentiel du pays, sans lien avec le Quiz)."""
+
+    def setUp(self):
+        self.subject_avec_quiz = Subject.objects.get(country__code="CM", code="MATHS")
+        self.subject_sans_quiz = Subject.objects.get(country__code="CM", code="PHYSIQUE_CHIMIE")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677200020", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        _make_competence_item(self.subject_avec_quiz, self.cursus, numero="1")
+
+    def test_requires_authentication(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertIn(response.status_code, (401, 403))
+
+    def test_only_returns_subjects_with_an_eligible_item_for_this_cursus(self):
+        response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([s["id"] for s in response.data], [self.subject_avec_quiz.id])
+
+    def test_scoped_to_the_requested_cursus(self):
+        response = self.client.get(f"/quiz/subjects/?cursus={self.other_cursus.id}")
+
+        self.assertEqual(response.data, [])
+
+    def test_draft_items_do_not_make_a_subject_eligible(self):
+        subject_brouillon_seulement = Subject.objects.get(country__code="CM", code="FRANCAIS")
+        _make_competence_item(subject_brouillon_seulement, self.cursus, numero="2", statut=StatutContenu.BROUILLON)
+
+        response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertEqual([s["id"] for s in response.data], [self.subject_avec_quiz.id])

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-integration-inegalite-c",
+  "meta": {
+    "titre": "Intégration d'une inégalité (conservation de l'ordre par intégration)",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Calcul intégral - inégalités",
+    "duree_estimee_min": 15,
+    "tags": ["intégration d'inégalité", "encadrement de suite", "monotonie de l'intégrale"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex2-q2c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une inégalité vraie pour toutes les valeurs de $x$ sur un intervalle reste-t-elle vraie une fois qu'on intègre chaque membre ? Oui, à condition de respecter une règle simple : on ne fait qu'empiler des aires les unes à côté des autres, sans jamais changer leur ordre relatif. C'est ce principe qui permet de transformer un encadrement de fonction en encadrement de suite."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Interprétation de l'intégrale comme aire algébrique", "Encadrement d'une fonction sur un intervalle", "Calcul d'une intégrale de fonction exponentielle"]
+    },
+    {
+      "type": "regle",
+      "titre": "L'intégration conserve l'ordre",
+      "contenu_markdown": "Si $g$, $\\varphi$ et $\\psi$ sont continues sur $[a;b]$ avec $a\\leq b$, et si $g(x)\\leq\\varphi(x)\\leq\\psi(x)$ pour tout $x\\in[a;b]$, alors :\n$$\\int_a^b g(x)\\,dx \\;\\leq\\; \\int_a^b \\varphi(x)\\,dx \\;\\leq\\; \\int_a^b \\psi(x)\\,dx$$\n\nEn particulier, si $\\varphi=f_n$ et que $u_n=\\displaystyle\\int_a^b f_n(x)\\,dx$, un encadrement de $f_n(x)$ pour tout $x\\in[a;b]$ se transforme directement, en intégrant chaque membre sur $[a;b]$, en un encadrement de $u_n$.",
+      "formule_principale": "g\\leq\\varphi\\leq\\psi \\text{ sur } [a;b] \\ \\Rightarrow\\ \\int_a^b g \\leq \\int_a^b \\varphi \\leq \\int_a^b \\psi",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que pour tout $n\\in\\mathbb{N}$ et $x\\in[0;1]$, $\\dfrac{e^{nx}}{e+1}\\leq f_n(x)\\leq \\dfrac12 e^{nx}$, en déduire un encadrement de $u_n=\\displaystyle\\int_0^1 f_n(x)\\,dx$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Intégrer chaque membre de l'encadrement sur [0;1]",
+          "justification": "L'intégration conserve l'ordre entre fonctions continues.",
+          "resultat_markdown": "$\\displaystyle\\int_0^1 \\dfrac{e^{nx}}{e+1}\\,dx \\leq \\int_0^1 f_n(x)\\,dx \\leq \\int_0^1 \\dfrac12 e^{nx}\\,dx$"
+        },
+        {
+          "numero": 2,
+          "action": "Sortir les constantes de l'intégrale",
+          "justification": "Linéarité de l'intégrale.",
+          "resultat_markdown": "$\\dfrac{1}{e+1}\\displaystyle\\int_0^1 e^{nx}\\,dx \\;\\leq\\; u_n \\;\\leq\\; \\dfrac12\\int_0^1 e^{nx}\\,dx$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'intégrale de e^{nx} sur [0;1] (pour n≥1)",
+          "justification": "Primitive usuelle de l'exponentielle.",
+          "resultat_markdown": "$\\displaystyle\\int_0^1 e^{nx}\\,dx=\\left[\\dfrac{e^{nx}}{n}\\right]_0^1=\\dfrac{e^n-1}{n}$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure l'encadrement de u_n",
+          "justification": "Substitution du résultat précédent.",
+          "resultat_markdown": "$\\dfrac{e^n-1}{n(e+1)} \\leq u_n \\leq \\dfrac{e^n-1}{2n}$"
+        }
+      ],
+      "conclusion_markdown": "On obtient un encadrement explicite de $u_n$ pour tout $n\\geq1$, valable sans connaître la valeur exacte de $u_n$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Intégrer chaque membre séparément sans vérifier que l'inégalité de départ est valable sur tout l'intervalle d'intégration.",
+          "pourquoi_faux": "Le théorème d'intégration d'une inégalité suppose que celle-ci est vraie en tout point de l'intervalle d'intégration ; une inégalité valable seulement sur une partie de l'intervalle ne se propage pas automatiquement à l'intégrale sur tout l'intervalle.",
+          "correction_markdown": "Vérifie systématiquement que l'encadrement de départ porte exactement sur le même intervalle que celui utilisé pour l'intégration."
+        },
+        {
+          "erreur_markdown": "Oublier que l'inégalité entre intégrales peut devenir une égalité si les deux fonctions comparées sont égales presque partout, et conclure trop vite à une inégalité stricte.",
+          "pourquoi_faux": "Le théorème de base donne des inégalités larges ($\\leq$) même si l'encadrement de départ est strict en presque tout point ; il faut un argument supplémentaire (fonction continue, non identiquement nulle) pour obtenir une inégalité stricte sur l'intégrale.",
+          "correction_markdown": "Si tu as besoin d'une inégalité stricte sur les intégrales, vérifie que la différence des fonctions comparées n'est pas identiquement nulle sur l'intervalle, en plus d'être de signe constant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que pour tout $x\\in[0;1]$, $x^2\\leq x\\leq \\sqrt{x}$, en déduire un encadrement de $\\displaystyle\\int_0^1 x\\,dx$.",
+          "solution_markdown": "En intégrant chaque membre sur $[0;1]$ : $\\displaystyle\\int_0^1 x^2\\,dx \\leq \\int_0^1 x\\,dx \\leq \\int_0^1 \\sqrt{x}\\,dx$, soit $\\dfrac13\\leq\\dfrac12\\leq\\dfrac23$, ce qui est bien vérifié (et confirme la cohérence de l'encadrement, même si la valeur exacte $\\frac12$ est ici connue directement)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sachant que pour tout $x\\in[1;2]$ et tout $n\\in\\mathbb{N}^*$, $\\dfrac{x^n}{5}\\leq\\dfrac{x^n}{1+x^2}\\leq\\dfrac{x^n}{2}$ (résultat d'un exercice précédent), en déduire un encadrement de $\\displaystyle\\int_1^2 \\dfrac{x^n}{1+x^2}\\,dx$ en fonction de $n$.",
+          "solution_markdown": "En intégrant chaque membre sur $[1;2]$ : $\\dfrac15\\displaystyle\\int_1^2 x^n\\,dx \\leq \\int_1^2 \\dfrac{x^n}{1+x^2}\\,dx \\leq \\dfrac12\\int_1^2 x^n\\,dx$. Or $\\displaystyle\\int_1^2 x^n\\,dx=\\left[\\dfrac{x^{n+1}}{n+1}\\right]_1^2=\\dfrac{2^{n+1}-1}{n+1}$. Donc : $\\dfrac{2^{n+1}-1}{5(n+1)} \\leq \\displaystyle\\int_1^2 \\dfrac{x^n}{1+x^2}\\,dx \\leq \\dfrac{2^{n+1}-1}{2(n+1)}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sachant que pour tout $x\\in[0;1]$, $1-x\\leq e^{-x}\\leq 1$ (à démontrer brièvement), en déduire un encadrement de $\\displaystyle\\int_0^1 e^{-x}\\,dx$, puis comparer à la valeur exacte.",
+          "solution_markdown": "**Démonstration de l'encadrement de $e^{-x}$.** La fonction $\\varphi(x)=e^{-x}-(1-x)=e^{-x}-1+x$ a pour dérivée $\\varphi'(x)=-e^{-x}+1=1-e^{-x}$, positive pour $x\\geq0$ (car $e^{-x}\\leq1$ pour $x\\geq0$). Donc $\\varphi$ est croissante sur $[0;1]$, et $\\varphi(0)=0$, donc $\\varphi(x)\\geq0$ sur $[0;1]$, soit $e^{-x}\\geq1-x$. De plus $e^{-x}\\leq1$ pour $x\\geq0$ (l'exponentielle de tout nombre négatif ou nul est inférieure ou égale à $1$).\n\n**Encadrement de l'intégrale.** En intégrant sur $[0;1]$ : $\\displaystyle\\int_0^1(1-x)\\,dx \\leq \\int_0^1 e^{-x}\\,dx \\leq \\int_0^1 1\\,dx$, soit $\\dfrac12\\leq \\displaystyle\\int_0^1 e^{-x}\\,dx \\leq 1$.\n\n**Comparaison à la valeur exacte.** $\\displaystyle\\int_0^1 e^{-x}\\,dx=\\big[-e^{-x}\\big]_0^1=-e^{-1}+1=1-\\dfrac1e\\approx0{,}632$, qui est bien compris entre $0{,}5$ et $1$, conformément à l'encadrement obtenu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une inégalité entre fonctions continues sur un intervalle se conserve par intégration sur ce même intervalle : c'est le passage-clé pour transformer un encadrement de fonction en encadrement de suite ou de valeur numérique.",
+        "Vérifie toujours que l'inégalité de départ est valable sur exactement l'intervalle d'intégration utilisé.",
+        "Le théorème de base donne des inégalités larges ; une inégalité stricte sur les intégrales demande un argument supplémentaire (non-nullité de la différence).",
+        "Les constantes se sortent de l'intégrale par linéarité, ce qui simplifie souvent les bornes de l'encadrement obtenu.",
+        "Cette technique est la brique de base qui permet, une fois combinée aux théorèmes de comparaison de limites, de déterminer le comportement asymptotique d'une suite définie par une intégrale que l'on ne sait pas calculer explicitement."
+      ]
+    }
+  ]
+}

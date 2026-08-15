@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-carres-modulo-n-symetrie-oppose-terminale-c",
+  "meta": {"titre": "Calculer les carrés dans Z/nZ en exploitant la symétrie entre un élément et son opposé", "cours_id": "cours-carres-modulo-n-symetrie-oppose-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Arithmétique modulaire — carrés et résidus quadratiques", "tags": ["Z/nZ", "carrés modulo n", "résidus quadratiques"], "duree_estimee_minutes": 6, "epreuve_source": "bac-c-maths-1988-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1988-e1-1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Calculer les $n$ carrés de $\\mathbb{Z}/n\\mathbb{Z}$ un par un est inutile : la relation $(-a)^2=a^2$ divise le travail par deux."},
+    {"type": "prerequis", "items_markdown": ["Opposé d'un élément dans $\\mathbb{Z}/n\\mathbb{Z}$ : $\\overline{-a}=\\overline{n-a}$", "Réduction modulo $n$ d'un entier"]},
+    {"type": "regle", "titre": "Symétrie des carrés autour de n/2", "contenu_markdown": "Pour tout $\\bar a\\in\\mathbb{Z}/n\\mathbb{Z}$, $(\\overline{-a})^2=\\overline{(-a)^2}=\\overline{a^2}=\\bar a^2$. Les éléments $\\bar a$ et $\\overline{n-a}$ ont donc toujours le même carré. Il suffit de calculer les carrés de $\\bar0$ à $\\overline{\\lfloor n/2\\rfloor}$, puis de reporter chaque valeur sur l'élément opposé correspondant pour obtenir le tableau complet.", "formule_principale": "a² = (n-a)² dans Z/nZ", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer les carrés de tous les éléments de Z/7Z.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Carrés de 0 à 3 (moitié de 7)", "justification": "calcul direct puis réduction modulo 7", "resultat_markdown": "0²=0, 1²=1, 2²=4, 3²=9≡2"},
+      {"numero": 2, "action": "Report par symétrie sur 4,5,6", "justification": "4=-3, 5=-2, 6=-1 modulo 7, donc mêmes carrés que 3,2,1", "resultat_markdown": "4²=2, 5²=4, 6²=1"}
+    ], "conclusion_markdown": "Carrés de Z/7Z : {0,1,2,4} — seuls 4 valeurs sur 7 sont des carrés."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Calculer les 11 (ou n) carrés un par un sans utiliser la symétrie, en recalculant inutilement chaque valeur au lieu de reporter", "pourquoi_faux": "C'est redondant et source d'erreurs de calcul répétées ; la moitié des calculs est évitable.", "correction_markdown": "Toujours calculer seulement jusqu'à la moitié de n, puis reporter par symétrie sur les éléments restants."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Calculer tous les carrés de Z/9Z par symétrie, puis donner l'ensemble des valeurs a pour lesquelles x²=ā a une solution.", "solution_markdown": "0²=0,1²=1,2²=4,3²=0,4²=7 (16≡7). Par symétrie (5=-4,6=-3,7=-2,8=-1) : 5²=7,6²=0,7²=4,8²=1. Carrés atteints : {0,1,4,7}."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Dans Z/nZ, a² = (n-a)² toujours : on ne calcule que jusqu'à n/2.", "Le cas a=0 (et a=n/2 si n pair) donne une unique racine ; les autres carrés atteints en donnent deux."]}
+  ]
+}

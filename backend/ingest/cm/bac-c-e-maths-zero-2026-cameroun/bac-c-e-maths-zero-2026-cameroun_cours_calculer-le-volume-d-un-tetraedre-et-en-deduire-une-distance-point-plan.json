@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-calculer-le-volume-d-un-tetraedre-et-en-deduire-une-distance-point-plan-terminale-c",
+  "meta": {
+    "titre": "Calculer le volume d'un tétraèdre et en déduire une distance point-plan",
+    "cours_id": "cours-calculer-le-volume-d-un-tetraedre-et-en-deduire-une-distance-point-plan-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Géométrie dans l'espace — volumes et distances",
+    "tags": [
+      "produit mixte",
+      "volume d'un tétraèdre",
+      "distance point-plan"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex3-3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le volume d'un tétraèdre, calculé par produit mixte, ouvre une voie détournée mais élégante pour obtenir une distance point-plan sans jamais utiliser la formule directe de distance."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir calculer un produit mixte (produit scalaire d'un vecteur avec un produit vectoriel)",
+        "Connaître la formule Volume=(1/3)×Aire de base×hauteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Volume d'un tétraèdre et distance point-plan associée",
+      "contenu_markdown": "Le volume d'un tétraèdre de sommets $O,A,B,K$ est $V=\\dfrac16\\left|\\overrightarrow{OA}\\cdot(\\overrightarrow{OB}\\wedge\\overrightarrow{OK})\\right|$ (produit mixte, en valeur absolue, divisé par 6). Si un des faces (ici $OAB$) est incluse dans un plan (P) et a une aire connue, le volume s'écrit aussi $V=\\dfrac13\\times\\mathrm{Aire(OAB)}\\times d$, où $d$ est la distance du quatrième sommet K à ce plan — ce qui permet d'isoler $d=\\dfrac{3V}{\\mathrm{Aire(OAB)}}$.",
+      "formule_principale": "V = (1/6)|OA·(OB∧OK)| ; d(K,(P)) = 3V/Aire(face dans (P))",
+      "variantes": [
+        "Vérification indépendante : d(K,(P)) = |xK+3yK-2zK|/√14 (formule directe distance point-plan)"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "OABK avec O(0;0;0), A(1;0;1/2), B(0;2/3;1), K(0;0;1). Montrer que le volume vaut 1/9 et en déduire la distance de K au plan (P):x+3y-2z=0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le produit mixte via permutation circulaire",
+          "justification": "OK·(OA∧OB)=OA·(OB∧OK), et OA∧OB=(-1/3;-1;2/3) déjà connu.",
+          "resultat_markdown": "OK·(OA∧OB) = (0;0;1)·(-1/3;-1;2/3) = 2/3"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le volume",
+          "justification": "V=(1/6)|produit mixte|.",
+          "resultat_markdown": "V = (1/6)×(2/3) = 1/9"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la distance d via V=(1/3)Aire×d",
+          "justification": "Aire(OAB)=√14/6 déjà calculée.",
+          "resultat_markdown": "d = 3V/Aire = 3×(1/9)/(√14/6) = (1/3)×(6/√14) = 2/√14 = √14/7"
+        }
+      ],
+      "conclusion_markdown": "Volume=1/9, et d(K,(P))=√14/7."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer un produit vectoriel OB∧OK complet au lieu d'utiliser la propriété de permutation circulaire du produit mixte",
+          "pourquoi_faux": "Le produit mixte OA·(OB∧OK) est égal à OK·(OA∧OB) par permutation circulaire ; si OA∧OB a déjà été calculé dans une question précédente, il est bien plus rapide de réutiliser ce résultat que de calculer un nouveau produit vectoriel OB∧OK.",
+          "correction_markdown": "Toujours chercher à réutiliser un produit vectoriel déjà calculé grâce à la propriété d'invariance du produit mixte par permutation circulaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le volume du tétraèdre O(0;0;0), (1;0;0), (0;1;0), (0;0;1).",
+          "solution_markdown": "Produit mixte=(1;0;0)·[(0;1;0)∧(0;0;1)]=(1;0;0)·(1;0;0)=1. V=1/6."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Vérifier la distance de K au plan (P):x+3y-2z=0 par la formule directe.",
+          "solution_markdown": "d=|xK+3yK-2zK|/√(1²+3²+2²)=|0+0-2|/√14=2/√14=√14/7 : cohérent avec le calcul via le volume."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi cette méthode (volume puis distance) est-elle utile même quand la formule directe de distance point-plan existe ?",
+          "solution_markdown": "Elle offre une vérification croisée indépendante du résultat, précieuse pour détecter une erreur de calcul ; de plus, dans un exercice structuré en questions successives où le volume est explicitement demandé, cette méthode réutilise des résultats déjà établis (aire, produit vectoriel) plutôt que d'introduire un calcul entièrement nouveau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le volume d'un tétraèdre se calcule par (1/6) de la valeur absolue du produit mixte de trois vecteurs issus d'un même sommet.",
+        "La propriété de permutation circulaire du produit mixte permet de réutiliser un produit vectoriel déjà calculé.",
+        "Connaissant le volume et l'aire d'une face, on isole la distance du sommet opposé au plan de cette face."
+      ]
+    }
+  ]
+}

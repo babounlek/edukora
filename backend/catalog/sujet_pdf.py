@@ -5,6 +5,8 @@ copie du produit payant. Distinct de l'ancien pipeline PDF supprimé, qui rendai
 le corrigé complet et devait donc être protégé - ici la fuite est le but.
 """
 
+import base64
+import io
 import os
 import re
 import subprocess
@@ -13,6 +15,7 @@ import tempfile
 from pathlib import Path
 
 import markdown
+import qrcode
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
@@ -113,6 +116,30 @@ def _resolve_media_paths(markdown_text):
     return _MEDIA_IMAGE_RE.sub(_replace, markdown_text)
 
 
+# Le PDF est explicitement conçu pour circuler hors plateforme (voir docstring de
+# module) - son unique CTA doit donc pointer vers la fiche de CETTE épreuve (même URL
+# canonique que catalog.sitemap._all_entries), pas vers la page d'accueil générique où
+# le lecteur devrait se réorienter seul. ?ref=pdf_sujet permet de mesurer combien de
+# visites viennent réellement d'un PDF partagé - voir EpreuveDetailPage.tsx (capture)
+# et analytics.models.EventName.PDF_SUJET_LANDING (évènement) côté frontend.
+def _lesson_deep_link(lesson, header):
+    country_code = header["pays"]["code"].lower()
+    return f"{settings.FRONTEND_URL}/{country_code}/epreuves/{lesson.slug}?ref=pdf_sujet"
+
+
+def _qr_code_data_uri(url):
+    """QR code encodé en data URI (comme KaTeX/les drapeaux, voir plus haut : jamais
+    de service tiers pour un asset généré à chaque PDF)."""
+    qr = qrcode.QRCode(border=1, box_size=8)
+    qr.add_data(url)
+    qr.make(fit=True)
+    image = qr.make_image(fill_color="#0a6e4e", back_color="#ffffff")
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
+
+
 def _render_html(lesson):
     markdown_text = _resolve_media_paths(lesson.preview_markdown())
     protected_markdown, math_spans = _protect_math(markdown_text)
@@ -124,6 +151,7 @@ def _render_html(lesson):
     content_html = _restore_math(content_html, math_spans)
     header = lesson.header_info()
     flag_path = _FLAGS_DIR / f"{header['pays']['code'].lower()}.svg"
+    lesson_url = _lesson_deep_link(lesson, header)
     return render_to_string("catalog/sujet_pdf_template.html", {
         "lesson": lesson,
         "header": header,
@@ -131,6 +159,8 @@ def _render_html(lesson):
         "site_name": settings.SITE_NAME,
         "site_url": settings.FRONTEND_URL,
         "site_url_display": settings.FRONTEND_URL.removeprefix("https://").removeprefix("http://"),
+        "lesson_url": lesson_url,
+        "qr_code_data_uri": _qr_code_data_uri(lesson_url),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
         "katex_js_url": (_KATEX_DIR / "katex.min.js").as_uri(),
         "katex_auto_render_url": (_KATEX_DIR / "contrib" / "auto-render.min.js").as_uri(),

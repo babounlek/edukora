@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-deduire-la-fonction-d-un-programme-a-partir-de-sa-trace-d-execution-terminale-c",
+  "meta": {
+    "titre": "Déduire la fonction d'un programme à partir de sa trace d'exécution",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Analyse de programmes en langage C",
+    "duree_estimee_min": 10,
+    "tags": [
+      "analyse de programme",
+      "généralisation",
+      "algorithmes classiques"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex5-q3.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Après avoir tracé un programme pour une valeur particulière, il faut savoir généraliser : que ferait-il pour n'importe quelle autre valeur ? C'est cette capacité de généralisation que ce cours entraîne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir réaliser la trace d'exécution d'un programme avec boucle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Généraliser à partir d'une trace",
+      "contenu_markdown": "Après une trace d'exécution réalisée pour une valeur particulière, on généralise le comportement observé à la fonction du programme quel que soit l'entrée : on identifie ce que fait la boucle indépendamment de la valeur précise testée.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déduire ce que fait le programme, à partir de la trace obtenue pour n=4 (affichage 1234).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer le résultat de la trace",
+          "justification": "Pour n=4, le programme a affiché 1, 2, 3, 4 dans l'ordre.",
+          "resultat_markdown": "Affichage : 1, 2, 3, 4"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le motif indépendamment de la valeur 4",
+          "justification": "Le programme affiche tous les entiers de 1 à n, quel que soit n, puisque la boucle dépend de n et non d'une valeur fixe.",
+          "resultat_markdown": "Affiche les entiers de 1 à n"
+        },
+        {
+          "numero": 3,
+          "action": "Formuler la fonction générale du programme",
+          "justification": "Généraliser la conclusion à toute valeur de n saisie par l'utilisateur.",
+          "resultat_markdown": "Affiche les n premiers entiers naturels non nuls, dans l'ordre croissant"
+        }
+      ],
+      "conclusion_markdown": "Le programme affiche les n premiers entiers naturels non nuls (de 1 à n), dans l'ordre croissant, quelle que soit la valeur de n saisie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"il affiche 1234\" comme fonction générale du programme",
+          "pourquoi_faux": "\"1234\" est le résultat particulier obtenu pour n=4, pas la description générale du comportement du programme pour n'importe quelle valeur de n.",
+          "correction_markdown": "Distingue toujours le résultat d'un cas particulier (utile pour comprendre) de la règle générale qu'il faut formuler en réponse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un programme affiche 0123 pour n=4 avec for(i=0; i<n; i++){ printf(\"%d\", i); }. Que fait-il en général ?",
+          "solution_markdown": "Il affiche les entiers de 0 à n-1, dans l'ordre croissant."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme affiche 2 4 6 8 pour n=4 avec for(i=1; i<=n; i++){ printf(\"%d \", i*2); }. Que fait-il en général ?",
+          "solution_markdown": "Il affiche les n premiers nombres pairs (positifs, à partir de 2), dans l'ordre croissant, chacun séparé par un espace."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment vérifier qu'une conclusion générale déduite d'une seule trace (par exemple pour n=4) est fiable, sans refaire une trace complète pour chaque valeur de n ?",
+          "solution_markdown": "On peut tester mentalement des cas limites significatifs : n=0 (la boucle ne devrait rien afficher, aucun affichage attendu), n=1 (un seul affichage attendu), et un très grand n (le motif doit rester cohérent). Si la règle générale déduite reste valable pour ces cas limites sans contradiction, elle est fiable ; toute exception sur un cas limite signale une erreur dans la généralisation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Après une trace, généralise le comportement observé au-delà du cas particulier testé.",
+        "Distingue le résultat d'un cas précis (ex. \"1234\" pour n=4) de la règle générale (\"affiche 1 à n\").",
+        "Une bonne généralisation reste valable même pour les cas limites (n=0, n=1, grand n).",
+        "Cette compétence clôt presque systématiquement les exercices de programmation du BAC informatique."
+      ]
+    }
+  ]
+}

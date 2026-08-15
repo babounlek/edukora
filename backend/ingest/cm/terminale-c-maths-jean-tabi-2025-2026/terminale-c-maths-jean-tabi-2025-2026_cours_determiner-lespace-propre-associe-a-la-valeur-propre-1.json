@@ -1,0 +1,30 @@
+{
+  "cours_id": "cours-determiner-lespace-propre-associe-a-la-valeur-propre-1-dun-endomorphisme-en-dimension-3-terminale-c",
+  "meta": {
+    "titre": "Déterminer l'espace des vecteurs invariants d'un endomorphisme en dimension 3",
+    "cours_id": "cours-determiner-lespace-propre-associe-a-la-valeur-propre-1-dun-endomorphisme-en-dimension-3-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire — vecteurs invariants",
+    "tags": ["espace propre", "système linéaire", "vecteurs invariants", "sous-espace"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex1-2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Trouver les vecteurs qu'un endomorphisme laisse inchangés revient à résoudre un simple système linéaire homogène : une compétence classique d'algèbre linéaire, essentielle pour identifier ensuite la nature géométrique d'une transformation."},
+    {"type": "prerequis", "items_markdown": ["Système d'équations linéaires à trois inconnues", "Résolution par substitution"]},
+    {"type": "regle", "titre": "Système homogène (M-I)u=0", "contenu_markdown": "Pour trouver $F=\\{\\vec u\\in E\\ /\\ f(\\vec u)=\\vec u\\}$, on pose $\\vec u=(x,y,z)$, on écrit $f(\\vec u)=\\vec u$ coordonnée par coordonnée à l'aide de la matrice $M$ de $f$, on regroupe pour obtenir un système linéaire homogène, puis on le résout par substitution : l'ensemble des solutions décrit exactement $F$.", "formule_principale": "(M - I) u = 0", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Soit f de matrice M=[[0,1,0],[1,0,0],[0,0,1]]. Déterminer F={u / f(u)=u}.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Écrire le système", "justification": "f(u)=u donne y=x, x=y, z=z.", "resultat_markdown": "y=x et z quelconque"},
+      {"numero": 2, "action": "Résoudre", "justification": "La première équation donne y=x ; z est libre.", "resultat_markdown": "(x,x,z), x,z réels"},
+      {"numero": 3, "action": "Conclure", "justification": "L'ensemble des solutions est un plan, engendré par (1,1,0) et (0,0,1).", "resultat_markdown": "F = Vect((1,1,0),(0,0,1))"}
+    ], "conclusion_markdown": "F est ici un plan (dimension 2), pas une droite : la dimension de F dépend entièrement de l'endomorphisme étudié."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Vérifier seulement qu'un vecteur particulier w satisfait f(w)=w et conclure que F=Vect(w) sans résoudre le système complet", "pourquoi_faux": "Cela prouve seulement Vect(w)⊂F, pas l'égalité : un autre vecteur indépendant de w pourrait aussi être invariant.", "correction_markdown": "Toujours résoudre le système linéaire complet pour être certain de la dimension exacte de F."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "M=[[1,0,0],[0,1,0],[0,0,-1]]. Déterminer F.", "solution_markdown": "F = {(x,y,0)} = Vect((1,0,0),(0,1,0)) : un plan."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "M=[[0,-1,0],[1,0,0],[0,0,1]]. Déterminer F.", "solution_markdown": "x=-y et y=x impose x=y=0 ; z quelconque. F=Vect((0,0,1)) : une droite."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La méthode générale est toujours la même : poser u=(x,y,z), écrire f(u)=u, résoudre le système homogène obtenu.", "La dimension de F (droite, plan, ou {0}) n'est jamais supposée a priori : elle résulte de la résolution complète.", "Vérifier qu'un vecteur candidat satisfait f(u)=u ne suffit pas à caractériser F entièrement."]}
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D et TI",
+  "examen": "bac_blanc",
+  "origine": "etablissement",
+  "etablissement": "Inspection Générale des Enseignements - Inspection de Pédagogie chargée de l'Enseignement des Sciences (Baccalauréat Blanc ESG)",
+  "annee": 2026,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 3,
+  "titre_exercice": "Équation différentielle du second ordre, intégration par parties, suite homographique",
+  "points": 3.5,
+  "figures": [],
+  "enonce_intro_markdown": "On considère l'équation différentielle $(E):y''-4y'+4y=0$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "points": "0,75pt",
+      "enonce_markdown": "Déterminer la forme générale des fonctions numériques, solutions de $(E)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-resoudre-une-equation-differentielle-du-second-ordre-a-racine-double-terminale-d-ti",
+          "texte": "Une équation différentielle linéaire du second ordre à coefficients constants $ay''+by'+cy=0$ se résout via son équation caractéristique $ar^2+br+c=0$. Si celle-ci admet une racine double $r_0$ (discriminant nul), les solutions générales sont $y(x)=(Ax+B)e^{r_0x}$, $A,B\\in\\mathbb{R}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne équation différentielle linéaire du second ordre à coefficients constants $ay''+by'+cy=0$ se résout via son équation caractéristique $ar^2+br+c=0$. Si celle-ci admet une racine double $r_0$ (discriminant nul), les solutions générales sont $y(x)=(Ax+B)e^{r_0x}$, $A,B\\in\\mathbb{R}$.\n\n**Équation caractéristique.** $r^2-4r+4=0$\n\n**Discriminant.** $\\Delta = (-4)^2-4\\times1\\times4 = 16-16=0$\n\nLe discriminant est nul : l'équation caractéristique admet une racine double $r_0=\\dfrac{4}{2}=2$.\n\n**Conclusion.** Les solutions générales de $(E)$ sont les fonctions $y(x)=(Ax+B)e^{2x}$, où $A,B$ sont des constantes réelles."
+    },
+    {
+      "numero": "1.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer la solution particulière $g$ de l'équation $(E)$ qui vérifie les conditions : $g(0)=2$ et $g'(0)=1$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-une-solution-particuliere-dune-equation-differentielle-via-conditions-initiales-terminale-d-ti",
+          "texte": "Pour déterminer la solution particulière vérifiant des conditions initiales $y(x_0)=y_0$ et $y'(x_0)=y_0'$, on substitue ces conditions dans l'expression générale (et sa dérivée) pour obtenir un système linéaire en les constantes."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer la solution particulière vérifiant des conditions initiales $y(x_0)=y_0$ et $y'(x_0)=y_0'$, on substitue ces conditions dans l'expression générale (et sa dérivée) pour obtenir un système linéaire en les constantes.\n\nOn part de $g(x)=(Ax+B)e^{2x}$ (question 1.a).\n\n**Condition $g(0)=2$.** $g(0)=(A\\times0+B)e^0=B$, donc $B=2$.\n\n**Calcul de $g'(x)$.** $g'(x) = A e^{2x} + (Ax+B)\\times2e^{2x} = \\left[A+2(Ax+B)\\right]e^{2x} = (2Ax+A+2B)e^{2x}$\n\n**Condition $g'(0)=1$.** $g'(0)=A+2B=1$, donc $A=1-2B=1-4=-3$.\n\n**Conclusion.** $g(x) = (-3x+2)e^{2x}$."
+    },
+    {
+      "numero": "1.c",
+      "points": "0,75pt",
+      "enonce_markdown": "À l'aide d'une intégration par parties, calculer $I=\\displaystyle\\int_{\\ln2}^{\\ln4}(-3t+2)e^{2t}\\,dt$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-integrale-par-parties-avec-terme-polynomial-et-exponentiel-terminale-d-ti",
+          "texte": "L'intégration par parties $\\int u'v = [uv]-\\int uv'$ (ou de façon équivalente $\\int uv'=[uv]-\\int u'v$) s'applique à une intégrale du type $\\int(\\alpha t+\\beta)e^{kt}dt$ en posant $u=\\alpha t+\\beta$ (dérivée simple) et $dv=e^{kt}dt$ (primitive simple), pour faire baisser le degré du terme polynomial."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'intégration par parties $\\int u'v = [uv]-\\int uv'$ (ou de façon équivalente $\\int uv'=[uv]-\\int u'v$) s'applique à une intégrale du type $\\int(\\alpha t+\\beta)e^{kt}dt$ en posant $u=\\alpha t+\\beta$ (dérivée simple) et $dv=e^{kt}dt$ (primitive simple), pour faire baisser le degré du terme polynomial.\n\n**Choix des fonctions.** $u=-3t+2$, donc $u'=-3$ ; $dv=e^{2t}dt$, donc $v=\\dfrac12e^{2t}$.\n\n**Application de la formule.** $I = \\left[(-3t+2)\\times\\dfrac12e^{2t}\\right]_{\\ln2}^{\\ln4} - \\int_{\\ln2}^{\\ln4}(-3)\\times\\dfrac12e^{2t}\\,dt$\n\n$I = \\left[\\dfrac12(-3t+2)e^{2t}\\right]_{\\ln2}^{\\ln4} + \\dfrac32\\int_{\\ln2}^{\\ln4}e^{2t}\\,dt$\n\n$\\displaystyle\\int_{\\ln2}^{\\ln4}e^{2t}dt = \\left[\\dfrac12e^{2t}\\right]_{\\ln2}^{\\ln4}$\n\n**Valeurs de $e^{2t}$ aux bornes.** $e^{2\\ln4}=e^{\\ln16}=16$ ; $e^{2\\ln2}=e^{\\ln4}=4$.\n\n**Calcul du crochet principal.** $\\dfrac12(-3\\ln4+2)\\times16 - \\dfrac12(-3\\ln2+2)\\times4 = 8(-3\\ln4+2)-2(-3\\ln2+2)$\n\n$= -24\\ln4+16+6\\ln2-4 = -24\\ln4+6\\ln2+12$\n\n**Calcul du second terme.** $\\dfrac32\\left[\\dfrac12e^{2t}\\right]_{\\ln2}^{\\ln4} = \\dfrac34(16-4) = \\dfrac34\\times12 = 9$\n\n**Somme.** $I = (-24\\ln4+6\\ln2+12) + 9 = -24\\ln4+6\\ln2+21$\n\n**Simplification via $\\ln4=2\\ln2$.** $-24\\ln4 = -24\\times2\\ln2 = -48\\ln2$, donc $-48\\ln2+6\\ln2=-42\\ln2$.\n\n**Conclusion.** $I = 21-42\\ln2$ (soit environ $I\\approx-8{,}11$)."
+    },
+    {
+      "numero": "2.a",
+      "points": "0,75pt",
+      "enonce_markdown": "Démontrer par récurrence que pour tout entier naturel $n$, $-2<u_n<0$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-par-recurrence-la-stabilite-dun-intervalle-pour-une-suite-avec-premier-terme-hors-intervalle-terminale-d-ti",
+          "texte": "Pour démontrer par récurrence qu'une suite récurrente $u_{n+1}=f(u_n)$ reste dans un intervalle $]a;b[$, on établit d'abord la propriété au premier rang où elle est effectivement vraie (le rang de départ n'est pas toujours $n=0$ si le terme initial est en dehors de l'intervalle visé), puis on utilise la stabilité de l'intervalle par $f$ pour l'hérédité."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence qu'une suite récurrente $u_{n+1}=f(u_n)$ reste dans un intervalle $]a;b[$, on établit d'abord la propriété au premier rang où elle est effectivement vraie (le rang de départ n'est pas toujours $n=0$ si le terme initial est en dehors de l'intervalle visé), puis on utilise la stabilité de l'intervalle par $f$ pour l'hérédité.\n\n**Note sur l'énoncé.** Le premier terme donné est $u_0=0$, qui ne vérifie pas l'inégalité stricte $-2<u_0<0$ (puisque $0$ n'est pas strictement inférieur à $0$) : $u_0$ est donc en dehors de l'intervalle ouvert visé. En revanche, $u_1=f(u_0)=\\dfrac{-4}{4+0}=-1$ vérifie bien $-2<-1<0$. La propriété demandée est donc établie ci-dessous pour tout $n\\ge1$, ce qui est le contenu mathématiquement exact et ce qui permet la suite du raisonnement (monotonie et convergence).\n\n**Initialisation (rang $n=1$).** $u_1=-1$, et $-2<-1<0$ : la propriété est vraie au rang $1$.\n\n**Hérédité.** Supposons que pour un entier $n\\ge1$ donné, $-2<u_n<0$. Montrons que $-2<u_{n+1}<0$.\n\nLa fonction $f(x)=\\dfrac{-4}{4+x}$ est strictement croissante sur $]-2;0[$ (voir question 2.b : $f'(x)=\\dfrac{4}{(4+x)^2}>0$). Par croissance de $f$ sur cet intervalle :\n\n$f(-2^+)\\le f(u_n)\\le f(0^-)$ au sens des limites, c'est-à-dire, en calculant les valeurs limites : quand $x\\to-2^+$, $4+x\\to2^+$, donc $f(x)\\to\\dfrac{-4}{2}=-2$ ; quand $x\\to0^-$, $4+x\\to4^-$, donc $f(x)\\to\\dfrac{-4}{4}=-1$.\n\nDonc $-2<f(u_n)<-1$, c'est-à-dire $-2<u_{n+1}<-1$. En particulier, $-2<u_{n+1}<0$ (car $-1<0$) : la propriété est vraie au rang $n+1$.\n\n**Conclusion.** Par récurrence, pour tout entier naturel $n\\ge1$, $-2<u_n<0$."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Étudier le sens de variation de la suite $(u_n)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-le-sens-de-variation-dune-suite-recurrente-via-la-croissance-de-f-terminale-d-ti",
+          "texte": "Pour une suite récurrente $u_{n+1}=f(u_n)$ avec $f$ strictement croissante, le sens de variation de la suite se déduit de la comparaison entre les deux premiers termes utiles : si $u_2$ et $u_1$ sont dans le même ordre que $u_1$ et $u_0$ (ou le rang de départ pertinent), cet ordre se propage à toute la suite par croissance de $f$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour une suite récurrente $u_{n+1}=f(u_n)$ avec $f$ strictement croissante, le sens de variation de la suite se déduit de la comparaison entre les deux premiers termes utiles : si $u_2$ et $u_1$ sont dans le même ordre que $u_1$ et $u_0$ (ou le rang de départ pertinent), cet ordre se propage à toute la suite par croissance de $f$.\n\n**Signe de $f'$.** $f(x)=\\dfrac{-4}{4+x} = -4(4+x)^{-1}$, donc $f'(x) = -4\\times(-1)(4+x)^{-2} = \\dfrac{4}{(4+x)^2}$, strictement positif partout où $f$ est définie (c'est-à-dire $x\\neq-4$). $f$ est donc strictement croissante sur son domaine, en particulier sur $]-2;0[$.\n\n**Comparaison des premiers termes utiles.** $u_1=-1$ (calculé à la question 2.a) et $u_2=f(u_1)=\\dfrac{-4}{4-1}=\\dfrac{-4}{3}\\approx-1{,}33$.\n\nOn observe $u_2<u_1$ (car $-\\frac43<-1$).\n\n**Propagation par croissance de $f$.** Puisque $f$ est croissante et $u_2<u_1$, on a $f(u_2)<f(u_1)$, c'est-à-dire $u_3<u_2$ ; et ainsi de suite par récurrence : l'ordre $u_{n+1}<u_n$ se propage à tout rang $n\\ge1$.\n\n**Conclusion.** La suite $(u_n)_{n\\ge1}$ est strictement décroissante."
+    },
+    {
+      "numero": "2.c",
+      "points": "0,25pt",
+      "enonce_markdown": "En déduire la convergence de la suite $(u_n)$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-la-convergence-dune-suite-decroissante-et-minoree-terminale-d-ti",
+          "texte": "Une suite décroissante (à partir d'un certain rang) et minorée converge, par le théorème de la limite monotone."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne suite décroissante (à partir d'un certain rang) et minorée converge, par le théorème de la limite monotone.\n\nD'après la question 2.b, $(u_n)_{n\\ge1}$ est décroissante. D'après la question 2.a, $u_n>-2$ pour tout $n\\ge1$ : la suite est minorée par $-2$.\n\n**Conclusion.** Une suite décroissante (à partir du rang 1) et minorée converge : $(u_n)$ est donc convergente."
+    }
+  ]
+}

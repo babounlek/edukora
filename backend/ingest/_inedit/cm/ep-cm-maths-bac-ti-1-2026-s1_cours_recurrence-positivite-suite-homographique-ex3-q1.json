@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-recurrence-positivite-suite-homographique",
+  "meta": {
+    "titre": "Démontrer par récurrence qu'une suite homographique reste strictement positive",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "récurrence",
+      "Suites numériques"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex3-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'étudier une suite définie par $u_{n+1}=\\dfrac{au_n+b}{cu_n+d}$, il faut souvent garantir que le dénominateur ne s'annule jamais et que la suite reste dans un domaine où les calculs suivants (comme une suite auxiliaire géométrique) restent valides. Une démonstration par récurrence bien menée règle ces deux problèmes en même temps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Principe de récurrence : initialisation, hérédité, conclusion",
+        "Suite définie par une relation de récurrence $u_{n+1}=f(u_n)$",
+        "Signe d'un quotient de deux expressions"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Structure d'une démonstration par récurrence sur le signe d'une suite",
+      "contenu_markdown": "Pour démontrer que $u_n>0$ pour tout entier naturel $n$, on établit : **l'initialisation** ($u_0>0$, souvent immédiate car $u_0$ est donné) ; **l'hérédité** (en supposant $u_n>0$, on montre que $u_{n+1}>0$, en général en montrant que le numérateur et le dénominateur de $f(u_n)$ sont chacun strictement positifs) ; puis on **conclut** par le principe de récurrence. Cette étape sert souvent de fondation à une étude plus poussée (variation, suite auxiliaire, convergence)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $(w_n)$ la suite définie par $w_0=1$ et, pour tout entier naturel $n$, $w_{n+1}=\\dfrac{3w_n+1}{w_n+3}$. Démontrer que, pour tout entier naturel $n$, $w_n>0$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialisation",
+          "justification": "On vérifie la propriété au rang 0.",
+          "resultat_markdown": "$w_0=1>0$ : vraie au rang 0."
+        },
+        {
+          "numero": 2,
+          "action": "Hérédité - hypothèse",
+          "justification": "On suppose la propriété vraie à un rang $n$ quelconque.",
+          "resultat_markdown": "On suppose $w_n>0$."
+        },
+        {
+          "numero": 3,
+          "action": "Hérédité - démonstration",
+          "justification": "Si $w_n>0$, alors $3w_n+1>0$ (somme de deux termes positifs) et $w_n+3>0$ (somme de deux termes positifs), donc leur quotient est strictement positif.",
+          "resultat_markdown": "$w_{n+1}=\\dfrac{3w_n+1}{w_n+3}>0$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclusion",
+          "justification": "Le principe de récurrence s'applique.",
+          "resultat_markdown": "Pour tout entier naturel $n$, $w_n>0$."
+        }
+      ],
+      "conclusion_markdown": "La propriété $w_n>0$ est vraie pour tout entier naturel $n$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Omettre l'étape d'initialisation et ne traiter que l'hérédité.",
+          "pourquoi_faux": "Sans initialisation, rien ne garantit que la propriété est vraie au premier rang : l'hérédité seule ne prouve rien.",
+          "correction_markdown": "Toujours vérifier explicitement la propriété au rang de départ avant l'hérédité."
+        },
+        {
+          "erreur_markdown": "Affirmer que le dénominateur est positif sans le justifier à partir de l'hypothèse de récurrence.",
+          "pourquoi_faux": "C'est justement l'hypothèse $w_n>0$ qui permet de conclure que $w_n+3>0$ ; l'affirmer sans le dire casse la logique de la démonstration.",
+          "correction_markdown": "Relier explicitement chaque signe obtenu à l'hypothèse de récurrence $w_n>0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Soit $(t_n)$ définie par $t_0=0$ et $t_{n+1}=\\dfrac{t_n+5}{2}$. Démontrer par récurrence que $t_n\\geq0$ pour tout $n$.",
+          "solution_markdown": "Initialisation : $t_0=0\\geq0$. Hérédité : si $t_n\\geq0$, alors $t_n+5\\geq5>0$, donc $t_{n+1}=\\dfrac{t_n+5}{2}>0\\geq0$. Conclusion : $t_n\\geq0$ pour tout $n$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Soit $(s_n)$ définie par $s_0=2$ et $s_{n+1}=\\dfrac{s_n+1}{s_n+2}$. Démontrer par récurrence que $s_n>0$ pour tout $n$.",
+          "solution_markdown": "Initialisation : $s_0=2>0$. Hérédité : si $s_n>0$, alors $s_n+1>0$ et $s_n+2>0$, donc $s_{n+1}>0$. Conclusion : $s_n>0$ pour tout $n$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $(r_n)$ définie par $r_0=4$ et $r_{n+1}=\\dfrac{2r_n-1}{r_n+1}$. Démontrer par récurrence que $r_n>\\dfrac12$ pour tout $n$ (indication : si $r_n>\\dfrac12$ alors $2r_n-1>0$).",
+          "solution_markdown": "Initialisation : $r_0=4>\\dfrac12$. Hérédité : si $r_n>\\dfrac12$, alors $2r_n-1>0$, et $r_n+1>\\dfrac32>0$, donc $r_{n+1}=\\dfrac{2r_n-1}{r_n+1}>0$. Une étude plus fine (hors de la portée de cet exercice) confirmerait même $r_{n+1}>\\dfrac12$, mais la stricte positivité suffit déjà à garantir que $r_n+1\\neq0$ à chaque étape."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une récurrence sur le signe d'une suite homographique repose sur le signe séparé du numérateur et du dénominateur.",
+        "Ne jamais sauter l'initialisation : c'est elle qui amorce toute la chaîne de déductions.",
+        "Cette étape garantit souvent que le dénominateur de la relation de récurrence ne s'annule jamais.",
+        "Elle sert de fondation à une étude ultérieure : suite auxiliaire, monotonie, convergence."
+      ]
+    }
+  ]
+}

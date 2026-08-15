@@ -1,0 +1,32 @@
+{
+  "cours_id": "cours-estimer-un-effectif-et-un-cout-a-partir-dune-probabilite-binomiale-composee-terminale-c",
+  "meta": {
+    "titre": "Estimer un effectif et un coût à partir d'une probabilité binomiale composée",
+    "cours_id": "cours-estimer-un-effectif-et-un-cout-a-partir-dune-probabilite-binomiale-composee-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Probabilités appliquées — estimation d'effectifs et de coûts",
+    "tags": ["loi binomiale", "événements composés", "espérance", "estimation financière"],
+    "duree_estimee_minutes": 25,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex4-tache2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Dans les problèmes de qualité industrielle, plusieurs niveaux de hasard s'enchaînent : défaut par défaut sur une unité, unité par unité pour un client, client par client pour une journée entière. Chaque niveau se traite l'un après l'autre, jamais en un seul calcul global."},
+    {"type": "prerequis", "items_markdown": ["Loi binomiale B(n,p)", "Indépendance d'événements et espérance d'une variable binomiale"]},
+    {"type": "regle", "titre": "Enchaîner les niveaux de probabilité", "contenu_markdown": "Quand un événement complexe se décompose en (1) une loi binomiale sur le nombre de défauts d'une unité, (2) une probabilité d'événement composite sur l'unité entière (ex. $P(X\\le k)$), (3) une répétition indépendante de cet événement sur plusieurs unités liées à un même client, puis (4) une estimation sur un grand nombre de clients : on calcule ces probabilités dans l'ordre, de la plus élémentaire à la plus globale, et on estime un effectif ou un coût total en multipliant la probabilité finale par l'espérance mathématique (nombre de clients $\\times$ probabilité).", "formule_principale": "E(nb. événements) = effectif total × P(événement composé)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "p=0,1 défaut par pièce. Lot de 10 pièces, acceptable si au plus 1 défaut. Client reçoit 2 lots, remboursé si les 2 sont non acceptables. Estimer le nombre de clients remboursés sur 50 clients.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Loi du nombre de défauts", "justification": "X~B(10;0,1).", "resultat_markdown": "P(X≤1)=P(X=0)+P(X=1)"},
+      {"numero": 2, "action": "Calculer P(X≤1)", "justification": "0,9^10+10×0,1×0,9^9≈0,3487+0,3874", "resultat_markdown": "P(acceptable)≈0,7361"},
+      {"numero": 3, "action": "P(non acceptable)", "justification": "1-0,7361", "resultat_markdown": "≈0,2639"},
+      {"numero": 4, "action": "P(client remboursé)", "justification": "(0,2639)² pour 2 lots indépendants", "resultat_markdown": "≈0,0697"},
+      {"numero": 5, "action": "Estimation sur 50 clients", "justification": "50×0,0697", "resultat_markdown": "≈3,48 clients remboursés en moyenne"}
+    ], "conclusion_markdown": "Chaque niveau (défaut, lot, client, journée) est traité successivement, sans jamais fusionner deux niveaux en un seul calcul."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Multiplier directement la probabilité de défaut d'une pièce par le nombre de clients, en sautant les étapes intermédiaires (lot puis client)", "pourquoi_faux": "La probabilité qu'un client soit remboursé résulte d'un enchaînement de plusieurs niveaux de hasard indépendants ; sauter des étapes mélange des probabilités de nature différente et donne un résultat sans signification.", "correction_markdown": "Toujours traiter chaque niveau séparément, dans l'ordre : défaut par unité, puis unité (lot) entière, puis client (plusieurs lots), puis population de clients."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "P(lot non acceptable)=0,05. Client remboursé si 2 lots sur 2 non acceptables. Calculer P(client remboursé).", "solution_markdown": "0,05²=0,0025."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Avec la probabilité précédente, estimer le nombre de clients remboursés sur 200 clients, et l'interpréter.", "solution_markdown": "200×0,0025=0,5 client en moyenne : sur une période de 2 jours (400 clients), on attend en moyenne 1 client remboursé."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un problème de qualité à plusieurs niveaux se résout niveau par niveau : unité, puis groupe, puis population.", "L'estimation finale (effectif ou coût) est une espérance mathématique : elle peut être non entière et inférieure à 1, ce qui reste un résultat valide.", "Une espérance faible se traduit avantageusement en fréquence (« 1 client tous les n jours ») pour l'interprétation pratique."]}
+  ]
+}

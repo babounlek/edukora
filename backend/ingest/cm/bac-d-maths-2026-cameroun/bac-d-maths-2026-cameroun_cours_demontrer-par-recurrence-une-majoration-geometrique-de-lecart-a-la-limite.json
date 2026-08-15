@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-une-majoration-geometrique-de-lecart-a-la-limite-terminale-d",
+  "meta": {
+    "titre": "Démontrer par récurrence une majoration géométrique de l'écart à la limite",
+    "cours_id": "cours-demontrer-par-recurrence-une-majoration-geometrique-de-lecart-a-la-limite-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Suites — majoration géométrique",
+    "tags": [
+      "récurrence",
+      "majoration géométrique",
+      "vitesse de convergence"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex2-7"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Enchaîner une inégalité de contraction terme après terme, par récurrence, donne une majoration explicite et géométrique de la distance à la limite : c'est le résultat qui permet ensuite d'appliquer le théorème des gendarmes."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Principe de démonstration par récurrence",
+        "Inégalité de contraction |U(n+1)-ℓ|≤k|Un-ℓ|"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Propager une inégalité de contraction par récurrence",
+      "contenu_markdown": "Si $|U_{n+1}-\\ell|\\le k|U_n-\\ell|$ pour tout $n$ (avec $0<k<1$), alors par récurrence, $|U_n-\\ell|\\le k^n|U_0-\\ell|$ pour tout $n$ : l'initialisation est immédiate (égalité au rang 0), et l'hérédité combine l'hypothèse de récurrence avec l'inégalité de contraction.",
+      "formule_principale": "|U(n+1)-ℓ|≤k|Un-ℓ| pour tout n ⟹ |Un-ℓ|≤kⁿ|U0-ℓ|",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "U0=5, ℓ=1, |U(n+1)-1|≤(1/3)|Un-1| pour tout n. Montrer par récurrence que |Un-1|≤4×(1/3)ⁿ.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialisation",
+          "justification": "|U0-1|=|5-1|=4=4×(1/3)⁰=4×1.",
+          "resultat_markdown": "Vrai au rang 0"
+        },
+        {
+          "numero": 2,
+          "action": "Hérédité : hypothèse au rang n",
+          "justification": "Supposons |Un-1|≤4×(1/3)ⁿ.",
+          "resultat_markdown": "Hypothèse de récurrence posée"
+        },
+        {
+          "numero": 3,
+          "action": "Combiner avec la contraction",
+          "justification": "|U(n+1)-1|≤(1/3)|Un-1|≤(1/3)×4×(1/3)ⁿ=4×(1/3)^(n+1).",
+          "resultat_markdown": "Vrai au rang n+1"
+        }
+      ],
+      "conclusion_markdown": "Par récurrence, pour tout n, |Un-1|≤4×(1/3)ⁿ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de multiplier le facteur initial |U0-ℓ| dans la majoration finale (écrire seulement kⁿ au lieu de |U0-ℓ|×kⁿ)",
+          "pourquoi_faux": "L'initialisation fixe la constante multiplicative devant kⁿ ; l'oublier fausse toute la majoration si |U0-ℓ|≠1.",
+          "correction_markdown": "Vérifier systématiquement la valeur exacte au rang 0 pour déterminer la constante multiplicative correcte devant kⁿ."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "|U(n+1)-2|≤(1/2)|Un-2|, U0=6. Que vaut |U0-2| ?",
+          "solution_markdown": "|6-2|=4."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la majoration de |Un-2| pour tout n.",
+          "solution_markdown": "|Un-2|≤4×(1/2)ⁿ."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment cette majoration renseigne-t-elle sur la 'vitesse' de convergence de la suite ?",
+          "solution_markdown": "Plus le facteur k est petit, plus (1/k)ⁿ décroît vite vers 0, donc plus la suite converge rapidement vers ℓ ; cette majoration quantifie explicitement, pour chaque n, l'erreur maximale par rapport à la limite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une inégalité de contraction |U(n+1)-ℓ|≤k|Un-ℓ| se propage par récurrence en |Un-ℓ|≤kⁿ|U0-ℓ|.",
+        "L'initialisation fixe la constante |U0-ℓ|, l'hérédité combine hypothèse et contraction.",
+        "Ce résultat quantifie explicitement la vitesse de convergence de la suite vers ℓ."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 2,
+  "titre_exercice": "Suite récurrente définie par une racine carrée et convergence vers le nombre d'or",
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "On considère la suite $(u_n)$ définie par $u_0=1$ et $u_{n+1}=\\sqrt{1+u_n}$.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "points": "0,25pt",
+      "enonce_markdown": "Développer et réduire $(1+\\sqrt5)^2$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-developper-un-carre-de-la-forme-a-plus-racine-terminale-d-ti",
+          "texte": "$(a+\\sqrt b)^2=a^2+2a\\sqrt b+b$, en utilisant l'identité remarquable $(x+y)^2=x^2+2xy+y^2$ avec $y=\\sqrt b$, donc $y^2=b$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$(a+\\sqrt b)^2=a^2+2a\\sqrt b+b$.\n\n$$(1+\\sqrt5)^2=1^2+2\\times1\\times\\sqrt5+(\\sqrt5)^2=1+2\\sqrt5+5=6+2\\sqrt5$$\n\n**Conclusion.** $(1+\\sqrt5)^2=6+2\\sqrt5$."
+    },
+    {
+      "numero": "1.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer par récurrence que pour tout entier naturel $n$, $1\\le u_n<\\dfrac{1+\\sqrt5}2$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-par-recurrence-un-encadrement-double-dune-suite-terminale-d-ti",
+          "texte": "Pour démontrer par récurrence un encadrement double $a\\le u_n<\\varphi$, on vérifie l'initialisation, puis dans l'hérédité on établit séparément la borne inférieure et la borne supérieure pour $u_{n+1}$, en utilisant si besoin une propriété algébrique de $\\varphi$ (ici $\\varphi^2=\\varphi+1$, conséquence de la question 1.a)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn vérifie l'initialisation, puis dans l'hérédité on établit séparément borne inférieure et borne supérieure, en utilisant la propriété $\\varphi^2=\\varphi+1$ où $\\varphi=\\frac{1+\\sqrt5}2$.\n\n**Propriété clé de $\\varphi=\\dfrac{1+\\sqrt5}2$.** D'après 1.a, $\\varphi^2=\\dfrac{(1+\\sqrt5)^2}4=\\dfrac{6+2\\sqrt5}4=\\dfrac{3+\\sqrt5}2$. Or $\\varphi+1=\\dfrac{1+\\sqrt5}2+1=\\dfrac{3+\\sqrt5}2$. Donc $\\varphi^2=\\varphi+1$.\n\n**Initialisation ($n=0$).** $u_0=1$. On a bien $1\\le1$ et $1<\\varphi\\approx1,618$ (car $\\sqrt5\\approx2,236>1$, donc $\\varphi=\\frac{1+2,236}2\\approx1,618$). La propriété est vraie au rang $0$.\n\n**Hérédité.** Supposons $1\\le u_n<\\varphi$ pour un entier $n$ fixé.\n\n*Borne inférieure.* Comme $u_n\\ge1$, on a $1+u_n\\ge2$, donc $u_{n+1}=\\sqrt{1+u_n}\\ge\\sqrt2>1\\ge1$ : en particulier $u_{n+1}\\ge1$.\n\n*Borne supérieure.* Comme $u_n<\\varphi$, on a $1+u_n<1+\\varphi=\\varphi^2$ (propriété clé). Les deux membres $1+u_n$ et $\\varphi^2$ étant strictement positifs, la fonction racine carrée étant strictement croissante, on en déduit $\\sqrt{1+u_n}<\\sqrt{\\varphi^2}=\\varphi$ (car $\\varphi>0$), soit $u_{n+1}<\\varphi$.\n\nDonc $1\\le u_{n+1}<\\varphi$ : la propriété est héréditaire.\n\n**Conclusion.** Par récurrence, pour tout entier naturel $n$, $1\\le u_n<\\dfrac{1+\\sqrt5}2$."
+    },
+    {
+      "numero": "2.a",
+      "points": "0,75pt",
+      "enonce_markdown": "On considère la fonction $f$ définie sur $[0;+\\infty[$ par $f(x)=\\sqrt{1+x}$. Montrer que pour tout $x\\in\\left[1;\\dfrac{1+\\sqrt5}2\\right[$, $f(x)>x$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-comparer-fx-et-x-en-etudiant-le-signe-dun-trinome-terminale-d-ti",
+          "texte": "Pour comparer $\\sqrt{1+x}$ et $x$ avec $x\\ge0$ (donc les deux membres positifs), on élève au carré : $\\sqrt{1+x}>x\\iff1+x>x^2\\iff x^2-x-1<0$. On résout ensuite cette inéquation du second degré et on compare l'intervalle solution à celui de l'énoncé."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour $x\\ge0$, $\\sqrt{1+x}>x\\iff1+x>x^2\\iff x^2-x-1<0$ (élévation au carré valide car les deux membres sont positifs).\n\n**Résolution de $x^2-x-1<0$.** Le discriminant de $x^2-x-1$ est $\\Delta=1+4=5>0$. Les racines sont $x=\\dfrac{1\\pm\\sqrt5}2$, soit $x_1=\\dfrac{1-\\sqrt5}2\\approx-0,618$ et $x_2=\\dfrac{1+\\sqrt5}2=\\varphi\\approx1,618$.\n\nLe trinôme $x^2-x-1$ (coefficient dominant positif) est négatif strictement entre ses racines : $x^2-x-1<0\\iff x\\in\\left]\\dfrac{1-\\sqrt5}2\\,;\\,\\varphi\\right[$.\n\n**Inclusion de l'intervalle de l'énoncé.** L'intervalle $\\left[1;\\varphi\\right[$ est inclus dans $\\left]\\frac{1-\\sqrt5}2;\\varphi\\right[$ car $\\frac{1-\\sqrt5}2\\approx-0,618<1$.\n\n**Conclusion.** Pour tout $x\\in\\left[1;\\varphi\\right[$, on a $x^2-x-1<0$, donc $1+x>x^2$, donc (les deux membres étant positifs pour $x\\ge0$) $\\sqrt{1+x}>x$, c'est-à-dire $f(x)>x$."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Montrer que pour tout entier naturel $n$, $u_{n+1}>u_n$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-appliquer-une-inegalite-fonctionnelle-aux-termes-dune-suite-recurrente-terminale-d-ti",
+          "texte": "Si $u_{n+1}=f(u_n)$ et si $u_n$ appartient toujours à un intervalle sur lequel on a montré $f(x)>x$, alors $u_{n+1}=f(u_n)>u_n$ directement, sans calcul supplémentaire."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $u_{n+1}=f(u_n)$ et que $u_n$ appartient à un intervalle où $f(x)>x$, alors $u_{n+1}>u_n$ directement.\n\nD'après la question 1.b, pour tout $n$, $u_n\\in\\left[1;\\varphi\\right[$. D'après la question 2.a, $f(x)>x$ pour tout $x$ de cet intervalle. En appliquant ceci à $x=u_n$ :\n\n$$u_{n+1}=\\sqrt{1+u_n}=f(u_n)>u_n$$\n\n**Conclusion.** Pour tout entier naturel $n$, $u_{n+1}>u_n$ : la suite $(u_n)$ est strictement croissante."
+    },
+    {
+      "numero": "2.c",
+      "points": "0,25pt",
+      "enonce_markdown": "Déduire des questions précédentes que la suite $(u_n)$ converge.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-conclure-a-la-convergence-par-le-theoreme-de-la-limite-monotone-terminale-d-ti",
+          "texte": "Toute suite croissante et majorée converge (théorème de la limite monotone)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nToute suite croissante et majorée converge.\n\n$(u_n)$ est strictement croissante (question 2.b) et majorée par $\\varphi=\\frac{1+\\sqrt5}2$ (question 1.b).\n\n**Conclusion.** D'après le théorème de la limite monotone, $(u_n)$ converge."
+    },
+    {
+      "numero": "4.a",
+      "points": "0,25pt",
+      "enonce_markdown": "On désigne par $l$ la limite de la suite $(u_n)$. On admet que $f(l)=l$. Montrer que $l\\ge1$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-passer-a-la-limite-dans-une-inegalite-large-terminale-d-ti",
+          "texte": "Si $u_n\\ge a$ pour tout $n$ et si $(u_n)$ converge vers $l$, alors par passage à la limite $l\\ge a$ (une inégalité large est conservée par passage à la limite ; une inégalité stricte ne le reste en général que sous forme large)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $u_n\\ge a$ pour tout $n$ et $u_n\\to l$, alors par passage à la limite $l\\ge a$.\n\nD'après la question 1.b, $u_n\\ge1$ pour tout entier naturel $n$. En passant à la limite quand $n\\to+\\infty$ :\n\n$$l\\ge1$$\n\n**Conclusion.** $l\\ge1$.\n\n### Piège à éviter\nMême si l'encadrement de départ était strict ($u_n<\\varphi$), le passage à la limite ne conserve que l'inégalité large ; ici c'est l'inégalité $u_n\\ge1$, déjà large, qui donne directement $l\\ge1$."
+    },
+    {
+      "numero": "4.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer la valeur de $l$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-la-limite-dune-suite-recurrente-en-resolvant-fl-egale-l-terminale-d-ti",
+          "texte": "La limite $l$ d'une suite récurrente convergente $u_{n+1}=f(u_n)$ (avec $f$ continue) vérifie $f(l)=l$. On résout cette équation, puis on sélectionne la solution compatible avec les contraintes déjà établies sur $l$ (signe, encadrement)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn résout $f(l)=l$, puis on sélectionne la solution compatible avec les contraintes déjà établies (ici $l\\ge1$).\n\n**Résolution de $f(l)=l$.** $\\sqrt{1+l}=l$. Comme $l\\ge1>0$ (question 4.a), les deux membres sont positifs, on peut élever au carré :\n\n$$1+l=l^2\\iff l^2-l-1=0$$\n\n**Racines.** Comme calculé à la question 2.a, les racines de $x^2-x-1=0$ sont $\\dfrac{1-\\sqrt5}2$ et $\\dfrac{1+\\sqrt5}2$.\n\n**Sélection de la racine.** Comme $l\\ge1$ et $\\dfrac{1-\\sqrt5}2\\approx-0,618<1$, cette racine négative est exclue. Il reste $l=\\dfrac{1+\\sqrt5}2$.\n\n**Conclusion.** $l=\\dfrac{1+\\sqrt5}2$ (le nombre d'or $\\varphi$), soit $l\\approx1,618$."
+    }
+  ]
+}

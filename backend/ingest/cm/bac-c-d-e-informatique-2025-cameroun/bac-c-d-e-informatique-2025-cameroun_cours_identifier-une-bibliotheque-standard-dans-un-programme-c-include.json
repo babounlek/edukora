@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-identifier-une-bibliotheque-standard-dans-un-programme-c-include-terminale-c",
+  "meta": {
+    "titre": "Identifier une bibliothèque standard dans un programme C (#include)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Bibliothèques standard du langage C",
+    "duree_estimee_min": 8,
+    "tags": [
+      "bibliothèque",
+      "stdio.h",
+      "#include"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex5-q1.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "printf et scanf n'existent pas par magie : ils viennent d'une bibliothèque, stdio.h, qu'il faut inclure en tête de programme. Ce cours explique ce rôle souvent mal compris des débutants."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un programme C peut utiliser des fonctions prédéfinies (printf, scanf...)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La bibliothèque : un ensemble de fonctions prédéfinies",
+      "contenu_markdown": "Une bibliothèque (ou fichier d'en-tête) regroupe des fonctions prédéfinies que le programme peut utiliser sans les réécrire lui-même. En C, elle s'inclut avec la directive #include <nom_bibliotheque.h>, placée en tout début de programme, avant la fonction main.",
+      "formule_principale": "",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier une bibliothèque dans le programme donné.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne #include du programme",
+          "justification": "La directive #include se trouve toujours en tête de fichier.",
+          "resultat_markdown": "#include <stdio.h>, ligne 1"
+        },
+        {
+          "numero": 2,
+          "action": "Nommer la bibliothèque incluse",
+          "justification": "Le nom suit #include, entre chevrons.",
+          "resultat_markdown": "stdio.h"
+        }
+      ],
+      "conclusion_markdown": "stdio.h est la bibliothèque standard d'entrées-sorties incluse par ce programme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"#include\" à la place de \"stdio.h\"",
+          "pourquoi_faux": "#include est le mot-clé (la directive) qui sert à inclure une bibliothèque, stdio.h est le nom de la bibliothèque elle-même : la question porte sur le nom, pas sur la directive.",
+          "correction_markdown": "Distingue la directive #include (le verbe \"inclure\") du nom de la bibliothèque incluse (stdio.h)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelles fonctions courantes fournit la bibliothèque stdio.h ?",
+          "solution_markdown": "printf (affichage à l'écran) et scanf (saisie clavier), entre autres fonctions d'entrées-sorties standard."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme utilise la fonction sqrt() pour calculer une racine carrée. Quelle bibliothèque doit-il inclure ?",
+          "solution_markdown": "math.h, la bibliothèque mathématique standard du C, qui fournit sqrt() ainsi que d'autres fonctions mathématiques (pow, abs, sin, cos...)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passerait-il si on retirait la ligne #include <stdio.h> d'un programme qui utilise printf et scanf ?",
+          "solution_markdown": "Le compilateur ne connaîtrait pas la déclaration de printf et scanf : la compilation échouerait (erreur \"implicit declaration of function\") ou, selon le compilateur, générerait un avertissement suivi d'un comportement imprévisible à l'exécution. La ligne #include est indispensable dès qu'une fonction de la bibliothèque correspondante est utilisée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliothèque regroupe des fonctions prédéfinies réutilisables.",
+        "#include <nom.h> inclut une bibliothèque, toujours en tête de programme.",
+        "stdio.h fournit notamment printf et scanf.",
+        "Sans l'#include correspondant, une fonction de bibliothèque provoque une erreur de compilation."
+      ]
+    }
+  ]
+}

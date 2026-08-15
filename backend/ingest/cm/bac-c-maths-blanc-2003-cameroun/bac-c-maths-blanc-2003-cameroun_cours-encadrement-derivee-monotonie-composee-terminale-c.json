@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-encadrement-derivee-monotonie-composee-terminale-c",
+  "meta": {
+    "titre": "Encadrer une dérivée sur un intervalle via l'étude de sa propre monotonie",
+    "cours_id": "cours-encadrement-derivee-monotonie-composee-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse - étude de la dérivée seconde implicite",
+    "tags": ["encadrement de dérivée", "monotonie", "fonction composée exponentielle"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_6_q2"
+  },
+  "sections": {
+    "accroche": "Pour encadrer les valeurs prises par une dérivée sur un intervalle, il faut souvent étudier sa PROPRE monotonie — une dérivée seconde implicite — avant de pouvoir se contenter d'évaluer aux bornes.",
+    "prerequis": ["Dérivée d'une fonction composée exponentielle e^{u(x)}", "Monotonie via l'étude du signe d'une dérivée supplémentaire"],
+    "regle": {
+      "titre": "Encadrement d'une dérivée par étude de sa monotonie",
+      "contenu_markdown": "Pour encadrer $h'(x)$ sur un intervalle $[a,b]$, si $h'$ est elle-même monotone sur cet intervalle (ce qui se vérifie en étudiant son signe de variation, souvent via une factorisation), ses valeurs extrêmes sont exactement $h'(a)$ et $h'(b)$ (dans l'ordre dicté par le sens de variation de $h'$). Il suffit alors d'évaluer $h'$ aux deux bornes pour obtenir l'encadrement recherché, sans calculer explicitement une dérivée seconde complète si une factorisation directe du signe suffit.",
+      "formule_principale": "$h'$ monotone sur $[a,b]$ $\\;\\Longrightarrow$ $h'(x)$ encadrée par $h'(a)$ et $h'(b)$",
+      "variantes": ["Pour une fonction du type h(x)=e^{1/x}, la dérivée h'(x)=-e^{1/x}/x² garde toujours un signe négatif constant, ce qui simplifie l'étude de sa monotonie propre (via le signe du quotient dérivé)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que h'(x)=-e^{2/x}/x² est croissante sur [1,2] (c'est-à-dire étudier le signe de la 'dérivée de h'').",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser φ(x)=-h'(x)=e^{2/x}/x²", "justification": "isoler le terme positif", "resultat_markdown": "φ(x)=e^{2/x}/x²"},
+        {"numero": 2, "action": "Dériver φ", "justification": "quotient et composée", "resultat_markdown": "φ'(x)=e^{2/x}(-2/x²)/x² + e^{2/x}(-2/x³) = -e^{2/x}(2/x⁴+2/x³) <0"},
+        {"numero": 3, "action": "Conclure", "justification": "φ décroissante donc h'=-φ croissante", "resultat_markdown": "h' croissante sur [1,2]"}
+      ],
+      "conclusion_markdown": "h' étant croissante, son minimum est h'(1) et son maximum h'(2)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Supposer sans preuve que h' est monotone sur l'intervalle, et se contenter d'évaluer aux bornes sans justification", "pourquoi_faux": "si h' n'est pas monotone, ses valeurs extrêmes pourraient être atteintes à l'intérieur de l'intervalle, pas seulement aux bornes", "correction_markdown": "Toujours établir explicitement la monotonie de h' (via l'étude du signe d'une dérivée supplémentaire ou une factorisation) avant de se contenter d'évaluer aux deux bornes pour obtenir l'encadrement."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Sachant m'(x)=-e^{1/x}/x² est croissante sur [1,3] (m'(1)=-e, m'(3)=-e^{1/3}/9), encadrer m'(x) sur [1,3].", "solution_markdown": "-e ≤ m'(x) ≤ -e^{1/3}/9 pour x∈[1,3]."}
+    ],
+    "synthese": "Pour encadrer une dérivée sur un intervalle, il faut d'abord établir sa propre monotonie (en étudiant le signe d'une dérivée supplémentaire ou en factorisant), puis évaluer simplement aux bornes de l'intervalle pour obtenir l'encadrement exact recherché."
+  }
+}

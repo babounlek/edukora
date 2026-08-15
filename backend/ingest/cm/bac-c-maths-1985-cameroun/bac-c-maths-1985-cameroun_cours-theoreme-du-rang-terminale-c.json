@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-theoreme-du-rang-terminale-c",
+  "meta": {
+    "titre": "Théorème du rang : dim(ker) + dim(Im) = dim(E)",
+    "cours_id": "cours-theoreme-du-rang-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - théorème du rang",
+    "tags": ["théorème du rang", "dimension", "noyau", "image", "supplémentaire"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_3_q1b"
+  },
+  "sections": {
+    "accroche": "Le théorème du rang est l'un des résultats les plus utilisés d'algèbre linéaire en Terminale C : il relie en une seule égalité la dimension du noyau, celle de l'image, et celle de l'espace de départ.",
+    "prerequis": ["Notion de supplémentaire", "Bijection linéaire entre un supplémentaire du noyau et l'image", "Additivité de la dimension pour une somme directe"],
+    "regle": {
+      "titre": "Théorème du rang",
+      "contenu_markdown": "Pour toute application linéaire $g:E\\to E$ (ou plus généralement $E\\to F$) en dimension finie : $\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)=\\dim E$. **Démonstration** : soit $G$ un supplémentaire de $\\ker g$ dans $E$ (il en existe toujours en dimension finie), de sorte que $E=\\ker g\\oplus G$, donc $\\dim G=\\dim E-\\dim(\\ker g)$. La restriction $g_{|G}$ réalise une bijection linéaire de $G$ vers $\\mathrm{Im}\\,g$ (résultat précédent), donc $\\dim(\\mathrm{Im}\\,g)=\\dim G=\\dim E-\\dim(\\ker g)$, ce qui donne l'égalité annoncée.",
+      "formule_principale": "$\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)=\\dim E$",
+      "variantes": ["Conséquence utile : $g$ injective $\\iff$ $\\ker g=\\{0\\}$ $\\iff$ $\\dim(\\mathrm{Im}\\,g)=\\dim E$ $\\iff$ $g$ surjective (en dimension finie, endomorphisme)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g:\\mathbb R^3\\to\\mathbb R^3$ linéaire avec $\\dim(\\ker g)=1$. Que vaut $\\dim(\\mathrm{Im}\\,g)$ ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Appliquer le théorème du rang", "justification": "formule directe", "resultat_markdown": "$\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)=\\dim\\mathbb R^3=3$"},
+        {"numero": 2, "action": "Isoler $\\dim(\\mathrm{Im}\\,g)$", "justification": "$\\dim(\\ker g)=1$ donné", "resultat_markdown": "$\\dim(\\mathrm{Im}\\,g)=3-1=2$"}
+      ],
+      "conclusion_markdown": "$\\dim(\\mathrm{Im}\\,g)=2$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Appliquer le théorème du rang sans vérifier que l'espace est de dimension finie", "pourquoi_faux": "le théorème repose sur l'additivité de la dimension pour une somme directe, qui suppose la dimension finie", "correction_markdown": "Toujours vérifier (ou supposer implicitement acquis dans le programme de Terminale) que $E$ est de dimension finie avant d'invoquer le théorème."},
+      {"erreur_markdown": "Confondre $\\dim(\\mathrm{Im}\\,g)$, le rang de $g$, avec le nombre de vecteurs de départ", "pourquoi_faux": "le rang est la dimension de l'image, pas la dimension de l'espace de départ", "correction_markdown": "Toujours distinguer $\\dim E$ (espace de départ), $\\dim(\\ker g)$ et $\\dim(\\mathrm{Im}\\,g)$, liés par le théorème mais conceptuellement différents."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit $g:E\\to E$ avec $\\dim E=4$ et $g$ surjective. Que vaut $\\dim(\\ker g)$ ?", "solution_markdown": "$g$ surjective $\\Rightarrow\\dim(\\mathrm{Im}\\,g)=4$. Théorème du rang : $\\dim(\\ker g)=4-4=0$, donc $\\ker g=\\{0\\}$ (g est aussi injective)."}
+    ],
+    "synthese": "Le théorème du rang, dim(ker g)+dim(Im g)=dim E, se démontre via la bijection linéaire entre un supplémentaire du noyau et l'image ; il relie noyau, image et espace de départ en une seule égalité incontournable."
+  }
+}

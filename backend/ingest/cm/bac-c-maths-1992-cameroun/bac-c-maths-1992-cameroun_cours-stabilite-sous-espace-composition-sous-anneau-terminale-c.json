@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-stabilite-sous-espace-composition-sous-anneau-terminale-c",
+  "meta": {
+    "titre": "Établir la stabilité d'un sous-espace pour la composition et la structure de sous-anneau",
+    "cours_id": "cours-stabilite-sous-espace-composition-sous-anneau-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre - sous-anneaux de L(E)",
+    "tags": ["stabilité", "sous-anneau", "anneau unitaire"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_5_qPIII-3b"
+  },
+  "sections": {
+    "accroche": "Vérifier qu'un petit sous-espace de L(E) forme à lui seul un anneau revient à montrer qu'il ne 's'échappe' jamais de lui-même quand on y compose deux éléments : un calcul direct sur des combinaisons génériques suffit.",
+    "prerequis": ["Définition de la stabilité d'un sous-ensemble pour une opération", "Structure d'anneau (sous-anneau unitaire)"],
+    "regle": {
+      "titre": "Stabilité de Vect(Id,f) pour la composition",
+      "contenu_markdown": "Pour montrer que $L_f=\\mathrm{Vect}(Id,f)$ est stable pour $\\circ$, on prend deux éléments génériques $g=xId+yf$ et $g'=x'Id+y'f$, on développe $g\\circ g'$ par bilinéarité, et on substitue $f\\circ f$ par sa relation connue (par exemple $-cId$) : le résultat reste de la forme $\\alpha Id+\\beta f$, donc dans $L_f$. Un sous-espace vectoriel stable pour $\\circ$ et contenant $Id$ hérite automatiquement de la structure d'anneau unitaire de $L(E)$ (associativité, distributivité déjà vraies dans $L(E)$ tout entier).",
+      "formule_principale": "$g\\circ g'=(xx'-cyy')Id+(xy'+yx')f \\in L_f$ (avec $f\\circ f=-cId$)",
+      "variantes": ["Cette stabilité fait de L_f un sous-anneau, structure algébrique plus riche qu'un simple sous-espace vectoriel"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant k∘k=Id (k involutif), montrer que Vect(Id,k) est stable pour ∘.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Prendre g=xId+yk, g'=x'Id+y'k", "justification": "éléments génériques", "resultat_markdown": "g,g'∈Vect(Id,k)"},
+        {"numero": 2, "action": "Développer g∘g'", "justification": "bilinéarité, k∘k=Id", "resultat_markdown": "g∘g'=xx'Id+xy'k+yx'k+yy'Id=(xx'+yy')Id+(xy'+yx')k"},
+        {"numero": 3, "action": "Conclure", "justification": "forme αId+βk", "resultat_markdown": "g∘g'∈Vect(Id,k) : stable"}
+      ],
+      "conclusion_markdown": "Vect(Id,k) est stable pour ∘, donc un sous-anneau de L(E)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Vérifier la stabilité uniquement sur Id et f pris isolément, sans traiter le cas général de deux combinaisons linéaires quelconques", "pourquoi_faux": "la stabilité doit être vraie pour TOUS les éléments du sous-espace, pas seulement pour ses générateurs", "correction_markdown": "Toujours introduire deux éléments génériques g=xId+yf et g'=x'Id+y'f (avec x,y,x',y' réels quelconques) avant de développer g∘g'."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant m∘m=2m+3Id, montrer que Vect(Id,m) est stable pour ∘.", "solution_markdown": "g∘g'=(xId+ym)∘(x'Id+y'm)=xx'Id+(xy'+yx')m+yy'(m∘m)=xx'Id+(xy'+yx')m+yy'(2m+3Id)=(xx'+3yy')Id+(xy'+yx'+2yy')m ∈ Vect(Id,m)."}
+    ],
+    "synthese": "Pour montrer qu'un sous-espace engendré par Id et f est stable pour la composition (donc un sous-anneau unitaire de L(E)), on développe la composée de deux combinaisons linéaires génériques de Id et f, en substituant systématiquement f∘f par sa relation algébrique connue, et on vérifie que le résultat reste dans le même sous-espace."
+  }
+}

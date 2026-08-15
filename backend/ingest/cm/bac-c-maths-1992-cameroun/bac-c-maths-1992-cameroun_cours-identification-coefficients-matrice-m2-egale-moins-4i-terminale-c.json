@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-identification-coefficients-matrice-m2-egale-moins-4i-terminale-c",
+  "meta": {
+    "titre": "Identifier les coefficients d'une matrice vérifiant M²=-cI",
+    "cours_id": "cours-identification-coefficients-matrice-m2-egale-moins-4i-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - matrices sans valeur propre réelle",
+    "tags": ["matrice 2x2", "identification de coefficients", "produit matriciel"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_5_qPIII-1a"
+  },
+  "sections": {
+    "accroche": "Une matrice dont le carré vaut un multiple négatif de l'identité impose des contraintes fortes et élégantes sur ses coefficients : sa diagonale se compense exactement, signature d'un endomorphisme sans valeur propre réelle.",
+    "prerequis": ["Produit matriciel 2x2", "Identification terme à terme de deux matrices égales"],
+    "regle": {
+      "titre": "Contraintes sur une matrice vérifiant M²=-cI (c>0)",
+      "contenu_markdown": "Pour $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$, $M^2=\\begin{pmatrix}a^2+bc&b(a+d)\\\\c(a+d)&bc+d^2\\end{pmatrix}$ (en factorisant les termes hors diagonale par $(a+d)$). Si $M^2=-kI$ ($k>0$), l'identification des termes hors diagonale donne $b(a+d)=0$ et $c(a+d)=0$ ; comme $b$ et $c$ ne peuvent être simultanément nuls (sinon $a^2=d^2=-k<0$, impossible), on en déduit $a+d=0$ (trace nulle). Les termes diagonaux donnent alors $a^2+bc=-k$.",
+      "formule_principale": "$M^2=-kI\\ (k>0) \\;\\Longrightarrow\\; \\mathrm{tr}(M)=a+d=0$ et $a^2+bc=-k$",
+      "variantes": ["Ce résultat est cohérent avec Cayley-Hamilton : M²=tr(M)M-det(M)I=-det(M)I quand tr(M)=0, donc det(M)=k"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit M=[[a,b],[c,-a]] avec M²=-9I. Trouver la relation entre a,b,c.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer M² (trace déjà nulle par construction)", "justification": "produit matriciel", "resultat_markdown": "$M^2=\\begin{pmatrix}a^2+bc&0\\\\0&bc+a^2\\end{pmatrix}$"},
+        {"numero": 2, "action": "Identifier avec -9I", "justification": "égalité de matrices", "resultat_markdown": "a²+bc=-9"}
+      ],
+      "conclusion_markdown": "La contrainte se réduit à une seule équation a²+bc=-9 une fois la trace nulle imposée par construction."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure a+d=0 sans exclure le cas b=c=0", "pourquoi_faux": "si b=c=0 simultanément, les équations b(a+d)=0 et c(a+d)=0 sont automatiquement vérifiées quel que soit a+d, et il faut alors examiner séparément les équations diagonales pour obtenir la contradiction", "correction_markdown": "Toujours traiter explicitement le cas b=c=0 à part (en montrant qu'il mène à une contradiction, a²=d²=-k impossible pour des réels), avant de conclure a+d=0 dans le cas restant."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit N=[[a,b],[c,d]] avec N²=-I. Montrer que a+d=0 et a²+bc=-1.", "solution_markdown": "Même méthode : identification terme à terme de N² avec -I, exclusion du cas b=c=0, puis a+d=0 et a²+bc=-1."}
+    ],
+    "synthese": "Une matrice 2x2 vérifiant M²=-kI (k>0) a nécessairement une trace nulle (a+d=0) et vérifie a²+bc=-k, résultat obtenu en identifiant terme à terme le produit matriciel développé avec -kI, après avoir exclu le cas dégénéré b=c=0."
+  }
+}

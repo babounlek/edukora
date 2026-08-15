@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-integrer-par-parties-lnx-sur-racine-de-x-terminale-c",
+  "meta": {"titre": "Intégrer par parties une fonction du type ln(x)/√x", "cours_id": "cours-integrer-par-parties-lnx-sur-racine-de-x-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Intégration — intégration par parties", "tags": ["intégration par parties", "logarithme", "racine carrée"], "duree_estimee_minutes": 12, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex1-6a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour intégrer un produit contenant ln x, le bon réflexe est presque toujours de poser u=ln x, car sa dérivée 1/x simplifie systématiquement le calcul de l'intégrale restante."},
+    {"type": "prerequis", "items_markdown": ["Formule d'intégration par parties ∫u dv = [uv] - ∫v du", "Primitive de x^{-1/2} : 2√x"]},
+    {"type": "regle", "titre": "Poser u=ln x, dv=le reste", "contenu_markdown": "Pour $\\int\\dfrac{\\ln x}{2\\sqrt x}dx$, on pose $u=\\ln x$ (donc $du=\\frac1xdx$) et $dv=\\dfrac1{2\\sqrt x}dx$ (donc $v=\\sqrt x$, primitive de $\\frac1{2\\sqrt x}$). La formule donne $\\int u\\,dv=[uv]-\\int v\\,du=[\\sqrt x\\ln x]-\\int\\dfrac{\\sqrt x}xdx=[\\sqrt x\\ln x]-\\int\\dfrac1{\\sqrt x}dx$, une intégrale immédiate.", "formule_principale": "u=lnx, dv=dx/(2√x), v=√x, du=dx/x", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫₁⁴ (lnx)/(2√x) dx.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Poser u et dv", "justification": "u=lnx, dv=dx/(2√x), v=√x, du=dx/x", "resultat_markdown": "IPP prête"},
+      {"numero": 2, "action": "Appliquer la formule", "justification": "[√x lnx]₁⁴ - ∫₁⁴ dx/√x", "resultat_markdown": "[2ln4-0] - [2√x]₁⁴"},
+      {"numero": 3, "action": "Calculer", "justification": "2ln4 - (4-2)=2ln4-2", "resultat_markdown": "I=2ln4-2"}
+    ], "conclusion_markdown": "∫₁⁴ (lnx)/(2√x) dx = 2ln4-2."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Poser dv=lnx dx et u=1/(2√x), inversant les rôles habituels", "pourquoi_faux": "Le logarithme n'a pas de primitive immédiate simple sans passer lui-même par une IPP (∫lnx dx=xlnx-x) ; poser u=lnx est presque toujours le choix qui simplifie le calcul, car sa dérivée 1/x élimine le logarithme.", "correction_markdown": "Retenir la règle mnémotechnique : en présence de ln x dans un produit, toujours poser u=lnx en priorité (sauf cas très particulier), jamais dv=lnx dx."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Quelle primitive choisir pour v si dv=1/(3√x) dx ?", "solution_markdown": "v=(2/3)√x, car (2/3 √x)'=(2/3)×1/(2√x)=1/(3√x)."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Calculer ∫₁ᵉ (lnx)/√x dx.", "solution_markdown": "u=lnx,dv=dx/√x,v=2√x,du=dx/x. I=[2√x lnx]₁ᵉ-∫₁ᵉ2/√x dx=(2√e×1-0)-[4√x]₁ᵉ=2√e-(4√e-4)=4-2√e."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Face à un produit contenant ln x, poser systématiquement u=ln x en priorité.", "Le choix de v comme primitive du reste doit être vérifié par dérivation avant de poursuivre.", "L'intégrale restante après IPP avec u=lnx est toujours plus simple (le logarithme a disparu)."]}
+  ]
+}

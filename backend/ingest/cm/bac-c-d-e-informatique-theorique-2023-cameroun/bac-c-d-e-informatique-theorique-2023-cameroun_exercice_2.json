@@ -1,0 +1,76 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2023,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 2,
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 pts) — Exercice 1 : Systèmes d'Information (3 pts)**\n\nLe directeur d'un établissement scolaire se propose d'implémenter une base de données simplifiée afin de gérer les sorties scolaires organisées au profit des élèves.\n\nChaque élève peut participer à plusieurs sorties. L'élève est identifié par un matricule et est caractérisé par son nom, son prénom, sa date de naissance, son adresse, sa classe et le numéro de téléphone de son tuteur.\n\nChaque sortie est identifiée par un numéro et est caractérisée par le thème de la sortie, la date et l'heure de départ, et correspond à la visite d'un site.\n\nLe site à visiter est caractérisé par un code unique, une description, une adresse et une ville de localisation. Chaque ville est caractérisée par un code unique et un intitulé.\n\nAfin de concevoir cette base de données, on vous demande de :",
+  "mots_cles_recherche": [
+    "entité",
+    "identifiant",
+    "MCD",
+    "association",
+    "cardinalités"
+  ],
+  "incertitudes": [
+    "Le cahier des charges ne précise pas explicitement de cardinalité minimale côté ÉLÈVE pour l'association PARTICIPER (\"chaque élève peut participer à plusieurs sorties\" n'impose pas qu'il en fasse au moins une) ; la cardinalité (0,n) est donc retenue côté ÉLÈVE, par opposition à (1,n) côté SORTIE, explicitement imposé par \"une sortie est effectuée par au moins un élève\"."
+  ],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Identifier toutes les quatre (04) entités décrites dans ce texte en précisant l'identifiant de chacune. (2 pts)",
+      "corrige_markdown": "### Rappel de méthode\nIl faut repérer, dans le texte, les objets du monde réel décrits avec leurs propres caractéristiques (entités), puis identifier pour chacun l'attribut qui garantit l'unicité (identifiant), généralement introduit par \"identifié(e) par\".\n\n### Corrigé\n\n| Entité | Identifiant |\n|---|---|\n| ÉLÈVE | Matricule |\n| SORTIE | NumeroSortie |\n| SITE | CodeSite |\n| VILLE | CodeVille |\n\n### Piège à éviter\nNe pas oublier l'entité VILLE : le texte la mentionne discrètement (\"chaque ville est caractérisée par un code unique et un intitulé\"), mais c'est bien une entité à part entière, distincte de SITE, avec son propre identifiant.",
+      "themes": [
+        "MCD",
+        "entités",
+        "identifiants"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex2-q1-0",
+          "competence": "Identifier les entités, attributs et identifiants d'un MCD à partir d'un cahier des charges",
+          "contenu_markdown": "Il faut repérer, dans le texte, les objets du monde réel décrits avec leurs propres caractéristiques (entités), puis identifier pour chacun l'attribut qui garantit l'unicité (identifiant), généralement introduit par \"identifié(e) par\".",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-entites-attributs-et-identifiants-d-un-mcd-a-partir-d-un-cahier-des-charges-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Dessiner un modèle conceptuel des données (MCD) traduisant la situation suivante : « Chaque élève peut participer à plusieurs sorties, et une sortie est effectuée par au moins un élève ». (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa cardinalité (min,max) de chaque entité vis-à-vis d'une association se détermine strictement à partir des règles de gestion données dans le texte.\n\n### Corrigé\n```\nÉLÈVE (Matricule, ...)  (0,n) ---- PARTICIPER ---- (1,n)  SORTIE (NumeroSortie, ...)\n```\n- Côté **ÉLÈVE** : cardinalité **(0,n)** — un élève peut participer à plusieurs sorties (et rien n'impose qu'il en fasse au moins une).\n- Côté **SORTIE** : cardinalité **(1,n)** — \"une sortie est effectuée par au moins un élève\" (minimum 1), et peut réunir plusieurs élèves (maximum n).\n\n### Piège à éviter\nNe pas inverser les cardinalités : c'est bien \"une sortie\" qui doit avoir AU MOINS un élève (minimum 1 côté SORTIE), pas l'inverse.",
+      "themes": [
+        "MCD",
+        "cardinalités",
+        "association"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex2-q2-0",
+          "competence": "Déterminer les cardinalités d'une association sur un MCD à partir des règles de gestion",
+          "contenu_markdown": "La cardinalité (min,max) de chaque entité vis-à-vis d'une association se détermine strictement à partir des règles de gestion données dans le texte.",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-les-cardinalites-d-une-association-sur-un-mcd-a-partir-des-regles-de-gestion-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-binomiale-au-moins-un-succes-par-levenement-complementaire-terminale-d",
+  "meta": {
+    "titre": "Calculer une probabilité binomiale « au moins un succès » par l'événement complémentaire",
+    "cours_id": "cours-calculer-une-probabilite-binomiale-au-moins-un-succes-par-levenement-complementaire-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Probabilités — loi binomiale",
+    "tags": [
+      "loi binomiale",
+      "événement complémentaire",
+      "au moins un succès"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex3-3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer directement « au moins un succès » sur n répétitions demanderait de sommer n probabilités ; passer par le complémentaire « aucun succès » réduit le calcul à une seule puissance."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Conditions d'une loi binomiale (répétitions indépendantes, probabilité de succès constante)",
+        "Notion d'événement complémentaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Probabilité d'au moins un succès via le complémentaire",
+      "contenu_markdown": "Si $X$ suit une loi binomiale $\\mathcal B(n,p)$, alors $P(X\\ge1)=1-P(X=0)=1-(1-p)^n$, car l'événement complémentaire de « au moins un succès » est « aucun succès », dont la probabilité est $(1-p)^n$ (échec à chacune des $n$ répétitions indépendantes).",
+      "formule_principale": "P(X≥1) = 1-(1-p)ⁿ",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On lance 5 fois un dé équilibré. Quelle est la probabilité d'obtenir au moins un 6 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier n et p",
+          "justification": "5 lancers indépendants, probabilité de succès (obtenir un 6) à chaque lancer p=1/6.",
+          "resultat_markdown": "n=5, p=1/6"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer P(X=0)",
+          "justification": "P(aucun 6)=(1-1/6)⁵=(5/6)⁵.",
+          "resultat_markdown": "(5/6)⁵≈0,4019"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire P(X≥1)",
+          "justification": "P(X≥1)=1-P(X=0).",
+          "resultat_markdown": "P(X≥1)≈1-0,4019=0,5981"
+        }
+      ],
+      "conclusion_markdown": "La probabilité d'obtenir au moins un 6 en 5 lancers est d'environ 0,598."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer P(X≥1) en sommant P(X=1)+P(X=2)+...+P(X=n) terme à terme",
+          "pourquoi_faux": "Cette méthode est mathématiquement correcte mais beaucoup plus longue et source d'erreurs de calcul, alors que le passage au complémentaire donne le même résultat en une seule puissance.",
+          "correction_markdown": "Dès qu'un énoncé contient l'expression « au moins un », réflexe immédiat : passer par le complémentaire « aucun » plutôt que de sommer toutes les probabilités individuelles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "p=0,1, n=3. Calculer P(aucun succès).",
+          "solution_markdown": "(1-0,1)³=0,9³=0,729."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En déduire P(au moins un succès).",
+          "solution_markdown": "1-0,729=0,271."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment ce résultat évolue-t-il quand n augmente, à p fixé ?",
+          "solution_markdown": "(1-p)ⁿ décroît vers 0 quand n augmente (car 0<1-p<1), donc P(X≥1)=1-(1-p)ⁿ croît vers 1 : plus on répète l'épreuve, plus il devient quasi certain d'observer au moins un succès, même si p est petit."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour « au moins un succès » sur n répétitions indépendantes, on passe par le complémentaire « aucun succès ».",
+        "P(X≥1)=1-(1-p)ⁿ, bien plus rapide qu'une somme terme à terme.",
+        "P(X≥1) tend vers 1 quand n augmente, même pour une probabilité de succès p faible."
+      ]
+    }
+  ]
+}

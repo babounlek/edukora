@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-proposer-une-adresse-ip-hote-valide-dans-un-sous-reseau-ipv4-donne-terminale-c",
+  "meta": {
+    "titre": "Proposer une adresse IP hôte valide dans un sous-réseau IPv4 donné",
+    "cours_id": "cours-proposer-une-adresse-ip-hote-valide-dans-un-sous-reseau-ipv4-donne-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Adressage IP",
+    "tags": [
+      "adresse IP hôte",
+      "plage d'adresses",
+      "configuration réseau"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex1-q2c-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Configurer un poste sur un réseau ne consiste pas à choisir une adresse IP au hasard : elle doit respecter des règles précises pour éviter tout conflit ou dysfonctionnement."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir déterminer l'adresse réseau à partir d'une adresse IP et de son masque"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Proposer une adresse IP hôte valide dans un sous-réseau",
+      "contenu_markdown": "Dans un sous-réseau IPv4 en /24 d'adresse réseau X.Y.Z.0, les adresses hôtes valides et attribuables vont de **X.Y.Z.1** à **X.Y.Z.254** (les adresses X.Y.Z.0 et X.Y.Z.255 étant réservées). Une adresse hôte proposée doit en outre être **différente de toute adresse déjà attribuée** à un autre équipement du réseau, pour éviter un conflit d'adresses.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Proposer une adresse IP valide pour la configuration de l'ordinateur Sec1, sachant que 192.168.10.102 est déjà utilisée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la plage d'adresses hôtes valides du sous-réseau",
+          "justification": "Pour 192.168.10.0/24, les hôtes valides vont de .1 à .254.",
+          "resultat_markdown": "192.168.10.1 à 192.168.10.254"
+        },
+        {
+          "numero": 2,
+          "action": "Exclure l'adresse déjà utilisée",
+          "justification": "192.168.10.102 est déjà attribuée (probablement au serveur).",
+          "resultat_markdown": "Toute adresse de la plage, sauf .102, ex. 192.168.10.10"
+        }
+      ],
+      "conclusion_markdown": "Une adresse hôte valide appartient à la plage .1-.254 du sous-réseau, hors adresse réseau, broadcast et adresses déjà attribuées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer une adresse d'un autre sous-réseau, par exemple 192.168.11.10",
+          "pourquoi_faux": "Pour communiquer directement (sans routeur) avec les autres machines du même réseau local, l'adresse proposée doit appartenir au même sous-réseau (192.168.10.x), sinon la machine serait isolée du reste du LAN.",
+          "correction_markdown": "Vérifie toujours que les 3 premiers octets de l'adresse proposée correspondent exactement à ceux de l'adresse réseau (ici 192.168.10)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le réseau a pour adresse 10.0.0.0/24. Proposer une adresse hôte valide.",
+          "solution_markdown": "Toute adresse entre 10.0.0.1 et 10.0.0.254, par exemple 10.0.0.5."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi ne peut-on pas proposer l'adresse 192.168.10.255 pour Sec1 ?",
+          "solution_markdown": "192.168.10.255 est l'adresse de diffusion (broadcast) du sous-réseau 192.168.10.0/24 : elle est réservée pour envoyer un message à tous les équipements du réseau simultanément, elle ne peut donc pas être attribuée à un poste individuel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un réseau d'entreprise avec beaucoup de postes, pourquoi préfère-t-on souvent l'attribution automatique d'adresses IP (DHCP) plutôt que la configuration manuelle décrite ici ?",
+          "solution_markdown": "Le DHCP (Dynamic Host Configuration Protocol) attribue automatiquement une adresse IP libre et valide à chaque équipement qui se connecte au réseau, ce qui évite les erreurs de configuration manuelle (conflits d'adresses, oublis) et simplifie considérablement l'administration lorsque le nombre de postes est important ; la configuration manuelle (dite IP statique), comme celle demandée ici pour Sec1, reste utilisée pour des équipements dont l'adresse doit rester fixe et connue à l'avance, comme un serveur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une adresse hôte valide appartient à la plage .1 à .254 du sous-réseau.",
+        "Elle doit être différente de toute adresse déjà attribuée sur le réseau.",
+        "Elle doit appartenir au même sous-réseau que les autres machines pour communiquer directement.",
+        "Le DHCP automatise cette attribution dans les réseaux comportant de nombreux postes."
+      ]
+    }
+  ]
+}

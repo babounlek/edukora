@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-determiner-les-cardinalites-d-une-association-sur-un-mcd-a-partir-des-regles-de-gestion-terminale-c",
+  "meta": {
+    "titre": "Déterminer les cardinalités d'une association sur un MCD à partir des règles de gestion",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Modélisation de données (Merise)",
+    "tags": ["cardinalités", "MCD", "règles de gestion"],
+    "duree_estimee_min": 20,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2c-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un client peut-il exister sans jamais commander ? Une commande peut-elle regrouper zéro produit ? Ce sont exactement les questions que répondent les cardinalités sur un MCD : elles traduisent, en deux chiffres, les règles de gestion écrites en français dans l'énoncé."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Identifier les entités d'un MCD", "Identifier une association entre deux entités"]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminer les cardinalités (min, max) d'une association",
+      "contenu_markdown": "Chaque entité participant à une association porte une cardinalité, notée (min, max), qui répond à deux questions distinctes côté de CETTE entité : le **minimum** répond à « une occurrence de cette entité participe-t-elle obligatoirement à l'association ? » (0 si non, 1 si oui) ; le **maximum** répond à « combien d'occurrences de l'association cette entité peut-elle avoir au maximum ? » (1 si une seule, n si plusieurs). La cardinalité se lit toujours strictement dans le texte des règles de gestion, jamais par supposition : chaque phrase du cahier des charges qui précise « au moins », « au plus », « un seul », « plusieurs » fixe une cardinalité précise.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cahier des charges précise : « Un client doit avoir passé au moins une commande. Une commande n'est passée que par un et un seul client. » Déterminer les cardinalités de l'association PASSER entre CLIENT et COMMANDE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter la règle côté CLIENT",
+          "justification": "« Un client doit avoir passé au moins une commande » fixe un minimum de 1 (obligatoire) ; rien dans la phrase ne limite le nombre de commandes qu'il peut passer, donc le maximum est n.",
+          "resultat_markdown": "CLIENT : cardinalité (1, n)"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter la règle côté COMMANDE",
+          "justification": "« Une commande n'est passée que par un et un seul client » impose exactement un client, ni zéro ni plusieurs : minimum 1, maximum 1.",
+          "resultat_markdown": "COMMANDE : cardinalité (1, 1)"
+        }
+      ],
+      "conclusion_markdown": "L'association PASSER porte les cardinalités (1,n) côté CLIENT et (1,1) côté COMMANDE : un client passe une ou plusieurs commandes, une commande appartient à un et un seul client."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le sens de lecture et affecter la cardinalité (1,n) à l'entité qui n'en peut avoir qu'une seule occurrence par association",
+          "pourquoi_faux": "La cardinalité (min,max) se lit toujours du point de vue de l'entité à laquelle elle est accolée sur le schéma, pas de l'entité en face - une inversion produit un MCD qui contredit exactement les règles de gestion.",
+          "correction_markdown": "Relis la phrase de règle de gestion en te demandant « combien de fois CETTE entité précise apparaît-elle dans une occurrence de l'association ? », jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Deviner une cardinalité « logique » ou « habituelle » sans la retrouver explicitement dans le texte",
+          "pourquoi_faux": "Deux cahiers des charges qui se ressemblent peuvent imposer des règles différentes (obligatoire vs facultatif) - une cardinalité non justifiée par le texte peut être fausse même si elle « semble » raisonnable.",
+          "correction_markdown": "Cite toujours, même mentalement, la phrase exacte du texte qui justifie chaque cardinalité que tu poses."
+        },
+        {
+          "erreur_markdown": "Confondre minimum 0 et minimum 1 quand le texte ne précise pas explicitement le caractère obligatoire",
+          "pourquoi_faux": "L'absence de précision sur le caractère obligatoire n'est pas neutre : elle signifie souvent que la participation est facultative (minimum 0), pas qu'elle est automatiquement obligatoire.",
+          "correction_markdown": "En l'absence de mention explicite d'obligation (« doit », « au moins »), pose un minimum de 0 plutôt que de supposer 1 par défaut."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Un élève est inscrit dans une et une seule classe. Une classe accueille plusieurs élèves, mais peut aussi être vide en début d'année. » Déterminer les cardinalités de l'association INSCRIRE entre ÉLÈVE et CLASSE.",
+          "solution_markdown": "ÉLÈVE : (1,1) - inscrit dans une et une seule classe (obligatoire, une seule). CLASSE : (0,n) - peut accueillir plusieurs élèves, et peut être vide (facultatif, plusieurs)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Un produit peut figurer dans plusieurs commandes, ou n'avoir jamais été commandé. Une commande contient au moins un produit et peut en contenir plusieurs. » Déterminer les cardinalités de l'association CONCERNER entre COMMANDE et PRODUIT.",
+          "solution_markdown": "COMMANDE : (1,n) - contient au moins un produit (obligatoire), et peut en contenir plusieurs. PRODUIT : (0,n) - peut n'avoir jamais été commandé (facultatif), et peut figurer dans plusieurs commandes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une cardinalité (0,1) et une cardinalité (1,1) se ressemblent (maximum de 1 dans les deux cas). Expliquer précisément ce qui les distingue, à l'aide d'un exemple.",
+          "solution_markdown": "Les deux cardinalités partagent le même maximum (1 : l'entité participe au plus une fois à l'association), mais diffèrent sur le minimum. (1,1) impose une participation obligatoire : toute occurrence de l'entité DOIT être liée à exactement une occurrence de l'association - ex. une COMMANDE (1,1) côté CLIENT : toute commande a nécessairement un client. (0,1) rend la participation facultative : une occurrence de l'entité peut exister sans jamais être liée à l'association, mais si elle l'est, c'est au plus une fois - ex. un EMPLOYÉ (0,1) côté association DIRIGER un service : un employé peut ne diriger aucun service, ou en diriger un seul, jamais plusieurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une cardinalité (min, max) se lit toujours du côté de l'entité à laquelle elle est accolée.",
+        "Le minimum répond à « participation obligatoire (1) ou facultative (0) ? », le maximum à « une seule fois (1) ou plusieurs (n) ? ».",
+        "Chaque cardinalité doit être justifiable par une phrase précise des règles de gestion, jamais devinée par habitude.",
+        "En l'absence de mention explicite d'obligation, le minimum par défaut est 0, pas 1.",
+        "Au BAC, cette compétence s'évalue en donnant les cardinalités d'un MCD à partir d'un texte, ou en le construisant entièrement."
+      ]
+    }
+  ]
+}

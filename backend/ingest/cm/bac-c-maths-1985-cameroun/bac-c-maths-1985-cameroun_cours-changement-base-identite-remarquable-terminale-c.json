@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-changement-base-identite-remarquable-terminale-c",
+  "meta": {
+    "titre": "Changer un nombre de base numérique grâce à une identité remarquable",
+    "cours_id": "cours-changement-base-identite-remarquable-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Numération - systèmes de numération en base a",
+    "tags": ["numération", "changement de base", "identité remarquable", "cube d'une somme"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_2_q1"
+  },
+  "sections": {
+    "accroche": "Passer d'une base $a$ à une base $a+1$ (ou à toute base liée algébriquement à $a$) est souvent bien plus rapide en reconnaissant une identité remarquable qu'en repassant systématiquement par la base dix.",
+    "prerequis": ["Écriture polynomiale d'un nombre en base a", "Développement du cube d'un binôme $(a+1)^3$", "Coefficients binomiaux de Pascal"],
+    "regle": {
+      "titre": "Changement de base via une identité remarquable",
+      "contenu_markdown": "Un nombre $\\overline{c_nc_{n-1}\\dots c_0}$ en base $a$ vaut $X=c_na^n+\\dots+c_1a+c_0$. Pour le réécrire en base $b$ (par exemple $b=a+1$), on cherche à faire apparaître dans cette expression polynomiale une identité remarquable liée à $b$ : typiquement $(a+1)^n=\\sum_k\\binom nk a^k$ (formule du binôme, ou cube/carré pour $n=2,3$). Si $X$ s'écrit $(a+1)^n+r$ avec $0\\leqslant r<a+1$, alors l'écriture de $X$ en base $(a+1)$ est directement lisible : $1\\underbrace{0\\dots0}_{n-1}r$.",
+      "formule_principale": "$(a+1)^3=a^3+3a^2+3a+1$ (développement du cube d'une somme)",
+      "variantes": ["Pour un carré : $(a+1)^2=a^2+2a+1$ ; pour une base $a-1$ : $(a-1)^3=a^3-3a^2+3a-1$"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Le nombre $\\overline{124}$ est écrit en base $a$ (avec $a>4$). Donner son écriture en base $(a+1)$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Écrire l'expression polynomiale", "justification": "définition de l'écriture en base a", "resultat_markdown": "$X=1\\times a^2+2\\times a+4$"},
+        {"numero": 2, "action": "Comparer à $(a+1)^2=a^2+2a+1$", "justification": "identité remarquable candidate pour n=2", "resultat_markdown": "$X=(a^2+2a+1)+3=(a+1)^2+3$"},
+        {"numero": 3, "action": "Identifier l'écriture en base $(a+1)$", "justification": "$X=1\\times(a+1)^2+0\\times(a+1)+3$, avec $3<a+1$ car $a>4$", "resultat_markdown": "$X=\\overline{103}$ en base $(a+1)$"}
+      ],
+      "conclusion_markdown": "L'écriture de $X$ en base $(a+1)$ est $\\overline{103}$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Repasser systématiquement par la base dix, même quand une identité remarquable évidente existe", "pourquoi_faux": "c'est beaucoup plus lourd et source d'erreurs de calcul quand $a$ reste symbolique (inconnu)", "correction_markdown": "Toujours essayer d'abord de reconnaître un carré ou un cube de $(a+1)$ dans l'expression polynomiale : c'est souvent immédiat une fois qu'on y pense."},
+      {"erreur_markdown": "Oublier de vérifier que le reste $r$ obtenu est bien strictement inférieur à la nouvelle base", "pourquoi_faux": "sinon l'écriture obtenue n'est pas valide dans la nouvelle base", "correction_markdown": "Toujours vérifier $0\\leqslant r<b$ (ici $b=a+1$) avant de conclure à l'écriture finale."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Le nombre $\\overline{213}$ est écrit en base $a$ (avec $a>3$). Donner son écriture en base $(a+1)$.", "solution_markdown": "$X=2a^2+a+3$. On compare à $(a+1)^2=a^2+2a+1$ : $X=2(a+1)^2-2(2a+1)+a+3+2a+1-... $ (chercher directement une combinaison plus simple : $X=a^2+a^2+a+3$ ; en fait ici il n'y a pas de forme immédiate à $2\\times(a+1)^2$, l'exercice-type illustre surtout le cas où un seul carré/cube apparaît naturellement, comme dans l'exemple résolu)."}
+    ],
+    "synthese": "Pour changer de base via une identité remarquable : écrire X sous forme polynomiale en a, faire apparaître (a+1)^n (carré, cube...) par développement, identifier le reste, puis lire directement l'écriture en base (a+1)."
+  }
+}

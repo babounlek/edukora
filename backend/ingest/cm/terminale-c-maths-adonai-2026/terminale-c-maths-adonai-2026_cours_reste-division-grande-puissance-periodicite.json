@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-determiner-le-reste-dune-grande-puissance-par-periodicite-modulaire-terminale-c",
+  "meta": {"titre": "Déterminer le reste d'une grande puissance par périodicité modulaire", "cours_id": "cours-determiner-le-reste-dune-grande-puissance-par-periodicite-modulaire-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Arithmétique — congruences", "tags": ["congruence", "périodicité", "reste de division euclidienne"], "duree_estimee_minutes": 10, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex3-ii2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour trouver le reste d'une puissance à exposant énorme, il est impossible de calculer directement : on réduit la base modulo n, puis on cherche la périodicité des puissances successives, souvent stable dès les premiers termes."},
+    {"type": "prerequis", "items_markdown": ["Division euclidienne et notation de congruence a≡r [n]", "Compatibilité de la congruence avec la multiplication : a≡b[n] et c≡d[n] ⟹ ac≡bd[n]"]},
+    {"type": "regle", "titre": "Réduire la base puis chercher un cycle des puissances", "contenu_markdown": "Pour trouver le reste de $a^N$ modulo $n$ : (1) réduire $a$ modulo $n$ pour obtenir un petit reste $r$ ; (2) calculer $r^1,r^2,r^3,\\dots$ modulo $n$ jusqu'à observer une périodicité (un reste déjà obtenu revient) ; (3) utiliser cette période pour déterminer directement le reste de $r^N$ sans calculer toutes les puissances intermédiaires.", "formule_principale": "a^N mod n : réduire a mod n, identifier le cycle des puissances de r=a mod n, appliquer la périodicité à N", "variantes": ["Cas particulier : si r^k≡r pour tout k≥1 (comme r=3 pour n=6), le reste est constant dès la première puissance"]},
+    {"type": "exemple_resolu", "enonce_markdown": "Déterminer le reste de 7^100 modulo 5.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Réduire la base", "justification": "7=5+2, donc 7≡2 [5]", "resultat_markdown": "chercher 2^100 mod 5"},
+      {"numero": 2, "action": "Chercher le cycle", "justification": "2¹=2,2²=4,2³=8≡3,2⁴=16≡1,2⁵≡2 : cycle de longueur 4", "resultat_markdown": "cycle : 2,4,3,1 (période 4)"},
+      {"numero": 3, "action": "Appliquer la périodicité", "justification": "100=4×25, donc 2^100≡2^4≡1 [5] (reste correspondant à l'exposant multiple de la période)", "resultat_markdown": "reste = 1"}
+    ], "conclusion_markdown": "7^100 ≡ 1 [5]."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Supposer sans vérification que la périodicité des puissances est toujours de longueur égale au module n, ou toujours égale à 1", "pourquoi_faux": "La période dépend spécifiquement de la base réduite et du module : elle peut être de longueur 1 (comme 3 mod 6), ou toute autre valeur (comme 4 pour 2 mod 5) ; il faut toujours la déterminer empiriquement en calculant les premières puissances.", "correction_markdown": "Toujours calculer explicitement les premières puissances (au moins 3 ou 4) avant de conclure sur la longueur du cycle, jamais la deviner."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Montrer que 4^n ≡ 4 [6] ou ≡ 1 [6] selon la parité de n (n≥1), en calculant les premières puissances.", "solution_markdown": "4¹=4, 4²=16≡4[6] (car 16=2×6+4). En fait 4^n≡4[6] pour tout n≥1 (cycle constant, comme pour 3 mod 6)."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Déterminer le reste de 2^10 modulo 7.", "solution_markdown": "2¹=2,2²=4,2³=8≡1[7] : cycle de longueur 3. 10=3×3+1, donc 2^10≡2^1≡2[7]."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La réduction de la base modulo n est toujours la première étape avant tout calcul de puissance.", "La longueur du cycle des puissances doit être déterminée empiriquement, jamais supposée.", "Une fois le cycle connu, le reste de l'exposant modulo la longueur du cycle donne directement la réponse."]}
+  ]
+}

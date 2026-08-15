@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-utiliser-la-fonction-produit-d-un-tableur-terminale-c",
+  "meta": {
+    "titre": "Utiliser la fonction PRODUIT d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Fonctions de tableur",
+    "duree_estimee_min": 10,
+    "tags": [
+      "PRODUIT",
+      "tableur",
+      "calcul automatique"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex1-q7.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Multiplier une quantité par un prix unitaire à la main, ligne par ligne, sur des dizaines d'articles, est source d'erreurs. La fonction PRODUIT d'un tableur automatise ce calcul en une seule formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir utiliser une formule simple de tableur (référence de cellule, signe =)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction PRODUIT dans un tableur",
+      "contenu_markdown": "La fonction `PRODUIT(plage)` (ou `PRODUCT` en anglais) d'un tableur calcule le produit (la multiplication) de toutes les valeurs contenues dans une plage de cellules donnée. Par exemple, `=PRODUIT(A1:A3)` multiplie entre elles les valeurs des cellules A1, A2 et A3.",
+      "formule_principale": "=PRODUIT(plage_de_cellules)",
+      "variantes": [
+        {
+          "nom": "Multiplication directe entre deux cellules",
+          "quand_utiliser": "Quand on multiplie seulement deux valeurs précises, sans plage étendue.",
+          "contenu_markdown": "On peut aussi écrire directement `=A1*B1` pour multiplier le contenu de deux cellules, sans passer par la fonction PRODUIT, ce qui est équivalent pour seulement deux valeurs."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la formule permettant de calculer le montant total d'une ligne de facture (quantité × prix unitaire).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les cellules à multiplier",
+          "justification": "Le montant total d'une ligne s'obtient en multipliant la quantité par le prix unitaire.",
+          "resultat_markdown": "Cellule quantité (ex. B2) et cellule prix unitaire (ex. C2)"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule avec PRODUIT",
+          "justification": "La fonction PRODUIT multiplie les valeurs de la plage indiquée.",
+          "resultat_markdown": "`=PRODUIT(B2:C2)`"
+        }
+      ],
+      "conclusion_markdown": "La fonction PRODUIT(plage) multiplie entre elles toutes les valeurs de la plage indiquée, utile pour calculer un montant (quantité × prix unitaire)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=PRODUIT(B2,C2)` avec une virgule au lieu de `=PRODUIT(B2:C2)` avec les deux-points d'une plage, en pensant que cela change le résultat",
+          "pourquoi_faux": "Les deux syntaxes fonctionnent en réalité pour multiplier des cellules individuelles séparées par des virgules, mais confondre systématiquement les deux points (plage continue) et la virgule (cellules séparées) peut causer des erreurs sur des formules plus complexes comme SOMME.",
+          "correction_markdown": "Retiens la convention : les deux-points (:) désignent une plage continue de cellules, la virgule (;) sépare des cellules ou plages distinctes non contiguës."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la formule calculant le produit des cellules A1 et A2.",
+          "solution_markdown": "`=PRODUIT(A1:A2)` ou `=A1*A2`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une ligne de facture a la quantité en B5, le prix unitaire en C5, et une remise en pourcentage en D5 (ex. 0.1 pour 10%). Écrire la formule du montant net (quantité × prix unitaire × (1 - remise)).",
+          "solution_markdown": "`=B5*C5*(1-D5)` — ici la multiplication directe est plus lisible que PRODUIT car elle combine une opération supplémentaire (1-D5) qui n'est pas une simple plage de cellules."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment calculer en une seule formule le total général de toutes les lignes de montants (colonne E, de E2 à E10), sachant que chaque E est déjà un produit quantité × prix unitaire ?",
+          "solution_markdown": "`=SOMME(E2:E10)` — on utilise ici la fonction SOMME, différente de PRODUIT, car il s'agit d'additionner des montants déjà calculés, pas de les multiplier entre eux. Cela illustre l'importance de choisir la fonction correspondant exactement à l'opération voulue (somme vs produit)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La fonction PRODUIT(plage) multiplie toutes les valeurs d'une plage de cellules.",
+        "Elle est idéale pour calculer un montant (quantité × prix unitaire).",
+        "Les deux-points (:) désignent une plage continue, la virgule des cellules séparées.",
+        "Ne pas confondre avec SOMME, qui additionne au lieu de multiplier."
+      ]
+    }
+  ]
+}

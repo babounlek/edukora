@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-traduire-la-declaration-d-un-tableau-algorithmique-en-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire la déclaration d'un tableau algorithmique en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Programmation - traduction algorithme vers C",
+    "tags": ["tableau", "langage C", "traduction"],
+    "duree_estimee_min": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex5-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'algorithmique et le langage C parlent de la même chose avec un vocabulaire différent : traduire une déclaration de tableau, c'est simplement apprendre l'équivalent syntaxique exact d'une notion déjà connue."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Identifier une structure de données (tableau) et sa taille en algorithmique", "Connaître les types de base du langage C (int, float, char)"]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire une déclaration de tableau",
+      "contenu_markdown": "La déclaration algorithmique `nom : Tableau[borne_basse..borne_haute] de type` se traduit en C par `type nom[taille];`, où **taille** est le nombre TOTAL d'éléments (borne_haute - borne_basse + 1), pas simplement le chiffre de la borne haute recopié. En C, les indices d'un tableau commencent toujours à 0 et vont jusqu'à taille-1, quelle que soit la convention de bornage utilisée côté algorithmique.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C la déclaration algorithmique : `Tab : Tableau[0..5] d'entiers`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la taille réelle du tableau",
+          "justification": "`[0..5]` désigne les indices 0, 1, 2, 3, 4 et 5 inclus, soit 6 valeurs distinctes.",
+          "resultat_markdown": "Taille = (5 - 0 + 1) = 6 éléments."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le type C correspondant au type algorithmique",
+          "justification": "« entiers » en algorithmique se traduit par `int` en C.",
+          "resultat_markdown": "Type C : int"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la déclaration C complète",
+          "justification": "La syntaxe C est `type nom[taille];`, avec un point-virgule final obligatoire.",
+          "resultat_markdown": "`int Tab[6];`"
+        }
+      ],
+      "conclusion_markdown": "`Tab : Tableau[0..5] d'entiers` se traduit par `int Tab[6];` - 6 cases, et non 5, malgré la borne haute affichant « 5 »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier directement la borne haute comme taille du tableau C, sans recalculer le nombre réel d'éléments",
+          "pourquoi_faux": "`Tableau[0..5]` compte 6 cases (indices 0 à 5 inclus), donc `int Tab[6];` et non `int Tab[5];` - une déclaration `int Tab[5];` en C ne réserverait que les indices 0 à 4, perdant la dernière case attendue.",
+          "correction_markdown": "Calcule toujours (borne haute - borne basse + 1) avant d'écrire la taille entre crochets en C, jamais en recopiant simplement un chiffre de la déclaration algorithmique."
+        },
+        {
+          "erreur_markdown": "Oublier le point-virgule final de l'instruction de déclaration en C",
+          "pourquoi_faux": "En C, chaque instruction se termine obligatoirement par un point-virgule ; son absence provoque une erreur de compilation.",
+          "correction_markdown": "Vérifie systématiquement la présence du point-virgule à la fin de chaque ligne de déclaration C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C la déclaration algorithmique : `Notes : Tableau[1..20] de réels`.",
+          "solution_markdown": "`float Notes[20];` - 20 éléments (20 - 1 + 1 = 20), de type réel (`float` en C)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C la déclaration algorithmique : `Villes : Tableau[0..7] de chaînes de caractères` (on utilisera un tableau de char de 30 caractères par ville).",
+          "solution_markdown": "`char Villes[8][30];` - 8 chaînes (8 - 0 + 1 = 8), chacune pouvant contenir jusqu'à 30 caractères (tableau à deux dimensions : la première pour le nombre de villes, la seconde pour les caractères de chaque nom)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève traduit `Ages : Tableau[1..30] d'entiers` par `int Ages[30];`, puis écrit en C la boucle `for (i = 1; i <= 30; i++) { ... Ages[i] ... }` pour parcourir tout le tableau. Explique pourquoi cette boucle contient une erreur, malgré une déclaration correcte du tableau.",
+          "solution_markdown": "La déclaration `int Ages[30];` est correcte (30 cases, bien calculées depuis 30 - 1 + 1 = 30), mais en C, les indices valides d'un tableau de taille 30 vont TOUJOURS de 0 à 29, jamais de 1 à 30 - contrairement à la convention algorithmique `[1..30]` qui, elle, autorisait l'indice 1. La boucle `for (i = 1; i <= 30; i++)` accède donc à `Ages[30]`, un indice hors des limites du tableau (comportement indéfini en C, source de bug grave), tout en ne traitant jamais `Ages[0]`, qui existe pourtant. La boucle correcte est `for (i = 0; i <= 29; i++)` (ou `i < 30`), qui balaie exactement les indices 0 à 29 réellement réservés par la déclaration."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La déclaration C d'un tableau est `type nom[taille];`, avec taille = (borne haute - borne basse + 1).",
+        "Ne recopie jamais directement la borne haute algorithmique comme taille C : calcule le nombre réel d'éléments.",
+        "En C, les indices valides vont toujours de 0 à taille-1, quelle que soit la convention de bornage utilisée en algorithmique.",
+        "N'oublie jamais le point-virgule final de chaque instruction de déclaration.",
+        "Au BAC, cette traduction est presque toujours suivie d'une boucle de parcours : vérifie que les indices utilisés dans la boucle restent cohérents avec l'indexation C (0 à taille-1)."
+      ]
+    }
+  ]
+}

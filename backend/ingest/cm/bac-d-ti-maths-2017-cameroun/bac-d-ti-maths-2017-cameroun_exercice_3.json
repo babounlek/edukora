@@ -1,0 +1,427 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2017-cameroun.pdf",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Mathematiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2017",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "points": "11",
+  "figures": [],
+  "enonce_intro_markdown": "**PROBLÈME (11 points)**",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "**Partie A**\n\nSoit la fonction $f$ définie sur $\\mathbb{R}$ par $f(x) = e^{3x/2}-2x-1$. On désigne par $(C_f)$ la courbe de $f$ dans un repère orthonormé $(O\\,;\\vec\\imath,\\vec\\jmath)$ d'unité graphique 2 cm.\n\n1. Déterminer les limites de $f$ aux bornes de son ensemble de définition.",
+      "corrige_markdown": "### Rappel de méthode\nFace à une forme indéterminée « exponentielle moins polynôme », on factorise par le terme exponentiel pour faire apparaître un produit dont chaque facteur a une limite connue, en utilisant les croissances comparées ($x\\,e^{-kx}\\to0$ quand $x\\to+\\infty$, pour $k>0$).\n\n**Limite en $+\\infty$.** On factorise par $e^{3x/2}$ :\n\n$f(x) = e^{3x/2}-2x-1 = e^{3x/2}\\left(1-\\dfrac{2x+1}{e^{3x/2}}\\right)$\n\nQuand $x\\to+\\infty$ : $e^{3x/2}\\to+\\infty$, et par croissances comparées $\\dfrac{2x+1}{e^{3x/2}}\\to0$ (une fonction affine est toujours dominée par une exponentielle en $+\\infty$). Donc le facteur entre parenthèses tend vers $1$, et :\n\n$\\lim\\limits_{x\\to+\\infty} f(x) = +\\infty$\n\n**Limite en $-\\infty$.** On étudie séparément les deux termes : $e^{3x/2}\\to0$ (une exponentielle de puissance tendant vers $-\\infty$ tend vers $0$), et $-2x-1\\to+\\infty$ (car $-2x\\to+\\infty$ quand $x\\to-\\infty$). La somme d'un terme tendant vers $0$ et d'un terme tendant vers $+\\infty$ tend vers $+\\infty$ :\n\n$\\lim\\limits_{x\\to-\\infty} f(x) = +\\infty$\n\n### Piège à éviter\nNe te laisse pas surprendre par l'intuition selon laquelle $e^{3x/2}-2x-1$ « ressemblerait » à une expression tendant vers $-\\infty$ en $-\\infty$ à cause du terme $-2x-1$ : ici $e^{3x/2}$ ne pose aucune indétermination en $-\\infty$ (il tend simplement vers 0), donc il n'y a rien à factoriser dans cette limite, contrairement à la limite en $+\\infty$ qui, elle, est réellement indéterminée avant factorisation.",
+      "themes": [
+        "limites",
+        "croissances comparées",
+        "fonction exponentielle",
+        "forme indéterminée"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA1-1",
+          "competence": "Limites par croissances comparées",
+          "contenu_markdown": "Face à une forme indéterminée « exponentielle moins polynôme », on factorise par le terme exponentiel pour faire apparaître un produit dont chaque facteur a une limite connue, en utilisant les croissances comparées ($x\\,e^{-kx}\\to0$ quand $x\\to+\\infty$, pour $k>0$).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2a",
+      "enonce_markdown": "2. a) Étudier les variations de $f$ et dresser son tableau de variations.",
+      "corrige_markdown": "### Rappel de méthode\nÉtudier les variations d'une fonction dérivable, c'est calculer sa dérivée, déterminer son signe (souvent en résolvant $f'(x)=0$ puis en exploitant la monotonie d'une fonction auxiliaire), puis construire le tableau de variations en y reportant les limites déjà connues.\n\n**Dérivée.** $f(x) = e^{3x/2}-2x-1$ est dérivable sur $\\mathbb{R}$ comme somme de fonctions dérivables, et :\n\n$f'(x) = \\dfrac{3}{2}e^{3x/2}-2$\n\n**Signe de $f'$.** On résout $f'(x)=0$ :\n\n$\\dfrac{3}{2}e^{3x/2} = 2 \\iff e^{3x/2} = \\dfrac{4}{3} \\iff \\dfrac{3x}{2} = \\ln\\left(\\dfrac{4}{3}\\right) \\iff x = \\dfrac{2}{3}\\ln\\left(\\dfrac{4}{3}\\right)$\n\nOn note $x_0 = \\dfrac{2}{3}\\ln\\left(\\dfrac{4}{3}\\right)$. Numériquement, $\\ln\\left(\\dfrac43\\right)\\approx0{,}2877$, donc $x_0\\approx0{,}1918$.\n\nLa fonction $x\\mapsto e^{3x/2}$ est strictement croissante sur $\\mathbb{R}$ (exponentielle d'une fonction affine croissante), donc $f'(x) = \\dfrac32e^{3x/2}-2$ est elle-même strictement croissante sur $\\mathbb{R}$. Comme $f'(x_0)=0$ et $f'$ est strictement croissante, on a $f'(x)<0$ pour $x<x_0$ et $f'(x)>0$ pour $x>x_0$.\n\n**Variations.** $f$ est donc strictement décroissante sur $\\left]-\\infty\\,;x_0\\right]$ et strictement croissante sur $\\left[x_0\\,;+\\infty\\right[$. Elle admet un minimum en $x_0$.\n\n**Valeur du minimum.** $f(x_0) = e^{3x_0/2}-2x_0-1$. Or $e^{3x_0/2} = \\dfrac43$ (par définition de $x_0$), donc :\n\n$f(x_0) = \\dfrac43-2x_0-1 = \\dfrac13-2x_0 = \\dfrac13-\\dfrac43\\ln\\left(\\dfrac43\\right)$\n\nNumériquement, $f(x_0)\\approx0{,}3333-1{,}3333\\times0{,}2877\\approx0{,}3333-0{,}3836\\approx-0{,}0502$.\n\n**Tableau de variations.**\n\n$$\n\\begin{array}{c|ccccc}\nx & -\\infty & & x_0 & & +\\infty \\\\\n\\hline\nf'(x) & & - & 0 & + & \\\\\n\\hline\nf(x) & +\\infty & \\searrow & f(x_0) & \\nearrow & +\\infty \\\\\n\\end{array}\n$$\n\navec $x_0 = \\dfrac23\\ln\\left(\\dfrac43\\right)\\approx0{,}192$ et $f(x_0)\\approx-0{,}050$.\n\n### Piège à éviter\nNe confonds pas le signe de $f'$ avec le signe de $f$ : $f'(x_0)=0$ donne un extremum de $f$, mais $f(x_0)$ (la valeur minimale de $f$) est négative, ce qui est une information totalement différente utilisée ensuite pour localiser les zéros de $f$.",
+      "themes": [
+        "étude de fonction",
+        "dérivée",
+        "tableau de variations",
+        "fonction exponentielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA2a-1",
+          "competence": "Étude complète d'une fonction exponentielle (dérivée, signe, tableau de variations)",
+          "contenu_markdown": "Étudier les variations d'une fonction dérivable, c'est calculer sa dérivée, déterminer son signe (souvent en résolvant $f'(x)=0$ puis en exploitant la monotonie d'une fonction auxiliaire), puis construire le tableau de variations en y reportant les limites déjà connues.",
+          "cours_genere": true,
+          "cours_id": "cours-etude-fonction-exponentielle-terminale-d-ti"
+        }
+      ]
+    },
+    {
+      "numero": "A2b",
+      "enonce_markdown": "b) Montrer que la droite $(D)$ d'équation $y=-2x-1$ est asymptote à $(C_f)$ en $-\\infty$.",
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une droite $y=ax+b$ est asymptote à une courbe $(C_f)$ au voisinage d'une borne, on calcule la limite de $f(x)-(ax+b)$ en cette borne : si elle vaut $0$, la droite est asymptote.\n\n$f(x)-(-2x-1) = \\left(e^{3x/2}-2x-1\\right)-(-2x-1) = e^{3x/2}-2x-1+2x+1 = e^{3x/2}$\n\nQuand $x\\to-\\infty$, $\\dfrac{3x}{2}\\to-\\infty$, donc $e^{3x/2}\\to0$.\n\n$\\lim\\limits_{x\\to-\\infty}\\left[f(x)-(-2x-1)\\right] = 0$\n\nLa droite $(D)$ d'équation $y=-2x-1$ est donc asymptote à $(C_f)$ en $-\\infty$.\n\nDe plus, $e^{3x/2}>0$ pour tout réel $x$, donc $f(x)-(-2x-1)>0$ pour tout $x$ : la courbe $(C_f)$ est toujours strictement au-dessus de $(D)$, ce qui sera réutilisé à la question 4 pour le calcul d'aire.",
+      "themes": [
+        "asymptote oblique",
+        "limite d'une différence",
+        "position relative courbe-droite"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA2b-1",
+          "competence": "Démonstration d'une asymptote oblique",
+          "contenu_markdown": "Pour montrer qu'une droite $y=ax+b$ est asymptote à une courbe $(C_f)$ au voisinage d'une borne, on calcule la limite de $f(x)-(ax+b)$ en cette borne : si elle vaut $0$, la droite est asymptote.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A2c",
+      "enonce_markdown": "c) Montrer que l'équation $f(x)=0$ admet deux solutions dont l'une est nulle et l'autre, notée $\\alpha$, appartient à l'intervalle $[0{,}3\\,;0{,}4]$.",
+      "corrige_markdown": "### Rappel de méthode\nSur un intervalle où une fonction est strictement monotone et continue, le théorème des valeurs intermédiaires (corollaire de la bijection monotone) garantit l'existence d'une unique solution à $f(x)=0$ dès que $f$ change de signe entre les deux bornes. On applique ce théorème séparément sur chaque intervalle de monotonie identifié au tableau de variations.\n\n**Une solution évidente : $x=0$.** $f(0) = e^0-2\\times0-1 = 1-0-1 = 0$. Donc $x=0$ est bien solution de $f(x)=0$.\n\n**Unicité sur $\\left]-\\infty\\,;x_0\\right]$.** D'après le tableau de variations (question 2a), $f$ est strictement décroissante sur $\\left]-\\infty\\,;x_0\\right]$ avec $x_0\\approx0{,}192$. Comme $0<x_0$, le réel $0$ appartient à cet intervalle. Une fonction strictement monotone ne peut s'annuler qu'une seule fois sur un intervalle : $x=0$ est donc l'unique solution de $f(x)=0$ sur $\\left]-\\infty\\,;x_0\\right]$.\n\n**Existence d'une seconde solution sur $\\left[x_0\\,;+\\infty\\right[$.** Sur cet intervalle, $f$ est strictement croissante, avec $f(x_0)\\approx-0{,}050<0$ et $\\lim\\limits_{x\\to+\\infty}f(x)=+\\infty$ (question 1). $f$ est continue sur $\\left[x_0\\,;+\\infty\\right[$ comme somme de fonctions continues. D'après le théorème des valeurs intermédiaires (cas d'une fonction strictement monotone), $f(x)=0$ admet une unique solution sur cet intervalle, notée $\\alpha$.\n\n**Encadrement de $\\alpha$.** On calcule $f$ en $0{,}3$ et $0{,}4$ :\n\n$f(0{,}3) = e^{0,45}-0{,}6-1 = e^{0,45}-1{,}6$. Avec $e^{0,45}\\approx1{,}5683$, on obtient $f(0{,}3)\\approx-0{,}0317<0$.\n\n$f(0{,}4) = e^{0,6}-0{,}8-1 = e^{0,6}-1{,}8$. Avec $e^{0,6}\\approx1{,}8221$, on obtient $f(0{,}4)\\approx0{,}0221>0$.\n\nComme $x_0\\approx0{,}192<0{,}3$, l'intervalle $[0{,}3\\,;0{,}4]$ est bien contenu dans $\\left[x_0\\,;+\\infty\\right[$, où $f$ est strictement croissante et continue. Puisque $f(0{,}3)<0<f(0{,}4)$, le théorème des valeurs intermédiaires assure que l'unique solution $\\alpha$ de $f(x)=0$ sur cet intervalle vérifie $\\alpha\\in\\,]0{,}3\\,;0{,}4[$.\n\n**Conclusion.** L'équation $f(x)=0$ admet exactement deux solutions sur $\\mathbb{R}$ : $x=0$ et $x=\\alpha$, avec $\\alpha\\in[0{,}3\\,;0{,}4]$.\n\n### Conseil\nPour situer rapidement $\\alpha$ sans calculatrice performante, une interpolation linéaire entre $f(0{,}3)\\approx-0{,}032$ et $f(0{,}4)\\approx0{,}022$ donne $\\alpha\\approx0{,}3+0{,}1\\times\\dfrac{0{,}032}{0{,}032+0{,}022}\\approx0{,}36$ : une estimation utile pour vérifier la cohérence de tes calculs dans les parties B et C, sans être exigée par l'énoncé.",
+      "themes": [
+        "théorème des valeurs intermédiaires",
+        "existence et unicité d'une solution",
+        "encadrement d'une racine"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA2c-1",
+          "competence": "Théorème des valeurs intermédiaires (fonction strictement monotone)",
+          "contenu_markdown": "Sur un intervalle où une fonction est strictement monotone et continue, le théorème des valeurs intermédiaires (corollaire de la bijection monotone) garantit l'existence d'une unique solution à $f(x)=0$ dès que $f$ change de signe entre les deux bornes. On applique ce théorème séparément sur chaque intervalle de monotonie identifié au tableau de variations.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A3",
+      "enonce_markdown": "3. Tracer $(C_f)$ et $(D)$ dans le repère $(O\\,;\\vec\\imath,\\vec\\jmath)$.",
+      "corrige_markdown": "### Rappel de méthode\nPour tracer une courbe à partir d'une étude de fonction, on reporte dans l'ordre : les asymptotes, les points remarquables (extremums, zéros) issus du tableau de variations, puis on relie ces éléments en respectant le sens de variation trouvé.\n\nÉléments à reporter dans le repère (unité graphique 2 cm) :\n\n- la droite $(D)$ d'équation $y=-2x-1$, tracée sur toute l'étendue du repère ;\n- le comportement de $(C_f)$ en $-\\infty$ : la courbe se rapproche de $(D)$ par au-dessus, sans jamais la toucher (question 2b) ;\n- le minimum de $(C_f)$ au point de coordonnées $\\left(x_0\\,;f(x_0)\\right)\\approx(0{,}192\\,;-0{,}050)$ ;\n- les deux zéros de $f$ : la courbe coupe l'axe des abscisses en $x=0$ et en $x=\\alpha\\approx0{,}36$ ;\n- en $+\\infty$, la courbe remonte très rapidement (croissance exponentielle), bien plus vite qu'une droite : aucune asymptote oblique de ce côté.\n\nOn relie ces éléments par un tracé continu, décroissant de $+\\infty$ jusqu'au minimum, puis croissant de façon de plus en plus raide vers $+\\infty$.",
+      "themes": [
+        "construction de courbe",
+        "tableau de variations",
+        "asymptote"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-d-ti-maths-2017-cameroun-ex3-qA3-1",
+          "competence": "Tracé d'une courbe à partir d'une étude de fonction",
+          "contenu_markdown": "### Rappel de méthode\nPour tracer une courbe à partir d'une étude de fonction, on reporte dans l'ordre : les asymptotes, les points remarquables (extremums, zéros) issus du tableau de variations, puis on relie ces éléments en respectant le sens de variation trouvé.\n\nÉléments à reporter dans le repère (unité graphique 2 cm) :\n\n- la droite $(D)$ d'équation $y=-2x-1$, tracée sur toute l'étendue du repère ;\n- le comportement de $(C_f)$ en $-\\infty$ : la courbe se rapproche de $(D)$ par au-dessus, sans jamais la toucher (question 2b) ;\n- le minimum de $(C_f)$ au point de coordonnées $\\left(x_0\\,;f(x_0)\\right)\\approx(0{,}192\\,;-0{,}050)$ ;\n- les deux zéros de $f$ : la courbe coupe l'axe des abscisses en $x=0$ et en $x=\\alpha\\approx0{,}36$ ;\n- en $+\\infty$, la courbe remonte très rapidement (croissance exponentielle), bien plus vite qu'une droite : aucune asymptote oblique de ce côté.\n\nOn relie ces éléments par un tracé continu, décroissant de $+\\infty$ jusqu'au minimum, puis croissant de façon de plus en plus raide vers $+\\infty$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A4a",
+      "enonce_markdown": "4. Soit $m$ un réel strictement inférieur à $0$.\n\na) Exprimer en fonction de $m$ l'aire $A(m)$ en cm² de la portion du plan limitée par $(C_f)$, $(D)$ et les droites d'équations $x=m$ et $x=0$.",
+      "corrige_markdown": "### Rappel de méthode\nL'aire entre deux courbes sur $[a\\,;b]$, quand l'une est toujours au-dessus de l'autre, s'obtient en intégrant leur différence : $\\mathcal A = \\displaystyle\\int_a^b\\big(\\text{courbe du dessus}-\\text{courbe du dessous}\\big)\\,dx$, exprimée en unités d'aire, puis convertie en cm² à l'aide de l'unité graphique.\n\n**Position relative.** D'après la question 2b, $f(x)-(-2x-1) = e^{3x/2}>0$ pour tout réel $x$ : $(C_f)$ est toujours strictement au-dessus de $(D)$.\n\n**Aire en unités graphiques.** Sur $[m\\,;0]$ (avec $m<0$), l'aire entre $(C_f)$ et $(D)$ vaut :\n\n$\\mathcal A = \\displaystyle\\int_m^0\\big[f(x)-(-2x-1)\\big]\\,dx = \\int_m^0 e^{3x/2}\\,dx$\n\nUne primitive de $x\\mapsto e^{3x/2}$ est $x\\mapsto\\dfrac23e^{3x/2}$ (car $\\dfrac{d}{dx}\\left(\\dfrac23e^{3x/2}\\right) = \\dfrac23\\times\\dfrac32e^{3x/2}=e^{3x/2}$).\n\n$\\mathcal A = \\left[\\dfrac23e^{3x/2}\\right]_m^0 = \\dfrac23e^0-\\dfrac23e^{3m/2} = \\dfrac23\\left(1-e^{3m/2}\\right)$\n\nCette valeur est bien positive pour $m<0$ : en effet $3m/2<0$ donne $e^{3m/2}<1$, donc $1-e^{3m/2}>0$.\n\n**Conversion en cm².** L'unité graphique vaut 2 cm sur chaque axe, donc une unité d'aire du repère vaut $2\\,\\text{cm}\\times2\\,\\text{cm} = 4\\,\\text{cm}^2$.\n\n$A(m) = 4\\times\\dfrac23\\left(1-e^{3m/2}\\right) = \\dfrac83\\left(1-e^{3m/2}\\right)\\ \\text{cm}^2$\n\n### Piège à éviter\nN'oublie jamais la conversion en cm² quand l'énoncé précise une unité graphique différente de 1 : l'intégrale calculée directement donne une aire en « unités d'aire du repère », pas en cm². Ici, oublier le facteur 4 revient à sous-estimer l'aire réelle d'un facteur 4.",
+      "themes": [
+        "calcul intégral",
+        "aire entre deux courbes",
+        "primitive d'une exponentielle",
+        "unité graphique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA4a-1",
+          "competence": "Aire entre une courbe et son asymptote (calcul intégral)",
+          "contenu_markdown": "L'aire entre deux courbes sur $[a\\,;b]$, quand l'une est toujours au-dessus de l'autre, s'obtient en intégrant leur différence : $\\mathcal A = \\displaystyle\\int_a^b\\big(\\text{courbe du dessus}-\\text{courbe du dessous}\\big)\\,dx$, exprimée en unités d'aire, puis convertie en cm² à l'aide de l'unité graphique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "A4b",
+      "enonce_markdown": "b) Quelle est la limite de cette aire quand $m$ tend vers $-\\infty$ ?",
+      "corrige_markdown": "### Rappel de méthode\nLa limite d'une aire dépendant d'un paramètre s'obtient en prenant la limite de l'expression trouvée précédemment ; elle traduit souvent la convergence d'une intégrale impropre, ce qui a un sens concret (ici, l'aire totale entre la courbe et son asymptote reste finie malgré un domaine d'intégration infini).\n\n$A(m) = \\dfrac83\\left(1-e^{3m/2}\\right)$\n\nQuand $m\\to-\\infty$, $\\dfrac{3m}{2}\\to-\\infty$, donc $e^{3m/2}\\to0$.\n\n$\\lim\\limits_{m\\to-\\infty}A(m) = \\dfrac83(1-0) = \\dfrac83\\ \\text{cm}^2$\n\nLa limite de l'aire est $\\dfrac83\\ \\text{cm}^2$, soit environ $2{,}67\\ \\text{cm}^2$. Cela signifie que, bien que la courbe $(C_f)$ s'écarte de $(D)$ sur un domaine infini quand $m\\to-\\infty$, l'aire totale entre les deux reste finie : c'est cohérent avec le fait que $(C_f)$ se rapproche de $(D)$ de plus en plus vite (l'écart $e^{3x/2}$ décroît exponentiellement) quand $x\\to-\\infty$.",
+      "themes": [
+        "limite d'une aire",
+        "intégrale impropre",
+        "asymptote"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qA4b-1",
+          "competence": "Limite d'une aire (intégrale impropre convergente)",
+          "contenu_markdown": "La limite d'une aire dépendant d'un paramètre s'obtient en prenant la limite de l'expression trouvée précédemment ; elle traduit souvent la convergence d'une intégrale impropre, ce qui a un sens concret (ici, l'aire totale entre la courbe et son asymptote reste finie malgré un domaine d'intégration infini).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B1",
+      "enonce_markdown": "**Partie B**\n\nOn considère la fonction $g$ définie sur $\\left]-\\dfrac12\\,;+\\infty\\right[$ par $g(x) = \\dfrac23\\ln(2x+1)$.\n\n1. Donner le sens de variation de $g$.",
+      "corrige_markdown": "### Rappel de méthode\nLe sens de variation d'une fonction dérivable se lit sur le signe de sa dérivée. Pour une composée avec $\\ln$, on utilise $\\left[\\ln(u)\\right]' = \\dfrac{u'}{u}$, valable là où $u>0$.\n\n$g$ est dérivable sur $\\left]-\\dfrac12\\,;+\\infty\\right[$ comme composée de fonctions dérivables (la fonction affine $x\\mapsto2x+1$ y est strictement positive, condition nécessaire à la dérivabilité de $\\ln$). Avec $u(x)=2x+1$, $u'(x)=2$ :\n\n$g'(x) = \\dfrac23\\times\\dfrac{u'(x)}{u(x)} = \\dfrac23\\times\\dfrac{2}{2x+1} = \\dfrac{4}{3(2x+1)}$\n\nPour tout $x>-\\dfrac12$, on a $2x+1>0$, donc $3(2x+1)>0$, donc $g'(x)>0$.\n\n$g$ est donc strictement croissante sur $\\left]-\\dfrac12\\,;+\\infty\\right[$.",
+      "themes": [
+        "dérivée d'une fonction logarithme",
+        "sens de variation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qB1-1",
+          "competence": "Dérivée et sens de variation d'une composée logarithmique",
+          "contenu_markdown": "Le sens de variation d'une fonction dérivable se lit sur le signe de sa dérivée. Pour une composée avec $\\ln$, on utilise $\\left[\\ln(u)\\right]' = \\dfrac{u'}{u}$, valable là où $u>0$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B2",
+      "enonce_markdown": "2. Montrer que les équations $f(x)=0$ et $g(x)=x$ sont équivalentes dans $\\left]-\\dfrac12\\,;+\\infty\\right[$.",
+      "corrige_markdown": "### Rappel de méthode\nPour montrer l'équivalence de deux équations, on part de l'une, on la transforme par des opérations réversibles (ici l'exponentielle et le logarithme, bijections réciproques l'une de l'autre sur les domaines adéquats) jusqu'à obtenir l'autre, ce qui prouve les deux implications à la fois.\n\nSoit $x\\in\\left]-\\dfrac12\\,;+\\infty\\right[$, de sorte que $2x+1>0$.\n\n$f(x)=0 \\iff e^{3x/2}-2x-1=0 \\iff e^{3x/2} = 2x+1$\n\nLes deux membres de cette dernière égalité sont strictement positifs ($e^{3x/2}>0$ toujours, et $2x+1>0$ car $x>-\\dfrac12$). La fonction $\\ln$ étant une bijection strictement croissante de $\\,]0\\,;+\\infty[$ vers $\\mathbb R$, on peut appliquer $\\ln$ aux deux membres sans changer l'ensemble des solutions :\n\n$e^{3x/2} = 2x+1 \\iff \\ln\\left(e^{3x/2}\\right) = \\ln(2x+1) \\iff \\dfrac{3x}{2} = \\ln(2x+1)$\n\nEn multipliant les deux membres par $\\dfrac23$ (opération réversible) :\n\n$\\dfrac{3x}{2} = \\ln(2x+1) \\iff x = \\dfrac23\\ln(2x+1) \\iff x = g(x)$\n\nEn chaînant ces équivalences : $f(x)=0 \\iff x=g(x)$, pour tout $x\\in\\left]-\\dfrac12\\,;+\\infty\\right[$.\n\nLes équations $f(x)=0$ et $g(x)=x$ sont donc équivalentes sur cet intervalle. En particulier, $\\alpha$ (racine de $f$ trouvée en A2c, qui appartient bien à $\\left]-\\dfrac12\\,;+\\infty\\right[$) vérifie $g(\\alpha)=\\alpha$ : $\\alpha$ est point fixe de $g$.",
+      "themes": [
+        "équivalence d'équations",
+        "bijection réciproque",
+        "exponentielle et logarithme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qB2-1",
+          "competence": "Équivalence d'équations via exponentielle et logarithme réciproques",
+          "contenu_markdown": "Pour montrer l'équivalence de deux équations, on part de l'une, on la transforme par des opérations réversibles (ici l'exponentielle et le logarithme, bijections réciproques l'une de l'autre sur les domaines adéquats) jusqu'à obtenir l'autre, ce qui prouve les deux implications à la fois.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3a",
+      "enonce_markdown": "3. On considère la suite $(u_n)$ définie par $u_0=4$ et, pour tout entier naturel $n$, $u_{n+1}=g(u_n)$.\n\na) Montrer par récurrence que, pour tout entier naturel $n$, on a $u_n\\in[\\alpha\\,;4]$ et que $(u_n)$ est décroissante.",
+      "corrige_markdown": "### Rappel de méthode\nPour une suite définie par $u_{n+1}=g(u_n)$ avec $g$ monotone, on établit l'encadrement et la monotonie par récurrence en exploitant le fait qu'une fonction croissante conserve l'ordre : si $x\\le y$ dans le domaine de $g$, alors $g(x)\\le g(y)$.\n\nOn démontre par récurrence la propriété $P(n)$ : « $\\alpha\\le u_n\\le4$ et $u_{n+1}\\le u_n$ ».\n\n**Initialisation ($n=0$).** $u_0=4$, donc $\\alpha\\le u_0\\le4$ est vérifié puisque $\\alpha\\in\\,]0{,}3\\,;0{,}4[$ (question A2c), donc $\\alpha<4$.\n\nCalculons $u_1=g(u_0)=g(4)=\\dfrac23\\ln(2\\times4+1)=\\dfrac23\\ln9$. Comme $\\ln9=\\ln(3^2)=2\\ln3$, $u_1=\\dfrac43\\ln3$. Avec $\\ln3\\approx1{,}0986$, $u_1\\approx1{,}3333\\times1{,}0986\\approx1{,}4648$.\n\n$u_1\\approx1{,}4648\\le4=u_0$ : $u_1\\le u_0$ est vérifié. $P(0)$ est donc vraie.\n\n**Hérédité.** Supposons $P(n)$ vraie pour un entier $n$ fixé : $\\alpha\\le u_n\\le4$ et $u_{n+1}\\le u_n$.\n\n*Encadrement au rang $n+1$.* Comme $g$ est strictement croissante sur $\\left]-\\dfrac12\\,;+\\infty\\right[$ (question B1) et que $\\alpha$, $u_n$, $4$ appartiennent tous à ce domaine (ils sont tous $>-\\dfrac12$), l'encadrement $\\alpha\\le u_n\\le4$ donne, en appliquant $g$ :\n\n$g(\\alpha)\\le g(u_n)\\le g(4)$\n\nOr $g(\\alpha)=\\alpha$ (question B2, $\\alpha$ est point fixe de $g$) et $g(u_n)=u_{n+1}$ par définition de la suite. Donc :\n\n$\\alpha\\le u_{n+1}\\le g(4)$\n\nComme $g(4)=\\dfrac43\\ln3\\approx1{,}4648\\le4$, on obtient $u_{n+1}\\le g(4)\\le4$, donc $\\alpha\\le u_{n+1}\\le4$ : la première partie de $P(n+1)$ est établie.\n\n*Décroissance au rang $n+1$.* Par hypothèse de récurrence, $u_{n+1}\\le u_n$. Ces deux termes appartiennent au domaine de $g$ (d'après l'encadrement qu'on vient d'établir pour $u_{n+1}$, et l'hypothèse de récurrence pour $u_n$). Comme $g$ est croissante, appliquer $g$ à l'inégalité $u_{n+1}\\le u_n$ conserve le sens :\n\n$g(u_{n+1})\\le g(u_n) \\iff u_{n+2}\\le u_{n+1}$\n\nLa seconde partie de $P(n+1)$ est établie.\n\n**Conclusion.** $P(n)$ est vraie pour tout entier naturel $n$ : pour tout $n$, $u_n\\in[\\alpha\\,;4]$ et $(u_n)$ est décroissante.",
+      "themes": [
+        "récurrence",
+        "suite définie par une fonction",
+        "monotonie et fonction croissante",
+        "point fixe"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qB3a-1",
+          "competence": "Récurrence pour une suite u(n+1)=g(u(n)) avec g monotone",
+          "contenu_markdown": "Pour une suite définie par $u_{n+1}=g(u_n)$ avec $g$ monotone, on établit l'encadrement et la monotonie par récurrence en exploitant le fait qu'une fonction croissante conserve l'ordre : si $x\\le y$ dans le domaine de $g$, alors $g(x)\\le g(y)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "B3b",
+      "enonce_markdown": "b) Justifier que $(u_n)$ est convergente et déterminer sa limite.",
+      "corrige_markdown": "### Rappel de méthode\nToute suite décroissante et minorée converge (théorème de la limite monotone). Si de plus la suite est définie par $u_{n+1}=g(u_n)$ avec $g$ continue, sa limite $L$ vérifie nécessairement $L=g(L)$ : c'est un point fixe de $g$.\n\n**Convergence.** D'après la question précédente, $(u_n)$ est décroissante et minorée par $\\alpha$ (car $u_n\\ge\\alpha$ pour tout $n$). Une suite décroissante et minorée converge (théorème de la limite monotone). $(u_n)$ converge donc vers une limite $L$.\n\n**Identification de la limite.** La fonction $g$ est continue sur $\\left]-\\dfrac12\\,;+\\infty\\right[$ (composée de fonctions continues). Comme $u_{n+1}=g(u_n)$, et que $u_n\\to L$ et $u_{n+1}\\to L$ (une sous-suite d'une suite convergente a la même limite), en passant à la limite dans l'égalité $u_{n+1}=g(u_n)$ et en utilisant la continuité de $g$ : $L=g(L)$.\n\n**$L$ appartient à $[\\alpha\\,;4]$.** Comme $\\alpha\\le u_n\\le4$ pour tout $n$ (question précédente), en passant à la limite (qui conserve les inégalités larges), $\\alpha\\le L\\le4$.\n\n**Unicité du point fixe dans $[\\alpha\\,;4]$.** D'après l'équivalence de la question B2, les points fixes de $g$ sont exactement les solutions de $f(x)=0$. Or $f(x)=0$ admet exactement deux solutions sur $\\mathbb R$ (question A2c) : $x=0$ et $x=\\alpha$. Comme $\\alpha\\in\\,]0{,}3\\,;0{,}4[$, on a $0<\\alpha$, donc $0\\notin[\\alpha\\,;4]$. Le seul point fixe de $g$ appartenant à $[\\alpha\\,;4]$ est donc $\\alpha$ lui-même.\n\n**Conclusion.** $L=\\alpha$, c'est-à-dire $\\lim\\limits_{n\\to+\\infty}u_n=\\alpha$.\n\n### Conseil\nCe type de suite « décroissante-minorée, définie par une fonction » revient très souvent au BAC : le réflexe à automatiser est toujours le même — convergence par le théorème de la limite monotone, puis identification de la limite comme solution de $L=g(L)$, puis élimination des solutions parasites en utilisant l'encadrement déjà démontré.",
+      "themes": [
+        "convergence d'une suite",
+        "théorème de la limite monotone",
+        "point fixe",
+        "continuité"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qB3b-1",
+          "competence": "Convergence d'une suite décroissante minorée et identification de la limite",
+          "contenu_markdown": "Toute suite décroissante et minorée converge (théorème de la limite monotone). Si de plus la suite est définie par $u_{n+1}=g(u_n)$ avec $g$ continue, sa limite $L$ vérifie nécessairement $L=g(L)$ : c'est un point fixe de $g$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C1",
+      "enonce_markdown": "**Partie C**\n\nOn considère les équations différentielles $(E)$ : $2y'-3y=0$ et $(E')$ : $2y'-3y=6x-1$.\n\n1. Montrer que $f$ est solution de $(E')$.",
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une fonction donnée est solution d'une équation différentielle, on calcule sa dérivée puis on substitue $y$ et $y'$ dans l'équation, pour vérifier que l'égalité annoncée est bien satisfaite identiquement.\n\n$f(x) = e^{3x/2}-2x-1$, donc $f'(x) = \\dfrac32e^{3x/2}-2$ (calculée en A2a).\n\nOn calcule $2f'(x)-3f(x)$ :\n\n$2f'(x) = 2\\left(\\dfrac32e^{3x/2}-2\\right) = 3e^{3x/2}-4$\n\n$3f(x) = 3\\left(e^{3x/2}-2x-1\\right) = 3e^{3x/2}-6x-3$\n\n$2f'(x)-3f(x) = \\left(3e^{3x/2}-4\\right)-\\left(3e^{3x/2}-6x-3\\right) = 3e^{3x/2}-4-3e^{3x/2}+6x+3 = 6x-1$\n\nOn retrouve exactement le second membre de $(E')$ : $2f'(x)-3f(x)=6x-1$ pour tout réel $x$. $f$ est donc bien solution de $(E')$.",
+      "themes": [
+        "équation différentielle",
+        "vérification d'une solution"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qC1-1",
+          "competence": "Vérifier qu'une fonction est solution d'une équation différentielle",
+          "contenu_markdown": "Pour montrer qu'une fonction donnée est solution d'une équation différentielle, on calcule sa dérivée puis on substitue $y$ et $y'$ dans l'équation, pour vérifier que l'égalité annoncée est bien satisfaite identiquement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C2",
+      "enonce_markdown": "2. Résoudre $(E)$ sur $\\mathbb{R}$.",
+      "corrige_markdown": "### Rappel de méthode\nUne équation différentielle linéaire homogène du premier ordre $ay'+by=0$ (avec $a\\neq0$) a pour solutions générales $y=Ce^{-\\frac{b}{a}x}$, $C\\in\\mathbb R$ : c'est une conséquence directe du fait que $y'/y$ doit être constant, égal à $-b/a$.\n\n$(E)$ : $2y'-3y=0 \\iff y'=\\dfrac32y$\n\nLes solutions de l'équation $y'=ky$ (avec $k$ constant) sont les fonctions $x\\mapsto Ce^{kx}$, $C\\in\\mathbb R$ : en effet, une telle fonction vérifie bien $y'(x)=Cke^{kx}=ky(x)$, et réciproquement toute solution de $y'=ky$ s'écrit sous cette forme.\n\nIci $k=\\dfrac32$, donc les solutions de $(E)$ sur $\\mathbb R$ sont les fonctions :\n\n$y(x) = Ce^{3x/2}, \\quad C\\in\\mathbb R$",
+      "themes": [
+        "équation différentielle linéaire homogène",
+        "solution générale"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qC2-1",
+          "competence": "Résolution d'une équation différentielle linéaire homogène du premier ordre",
+          "contenu_markdown": "Une équation différentielle linéaire homogène du premier ordre $ay'+by=0$ (avec $a\\neq0$) a pour solutions générales $y=Ce^{-\\frac{b}{a}x}$, $C\\in\\mathbb R$ : c'est une conséquence directe du fait que $y'/y$ doit être constant, égal à $-b/a$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C3",
+      "enonce_markdown": "3. Montrer qu'une fonction $h$ est solution de $(E)$ si et seulement si $h+f$ est solution de $(E')$.",
+      "corrige_markdown": "### Rappel de méthode\nQuand une solution particulière $f$ d'une équation avec second membre $(E')$ est connue, la linéarité de l'opérateur $y\\mapsto2y'-3y$ permet de ramener la résolution de $(E')$ à celle de l'équation homogène associée $(E)$ : la différence entre deux solutions de $(E')$ est toujours solution de $(E)$.\n\nSoit $h$ une fonction dérivable sur $\\mathbb R$, et posons $\\varphi=h+f$. On calcule $2\\varphi'-3\\varphi$ :\n\n$2\\varphi'-3\\varphi = 2(h'+f')-3(h+f) = (2h'-3h)+(2f'-3f)$\n\nD'après la question C1, $f$ est solution de $(E')$, donc $2f'-3f=6x-1$. On remplace :\n\n$2\\varphi'-3\\varphi = (2h'-3h)+(6x-1)$\n\n**Sens direct.** Si $h$ est solution de $(E)$, alors $2h'-3h=0$, donc $2\\varphi'-3\\varphi = 0+(6x-1) = 6x-1$ : $\\varphi=h+f$ est solution de $(E')$.\n\n**Réciproque.** Si $\\varphi=h+f$ est solution de $(E')$, alors $2\\varphi'-3\\varphi=6x-1$. Avec l'égalité $2\\varphi'-3\\varphi=(2h'-3h)+(6x-1)$ établie ci-dessus, on obtient $(2h'-3h)+(6x-1)=6x-1$, donc $2h'-3h=0$ : $h$ est solution de $(E)$.\n\nLes deux implications sont établies : $h$ est solution de $(E)$ si et seulement si $h+f$ est solution de $(E')$.",
+      "themes": [
+        "équation différentielle avec second membre",
+        "linéarité",
+        "solution particulière"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qC3-1",
+          "competence": "Structure des solutions d'une équation différentielle avec second membre",
+          "contenu_markdown": "Quand une solution particulière $f$ d'une équation avec second membre $(E')$ est connue, la linéarité de l'opérateur $y\\mapsto2y'-3y$ permet de ramener la résolution de $(E')$ à celle de l'équation homogène associée $(E)$ : la différence entre deux solutions de $(E')$ est toujours solution de $(E)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C4",
+      "enonce_markdown": "4. Résoudre alors $(E')$ sur $\\mathbb{R}$.",
+      "corrige_markdown": "### Rappel de méthode\nUne fois établi que « $h$ solution de $(E)$ » équivaut à « $h+f$ solution de $(E')$ », la solution générale de $(E')$ s'obtient en ajoutant la solution particulière $f$ à la solution générale de l'équation homogène $(E)$.\n\nD'après la question C3, les solutions de $(E')$ sont exactement les fonctions $h+f$ où $h$ parcourt l'ensemble des solutions de $(E)$. D'après la question C2, $h(x)=Ce^{3x/2}$, $C\\in\\mathbb R$.\n\nLes solutions de $(E')$ sur $\\mathbb R$ sont donc les fonctions :\n\n$y(x) = Ce^{3x/2}+f(x) = Ce^{3x/2}+e^{3x/2}-2x-1 = (C+1)e^{3x/2}-2x-1$\n\nEn posant $K=C+1$ (qui parcourt aussi $\\mathbb R$ tout entier quand $C$ parcourt $\\mathbb R$), les solutions de $(E')$ sur $\\mathbb R$ s'écrivent :\n\n$y(x) = Ke^{3x/2}-2x-1, \\quad K\\in\\mathbb R$",
+      "themes": [
+        "équation différentielle avec second membre",
+        "solution générale"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qC4-1",
+          "competence": "Solution générale d'une équation différentielle avec second membre",
+          "contenu_markdown": "Une fois établi que « $h$ solution de $(E)$ » équivaut à « $h+f$ solution de $(E')$ », la solution générale de $(E')$ s'obtient en ajoutant la solution particulière $f$ à la solution générale de l'équation homogène $(E)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "C5",
+      "enonce_markdown": "5. Déterminer la fonction $u$ solution de $(E')$ telle que $u(0)=2$.",
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer la solution particulière d'une équation différentielle vérifiant une condition initiale, on substitue cette condition dans la solution générale afin de calculer la constante restante.\n\nLa solution générale de $(E')$ est $y(x)=Ke^{3x/2}-2x-1$, $K\\in\\mathbb R$ (question C4). On impose $u(0)=2$ :\n\n$u(0) = Ke^0-2\\times0-1 = K-1$\n\n$K-1=2 \\iff K=3$\n\nLa fonction cherchée est donc :\n\n$u(x) = 3e^{3x/2}-2x-1$\n\n**Vérification indépendante.** $u(0)=3\\times1-0-1=2$ : la condition initiale est bien vérifiée. Pour la vérification de l'équation différentielle, $u'(x)=3\\times\\dfrac32e^{3x/2}-2=\\dfrac92e^{3x/2}-2$, donc $2u'(x)=9e^{3x/2}-4$ et $3u(x)=9e^{3x/2}-6x-3$ ; $2u'(x)-3u(x)=(9e^{3x/2}-4)-(9e^{3x/2}-6x-3)=6x-1$, qui est bien le second membre de $(E')$.",
+      "themes": [
+        "équation différentielle avec condition initiale",
+        "détermination d'une constante"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacdtimaths2017cameroun-ex3-qC5-1",
+          "competence": "Solution particulière d'une équation différentielle avec condition initiale",
+          "contenu_markdown": "Pour déterminer la solution particulière d'une équation différentielle vérifiant une condition initiale, on substitue cette condition dans la solution générale afin de calculer la constante restante.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction",
+    "fonction exponentielle",
+    "limites",
+    "croissances comparées",
+    "tableau de variations",
+    "asymptote oblique",
+    "théorème des valeurs intermédiaires",
+    "calcul intégral",
+    "aire entre courbe et asymptote",
+    "suite définie par une fonction",
+    "récurrence",
+    "convergence",
+    "point fixe",
+    "équation différentielle",
+    "terminale D-TI"
+  ],
+  "incertitudes": [
+    "Question A3 (tracé de la courbe et de l'asymptote) est une tâche de construction graphique décrite textuellement, sans image produite : le sujet source ne fournit pas de grille pré-imprimée.",
+    "La valeur exacte de alpha (racine de f sur ]0,3;0,4[) n'est pas exprimable par une formule fermée usuelle : elle est seulement encadrée par le théorème des valeurs intermédiaires, conformément à la question A2c ; toute valeur décimale citée (environ 0,36) est une estimation par interpolation, explicitement signalée comme telle dans le corrigé, jamais utilisée comme donnée exacte dans les démonstrations.",
+    "14 des 15 rappels de méthode de cet exercice n'ont pas généré de cours complet dans cette passe (cours_genere:false) : rdm-bacdtimaths2017cameroun-ex3-qA1-1 (Limites par croissances comparées); rdm-bacdtimaths2017cameroun-ex3-qA2b-1 (Démonstration d'une asymptote oblique); rdm-bacdtimaths2017cameroun-ex3-qA2c-1 (Théorème des valeurs intermédiaires (fonction strictement monotone)); rdm-bacdtimaths2017cameroun-ex3-qA4a-1 (Aire entre une courbe et son asymptote (calcul intégral)); rdm-bacdtimaths2017cameroun-ex3-qA4b-1 (Limite d'une aire (intégrale impropre convergente)); rdm-bacdtimaths2017cameroun-ex3-qB1-1 (Dérivée et sens de variation d'une composée logarithmique); rdm-bacdtimaths2017cameroun-ex3-qB2-1 (Équivalence d'équations via exponentielle et logarithme réciproques); rdm-bacdtimaths2017cameroun-ex3-qB3a-1 (Récurrence pour une suite u(n+1)=g(u(n)) avec g monotone); rdm-bacdtimaths2017cameroun-ex3-qB3b-1 (Convergence d'une suite décroissante minorée et identification de la limite); rdm-bacdtimaths2017cameroun-ex3-qC1-1 (Vérifier qu'une fonction est solution d'une équation différentielle); rdm-bacdtimaths2017cameroun-ex3-qC2-1 (Résolution d'une équation différentielle linéaire homogène du premier ordre); rdm-bacdtimaths2017cameroun-ex3-qC3-1 (Structure des solutions d'une équation différentielle avec second membre); rdm-bacdtimaths2017cameroun-ex3-qC4-1 (Solution générale d'une équation différentielle avec second membre); rdm-bacdtimaths2017cameroun-ex3-qC5-1 (Solution particulière d'une équation différentielle avec condition initiale). Seul rdm-bacdtimaths2017cameroun-ex3-qA2a-1 (étude complète d'une fonction exponentielle) a été développé en cours à 7 sections, jugé le rappel le plus transférable de toute l'épreuve.",
+    "Rappel de méthode de la question A3 (tracé de la courbe) extrait après coup dans rappels_de_methode (oubli lors de la première passe) ; cours_genere=false, cours_id=null."
+  ],
+  "statut": "brouillon"
+}

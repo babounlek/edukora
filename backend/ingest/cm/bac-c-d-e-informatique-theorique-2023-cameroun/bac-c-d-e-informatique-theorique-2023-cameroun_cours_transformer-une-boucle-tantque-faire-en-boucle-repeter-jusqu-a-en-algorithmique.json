@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-transformer-une-boucle-tantque-faire-en-boucle-repeter-jusqu-a-en-algorithmique-terminale-c",
+  "meta": {
+    "titre": "Transformer une boucle 'TantQue...Faire' en boucle 'Répéter...Jusqu'à' en algorithmique",
+    "cours_id": "cours-transformer-une-boucle-tantque-faire-en-boucle-repeter-jusqu-a-en-algorithmique-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique — structures itératives",
+    "tags": [
+      "boucle Répéter...Jusqu'à",
+      "boucle TantQue",
+      "transformation"
+    ],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "TantQue et Répéter...Jusqu'à semblent proches mais fonctionnent en miroir : l'une teste avant, l'autre après ; l'une continue \"tant que c'est vrai\", l'autre \"jusqu'à ce que ce soit vrai\". Confondre les deux logiques est l'erreur la plus fréquente sur ce type de conversion."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la structure itérative TantQue...Faire...FinTantque",
+        "Connaître la structure itérative Répéter...Jusqu'à"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Transformer une boucle TantQue en boucle Répéter...Jusqu'à",
+      "contenu_markdown": "La boucle **TantQue (condition) Faire ... FinTantque** teste sa condition **avant** chaque itération et continue **tant qu'elle est vraie** (elle peut donc ne s'exécuter aucune fois). La boucle **Répéter ... Jusqu'à (condition)** teste sa condition **après** chaque itération (elle s'exécute donc toujours au moins une fois) et continue **jusqu'à ce que la condition devienne vraie** (c'est-à-dire qu'elle continue tant que la condition est fausse). Pour convertir une boucle TantQue(C) en Répéter...Jusqu'à, il faut donc utiliser comme condition d'arrêt la **négation logique** de C : NON(C).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Transformer Tant que ((i<=N) et (trouve=faux)) Faire ... FinTantque en Répéter ... Jusqu'à.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la condition de poursuite de la boucle TantQue",
+          "justification": "C'est la condition testée pour continuer à boucler.",
+          "resultat_markdown": "(i<=N) et (trouve=faux)"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer sa négation logique (loi de De Morgan)",
+          "justification": "La condition d'arrêt du Répéter...Jusqu'à doit être la négation de la condition de poursuite du TantQue.",
+          "resultat_markdown": "NON((i<=N) et (trouve=faux)) = (i>N) ou (trouve=vrai)"
+        },
+        {
+          "numero": 3,
+          "action": "Placer cette condition après \"Jusqu'à\", en fin de boucle",
+          "justification": "Répéter...Jusqu'à teste sa condition après l'exécution du corps.",
+          "resultat_markdown": "Jusqu'à ((i>N) ou (trouve=vrai))"
+        }
+      ],
+      "conclusion_markdown": "Pour convertir TantQue(C) en Répéter...Jusqu'à, utiliser NON(C) comme condition d'arrêt, placée en fin de boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier la condition du TantQue telle quelle après \"Jusqu'à\", sans l'inverser",
+          "pourquoi_faux": "Répéter continue TANT QUE sa condition est FAUSSE (s'arrête quand elle devient vraie) ; garder la même condition qu'un TantQue (qui continue quand elle est vraie) inverserait complètement le comportement de la boucle.",
+          "correction_markdown": "N'oublie jamais d'inverser (NON logique) la condition lors du passage de TantQue à Répéter...Jusqu'à — c'est l'étape la plus souvent oubliée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Transformer \"TantQue (i<10) Faire i<-i+1 FinTantque\" en Répéter...Jusqu'à.",
+          "solution_markdown": "```\nRépéter\n    i <- i+1\nJusqu'à (i>=10)\n```\n(NON(i<10) équivaut à i>=10)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle différence de comportement peut apparaître entre les deux versions si N vaut 0 (tableau vide) dans l'algorithme de recherche ?",
+          "solution_markdown": "Avec TantQue, la condition (i<=N) est testée AVANT toute exécution : si N=0, (1<=0) est fausse d'emblée, donc le corps ne s'exécute jamais, évitant un accès à numero[1] qui n'existe pas. Avec Répéter...Jusqu'à, le corps s'exécute TOUJOURS au moins une fois avant le premier test, ce qui provoquerait ici un accès à numero[1] même si le tableau est vide — un comportement incorrect qu'il faut anticiper (par exemple en traitant N=0 comme cas particulier avant la boucle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans quel type de situation la boucle Répéter...Jusqu'à est-elle intrinsèquement mieux adaptée que TantQue, indépendamment de toute traduction ?",
+          "solution_markdown": "Répéter...Jusqu'à est naturellement adaptée aux situations où le corps de la boucle DOIT s'exécuter au moins une fois avant même de pouvoir évaluer la condition d'arrêt — typiquement la saisie d'une donnée à valider : on ne peut tester sa validité qu'APRÈS l'avoir saisie au moins une fois (\"Répéter Lire(valeur) Jusqu'à (valeur valide)\"), un schéma que TantQue exprimerait plus maladroitement (nécessitant une saisie \"factice\" initiale ou une duplication de code)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "TantQue teste avant (peut ne jamais s'exécuter) ; Répéter...Jusqu'à teste après (s'exécute au moins une fois).",
+        "TantQue continue tant que sa condition est vraie ; Répéter continue tant que sa condition est fausse.",
+        "La conversion exige d'inverser la condition (NON logique), erreur la plus fréquente si oubliée.",
+        "Répéter...Jusqu'à convient naturellement à la validation de saisie, exécutée au moins une fois par nature."
+      ]
+    }
+  ]
+}

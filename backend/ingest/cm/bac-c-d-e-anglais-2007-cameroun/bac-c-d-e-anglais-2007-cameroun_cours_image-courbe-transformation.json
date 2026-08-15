@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-image-courbe-transformation-complexe-c",
+  "meta": {
+    "titre": "Équation de l'image d'une courbe par une transformation d'écriture complexe",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Nombres complexes et transformations",
+    "duree_estimee_min": 30,
+    "tags": ["image d'une courbe", "similitude", "changement de variable complexe", "ellipse"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qA2b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une ellipse est déformée par une rotation suivie d'un agrandissement : quelle est l'équation de la nouvelle courbe ? Il n'est pas nécessaire de repartir de zéro géométriquement - un simple changement de variable dans l'équation de départ, en exprimant l'ancienne affixe en fonction de la nouvelle, donne directement la réponse."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Écriture complexe d'une transformation (rotation, homothétie, similitude)", "Inversion d'une relation affine complexe", "Calcul du conjugué d'une expression complexe"]
+    },
+    {
+      "type": "regle",
+      "titre": "Exprimer l'ancienne variable en fonction de la nouvelle",
+      "contenu_markdown": "Soit une courbe $(\\Gamma)$ définie par une équation en $z$ (et éventuellement $\\bar z$), et une transformation d'écriture complexe $Z=g(z)$. Un point $M$ d'affixe $z$ décrit $(\\Gamma)$ ; son image $M'$ a pour affixe $Z=g(z)$.\n\nPour obtenir l'équation de la courbe image $(\\Gamma')$ décrite par $M'$ (donc par $Z$), on procède ainsi :\n\n1. Exprimer $z$ en fonction de $Z$ à partir de la relation $Z=g(z)$ (relation réciproque).\n2. Calculer $\\bar z$ en fonction de $Z$ et $\\bar Z$ si l'équation de $(\\Gamma)$ en dépend.\n3. Substituer ces expressions dans l'équation de $(\\Gamma)$ : l'équation obtenue, en $Z$ et $\\bar Z$ (ou en $X=\\mathrm{Re}(Z)$ et $Y=\\mathrm{Im}(Z)$), est celle de $(\\Gamma')$.",
+      "formule_principale": "Z=g(z) \\Rightarrow z=g^{-1}(Z),\\ \\text{puis substituer dans l'équation de } (\\Gamma)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$(G)$ a pour équation $5z\\bar z+(z+\\bar z+1)^2-1=0$. Soit $g(z)=2iz$. Déterminer l'équation de l'image $(G')$ de $(G)$ par la transformation associée à $g$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer z en fonction de Z=g(z)",
+          "justification": "On inverse la relation Z=2iz.",
+          "resultat_markdown": "$z=\\dfrac{Z}{2i}=\\dfrac{-iZ}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer z-barre",
+          "justification": "Conjugué de l'expression précédente.",
+          "resultat_markdown": "$\\bar z=\\dfrac{i\\bar Z}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer z*z-barre et z+z-barre en fonction de X, Y (Z=X+iY)",
+          "justification": "Ce sont les quantités qui apparaissent dans l'équation de départ.",
+          "resultat_markdown": "$z\\bar z=\\dfrac{X^2+Y^2}{4}$ ; $z+\\bar z=Y$"
+        },
+        {
+          "numero": 4,
+          "action": "Substituer dans l'équation de (G)",
+          "justification": "On obtient l'équation de (G') en X et Y.",
+          "resultat_markdown": "$5\\times\\dfrac{X^2+Y^2}{4}+(Y+1)^2-1=0 \\Rightarrow 5X^2+9Y^2+8Y=0$"
+        }
+      ],
+      "conclusion_markdown": "Après complétion du carré, on obtient $\\dfrac{X^2}{16/45}+\\dfrac{(Y+4/9)^2}{16/81}=1$ : $(G')$ est une ellipse de centre $(0;-4/9)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer Z à la place de z dans l'équation de (Γ) au lieu d'exprimer z en fonction de Z.",
+          "pourquoi_faux": "L'équation de (Γ) porte sur les points de la courbe de départ, dont l'affixe est z, pas Z. C'est en remplaçant z (et z-barre) par leur expression en fonction de Z que l'on obtient l'équation vérifiée par les points de la courbe image.",
+          "correction_markdown": "Repars toujours de la relation Z=g(z), inverse-la pour obtenir z en fonction de Z, puis substitue cette expression - jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Oublier de recalculer le conjugué à partir de l'expression de z en fonction de Z, et réutiliser par erreur l'ancien conjugué.",
+          "pourquoi_faux": "Le conjugué de z en fonction de Z n'est pas Z-barre lui-même en général : il faut le calculer explicitement à partir de l'expression trouvée pour z, en conjuguant chaque terme (y compris les coefficients complexes comme -i, dont le conjugué est i).",
+          "correction_markdown": "Calcule le conjugué terme à terme à partir de l'expression exacte de z en fonction de Z, en particulier les coefficients imaginaires purs (leur conjugué change de signe)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le cercle $(\\Gamma_1)$ a pour équation $z\\bar z=4$. Soit $g_1(z)=3z$. Déterminer l'équation de l'image de $(\\Gamma_1)$ par $g_1$.",
+          "solution_markdown": "$z=\\dfrac{Z}{3}$, $\\bar z=\\dfrac{\\bar Z}{3}$. $z\\bar z=\\dfrac{Z\\bar Z}{9}=4 \\Rightarrow Z\\bar Z=36$. L'image est le cercle d'équation $Z\\bar Z=36$, c'est-à-dire de centre $O$ et de rayon $6$ (cohérent : une homothétie de rapport $3$ multiplie le rayon $2$ du cercle de départ par $3$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La droite $(\\Delta)$ a pour équation $z+\\bar z=2$. Soit $g_2(z)=iz+1$. Déterminer l'équation de l'image de $(\\Delta)$ par $g_2$.",
+          "solution_markdown": "$Z=iz+1 \\Rightarrow z=\\dfrac{Z-1}{i}=-i(Z-1)$. Conjugué : $\\bar z=i(\\bar Z-1)$. $z+\\bar z=-i(Z-1)+i(\\bar Z-1)=i\\big[(\\bar Z-1)-(Z-1)\\big]=i(\\bar Z-Z)$. Avec $Z=X+iY$ : $\\bar Z-Z=-2iY$, donc $z+\\bar z=i\\times(-2iY)=2Y$. L'équation devient $2Y=2$, soit $Y=1$ : l'image est la droite horizontale d'équation $Y=1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En reprenant l'exemple résolu (image de l'ellipse (G) par g(z)=2iz), retrouver l'excentricité de (G') sans refaire tout le calcul, en utilisant uniquement le fait que g est une similitude directe et l'excentricité de (G) trouvée précédemment (e=2/3).",
+          "solution_markdown": "Une similitude directe conserve les angles et les rapports de longueurs : elle transforme donc toute ellipse en une ellipse de même excentricité. Comme $(G)$ a pour excentricité $\\dfrac23$ et que $g$ est une similitude directe (rotation d'angle $\\pi/2$ composée à une homothétie de rapport $2$, donc conserve les rapports de distances), l'image $(G')$ a nécessairement la même excentricité $\\dfrac23$, sans qu'il soit nécessaire de recalculer foyers et directrices depuis l'équation développée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver l'équation de l'image d'une courbe par une transformation Z=g(z), exprime toujours z (et son conjugué si nécessaire) en fonction de Z, puis substitue dans l'équation de départ - jamais l'inverse.",
+        "Calcule le conjugué terme à terme à partir de l'expression trouvée pour z, en faisant particulièrement attention aux coefficients imaginaires purs.",
+        "Reviens aux parties réelle et imaginaire (X et Y) de Z dès que possible pour retrouver une équation cartésienne exploitable.",
+        "Une similitude directe conserve l'excentricité d'une conique : ce résultat, une fois connu, permet souvent de vérifier rapidement un résultat obtenu par le calcul complet, ou même de l'anticiper.",
+        "Cette méthode de changement de variable se généralise à n'importe quelle transformation d'écriture complexe affine (translation, rotation, homothétie, similitude), pas seulement aux similitudes directes centrées à l'origine."
+      ]
+    }
+  ]
+}

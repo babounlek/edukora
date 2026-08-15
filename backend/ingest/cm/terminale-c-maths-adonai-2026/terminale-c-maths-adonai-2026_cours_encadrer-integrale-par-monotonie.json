@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-encadrer-une-integrale-sur-un-sous-intervalle-par-monotonie-terminale-c",
+  "meta": {"titre": "Encadrer une intégrale sur un sous-intervalle grâce à la monotonie de la fonction", "cours_id": "cours-encadrer-une-integrale-sur-un-sous-intervalle-par-monotonie-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Intégration — encadrement, sommes de Riemann", "tags": ["encadrement d'intégrale", "monotonie", "rectangles"], "duree_estimee_minutes": 10, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex1-6b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand une fonction est monotone sur un petit intervalle, ses valeurs aux deux bornes encadrent directement toutes ses valeurs intermédiaires — et donc aussi son intégrale sur cet intervalle, une fois multipliée par la longueur de l'intervalle."},
+    {"type": "prerequis", "items_markdown": ["Comparaison d'intégrales : si m≤h(x)≤M sur [a,b], alors m(b-a)≤∫h≤M(b-a)", "Monotonie déjà établie sur l'intervalle global"]},
+    {"type": "regle", "titre": "Encadrer par les valeurs aux bornes puis intégrer", "contenu_markdown": "Si $g$ est croissante sur $[\\alpha,\\beta]$, alors pour tout $x\\in[\\alpha,\\beta]$ : $g(\\alpha)\\le g(x)\\le g(\\beta)$. En intégrant les trois membres sur $[\\alpha,\\beta]$ (intervalle de longueur $\\beta-\\alpha$), on obtient $(\\beta-\\alpha)g(\\alpha)\\le\\int_\\alpha^\\beta g(x)dx\\le(\\beta-\\alpha)g(\\beta)$.", "formule_principale": "g croissante sur [α,β] ⟹ (β-α)g(α) ≤ ∫[α,β] g ≤ (β-α)g(β)", "variantes": ["g décroissante : inégalités inversées"]},
+    {"type": "exemple_resolu", "enonce_markdown": "g croissante sur [2,3] avec g(2)=5, g(3)=8. Encadrer ∫₂³ g(x)dx.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Encadrer g(x)", "justification": "g croissante entre les bornes", "resultat_markdown": "5≤g(x)≤8 pour x∈[2,3]"},
+      {"numero": 2, "action": "Intégrer sur [2,3] (longueur 1)", "justification": "multiplier par (3-2)=1", "resultat_markdown": "5×1≤∫g≤8×1"}
+    ], "conclusion_markdown": "5≤∫₂³g(x)dx≤8."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de multiplier par la longueur de l'intervalle après avoir encadré g(x), en laissant l'encadrement sous la forme g(α)≤∫g≤g(β) sans ce facteur", "pourquoi_faux": "L'intégrale d'une constante c sur un intervalle de longueur L vaut c×L, pas seulement c ; omettre ce facteur donne un encadrement structurellement faux dès que la longueur de l'intervalle diffère de 1.", "correction_markdown": "Toujours multiplier chaque borne de l'encadrement par la longueur exacte de l'intervalle d'intégration avant de conclure."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "h décroissante sur [0,0,5] avec h(0)=10, h(0,5)=6. Encadrer ∫₀^0,5 h(x)dx.", "solution_markdown": "h décroissante : h(0,5)≤h(x)≤h(0). Intégrer sur longueur 0,5 : 6×0,5≤∫h≤10×0,5, soit 3≤∫h≤5."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pourquoi cette méthode d'encadrement est-elle à la base de la construction des sommes de Riemann ?", "solution_markdown": "En appliquant cet encadrement à chaque sous-intervalle d'une subdivision régulière puis en sommant, on encadre l'intégrale globale par deux sommes de rectangles (l'une par défaut, l'autre par excès), qui convergent toutes deux vers l'intégrale quand le nombre de subdivisions tend vers l'infini."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La monotonie d'une fonction sur un intervalle permet d'encadrer directement son intégrale par les valeurs aux bornes multipliées par la longueur de l'intervalle.", "Le sens de l'encadrement dépend du sens de variation (croissante ou décroissante).", "Cette technique, répétée sur chaque sous-intervalle d'une subdivision, est le fondement de la construction rigoureuse des sommes de Riemann."]}
+  ]
+}

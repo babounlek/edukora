@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-deduire-un-encadrement-par-integration-d-un-encadrement-terminale-c",
+  "meta": {
+    "titre": "Déduire un encadrement par intégration d'un encadrement",
+    "cours_id": "cours-deduire-un-encadrement-par-integration-d-un-encadrement-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse — calcul intégral",
+    "tags": [
+      "intégration d'une inégalité",
+      "primitive",
+      "encadrement de ln"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex3-II.3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Intégrer les trois membres d'un encadrement, terme à terme, entre deux bornes fixes transforme un encadrement de dérivée en encadrement de primitive — sans jamais changer le sens des inégalités, à condition d'intégrer dans le bon sens."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir que l'intégration sur un intervalle orienté positivement conserve le sens d'une inégalité",
+        "Savoir calculer les primitives usuelles (polynômes, 1/(1+t))"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégrer un encadrement terme à terme",
+      "contenu_markdown": "Si $g(t)\\leq h(t)\\leq k(t)$ pour tout $t$ d'un intervalle, alors pour $x>0$, $\\displaystyle\\int_0^xg(t)\\,dt \\leq \\int_0^xh(t)\\,dt \\leq \\int_0^xk(t)\\,dt$ (l'intégration entre 0 et x>0, préserve le sens des inégalités). Cette technique permet de déduire un encadrement d'une primitive (souvent $\\ln(1+x)$) à partir d'un encadrement déjà établi sur la fonction dérivée correspondante.",
+      "formule_principale": "g≤h≤k sur [0,x] ⟹ ∫g ≤ ∫h ≤ ∫k entre 0 et x",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "1-t ≤ 1/(1+t) ≤ 1-t+t² pour t>0. En déduire un encadrement de ln(x+1) pour x>0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Intégrer les trois membres entre 0 et x",
+          "justification": "x>0, intégration préserve le sens des inégalités.",
+          "resultat_markdown": "∫₀ˣ(1-t)dt ≤ ∫₀ˣ1/(1+t)dt ≤ ∫₀ˣ(1-t+t²)dt"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer chaque primitive",
+          "justification": "Primitives usuelles.",
+          "resultat_markdown": "∫₀ˣ(1-t)dt=x-x²/2 ; ∫₀ˣ1/(1+t)dt=ln(1+x) ; ∫₀ˣ(1-t+t²)dt=x-x²/2+x³/3"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler l'encadrement final",
+          "justification": "Substitution des trois résultats.",
+          "resultat_markdown": "x-x²/2 ≤ ln(1+x) ≤ x-x²/2+x³/3"
+        }
+      ],
+      "conclusion_markdown": "x-x²/2 ≤ ln(x+1) ≤ x-x²/2+x³/3 pour tout x>0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Intégrer entre x et 0 au lieu de 0 et x, ou ne pas vérifier le sens de variation de la borne",
+          "pourquoi_faux": "Si x<0, intégrer de 0 à x inverserait le sens des inégalités (car on intégrerait 'à rebours') ; il faut donc toujours vérifier le signe de la borne x avant d'affirmer que l'intégration conserve le sens de l'encadrement.",
+          "correction_markdown": "Toujours vérifier explicitement que la borne d'intégration x est positive avant d'affirmer que l'intégration conserve le sens des inégalités."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer ∫₀ˣ t² dt.",
+          "solution_markdown": "x³/3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si 0≤f(t)≤t pour t∈[0,x] (x>0), que peut-on dire de ∫₀ˣf(t)dt ?",
+          "solution_markdown": "0 ≤ ∫₀ˣf(t)dt ≤ x²/2, en intégrant les deux membres de l'encadrement entre 0 et x."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi cette technique d'intégration d'un encadrement est-elle si utile pour établir des approximations polynomiales du logarithme ?",
+          "solution_markdown": "Elle permet de construire, par intégrations successives, des approximations polynomiales de plus en plus précises de ln(1+x) (ici à l'ordre 3), sans jamais avoir à calculer une dérivée n-ième complexe : chaque étape d'intégration ajoute un ordre supplémentaire au polynôme d'encadrement, une méthode élégante alternative au développement de Taylor."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Intégrer un encadrement terme à terme entre 0 et x (x>0) préserve le sens des inégalités.",
+        "Cette technique déduit un encadrement de primitive à partir d'un encadrement de dérivée.",
+        "Toujours vérifier le signe de la borne d'intégration avant d'affirmer la conservation du sens des inégalités."
+      ]
+    }
+  ]
+}

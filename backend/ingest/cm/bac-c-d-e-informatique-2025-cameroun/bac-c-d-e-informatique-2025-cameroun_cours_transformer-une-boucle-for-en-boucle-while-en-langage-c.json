@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-transformer-une-boucle-for-en-boucle-while-en-langage-c-terminale-c",
+  "meta": {
+    "titre": "Transformer une boucle for en boucle while en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Boucles en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "transformation de boucle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex5-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le C propose plusieurs façons d'écrire une même répétition : for et while. Savoir passer de l'une à l'autre, sans changer le comportement du programme, est une compétence classique du BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de la boucle for",
+        "Savoir identifier initialisation, condition et incrémentation dans un for"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Transformer un for en while",
+      "contenu_markdown": "Une boucle for(initialisation; condition; incrémentation) { bloc } se transforme en boucle while en plaçant l'initialisation avant la boucle, la condition dans le while(condition), et l'incrémentation à l'intérieur du bloc, en dernière instruction.",
+      "formule_principale": "init; while(condition) { bloc; incrementation; }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire for(i=0; i<n; i++){ printf(\"%d\", i+1); } en boucle While().",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Extraire l'initialisation et la placer avant le while",
+          "justification": "L'initialisation ne s'exécute qu'une fois, avant la première évaluation de la condition.",
+          "resultat_markdown": "i = 0;"
+        },
+        {
+          "numero": 2,
+          "action": "Placer la condition dans le while",
+          "justification": "La boucle continue tant que cette condition reste vraie, comme dans le for original.",
+          "resultat_markdown": "while (i < n) { ... }"
+        },
+        {
+          "numero": 3,
+          "action": "Placer le bloc d'instructions puis l'incrémentation, dans cet ordre, à l'intérieur du while",
+          "justification": "Le bloc s'exécute d'abord, puis l'incrémentation, exactement comme à la fin de chaque tour d'un for.",
+          "resultat_markdown": "printf(\"%d\", i+1); puis i++;"
+        }
+      ],
+      "conclusion_markdown": "La boucle while reproduit exactement le comportement du for original : même nombre de tours, même affichage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de placer l'incrémentation (i++) dans le bloc while",
+          "pourquoi_faux": "Sans incrémentation, i garde toujours la même valeur, la condition (i<n) reste indéfiniment vraie, et la boucle ne se termine jamais (boucle infinie).",
+          "correction_markdown": "Vérifie toujours que l'incrémentation apparaît bien à l'intérieur du bloc while, en général en dernière instruction."
+        },
+        {
+          "erreur_markdown": "Placer l'incrémentation avant le bloc d'instructions plutôt qu'après",
+          "pourquoi_faux": "Cela changerait l'ordre d'exécution par rapport au for original : dans un for, le bloc s'exécute avant l'incrémentation à chaque tour ; inverser l'ordre décale les valeurs affichées.",
+          "correction_markdown": "Respecte l'ordre : exécuter d'abord le bloc, incrémenter ensuite, pour reproduire fidèlement le comportement du for."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Transforme for(k=1; k<=5; k++){ printf(\"%d\", k); } en boucle while.",
+          "solution_markdown": "```c\nk = 1;\nwhile (k <= 5) {\n    printf(\"%d\", k);\n    k++;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Transforme for(i=10; i>0; i=i-2){ printf(\"%d \", i); } en boucle while.",
+          "solution_markdown": "```c\ni = 10;\nwhile (i > 0) {\n    printf(\"%d \", i);\n    i = i - 2;\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le for suivant a un corps vide : for(i=0; i<n; i++); (le point-virgule termine immédiatement l'instruction). Que fait ce for, et comment le traduire fidèlement en while ?",
+          "solution_markdown": "Ce for ne fait qu'incrémenter i de 0 à n sans exécuter aucune autre instruction à chaque tour (le corps est une instruction vide) : il ne sert typiquement qu'à faire progresser i jusqu'à n. En while, il se traduit par : ```c\ni = 0;\nwhile (i < n) {\n    i++;\n}\n```\nLe bloc while ne contient alors que l'incrémentation, puisqu'aucune autre instruction n'existait dans le corps du for d'origine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Transformer for(init; cond; incr) en while : init avant la boucle, cond dans le while, incr en dernier dans le bloc.",
+        "L'ordre à l'intérieur du bloc while doit être : instructions du corps, puis incrémentation.",
+        "Oublier l'incrémentation dans le while crée une boucle infinie.",
+        "Cette transformation est un classique des sujets de programmation du BAC informatique."
+      ]
+    }
+  ]
+}

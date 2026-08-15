@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-suppression-conditionnelle-delete-from-where-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de suppression conditionnelle (DELETE FROM... WHERE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL — Manipulation de données (LMD)",
+    "duree_estimee_min": 10,
+    "tags": [
+      "DELETE",
+      "SQL",
+      "suppression conditionnelle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Supprimer une seule ligne précise d'une table, sans toucher aux autres, exige une clause WHERE bien construite : une erreur ici peut effacer bien plus de données que prévu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une clause WHERE avec SELECT"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Supprimer des lignes avec DELETE FROM ... WHERE",
+      "contenu_markdown": "L'instruction `DELETE FROM table WHERE condition;` supprime de la table uniquement les lignes qui satisfont la condition indiquée. Omettre la clause WHERE supprime **toutes** les lignes de la table.",
+      "formule_principale": "DELETE FROM table WHERE condition;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête SQL supprimant une voiture précise (par son immatriculation) de la table VOITURE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et la condition de ciblage",
+          "justification": "Il faut cibler uniquement la ligne correspondant à l'immatriculation donnée.",
+          "resultat_markdown": "Table VOITURE, condition immatriculation = valeur donnée"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la requête complète",
+          "justification": "DELETE FROM avec WHERE limite la suppression à la ligne ciblée.",
+          "resultat_markdown": "`DELETE FROM VOITURE WHERE immatriculation = 'CE-123-AB';`"
+        }
+      ],
+      "conclusion_markdown": "DELETE FROM table WHERE condition; supprime uniquement les lignes correspondant à la condition — sans WHERE, tout est supprimé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire DELETE FROM VOITURE; sans clause WHERE en pensant ne supprimer qu'une ligne",
+          "pourquoi_faux": "Sans WHERE, l'instruction supprime absolument toutes les lignes de la table, ce qui est une erreur potentiellement catastrophique en environnement réel.",
+          "correction_markdown": "Vérifie systématiquement la présence d'une clause WHERE avant d'exécuter un DELETE, et teste d'abord la condition avec un SELECT pour voir quelles lignes seraient concernées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête supprimant le client dont le numClient vaut 12 de la table CLIENT.",
+          "solution_markdown": "`DELETE FROM CLIENT WHERE numClient = 12;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête supprimant toutes les voitures de marque 'Renault' de la table VOITURE.",
+          "solution_markdown": "`DELETE FROM VOITURE WHERE marque = 'Renault';` — ici plusieurs lignes peuvent être concernées si plusieurs voitures Renault existent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il recommandé de toujours exécuter le SELECT équivalent avant un DELETE en environnement de production ?",
+          "solution_markdown": "Exécuter `SELECT * FROM table WHERE condition;` avant le DELETE permet de visualiser précisément quelles lignes seraient supprimées, avant d'engager une opération irréversible ; cela évite les suppressions accidentelles massives dues à une condition mal formulée (par exemple une faute de frappe ou un opérateur de comparaison erroné), une bonne pratique standard en administration de bases de données."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DELETE FROM table WHERE condition; supprime uniquement les lignes correspondant à la condition.",
+        "L'absence de WHERE supprime toutes les lignes de la table — extrême prudence requise.",
+        "La condition WHERE fonctionne comme pour un SELECT.",
+        "Bonne pratique : tester la condition avec un SELECT avant d'exécuter le DELETE."
+      ]
+    }
+  ]
+}

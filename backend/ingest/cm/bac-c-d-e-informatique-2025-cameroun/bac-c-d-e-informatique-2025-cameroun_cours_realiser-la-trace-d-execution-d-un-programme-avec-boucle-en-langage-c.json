@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-realiser-la-trace-d-execution-d-un-programme-avec-boucle-en-langage-c-terminale-c",
+  "meta": {
+    "titre": "Réaliser la trace d'exécution d'un programme avec boucle en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Analyse de programmes en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "trace d'exécution",
+      "boucle",
+      "débogage"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex5-q3.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comprendre un programme sans l'exécuter sur un ordinateur, c'est le rôle de la trace d'exécution : simuler, à la main, ligne par ligne, ce que fait chaque instruction. C'est une compétence indispensable, aussi bien pour répondre à cette question du BAC que pour déboguer un vrai programme plus tard."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle for et son fonctionnement (initialisation, condition, incrémentation)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Faire la trace d'un programme avec boucle",
+      "contenu_markdown": "Faire la trace d'un programme consiste à simuler son exécution pas à pas : pour chaque tour de boucle, on note la valeur de la variable de contrôle, on vérifie si la condition est encore vraie, et on note ce que le programme affiche, jusqu'à ce que la condition devienne fausse.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la trace écrite de l'exécution du programme avec n=4.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Noter la valeur saisie",
+          "justification": "L'utilisateur saisit 4, donc n=4.",
+          "resultat_markdown": "n = 4"
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler chaque tour de boucle dans un tableau",
+          "justification": "Pour chaque valeur de i (0,1,2,3), vérifier i<4 puis noter l'affichage i+1.",
+          "resultat_markdown": "i=0→affiche 1 ; i=1→affiche 2 ; i=2→affiche 3 ; i=3→affiche 4 ; i=4→condition fausse, arrêt"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la sortie affichée à l'écran",
+          "justification": "Les affichages successifs de printf s'enchaînent sans séparateur (pas d'espace ni de retour à la ligne dans le format \"%d\").",
+          "resultat_markdown": "1234"
+        }
+      ],
+      "conclusion_markdown": "La trace montre que le programme affiche successivement 1, 2, 3, 4, soit \"1234\" à l'écran, pour n=4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrêter la boucle à i=4 en incluant ce tour dans le tableau de trace",
+          "pourquoi_faux": "La condition i<n (i<4) est fausse dès que i atteint 4 : ce tour n'est jamais exécuté, il ne doit donc pas apparaître comme un tour ayant produit un affichage.",
+          "correction_markdown": "Vérifie toujours la condition AVANT d'exécuter le corps de la boucle à chaque tour, y compris pour le dernier tour qui arrête la boucle."
+        },
+        {
+          "erreur_markdown": "Afficher \"0123\" au lieu de \"1234\", en oubliant le +1 dans printf(\"%d\", i+1)",
+          "pourquoi_faux": "Le programme affiche i+1, pas i directement : à i=0, il affiche 1, pas 0.",
+          "correction_markdown": "Relis attentivement l'expression affichée par printf, pas seulement la variable de boucle elle-même."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Fais la trace de for(i=0; i<3; i++){ printf(\"%d\", i); } (sans +1 cette fois).",
+          "solution_markdown": "i=0→affiche 0 ; i=1→affiche 1 ; i=2→affiche 2 ; i=3→condition fausse, arrêt. Affichage : 012"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Fais la trace de for(i=1; i<=5; i++){ printf(\"%d \", i*2); } (avec un espace après chaque nombre).",
+          "solution_markdown": "i=1→affiche 2 ; i=2→affiche 4 ; i=3→affiche 6 ; i=4→affiche 8 ; i=5→affiche 10 ; i=6→condition fausse, arrêt. Affichage : 2 4 6 8 10 "
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Fais la trace de for(i=0; i<n; i++){ printf(\"%d\", i+1); } pour n=0 (l'utilisateur saisit 0). Que se passe-t-il ?",
+          "solution_markdown": "Dès le premier test, i=0 et la condition i<n devient 0<0, qui est fausse : le corps de la boucle ne s'exécute jamais, aucun affichage n'a lieu. Le programme se termine sans rien afficher à l'écran, ce qui illustre qu'une boucle for peut s'exécuter zéro fois si la condition est fausse dès le départ."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La trace simule l'exécution pas à pas : valeur des variables et affichages à chaque tour.",
+        "Vérifie toujours la condition avant d'exécuter le corps de la boucle, à chaque tour.",
+        "Relis précisément l'expression affichée par printf, pas seulement la variable de boucle.",
+        "Une boucle for peut s'exécuter zéro fois si la condition est fausse dès le premier test."
+      ]
+    }
+  ]
+}

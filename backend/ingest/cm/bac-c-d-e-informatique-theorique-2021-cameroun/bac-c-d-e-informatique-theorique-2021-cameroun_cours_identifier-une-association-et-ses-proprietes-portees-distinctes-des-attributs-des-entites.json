@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-identifier-une-association-et-ses-proprietes-portees-distinctes-des-attributs-des-entites-terminale-c",
+  "meta": {
+    "titre": "Identifier une association et ses propriétés portées, distinctes des attributs des entités",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Modélisation de données (Merise)",
+    "duree_estimee_min": 10,
+    "tags": [
+      "association",
+      "MCD",
+      "propriété portée"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux entités liées par une action (louer, commander, inscrire) : voilà ce que représente une association en MCD. Certaines informations, comme une date de location, n'appartiennent à aucune des deux entités seules mais à leur mise en relation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion d'entité et d'attribut"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'association et ses propriétés portées",
+      "contenu_markdown": "Une **association** relie deux (ou plusieurs) entités par une action ou un lien du monde réel, généralement nommée par un verbe (ex. LOUER, COMMANDER, INSCRIRE). Une association peut elle-même porter des **propriétés** : des informations qui ne dépendent d'aucune des deux entités isolément, mais de leur combinaison (ex. la dateDebut et la dateRetour d'une location dépendent à la fois du client ET de la voiture concernés).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier l'association entre CLIENT et VOITURE, et ses propriétés portées.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le verbe reliant les deux entités",
+          "justification": "Le cahier des charges décrit une action de location entre client et voiture.",
+          "resultat_markdown": "LOUER"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les informations qui dépendent des deux entités à la fois",
+          "justification": "La date de début et la date de retour ne concernent ni le client seul, ni la voiture seule, mais l'événement de location.",
+          "resultat_markdown": "dateDebut, dateRetour portées par LOUER"
+        }
+      ],
+      "conclusion_markdown": "L'association nomme le lien entre deux entités (souvent un verbe) ; ses propriétés portées dépendent de la combinaison des deux entités liées, non de l'une isolément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer dateDebut comme attribut de l'entité CLIENT",
+          "pourquoi_faux": "Un même client peut louer plusieurs voitures à des dates différentes : la date ne caractérise donc pas le client en général, mais chaque location précise (donc l'association).",
+          "correction_markdown": "Teste toujours : \"cette information change-t-elle si la même entité participe à plusieurs occurrences de l'association ?\" Si oui, elle appartient à l'association."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer l'association probable entre les entités ETUDIANT et COURS.",
+          "solution_markdown": "INSCRIRE (ou S'INSCRIRE), reliant un étudiant à un cours."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'association INSCRIRE entre ETUDIANT et COURS, une note obtenue à l'examen du cours est-elle une propriété de ETUDIANT, de COURS, ou de l'association ?",
+          "solution_markdown": "De l'association INSCRIRE, car la note dépend à la fois de l'étudiant précis ET du cours précis concerné (un même étudiant a des notes différentes selon les cours)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une association peut-elle relier plus de deux entités ? Donner un exemple.",
+          "solution_markdown": "Oui, c'est ce qu'on appelle une association ternaire (ou n-aire). Exemple : une association LIVRER pourrait relier FOURNISSEUR, PRODUIT et ENTREPOT, avec une propriété portée quantiteLivree qui dépend simultanément des trois entités (quelle quantité de quel produit, livrée par quel fournisseur, vers quel entrepôt)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'association relie deux (ou plusieurs) entités, généralement nommée par un verbe.",
+        "Elle peut porter des propriétés propres, distinctes de celles des entités.",
+        "Une propriété portée dépend de la combinaison des entités liées, pas d'une seule.",
+        "Une association peut être ternaire (n-aire) et relier plus de deux entités."
+      ]
+    }
+  ]
+}

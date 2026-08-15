@@ -1,0 +1,152 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2022,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 2,
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 pts) — Exercice 1 : Systèmes d'information (3 pts)**\n\nPour la gestion de sa petite boutique, M. KAMGA fait appel à vous pour l'informatisation de son processus de vente des produits. Le principe de fonctionnement des ventes est le suivant :\n\n- Un client passe la commande concernant un certain nombre de produits ;\n- Le nom et le téléphone du client sont recueillis et un identifiant numClient lui est attribué ;\n- Sa commande est enregistrée avec un identifiant numCommande ainsi que la date ;\n- Les produits stockés dans l'entreprise sont enregistrés avec un code qui les identifie, un libellé et un prix unitaire ;\n- Une commande doit contenir des produits, et n'est passée que par un et un seul client ;\n- Un client doit avoir passé au moins une commande pour être enregistré ;\n- Certains produits peuvent n'avoir jamais été commandés ;\n- À l'achat d'un produit, la quantité commandée est enregistrée.",
+  "mots_cles_recherche": [
+    "entité",
+    "association",
+    "MCD",
+    "cardinalités",
+    "MLD",
+    "clé étrangère",
+    "table intermédiaire"
+  ],
+  "incertitudes": [
+    "Le cahier des charges ne précise pas explicitement les cardinalités numériques (0,n / 1,n) des règles de gestion sous forme de tableau ; elles sont déduites du texte narratif (\"une commande n'est passée que par un et un seul client\" ⇒ (1,1) côté CLIENT pour l'association PASSER ; \"un client doit avoir passé au moins une commande\" ⇒ (1,n) côté COMMANDE ; \"certains produits peuvent n'avoir jamais été commandés\" ⇒ (0,n) côté PRODUIT pour l'association CONCERNER)."
+  ],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "À partir de la description ci-dessus et de vos connaissances en Systèmes d'information, définir : Entité, association. (0,5×2 = 1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nL'entité regroupe des objets concrets ou abstraits de même nature ayant un intérêt pour le système. L'association relie deux (ou plusieurs) entités par une action ou un lien du monde réel.\n\n### Corrigé\n**Entité** : représentation d'un ensemble d'objets concrets ou abstraits de même nature, ayant un intérêt pour le système à modéliser (ex. CLIENT, PRODUIT).\n\n**Association** : représentation d'un lien, généralement nommé par un verbe, entre deux (ou plusieurs) entités (ex. l'association PASSER entre CLIENT et COMMANDE).",
+      "themes": [
+        "MCD",
+        "définitions Merise"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q1-0",
+          "competence": "Définir la notion d'entité (modélisation de données)",
+          "contenu_markdown": "L'entité regroupe des objets concrets ou abstraits de même nature ayant un intérêt pour le système. L'association relie deux (ou plusieurs) entités par une action ou un lien du monde réel.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-notion-d-entite-modelisation-de-donnees-terminale-c"
+        },
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q1-1",
+          "competence": "Définir la notion d'association (modélisation de données)",
+          "contenu_markdown": "L'entité regroupe des objets concrets ou abstraits de même nature ayant un intérêt pour le système. L'association relie deux (ou plusieurs) entités par une action ou un lien du monde réel.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-notion-d-association-modelisation-de-donnees-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "Produire le MCD décrivant ce fonctionnement en représentant :\n\na. Les entités et leurs propriétés. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nIl faut repérer, dans le texte, les objets du monde réel à modéliser (entités), puis lister pour chacun les informations élémentaires citées (attributs), en identifiant celui qui garantit l'unicité (identifiant).\n\n### Corrigé\nDeux entités se dégagent du cahier des charges :\n\n**CLIENT** : *numClient* (identifiant, souligné), nom, telephone.\n\n**PRODUIT** : *code* (identifiant, souligné), libelle, prixUnitaire.\n\n*(La commande, portant numCommande et date, est également une information du monde réel ; selon la convention Merise adoptée, elle peut être modélisée soit comme une entité COMMANDE reliée à CLIENT et PRODUIT par deux associations distinctes, soit — plus simplement, puisqu'une commande n'a qu'un seul client — comme les propriétés numCommande et date portées par l'association CONCERNER entre CLIENT et PRODUIT. La première solution, plus proche de la réalité de gestion (une commande regroupe plusieurs produits), est retenue dans la suite de ce corrigé : voir question 2.b.)*",
+      "themes": [
+        "MCD",
+        "entités",
+        "attributs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2a-0",
+          "competence": "Identifier les entités, attributs et identifiants d'un MCD à partir d'un cahier des charges",
+          "contenu_markdown": "Il faut repérer, dans le texte, les objets du monde réel à modéliser (entités), puis lister pour chacun les informations élémentaires citées (attributs), en identifiant celui qui garantit l'unicité (identifiant).",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-entites-attributs-et-identifiants-d-un-mcd-a-partir-d-un-cahier-des-charges-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "b. Les relations entre entités ainsi que les éventuelles propriétés. (0,25 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne association porte des propriétés lorsque celles-ci dépendent de la combinaison de plusieurs entités liées et non d'une seule entité isolément.\n\n### Corrigé\nDeux entités supplémentaires et deux associations structurent le fonctionnement :\n\n**COMMANDE** : *numCommande* (identifiant), date.\n\n- Association **PASSER** entre CLIENT et COMMANDE (une commande est passée par un client).\n- Association **CONCERNER** entre COMMANDE et PRODUIT, portant la propriété **quantite** (la quantité commandée dépend à la fois de la commande précise ET du produit précis concernés).",
+      "themes": [
+        "MCD",
+        "associations",
+        "propriétés portées"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2b-0",
+          "competence": "Identifier une association et ses propriétés portées, distinctes des attributs des entités",
+          "contenu_markdown": "Une association porte des propriétés lorsque celles-ci dépendent de la combinaison de plusieurs entités liées et non d'une seule entité isolément.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-une-association-et-ses-proprietes-portees-distinctes-des-attributs-des-entites-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.c",
+      "enonce_markdown": "c. Les cardinalités. (0,25 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa cardinalité (min,max) de chaque entité vis-à-vis d'une association se détermine strictement à partir des règles de gestion données dans le texte.\n\n### Corrigé\n- Association **PASSER** (CLIENT–COMMANDE) : CLIENT (1,n) — \"un client doit avoir passé au moins une commande\" ; COMMANDE (1,1) — \"une commande n'est passée que par un et un seul client\".\n- Association **CONCERNER** (COMMANDE–PRODUIT) : COMMANDE (1,n) — une commande contient au moins un produit ; PRODUIT (0,n) — \"certains produits peuvent n'avoir jamais été commandés\", et un produit peut apparaître dans plusieurs commandes.",
+      "themes": [
+        "MCD",
+        "cardinalités"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q2c-0",
+          "competence": "Déterminer les cardinalités d'une association sur un MCD à partir des règles de gestion",
+          "contenu_markdown": "La cardinalité (min,max) de chaque entité vis-à-vis d'une association se détermine strictement à partir des règles de gestion données dans le texte.",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-les-cardinalites-d-une-association-sur-un-mcd-a-partir-des-regles-de-gestion-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "En appliquant les règles de passage du MCD vers le MLD, déduire le MLD correspondant au fonctionnement de ce système. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne association (1,n)/(1,1) se traduit par la migration de la clé de l'entité côté \"1\" vers la table de l'entité côté \"n\". Une association (1,n)/(0,n) (plusieurs-à-plusieurs) nécessite une table intermédiaire portant les deux clés étrangères, ainsi que les propriétés propres à l'association.\n\n### Corrigé\n```\nCLIENT (numClient, nom, telephone)\nPRODUIT (code, libelle, prixUnitaire)\nCOMMANDE (numCommande, date, #numClient)\nCONCERNER (#numCommande, #code, quantite)\n```\nL'association PASSER, de type (1,1)/(1,n), se traduit par la migration de la clé numClient dans la table COMMANDE. L'association CONCERNER, de type (1,n)/(0,n), nécessite une table intermédiaire portant les deux clés étrangères numCommande et code, ainsi que la propriété quantite qu'elle porte.\n\n### Piège à éviter\nNe pas créer de table intermédiaire pour l'association PASSER (1,1)/(1,n) : une simple migration de clé étrangère suffit ici, contrairement à CONCERNER qui est plusieurs-à-plusieurs.",
+      "themes": [
+        "MLD",
+        "passage MCD-MLD",
+        "clé étrangère"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex2-q3-0",
+          "competence": "Passer du MCD au MLD pour une association de type N,N (avec table intermédiaire)",
+          "contenu_markdown": "Une association (1,n)/(1,1) se traduit par la migration de la clé de l'entité côté \"1\" vers la table de l'entité côté \"n\". Une association (1,n)/(0,n) (plusieurs-à-plusieurs) nécessite une table intermédiaire portant les deux clés étrangères, ainsi que les propriétés propres à l'association.",
+          "cours_genere": true,
+          "cours_id": "cours-passer-du-mcd-au-mld-pour-une-association-de-type-n-n-avec-table-intermediaire-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

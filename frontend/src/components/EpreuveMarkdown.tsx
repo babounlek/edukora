@@ -14,21 +14,24 @@ import { API_BASE_URL } from "@/api/client"
 
 const CALLOUT_SENTINEL = /^\[CALLOUT:(piege|conseil|rappel)\]$/
 const SOLUTION_TOGGLE_SENTINEL = /^\[SOLUTION_TOGGLE\]$/
-const COURS_LINK_SENTINEL = /^\[COURS_LINK:(\d+)\]$/
-const COURS_REF_HREF = /^COURS_REF:(\d+)$/
+// Le marqueur porte le slug du Cours depuis son introduction ; un id numérique reste
+// possible sur du contenu compilé avant cette bascule (voir VisibleQuerySet.par_slug_ou_id
+// côté backend, qui accepte encore les deux en lecture).
+const COURS_LINK_SENTINEL = /^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$/
+const COURS_REF_HREF = /^COURS_REF:([a-zA-Z0-9_-]+)$/
 
-/** Sépare les enfants "[COURS_LINK:id]" (un par cours associé) du reste du contenu. */
-function extractCoursLinks(items: ReactNode[]): { coursIds: number[]; rest: ReactNode[] } {
-  const coursIds: number[] = []
+/** Sépare les enfants "[COURS_LINK:slug]" (un par cours associé) du reste du contenu. */
+function extractCoursLinks(items: ReactNode[]): { coursSlugs: string[]; rest: ReactNode[] } {
+  const coursSlugs: string[] = []
   const rest = items.filter((item) => {
     const match = flattenReactText(item).trim().match(COURS_LINK_SENTINEL)
     if (match) {
-      coursIds.push(Number(match[1]))
+      coursSlugs.push(match[1])
       return false
     }
     return true
   })
-  return { coursIds, rest }
+  return { coursSlugs, rest }
 }
 
 interface EpreuveMarkdownProps {
@@ -45,7 +48,7 @@ interface EpreuveMarkdownProps {
 
 /** Rendu Markdown partagé entre la lecture en ligne complète et l'aperçu public d'une épreuve. */
 export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveMarkdownProps) {
-  const coursHref = (coursId: number) => (directCoursLinks ? `/cours/${coursId}/lire` : `/cours/${coursId}`)
+  const coursHref = (coursSlug: string) => (directCoursLinks ? `/cours/${coursSlug}/lire` : `/cours/${coursSlug}`)
 
   function MarkdownBlockquote({ children }: { children?: ReactNode }) {
     // react-markdown insère des noeuds texte "\n" entre les <p> enfants : on les
@@ -55,9 +58,9 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
 
     const calloutMarker = firstText.match(CALLOUT_SENTINEL)
     if (calloutMarker) {
-      const { coursIds, rest } = extractCoursLinks(items.slice(1))
+      const { coursSlugs, rest } = extractCoursLinks(items.slice(1))
       return (
-        <Callout variant={calloutMarker[1] as CalloutVariant} coursHrefs={coursIds.map(coursHref)}>
+        <Callout variant={calloutMarker[1] as CalloutVariant} coursHrefs={coursSlugs.map(coursHref)}>
           {rest}
         </Callout>
       )
@@ -71,9 +74,9 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
   }
 
   /**
-   * Marqueur "[COURS_LINK:id]" isolé (pas dans un Rappel de méthode) : filet de
+   * Marqueur "[COURS_LINK:slug]" isolé (pas dans un Rappel de méthode) : filet de
    * sécurité quand le rappel source a été reformulé et ne matche aucun bloc précis
-   * (voir Lesson._annotate_cours_links côté backend) - le lien reste visible.
+   * (voir _annotate_cours_links côté backend) - le lien reste visible.
    */
   function MarkdownParagraph({ children }: { children?: ReactNode }) {
     const match = flattenReactText(children).trim().match(COURS_LINK_SENTINEL)
@@ -81,7 +84,7 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
       return (
         <p className="not-prose my-3">
           <Link
-            to={coursHref(Number(match[1]))}
+            to={coursHref(match[1])}
             className="flex w-fit items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"
           >
             Voir le cours complet
@@ -94,8 +97,8 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
   }
 
   /**
-   * Lien "[label](COURS_REF:id)" - prérequis d'un Cours résolu vers un autre Cours
-   * existant (voir Cours._render_section côté backend). Pointe toujours vers la
+   * Lien "[label](COURS_REF:slug)" - prérequis d'un Cours résolu vers un autre Cours
+   * existant (voir _render_cours_section côté backend). Pointe toujours vers la
    * fiche du cours, jamais directement vers la lecture : contrairement au cours
    * généré depuis l'épreuve qu'on est en train de lire, l'accès à un cours
    * référencé en prérequis n'est pas garanti par le même abonnement.

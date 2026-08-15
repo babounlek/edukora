@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-calculer-l-aire-de-l-image-d-une-figure-par-une-transformation-affine-et-en-deduire-un-cout-terminale-c",
+  "meta": {
+    "titre": "Calculer l'aire de l'image d'une figure par une transformation affine et en déduire un coût",
+    "cours_id": "cours-calculer-l-aire-de-l-image-d-une-figure-par-une-transformation-affine-et-en-deduire-un-cout-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Applications — transformations et aires",
+    "tags": [
+      "rapport d'aire",
+      "déterminant",
+      "similitude complexe"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex4-Tache1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute transformation affine du plan multiplie les aires par un facteur fixe et calculable, qu'on la lise comme un déterminant matriciel ou comme le carré du rapport d'une similitude complexe : les deux points de vue mènent exactement au même nombre."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir calculer le déterminant d'une matrice 2×2",
+        "Savoir reconnaître une similitude directe dans une expression analytique (x,y)↦(ax-by+e,bx+ay+f)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rapport d'aire d'une transformation affine",
+      "contenu_markdown": "Une transformation affine $(x,y)\\mapsto(ax+by+e,cx+dy+f)$ multiplie toutes les aires par $|\\det M|$, où $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ est la partie linéaire. Si la transformation est une similitude directe d'écriture complexe $z'=\\alpha z+\\beta$, ce rapport vaut aussi $|\\alpha|^2$ (le carré du rapport de la similitude) — les deux méthodes doivent donner le même résultat.",
+      "formule_principale": "Aire(image) = |det M| × Aire(originale), avec M la partie linéaire de la transformation",
+      "variantes": [
+        "Pour une similitude z'=αz+β : rapport d'aire = |α|²"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "S: x'=2x-2y+2, y'=2x+2y+3. Calculer l'aire de l'image d'un carré de 4m de côté et en déduire le coût à 5000 FCFA/m².",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la partie linéaire M",
+          "justification": "Coefficients de x et y dans les formules de x' et y'.",
+          "resultat_markdown": "M = [[2,-2],[2,2]]"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer det(M)",
+          "justification": "det = ad-bc.",
+          "resultat_markdown": "det(M) = 2×2-(-2)×2 = 4+4 = 8"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'aire du carré initial et celle de l'image",
+          "justification": "Aire initiale × |det M|.",
+          "resultat_markdown": "Aire initiale = 4×4=16 m² ; Aire image = 8×16 = 128 m²"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le coût",
+          "justification": "Aire × prix unitaire.",
+          "resultat_markdown": "128 × 5000 = 640 000 FCFA"
+        }
+      ],
+      "conclusion_markdown": "L'image du carré a une aire de 128 m², pour un coût de 640 000 FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la valeur absolue autour du déterminant",
+          "pourquoi_faux": "Un déterminant négatif indiquerait une transformation qui inverse l'orientation (comme une réflexion), mais l'aire elle-même reste toujours positive : il faut donc toujours prendre la valeur absolue du déterminant pour obtenir le rapport d'aire.",
+          "correction_markdown": "Toujours utiliser |det M|, jamais det M directement, pour calculer un rapport d'aire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer det([[3,0],[0,3]]) et le rapport d'aire associé.",
+          "solution_markdown": "det=9, rapport d'aire=9 (homothétie de rapport 3, qui multiplie les aires par 3²=9)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une transformation a pour écriture complexe z'=(3+4i)z+1. Quel est son rapport d'aire ?",
+          "solution_markdown": "|3+4i|²=9+16=25."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment vérifier, sans calcul supplémentaire, que la transformation S de l'exemple résolu est bien une similitude directe (et pas une transformation affine quelconque) ?",
+          "solution_markdown": "Une similitude directe a une matrice de la forme [[a,-b],[b,a]] (coefficients diagonaux égaux, coefficients anti-diagonaux opposés) ; ici M=[[2,-2],[2,2]] correspond exactement à a=2,b=2, confirmant que S est bien une similitude directe de rapport √(a²+b²)=√8=2√2, dont le carré redonne bien 8, cohérent avec le déterminant calculé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rapport d'aire d'une transformation affine est |det M|, M étant sa partie linéaire.",
+        "Pour une similitude directe, ce rapport vaut aussi |α|² (carré du rapport de la similitude).",
+        "Toujours utiliser la valeur absolue du déterminant pour un rapport d'aire, jamais le déterminant signé."
+      ]
+    }
+  ]
+}

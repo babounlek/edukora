@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-transformer-une-boucle-pour-finpour-en-boucle-tantque-fintantque-en-algorithmique-terminale-c",
+  "meta": {
+    "titre": "Transformer une boucle 'pour...finpour' en boucle 'tantque...fintantque' en algorithmique",
+    "cours_id": "cours-transformer-une-boucle-pour-finpour-en-boucle-tantque-fintantque-en-algorithmique-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique — structures itératives",
+    "tags": [
+      "boucle TantQue",
+      "boucle Pour",
+      "traduction algorithmique"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La boucle \"Pour\" est pratique mais cache en réalité trois étapes distinctes (initialisation, test, incrémentation). Savoir les faire réapparaître explicitement avec \"TantQue\" est une compétence clé pour comprendre en profondeur le fonctionnement d'une boucle."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la structure itérative Pour...FinPour",
+        "Connaître la structure itérative TantQue...FinTantQue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Transformer une boucle Pour en boucle TantQue",
+      "contenu_markdown": "Toute boucle `Pour i allant de a à b Faire ... FinPour` est strictement équivalente à la séquence suivante : initialiser `i <- a` avant la boucle, tester `TantQue i <= b Faire` pour la condition de poursuite, exécuter le corps de la boucle, puis incrémenter explicitement `i <- i + 1` à la fin de chaque itération, avant `FinTantQue`.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire les lignes 6, 7, 8 et 9 de l'algorithme (boucle Pour de saisie) en utilisant la structure TantQue.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser la variable de boucle avant la structure TantQue",
+          "justification": "La boucle Pour initialise implicitement i à sa borne de départ ; il faut le faire explicitement avant le TantQue.",
+          "resultat_markdown": "`i <- 1` (avant la boucle)"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition de poursuite et le corps de la boucle",
+          "justification": "La condition reprend la borne supérieure de la boucle Pour d'origine.",
+          "resultat_markdown": "`TantQue (i <= 10) faire ... `"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter explicitement l'incrémentation en fin de boucle",
+          "justification": "Contrairement à Pour, TantQue n'incrémente jamais automatiquement.",
+          "resultat_markdown": "`i <- i + 1` juste avant `FinTantQue`"
+        }
+      ],
+      "conclusion_markdown": "Pour i allant de a à b Faire...FinPour équivaut à : i<-a ; TantQue i<=b Faire ... ; i<-i+1 ; FinTantQue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'initialiser i avant la boucle TantQue, ou oublier l'incrémentation à l'intérieur",
+          "pourquoi_faux": "Sans initialisation, i aurait une valeur indéterminée au premier test ; sans incrémentation, la condition i<=b resterait indéfiniment vraie, provoquant une boucle infinie.",
+          "correction_markdown": "Vérifie systématiquement la présence des trois éléments : initialisation avant la boucle, test dans le TantQue, incrémentation en toute fin de corps de boucle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire \"Pour i allant de 1 à 5 Faire Ecrire(i) FinPour\" en boucle TantQue.",
+          "solution_markdown": "```\ni <- 1\nTantQue (i <= 5) faire\n    Ecrire(i)\n    i <- i + 1\nFinTantQue\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire une boucle \"Pour i allant de 10 à 1 Faire\" (pas décroissant, non standard en Pour classique mais présent dans certains pseudocodes) en TantQue.",
+          "solution_markdown": "```\ni <- 10\nTantQue (i >= 1) faire\n    // instructions\n    i <- i - 1\nFinTantQue\n```\nL'incrémentation devient une décrémentation, et la condition s'inverse (i >= 1 au lieu de i <= b)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans quel cas une boucle TantQue est-elle préférable à une boucle Pour, indépendamment de toute traduction ?",
+          "solution_markdown": "La boucle TantQue est préférable lorsque le nombre d'itérations n'est pas connu à l'avance mais dépend d'une condition qui évolue pendant l'exécution (par exemple, répéter la saisie \"tant que la valeur saisie n'est pas valide\", ou parcourir une liste chaînée \"tant qu'il reste un élément suivant\") ; la boucle Pour, elle, est réservée aux cas où le nombre d'itérations est connu et fixé dès le départ (parcourir un tableau de taille connue, par exemple)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour i de a à b équivaut à : i<-a ; TantQue i<=b ; ... ; i<-i+1 ; FinTantQue.",
+        "TantQue exige une initialisation explicite avant la boucle et une incrémentation explicite dans le corps.",
+        "Oublier l'incrémentation dans une boucle TantQue provoque une boucle infinie.",
+        "TantQue convient mieux quand le nombre d'itérations dépend d'une condition évolutive, pas d'un compteur fixe."
+      ]
+    }
+  ]
+}

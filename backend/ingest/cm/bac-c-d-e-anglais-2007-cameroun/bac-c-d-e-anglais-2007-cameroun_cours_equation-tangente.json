@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-equation-tangente-courbe-c",
+  "meta": {
+    "titre": "Équation de la tangente à une courbe en un point",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Étude de fonctions - tangentes",
+    "duree_estimee_min": 15,
+    "tags": ["tangente", "nombre dérivé", "équation de droite"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qB5b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La tangente à une courbe en un point, c'est la droite qui \"colle\" le mieux à la courbe au voisinage immédiat de ce point. Sa pente est donnée par le nombre dérivé, et son équation se déduit ensuite de la même manière que pour n'importe quelle droite passant par un point avec une pente donnée."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Nombre dérivé en un point", "Équation d'une droite de pente connue passant par un point donné", "Résolution d'une équation simple pour trouver l'abscisse d'un point particulier"]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule de la tangente",
+      "contenu_markdown": "Si $\\ell$ est une fonction dérivable en $x_0$, la tangente à la courbe représentative de $\\ell$ au point d'abscisse $x_0$ a pour équation :\n$$y=\\ell'(x_0)(x-x_0)+\\ell(x_0)$$\n\nCette formule traduit simplement qu'il s'agit de la droite passant par le point $(x_0;\\ell(x_0))$ de la courbe, avec pour pente le nombre dérivé $\\ell'(x_0)$.",
+      "formule_principale": "y=\\ell'(x_0)(x-x_0)+\\ell(x_0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $\\ell(x)=\\dfrac{2\\ln x}{x(x+1)}$ et $A$ le point où la courbe $(C)$ de $\\ell$ coupe l'axe des abscisses. Écrire une équation de la tangente $(D)$ à $(C)$ en $A$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer l'abscisse de A",
+          "justification": "A est le point où ℓ(x)=0.",
+          "resultat_markdown": "$\\ell(x)=0 \\iff \\ln x=0 \\iff x=1$ (dénominateur non nul sur le domaine). Donc $A(1;0)$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer ℓ'(1)",
+          "justification": "On utilise l'expression de ℓ' déjà établie et h(1).",
+          "resultat_markdown": "$h(1)=\\dfrac23$, donc $\\ell'(1)=\\dfrac{2\\times3\\times\\frac23}{2^2}=\\dfrac{4}{4}=1$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de la tangente",
+          "justification": "Avec x0=1, ℓ(1)=0 et ℓ'(1)=1.",
+          "resultat_markdown": "$y=1\\times(x-1)+0=x-1$"
+        }
+      ],
+      "conclusion_markdown": "La tangente $(D)$ à $(C)$ en $A$ a pour équation $y=x-1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser ℓ'(x0) comme ordonnée à l'origine de la tangente au lieu de la pente.",
+          "pourquoi_faux": "$\\ell'(x_0)$ est la pente de la tangente, pas son ordonnée à l'origine ; confondre les deux donne une droite qui ne passe généralement pas par le point de tangence.",
+          "correction_markdown": "Vérifie systématiquement, après avoir écrit l'équation, que le point $(x_0;\\ell(x_0))$ la vérifie bien : c'est un test de cohérence immédiat."
+        },
+        {
+          "erreur_markdown": "Chercher l'abscisse du point de tangence en résolvant ℓ'(x)=0 au lieu de ℓ(x)=0 lorsque l'énoncé demande le point d'intersection avec l'axe des abscisses.",
+          "pourquoi_faux": "ℓ(x)=0 donne les points où la courbe coupe l'axe des abscisses (ordonnée nulle) ; ℓ'(x)=0 donne les points où la tangente est horizontale (extremums de la fonction) : ce sont deux conditions différentes.",
+          "correction_markdown": "Relis précisément ce que demande l'énoncé (intersection avec un axe, ou tangente horizontale) avant de choisir entre résoudre ℓ(x)=0 ou ℓ'(x)=0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=x^2-3x+2$. Écrire une équation de la tangente à la courbe de $f$ au point d'abscisse $x_0=2$.",
+          "solution_markdown": "$f(2)=4-6+2=0$. $f'(x)=2x-3$, donc $f'(2)=1$. Équation : $y=1\\times(x-2)+0=x-2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=\\ln x$. Écrire une équation de la tangente à la courbe de $g$ au point d'abscisse $x_0=e$ (nombre d'Euler), puis vérifier que cette tangente passe par l'origine.",
+          "solution_markdown": "$g(e)=\\ln e=1$. $g'(x)=\\dfrac1x$, donc $g'(e)=\\dfrac1e$. Équation : $y=\\dfrac1e(x-e)+1=\\dfrac{x}{e}-1+1=\\dfrac{x}{e}$. Pour $x=0$ : $y=0$, donc la tangente passe bien par l'origine du repère."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=\\dfrac{x^2}{x+1}$ sur $]-1;+\\infty[$. Déterminer les points de la courbe de $k$ où la tangente est parallèle à la droite d'équation $y=x$.",
+          "solution_markdown": "$k'(x)=\\dfrac{2x(x+1)-x^2\\times1}{(x+1)^2}=\\dfrac{2x^2+2x-x^2}{(x+1)^2}=\\dfrac{x^2+2x}{(x+1)^2}$. On cherche $x$ tel que $k'(x)=1$ (pente de la droite $y=x$) : $\\dfrac{x^2+2x}{(x+1)^2}=1 \\Rightarrow x^2+2x=(x+1)^2=x^2+2x+1 \\Rightarrow 0=1$, ce qui est impossible : il n'existe donc aucun point de la courbe où la tangente soit parallèle à la droite $y=x$ (la pente $1$ n'est jamais atteinte par $k'$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'équation de la tangente en x0 est toujours y = ℓ'(x0)(x-x0) + ℓ(x0) : retiens la structure (pente × écart en x, plus l'ordonnée du point) plutôt qu'une formule figée.",
+        "Calcule séparément et avec soin ℓ(x0) (l'ordonnée du point de tangence) et ℓ'(x0) (la pente), avant de les assembler dans l'équation finale.",
+        "Distingue toujours résoudre ℓ(x)=0 (intersection avec l'axe des abscisses) de résoudre ℓ'(x)=0 (tangente horizontale, extremum) : ce sont deux questions différentes qui se ressemblent par leur formulation.",
+        "Vérifie systématiquement que le point de tangence vérifie bien l'équation de la tangente trouvée - une erreur de signe se détecte immédiatement ainsi.",
+        "L'équation de la tangente en un point remarquable (souvent une intersection avec un axe) sert presque toujours ensuite à esquisser l'allure de la courbe, comme point d'ancrage du tracé."
+      ]
+    }
+  ]
+}

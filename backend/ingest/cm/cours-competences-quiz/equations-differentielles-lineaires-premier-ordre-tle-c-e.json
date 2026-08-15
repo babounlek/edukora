@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-equations-differentielles-lineaires-tle-c-e",
+  "meta": {
+    "titre": "Équations différentielles linéaires du premier ordre (Terminale C/E)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Résolution des équations différentielles linéaires du premier ordre à coefficients constants, avec ou sans second membre, et détermination d'une solution vérifiant une condition initiale",
+    "duree_estimee_min": 40,
+    "tags": ["Équations différentielles (Tle C/E)", "équation différentielle", "équation homogène", "solution particulière", "condition initiale", "premier ordre"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "25", "savoir_numero": "IX"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Mathématiques BAC D et TI 2017",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bacdtimaths2017cameroun-ex3-qC2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation différentielle ne donne jamais directement la fonction cherchée : elle donne une relation entre cette fonction et sa dérivée, comme un indice à décoder plutôt qu'une réponse toute faite. C'est exactement ce type de relation qui décrit la décharge d'un condensateur, le refroidissement d'un objet ou l'évolution d'une grandeur dont la vitesse de variation dépend de sa propre valeur. Tu sais déjà calculer une dérivée et résoudre une équation du premier degré ; ce cours assemble ces deux compétences pour résoudre entièrement une équation du type $ay'+by=g(x)$, avec ou sans second membre, puis pour isoler l'unique solution compatible avec une condition initiale donnée. Cette compétence revient presque à chaque BAC C et E, généralement en fin de sujet, sur 3 à 5 points bien identifiables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dériver une fonction exponentielle du type $x\\mapsto e^{kx}$, avec $k$ réel.",
+        "Savoir dériver une somme, un produit, et une fonction affine.",
+        "Résoudre une équation du premier degré à une inconnue, pour isoler une constante.",
+        "Savoir qu'une fonction dont la dérivée est nulle sur $\\mathbb R$ est constante sur $\\mathbb R$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre une équation différentielle linéaire du premier ordre à coefficients constants",
+      "contenu_markdown": "Une équation différentielle linéaire du premier ordre à coefficients constants relie une fonction dérivable $y$ et sa dérivée $y'$ par une relation de la forme $ay'+by=g(x)$, où $a$ et $b$ sont des réels fixés ($a\\neq0$) et $g$ une fonction donnée. Résoudre cette équation, c'est trouver toutes les fonctions $y$ dérivables sur $\\mathbb R$ qui la vérifient pour tout $x$.\n\nLorsque $g$ est la fonction nulle, l'équation $(E)$ : $ay'+by=0$ est dite homogène. C'est le cas le plus simple, et il sert de brique de base pour tous les autres.\n\n**Résolution de l'équation homogène.** Les solutions de $(E)$ : $ay'+by=0$ sont exactement les fonctions $y=Ce^{-\\frac{b}{a}x}$, avec $C\\in\\mathbb R$.\n\nVérifions d'abord que chacune de ces fonctions est bien solution. Pour $y(x)=Ce^{-\\frac{b}{a}x}$, on a $y'(x)=-\\dfrac{b}{a}Ce^{-\\frac{b}{a}x}$, donc $ay'(x)+by(x) = a\\times\\left(-\\dfrac{b}{a}\\right)Ce^{-\\frac{b}{a}x}+bCe^{-\\frac{b}{a}x} = -bCe^{-\\frac{b}{a}x}+bCe^{-\\frac{b}{a}x}=0$ : l'équation est vérifiée pour tout $x$ et pour tout $C$.\n\nMontrons maintenant qu'il n'y en a pas d'autres. Soit $g$ une fonction dérivable sur $\\mathbb R$ solution de $(E)$, c'est-à-dire $g'=-\\dfrac{b}{a}g$. Posons $h(x)=g(x)e^{\\frac{b}{a}x}$, une fonction dérivable comme produit de fonctions dérivables. Sa dérivée vaut $h'(x) = g'(x)e^{\\frac{b}{a}x}+g(x)\\times\\dfrac{b}{a}e^{\\frac{b}{a}x} = e^{\\frac{b}{a}x}\\left[g'(x)+\\dfrac{b}{a}g(x)\\right]$. Comme $g'(x)=-\\dfrac{b}{a}g(x)$, le crochet vaut $0$ pour tout $x$, donc $h'=0$ sur $\\mathbb R$. Une fonction dont la dérivée est nulle sur $\\mathbb R$ est constante sur $\\mathbb R$ : il existe donc un réel $C$ tel que $h(x)=C$ pour tout $x$, c'est-à-dire $g(x)e^{\\frac{b}{a}x}=C$, soit $g(x)=Ce^{-\\frac{b}{a}x}$. Toute solution de $(E)$ s'écrit bien sous cette forme.\n\n**Résolution avec second membre, à partir d'une solution particulière connue.** Pour $(E')$ : $ay'+by=g(x)$ avec $g$ non nulle, il n'existe pas de méthode universelle pour trouver directement une solution : on cherche une solution particulière $f$ dans une famille adaptée à $g$ (une fonction affine si $g$ est affine, un multiple de $e^{kx}$ si $g$ est de cette forme), souvent par identification des coefficients. Une fois $f$ trouvée, la structure complète de $(E')$ se déduit de celle de l'équation homogène $(E)$ associée.\n\nSoit $y$ une fonction dérivable sur $\\mathbb R$, et posons $z=y-f$. Alors $az'+bz = a(y'-f')+b(y-f) = (ay'+by)-(af'+bf)$. Comme $f$ est solution de $(E')$, $af'+bf=g(x)$, donc $az'+bz = (ay'+by)-g(x)$.\n\nSi $y$ est solution de $(E')$, $ay'+by=g(x)$, donc $az'+bz=0$ : $z$ est solution de $(E)$.\n\nSi $z=y-f$ est solution de $(E)$, $az'+bz=0$, donc $(ay'+by)-g(x)=0$, c'est-à-dire $ay'+by=g(x)$ : $y$ est solution de $(E')$.\n\nLes solutions de $(E')$ sont donc exactement les fonctions $y=f+z$, où $z$ décrit l'ensemble des solutions de $(E)$ : la solution générale de $(E')$ s'obtient en ajoutant la solution particulière $f$ à la solution générale de l'équation homogène associée.\n\n**Détermination d'une solution vérifiant une condition initiale.** Une fois la solution générale de $(E')$ écrite sous la forme $y(x)=f(x)+Ce^{-\\frac{b}{a}x}$, la constante $C$ n'est pas encore fixée : elle décrit une famille infinie de solutions. Une condition du type $y(x_0)=y_0$ permet de sélectionner, parmi toutes ces solutions, l'unique fonction qui convient : on substitue $x_0$ dans l'expression générale, on remplace $y(x_0)$ par $y_0$, et on résout l'équation obtenue en $C$.",
+      "formule_principale": "ay' + by = 0 \\iff y = Ce^{-\\frac{b}{a}x},\\ C\\in\\mathbb R",
+      "variantes": [
+        {
+          "nom": "Vérifier qu'une fonction proposée est solution",
+          "quand_utiliser": "Quand l'énoncé donne explicitement une fonction et demande de montrer qu'elle vérifie une équation différentielle, avant de s'en servir comme solution particulière.",
+          "contenu_markdown": "On calcule la dérivée de la fonction proposée, on substitue $y$ et $y'$ dans le membre de gauche de l'équation, puis on développe et on réduit jusqu'à obtenir exactement le second membre annoncé. Aucune étape de ce calcul ne doit être sautée : une simplification manquante rend la vérification invisible pour le correcteur, même si le résultat final est juste."
+        },
+        {
+          "nom": "Reconnaître le type de solution particulière à chercher",
+          "quand_utiliser": "Quand l'énoncé ne donne pas la solution particulière $f$ toute faite et demande de la déterminer soi-même.",
+          "contenu_markdown": "Si $g(x)$ est un polynôme de degré $n$, on cherche $f$ sous forme d'un polynôme de même degré (souvent affine si $g$ l'est). Si $g(x)$ est un multiple de $e^{kx}$ avec $k\\neq-\\frac{b}{a}$, on cherche $f$ sous la forme $\\lambda e^{kx}$. Dans les deux cas, on substitue la forme choisie dans l'équation $(E')$ et on identifie les coefficients terme à terme pour déterminer les paramètres inconnus."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'équation différentielle $(E')$ : $y'-2y=4x+3$, où $y$ désigne une fonction dérivable sur $\\mathbb R$.\n\n1. Vérifier que la fonction $f$ définie sur $\\mathbb R$ par $f(x)=-2x-\\dfrac{5}{2}$ est solution de $(E')$.\n2. Résoudre l'équation différentielle homogène associée $(E)$ : $y'-2y=0$.\n3. En déduire la solution générale de $(E')$.\n4. Déterminer la fonction $g$, solution de $(E')$, telle que $g(0)=\\dfrac12$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $f'$ et substituer dans $(E')$",
+          "justification": "Vérifier qu'une fonction est solution consiste à calculer sa dérivée puis à substituer $y$ et $y'$ dans l'équation, pour retrouver le second membre annoncé.",
+          "resultat_markdown": "$f(x)=-2x-\\dfrac52$, donc $f'(x)=-2$.\n\n$f'(x)-2f(x) = -2-2\\left(-2x-\\dfrac52\\right) = -2+4x+5 = 4x+3$\n\nOn retrouve exactement le second membre de $(E')$ : $f$ est bien solution de $(E')$."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier $a$ et $b$ puis appliquer la formule de résolution de l'équation homogène",
+          "justification": "$(E)$ s'écrit $ay'+by=0$ avec $a=1$ et $b=-2$ ; d'après la règle démontrée plus haut, ses solutions sont $y=Ce^{-\\frac{b}{a}x}$.",
+          "resultat_markdown": "$-\\dfrac{b}{a} = -\\dfrac{-2}{1} = 2$\n\nLes solutions de $(E)$ sur $\\mathbb R$ sont les fonctions $y(x)=Ce^{2x}$, $C\\in\\mathbb R$."
+        },
+        {
+          "numero": 3,
+          "action": "Combiner la solution particulière et la solution générale de l'équation homogène",
+          "justification": "D'après la règle démontrée plus haut, la solution générale de $(E')$ s'obtient en ajoutant la solution particulière $f$ trouvée à l'étape 1 à la solution générale de $(E)$ trouvée à l'étape 2.",
+          "resultat_markdown": "Les solutions de $(E')$ sur $\\mathbb R$ sont les fonctions :\n\n$$y(x) = f(x)+Ce^{2x} = -2x-\\dfrac52+Ce^{2x},\\quad C\\in\\mathbb R$$"
+        },
+        {
+          "numero": 4,
+          "action": "Substituer la condition initiale $g(0)=\\dfrac12$ dans la solution générale",
+          "justification": "La constante $C$ se détermine en remplaçant $x$ par $0$ dans l'expression générale et en résolvant l'équation obtenue.",
+          "resultat_markdown": "$g(0) = -2\\times0-\\dfrac52+Ce^{0} = -\\dfrac52+C$\n\n$-\\dfrac52+C = \\dfrac12 \\iff C = \\dfrac12+\\dfrac52 = 3$\n\nLa fonction cherchée est $g(x) = -2x-\\dfrac52+3e^{2x}$."
+        }
+      ],
+      "conclusion_markdown": "La fonction $g(x)=-2x-\\dfrac52+3e^{2x}$ est l'unique fonction dérivable sur $\\mathbb R$ qui vérifie à la fois l'équation $(E')$ et la condition $g(0)=\\dfrac12$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Résoudre $(E)$ : $y'-2y=0$ en écrivant directement $y=Ce^{-2x}$, en recopiant le coefficient $-2$ de l'équation sans passer par la formule $y=Ce^{-\\frac{b}{a}x}$.",
+          "pourquoi_faux": "Ici $a=1$ et $b=-2$, donc $-\\dfrac{b}{a}=-\\dfrac{-2}{1}=2$, pas $-2$. L'erreur vient d'une confusion entre le coefficient $b$ affiché dans l'équation et l'exposant réel de la solution, qui vaut $-b/a$ et non $b$ : le signe s'inverse dès que $b$ est déjà négatif.",
+          "correction_markdown": "Identifie systématiquement $a$ et $b$ séparément avant tout calcul, puis calcule explicitement $-\\dfrac{b}{a}$ comme une fraction à part entière plutôt que de recopier un coefficient à l'œil."
+        },
+        {
+          "erreur_markdown": "Après avoir trouvé une solution particulière $f$ de $(E')$, répondre que $f$ est la solution de $(E')$, sans ajouter le terme $Ce^{-\\frac{b}{a}x}$ issu de l'équation homogène.",
+          "pourquoi_faux": "$(E')$ admet une infinité de solutions, pas une seule : toute fonction $f+Ce^{-\\frac{b}{a}x}$ convient, quel que soit $C\\in\\mathbb R$. Répondre $f$ seul revient à n'en donner qu'une, celle qui correspond à $C=0$, une réponse incomplète qui perd la totalité des points liés à la résolution de $(E')$.",
+          "correction_markdown": "Une solution particulière n'est jamais la réponse finale à « résoudre $(E')$ » : elle n'est qu'un ingrédient. Termine toujours par écrire explicitement la solution générale $f(x)+Ce^{-\\frac{b}{a}x}$, avec $C\\in\\mathbb R$ précisé."
+        },
+        {
+          "erreur_markdown": "Pour déterminer la solution particulière vérifiant $g(x_0)=y_0$, chercher la constante $C$ en même temps que les coefficients de la solution particulière $f$, dans le même calcul.",
+          "pourquoi_faux": "Les coefficients de $f$ (par exemple les $\\alpha$ et $\\beta$ d'une forme affine $f(x)=\\alpha x+\\beta$) se déterminent en identifiant $(E')$ elle-même, indépendamment de toute condition initiale : ils sont fixés une fois pour toutes par l'équation. La constante $C$, elle, n'apparaît qu'après avoir formé la solution générale $f+Ce^{-\\frac{b}{a}x}$ ; mélanger les deux calculs conduit à un système sans solution ou à une valeur de $C$ fausse.",
+          "correction_markdown": "Respecte toujours l'ordre des trois étapes : d'abord la solution particulière par identification dans $(E')$, ensuite la solution homogène, enfin la solution générale de $(E')$ - et seulement à ce moment-là, substitue la condition initiale pour isoler $C$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb R$ l'équation différentielle $(E)$ : $3y'+6y=0$.",
+          "solution_markdown": "On identifie $a=3$ et $b=6$ dans l'équation $ay'+by=0$.\n\n$-\\dfrac{b}{a} = -\\dfrac{6}{3} = -2$\n\nD'après la règle du cours, les solutions de $(E)$ sur $\\mathbb R$ sont les fonctions :\n\n$$y(x) = Ce^{-2x},\\quad C\\in\\mathbb R$$\n\n**Vérification.** Pour $y(x)=Ce^{-2x}$, $y'(x)=-2Ce^{-2x}$, donc $3y'(x)+6y(x) = 3\\times(-2Ce^{-2x})+6Ce^{-2x} = -6Ce^{-2x}+6Ce^{-2x}=0$ : l'équation est bien vérifiée pour tout $C$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer la solution générale de $(E')$ : $2y'-y=6x-1$, sachant qu'elle admet une solution particulière affine.",
+          "solution_markdown": "**Recherche de la solution particulière.** On cherche $f$ sous la forme $f(x)=\\alpha x+\\beta$, avec $\\alpha,\\beta$ réels à déterminer. Alors $f'(x)=\\alpha$, et :\n\n$2f'(x)-f(x) = 2\\alpha-(\\alpha x+\\beta) = -\\alpha x+(2\\alpha-\\beta)$\n\nOn identifie ce résultat au second membre $6x-1$, terme à terme.\n\nCoefficient de $x$ : $-\\alpha = 6$, donc $\\alpha=-6$.\n\nTerme constant : $2\\alpha-\\beta=-1$. En remplaçant $\\alpha$ par $-6$ : $2\\times(-6)-\\beta=-1 \\iff -12-\\beta=-1 \\iff \\beta=-11$.\n\nLa fonction $f(x)=-6x-11$ est donc une solution particulière de $(E')$ (on peut le vérifier : $f'(x)=-6$, donc $2f'(x)-f(x) = -12-(-6x-11) = -12+6x+11 = 6x-1$, qui est bien le second membre).\n\n**Résolution de l'équation homogène associée $(E)$ : $2y'-y=0$.** On identifie $a=2$ et $b=-1$ :\n\n$-\\dfrac{b}{a} = -\\dfrac{-1}{2} = \\dfrac12$\n\nLes solutions de $(E)$ sur $\\mathbb R$ sont les fonctions $y(x)=Ce^{x/2}$, $C\\in\\mathbb R$.\n\n**Solution générale de $(E')$.** D'après la règle du cours, elle s'obtient en ajoutant $f$ à la solution générale de $(E)$ :\n\n$$y(x) = -6x-11+Ce^{x/2},\\quad C\\in\\mathbb R$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère l'équation différentielle $(E)$ : $y'+2y=8$, où $y$ désigne une fonction dérivable sur $\\mathbb R$. Pour toute solution $y$ de $(E)$, on pose $z(x)=y(x)-4$.\n\n1. Montrer que $y$ est solution de $(E)$ si et seulement si $z$ est solution de l'équation homogène $(E_0)$ : $z'+2z=0$.\n2. Résoudre $(E_0)$ sur $\\mathbb R$.\n3. En déduire la solution générale de $(E)$.\n4. Déterminer la fonction $h$, solution de $(E)$, telle que $h(0)=10$.",
+          "solution_markdown": "**1. Équivalence entre $(E)$ et $(E_0)$.** Comme $z(x)=y(x)-4$, on a $z'(x)=y'(x)$ (la dérivée d'une constante est nulle). Donc :\n\n$z'(x)+2z(x) = y'(x)+2\\big(y(x)-4\\big) = y'(x)+2y(x)-8$\n\nSi $y$ est solution de $(E)$, $y'(x)+2y(x)=8$ pour tout $x$, donc $z'(x)+2z(x) = 8-8=0$ : $z$ est solution de $(E_0)$.\n\nRéciproquement, si $z$ est solution de $(E_0)$, $z'(x)+2z(x)=0$ pour tout $x$. Avec l'égalité $z'(x)+2z(x) = y'(x)+2y(x)-8$ établie ci-dessus, on obtient $y'(x)+2y(x)-8=0$, c'est-à-dire $y'(x)+2y(x)=8$ : $y$ est solution de $(E)$.\n\nLes deux implications sont établies : $y$ est solution de $(E)$ si et seulement si $z$ est solution de $(E_0)$.\n\n**2. Résolution de $(E_0)$.** $(E_0)$ : $z'+2z=0$ s'écrit $az'+bz=0$ avec $a=1$ et $b=2$ :\n\n$-\\dfrac{b}{a} = -\\dfrac21 = -2$\n\nLes solutions de $(E_0)$ sur $\\mathbb R$ sont les fonctions $z(x)=Ce^{-2x}$, $C\\in\\mathbb R$.\n\n**3. Solution générale de $(E)$.** D'après la question 1, $y$ est solution de $(E)$ si et seulement si $y-4$ est solution de $(E_0)$, c'est-à-dire $y(x)-4=Ce^{-2x}$. Les solutions de $(E)$ sur $\\mathbb R$ sont donc les fonctions :\n\n$$y(x) = 4+Ce^{-2x},\\quad C\\in\\mathbb R$$\n\n**4. Détermination de $h$.** On impose $h(0)=10$ :\n\n$h(0) = 4+Ce^{0} = 4+C$\n\n$4+C=10 \\iff C=6$\n\nLa fonction cherchée est $h(x) = 4+6e^{-2x}$.\n\n**Vérification.** $h'(x)=-12e^{-2x}$, donc $h'(x)+2h(x) = -12e^{-2x}+2\\big(4+6e^{-2x}\\big) = -12e^{-2x}+8+12e^{-2x} = 8$ : $(E)$ est bien vérifiée. De plus, $h(0)=4+6=10$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Résoudre $ay'+by=0$ (avec $a\\neq0$) donne toujours $y=Ce^{-\\frac{b}{a}x}$, $C\\in\\mathbb R$ - calcule cette fraction $-b/a$ explicitement, ne la devine jamais à l'œil.",
+        "Face à une équation avec second membre $ay'+by=g(x)$, la première étape consiste presque toujours à trouver une solution particulière $f$ dans la même famille que $g$ (affine, exponentielle...), généralement par identification des coefficients.",
+        "La solution générale de $(E')$ vaut toujours $f$ plus la solution générale de l'équation homogène associée, jamais $f$ seule : oublier ce second terme fait perdre une infinité de solutions valables.",
+        "Une condition initiale $y(x_0)=y_0$ ne sert qu'à une seule chose : calculer la valeur numérique de la constante $C$, une fois la solution générale déjà écrite en entier.",
+        "Poser une fonction auxiliaire $z=y-k$ permet souvent de ramener une équation à second membre constant à une équation homogène déjà connue - une technique à garder en réserve dès que le second membre semble trop simple pour justifier une recherche par identification.",
+        "Au BAC C et E, ce savoir ferme presque toujours un exercice d'analyse : il évalue autant la rigueur de la rédaction (citer la règle, démontrer l'équivalence) que la justesse du calcul."
+      ]
+    }
+  ]
+}

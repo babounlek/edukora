@@ -1,0 +1,110 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ordre-graphe-degre-sommets",
+  "meta": {
+    "titre": "Ordre d'un graphe et degré de ses sommets",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Théorie des graphes",
+    "duree_estimee_min": 20,
+    "tags": [
+      "graphe pondéré",
+      "exploitation de graphe"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-ti-1-2026-s1-ex5-qtache-1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de chercher un trajet optimal dans un réseau, il faut savoir décrire ce réseau : combien de points le composent (l'ordre), et combien de liaisons directes part de chacun (le degré). Deux notions simples, mais la base indispensable de toute la recherche opérationnelle au programme de Terminale TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire de base d'un graphe : sommet, arête, graphe pondéré",
+        "Lecture d'un tableau de distances ou d'une liste d'adjacence"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ordre et degré d'un graphe",
+      "contenu_markdown": "L'**ordre** d'un graphe est son nombre de sommets. Le **degré** d'un sommet $S$, noté $d(S)$, est le nombre d'arêtes qui lui sont incidentes, c'est-à-dire le nombre de sommets directement reliés à $S$ par une arête. Propriété fondamentale : la somme des degrés de tous les sommets d'un graphe est toujours paire, et égale au double du nombre d'arêtes (chaque arête est comptée deux fois, une fois pour chacune de ses extrémités).",
+      "formule_principale": "\\sum_{S} d(S) = 2\\times(\\text{nombre d'arêtes})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un club sportif compte 5 sections notées P, Q, R, S, T, reliées par des couloirs de communication directs donnés par le tableau suivant (case cochée = couloir direct) :\n\n| | P | Q | R | S | T |\n|---|---|---|---|---|---|\n| P | - | X | X | - | - |\n| Q | X | - | X | X | - |\n| R | X | X | - | - | X |\n| S | - | X | - | - | X |\n| T | - | - | X | X | - |\n\nDéterminer l'ordre du graphe et le degré de chaque sommet.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les sommets",
+          "justification": "L'ordre est le nombre total de sommets du graphe.",
+          "resultat_markdown": "5 sommets (P, Q, R, S, T) : l'ordre du graphe est 5."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les liaisons de chaque sommet",
+          "justification": "Pour chaque ligne du tableau, on compte le nombre de croix.",
+          "resultat_markdown": "$d(P)=2$ (Q, R) ; $d(Q)=3$ (P, R, S) ; $d(R)=3$ (P, Q, T) ; $d(S)=2$ (Q, T) ; $d(T)=2$ (R, S)"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la somme des degrés",
+          "justification": "La somme doit être paire et égale au double du nombre d'arêtes.",
+          "resultat_markdown": "$2+3+3+2+2=12=2\\times6$ : cohérent avec les 6 couloirs du tableau."
+        }
+      ],
+      "conclusion_markdown": "Le graphe est d'ordre 5, avec les degrés $d(P)=2$, $d(Q)=3$, $d(R)=3$, $d(S)=2$, $d(T)=2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter une liaison deux fois en lisant à la fois la ligne et la colonne d'un même sommet dans un tableau symétrique.",
+          "pourquoi_faux": "Le tableau étant symétrique (une arête entre A et B se lit aussi bien sur la ligne A que sur la ligne B), il faut se limiter à une seule ligne par sommet pour calculer son degré.",
+          "correction_markdown": "Compter uniquement les cases cochées de la ligne du sommet étudié (ou uniquement sa colonne, jamais les deux)."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier que la somme des degrés est paire.",
+          "pourquoi_faux": "Une somme impaire signale à coup sûr une erreur de comptage, puisque chaque arête contribue exactement 2 au total.",
+          "correction_markdown": "Systématiquement additionner tous les degrés trouvés et vérifier la parité avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un graphe a pour sommets A, B, C reliés par les arêtes AB et BC uniquement. Donner son ordre et le degré de chaque sommet.",
+          "solution_markdown": "Ordre 3. $d(A)=1$, $d(B)=2$, $d(C)=1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un graphe d'ordre 4 (sommets A, B, C, D) a pour arêtes AB, AC, AD, BC. Donner le degré de chaque sommet et vérifier la somme des degrés.",
+          "solution_markdown": "$d(A)=3$ (B,C,D), $d(B)=2$ (A,C), $d(C)=2$ (A,B), $d(D)=1$ (A). Somme $=3+2+2+1=8=2\\times4$, cohérent avec les 4 arêtes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un graphe d'ordre 6 a toutes les sommes de degrés égales à 4 sauf un sommet isolé (degré 0). Combien ce graphe compte-t-il d'arêtes ?",
+          "solution_markdown": "Somme des degrés $=5\\times4+0=20$, donc nombre d'arêtes $=20/2=10$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'ordre d'un graphe est simplement son nombre de sommets.",
+        "Le degré d'un sommet compte ses liaisons directes, jamais les liaisons indirectes (via un autre sommet).",
+        "La somme des degrés est toujours paire, égale au double du nombre d'arêtes : un contrôle systématique.",
+        "Ces deux notions sont le point de départ obligé avant toute recherche de chemin optimal dans un graphe pondéré."
+      ]
+    }
+  ]
+}

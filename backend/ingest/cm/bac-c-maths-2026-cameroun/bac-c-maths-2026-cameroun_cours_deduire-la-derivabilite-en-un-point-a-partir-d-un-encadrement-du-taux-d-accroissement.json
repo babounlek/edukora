@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-deduire-la-derivabilite-en-un-point-a-partir-d-un-encadrement-du-taux-d-accroissement-terminale-c",
+  "meta": {
+    "titre": "Déduire la dérivabilité en un point à partir d'un encadrement du taux d'accroissement",
+    "cours_id": "cours-deduire-la-derivabilite-en-un-point-a-partir-d-un-encadrement-du-taux-d-accroissement-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse — dérivabilité",
+    "tags": [
+      "théorème des gendarmes",
+      "taux d'accroissement",
+      "tangente"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex3-II.4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le théorème des gendarmes permet de prouver la dérivabilité en un point sans jamais calculer explicitement la dérivée : il suffit d'encadrer le taux d'accroissement par deux expressions qui convergent vers la même limite."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la définition du nombre dérivé comme limite du taux d'accroissement",
+        "Connaître le théorème des gendarmes (comparaison de limites)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Prouver la dérivabilité par encadrement du taux d'accroissement",
+      "contenu_markdown": "Pour montrer que $f$ est dérivable en $x_0$ à partir d'un encadrement de $f(x)$, on forme le taux d'accroissement $\\dfrac{f(x)-f(x_0)}{x-x_0}$ en soustrayant $f(x_0)$ à l'encadrement puis en divisant par $x-x_0$ (attention au sens si négatif), et on fait tendre $x$ vers $x_0$ : si les deux bornes de l'encadrement tendent vers la même limite $\\ell$, le théorème des gendarmes donne $f'(x_0)=\\ell$.",
+      "formule_principale": "Encadrement de f(x)-f(x0), divisé par x-x0, deux bornes → ℓ ⟹ f'(x0)=ℓ (théorème des gendarmes)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "x-x²/2 ≤ ln(x+1) ≤ x-x²/2+x³/3 pour x>0, avec f(x)=ln(x+1)/x et f(0)=1. Déduire la dérivabilité de f en 0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Diviser l'encadrement par x>0",
+          "justification": "Pour faire apparaître f(x)=ln(x+1)/x.",
+          "resultat_markdown": "1-x/2 ≤ f(x) ≤ 1-x/2+x²/3"
+        },
+        {
+          "numero": 2,
+          "action": "Soustraire f(0)=1 aux trois membres",
+          "justification": "Former f(x)-f(0).",
+          "resultat_markdown": "-x/2 ≤ f(x)-1 ≤ -x/2+x²/3"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser par x>0 pour former le taux d'accroissement",
+          "justification": "Taux d'accroissement en 0.",
+          "resultat_markdown": "-1/2 ≤ [f(x)-f(0)]/x ≤ -1/2+x/3"
+        },
+        {
+          "numero": 4,
+          "action": "Passer à la limite quand x→0+",
+          "justification": "Les deux bornes tendent vers -1/2.",
+          "resultat_markdown": "lim [f(x)-f(0)]/x = -1/2 (théorème des gendarmes)"
+        }
+      ],
+      "conclusion_markdown": "f est dérivable en 0, avec f'(0)=-1/2 ; la tangente en 0 a pour équation y=1-x/2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser par x sans vérifier son signe, risquant d'inverser le sens de l'encadrement",
+          "pourquoi_faux": "Diviser une inégalité par un nombre négatif inverse son sens ; comme le domaine ici est [0,+∞[, on ne considère que x>0, ce qui préserve le sens, mais cette vérification doit être explicite et non implicite.",
+          "correction_markdown": "Toujours préciser le signe de la variable par laquelle on divise une inégalité, et inverser le sens si nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Si -x ≤ g(x)-g(0) ≤ x pour tout x, quelle est la valeur de g'(0) ?",
+          "solution_markdown": "En divisant par x>0 (ou x<0 avec inversion), on obtient -1≤[g(x)-g(0)]/x≤1, ce qui ne donne PAS directement g'(0) car les bornes ne convergent pas vers une même valeur (elles restent -1 et 1) : ici on ne peut conclure qu'un encadrement de la dérivée, pas sa valeur exacte, sauf si un encadrement plus fin (dépendant de x) est disponible."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi cette méthode ne calcule-t-elle jamais explicitement f'(x) pour x≠0 ?",
+          "solution_markdown": "La méthode par encadrement est spécifiquement conçue pour traiter UN point particulier (souvent un point où le calcul direct de f' pose problème, comme une forme 0/0) ; pour les autres points du domaine, la dérivée s'obtient normalement par les règles de dérivation usuelles (produit, quotient, composée)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi cette technique est-elle indispensable ici plutôt que de calculer directement f'(0) avec la formule du quotient ?",
+          "solution_markdown": "La formule du quotient f'(x)=[x/(x+1)-ln(x+1)]/x² présente une forme indéterminée 0/0 en x=0 (numérateur et dénominateur s'annulent tous deux) ; la méthode par encadrement, elle, contourne cette indétermination en travaillant directement sur le taux d'accroissement via le théorème des gendarmes, sans jamais manipuler la forme indéterminée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème des gendarmes permet de prouver la dérivabilité en un point sans calcul direct de la dérivée.",
+        "On forme le taux d'accroissement à partir d'un encadrement, en soustrayant f(x0) puis en divisant par (x-x0).",
+        "Cette méthode est particulièrement utile quand le calcul direct de f' mène à une forme indéterminée au point considéré."
+      ]
+    }
+  ]
+}

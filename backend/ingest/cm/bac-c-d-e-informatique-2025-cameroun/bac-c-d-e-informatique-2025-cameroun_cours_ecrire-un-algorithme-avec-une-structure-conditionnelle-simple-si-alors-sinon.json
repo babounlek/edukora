@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-ecrire-un-algorithme-avec-une-structure-conditionnelle-simple-si-alors-sinon-terminale-c",
+  "meta": {
+    "titre": "Écrire un algorithme avec une structure conditionnelle simple (Si...Alors...Sinon)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Écriture d'algorithmes",
+    "duree_estimee_min": 15,
+    "tags": [
+      "Si Alors Sinon",
+      "pseudocode",
+      "algorithme complet"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex4-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Écrire un algorithme complet, ce n'est pas seulement écrire la ligne de décision : c'est respecter un squelette entier, de la déclaration des variables jusqu'au Fin. Ce cours détaille ce squelette sur l'exemple Admis/Refusé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure conditionnelle Si...Alors...Sinon",
+        "Savoir déclarer une variable (nom, type)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le squelette obligatoire d'un algorithme",
+      "contenu_markdown": "Un algorithme s'écrit selon un squelette fixe : un en-tête (mot-clé Algorithme suivi d'un nom), la déclaration des variables (mot-clé Var, avec le type de chaque variable), puis le corps entre Début et Fin, avec les instructions de lecture (Lire), de traitement, et d'écriture (Écrire) dans l'ordre logique du problème.",
+      "formule_principale": "Algorithme Nom / Var / Début ... Fin",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Proposer un algorithme qui décide Admis (moyenne >= 10) ou Refusé (sinon).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer la variable nécessaire",
+          "justification": "L'algorithme manipule une seule donnée : la moyenne, un nombre réel.",
+          "resultat_markdown": "Var moyenne : réel"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la saisie de la moyenne",
+          "justification": "L'algorithme doit lire la valeur avant de la tester.",
+          "resultat_markdown": "Lire(moyenne)"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la structure conditionnelle et les deux issues",
+          "justification": "Comparer moyenne à 10 puis afficher Admis ou Refusé selon le résultat.",
+          "resultat_markdown": "Si moyenne >= 10 Alors Écrire(\"Admis\") Sinon Écrire(\"Refusé\") FinSi"
+        }
+      ],
+      "conclusion_markdown": "L'algorithme complet déclare la variable, lit la moyenne, puis affiche la décision selon la comparaison à 10."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le mot-clé FinSi qui referme la structure conditionnelle",
+          "pourquoi_faux": "Sans FinSi, la structure conditionnelle reste ouverte : les instructions suivantes seraient interprétées comme faisant partie du bloc Sinon, ce qui fausse la logique de l'algorithme.",
+          "correction_markdown": "Referme systématiquement chaque structure conditionnelle par FinSi, même quand cela semble redondant."
+        },
+        {
+          "erreur_markdown": "Utiliser une affectation (moyenne <- 10) au lieu d'une comparaison (moyenne >= 10) dans le Si",
+          "pourquoi_faux": "Le symbole <- affecte une valeur à une variable, alors que le Si a besoin d'une expression qui rend vrai ou faux (une comparaison) pour décider quelle branche exécuter.",
+          "correction_markdown": "N'utilise jamais l'affectation à l'intérieur d'un test conditionnel : utilise un opérateur de comparaison (=, >, >=, <, <=, ≠)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris un algorithme qui lit un nombre et affiche \"Positif\" ou \"Négatif ou nul\".",
+          "solution_markdown": "```\nAlgorithme SigneNombre\nVar\n    n : réel\nDébut\n    Lire(n)\n    Si n > 0 Alors\n        Écrire(\"Positif\")\n    Sinon\n        Écrire(\"Négatif ou nul\")\n    FinSi\nFin\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Modifie l'algorithme Admission pour afficher \"Admis avec mention\" si la moyenne est supérieure ou égale à 16.",
+          "solution_markdown": "Il faut ajouter une branche Sinon Si pour tester ce cas supplémentaire, avant le cas Refusé. Réponse : ```\nAlgorithme Admission\nVar\n    moyenne : réel\nDébut\n    Lire(moyenne)\n    Si moyenne >= 16 Alors\n        Écrire(\"Admis avec mention\")\n    Sinon Si moyenne >= 10 Alors\n        Écrire(\"Admis\")\n    Sinon\n        Écrire(\"Refusé\")\n    FinSi\nFin\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi faut-il tester \"moyenne >= 16\" avant \"moyenne >= 10\" dans l'algorithme précédent, et pas l'inverse ?",
+          "solution_markdown": "Les tests Si...Sinon Si s'évaluent dans l'ordre et s'arrêtent au premier vrai : si on testait d'abord \"moyenne >= 10\", toute moyenne supérieure ou égale à 16 validerait déjà ce premier test (puisque 16 est aussi >= 10) et afficherait \"Admis\" sans jamais atteindre le test de la mention. Il faut donc toujours ordonner les conditions du cas le plus restrictif (le plus élevé) vers le plus large."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme complet suit le squelette : Algorithme / Var / Début ... Fin.",
+        "Toute variable utilisée doit être déclarée avec son type avant utilisation.",
+        "Chaque structure Si doit être refermée par FinSi.",
+        "En cas de tests en cascade (Sinon Si), ordonne toujours du cas le plus restrictif vers le plus large."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "cours_id": "cours-determiner-le-terme-general-d-une-suite-arithmetique-definie-par-recurrence-terminale-c",
+  "meta": {
+    "titre": "Déterminer le terme général d'une suite arithmétique définie par récurrence",
+    "cours_id": "cours-determiner-le-terme-general-d-une-suite-arithmetique-definie-par-recurrence-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Suites numériques",
+    "tags": [
+      "suite arithmétique",
+      "terme général",
+      "raison"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-B.2.a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Reconnaître qu'une relation de récurrence cache une suite arithmétique permet d'en donner instantanément le terme général, sans avoir à calculer terme par terme."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la définition d'une suite arithmétique de raison r : u_(n+1)=u_n+r"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule du terme général d'une suite arithmétique",
+      "contenu_markdown": "Une suite $(u_n)$ vérifiant une relation de récurrence $u_{n+1}=u_n+r$ (r constant, indépendant de n) est une suite arithmétique de raison $r$. Son terme général, en fonction du premier terme $u_1$ et de l'indice $n$, est $u_n=u_1+(n-1)r$.",
+      "formule_principale": "u_(n+1)=u_n+r (r constant) ⟹ suite arithmétique, u_n = u_1+(n-1)r",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La suite (u_n) vérifie u_(n+1)=u_n-2 et u_1=0. Calculer u_n en fonction de n.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de la suite",
+          "justification": "La relation u_(n+1)=u_n-2 a une différence constante (-2), indépendante de n.",
+          "resultat_markdown": "(u_n) est arithmétique de raison r=-2"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du terme général",
+          "justification": "u_n=u_1+(n-1)r, avec u_1=0.",
+          "resultat_markdown": "u_n = 0+(n-1)×(-2) = -2(n-1)"
+        },
+        {
+          "numero": 3,
+          "action": "Développer l'expression",
+          "justification": "Simple distribution algébrique.",
+          "resultat_markdown": "u_n = -2n+2 = 2-2n"
+        }
+      ],
+      "conclusion_markdown": "u_n = 2-2n pour tout n∈ℕ*."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser u_n=u_1+n·r au lieu de u_n=u_1+(n-1)·r",
+          "pourquoi_faux": "Le décalage d'indice est essentiel : entre le premier terme u_1 et le terme u_n, il n'y a que (n-1) 'sauts' de raison r, pas n sauts ; utiliser n au lieu de (n-1) décale systématiquement le résultat d'un terme.",
+          "correction_markdown": "Toujours vérifier la formule sur un petit cas (n=1 doit redonner u_1) avant de l'appliquer : u_1=u_1+(1-1)r=u_1, ce qui valide la formule avec (n-1)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une suite arithmétique a pour premier terme 5 et raison 3. Calculer u_10.",
+          "solution_markdown": "u_10=5+(10-1)×3=5+27=32."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une suite vérifie v_(n+1)=v_n+n (pas constant). Est-elle arithmétique ?",
+          "solution_markdown": "Non : la différence v_(n+1)-v_n=n dépend de n, elle n'est pas constante, donc la suite n'est pas arithmétique au sens strict."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment retrouver rapidement le signe de la raison d'une suite arithmétique décrite par une situation concrète (comme un(n) représentant un coefficient qui diminue à chaque dérivation successive) ?",
+          "solution_markdown": "Il suffit d'examiner le signe de la différence entre deux termes consécutifs connus (ou de la relation de récurrence elle-même) : une raison négative traduit une suite décroissante, ce qui est cohérent, par exemple, avec un coefficient qui perd une valeur fixe à chaque étape d'un processus itératif comme une dérivation successive."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une relation u_(n+1)=u_n+r avec r constant caractérise une suite arithmétique de raison r.",
+        "Le terme général est u_n=u_1+(n-1)r : attention au décalage d'indice (n-1), pas n.",
+        "Toujours vérifier la formule sur le premier terme avant de l'utiliser pour un rang quelconque."
+      ]
+    }
+  ]
+}

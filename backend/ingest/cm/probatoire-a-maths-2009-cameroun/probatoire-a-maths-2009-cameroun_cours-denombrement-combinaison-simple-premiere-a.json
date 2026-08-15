@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-denombrement-combinaison-simple-premiere-a",
+  "meta": {
+    "titre": "Dénombrer un choix au sein d'un unique groupe homogène (combinaison simple)",
+    "cours_id": "cours-denombrement-combinaison-simple-premiere-a",
+    "matiere": "Mathématiques",
+    "niveau": "Première A (Probatoire)",
+    "sous_theme": "Dénombrement - combinaison simple",
+    "tags": ["combinaison", "factorielle", "choix sans ordre"],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "probatoire-a-maths-2009-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-a-maths-2009-cameroun_exercice_2_q2b"
+  },
+  "sections": {
+    "accroche": "Dès que la condition d'un problème de dénombrement restreint le choix à UN SEUL groupe homogène (par exemple, tous les éléments choisis doivent provenir de la même sous-catégorie), une seule combinaison suffit à répondre à la question — pas de produit à calculer.",
+    "prerequis": ["Formule de la combinaison $\\binom{n}{k}=\\dfrac{n!}{k!(n-k)!}$"],
+    "regle": {
+      "titre": "Combinaison simple pour un groupe homogène unique",
+      "contenu_markdown": "Quand une condition (« tous coûtent au moins... », « tous sont de couleur X », etc.) restreint automatiquement le choix à un seul groupe homogène de $n$ éléments, le nombre de façons de choisir $k$ éléments parmi ce groupe est simplement $\\binom{n}{k}$, calculé une seule fois — sans produit avec d'autres groupes, puisque tous les éléments choisis proviennent de la même source.",
+      "formule_principale": "$\\binom{n}{k}=\\dfrac{n!}{k!(n-k)!}$, pour un choix entièrement restreint à un seul groupe",
+      "variantes": ["Si la condition restreignait le choix à DEUX groupes (au lieu d'un seul), il faudrait revenir au principe multiplicatif (produit de deux combinaisons), mais uniquement sur ces deux groupes concernés, pas sur l'ensemble des groupes disponibles"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Une classe compte 18 filles et 12 garçons. On choisit 5 délégués, tous des filles. Combien de choix possibles ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier le groupe concerné", "justification": "condition restreint aux filles uniquement", "resultat_markdown": "groupe des 18 filles"},
+        {"numero": 2, "action": "Calculer la combinaison", "justification": "choisir 5 parmi 18", "resultat_markdown": "C(18,5)=8568"}
+      ],
+      "conclusion_markdown": "Il existe 8568 choix possibles."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Continuer à faire intervenir les autres groupes (non concernés par la condition) dans le calcul, par exemple en multipliant par une combinaison portant sur le groupe exclu", "pourquoi_faux": "dès qu'une condition exclut totalement un ou plusieurs groupes du choix (« au moins 2500 » exclut toutes les tranches de prix inférieures), ces groupes n'interviennent plus du tout dans le calcul : les faire intervenir quand même produit un résultat totalement faux", "correction_markdown": "Relire attentivement la condition de l'énoncé pour identifier EXACTEMENT quel(s) groupe(s) restent éligibles au choix, et n'utiliser dans le calcul que la ou les combinaisons portant sur ces groupes, en excluant complètement les autres."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Un lot contient 20 objets défectueux et 80 objets bons. On choisit 4 objets, tous défectueux. Combien de choix possibles ?", "solution_markdown": "C(20,4)=4845."}
+    ],
+    "synthese": "Quand une condition de l'énoncé restreint le choix à un seul groupe homogène, le nombre de possibilités se calcule par une seule combinaison C(n,k) portant sur ce groupe, sans faire intervenir les autres groupes exclus par la condition."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-vecteur-propre-valeur-propre-un-endomorphisme-parametre-terminale-c",
+  "meta": {"titre": "Trouver un vecteur propre associé à la valeur propre 1 pour un endomorphisme paramétré", "cours_id": "cours-vecteur-propre-valeur-propre-un-endomorphisme-parametre-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — vecteurs et valeurs propres", "tags": ["vecteur propre", "valeur propre", "endomorphisme", "matrice paramétrée"], "duree_estimee_minutes": 6, "epreuve_source": "bac-c-maths-1990-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-c-maths-1990-cameroun-probleme-partieA-q1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Chercher les vecteurs fixés par un endomorphisme (ρ(u)=u) revient exactement à chercher son espace propre associé à la valeur propre 1, en résolvant le système linéaire homogène (M-I)v=0."},
+    {"type": "prerequis", "items_markdown": ["Un vecteur propre associé à la valeur propre λ vérifie ρ(u)=λu, soit (M-λI)v=0", "Résolution d'un système linéaire homogène 2×2"]},
+    {"type": "regle", "titre": "Résoudre (M-I)v=0 et vérifier la non-nullité de la solution trouvée", "contenu_markdown": "Pour montrer que $\\rho(u)=u$ définit une droite vectorielle, on résout le système $(M-I)v=\\vec0$, où $M$ est la matrice de $\\rho$. Dans une matrice $2\\times2$ dont les deux lignes sont proportionnelles (souvent le cas quand la structure de $M$ impose une contrainte, par exemple des colonnes de somme constante), une seule équation suffit à déterminer une droite de solutions. On exhibe alors un vecteur non nul $e_1$ vérifiant cette équation, souvent guidé par la structure de la matrice, et on vérifie explicitement qu'il n'est pas nul avant de conclure.", "formule_principale": "(M-I)v=0, rang(M-I)=1 (lignes proportionnelles) ⟹ ker(M-I) est une droite ; exhiber e1≠0 solution", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "M=(2,-1;1,0). Trouver une base de ker(M-I).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Calculer M-I", "justification": "M-I=(1,-1;1,-1)", "resultat_markdown": "lignes identiques"},
+      {"numero": 2, "action": "Résoudre x-y=0", "justification": "prendre x=1,y=1", "resultat_markdown": "e1=(1,1)"},
+      {"numero": 3, "action": "Vérifier", "justification": "M(1,1)ᵀ=(2-1,1+0)ᵀ=(1,1)ᵀ", "resultat_markdown": "confirmé, ρ(e1)=e1"}
+    ], "conclusion_markdown": "e1=(1,1) engendre la droite propre associée à la valeur propre 1."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de vérifier que le vecteur trouvé n'est pas le vecteur nul, notamment lorsque la matrice dépend de paramètres pouvant, pour certaines valeurs exclues par l'énoncé, annuler simultanément toutes les coordonnées", "pourquoi_faux": "Si le vecteur candidat est nul, il n'engendre aucune droite : la construction de l'espace propre échoue silencieusement sans cette vérification.", "correction_markdown": "Toujours vérifier explicitement, en s'appuyant sur les hypothèses de l'énoncé sur les paramètres, que le vecteur propre exhibé est non nul avant de conclure qu'il engendre une droite vectorielle."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "M=(a,1-a;a-1,2-a). Montrer que (1,1) engendre toujours ker(M-I), quel que soit a.", "solution_markdown": "M-I=(a-1,1-a;a-1,1-a) : les deux lignes sont identiques. L'équation (a-1)x+(1-a)y=0 se simplifie, pour a≠1, en x=y ; pour a=1, l'équation devient 0=0, toujours vérifiée. Dans tous les cas, (1,1) est solution : M(1,1)ᵀ=(a+1-a,a-1+2-a)ᵀ=(1,1)ᵀ. Donc (1,1) engendre ker(M-I)."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Chercher les vecteurs fixés par un endomorphisme revient à résoudre le système homogène (M-I)v=0.", "La vérification de la non-nullité du vecteur trouvé, souvent garantie par une hypothèse de l'énoncé sur les paramètres, est une étape indispensable de la démonstration."]}
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-intersection-triviale-somme-directe-grassmann-terminale-c",
+  "meta": {
+    "titre": "De l'intersection triviale à la somme directe via la formule de Grassmann",
+    "cours_id": "cours-intersection-triviale-somme-directe-grassmann-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - somme directe, formule de Grassmann",
+    "tags": ["formule de Grassmann", "somme directe", "dimension", "noyau et image"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_3_q2b"
+  },
+  "sections": {
+    "accroche": "Une intersection réduite au vecteur nul entre deux sous-espaces ne suffit pas, en général, à conclure à une somme directe égale à tout l'espace : il faut en plus vérifier l'égalité des dimensions, ce que la formule de Grassmann permet de faire immédiatement.",
+    "prerequis": ["Formule de Grassmann", "Théorème du rang", "Définition d'une somme directe E=A⊕B"],
+    "regle": {
+      "titre": "De l'intersection triviale à E=ker g⊕Im g",
+      "contenu_markdown": "Pour un endomorphisme $g:E\\to E$ en dimension finie, $\\ker g\\cap\\mathrm{Im}\\,g=\\{0\\}\\iff E=\\ker g\\oplus\\mathrm{Im}\\,g$. **Sens direct** : la formule de Grassmann donne $\\dim(\\ker g+\\mathrm{Im}\\,g)=\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)-\\dim(\\ker g\\cap\\mathrm{Im}\\,g)$. Si l'intersection est $\\{0\\}$, son terme de dimension est nul, donc $\\dim(\\ker g+\\mathrm{Im}\\,g)=\\dim(\\ker g)+\\dim(\\mathrm{Im}\\,g)=\\dim E$ (théorème du rang). Comme $\\ker g+\\mathrm{Im}\\,g\\subset E$ et a la même dimension que $E$, on a $\\ker g+\\mathrm{Im}\\,g=E$ ; combiné à l'intersection triviale, c'est bien une somme directe. **Réciproque** : par définition d'une somme directe, une intersection triviale est automatique.",
+      "formule_principale": "$\\dim(A+B)=\\dim A+\\dim B-\\dim(A\\cap B)$ (formule de Grassmann)",
+      "variantes": ["En dimension finie, il suffit souvent de vérifier soit l'intersection triviale, soit l'égalité des dimensions ($\\dim A+\\dim B=\\dim E$) pour en déduire l'autre grâce à Grassmann"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $E$ de dimension 3, $A$ de dimension 2 et $B$ de dimension 1, avec $A\\cap B=\\{0\\}$. Montrer que $E=A\\oplus B$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Appliquer Grassmann", "justification": "formule générale", "resultat_markdown": "$\\dim(A+B)=2+1-0=3$"},
+        {"numero": 2, "action": "Comparer à $\\dim E$", "justification": "$A+B\\subset E$ et $\\dim(A+B)=\\dim E=3$", "resultat_markdown": "$A+B=E$"}
+      ],
+      "conclusion_markdown": "Avec $A\\cap B=\\{0\\}$ et $A+B=E$, on a bien $E=A\\oplus B$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Croire qu'une intersection triviale entre deux sous-espaces suffit toujours, seule, à garantir que leur somme est tout l'espace", "pourquoi_faux": "sans l'information sur les dimensions (via Grassmann ou le théorème du rang), la somme pourrait être un sous-espace strict de E", "correction_markdown": "Toujours compléter la vérification de l'intersection triviale par un argument de dimension (Grassmann ou théorème du rang) avant de conclure à une somme directe égale à E entier."},
+      {"erreur_markdown": "Appliquer la formule de Grassmann à des sous-espaces de dimension infinie", "pourquoi_faux": "la formule suppose des dimensions finies pour avoir un sens arithmétique", "correction_markdown": "Vérifier que les sous-espaces considérés sont de dimension finie avant d'utiliser Grassmann."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit $E$ de dimension 4, $\\ker g$ de dimension 1 et $\\mathrm{Im}\\,g$ de dimension 3, avec $\\ker g\\cap\\mathrm{Im}\\,g=\\{0\\}$. Justifier $E=\\ker g\\oplus\\mathrm{Im}\\,g$.", "solution_markdown": "Grassmann : $\\dim(\\ker g+\\mathrm{Im}\\,g)=1+3-0=4=\\dim E$, donc $\\ker g+\\mathrm{Im}\\,g=E$ ; combiné à l'intersection triviale, $E=\\ker g\\oplus\\mathrm{Im}\\,g$."}
+    ],
+    "synthese": "En dimension finie, intersection triviale + formule de Grassmann + théorème du rang permettent de passer de ker g∩Im g={0} à E=ker g⊕Im g : l'intersection triviale seule ne suffit pas, l'argument de dimension est indispensable."
+  }
+}

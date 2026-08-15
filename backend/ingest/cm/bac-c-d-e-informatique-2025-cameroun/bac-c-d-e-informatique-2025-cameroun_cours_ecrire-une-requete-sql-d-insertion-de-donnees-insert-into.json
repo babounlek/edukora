@@ -1,0 +1,110 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-d-insertion-de-donnees-insert-into-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL d'insertion de données (INSERT INTO)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL : manipulation de données",
+    "duree_estimee_min": 10,
+    "tags": [
+      "INSERT INTO",
+      "SQL"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une table vide ne sert à rien : INSERT INTO est la commande qui y ajoute des données, ligne par ligne. C'est l'une des commandes SQL les plus simples et les plus systématiquement demandées au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une table (nom des colonnes, ordre)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande INSERT INTO",
+      "contenu_markdown": "INSERT INTO nom_table (colonne1, colonne2, ...) VALUES (valeur1, valeur2, ...) ajoute une nouvelle ligne dans la table indiquée. Les valeurs doivent être données dans le même ordre que les colonnes listées, et les valeurs textuelles s'écrivent entre apostrophes.",
+      "formule_principale": "INSERT INTO nom_table (colonnes) VALUES (valeurs);",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête qui insère le client ('1170033', '676201527', 'P185M90T102').",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et l'ordre de ses colonnes",
+          "justification": "Les trois valeurs correspondent, dans l'ordre, aux colonnes numcni, contact, MesureClient de la table client.",
+          "resultat_markdown": "Table client, colonnes (numcni, contact, MesureClient)"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la requête INSERT INTO complète",
+          "justification": "Chaque valeur textuelle s'écrit entre apostrophes, dans l'ordre des colonnes.",
+          "resultat_markdown": "INSERT INTO client (numcni, contact, MesureClient) VALUES ('1170033', '676201527', 'P185M90T102');"
+        }
+      ],
+      "conclusion_markdown": "La requête ajoute une nouvelle ligne à la table client avec les trois valeurs fournies, dans le bon ordre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser l'ordre des valeurs par rapport aux colonnes",
+          "pourquoi_faux": "SQL associe chaque valeur à la colonne de même position dans la liste : inverser l'ordre insère les données dans les mauvaises colonnes, sans erreur signalée si les types restent compatibles.",
+          "correction_markdown": "Vérifie toujours que l'ordre des valeurs correspond exactement à l'ordre des colonnes déclarées."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes autour des valeurs textuelles",
+          "pourquoi_faux": "Une valeur textuelle non encadrée d'apostrophes est interprétée par erreur comme un nom de colonne ou une valeur numérique, ce qui provoque une erreur de syntaxe.",
+          "correction_markdown": "Encadre systématiquement les valeurs de type texte par des apostrophes simples ('...')."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la requête qui insère dans la table eleve(matricule, nom, classe) l'élève ('E001', 'Fotso', '3eme').",
+          "solution_markdown": "```sql\nINSERT INTO eleve (matricule, nom, classe)\nVALUES ('E001', 'Fotso', '3eme');\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la requête qui insère dans la table tissu le tissu ('0118', 'bazin', 'robe', '11750032').",
+          "solution_markdown": "```sql\nINSERT INTO tissu (ref, typeTissu, modele, numCNI)\nVALUES ('0118', 'bazin', 'robe', '11750032');\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passe-t-il si on tente d'insérer un tissu avec un numCNI qui n'existe dans aucune ligne de la table client, alors qu'une contrainte FOREIGN KEY a été définie ?",
+          "solution_markdown": "Le SGBD rejette l'insertion avec une erreur de violation de contrainte de clé étrangère (integrity constraint violation), car la contrainte impose que toute valeur de numCNI dans tissu corresponde à une valeur existante de numcni dans client. Il faut d'abord insérer le client correspondant avant de pouvoir insérer le tissu qui le référence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "INSERT INTO table (colonnes) VALUES (valeurs) ajoute une ligne.",
+        "L'ordre des valeurs doit correspondre exactement à l'ordre des colonnes listées.",
+        "Les valeurs textuelles s'écrivent entre apostrophes.",
+        "Une contrainte de clé étrangère peut faire échouer un INSERT si la valeur référencée n'existe pas."
+      ]
+    }
+  ]
+}

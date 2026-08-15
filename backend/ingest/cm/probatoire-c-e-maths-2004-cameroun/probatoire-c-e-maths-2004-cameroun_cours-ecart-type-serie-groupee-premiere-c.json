@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-ecart-type-serie-groupee-premiere-c",
+  "meta": {
+    "titre": "Calculer l'écart-type d'une série statistique groupée (formule de König-Huygens)",
+    "cours_id": "cours-ecart-type-serie-groupee-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Statistiques - dispersion",
+    "tags": ["écart-type", "variance", "König-Huygens"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_2_q3"
+  },
+  "sections": {
+    "accroche": "L'écart-type mesure la dispersion des données autour de la moyenne ; la formule de König-Huygens permet de le calculer sans avoir à soustraire la moyenne à chaque valeur individuellement, ce qui simplifie énormément le calcul pratique.",
+    "prerequis": ["Moyenne d'une série groupée", "Calcul de carrés et de racines carrées"],
+    "regle": {
+      "titre": "Formule de König-Huygens",
+      "contenu_markdown": "La variance d'une série groupée est $V=\\dfrac{\\sum n_ic_i^2}{\\sum n_i}-\\bar x^2$ (moyenne des carrés moins carré de la moyenne), et l'écart-type est $\\sigma=\\sqrt{V}$. Cette formule évite de calculer directement $\\sum n_i(c_i-\\bar x)^2$, qui demanderait de soustraire la moyenne à chaque centre avant de l'élever au carré.",
+      "formule_principale": "$\\sigma=\\sqrt{\\dfrac{\\sum n_ic_i^2}{\\sum n_i}-\\bar x^2}$",
+      "variantes": ["La variance peut aussi se calculer directement par $V=\\dfrac{\\sum n_i(c_i-\\bar x)^2}{\\sum n_i}$ ; les deux formules sont mathématiquement équivalentes, mais celle de König-Huygens est presque toujours plus rapide en pratique"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer l'écart-type de : [0;10[ (effectif 4, centre 5), [10;20[ (effectif 6, centre 15), sachant que la moyenne est 11.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Somme des ni×ci²", "justification": "carrés des centres pondérés", "resultat_markdown": "4×25+6×225=100+1350=1450"},
+        {"numero": 2, "action": "Moyenne des carrés", "justification": "diviser par l'effectif total", "resultat_markdown": "1450/10=145"},
+        {"numero": 3, "action": "Variance puis écart-type", "justification": "König-Huygens", "resultat_markdown": "V=145-11²=145-121=24 ; σ=√24≈4,90"}
+      ],
+      "conclusion_markdown": "L'écart-type de cette série est environ 4,90."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre variance et écart-type en oubliant de prendre la racine carrée à la fin du calcul", "pourquoi_faux": "la variance et l'écart-type n'ont pas la même unité (la variance est en unité², l'écart-type dans la même unité que les données) ; présenter la variance comme écart-type fausse toute comparaison avec la moyenne", "correction_markdown": "Toujours vérifier, avant de conclure, que la dernière opération effectuée est bien une racine carrée, et que le résultat final est comparable en unité à la moyenne."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant Σnici²=800, Σni=20, moyenne=6, calculer l'écart-type.", "solution_markdown": "800/20=40 ; V=40-36=4 ; σ=2."}
+    ],
+    "synthese": "L'écart-type d'une série groupée se calcule via la formule de König-Huygens, en soustrayant le carré de la moyenne à la moyenne des carrés des centres de classe pondérés par les effectifs, puis en prenant la racine carrée du résultat."
+  }
+}

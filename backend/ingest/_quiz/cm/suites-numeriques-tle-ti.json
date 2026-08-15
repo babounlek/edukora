@@ -1,0 +1,156 @@
+[
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-faible-0",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la suite $(u_n)_{n\\in\\mathbb{N}}$ définie par $u_0=5$ et, pour tout entier naturel $n$, $u_{n+1}=u_n+4$. Quelle est la valeur de $u_4$ ?",
+    "corrige_markdown": "### Rappel de méthode\nPour une suite arithmétique de premier terme $u_0$ et de raison $r$, le terme de rang $n$ est donné par $u_n=u_0+nr$.\n\n### Corrigé\nLa suite $(u_n)$ est arithmétique de premier terme $u_0=5$ et de raison $r=4$. D'après la formule du terme général :\n$$u_4=u_0+4r=5+4\\times4=5+16=21$$\n\n**La bonne réponse est A ($u_4=21$).**\n\n### Pourquoi les autres réponses sont fausses\n- **B ($17$)** : correspond à $u_3=u_0+3r=5+12=17$, une erreur de décalage d'un rang (utiliser $u_0+3r$ au lieu de $u_0+4r$).\n- **C ($25$)** : correspond à $u_0+5r=5+20=25$, soit $u_5$, un rang en trop.\n- **D ($9$)** : correspond à $u_1=u_0+r=5+4=9$, en confondant le premier terme suivant $u_0$ avec le terme demandé.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "$21$"},
+      {"lettre": "B", "texte": "$17$"},
+      {"lettre": "C", "texte": "$25$"},
+      {"lettre": "D", "texte": "$9$"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [6537]
+  },
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-faible-1",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Démontrer par récurrence que, pour tout entier naturel $n$, $2^n\\geq n+1$.",
+    "corrige_markdown": "### Rappel de méthode\nUne démonstration par récurrence comporte une initialisation (vérifier la propriété au premier rang) et une hérédité (supposer la propriété vraie à un rang $n$ et la démontrer au rang $n+1$).\n\n### Corrigé\nNotons $\\mathcal{P}(n)$ la propriété : $2^n\\geq n+1$.\n\n**Initialisation** ($n=0$) : $2^0=1$ et $0+1=1$, donc $2^0\\geq0+1$ : $\\mathcal{P}(0)$ est vraie (égalité).\n\n**Hérédité.** Supposons $\\mathcal{P}(n)$ vraie pour un entier naturel $n$ fixé, soit $2^n\\geq n+1$. Comme $2>0$, on peut multiplier les deux membres par $2$ sans changer le sens de l'inégalité :\n$$2^{n+1}\\geq2(n+1)=2n+2$$\n\nOr $2n+2\\geq n+2=(n+1)+1$ dès que $n\\geq0$, ce qui est toujours vrai puisque $n$ est un entier naturel. En combinant les deux inégalités :\n$$2^{n+1}\\geq2n+2\\geq(n+1)+1$$\n\ndonc $\\mathcal{P}(n+1)$ est vraie.\n\n**Conclusion.** Par le principe de récurrence, pour tout entier naturel $n$, $2^n\\geq n+1$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6530]
+  },
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-moyenne-2",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Démontrer par récurrence que, pour tout entier naturel $n\\geq1$,\n$$1\\times2+2\\times3+3\\times4+\\cdots+n\\times(n+1)=\\dfrac{n(n+1)(n+2)}{3}.$$",
+    "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence une formule de somme $\\sum_{k=1}^nf(k)=g(n)$, on vérifie l'initialisation puis, à l'hérédité, on ajoute le terme $f(n+1)$ aux deux membres de l'hypothèse de récurrence et on factorise pour retrouver la forme $g(n+1)$.\n\n### Corrigé\nNotons $\\mathcal{P}(n)$ la propriété : $\\displaystyle\\sum_{k=1}^nk(k+1)=\\dfrac{n(n+1)(n+2)}{3}$.\n\n**Initialisation** ($n=1$) : le membre de gauche se réduit à $1\\times2=2$, et le membre de droite vaut $\\dfrac{1\\times2\\times3}{3}=\\dfrac63=2$. Les deux membres coïncident : $\\mathcal{P}(1)$ est vraie.\n\n**Hérédité.** Supposons $\\mathcal{P}(n)$ vraie pour un entier $n\\geq1$ fixé, soit $\\displaystyle\\sum_{k=1}^nk(k+1)=\\dfrac{n(n+1)(n+2)}{3}$. En ajoutant le terme suivant $(n+1)(n+2)$ aux deux membres :\n$$\\sum_{k=1}^{n+1}k(k+1)=\\dfrac{n(n+1)(n+2)}{3}+(n+1)(n+2)$$\n\nOn factorise le membre de droite par $(n+1)(n+2)$ :\n$$\\dfrac{n(n+1)(n+2)}{3}+(n+1)(n+2)=(n+1)(n+2)\\left(\\dfrac n3+1\\right)=(n+1)(n+2)\\times\\dfrac{n+3}{3}=\\dfrac{(n+1)(n+2)(n+3)}{3}$$\n\nOn reconnaît exactement la formule attendue au rang $n+1$ : $\\mathcal{P}(n+1)$ est donc vraie.\n\n**Conclusion.** Par le principe de récurrence, pour tout entier naturel $n\\geq1$ :\n$$1\\times2+2\\times3+\\cdots+n\\times(n+1)=\\dfrac{n(n+1)(n+2)}{3}$$",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6538]
+  },
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-moyenne-3",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une cuve de traitement industriel, on effectue des cycles successifs de dilution d'une solution saline. La cuve contient initialement $C_0=200$ g de sel dissous. À chaque cycle numéroté $n$, on retire les trois quarts de la solution présente (ce qui revient à ne conserver que le quart de la masse de sel), puis on injecte $30$ g de sel frais, si bien que $C_{n+1}=\\dfrac14C_n+30$ pour tout entier naturel $n$.\n\n1. On pose, pour tout entier naturel $n$, $D_n=C_n-40$. Montrer que $(D_n)$ est une suite géométrique dont on précisera la raison et le premier terme.\n2. En déduire l'expression de $C_n$ en fonction de $n$.\n3. Déterminer la limite de $(C_n)$ quand $n$ tend vers $+\\infty$, et interpréter ce résultat pour la quantité de sel dans la cuve.",
+    "corrige_markdown": "### Rappel de méthode\nPour une suite définie par une relation affine $C_{n+1}=aC_n+b$ (avec $a\\neq1$), on introduit la suite auxiliaire $D_n=C_n-\\ell$, où $\\ell$ est le point fixe de la relation, solution de $\\ell=a\\ell+b$. La suite $(D_n)$ est alors géométrique de raison $a$, ce qui permet d'expliciter $C_n$.\n\n### Corrigé\n**1) Nature de $(D_n)$.** Le point fixe $\\ell$ vérifie $\\ell=\\dfrac14\\ell+30$, soit $\\dfrac34\\ell=30$, donc $\\ell=40$. On pose $D_n=C_n-40$. Pour tout entier naturel $n$ :\n$$D_{n+1}=C_{n+1}-40=\\left(\\dfrac14C_n+30\\right)-40=\\dfrac14C_n-10=\\dfrac14(C_n-40)=\\dfrac14D_n$$\n\nLa relation $D_{n+1}=\\dfrac14D_n$ étant vraie pour tout $n$, $(D_n)$ est une **suite géométrique de raison $\\dfrac14$**, de premier terme :\n$$D_0=C_0-40=200-40=160$$\n\n**2) Expression de $C_n$.** D'après la formule du terme général d'une suite géométrique :\n$$D_n=D_0\\times\\left(\\dfrac14\\right)^n=160\\times\\left(\\dfrac14\\right)^n$$\n\nComme $C_n=D_n+40$ :\n$$C_n=40+160\\times\\left(\\dfrac14\\right)^n$$\n\n**3) Limite et interprétation.** Comme $-1<\\dfrac14<1$, on a $\\left(\\dfrac14\\right)^n\\to0$ quand $n\\to+\\infty$, donc $160\\times\\left(\\dfrac14\\right)^n\\to0$, et :\n$$\\lim_{n\\to+\\infty}C_n=40$$\n\n**La quantité de sel dans la cuve se stabilise donc autour de $40$ g** à mesure que les cycles de dilution se répètent, quelle que soit la quantité initiale.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6548]
+  },
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-moyenne-4",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la suite $(S_n)_{n\\in\\mathbb{N}}$ définie par $S_n=\\displaystyle\\sum_{k=0}^n\\left(\\dfrac13\\right)^k=1+\\dfrac13+\\dfrac19+\\cdots+\\left(\\dfrac13\\right)^n$. Quelle est la limite de $(S_n)$ lorsque $n$ tend vers $+\\infty$ ?",
+    "corrige_markdown": "### Rappel de méthode\nLa somme des $n+1$ premiers termes d'une suite géométrique de premier terme $1$ et de raison $q$ (avec $q\\neq1$) est $\\sum_{k=0}^nq^k=\\dfrac{1-q^{n+1}}{1-q}$. Lorsque $|q|<1$, $q^{n+1}\\to0$ quand $n\\to+\\infty$, et la somme converge vers $\\dfrac1{1-q}$.\n\n### Corrigé\nIci $q=\\dfrac13$, avec $|q|<1$. D'après la formule de la somme géométrique :\n$$S_n=\\sum_{k=0}^n\\left(\\dfrac13\\right)^k=\\dfrac{1-\\left(\\frac13\\right)^{n+1}}{1-\\frac13}=\\dfrac{1-\\left(\\frac13\\right)^{n+1}}{\\frac23}=\\dfrac32\\left[1-\\left(\\dfrac13\\right)^{n+1}\\right]$$\n\nQuand $n\\to+\\infty$, $\\left(\\dfrac13\\right)^{n+1}\\to0$, donc :\n$$\\lim_{n\\to+\\infty}S_n=\\dfrac32\\times(1-0)=\\dfrac32$$\n\n**La bonne réponse est A ($\\dfrac32$).**\n\n### Pourquoi les autres réponses sont fausses\n- **B ($3$)** : correspond à une erreur de calcul du dénominateur $1-q$, en utilisant $\\dfrac13$ au lieu de $\\dfrac23$ (soit $\\frac1{1/3}=3$).\n- **C ($1$)** : correspond au premier terme de la somme, en supposant à tort que $S_n$ reste égal à sa valeur initiale puisque les termes ajoutés tendent vers $0$.\n- **D (« la suite diverge vers $+\\infty$ »)** : confond avec le cas $|q|\\geq1$, où la somme géométrique diverge effectivement ; ici $|q|=\\dfrac13<1$, donc $(S_n)$ converge.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "$\\dfrac32$"},
+      {"lettre": "B", "texte": "$3$"},
+      {"lettre": "C", "texte": "$1$"},
+      {"lettre": "D", "texte": "La suite diverge vers $+\\infty$."}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [6548]
+  },
+  {
+    "external_id": "cqc-suites-numeriques-tle-ti-elevee-5",
+    "theme": "Suites numériques (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "IV"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la suite $(u_n)_{n\\in\\mathbb{N}}$ définie par $u_0=4$ et, pour tout entier naturel $n$, $u_{n+1}=-3u_n+8$.\n\n1. On pose, pour tout entier naturel $n$, $v_n=u_n-2$. Montrer que $(v_n)$ est une suite géométrique dont on précisera la raison et le premier terme.\n2. En déduire l'expression de $u_n$ en fonction de $n$.\n3. La suite $(u_n)$ est-elle convergente ? Justifier soigneusement la réponse.",
+    "corrige_markdown": "### Rappel de méthode\nPour une suite définie par $u_{n+1}=au_n+b$, la suite auxiliaire $v_n=u_n-\\ell$ (où $\\ell=a\\ell+b$ est le point fixe) est géométrique de raison $a$. Attention : contrairement au cas $|a|<1$, l'existence d'un point fixe ne garantit pas à elle seule la convergence de $(u_n)$ - il faut impérativement vérifier la valeur de $|a|$ avant de conclure.\n\n### Corrigé\n**1) Nature de $(v_n)$.** Le point fixe $\\ell$ vérifie $\\ell=-3\\ell+8$, soit $4\\ell=8$, donc $\\ell=2$. Pour tout entier naturel $n$ :\n$$v_{n+1}=u_{n+1}-2=(-3u_n+8)-2=-3u_n+6=-3(u_n-2)=-3v_n$$\n\nLa relation $v_{n+1}=-3v_n$ étant vraie pour tout $n$, $(v_n)$ est une **suite géométrique de raison $-3$**, de premier terme :\n$$v_0=u_0-2=4-2=2$$\n\n**2) Expression de $u_n$.** D'après la formule du terme général d'une suite géométrique :\n$$v_n=v_0\\times(-3)^n=2\\times(-3)^n$$\n\nComme $u_n=v_n+2$ :\n$$u_n=2+2\\times(-3)^n$$\n\n**3) Convergence de $(u_n)$.** La raison de $(v_n)$ est $-3$, et $|-3|=3>1$ : on ne se trouve donc pas dans le cas $|a|<1$ qui garantirait $v_n\\to0$. Étudions séparément les rangs pairs et impairs.\n\n- Pour $n$ pair, $(-3)^n=3^n>0$ et tend vers $+\\infty$, donc $u_n=2+2\\times3^n\\to+\\infty$.\n- Pour $n$ impair, $(-3)^n=-3^n<0$ et tend vers $-\\infty$, donc $u_n=2-2\\times3^n\\to-\\infty$.\n\nLa sous-suite des rangs pairs tend vers $+\\infty$ tandis que la sous-suite des rangs impairs tend vers $-\\infty$ : ces deux sous-suites n'ont pas la même limite. **La suite $(u_n)$ n'admet donc pas de limite : elle diverge, en oscillant avec une amplitude croissante.**\n\n### Piège à éviter\nIl serait tentant de conclure hâtivement que $(u_n)$ converge vers le point fixe $\\ell=2$, comme dans les exemples usuels de suites arithmético-géométriques. Cette conclusion n'est valable que lorsque $|a|<1$. Ici $a=-3$ vérifie $|a|=3>1$, ce qui change radicalement la nature de la suite : loin de converger vers $2$, elle diverge en oscillant de plus en plus loin de cette valeur à chaque étape.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6548, 6537]
+  }
+]

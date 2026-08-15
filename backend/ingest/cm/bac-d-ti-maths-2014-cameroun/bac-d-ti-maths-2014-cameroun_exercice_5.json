@@ -1,0 +1,48 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2014-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2014,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 5,
+  "titre_exercice": "Problème, Partie C : suite récurrente un+1=f(un), convergence par encadrement géométrique",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "On considère la suite $(u_n)$ à termes positifs, définie par $u_0=\\dfrac12$ et, pour tout entier naturel $n$, $u_{n+1}=f(u_n)$, où $f(x)=\\dfrac{e^x}{x+2}$ (Partie A) et où $\\alpha$ désigne l'unique solution de $f(x)=x$ dans $[0;1]$ (Partie B, question 4).\n\n**Note sur une imprécision du document source.** L'énoncé transcrit précise que la relation $u_{n+1}=f(u_n)$ est valable « pour tout entier naturel non nul $n$ ». Prise au pied de la lettre, cette formulation ne définirait jamais $u_1=f(u_0)$ (puisque $n=0$ serait exclu), rendant impossible la récurrence demandée à la question 1, qui repose explicitement sur le passage de $u_0$ à $u_1$. Il s'agit manifestement d'une coquille : la relation de récurrence usuelle, valable pour tout entier naturel $n$ (y compris $n=0$), est celle utilisée dans la suite de ce corrigé.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1,25pt",
+      "enonce_markdown": "Montrer par récurrence sur $n$ que la suite $(u_n)$ est croissante et que $u_n\\in\\left[\\dfrac12;1\\right]$ ; quelle conclusion peut-on en tirer ?",
+      "rappels_de_methode": [{"cours_id": "cours-recurrence-double-suite-croissante-bornee-terminale-d-ti", "texte": "Pour montrer par récurrence qu'une suite est croissante ET bornée dans un intervalle stable par f (f croissante), on établit les deux propriétés simultanément à chaque étape, en s'appuyant sur la stricte croissance de f pour propager l'inégalité."}],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer par récurrence qu'une suite récurrente $u_{n+1}=f(u_n)$ est croissante et bornée dans un intervalle $[m;M]$ stable par $f$ (c'est-à-dire $f([m;M])\\subset[m;M]$), on établit simultanément à chaque étape les deux propriétés $u_n\\leqslant u_{n+1}$ et $u_n\\in[m;M]$, en s'appuyant sur la stricte croissance de $f$ pour propager l'inégalité d'un rang au suivant.\n\n**Initialisation ($n=0$).** $u_0=\\dfrac12\\in\\left[\\dfrac12;1\\right]$.\n\n**Calcul de $u_1=f(u_0)=f\\left(\\dfrac12\\right)$.**\n\n$$u_1=\\dfrac{e^{1/2}}{\\frac12+2}=\\dfrac{\\sqrt e}{2{,}5}=\\dfrac{2\\sqrt e}5\\approx\\dfrac{2\\times1{,}6487}5\\approx0{,}6595$$\n\n**$u_1\\approx0{,}6595\\in\\left[\\dfrac12;1\\right]$, et $u_0=0{,}5\\leqslant u_1\\approx0{,}6595$ : l'initialisation est vérifiée.**\n\n**Hérédité.** Supposons que pour un rang $n$, $u_n\\in\\left[\\dfrac12;1\\right]$ et $u_n\\leqslant u_{n+1}$ (hypothèse de récurrence), avec $u_{n+1}\\in\\left[\\dfrac12;1\\right]$ également (à établir).\n\n**Stabilité de $\\left[\\dfrac12;1\\right]$ par $f$.** $f$ est strictement croissante sur $\\left[\\dfrac12;1\\right]\\subset[-1;+\\infty[$ (Partie A, question 2). Donc $f\\left(\\left[\\dfrac12;1\\right]\\right)=\\left[f\\left(\\dfrac12\\right);f(1)\\right]=\\left[\\dfrac{2\\sqrt e}5;\\dfrac e3\\right]\\approx[0{,}6595;0{,}906]\\subset\\left[\\dfrac12;1\\right]$ : l'intervalle est bien stable par $f$.\n\n**Propagation de la croissance.** Comme $f$ est strictement croissante et $u_n\\leqslant u_{n+1}$ (tous deux dans $\\left[\\dfrac12;1\\right]$, où $f$ est croissante), on applique $f$ aux deux membres :\n\n$$f(u_n)\\leqslant f(u_{n+1})\\ \\Longrightarrow\\ u_{n+1}\\leqslant u_{n+2}$$\n\n**De plus, $u_{n+2}=f(u_{n+1})\\in f\\left(\\left[\\dfrac12;1\\right]\\right)\\subset\\left[\\dfrac12;1\\right]$** (par stabilité de l'intervalle, $u_{n+1}$ étant dans $\\left[\\frac12;1\\right]$).\n\n**Par récurrence, pour tout $n\\in\\mathbb N$, $u_n\\in\\left[\\dfrac12;1\\right]$ et $u_n\\leqslant u_{n+1}$ : la suite $(u_n)$ est croissante et majorée par $1$.**\n\n**Conclusion.** Une suite croissante et majorée converge (théorème de la limite monotone) : $(u_n)$ converge donc vers une limite $\\ell\\in\\left[\\dfrac12;1\\right]$."
+    },
+    {
+      "numero": "2",
+      "points": "1,25pt",
+      "enonce_markdown": "Démontrer que pour tout entier naturel $n$, on a : $|u_{n+1}-\\alpha|\\leqslant\\dfrac23|u_n-\\alpha|$.",
+      "rappels_de_methode": [{"cours_id": "cours-inegalite-accroissements-finis-contraction-terminale-d-ti", "texte": "L'inégalité des accroissements finis |f(x)-f(y)|≤M|x-y| (avec M majorant de |f'| sur l'intervalle) appliquée à x=un et y=α (point fixe de f) donne directement |un+1-α|≤M|un-α|."}],
+      "corrige_markdown": "### Rappel de méthode\nL'inégalité des accroissements finis énonce que si $|f'(t)|\\leqslant M$ pour tout $t$ d'un intervalle $[m;M']$, alors pour tous $x,y$ de cet intervalle, $|f(x)-f(y)|\\leqslant M|x-y|$. Appliquée avec $x=u_n$ et $y=\\alpha$ (point fixe de $f$, donc $f(\\alpha)=\\alpha$), cette inégalité donne directement une majoration de $|u_{n+1}-\\alpha|$ en fonction de $|u_n-\\alpha|$.\n\n**D'après la question 1, $u_n\\in\\left[\\dfrac12;1\\right]\\subset[0;1]$ pour tout $n$.**\n\n**D'après la Partie B (question 4), $\\alpha\\in\\,]0;1[\\subset[0;1]$.**\n\n**D'après la Partie B (question 3), pour tout $x\\in[0;1]$, $\\dfrac14\\leqslant f'(x)\\leqslant\\dfrac23$, donc en particulier $|f'(x)|\\leqslant\\dfrac23$ sur $[0;1]$** (car $f'(x)\\geqslant\\frac14>0$, donc $f'(x)=|f'(x)|$).\n\n**Application de l'inégalité des accroissements finis sur $[0;1]$, avec $x=u_n$ et $y=\\alpha$ (tous deux dans $[0;1]$) :**\n\n$$|f(u_n)-f(\\alpha)|\\leqslant\\dfrac23|u_n-\\alpha|$$\n\n**Comme $u_{n+1}=f(u_n)$ (relation de récurrence) et $\\alpha=f(\\alpha)$ ($\\alpha$ point fixe de $f$, Partie B question 4) :**\n\n$$|u_{n+1}-\\alpha|\\leqslant\\dfrac23|u_n-\\alpha|$$\n\n**L'inégalité demandée est démontrée pour tout $n\\in\\mathbb N$.**"
+    },
+    {
+      "numero": "3",
+      "points": "1pt",
+      "enonce_markdown": "En déduire que pour tout entier naturel $n$, $|u_n-\\alpha|\\leqslant\\left(\\dfrac23\\right)^n$.",
+      "rappels_de_methode": [{"cours_id": "cours-recurrence-inegalite-geometrique-contraction-terminale-d-ti", "texte": "Une inégalité de contraction |un+1-α|≤k|un-α| se propage par récurrence en |un-α|≤k^n|u0-α|, puis se majore par k^n dès que |u0-α|≤1."}],
+      "corrige_markdown": "### Rappel de méthode\nUne inégalité de contraction $|u_{n+1}-\\alpha|\\leqslant k|u_n-\\alpha|$ (avec $0<k<1$) se propage par récurrence immédiate en $|u_n-\\alpha|\\leqslant k^n|u_0-\\alpha|$ ; si de plus $|u_0-\\alpha|\\leqslant1$, on obtient directement $|u_n-\\alpha|\\leqslant k^n$.\n\n**Initialisation ($n=0$).** $u_0=\\dfrac12$ et $\\alpha\\in\\,]0;1[$ (Partie B, question 4), donc $u_0,\\alpha\\in[0;1]$, d'où $|u_0-\\alpha|\\leqslant1=\\left(\\dfrac23\\right)^0$ (deux points de $[0;1]$ sont toujours distants d'au plus $1$).\n\n**Hérédité.** Supposons $|u_n-\\alpha|\\leqslant\\left(\\dfrac23\\right)^n$ pour un rang $n$. D'après la question 2 :\n\n$$|u_{n+1}-\\alpha|\\leqslant\\dfrac23|u_n-\\alpha|\\leqslant\\dfrac23\\times\\left(\\dfrac23\\right)^n=\\left(\\dfrac23\\right)^{n+1}$$\n\n**Par récurrence, pour tout $n\\in\\mathbb N$, $|u_n-\\alpha|\\leqslant\\left(\\dfrac23\\right)^n$.**"
+    },
+    {
+      "numero": "4",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer la limite de la suite $(u_n)$.",
+      "rappels_de_methode": [{"cours_id": "cours-limite-suite-encadrement-geometrique-terminale-d-ti", "texte": "Si 0≤|un-α|≤kⁿ avec 0<k<1, alors kⁿ→0, donc par le théorème des gendarmes |un-α|→0, c'est-à-dire un→α."}],
+      "corrige_markdown": "### Rappel de méthode\nSi $0\\leqslant|u_n-\\alpha|\\leqslant k^n$ avec $0<k<1$, alors $k^n\\to0$ quand $n\\to+\\infty$ (suite géométrique de raison dans $]0;1[$), donc par le théorème des gendarmes (théorème d'encadrement), $|u_n-\\alpha|\\to0$, c'est-à-dire $u_n\\to\\alpha$.\n\n**D'après la question 3, pour tout $n$, $0\\leqslant|u_n-\\alpha|\\leqslant\\left(\\dfrac23\\right)^n$.**\n\n**Comme $\\dfrac23\\in\\,]0;1[$, on a $\\displaystyle\\lim_{n\\to+\\infty}\\left(\\dfrac23\\right)^n=0$.**\n\n**Par le théorème des gendarmes, $\\displaystyle\\lim_{n\\to+\\infty}|u_n-\\alpha|=0$, c'est-à-dire :**\n\n$$\\lim_{n\\to+\\infty}u_n=\\alpha$$\n\n### Conseil\nCe résultat précise et confirme la conclusion de la question 1 (convergence vers une limite $\\ell\\in\\left[\\frac12;1\\right]$, établie par le théorème de la limite monotone) : ici, l'encadrement géométrique identifie explicitement cette limite comme étant $\\alpha$, le point fixe de $f$ déjà caractérisé en Partie B."
+    }
+  ]
+}

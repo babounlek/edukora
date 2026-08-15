@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from access.services import has_access
 
-from .models import Cours, Country, Cursus, Lesson, Series, StatutContenu, Subject, Tag
+from .models import Cours, Country, Cursus, Lesson, Series, StatutContenu, Subject, Tag, Temoignage
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -40,6 +40,12 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
+class TemoignageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Temoignage
+        fields = ["id", "auteur_nom", "auteur_description", "contenu", "note"]
+
+
 class CursusSerializer(serializers.ModelSerializer):
     country = CountrySerializer(read_only=True)
     series = SeriesSerializer(read_only=True)
@@ -65,6 +71,11 @@ class _HasAccessMixin:
         return user if user and user.is_authenticated else None
 
     def get_has_access(self, obj):
+        # Une Lesson vitrine (voir has_access) est lisible par un visiteur anonyme -
+        # court-circuite _current_user() ici même, qui renvoie toujours None pour lui
+        # et masquerait sinon ce cas particulier.
+        if getattr(obj, "est_vitrine", False):
+            return True
         user = self._current_user()
         return bool(user and has_access(user, obj))
 
@@ -73,14 +84,36 @@ class _HasAccessMixin:
         return bool(user and obj.lectures.filter(user=user).exists())
 
 
+def _cours_content_summary(sections_raw):
+    """
+    Signal léger sur le contenu d'un Cours, dérivé directement de sections_raw (pas du
+    rendu complet, voir Cours.sections_breakdown) - pour un indicateur rapide sur une
+    carte/fiche avant ouverture (ex. CoursCard), sans requête ni construction
+    supplémentaire.
+    """
+    has_exemple_resolu = False
+    exercices_count = 0
+    for section in sections_raw:
+        section_type = section.get("type")
+        if section_type == "exemple_resolu":
+            has_exemple_resolu = True
+        elif section_type == "exercices_application":
+            exercices_count += len(section.get("items") or [])
+    return {"has_exemple_resolu": has_exemple_resolu, "exercices_count": exercices_count}
+
+
 class CoursSummarySerializer(_HasAccessMixin, serializers.ModelSerializer):
     """Version allégée de Cours pour l'affichage "Cours associés" sur une Lesson."""
 
     has_access = serializers.SerializerMethodField()
+    apercu_contenu = serializers.SerializerMethodField()
 
     class Meta:
         model = Cours
-        fields = ["id", "titre", "has_access"]
+        fields = ["id", "slug", "titre", "has_access", "apercu_contenu"]
+
+    def get_apercu_contenu(self, obj):
+        return _cours_content_summary(obj.sections_raw)
 
 
 class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
@@ -88,21 +121,41 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
     cursus = CursusSerializer(read_only=True, many=True)
     lesson_type_display = serializers.CharField(source="get_lesson_type_display", read_only=True)
     origine_display = serializers.CharField(source="get_origine_display", read_only=True)
+    nature_epreuve_display = serializers.CharField(source="get_nature_epreuve_display", read_only=True)
     themes = TagSerializer(many=True, read_only=True)
     has_access = serializers.SerializerMethodField()
     is_read = serializers.SerializerMethodField()
     exercises_count = serializers.SerializerMethodField()
     related_cours = serializers.SerializerMethodField()
     sujet_pdf_url = serializers.SerializerMethodField()
+    kind = serializers.SerializerMethodField()
+    duree_minutes = serializers.SerializerMethodField()
+    sujet_pdf_disponible = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson
         fields = [
-            "id", "slug", "title", "subject", "cursus", "lesson_type", "lesson_type_display",
-            "year", "duree_epreuve", "coefficient", "origine", "origine_display",
-            "etablissement", "themes", "has_access", "is_read",
-            "exercises_count", "related_cours", "sujet_pdf_url",
+            "id", "kind", "slug", "title", "subject", "cursus", "lesson_type", "lesson_type_display",
+            "year", "duree_epreuve", "duree_minutes", "coefficient", "origine", "origine_display",
+            "etablissement", "nature_epreuve", "nature_epreuve_display", "themes",
+            "has_access", "is_read", "est_vitrine", "created_at",
+            "exercises_count", "related_cours", "sujet_pdf_url", "sujet_pdf_disponible",
         ]
+
+    def get_kind(self, obj):
+        return "classique"
+
+    def get_duree_minutes(self, obj):
+        # Toujours null côté Lesson - existe pour que le frontend ait un seul champ,
+        # jamais présent seulement côté EpreuveInedite (voir catalog.inedit_bridge).
+        return None
+
+    def get_sujet_pdf_disponible(self, obj):
+        # Toujours False côté Lesson - le sujet classique est déjà exposé via
+        # sujet_pdf_url (URL publique directe) : ce booléen n'a de sens que côté
+        # EpreuveInedite, dont le sujet reste un contenu payant (voir
+        # catalog.inedit_bridge et inedit.views.download_sujet_pdf, gated).
+        return False
 
     def get_exercises_count(self, obj):
         return obj.exercises.filter(statut=StatutContenu.VALIDE).count()
@@ -128,10 +181,14 @@ class CoursSerializer(_HasAccessMixin, serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     has_access = serializers.SerializerMethodField()
     is_read = serializers.SerializerMethodField()
+    apercu_contenu = serializers.SerializerMethodField()
 
     class Meta:
         model = Cours
         fields = [
-            "id", "titre", "subject", "cursus", "sous_theme",
-            "duree_estimee_min", "tags", "has_access", "is_read",
+            "id", "slug", "titre", "subject", "cursus", "sous_theme",
+            "duree_estimee_min", "tags", "has_access", "is_read", "apercu_contenu", "created_at",
         ]
+
+    def get_apercu_contenu(self, obj):
+        return _cours_content_summary(obj.sections_raw)

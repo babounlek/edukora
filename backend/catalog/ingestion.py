@@ -15,23 +15,38 @@ séparés par un tiret, une virgule ou un slash ("C-E", "C, E", "C/E"), et le
 champ `coefficient` peut être une valeur unique ou un objet {code_serie:
 coefficient} quand il diffère selon la série (voir _format_coefficient).
 
-Le pays n'est jamais lu dans le JSON (la compétence correction-experte ne le
-fournit pas) : il est dérivé du chemin sur disque, convention
-`ingest/<code_pays>/<epreuve>/...json` - voir _country_code_from_path.
+Le pays n'est jamais résolu depuis le JSON : il est dérivé du chemin sur disque,
+convention `ingest/<code_pays>/<epreuve>/...json` (voir _country_code_from_path) pour
+un exercice, hérité de l'épreuve source pour un cours. La compétence fournit désormais
+aussi un champ `pays` (voir SKILL.md) censé reproduire ce même code - _validate_pays_
+matches_country s'en sert uniquement comme signal de contrôle redondant (erreur si
+incohérent), jamais comme source de vérité.
 """
 
 import json
+import os
 import re
+import subprocess
+import sys
 import unicodedata
+from datetime import datetime
+from functools import lru_cache
+from io import BytesIO
 from pathlib import Path
 
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from PIL import Image, UnidentifiedImageError
 from django.db import transaction
+from django.utils import timezone
 
 from .ingestion_repairs import (
+    _dedupe_exercise_heading,
     _dedupe_question_enonce,
     _flag_part_headers_in_intro,
+    _merge_series_from_folder_name,
+    _repair_dict_shaped_cours_sections,
     _repair_double_json_escaping,
     _repair_glued_hline,
     _repair_missing_exercise_heading,
@@ -39,7 +54,8 @@ from .ingestion_repairs import (
     _repair_narrow_array_columns,
     _strip_em_dash,
 )
-from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, Origine, OrigineFigure, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag, TypeReponse, _join_fr
+from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, _join_fr
+from programme.models import Module, Savoir
 
 
 class IngestionError(Exception):
@@ -79,28 +95,73 @@ MATIERE_MAP = {
     "maths": "MATHS",
     "physique-chimie": "PHYSIQUE_CHIMIE",
     "physique chimie": "PHYSIQUE_CHIMIE",
-    # Certaines épreuves (ex. le Congo) traitent Physique et Chimie comme deux
-    # matières distinctes sur la couverture, alors que le référentiel les regroupe
-    # en une seule Subject PHYSIQUE_CHIMIE - voir Subject.
-    "physique": "PHYSIQUE_CHIMIE",
-    "chimie": "PHYSIQUE_CHIMIE",
+    # Décision utilisateur du 2026-08-08 : Physique et Chimie sont deux Subject à part
+    # entière (avant cette date, toutes deux étaient conflatées vers PHYSIQUE_CHIMIE -
+    # voir SUBJECT_FAMILIES et la logique de "promotion" dans ingest_exercise pour le
+    # cas réel d'une épreuve qui mélange les deux, ex. bac-d-physique-chimie-1995-
+    # cameroun ou bac-c-physique-chimie-2016-congo, où le matiere déclaré varie déjà
+    # par exercice au sein d'un même epreuve_source). PHYSIQUE_CHIMIE reste la Subject
+    # à utiliser quand la source déclare littéralement les deux ensemble, ou quand la
+    # discipline exacte n'est pas déterminable - jamais supprimée ni renommée.
+    "physique": "PHYSIQUE",
+    "chimie": "CHIMIE",
     "sciences de la vie et de la terre": "SVT",
     "svt": "SVT",
+    # Nom officiel actuel de la matière au BAC camerounais (constaté sur bac-c-ti-
+    # svteehb-2024-cameroun, série C-TI) : "Sciences de la Vie et de la Terre, Éducation
+    # à l'Environnement, Hygiène et Biotechnologie" - même matière que SVT, juste
+    # l'intitulé complet/à jour du programme (contenu vérifié identique : osmose,
+    # immunologie, génétique... rien de spécifiquement "environnement/hygiène" qui
+    # justifierait une Subject à part), pas une discipline distincte.
+    "svteehb": "SVT",
     "francais": "FRANCAIS",
     "langue francaise": "FRANCAIS",
+    # Composantes de l'épreuve de Français au BEPC camerounais (jamais notées comme
+    # une seule épreuve "Français" - le sujet source distingue ces intitulés par
+    # exercice/partie), toutes vues sur bepc-etude-de-texte-*/bepc-orthographe-2016-
+    # cameroun : pas des matières à part, la même Subject FRANCAIS que le reste du
+    # corpus.
+    "etude de texte": "FRANCAIS",
+    "expression ecrite": "FRANCAIS",
+    "orthographe": "FRANCAIS",
     "philosophie": "PHILOSOPHIE",
     "histoire-geographie": "HISTOIRE_GEO",
     "histoire geographie": "HISTOIRE_GEO",
     "histoire-geo": "HISTOIRE_GEO",
+    # Décision utilisateur du 2026-08-11 : le BEPC camerounais examine parfois Histoire
+    # et Géographie séparément (contrairement au Probatoire/BAC, toujours combinés,
+    # voir bepc-histoire-2024-blanc-cameroun / bepc-geographie-2026-cameroun) - rattaché
+    # au même code HISTOIRE_GEO plutôt qu'une Subject dédiée par matière, pour que ces
+    # épreuves restent visibles à un élève qui filtre sur "Histoire-Géo".
+    "histoire": "HISTOIRE_GEO",
+    "geographie": "HISTOIRE_GEO",
     "anglais": "ANGLAIS",
+    # Deuxième langue vivante, examinée au BEPC camerounais (voir bepc-espagnol-2018-
+    # cameroun) - décision utilisateur du 2026-08-15 : Subject à part entière, jamais un
+    # alias vers ANGLAIS, un élève filtrant sur "Anglais" n'ayant rien à faire d'une
+    # épreuve d'espagnol. Contenu resté bloqué à l'ingestion jusqu'ici (5 fichiers en
+    # erreur "Matière inconnue" à chaque run), faute d'exister au référentiel.
+    "espagnol": "ESPAGNOL",
     "economie": "ECONOMIE",
     "droit": "DROIT",
+    "education civique": "EDUCATION_CIVIQUE",
+    "education a la citoyennete": "EDUCATION_CIVIQUE",  # synonyme vu sur bepc-ecm-2026-cameroun ("ECM" = Éducation à la Citoyenneté et à la Morale).
     "litterature": "LITTERATURE",
     "litterature ou culture generale": "LITTERATURE",
+    "litterature / culture generale": "LITTERATURE",  # variante slash-espacé, vue sur bac-c-e-lit-cg-2017-cameroun.
+    "litterature/culture generale": "LITTERATURE",  # même variante, sans espaces, vue sur bac-c-d-e-ti-lit-cg-2025-corrige-cameroun.
+    "litterature et culture generale": "LITTERATURE",  # variante "et" plutôt que "/", vue sur bac-c-d-e-ti-lit-cg-2023-cameroun.
     "culture generale": "LITTERATURE",
     "eps": "EPS",
     "education physique et sportive": "EPS",
     "education physique": "EPS",
+    "informatique": "INFORMATIQUE",
+    # Matière officielle distincte au BEPC camerounais (une seule épreuve couvrant les
+    # trois volets), à ne pas confondre avec PHYSIQUE_CHIMIE (Probatoire/BAC, qui ne
+    # couvre pas la technologie) - décision utilisateur du 2026-08-08 : nouvelle Subject
+    # dédiée plutôt qu'un alias vers PHYSIQUE_CHIMIE, pour ne pas perdre le volet
+    # technologie dans l'intitulé affiché à l'élève.
+    "physique-chimie-technologie": "PHYSIQUE_CHIMIE_TECH",
 }
 
 # Tolère l'ancienne nomenclature (A/B/C/D/F/G) ET la nomenclature actuelle.
@@ -125,14 +186,44 @@ EXAMEN_MAP = {
     "bfem": Examen.BEPC,  # nom sénégalais du même niveau (fin de collège) - voir ExamenLabel.
     "probatoire": Examen.PROBATOIRE,
     "bac": Examen.BAC,
+    "baccalaureat": Examen.BAC,  # nom complet en toutes lettres, vu sur bac-d-physique-chimie-1995/1996/1997 et bac-d-ti-physique-1999-2016-cameroun (60 fichiers) - _normalize() a déjà retiré l'accent sur "baccalauréat".
+    # "bac_blanc" (vu sur bac-d-ti-maths-2026-cameroun, 5 fichiers) : le niveau réel est
+    # bien BAC, le caractère "blanc"/non-officiel de l'épreuve est déjà porté par
+    # `origine` (Origine.BLANC ou Origine.ETABLISSEMENT selon le cas) - un examen blanc
+    # cible quand même un (examen, série) existant, il n'a jamais été un niveau d'examen
+    # à part entière (voir Origine, docstring). Même défaut de mélange examen/origine que
+    # "Cameroun" dans ORIGINE_MAP (_resolve_origine) : dérive stochastique de la
+    # compétence, pas une ambiguïté réelle du référentiel.
+    "bac_blanc": Examen.BAC,
+    "bac blanc": Examen.BAC,
     "autre": Examen.AUTRE,
+    # ATTENTION : aucun Cursus n'existe (ni n'est jamais seedé par seed_country) pour
+    # Examen.AUTRE - un examen dont la valeur résout ici échouera toujours la résolution
+    # de Cursus plus bas avec "Cursus introuvable", série ou pas. N'a jamais été exercé
+    # en pratique par le corpus existant ; laissé tel quel (pas notre bug à corriger sans
+    # cas réel pour en déterminer le bon niveau cible) plutôt que supprimé.
     "devoir surveille": Examen.AUTRE,
+    # "devoir harmonisé" (vu sur terminale-c-maths-jean-tabi-2025-2026, 4 fichiers,
+    # serie="C", etablissement="Collège Jean Tabi d'Étoudi ... Période 5") : contrairement
+    # à "devoir surveille" juste au-dessus, il ne s'agit pas ici d'un niveau à part -
+    # coefficient (7) et durée (4h) correspondent exactement au BAC C Maths, l'épreuve
+    # cible bien le niveau Terminale C = BAC C, simplement organisée en interne par
+    # l'établissement (déjà porté par origine="etablissement") plutôt que par l'examen
+    # national - donc Examen.BAC ici, jamais Examen.AUTRE (qui échouerait la résolution
+    # de Cursus, voir juste au-dessus).
+    "devoir harmonise": Examen.BAC,
+    "devoir_harmonise": Examen.BAC,
 }
 
 DIFFICULTE_MAP = {
     "faible": Difficulte.FAIBLE,
     "moyenne": Difficulte.MOYENNE,
     "elevee": Difficulte.ELEVEE,
+}
+
+NATURE_MAP = {
+    "theorique": NatureEpreuve.THEORIQUE,
+    "pratique": NatureEpreuve.PRATIQUE,
 }
 
 ORIGINE_MAP = {
@@ -144,6 +235,7 @@ ORIGINE_MAP = {
     # un sujet officiel classique, sans distinction visible pour l'élève.
     "compilation": Origine.OFFICIEL,
     "examen blanc": Origine.BLANC,
+    "examen_blanc": Origine.BLANC,  # variante underscore, vu sur bac-c-maths-blanc-2003-cameroun - même dérive que "bac_blanc" dans EXAMEN_MAP.
     "blanc": Origine.BLANC,
     "etablissement": Origine.ETABLISSEMENT,
     "epreuve d'etablissement": Origine.ETABLISSEMENT,
@@ -151,7 +243,7 @@ ORIGINE_MAP = {
 }
 
 REQUIRED_KEYS = [
-    "epreuve_source", "numero_exercice", "matiere", "serie", "examen",
+    "epreuve_source", "numero_exercice", "matiere", "examen",
 ]
 
 
@@ -174,6 +266,15 @@ def _country_code_from_path(path):
     return parts[idx + 1]
 
 
+# Ces trois résolveurs sont des lookups purs (même entrée -> même sortie tant que le
+# référentiel Country/Subject/Series/Cursus ne change pas) mais sont appelés une fois
+# PAR FICHIER ingéré - sur un dossier de plusieurs centaines de fichiers partageant
+# tous le même pays/matière/cursus (ex. tout un lot "bac-c-d-chimie-*-cameroun"), ça
+# fait des centaines de requêtes identiques pour la même réponse. lru_cache les rend
+# gratuits après le premier appel ; `run_ingestion` vide le cache à chaque exécution
+# (voir son propre commentaire) pour ne jamais servir une réponse obsolète d'un run
+# précédent si le référentiel a changé entre-temps (ex. Subject ajouté depuis l'admin).
+@lru_cache(maxsize=None)
 def _resolve_country(code):
     if not code:
         raise IngestionError(
@@ -186,6 +287,7 @@ def _resolve_country(code):
         raise IngestionError(f"Pays inconnu : {code!r} - créez d'abord ce Country en base.")
 
 
+@lru_cache(maxsize=None)
 def _resolve_subject(matiere_raw, country):
     code = MATIERE_MAP.get(_normalize(matiere_raw))
     if not code:
@@ -198,6 +300,23 @@ def _resolve_subject(matiere_raw, country):
         raise IngestionError(f"Subject introuvable en base pour le code {code!r} et le pays {country}.")
 
 
+def _subject_family_codes(code):
+    """
+    Tous les codes de Subject d'une même famille (ex. {PHYSIQUE, CHIMIE,
+    PHYSIQUE_CHIMIE}), à traiter comme "la même épreuve potentielle" pour un même
+    epreuve_source - voir SUBJECT_FAMILIES et son usage dans ingest_exercise. Symétrique
+    : PHYSIQUE et CHIMIE renvoient tous deux la famille complète (pas seulement
+    {code, combiné}), sans quoi un exercice de Chimie ne retrouverait jamais le Lesson
+    déjà créé par un exercice de Physique de la même épreuve - c'est précisément le
+    mécanisme anti-fragmentation. Toujours au moins {code} lui-même : comportement
+    inchangé pour toute matière hors famille (l'écrasante majorité des cas).
+    """
+    combined = SUBJECT_FAMILIES.get(code, code)
+    members = {k for k, v in SUBJECT_FAMILIES.items() if v == combined}
+    return {combined, *members} if members else {code}
+
+
+@lru_cache(maxsize=None)
 def _resolve_cursus_list(examen_raw, serie_raw, country):
     """
     Retourne la liste des Cursus concernés (plusieurs si l'épreuve est commune à
@@ -205,6 +324,11 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
     partagé entre pays, mais Subject/Series/(country, examen, série) sont propres à
     chaque pays - sans ce filtre, deux pays partageant un même (examen, série) (ex:
     BAC Série C ailleurs qu'au Cameroun) feraient lever *.MultipleObjectsReturned.
+
+    Retourne un tuple (pas une liste) : la valeur est mise en cache par lru_cache et
+    donc potentiellement partagée entre plusieurs appelants - un tuple immuable évite
+    qu'un appelant qui la muterait par erreur ne corrompe silencieusement le cache
+    pour tous les autres fichiers du même lot.
     """
     examen = EXAMEN_MAP.get(_normalize(examen_raw))
     if not examen:
@@ -212,7 +336,7 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
 
     if examen == Examen.BEPC:
         try:
-            return [Cursus.objects.get(country=country, examen=examen, series__isnull=True)]
+            return (Cursus.objects.get(country=country, examen=examen, series__isnull=True),)
         except Cursus.DoesNotExist:
             raise IngestionError(f"Cursus BEPC introuvable en base pour {country}.")
 
@@ -233,7 +357,7 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
         except (Series.DoesNotExist, Cursus.DoesNotExist):
             raise IngestionError(f"Cursus introuvable pour pays={country}, examen={examen_raw!r}, série={part!r}.")
 
-    return cursus_list
+    return tuple(cursus_list)
 
 
 def _format_coefficient(coefficient_raw):
@@ -249,15 +373,158 @@ def _format_coefficient(coefficient_raw):
     return str(coefficient_raw or "")
 
 
-def _resolve_origine(origine_raw):
+def _resolve_origine(origine_raw, country):
     """Absent du JSON (compétence pas encore mise à jour, ou simplement omis pour un
-    sujet officiel) -> OFFICIEL, le cas très largement majoritaire."""
+    sujet officiel) -> OFFICIEL, le cas très largement majoritaire.
+
+    Tolère aussi le nom du pays lui-même comme valeur de `origine` (ex. "Cameroun") :
+    un défaut constaté à deux reprises sur des lots de physique-chimie distincts
+    (bac-c-e-physique-2014/2015, puis bac-c(-e)-physique-2017 à 2022-cameroun, 36
+    fichiers au total), toujours pour une épreuve par ailleurs authentiquement
+    officielle - jamais rencontré pour un cas blanc/etablissement/autre, qui n'a aucune
+    raison de coïncider avec un nom de pays. Sans dépendance dure à `country` : reste
+    `None`-safe pour un éventuel appelant qui ne l'aurait pas encore résolu."""
     if not origine_raw:
         return Origine.OFFICIEL
-    origine = ORIGINE_MAP.get(_normalize(origine_raw))
-    if not origine:
-        raise IngestionError(f"Origine inconnue : {origine_raw!r}. Attendu officiel/examen blanc/etablissement/autre.")
-    return origine
+    normalized = _normalize(origine_raw)
+    origine = ORIGINE_MAP.get(normalized)
+    if origine:
+        return origine
+    if country and normalized == _normalize(country.label):
+        return Origine.OFFICIEL
+    raise IngestionError(f"Origine inconnue : {origine_raw!r}. Attendu officiel/examen blanc/etablissement/autre.")
+
+
+def _resolve_nature_epreuve(nature_raw):
+    """
+    Champ optionnel (contrairement à `origine`/`examen`) : absent ou vide -> chaîne
+    vide (pas de valeur, `Lesson.nature_epreuve` reste blank) plutôt qu'une erreur -
+    la distinction Théorique/Pratique n'existe pas pour toutes les matières et la
+    compétence ne doit jamais être forcée à en inventer une. Présent mais hors liste
+    fermée -> erreur, même garde-fou que les autres champs contraints (une valeur
+    "raisonnable" mais mal orthographiée doit être corrigée à la source, pas
+    silencieusement ignorée)."""
+    if not nature_raw:
+        return ""
+    nature = NATURE_MAP.get(_normalize(nature_raw))
+    if not nature:
+        raise IngestionError(f"Nature d'épreuve inconnue : {nature_raw!r}. Attendu théorique/pratique (ou absent).")
+    return nature
+
+
+def _validate_pays_matches_country(pays_raw, country):
+    """
+    SKILL.md (mode automatisation ET mode cours) documente désormais un champ `pays`
+    (code ISO 3166-1 alpha-2 minuscule) censé toujours reproduire le pays réellement
+    résolu - le segment `<code_pays>` du dossier `ingest/<code_pays>/` pour un
+    exercice, hérité de l'épreuve source pour un cours (voir ingest_cours). Ce module
+    continue de résoudre `country` uniquement depuis cette source structurelle, jamais
+    depuis ce champ (raison documentée en tête de fichier : la compétence ne fournissait
+    pas ce champ à l'origine, et le dossier reste la source de vérité même maintenant
+    qu'elle le fait) - `pays` sert donc de signal de contrôle redondant, pas de valeur
+    à consommer.
+
+    Absent (fichier généré avant l'ajout du champ à la compétence, ou par une version
+    du skill qui ne le fournit pas encore) : aucune vérification, comportement inchangé
+    - c'est le cas de tout le corpus `ingest/` existant au moment où ce contrôle a été
+    ajouté. Présent et incohérent avec le pays réellement résolu (ex. contenu déposé
+    dans le mauvais dossier, ou dérive du même type que celle documentée pour `origine`) :
+    erreur explicite plutôt qu'une incohérence silencieuse entre le pays affiché et le
+    pays réel de l'exercice/cours.
+    """
+    if not pays_raw:
+        return
+    normalized = _normalize(pays_raw)
+    if normalized != country.code.lower():
+        raise IngestionError(
+            f"Le champ 'pays' ({pays_raw!r}) ne correspond pas au pays résolu "
+            f"({country.code.lower()!r}, déduit du dossier ingest/<code_pays>/ pour un "
+            "exercice, ou hérité de l'épreuve source pour un cours).",
+        )
+
+
+def _cours_sibling_rappel_id_map(source_dir):
+    """
+    Index {cours_id: rappel_id} construit à partir des fichiers cours déjà présents
+    dans `source_dir` - toujours le même dossier que l'exercice source (voir
+    run_ingestion, qui ingère systématiquement tous les exercices d'un dossier avant
+    ses cours), donc ces fichiers existent déjà sur disque même si pas encore en base.
+
+    Filet de secours pour un défaut constaté à deux reprises sur des lots de
+    physique-chimie distincts (bac-c-e-physique-2014/2015, puis bac-c(-e)-physique-2017
+    à 2022-cameroun, 36 fichiers au total à ce jour) : une entrée `rappels_de_methode`
+    perd son `id` (requis, external_id du RappelDeMethode) et ne laisse que `cours_id` -
+    un identifiant de bookkeeping interne à la compétence, normalement optionnel et
+    jamais lu par ailleurs dans ce module (voir _link_rappels_lies plus bas, qui calcule
+    le lien Cours -> RappelDeMethode côté base, jamais depuis ce JSON). Quand le cours
+    correspondant a déjà été généré, son propre fichier contient la valeur perdue dans
+    `source.rappel_id` (l'exercice source ne peut être faux : c'est de là que ce cours a
+    été dérivé) - on la relit ici plutôt que de la deviner.
+
+    Parcourt TOUS les `*.json` du dossier (pas seulement `*_cours_*.json`) et filtre par
+    contenu (présence de `cours_id` + `source.rappel_id`), comme run_ingestion le fait
+    déjà pour distinguer cours/exercice - même raison : le séparateur entre "cours" et
+    le slug n'est pas fiable (`_cours_bijection-...` vu sur la plupart du corpus, mais
+    `_cours-bijection-...` avec un tiret vu sur bac-c-maths-1985-1992-cameroun, 5
+    dossiers, qui faisait manquer ces fichiers entièrement - le filtre par contenu
+    ci-dessous ne dépend d'aucune convention de nommage).
+    """
+    mapping = {}
+    for cours_file in Path(source_dir).glob("*.json"):
+        try:
+            cours_data = json.loads(cours_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        cours_id = cours_data.get("cours_id")
+        rappel_id = (cours_data.get("source") or {}).get("rappel_id")
+        if cours_id and rappel_id:
+            mapping[cours_id] = rappel_id
+    return mapping
+
+
+def _lesson_from_source_dir(source_dir):
+    """
+    Retrouve la Lesson d'une épreuve depuis son dossier sur disque, en relisant le
+    `epreuve_source` déclaré par les fichiers exercices qui y vivent - la valeur exacte
+    avec laquelle ingest_exercise a créé cette Lesson, jamais un slug reconstruit depuis
+    le nom du dossier.
+
+    Dernier recours pour rattacher un cours dont le rappel source est introuvable (voir
+    ingest_cours) : sur les 87 fichiers concernés, seuls 11 portent `source.epreuve_source`,
+    mais les 5 dossiers ont chacun un et un seul `epreuve_source` côté exercices - le
+    dossier identifie donc l'épreuve sans ambiguïté là où le JSON du cours ne dit rien.
+
+    Renvoie None dès qu'il y a le moindre doute (dossier inconnu, aucun exercice lisible,
+    ou plusieurs épreuves mélangées dans le même dossier) : un cours mal rattaché serait
+    pire qu'un cours non ingéré.
+    """
+    if not source_dir:
+        return None
+
+    sources = set()
+    for sibling in Path(source_dir).glob("*.json"):
+        try:
+            raw = json.loads(sibling.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for item in raw if isinstance(raw, list) else [raw]:
+            # Même filtre par contenu que run_ingestion pour distinguer exercice et cours
+            # (voir _cours_sibling_rappel_id_map) : aucune convention de nommage.
+            if isinstance(item, dict) and item.get("epreuve_source") and "sections" not in item:
+                sources.add(item["epreuve_source"])
+
+    if len(sources) != 1:
+        return None
+
+    lessons = Lesson.objects.filter(epreuve_source=sources.pop())
+    country_code = _country_code_from_path(Path(source_dir))
+    if country_code:
+        lessons = lessons.filter(cursus__country__code__iexact=country_code)
+    # Plusieurs Lesson peuvent partager un même epreuve_source (une épreuve mixte
+    # Physique/Chimie donne une Lesson par matière, voir ingest_exercise) : elles
+    # dérivent alors du même sujet, donc même pays et même cursus - la première suffit
+    # pour ce dont ingest_cours a besoin.
+    return lessons.first()
 
 
 _CHOIX_PREFIX_RE = re.compile(r"^\s*([A-Za-z])\)\s*(.*)$", re.DOTALL)
@@ -334,6 +601,116 @@ def _get_or_create_tags(names):
     return tags
 
 
+def _resolve_savoir_officiel(raw, subject):
+    """
+    Référence optionnelle vers le référentiel programme officiel (programme.Module/
+    Savoir) - {"classe": "1ere", "serie_label": "C-E", "module_numero": "21",
+    "savoir_numero": "II"} ("serie_label" vide pour le BEPC, voir Module.serie_label).
+    Absent -> None, comportement inchangé pour tout appelant qui ne fournit pas ce
+    champ. Présent mais non résolvable -> IngestionError : mieux vaut échouer fort
+    qu'ignorer en silence une référence fausse fournie par un skill.
+    """
+    if not raw:
+        return None
+    if not isinstance(raw, dict):
+        raise IngestionError(f"savoir_officiel doit être un objet : {raw!r}")
+
+    module_numero = str(raw.get("module_numero") or "").strip()
+    if not module_numero:
+        raise IngestionError("savoir_officiel.module_numero manquant.")
+    classe = str(raw.get("classe") or "").strip()
+    serie_label = str(raw.get("serie_label") or "").strip()
+    savoir_numero = str(raw.get("savoir_numero") or "").strip()
+
+    try:
+        module = Module.objects.get(subject=subject, classe=classe, serie_label=serie_label, numero=module_numero)
+    except Module.DoesNotExist:
+        raise IngestionError(
+            f"savoir_officiel : aucun module officiel pour matière={subject.code!r} classe={classe!r} "
+            f"serie_label={serie_label!r} numero={module_numero!r}.",
+        )
+    try:
+        return module.savoirs.get(numero=savoir_numero)
+    except Savoir.DoesNotExist:
+        raise IngestionError(f"savoir_officiel : le module {module} n'a pas de savoir numéro {savoir_numero!r}.")
+    except Savoir.MultipleObjectsReturned:
+        # Ne devrait jamais arriver (numéro cense identifier un savoir de façon unique
+        # au sein d'un module) - mais un doublon de numérotation dans le fixture source
+        # (voir programme_officiel_cm_maths.json, incident du 2026-08-12 : "III." utilisé
+        # deux fois dans le même module) doit échouer proprement ici plutôt que de laisser
+        # remonter un Savoir.MultipleObjectsReturned brut jusqu'à l'appelant du skill.
+        raise IngestionError(
+            f"savoir_officiel : plusieurs savoirs numéro {savoir_numero!r} dans le module {module} - "
+            "doublon de numérotation à corriger dans le fixture programme officiel.",
+        )
+
+
+def _link_tags_to_savoir(tags, savoir):
+    """
+    Best-effort, jamais bloquant pour l'ingestion elle-même : lie chaque Tag résolu au
+    Savoir officiel visé, seulement s'il n'a pas déjà de rattachement (jamais
+    d'écrasement d'un mapping déjà validé à la main - voir Tag.savoir_officiel). Effet
+    de bord volontaire : chaque contenu neuf généré avec ce champ fait progresser le
+    mapping des tags historiques vers le référentiel officiel, sans attendre la passe
+    de curation dédiée pour ce tag précis.
+    """
+    if not savoir:
+        return
+    for tag in tags:
+        if tag.savoir_officiel_id is None:
+            tag.savoir_officiel = savoir
+            tag.save(update_fields=["savoir_officiel"])
+
+
+# Largeur maximale d'une figure une fois compressée - un scan de manuel ou une photo
+# de tableau arrive souvent à une résolution largement supérieure à ce qu'un écran de
+# lecture peut afficher utilement ; au-delà, ce ne sont que des octets gaspillés sur
+# une connexion mobile instable (voir l'audit UX, reco 5.2, et la stratégie hors-ligne
+# déjà en place côté frontend qui met précisément ces figures en cache le plus
+# longtemps de tout le contenu - vite_config.ts, CacheFirst sur /media/figures/).
+_FIGURE_MAX_WIDTH = 1200
+_FIGURE_WEBP_QUALITY = 82
+
+
+def _compress_figure_image(raw_bytes, filename):
+    """
+    Reconvertit une figure en WebP et la redimensionne à _FIGURE_MAX_WIDTH si besoin,
+    avant stockage - jamais à la volée (voir la docstring de _attach_figures et
+    l'audit UX, reco 5.2). Ne redimensionne jamais à la hausse une image déjà plus
+    petite que la cible.
+
+    En cas d'échec (fichier corrompu, format non reconnu par Pillow) : retombe sur les
+    octets et le nom de fichier d'origine plutôt que de faire échouer l'ingestion de
+    tout l'exercice pour une seule figure - même philosophie que le reste de cette
+    fonction (voir sans_fichier/illisibles_indispensables dans _attach_figures) : la
+    qualité d'une figure est un problème pour un humain à trancher plus tard, jamais
+    un motif de blocage automatique.
+    """
+    try:
+        image = Image.open(BytesIO(raw_bytes))
+        image.load()
+    except (UnidentifiedImageError, OSError):
+        return raw_bytes, filename
+
+    if image.mode not in ("RGB", "L"):
+        # RGBA/P/LA (transparence, palette) : aplati sur fond blanc - une figure de
+        # cours (schéma, graphique, tableau scanné) n'a aucune raison d'avoir besoin
+        # d'un canal alpha, et le WebP avec perte utilisé ici ne le conserverait pas
+        # de toute façon.
+        rgba = image.convert("RGBA")
+        background = Image.new("RGB", rgba.size, "white")
+        background.paste(rgba, mask=rgba.split()[-1])
+        image = background
+
+    if image.width > _FIGURE_MAX_WIDTH:
+        ratio = _FIGURE_MAX_WIDTH / image.width
+        image = image.resize((_FIGURE_MAX_WIDTH, round(image.height * ratio)), Image.LANCZOS)
+
+    buffer = BytesIO()
+    image.save(buffer, format="WEBP", quality=_FIGURE_WEBP_QUALITY)
+    return buffer.getvalue(), f"{Path(filename).stem}.webp"
+
+
 def _attach_figures(exercise, figures_data, source_dir):
     """
     Crée un Figure par entrée de `figures_data`, en lisant le PNG depuis `source_dir`
@@ -358,12 +735,37 @@ def _attach_figures(exercise, figures_data, source_dir):
 
     questions = list(exercise.questions.all())
     illisibles_indispensables = []
+    sans_fichier = []
 
     for fig_data in figures_data:
+        if isinstance(fig_data, str):
+            # Constaté sur bac-c-physique-2024/bac-d-physique-2019/2022-cameroun (9
+            # fichiers) : la compétence a émis l'id de la figure comme simple chaîne
+            # au lieu de l'objet {"id", "fichier", ...} attendu - même défaut de forme
+            # que le cas "sans fichier" ci-dessous (aucun de ces id n'est référencé par
+            # un placeholder ![...] dans enonce/corrige_markdown, vérifié corpus-wide),
+            # donc traité identiquement : ignoré à l'ingestion plutôt que de faire
+            # échouer tout l'exercice pour une figure qui n'était de toute façon pas
+            # exploitable telle quelle.
+            sans_fichier.append(fig_data)
+            continue
         filename = fig_data.get("fichier")
         fig_id = fig_data.get("id")
-        if not filename or not fig_id:
-            raise IngestionError(f"Figure incomplète (id/fichier manquant) : {fig_data!r}")
+        if not fig_id:
+            raise IngestionError(f"Figure incomplète (id manquant) : {fig_data!r}")
+        if not filename:
+            # Cas fréquent sur les épreuves anciennes scannées (voir bac-d-ti-physique
+            # 1999-2016, probatoire-c-d-chimie 2008/2011/2013) : la compétence décrit
+            # une figure qu'elle sait avoir existé sur le sujet source (id + type +
+            # description) mais n'a pas pu en extraire une image exploitable - jamais
+            # référencée par un placeholder `![...]` dans enonce/corrige_markdown
+            # (vérifié corpus-wide, 2026-08 : aucun des cas rencontrés ne s'appuie sur
+            # l'image pour la lisibilité du texte), donc rien n'est perdu à l'ignorer
+            # plutôt qu'à faire échouer l'ingestion de tout l'exercice pour ça. Tracée
+            # dans les incertitudes (comme le filet "illisible" ci-dessous) pour qu'un
+            # humain puisse plus tard fournir l'image si elle s'avère nécessaire.
+            sans_fichier.append(fig_id)
+            continue
 
         image_path = source_dir / filename
         if not image_path.is_file():
@@ -378,10 +780,12 @@ def _attach_figures(exercise, figures_data, source_dir):
         lisibilite = str(fig_data.get("lisibilite") or "")
         origine = OrigineFigure.CORRIGE if _normalize(fig_data.get("origine_figure")) == "corrige" else OrigineFigure.ENONCE
 
+        compressed_bytes, stored_filename = _compress_figure_image(image_path.read_bytes(), filename)
+
         figure = Figure.objects.create(
             exercise=exercise,
             external_id=fig_id,
-            image=ContentFile(image_path.read_bytes(), name=filename),
+            image=ContentFile(compressed_bytes, name=stored_filename),
             page_source=page_source,
             type_figure=_strip_em_dash(str(fig_data.get("type") or "")),
             legende=_strip_em_dash(str(fig_data.get("legende") or "")),
@@ -390,15 +794,27 @@ def _attach_figures(exercise, figures_data, source_dir):
             origine=origine,
         )
 
+        # Le placeholder `![fig-N](nom_original.png)` livré par correction-experte
+        # porte l'id de la figure en texte alternatif, jamais une description utile à
+        # un lecteur d'écran (voir l'audit UX, reco 6.1) - remplacé ici par la légende
+        # déjà saisie par la compétence, ou à défaut le type de figure, plutôt que de
+        # laisser "fig-1" tel quel. Repli sur le remplacement brut du seul nom de
+        # fichier si jamais le placeholder ne respecte pas exactement cette convention
+        # (contenu plus ancien, ou variation de rédaction) - mieux vaut un lien
+        # fonctionnel sans alternative améliorée qu'un lien cassé.
+        alt_text = figure.legende or figure.type_figure or "Figure du corrigé"
+        placeholder_re = re.compile(r"!\[" + re.escape(fig_id) + r"\]\(" + re.escape(filename) + r"\)")
+        replacement = f"![{alt_text}]({figure.image.url})"
+
         for question in questions:
-            enonce = question.enonce_markdown.replace(filename, figure.image.url)
-            corrige = question.corrige_markdown.replace(filename, figure.image.url)
+            enonce = placeholder_re.sub(replacement, question.enonce_markdown).replace(filename, figure.image.url)
+            corrige = placeholder_re.sub(replacement, question.corrige_markdown).replace(filename, figure.image.url)
             if enonce != question.enonce_markdown or corrige != question.corrige_markdown:
                 question.enonce_markdown = enonce
                 question.corrige_markdown = corrige
                 question.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
 
-        intro = exercise.enonce_intro_markdown.replace(filename, figure.image.url)
+        intro = placeholder_re.sub(replacement, exercise.enonce_intro_markdown).replace(filename, figure.image.url)
         if intro != exercise.enonce_intro_markdown:
             exercise.enonce_intro_markdown = intro
             exercise.save(update_fields=["enonce_intro_markdown", "updated_at"])
@@ -414,6 +830,15 @@ def _attach_figures(exercise, figures_data, source_dir):
         note = (
             f"Figure(s) indispensable(s) mais illisible(s) : {', '.join(illisibles_indispensables)} - "
             "questions dépendantes non fiables."
+        )
+        if note not in exercise.incertitudes:
+            exercise.incertitudes = [note, *exercise.incertitudes]
+            exercise.save(update_fields=["incertitudes"])
+
+    if sans_fichier:
+        note = (
+            f"Figure(s) décrite(s) dans le JSON source sans fichier image fourni, ignorée(s) à "
+            f"l'ingestion : {', '.join(sans_fichier)}."
         )
         if note not in exercise.incertitudes:
             exercise.incertitudes = [note, *exercise.incertitudes]
@@ -461,18 +886,32 @@ def ingest_exercise(data, source_dir=None, force=False):
     if missing:
         raise IngestionError(f"Champs obligatoires manquants : {missing}")
 
-    questions_data = data.get("questions") or []
-    if not questions_data:
+    if not data.get("questions"):
         raise IngestionError("'questions' est requis et doit contenir au moins une entrée.")
 
     data, had_missing_heading = _repair_missing_exercise_heading(data)
+    # Après le filet ci-dessus, jamais avant : c'est aussi le repère qu'il vient
+    # éventuellement d'injecter dans l'intro qu'il faut dédupliquer d'avec celui
+    # déjà porté par la tête d'une question.
+    data, had_duplicate_heading = _dedupe_exercise_heading(data)
+
+    # Relu APRÈS les rustines, jamais avant : _dedupe_exercise_heading réécrit des
+    # entrées de `questions` (les précédentes ne touchaient que l'intro), et une
+    # référence capturée plus haut pointerait encore sur la liste d'origine - les
+    # corrections seraient alors silencieusement perdues à la création des Question.
+    questions_data = data["questions"]
 
     if source_dir is None:
         raise IngestionError("source_dir manquant : impossible de déterminer le pays de cet exercice.")
     country = _resolve_country(_country_code_from_path(source_dir))
+    _validate_pays_matches_country(data.get("pays"), country)
+
+    data, had_series_from_folder = _merge_series_from_folder_name(
+        data, source_dir, SERIE_MAP, _split_series,
+    )
 
     subject = _resolve_subject(data["matiere"], country)
-    cursus_list = _resolve_cursus_list(data["examen"], data.get("serie"), country)
+    nature_epreuve = _resolve_nature_epreuve(data.get("nature_epreuve"))
 
     year = None
     if data.get("annee"):
@@ -482,6 +921,33 @@ def ingest_exercise(data, source_dir=None, force=False):
             raise IngestionError(f"Année invalide : {data['annee']!r}")
 
     epreuve_source = data["epreuve_source"]
+    numero_exercice = str(data["numero_exercice"])
+
+    # Sortie rapide avant tout travail coûteux (résolution des cursus, transaction,
+    # création/mise à jour du Lesson) : sur un dossier de plusieurs centaines de
+    # fichiers déjà ingérés lors d'un run précédent, c'est le chemin emprunté pour
+    # l'écrasante majorité des fichiers à chaque nouvelle exécution - un seul SELECT
+    # (jointure Exercise -> Lesson) suffit à le confirmer, sans jamais toucher
+    # `_resolve_cursus_list` ni ouvrir de transaction. Vérifie exactement la même clé
+    # (lesson, numero_exercice) que le contrôle équivalent plus bas, juste résolue
+    # directement par jointure plutôt qu'en deux temps (chercher/créer le Lesson, puis
+    # chercher l'Exercise dessus). `force=True` (ré-import explicite depuis l'admin,
+    # jamais depuis run_ingestion) court-circuite volontairement ce raccourci et
+    # repasse par le chemin complet ci-dessous, seul à savoir supprimer puis recréer
+    # l'Exercise existant.
+    if not force:
+        existing = Exercise.objects.filter(
+            numero_exercice=numero_exercice,
+            lesson__epreuve_source=epreuve_source,
+            lesson__subject=subject,
+            lesson__year=year,
+            lesson__lesson_type=LessonType.CORR,
+            lesson__cursus__country=country,
+        ).first()
+        if existing:
+            return existing, False
+
+    cursus_list = _resolve_cursus_list(data["examen"], data.get("serie"), country)
 
     # Tout ce qui suit est all-or-nothing (y compris la création du Lesson s'il est
     # nouveau) : sans ce bloc, une IngestionError levée plus loin par _attach_figures
@@ -492,13 +958,37 @@ def ingest_exercise(data, source_dir=None, force=False):
     with transaction.atomic():
         # cursus est M2M : ne peut pas faire partie de la clé de get_or_create.
         # Une épreuve est identifiée par (source, matière, année) ; le(s) cursus s'y ajoutent ensuite.
-        # Filtré par pays (via cursus__country) pour ne jamais fusionner deux épreuves
-        # de pays différents qui partageraient par coïncidence (source, matière, année)
-        # - ex. deux "bac-blanc-maths-2024" non désambiguïsés dans leur epreuve_source.
+        # Filtré par pays (via cursus__country ET subject__country) pour ne jamais
+        # fusionner deux épreuves de pays différents qui partageraient par coïncidence
+        # (source, matière, année) - ex. deux "bac-blanc-maths-2024" non désambiguïsés
+        # dans leur epreuve_source.
+        #
+        # subject__code__in=family_codes (pas juste subject=subject) : une épreuve peut
+        # mélanger plusieurs disciplines d'une même famille au sein d'un même
+        # epreuve_source, avec un matiere qui varie par exercice (constaté sur
+        # bac-d-physique-chimie-1995-cameroun : exercices 1-2 "Physique", 3-4 "Chimie" ;
+        # et bac-c-physique-chimie-2016-congo : exercices 1-2 "Chimie", 3-5 "Physique").
+        # Sans cette recherche élargie, le 2e groupe créerait un second Lesson pour la
+        # même épreuve physique au lieu de rejoindre le premier - voir la promotion
+        # ci-dessous, qui élargit alors la Subject du Lesson existant plutôt que de le
+        # fragmenter. `family_codes` ne contient que {subject.code} pour toute matière
+        # hors famille (l'écrasante majorité) : comportement strictement inchangé.
+        family_codes = _subject_family_codes(subject.code)
         lesson = Lesson.objects.filter(
-            epreuve_source=epreuve_source, subject=subject, year=year, lesson_type=LessonType.CORR,
-            cursus__country=country,
+            epreuve_source=epreuve_source, subject__code__in=family_codes, subject__country=country,
+            year=year, lesson_type=LessonType.CORR, cursus__country=country,
         ).distinct().first()
+        if lesson is not None and lesson.subject_id != subject.id and len(family_codes) > 1:
+            # Promotion, jamais de retour en arrière : une fois qu'une épreuve s'avère
+            # multidisciplinaire (ou explicitement déclarée "Physique-Chimie"), le
+            # Lesson reste sous la Subject combinée pour le reste de son existence,
+            # même si un exercice ultérieur redéclare une seule discipline - voir
+            # SUBJECT_FAMILIES. get(..., subject.code) : no-op si le Lesson est déjà
+            # sous la Subject combinée (cas le plus fréquent une fois promu une 1re fois).
+            combined_code = SUBJECT_FAMILIES.get(subject.code, subject.code)
+            if lesson.subject.code != combined_code:
+                lesson.subject = Subject.objects.get(code=combined_code, country=country)
+                lesson.save(update_fields=["subject", "updated_at"])
         if lesson is None:
             # Regroupe par examen pour ne pas répéter le diplôme quand l'épreuve concerne
             # plusieurs séries : "BAC C et E" plutôt que "BAC - Série C / BAC - Série E".
@@ -511,7 +1001,7 @@ def ingest_exercise(data, source_dir=None, force=False):
                 f"{g['examen_display']} {_join_fr(g['series'])}" if g["series"] else g["examen_display"]
                 for g in groups.values()
             )
-            origine = _resolve_origine(data.get("origine"))
+            origine = _resolve_origine(data.get("origine"), country)
             etablissement = str(data.get("etablissement") or "")
 
             # Jamais de suffixe "Corrigé" : ce titre est affiché tel quel sur des
@@ -533,6 +1023,7 @@ def ingest_exercise(data, source_dir=None, force=False):
                 coefficient=_format_coefficient(data.get("coefficient")),
                 origine=origine,
                 etablissement=etablissement,
+                nature_epreuve=nature_epreuve,
             )
         for cursus in cursus_list:
             lesson.cursus.add(cursus)
@@ -550,10 +1041,12 @@ def ingest_exercise(data, source_dir=None, force=False):
         if not lesson.etablissement and data.get("etablissement"):
             lesson.etablissement = str(data["etablissement"])
             update_fields.append("etablissement")
+        if not lesson.nature_epreuve and nature_epreuve:
+            lesson.nature_epreuve = nature_epreuve
+            update_fields.append("nature_epreuve")
         if update_fields:
             lesson.save(update_fields=[*update_fields, "updated_at"])
 
-        numero_exercice = str(data["numero_exercice"])
         existing = Exercise.objects.filter(lesson=lesson, numero_exercice=numero_exercice).first()
         cours_par_external_id = {}
         if existing:
@@ -616,7 +1109,9 @@ def ingest_exercise(data, source_dir=None, force=False):
                 choix=choix,
                 reponse_correcte=reponse_correcte,
             )
-            question.themes.set(_get_or_create_tags(q_data.get("themes")))
+            themes = _get_or_create_tags(q_data.get("themes"))
+            question.themes.set(themes)
+            _link_tags_to_savoir(themes, _resolve_savoir_officiel(q_data.get("savoir_officiel"), subject))
 
             for rappel_data in q_data.get("rappels_de_methode") or []:
                 # _strip_em_dash appliqué identiquement ici et sur corrige_markdown
@@ -625,8 +1120,19 @@ def ingest_exercise(data, source_dir=None, force=False):
                 # diffère entre les deux casserait ce rapprochement silencieusement.
                 # Le rappel reste rattaché à l'Exercise (pas à la Question) : Cours
                 # continue de se générer au niveau de l'épreuve, pas de la sous-question.
+                rappel_id = rappel_data.get("id")
+                if not rappel_id and rappel_data.get("cours_id"):
+                    # Voir _cours_sibling_rappel_id_map : `id` a été perdu, `cours_id`
+                    # (bookkeeping) survit - on retrouve la valeur perdue via le fichier
+                    # cours sibling plutôt que d'échouer ou d'inventer un identifiant.
+                    rappel_id = _cours_sibling_rappel_id_map(source_dir).get(rappel_data["cours_id"])
+                if not rappel_id:
+                    raise IngestionError(
+                        f"rappels_de_methode : entrée sans 'id' pour la question {q_data.get('numero')!r} "
+                        "('cours_id' absent ou non résoluble depuis un fichier cours sibling).",
+                    )
                 RappelDeMethode.objects.get_or_create(
-                    external_id=rappel_data["id"],
+                    external_id=rappel_id,
                     defaults={
                         "exercise": exercise,
                         # `.get(key) or ""` et pas `.get(key, "")` : correction-experte
@@ -636,7 +1142,21 @@ def ingest_exercise(data, source_dir=None, force=False):
                         # valeur JSON vaut déjà null - le None traverse alors jusqu'à
                         # la colonne NOT NULL (DataError Postgres constaté en prod).
                         "competence": _strip_em_dash(rappel_data.get("competence") or ""),
-                        "contenu_markdown": _strip_em_dash(rappel_data.get("contenu_markdown") or ""),
+                        # "texte" (pas "contenu_markdown") : vu sur ~110 rappels répartis
+                        # sur 7 dossiers d'épreuves de maths anciennes (bac-c-maths-1985/
+                        # 1986/1989/1990/1991/1992/blanc-2003-cameroun), toujours couplé à
+                        # la forme `id` absent + `cours_id` présent ci-dessus (même lot,
+                        # vraisemblablement une convention de sortie plus ancienne du mode
+                        # cours) - sans ce repli, `contenu_markdown` restait silencieusement
+                        # vide : `id` se résolvait bien via le fichier cours sibling (pas
+                        # d'IngestionError), mais _annotate_cours_links (catalog.rendering)
+                        # ne peut jamais injecter le lien "[COURS_LINK:...]" sur un
+                        # RappelDeMethode dont contenu_markdown.strip() est vide (voir sa
+                        # garde `if r.cours_id and r.contenu_markdown.strip()`) - le lien
+                        # "Voir le cours complet" disparaissait silencieusement du corrigé.
+                        "contenu_markdown": _strip_em_dash(
+                            rappel_data.get("contenu_markdown") or rappel_data.get("texte") or "",
+                        ),
                     },
                 )
 
@@ -664,6 +1184,16 @@ def ingest_exercise(data, source_dir=None, force=False):
                 exercise.save(update_fields=["incertitudes"])
         if had_missing_heading:
             note = "Titre \"Exercice N\"/\"Problème\" absent de l'énoncé source, reconstruit automatiquement depuis numero_exercice/points à l'ingestion (voir _repair_missing_exercise_heading)."
+            if note not in exercise.incertitudes:
+                exercise.incertitudes = [note, *exercise.incertitudes]
+                exercise.save(update_fields=["incertitudes"])
+        if had_series_from_folder:
+            note = "Série(s) annoncée(s) par le nom du dossier mais absente(s) du champ 'serie' du JSON, ajoutée(s) automatiquement à l'ingestion (voir _merge_series_from_folder_name) - vérifier sur le sujet source si le nom du dossier dit vrai."
+            if note not in exercise.incertitudes:
+                exercise.incertitudes = [note, *exercise.incertitudes]
+                exercise.save(update_fields=["incertitudes"])
+        if had_duplicate_heading:
+            note = "Repère \"Exercice N\"/\"Problème\" présent à la fois dans l'intro et en tête d'une question, dédupliqué automatiquement à l'ingestion (voir _dedupe_exercise_heading)."
             if note not in exercise.incertitudes:
                 exercise.incertitudes = [note, *exercise.incertitudes]
                 exercise.save(update_fields=["incertitudes"])
@@ -696,12 +1226,16 @@ def _link_rappels_lies(cours, source):
         RappelDeMethode.objects.filter(external_id__in=external_ids).update(cours=cours)
 
 
-def ingest_cours(data):
+def ingest_cours(data, source_dir=None):
     """
     Ingère un objet JSON produit par le mode cours de correction-experte. Retourne
-    (cours, created). Lève IngestionError si le rappel de méthode source (déjà ingéré
-    via ingest_exercise) est introuvable - un cours ne peut pas exister sans épreuve
-    source tracée. Idempotent via `cours_id` (external_id).
+    (cours, created). Idempotent via `cours_id` (external_id).
+
+    Un cours ne peut pas exister sans épreuve source tracée : IngestionError si celle-ci
+    reste introuvable. En revanche le rappel de méthode précis dont le cours dérive peut
+    manquer sans être bloquant - voir la résolution de `lesson_source` plus bas : le cours
+    est alors publié rattaché à son épreuve, seul le lien rappel -> cours (le « voir le
+    cours » affiché dans le corrigé) reste absent, faute de rappel où l'accrocher.
 
     Valide et compile automatiquement (voir ingest_exercise) : le Cours passe directement
     en VALIDE et son content_markdown est compilé avant de retourner - visible côté
@@ -709,6 +1243,7 @@ def ingest_cours(data):
     """
     data, _ = _repair_double_json_escaping(data)
     data, _ = _repair_missing_matrix_row_separators(data)
+    data, _ = _repair_dict_shaped_cours_sections(data)
 
     meta = data.get("meta") or {}
     source = data.get("source") or {}
@@ -717,17 +1252,65 @@ def ingest_cours(data):
     if not cours_id or not meta.get("titre") or not meta.get("matiere") or not source.get("rappel_id"):
         raise IngestionError("Champs obligatoires manquants : cours_id, meta.titre, meta.matiere, source.rappel_id")
 
-    try:
-        rappel = RappelDeMethode.objects.select_related("exercise__lesson").get(external_id=source["rappel_id"])
-    except RappelDeMethode.DoesNotExist:
-        raise IngestionError(
-            f"RappelDeMethode introuvable pour source.rappel_id={source['rappel_id']!r} - "
-            "l'exercice source doit être ingéré avant le cours qui en dérive.",
-        )
-
+    # Vérifié avant de résoudre `rappel` : sur un dossier déjà ingéré lors d'un run
+    # précédent (le cas courant à chaque nouvelle exécution sur tout `ingest/`), ce
+    # seul lookup indexé (external_id, unique=True) suffit à confirmer qu'il n'y a
+    # rien à faire - inutile d'aller chercher le RappelDeMethode source (une jointure
+    # en plus) pour un cours qui existe déjà. Décale aussi, en bonus, la vérification
+    # "le rappel source existe" pour qu'elle ne s'applique qu'aux cours réellement à
+    # créer : un cours déjà ingéré reste idempotent même si son rappel source avait
+    # depuis disparu ou changé d'external_id, au lieu de faire échouer à tort un
+    # fichier qui n'avait de toute façon plus rien à ingérer.
     existing = Cours.objects.filter(external_id=cours_id).first()
     if existing:
+        # `cours_id` est déterministe, dérivé uniquement de la compétence et du
+        # niveau (voir SKILL.md) - jamais de l'épreuve source. Deux épreuves
+        # différentes couvrant la même compétence produisent donc légitimement le
+        # même `cours_id` : ce n'est pas seulement une ré-ingestion du même fichier,
+        # c'est aussi le cas normal d'une notion récurrente d'un examen à l'autre.
+        # Sans rattacher CE rappel-ci au Cours déjà existant, il resterait orphelin
+        # (cours_genere jamais mis à true) même si le Cours qu'il devrait pointer
+        # existe déjà et est publié - même geste que le dédoublonnage par titre
+        # ci-dessous, jamais de contenu recréé. `rappel` peut rester introuvable
+        # (source.rappel_id absent/changé) sans faire échouer l'idempotence : c'est
+        # exactement le cas que ce fast-path est censé tolérer (voir commentaire
+        # d'origine ci-dessus), on se contente alors de ne rien lier.
+        rappel = RappelDeMethode.objects.filter(external_id=source.get("rappel_id")).first()
+        if rappel and rappel.cours_id != existing.pk:
+            rappel.cours = existing
+            rappel.save(update_fields=["cours"])
+            _link_rappels_lies(existing, source)
         return existing, False
+
+    rappel = RappelDeMethode.objects.select_related("exercise__lesson").filter(
+        external_id=source["rappel_id"],
+    ).first()
+    # Repli sur la leçon quand le rappel source n'existe pas, pour un défaut constaté sur
+    # 87 fichiers (bac-a-anglais-2014 à 2017-cameroun, 85 ; bac-c-maths-1986-cameroun, 2) :
+    # la passe cours a généré un cours PAR QUESTION (source.rappel_id = "rdm-...-ex1-qI.3-0")
+    # alors que la passe exercices n'a émis qu'un rappel PAR EXERCICE ("rdm-...-ex1-0"), donc
+    # aucun des deux ne se rejoint. Ces cours - du contenu réel, déjà rédigé - échouaient à
+    # chaque run depuis, sans jamais être publiés.
+    #
+    # Le rappel sert à trois choses : le lien rappel -> cours, et l'héritage du pays et du
+    # cursus depuis la leçon dont il dérive. Sans lui, seul le premier est réellement perdu -
+    # la leçon reste identifiable par `source.epreuve_source`, le même champ que
+    # Lesson.epreuve_source (voir ingest_exercise), donc pays et cursus restent connus avec
+    # certitude plutôt que devinés. Publier vaut mieux que bloquer ; mais uniquement sur
+    # cette identification exacte : sans épreuve retrouvée, on échoue toujours plutôt que de
+    # rattacher un cours à peu près.
+    lesson_source = rappel.exercise.lesson if rappel else (
+        Lesson.objects.filter(epreuve_source=source.get("epreuve_source") or "").first()
+        # `source.epreuve_source` est optionnel côté compétence et absent de 76 des 87
+        # fichiers concernés - le dossier prend alors le relais.
+        or _lesson_from_source_dir(source_dir)
+    )
+    if lesson_source is None:
+        raise IngestionError(
+            f"RappelDeMethode introuvable pour source.rappel_id={source['rappel_id']!r}, et "
+            f"épreuve non identifiable (source.epreuve_source={source.get('epreuve_source')!r}, "
+            f"dossier={source_dir}) - l'exercice source doit être ingéré avant le cours qui en dérive.",
+        )
 
     # Dédoublonnage par titre : une même notion (ex. "Résolution d'équations du second
     # degré") peut être extraite de plusieurs épreuves différentes - avec la génération
@@ -739,16 +1322,18 @@ def ingest_cours(data):
     titre = _strip_em_dash(meta["titre"])
     duplicate = Cours.objects.filter(titre__iexact=titre, statut=StatutContenu.VALIDE).first()
     if duplicate:
-        rappel.cours = duplicate
-        rappel.save(update_fields=["cours"])
+        if rappel:
+            rappel.cours = duplicate
+            rappel.save(update_fields=["cours"])
         _link_rappels_lies(duplicate, source)
         return duplicate, False
 
     # Un Cours n'a pas de dossier source à lui (pas de source_dir ici, contrairement à
-    # ingest_exercise) : le pays se déduit du Cursus déjà résolu pour l'exercice dont
-    # il dérive plutôt que d'être re-parsé - garanti non vide, cursus est obligatoire
+    # ingest_exercise) : le pays se déduit du Cursus déjà résolu pour la leçon dont il
+    # dérive plutôt que d'être re-parsé - garanti non vide, cursus est obligatoire
     # sur Lesson (voir Lesson.cursus) et déjà peuplé à ce stade de l'ingestion.
-    country = rappel.exercise.lesson.cursus.first().country
+    country = lesson_source.cursus.first().country
+    _validate_pays_matches_country(meta.get("pays"), country)
     subject = _resolve_subject(meta["matiere"], country)
 
     # all-or-nothing, même raison que le bloc équivalent d'ingest_exercise : sans ce
@@ -774,13 +1359,16 @@ def ingest_cours(data):
         # plutôt que de re-parser ces champs. serie=null ("toutes séries") laisse cursus
         # vide : le cours reste alors accessible à tout abonné actif (voir has_access).
         if meta.get("serie"):
-            cours.cursus.set(rappel.exercise.lesson.cursus.all())
+            cours.cursus.set(lesson_source.cursus.all())
 
-        cours.tags.set(_get_or_create_tags(meta.get("tags")))
+        tags = _get_or_create_tags(meta.get("tags"))
+        cours.tags.set(tags)
+        _link_tags_to_savoir(tags, _resolve_savoir_officiel(meta.get("savoir_officiel"), subject))
         cours.compile_from_sections()
 
-        rappel.cours = cours
-        rappel.save(update_fields=["cours"])
+        if rappel:
+            rappel.cours = cours
+            rappel.save(update_fields=["cours"])
         _link_rappels_lies(cours, source)
 
     return cours, True
@@ -799,6 +1387,15 @@ def run_ingestion(path):
 
     Retourne {"files_found": int, "created": int, "skipped": int, "errors": [str, ...]}.
     """
+    # Vidé à chaque run (jamais laissé vivre entre deux appels) : voir le commentaire
+    # sur _resolve_country - garantit qu'un Country/Subject/Cursus ajouté ou modifié
+    # depuis l'admin entre deux runs est bien vu par celui-ci, tout en profitant du
+    # cache pour la durée d'un même run (le cas qui compte : des centaines de fichiers
+    # du même lot partagent le même pays/matière/cursus).
+    _resolve_country.cache_clear()
+    _resolve_subject.cache_clear()
+    _resolve_cursus_list.cache_clear()
+
     path = Path(path)
     # Tout composant de chemin préfixé par "_" (dossier ou fichier) est du tooling/état
     # interne, jamais du contenu à ingérer - convention déjà utilisée par "_quiz"
@@ -874,7 +1471,7 @@ def run_ingestion(path):
 
     for file_path, data in cours_items:
         try:
-            _, was_created = ingest_cours(data)
+            _, was_created = ingest_cours(data, source_dir=file_path.parent)
             created += 1 if was_created else 0
             skipped += 0 if was_created else 1
         except Exception as exc:
@@ -885,3 +1482,93 @@ def run_ingestion(path):
         "files_found": len(files), "created": created, "skipped": skipped, "errors": errors,
         "lesson_ids": sorted(lesson_ids),
     }
+
+
+# --- Ingestion en arrière-plan (bouton de l'admin) ---------------------------
+#
+# run_ingestion parcourt tout INGEST_DIR d'un bloc : ~30 s pour un dossier de 5 000
+# fichiers déjà tous ingérés (donc uniquement des lectures), bien davantage dès qu'il
+# reste du contenu neuf à écrire. C'est au-delà du `--timeout 30` de gunicorn (voir
+# backend/entrypoint.sh) : lancée depuis le thread de requête, l'ingestion faisait tuer
+# le worker en plein run (WORKER TIMEOUT), et l'admin renvoyait la page "Internal Server
+# Error" de gunicorn - alors même que l'ingestion avait déjà commencé à écrire en base,
+# chaque fichier étant dans sa propre transaction. Elle est donc lancée dans un processus
+# détaché (même pattern que catalog.sujet_pdf.queue_sujet_pdf_generation, déjà éprouvé
+# ici pour la génération des PDF), et le rapport - qui ne peut plus être renvoyé dans la
+# réponse - est écrit sur disque pour que la page admin l'affiche à l'actualisation.
+INGESTION_REPORT_PATH = Path(settings.BASE_DIR) / "logs" / "ingestion_report.json"
+
+
+def write_ingestion_report(report, path=INGESTION_REPORT_PATH):
+    """Écrit le rapport d'un run (voir read_ingestion_report pour sa lecture)."""
+    path = Path(path)
+    path.parent.mkdir(exist_ok=True)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+
+
+def read_ingestion_report(path=INGESTION_REPORT_PATH):
+    """
+    Rapport du dernier run - `status` valant "running" (processus lancé, pas encore
+    terminé), "done" ou "error". None tant qu'aucun run n'a eu lieu, ou si le fichier
+    est illisible : l'absence de rapport ne doit jamais empêcher la page de s'afficher.
+
+    Les horodatages sont réhydratés en datetime pour rester filtrables côté template.
+    """
+    try:
+        report = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    for key in ("started_at", "finished_at"):
+        try:
+            report[key] = datetime.fromisoformat(report[key])
+        except (KeyError, TypeError, ValueError):
+            pass
+    return report
+
+
+def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
+    """
+    Lance `manage.py ingest_corrections <path>` dans un processus détaché, complètement
+    en dehors du process serveur - voir le commentaire ci-dessus sur INGESTION_REPORT_PATH.
+    La commande écrit elle-même le rapport dans report_path en fin de traitement (option
+    --report-json), et enchaîne sur la génération des PDF de sujet manquants.
+
+    Le rapport "running" est écrit ici, avant le lancement, pour qu'une actualisation
+    immédiate de la page admin montre déjà le run en cours plutôt que le rapport
+    précédent (et pour que le bouton refuse d'en lancer un second en parallèle).
+    """
+    write_ingestion_report(
+        {"status": "running", "started_at": timezone.now().isoformat(), "path": str(path)}, report_path,
+    )
+
+    manage_py = Path(settings.BASE_DIR) / "manage.py"
+    args = [
+        sys.executable, str(manage_py), "ingest_corrections", str(path),
+        "--report-json", str(report_path),
+    ]
+
+    # PYTHONUTF8 / Popen "nu" / start_new_session : mêmes contraintes, pour les mêmes
+    # raisons, que catalog.sujet_pdf.queue_sujet_pdf_generation - voir ses commentaires.
+    logs_dir = Path(settings.BASE_DIR) / "logs"
+    logs_dir.mkdir(exist_ok=True)
+    log_f = open(logs_dir / "ingestion.log", "ab")
+    env = {**os.environ, "PYTHONUTF8": "1"}
+
+    kwargs = {}
+    if sys.platform != "win32":
+        kwargs["start_new_session"] = True
+
+    try:
+        subprocess.Popen(
+            args, cwd=settings.BASE_DIR, env=env,
+            stdin=subprocess.DEVNULL, stdout=log_f, stderr=log_f,
+            **kwargs,
+        )
+    except OSError as exc:
+        # Sans ça, un lancement impossible laisserait un rapport "running" éternel, qui
+        # bloquerait aussi toute nouvelle tentative depuis l'admin.
+        write_ingestion_report(
+            {"status": "error", "started_at": timezone.now().isoformat(), "detail": str(exc)}, report_path,
+        )
+        raise

@@ -1,6 +1,6 @@
 import json
 import tempfile
-from io import StringIO
+from io import BytesIO, StringIO
 from pathlib import Path
 
 from django.contrib.admin.sites import AdminSite
@@ -12,18 +12,27 @@ from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
+from PIL import Image
 
 from unittest.mock import patch
 
 from rest_framework.test import APIClient
 
 from access.models import LectureProgress
+from inedit.models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite, TentativeInedite
 from users.models import User
 
 from .admin import ExerciseAdmin
-from .ingestion import IngestionError, _country_code_from_path, ingest_cours, ingest_exercise, run_ingestion
+from .ingestion import (
+    IngestionError, _compress_figure_image, _country_code_from_path, ingest_cours, ingest_exercise,
+    queue_ingestion, read_ingestion_report, run_ingestion, write_ingestion_report,
+)
 from .ingestion_repairs import _dedupe_question_enonce
-from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Figure, Lesson, LessonType, Origine, Question, Series, StatutContenu, Subject, Tag, TypeReponse, figure_upload_to, resolve_examen_label
+from .management.commands.seed_country import SUBJECTS as SEED_SUBJECTS
+from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Figure, Lesson, LessonType, NatureEpreuve, Origine, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag, Temoignage, TypeReponse, figure_upload_to, resolve_examen_label
+from programme.models import Module, Savoir
+from .rendering import _exercise_titre_et_points, _render_question_enonce, cours_sections_breakdown
 from .sujet_pdf import _render_html, save_sujet_pdf, sujet_pdf_filename
 
 
@@ -117,6 +126,130 @@ class IngestExerciseCountryScopingTests(TestCase):
         payload = {**_exercise_payload("bac-lit-2024"), "matiere": "Littérature"}
         with self.assertRaises(IngestionError):
             ingest_exercise(payload, source_dir=Path("ingest/bj/bac-lit-2024"))
+
+
+class SavoirOfficielLinkingTests(TestCase):
+    """`savoir_officiel` (optionnel, sur une Question ou un Cours) lie le Tag résolu à
+    son Savoir officiel - voir catalog.ingestion._resolve_savoir_officiel et
+    _link_tags_to_savoir. Branché depuis correction-experte (ce test), et de la même
+    façon depuis concepteur-quiz-competence/concepteur-epreuve-inedite (voir leurs
+    propres tests)."""
+
+    def setUp(self):
+        maths = Subject.objects.get(country__code="CM", code="MATHS")
+        module = Module.objects.create(subject=maths, classe="1ere", serie_label="C", numero="99", titre="Module test")
+        self.savoir = Savoir.objects.create(module=module, numero="I", intitule="Notion test")
+        self.savoir_ref = {"classe": "1ere", "serie_label": "C", "module_numero": "99", "savoir_numero": "I"}
+
+    def test_links_new_tag_to_savoir(self):
+        payload = _exercise_payload("bac-maths-savoir-1")
+        payload["questions"][0]["themes"] = ["Notion test tag"]
+        payload["questions"][0]["savoir_officiel"] = self.savoir_ref
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-1"))
+
+        tag = Tag.objects.get(name="Notion test tag")
+        self.assertEqual(tag.savoir_officiel_id, self.savoir.pk)
+
+    def test_never_overwrites_an_already_linked_tag(self):
+        other_savoir = Savoir.objects.create(module=self.savoir.module, numero="II", intitule="Autre notion")
+        tag = Tag.objects.create(name="Deja lie", savoir_officiel=other_savoir)
+
+        payload = _exercise_payload("bac-maths-savoir-2")
+        payload["questions"][0]["themes"] = ["Deja lie"]
+        payload["questions"][0]["savoir_officiel"] = self.savoir_ref
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-2"))
+
+        tag.refresh_from_db()
+        self.assertEqual(tag.savoir_officiel_id, other_savoir.pk)
+
+    def test_absent_field_is_a_no_op(self):
+        payload = _exercise_payload("bac-maths-savoir-3")
+        payload["questions"][0]["themes"] = ["Sans savoir"]
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-3"))
+
+        tag = Tag.objects.get(name="Sans savoir")
+        self.assertIsNone(tag.savoir_officiel_id)
+
+    def test_unresolvable_reference_raises(self):
+        payload = _exercise_payload("bac-maths-savoir-4")
+        payload["questions"][0]["themes"] = ["Peu importe"]
+        payload["questions"][0]["savoir_officiel"] = {**self.savoir_ref, "module_numero": "999"}
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-4"))
+
+    def test_duplicate_savoir_numero_in_module_raises_cleanly(self):
+        # Régression du 2026-08-12 : un doublon de numérotation dans le fixture source
+        # (deux savoirs "III" sous le même module, voir programme_officiel_cm_maths.json)
+        # faisait remonter un Savoir.MultipleObjectsReturned brut jusqu'à l'appelant -
+        # doit échouer proprement via IngestionError à la place.
+        Savoir.objects.create(module=self.savoir.module, numero="I", intitule="Doublon du même numéro")
+
+        payload = _exercise_payload("bac-maths-savoir-5")
+        payload["questions"][0]["themes"] = ["Peu importe"]
+        payload["questions"][0]["savoir_officiel"] = self.savoir_ref
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-5"))
+
+
+class BepcWithoutSerieIngestionTests(TestCase):
+    """Le BEPC (fin de collège au Cameroun) n'a pas de série, contrairement au
+    Probatoire/BAC - REQUIRED_KEYS exigeait pourtant `serie` sans condition, rejetant
+    toute épreuve BEPC avant même d'atteindre _resolve_cursus_list qui, lui, sait déjà
+    ignorer `serie` pour ce diplôme (Cursus.series__isnull=True, voir seed_country)."""
+
+    def _bepc_payload(self, epreuve_source="bepc-physique-2023", **overrides):
+        payload = {**_exercise_payload(epreuve_source), "matiere": "Physique-Chimie", "examen": "BEPC"}
+        del payload["serie"]
+        payload.update(overrides)
+        return payload
+
+    def test_bepc_exercise_without_serie_key_ingests_successfully(self):
+        exercise, created = ingest_exercise(self._bepc_payload(), source_dir=Path("ingest/cm/bepc-physique-2023"))
+
+        self.assertTrue(created)
+        self.assertEqual(
+            list(exercise.lesson.cursus.all()),
+            [Cursus.objects.get(country__code="CM", examen=Examen.BEPC, series__isnull=True)],
+        )
+
+    def test_bepc_exercise_with_null_serie_still_ingests_successfully(self):
+        exercise, created = ingest_exercise(
+            self._bepc_payload(serie=None), source_dir=Path("ingest/cm/bepc-physique-2023"),
+        )
+
+        self.assertTrue(created)
+
+    def test_bac_still_requires_a_serie(self):
+        payload = {**_exercise_payload("bac-maths-2024")}
+        del payload["serie"]
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+
+class PaysFieldToleranceTests(TestCase):
+    """SKILL.md ajoute un champ `pays` (code ISO alpha-2 minuscule) au schéma JSON,
+    censé reproduire le pays déjà déduit du dossier ingest/<code_pays>/ - voir
+    catalog.ingestion._validate_pays_matches_country. Le pays continue d'être résolu
+    uniquement depuis le dossier, jamais depuis ce champ : `pays` ne sert que de
+    signal de contrôle redondant."""
+
+    def test_ingest_exercise_accepts_a_pays_matching_the_folder(self):
+        payload = {**_exercise_payload("bac-maths-2024"), "pays": "cm"}
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(exercise.lesson.cursus.first().country.code, "CM")
+
+    def test_ingest_exercise_still_works_when_pays_is_absent(self):
+        # Corpus existant intégral au moment où ce champ a été ajouté à la compétence :
+        # aucun fichier ne le porte encore - absence != erreur.
+        exercise, _ = ingest_exercise(_exercise_payload("bac-maths-2024"), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(exercise.lesson.cursus.first().country.code, "CM")
+
+    def test_ingest_exercise_rejects_a_pays_contradicting_the_folder(self):
+        # Contenu déposé dans le mauvais dossier (ou dérive analogue à celle déjà
+        # rencontrée sur `origine`) : signalé plutôt que silencieusement ignoré.
+        payload = {**_exercise_payload("bac-maths-2024"), "pays": "sn"}
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
 
 class CountryFilteringApiTests(TestCase):
@@ -255,6 +388,207 @@ class OrderingFilterApiTests(TestCase):
         titles = [item["title"] for item in response.json()["results"]]
         self.assertLess(titles.index("Ancien"), titles.index("Recent"))
 
+    def test_ordering_recent_sorts_by_created_at_not_year(self):
+        # Un vieux sujet (year=2001) tout juste corrigé doit ressortir avant un sujet
+        # plus récent (year=2023) ajouté plus tôt à la plateforme - created_at, jamais
+        # year (voir le rail "Derniers ajouts", audit UX). .update() plutôt que
+        # created_at= au create() : auto_now_add ignore toute valeur passée à l'INSERT.
+        Lesson.objects.filter(pk=self.old.pk).update(created_at=timezone.now())
+        Lesson.objects.filter(pk=self.recent.pk).update(created_at=timezone.now() - timezone.timedelta(days=10))
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "recent"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertLess(titles.index("Ancien"), titles.index("Recent"))
+
+
+class PopularOrderingApiTests(TestCase):
+    """`?ordering=popular` sur /catalog/lessons/ - classe par nombre de lecteurs
+    distincts (access.LectureProgress), avec un seuil minimum (voir
+    catalog.views.MIN_POPULAR_READERS) pour ne jamais qualifier de "populaire" un
+    contenu qui n'a que 1-2 lectures de test."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.popular = Lesson.objects.create(
+            title="Tres lu", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, year=2020,
+        )
+        self.below_threshold = Lesson.objects.create(
+            title="Peu lu", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, year=2021,
+        )
+        self.unread = Lesson.objects.create(
+            title="Jamais lu", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, year=2022,
+        )
+        for i in range(3):
+            reader = User.objects.create_user(phone_number=f"67710010{i}", password="x")
+            LectureProgress.objects.create(user=reader, lesson=self.popular)
+        below_reader = User.objects.create_user(phone_number="677100109", password="x")
+        LectureProgress.objects.create(user=below_reader, lesson=self.below_threshold)
+
+    def test_excludes_lessons_below_minimum_reader_threshold(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "popular"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertIn("Tres lu", titles)
+        self.assertNotIn("Peu lu", titles)
+        self.assertNotIn("Jamais lu", titles)
+
+    def test_never_exposes_raw_reader_count(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "popular"})
+        item = response.json()["results"][0]
+        self.assertNotIn("_lectures_count", item)
+        self.assertNotIn("lectures_count", item)
+
+
+class InediteCatalogueMergeApiTests(TestCase):
+    """/catalog/lessons/ fusionne désormais Lesson et EpreuveInedite - voir
+    catalog.views.LessonListView.list / catalog.inedit_bridge. Une EpreuveInedite n'a
+    pas d'année (sort toujours après une Lesson datée sous ordering=year/défaut -
+    décision produit actée, voir le plan de fusion du catalogue)."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.lesson = Lesson.objects.create(
+            title="Classique", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, year=2020,
+        )
+        self.lesson.cursus.add(self.cursus)
+
+        self.blueprint = Blueprint.objects.create(
+            subject=self.subject, titre="Blueprint fusion",
+            sections_plan=[{"section": "Exercice 1", "points": 20}], duree_minutes=120, bareme_total=20,
+            statut=StatutContenu.VALIDE,
+        )
+        self.blueprint.cursus.set([self.cursus])
+        self.epreuve = EpreuveInedite.objects.create(
+            blueprint=self.blueprint, subject=self.subject,
+            titre="Inedite fusion", statut=StatutContenu.VALIDE,
+        )
+        self.epreuve.cursus.set([self.cursus])
+
+    def test_inedite_appears_in_merged_list_with_kind(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS"})
+        by_title = {item["title"]: item for item in response.json()["results"]}
+        self.assertIn("Inedite fusion", by_title)
+        self.assertEqual(by_title["Inedite fusion"]["kind"], "inedite")
+        self.assertEqual(by_title["Classique"]["kind"], "classique")
+
+    def test_epreuve_common_to_multiple_series_appears_only_once(self):
+        """Régression : cursus__country__actif (build_inedit_queryset) traverse le M2M
+        EpreuveInedite.cursus - sans distinct(), une épreuve commune à 2 séries
+        apparaissait 2 fois dans la liste fusionnée."""
+        other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        self.epreuve.cursus.add(other_cursus)
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS"})
+
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertEqual(titles.count("Inedite fusion"), 1)
+
+    def test_inedite_exposes_its_own_slug_through_the_merged_list(self):
+        # Contrairement au reste des champs classique-only (voir Epreuve côté frontend),
+        # slug est désormais renseigné aussi côté inédit (voir EpreuveInedite.slug) - un
+        # id numérique dans l'URL ne dit rien du contenu (motif SEO, voir
+        # generate_unique_slug côté catalog, réutilisé tel quel).
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
+        item = response.json()["results"][0]
+        self.assertEqual(item["slug"], self.epreuve.slug)
+        self.assertNotEqual(item["slug"], None)
+
+    def test_origine_inedite_filter_returns_only_inedites(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertEqual(titles, ["Inedite fusion"])
+
+    def test_lesson_type_filter_excludes_inedites(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "lesson_type": "CORR"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertIn("Classique", titles)
+        self.assertNotIn("Inedite fusion", titles)
+
+    def test_nature_filter_excludes_inedites(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "nature": "pratique"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertNotIn("Inedite fusion", titles)
+
+    def test_est_vitrine_filter_excludes_inedites(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "est_vitrine": "true"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertNotIn("Inedite fusion", titles)
+
+    def test_default_and_year_ordering_puts_inedite_after_dated_lessons(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertLess(titles.index("Classique"), titles.index("Inedite fusion"))
+
+        response_year = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "year"})
+        titles_year = [item["title"] for item in response_year.json()["results"]]
+        self.assertLess(titles_year.index("Classique"), titles_year.index("Inedite fusion"))
+
+    def test_popular_ordering_respects_threshold_for_inedites(self):
+        for i in range(3):
+            reader = User.objects.create_user(phone_number=f"67710020{i}", password="x")
+            TentativeInedite.objects.create(user=reader, epreuve=self.epreuve)
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "popular"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertIn("Inedite fusion", titles)
+
+    def test_anonymous_request_sees_inedite_with_has_access_false(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
+        item = response.json()["results"][0]
+        self.assertFalse(item["has_access"])
+
+    def test_pagination_across_merged_set_larger_than_page_size(self):
+        for i in range(30):
+            extra = Lesson.objects.create(
+                title=f"Page {i}", subject=self.subject, lesson_type=LessonType.CORR,
+                statut=StatutContenu.VALIDE, year=1990 + i,
+            )
+            extra.cursus.add(self.cursus)
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS"})
+        payload = response.json()
+        self.assertEqual(len(payload["results"]), 24)
+        self.assertIsNotNone(payload["next"])
+        self.assertEqual(payload["count"], 32)  # 30 + self.lesson + self.epreuve
+
+        page2 = self.client.get(payload["next"])
+        self.assertEqual(len(page2.json()["results"]), 8)
+
+    def test_related_cours_surfaces_through_the_merged_list_too(self):
+        """Même fonction (catalog.inedit_bridge.epreuve_inedite_catalogue_payload) que
+        pour la fiche détail - second consommateur, même garantie."""
+        exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1")
+        rappel = RappelDeMethodeInedite.objects.create(
+            exercice=exercice, external_id="rdi-merge-test", competence="C",
+        )
+        cours = Cours.objects.create(
+            external_id="cours-merge-test", titre="Cours fusion", subject=self.subject, statut=StatutContenu.VALIDE,
+        )
+        rappel.cours = cours
+        rappel.save(update_fields=["cours"])
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
+
+        item = response.json()["results"][0]
+        self.assertEqual([c["titre"] for c in item["related_cours"]], ["Cours fusion"])
+
+    def test_apercu_enonce_markdown_stays_none_in_the_merged_list(self):
+        # include_apercu=False dans le catalogue fusionné (voir
+        # catalog.inedit_bridge.epreuve_inedite_catalogue_payload) - même si l'épreuve a
+        # bien une question, la clé reste None ici : coûterait 2 requêtes de plus par
+        # carte pour un aperçu jamais affiché dans la liste (seul EpreuveInediteDetailAPITests
+        # couvre la valeur réellement renseignée, sur la fiche détail).
+        exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1")
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="1", ordre=1, enonce_markdown="Un énoncé.",
+            corrige_markdown="Un corrigé.", type_reponse=TypeReponse.OUVERTE,
+        )
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
+
+        item = response.json()["results"][0]
+        self.assertIsNone(item["apercu_enonce_markdown"])
+
 
 class CountryActiveFilteringTests(TestCase):
     """`Country.actif=False` doit rendre tout le contenu de ce pays invisible côté
@@ -274,6 +608,16 @@ class CountryActiveFilteringTests(TestCase):
         self.inactive_cours = Cours.objects.create(
             external_id="tg-cours", titre="Cours Togo", subject=self.inactive_subject, statut=StatutContenu.VALIDE,
         )
+        inactive_blueprint = Blueprint.objects.create(
+            subject=self.inactive_subject, titre="BP Togo",
+            statut=StatutContenu.VALIDE,
+        )
+        inactive_blueprint.cursus.set([self.inactive_cursus])
+        self.inactive_epreuve_inedite = EpreuveInedite.objects.create(
+            blueprint=inactive_blueprint, subject=self.inactive_subject,
+            titre="Inédite Togo", statut=StatutContenu.VALIDE,
+        )
+        self.inactive_epreuve_inedite.cursus.set([self.inactive_cursus])
 
     def _titles(self, payload, key):
         return [item[key] for item in payload["results"]] if "results" in payload else [item[key] for item in payload]
@@ -323,6 +667,7 @@ class CountryActiveFilteringTests(TestCase):
         base = settings.FRONTEND_URL
         self.assertNotIn(f"<loc>{base}/tg</loc>", xml)
         self.assertNotIn(f"/epreuves/{self.inactive_lesson.slug}", xml)
+        self.assertNotIn(f"/epreuves-inedites/{self.inactive_epreuve_inedite.slug}", xml)
 
     def test_ingestion_still_accepts_content_for_an_inactive_country(self):
         # L'ingestion ne consulte jamais Country.actif - un pays désactivé doit rester
@@ -334,6 +679,32 @@ class CountryActiveFilteringTests(TestCase):
         exercise, created = ingest_exercise(payload, source_dir=Path("ingest/tg/tg-src"))
         self.assertTrue(created)
         self.assertEqual(exercise.lesson.subject.country.code, "TG")
+
+
+class CoursDetailSlugLookupTests(TestCase):
+    """`/catalog/cours/<slug-ou-id>/` - voir CoursDetailView.get_object et
+    catalog.models.Cours.save (slug auto-généré), reco d'audit UX (URLs cours en slug)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(
+            external_id="slug-lookup-test", titre="Cours de test slug", subject=subject, statut=StatutContenu.VALIDE,
+        )
+
+    def test_generates_a_slug_from_titre_on_creation(self):
+        self.assertEqual(self.cours.slug, "cours-de-test-slug")
+
+    def test_detail_view_resolves_by_slug(self):
+        response = self.client.get(reverse("catalog:cours-detail", args=[self.cours.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["titre"], "Cours de test slug")
+
+    def test_detail_view_still_resolves_by_numeric_id(self):
+        # Compat historique (voir VisibleQuerySet.par_slug_ou_id) - liens déjà en
+        # circulation construits avec l'id avant l'introduction du slug.
+        response = self.client.get(reverse("catalog:cours-detail", args=[self.cours.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["titre"], "Cours de test slug")
 
 
 class SubjectSeriesCountryScopingTests(TestCase):
@@ -492,7 +863,11 @@ class SeedCountryCommandTests(TestCase):
         self.assertEqual(bj.label, "Bénin")
         self.assertEqual(bj.dial_code, "229")
         self.assertEqual(bj.currency, "XOF")
-        self.assertEqual(Subject.objects.filter(country=bj).count(), 11)
+        # Comparé à SUBJECTS plutôt qu'à un nombre en dur : ce qui est testé est que la
+        # commande crée bien *toute* la liste déclarée, et un compte figé fait échouer ces
+        # tests à chaque matière ajoutée au référentiel pour une raison qui n'en est pas
+        # une (constaté : bloqués à 15 alors que la liste en comptait 16).
+        self.assertEqual(Subject.objects.filter(country=bj).count(), len(SEED_SUBJECTS))
         self.assertEqual(Series.objects.filter(country=bj).count(), 7)
         # 1 BEPC (sans série) + 7 séries x (PROBATOIRE + BAC).
         self.assertEqual(Cursus.objects.filter(country=bj).count(), 15)
@@ -508,7 +883,7 @@ class SeedCountryCommandTests(TestCase):
 
         self.assertEqual(Country.objects.filter(code="BJ").count(), 1)
         bj = Country.objects.get(code="BJ")
-        self.assertEqual(Subject.objects.filter(country=bj).count(), 11)
+        self.assertEqual(Subject.objects.filter(country=bj).count(), len(SEED_SUBJECTS))
         self.assertEqual(Cursus.objects.filter(country=bj).count(), 15)
 
     def test_rejects_code_that_is_not_two_letters(self):
@@ -519,6 +894,27 @@ class SeedCountryCommandTests(TestCase):
         cm_subject_count = Subject.objects.filter(country__code="CM").count()
         self._run("bj", "Bénin")
         self.assertEqual(Subject.objects.filter(country__code="CM").count(), cm_subject_count)
+
+    def test_new_country_defaults_to_inactive(self):
+        # Un référentiel cloné depuis le Cameroun n'est pas une localisation réelle - voir
+        # l'audit UX, reco 8.2. Le pays doit rester invisible du catalogue public
+        # (VisibleQuerySet.visibles()) tant qu'un admin ne l'a pas vérifié et activé.
+        self._run("bj", "Bénin")
+
+        self.assertFalse(Country.objects.get(code="BJ").actif)
+
+    def test_rerun_does_not_reset_an_already_activated_country(self):
+        # Idempotence : compléter le référentiel d'un pays déjà activé par un admin ne
+        # doit jamais le repasser inactif (get_or_create ne touche pas defaults sur un
+        # objet déjà existant, mais on le vérifie explicitement ici).
+        self._run("bj", "Bénin")
+        bj = Country.objects.get(code="BJ")
+        bj.actif = True
+        bj.save(update_fields=["actif"])
+
+        self._run("bj", "Bénin")
+
+        self.assertTrue(Country.objects.get(code="BJ").actif)
 
 
 class ExamenLabelTests(TestCase):
@@ -616,6 +1012,104 @@ class OrigineMapToleranceTests(TestCase):
             self.assertEqual(exercise.lesson.origine, Origine.OFFICIEL)
 
 
+class OrigineCountryNameToleranceTests(TestCase):
+    """Reproduit un blocage d'ingestion réel, rencontré à deux reprises (8 fichiers
+    bac-c-e-physique-2014/2015-cameroun, puis 28 fichiers bac-c(-e)-physique-2017 à
+    2022-cameroun) : "origine" portait le nom du pays ("Cameroun") au lieu d'une
+    catégorie valide - IngestionError sur les 36 fichiers au total. Voir
+    catalog.ingestion._resolve_origine."""
+
+    def test_ingest_exercise_treats_country_label_as_officiel(self):
+        payload = _exercise_payload("bac-physique-2017")
+        payload["origine"] = "Cameroun"
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-physique-2017"))
+        self.assertEqual(exercise.lesson.origine, Origine.OFFICIEL)
+
+    def test_ingest_exercise_still_rejects_an_unrelated_unknown_origine(self):
+        payload = _exercise_payload("bac-physique-2018")
+        payload["origine"] = "Nigeria"
+        with self.assertRaises(IngestionError):
+            ingest_exercise(payload, source_dir=Path("ingest/cm/bac-physique-2018"))
+
+
+class ExamenMapToleranceTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : 60 fichiers (bac-d-physique-chimie
+    1995-1997, bac-d-ti-physique 1999-2016-cameroun) portaient "examen":
+    "baccalaureat" (nom complet en toutes lettres) plutôt que le code court "bac"
+    documenté dans le schéma JSON de la compétence - voir catalog.ingestion.EXAMEN_MAP.
+    IngestionError sur les 60 fichiers ("Examen inconnu : 'baccalaureat'")."""
+
+    def test_examen_map_tolerates_the_full_word_form(self):
+        from .ingestion import EXAMEN_MAP
+
+        self.assertEqual(EXAMEN_MAP["baccalaureat"], Examen.BAC)
+
+    def test_ingest_exercise_accepts_baccalaureat(self):
+        payload = _exercise_payload("bac-physique-chimie-1995")
+        payload["examen"] = "baccalaureat"
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-physique-chimie-1995"))
+        self.assertEqual(exercise.lesson.cursus.first().examen, Examen.BAC)
+
+
+class ExamenMapBlancEtHarmoniseToleranceTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : 5 fichiers (bac-d-ti-maths-2026-cameroun)
+    portaient "examen": "bac_blanc" et 4 fichiers (terminale-c-maths-jean-tabi-2025-2026)
+    "examen": "devoir_harmonise" - ni l'un ni l'autre n'est un niveau d'examen à part
+    entière (voir Examen.choices) : le premier confond le niveau (BAC) avec le caractère
+    non-officiel de l'épreuve (déjà porté par `origine`) ; le second désigne un devoir
+    interne d'établissement dont le niveau réel, ici, est bien le BAC visé (coefficient/
+    durée identiques, série renseignée) - voir catalog.ingestion.EXAMEN_MAP. Un premier
+    essai avait mappé "devoir_harmonise" vers Examen.AUTRE comme "devoir surveille" (déjà
+    présent dans EXAMEN_MAP), ce qui échoue systématiquement la résolution de Cursus :
+    aucun Cursus n'est jamais seedé pour Examen.AUTRE (voir seed_country.py), quelle que
+    soit la série."""
+
+    def test_examen_map_tolerates_bac_blanc(self):
+        from .ingestion import EXAMEN_MAP
+
+        self.assertEqual(EXAMEN_MAP["bac_blanc"], Examen.BAC)
+        self.assertEqual(EXAMEN_MAP["bac blanc"], Examen.BAC)
+
+    def test_examen_map_resolves_devoir_harmonise_to_bac_not_autre(self):
+        from .ingestion import EXAMEN_MAP
+
+        self.assertEqual(EXAMEN_MAP["devoir_harmonise"], Examen.BAC)
+        self.assertEqual(EXAMEN_MAP["devoir harmonise"], Examen.BAC)
+
+    def test_ingest_exercise_accepts_bac_blanc(self):
+        payload = _exercise_payload("bac-d-ti-maths-2026")
+        payload["examen"] = "bac_blanc"
+        payload["origine"] = "etablissement"
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-d-ti-maths-2026"))
+        self.assertEqual(exercise.lesson.cursus.first().examen, Examen.BAC)
+
+    def test_ingest_exercise_accepts_devoir_harmonise_and_resolves_a_cursus(self):
+        payload = _exercise_payload("terminale-c-maths-jean-tabi-2025-2026")
+        payload["examen"] = "devoir_harmonise"
+        payload["origine"] = "etablissement"
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/terminale-c-maths-jean-tabi-2025-2026"),
+        )
+        self.assertEqual(exercise.lesson.cursus.first().examen, Examen.BAC)
+
+
+class QuestionNumeroWidthTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : "numero": "Présentation" (12 caractères,
+    un item de barème récurrent - clarté/soin de la copie - sans rapport avec une
+    sous-question numérotée) est apparu identique sur 3 lots d'épreuves de maths
+    distincts (bac-c-maths-2026, bac-d-maths-2023, bepc-maths-2024-cameroun), ce qui
+    dépassait Question.numero (CharField max_length=10 à l'époque) et levait un
+    DataError Postgres ("value too long for type character varying(10)")."""
+
+    def test_ingest_exercise_accepts_presentation_as_numero(self):
+        payload = _exercise_payload("bac-maths-2026")
+        payload["questions"] = [
+            {"numero": "Présentation", "enonce_markdown": "Présentation.", "corrige_markdown": "Corrigé."},
+        ]
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2026"))
+        self.assertEqual(exercise.questions.get().numero, "Présentation")
+
+
 class ContentPageCountryTests(TestCase):
     """Le visiteur d'une page de contenu doit voir le pays de CE contenu, pas celui
     qu'il navigue par ailleurs (voir Lesson/Cours.header_info) - dérivé de
@@ -638,6 +1132,36 @@ class ContentPageCountryTests(TestCase):
         )
         self.assertEqual(cours.cursus.count(), 0)
         self.assertEqual(cours.header_info()["pays"], {"code": "SN", "label": "Sénégal"})
+
+
+class CoursPrerequisSectionTests(TestCase):
+    """Section "prerequis" (mode cours) : chaque item dont le titre matche un Cours
+    déjà validé devient un lien "(COURS_REF:<slug>)" - voir _render_cours_section."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.autre_cours = Cours.objects.create(
+            external_id="autre-cours", titre="Calcul littéral", subject=subject, statut=StatutContenu.VALIDE,
+        )
+        self.cours = Cours.objects.create(external_id="test-prerequis", titre="Test", subject=subject)
+
+    def test_matching_item_links_to_the_cours_slug_not_its_numeric_id(self):
+        self.cours.sections_raw = [{"type": "prerequis", "items": ["Calcul littéral"]}]
+        rendered = self.cours._render_section(self.cours.sections_raw[0])
+
+        self.assertIn(f"(COURS_REF:{self.autre_cours.slug})", rendered)
+        self.assertNotIn(f"(COURS_REF:{self.autre_cours.id})", rendered)
+
+    def test_items_markdown_key_is_accepted_as_a_fallback_for_items(self):
+        # Constaté sur 638 Cours du corpus : la compétence utilise parfois le nom de
+        # champ de la section synthese ("items_markdown") au lieu de "items" pour
+        # prerequis - sans ce repli, la section reste vide (voir aussi
+        # CoursSectionsBreakdownTests.test_prerequis_accepts_items_markdown_fallback
+        # pour la version structurée).
+        self.cours.sections_raw = [{"type": "prerequis", "items_markdown": ["Calcul littéral"]}]
+        rendered = self.cours._render_section(self.cours.sections_raw[0])
+
+        self.assertIn(f"(COURS_REF:{self.autre_cours.slug})", rendered)
 
 
 class CoursExercicesApplicationSectionTests(TestCase):
@@ -748,6 +1272,153 @@ class CoursErreursClassiquesSectionTests(TestCase):
         self.assertIn("Confondre saponification et hydrolyse acide d'un ester.", rendered)
 
 
+class CoursSectionsBreakdownTests(TestCase):
+    """cours_sections_breakdown() - version structurée (dicts) des sections, pour la
+    lecture en ligne (voir CoursReaderPage) - même tolérance str-vs-objet que
+    _render_cours_section, testée séparément ci-dessus, mais des dicts en sortie plutôt
+    que du Markdown concaténé."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(external_id="test-breakdown", titre="Test", subject=subject)
+
+    def _breakdown(self, section, allowed_types=None):
+        self.cours.sections_raw = [section]
+        return cours_sections_breakdown(self.cours, allowed_types=allowed_types)
+
+    def test_accroche_returns_body(self):
+        result = self._breakdown({"type": "accroche", "contenu_markdown": "Une accroche."})
+        self.assertEqual(result, [{"type": "accroche", "body_markdown": "Une accroche."}])
+
+    def test_empty_accroche_is_excluded(self):
+        result = self._breakdown({"type": "accroche", "contenu_markdown": ""})
+        self.assertEqual(result, [])
+
+    def test_prerequis_links_matching_cours_by_slug(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        autre = Cours.objects.create(
+            external_id="test-breakdown-autre", titre="Calcul littéral", subject=subject,
+            statut=StatutContenu.VALIDE,
+        )
+        result = self._breakdown({"type": "prerequis", "items": ["Calcul littéral", "Notion inconnue"]})
+        self.assertEqual(result, [{
+            "type": "prerequis",
+            "items": [
+                {"label": "Calcul littéral", "cours_slug": autre.slug},
+                {"label": "Notion inconnue", "cours_slug": None},
+            ],
+        }])
+
+    def test_prerequis_accepts_items_markdown_fallback(self):
+        # Voir CoursPrerequisSectionTests.test_items_markdown_key_is_accepted_as_a_fallback_for_items -
+        # même repli côté rendu structuré.
+        result = self._breakdown({"type": "prerequis", "items_markdown": ["Notion X"]})
+        self.assertEqual(result, [{"type": "prerequis", "items": [{"label": "Notion X", "cours_slug": None}]}])
+
+    def test_regle_structures_formule_and_variantes(self):
+        result = self._breakdown({
+            "type": "regle", "titre": "La règle des signes", "contenu_markdown": "Corps.",
+            "formule_principale": "a \\times b", "variantes": [
+                {"nom": "Cas positif", "quand_utiliser": "a>0", "contenu_markdown": "Reste positif."},
+                "x < 0",
+            ],
+        })
+        self.assertEqual(result, [{
+            "type": "regle",
+            "titre": "La règle des signes",
+            "body_markdown": "Corps.",
+            "formule_markdown": "$$a \\times b$$",
+            "variantes": [
+                {"nom": "Cas positif", "quand_utiliser": "a>0", "body_markdown": "Reste positif."},
+                {"nom": None, "quand_utiliser": None, "body_markdown": "$$x < 0$$"},
+            ],
+        }])
+
+    def test_regle_without_formula_keeps_formule_markdown_none(self):
+        result = self._breakdown({"type": "regle", "contenu_markdown": "Corps seul."})
+        self.assertIsNone(result[0]["formule_markdown"])
+        self.assertEqual(result[0]["titre"], "La règle")
+
+    def test_exemple_resolu_structures_steps_and_tolerates_bare_strings(self):
+        result = self._breakdown({
+            "type": "exemple_resolu", "enonce_markdown": "Énoncé.",
+            "etapes": [
+                {"numero": 1, "action": "Identifier", "justification": "Car X.", "resultat_markdown": "y=1."},
+                "Étape en texte libre.",
+            ],
+            "conclusion_markdown": "Donc voilà.",
+        })
+        self.assertEqual(result, [{
+            "type": "exemple_resolu",
+            "enonce_markdown": "Énoncé.",
+            "etapes": [
+                {"numero": 1, "action": "Identifier", "justification": "Car X.", "resultat_markdown": "y=1.", "body_markdown": None},
+                {"numero": None, "action": None, "justification": None, "resultat_markdown": None, "body_markdown": "Étape en texte libre."},
+            ],
+            "conclusion_markdown": "Donc voilà.",
+        }])
+
+    def test_erreurs_classiques_structures_items_and_tolerates_bare_strings(self):
+        result = self._breakdown({
+            "type": "erreurs_classiques", "items": [
+                {"erreur_markdown": "Confondre A et B.", "pourquoi_faux": "Distincts.", "correction_markdown": "Corriger."},
+                "Erreur en texte libre.",
+            ],
+        })
+        self.assertEqual(result, [{
+            "type": "erreurs_classiques",
+            "items": [
+                {"erreur_markdown": "Confondre A et B.", "pourquoi_faux": "Distincts.", "correction_markdown": "Corriger."},
+                {"erreur_markdown": "Erreur en texte libre.", "pourquoi_faux": None, "correction_markdown": None},
+            ],
+        }])
+
+    def test_exercices_application_structures_items_with_sub_questions(self):
+        result = self._breakdown({
+            "type": "exercices_application", "items": [
+                {
+                    "numero": 1, "difficulte": "moyen", "enonce_intro_markdown": "Soit f(x) = x^2.",
+                    "questions": [
+                        {"numero": "a", "enonce_markdown": "Calculer f'(x).", "solution_markdown": "f'(x) = 2x."},
+                    ],
+                },
+                "Énoncé nu, sans solution fournie.",
+            ],
+        })
+        self.assertEqual(result[0]["type"], "exercices_application")
+        first, second = result[0]["items"]
+        self.assertEqual(first["numero"], 1)
+        self.assertEqual(first["difficulte"], "moyen")
+        self.assertIn("Soit f(x) = x^2.", first["enonce_markdown"])
+        self.assertIn("Calculer f'(x).", first["enonce_markdown"])
+        self.assertEqual(first["solution_markdown"], "f'(x) = 2x.")
+        self.assertEqual(second, {
+            "numero": None, "difficulte": None,
+            "enonce_markdown": "Énoncé nu, sans solution fournie.", "solution_markdown": None,
+        })
+
+    def test_synthese_joins_bullet_list(self):
+        result = self._breakdown({"type": "synthese", "items_markdown": ["Point A.", "Point B."]})
+        self.assertEqual(result, [{"type": "synthese", "body_markdown": "- Point A.\n- Point B."}])
+
+    def test_synthese_keeps_prose_string_as_is(self):
+        result = self._breakdown({"type": "synthese", "items_markdown": "Déjà rédigé en prose."})
+        self.assertEqual(result, [{"type": "synthese", "body_markdown": "Déjà rédigé en prose."}])
+
+    def test_empty_synthese_is_excluded(self):
+        result = self._breakdown({"type": "synthese", "items_markdown": []})
+        self.assertEqual(result, [])
+
+    def test_allowed_types_filters_before_building(self):
+        self.cours.sections_raw = [
+            {"type": "accroche", "contenu_markdown": "Accroche."},
+            {"type": "regle", "contenu_markdown": "Règle."},
+            {"type": "synthese", "items_markdown": "Retenir."},
+        ]
+        result = cours_sections_breakdown(self.cours, allowed_types={"accroche", "regle"})
+        self.assertEqual([s["type"] for s in result], ["accroche", "regle"])
+
+
 class IngestCoursRappelsLiesTests(TestCase):
     """`source.rappels_lies` (mode cours, SKILL.md) : d'autres rappels déjà ingérés,
     de la même épreuve, que ce même cours couvre aussi - cas du mode interactif où
@@ -806,10 +1477,229 @@ class IngestCoursRappelsLiesTests(TestCase):
         self.assertEqual(rappel_d.cours_id, cours.id)
 
 
+class RepairDictShapedCoursSectionsTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : 124 fichiers cours (bac-c-maths-1985/
+    1986/1991/1992/blanc-2003-cameroun) portaient `sections` comme un DICT à clés
+    fixes ("accroche", "regle", ...) plutôt que la forme LISTE de blocs {"type": ...}
+    attendue partout ailleurs dans le corpus - `for section in cours.sections_raw:
+    section.get("type")` itère alors les CLÉS du dict (des chaînes), levant
+    `AttributeError: 'str' object has no attribute 'get'` sur les 124 fichiers. Voir
+    catalog.ingestion_repairs._repair_dict_shaped_cours_sections."""
+
+    def _cours_payload(self, sections_dict):
+        return {
+            "cours_id": "cours-dict-shape-test",
+            "meta": {"titre": "Cours dict-shape", "matiere": "Mathematiques"},
+            "source": {"rappel_id": "rdm-dict-shape"},
+            "sections": sections_dict,
+        }
+
+    def setUp(self):
+        payload = _exercise_payload("bac-maths-1985")
+        payload["questions"][0]["rappels_de_methode"] = [
+            {"id": "rdm-dict-shape", "competence": "Notion", "contenu_markdown": "Contenu."},
+        ]
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-1985"))
+
+    def test_ingest_cours_accepts_dict_shaped_sections_without_crashing(self):
+        cours, created = ingest_cours(self._cours_payload({
+            "accroche": "Phrase d'accroche.",
+            "prerequis": ["Prérequis 1", "Prérequis 2"],
+            "regle": {"titre": "La règle", "contenu_markdown": "Contenu de la règle."},
+            "exemple_resolu": {"enonce_markdown": "Énoncé.", "etapes": [], "conclusion_markdown": "Conclusion."},
+            "erreurs_classiques": [{"erreur_markdown": "Une erreur.", "pourquoi_faux": "Car.", "correction_markdown": "Corrigé."}],
+            "exercices_application": [{"numero": 1, "difficulte": "facile", "enonce_markdown": "Énoncé.", "solution_markdown": "Solution."}],
+            "synthese": "Une phrase de synthèse.",
+        }))
+        self.assertTrue(created)
+        self.assertIn("Phrase d'accroche.", cours.content_markdown)
+        self.assertIn("Prérequis 1", cours.content_markdown)
+        self.assertIn("Contenu de la règle.", cours.content_markdown)
+        self.assertIn("Une phrase de synthèse.", cours.content_markdown)
+
+    def test_list_shaped_sections_are_left_untouched(self):
+        list_sections = [{"type": "accroche", "contenu_markdown": "Déjà la bonne forme."}]
+        cours, created = ingest_cours(self._cours_payload(list_sections))
+        self.assertTrue(created)
+        self.assertIn("Déjà la bonne forme.", cours.content_markdown)
+
+
+class CoursSiblingRappelIdMapFilenameToleranceTests(TestCase):
+    """`_cours_sibling_rappel_id_map` (filet de secours id manquant + cours_id, voir
+    IngestCoursRappelsLiesTests) ne doit dépendre d'aucune convention de nommage -
+    repéré sur bac-c-maths-1985/1986/1991/1992/blanc-2003-cameroun (124 fichiers) qui
+    utilisent `<epreuve>_cours-<slug>.json` (tiret) plutôt que `<epreuve>_cours_<slug>.json`
+    (underscore, la convention majoritaire) - l'ancien glob `*_cours_*.json` manquait
+    ces fichiers entièrement."""
+
+    def test_recovers_id_from_a_hyphen_named_cours_sibling(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-1985"
+            source_dir.mkdir(parents=True)
+            (source_dir / "bac-maths-1985_cours-slug-with-hyphen.json").write_text(
+                json.dumps({
+                    "cours_id": "cours-slug-with-hyphen",
+                    "source": {"rappel_id": "rdm-recovered-via-hyphen-filename"},
+                }),
+                encoding="utf-8",
+            )
+
+            payload = _exercise_payload("bac-maths-1985")
+            payload["questions"][0]["rappels_de_methode"] = [
+                {"cours_id": "cours-slug-with-hyphen", "texte": "Contenu du rappel."},
+            ]
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+            rappel = exercise.rappels_de_methode.get()
+            self.assertEqual(rappel.external_id, "rdm-recovered-via-hyphen-filename")
+
+    def test_falls_back_to_texte_when_contenu_markdown_is_absent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-1986"
+            source_dir.mkdir(parents=True)
+            payload = _exercise_payload("bac-maths-1986")
+            payload["questions"][0]["rappels_de_methode"] = [
+                {"id": "rdm-texte-shape", "cours_id": None, "texte": "Contenu porté par 'texte', pas 'contenu_markdown'."},
+            ]
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+            rappel = exercise.rappels_de_methode.get(external_id="rdm-texte-shape")
+            self.assertEqual(rappel.contenu_markdown, "Contenu porté par 'texte', pas 'contenu_markdown'.")
+
+
+class IngestCoursSameExternalIdAcrossEpreuvesTests(TestCase):
+    """`cours_id` est déterministe, dérivé de la seule compétence/niveau (voir
+    SKILL.md) - jamais de l'épreuve source. Deux épreuves distinctes couvrant la
+    même compétence produisent donc légitimement le même `cours_id` : ce n'est pas
+    seulement une ré-ingestion du même fichier. Constaté en production sur deux
+    épreuves d'Informatique BAC C 2022/2023 partageant plusieurs compétences avec
+    une épreuve 2024 déjà ingérée - le fast-path `external_id` existant retournait
+    le Cours déjà en base sans jamais rattacher le NOUVEAU rappel, le laissant
+    orphelin (cours_genere jamais mis à true) malgré 0 erreur d'ingestion."""
+
+    def setUp(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["questions"][0]["rappels_de_methode"] = [
+            {"id": "rdm-a", "competence": "Notion A", "contenu_markdown": "Contenu A."},
+        ]
+        self.exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+    def _cours_payload(self, rappel_id):
+        return {
+            "cours_id": "cours-meme-id-partout",
+            "meta": {"titre": "Cours de test", "matiere": "Mathematiques"},
+            "source": {"rappel_id": rappel_id},
+            "sections": [],
+        }
+
+    def test_second_epreuve_reusing_the_same_cours_id_still_links_its_rappel(self):
+        first_cours, first_created = ingest_cours(self._cours_payload("rdm-a"))
+        self.assertTrue(first_created)
+
+        payload = _exercise_payload("bac-maths-2025")
+        payload["questions"][0]["rappels_de_methode"] = [
+            {"id": "rdm-b", "competence": "Notion A", "contenu_markdown": "Contenu A."},
+        ]
+        other_exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2025"))
+
+        second_cours, second_created = ingest_cours(self._cours_payload("rdm-b"))
+
+        self.assertFalse(second_created)
+        self.assertEqual(second_cours.id, first_cours.id)
+        rappel_b = other_exercise.rappels_de_methode.get(external_id="rdm-b")
+        self.assertEqual(rappel_b.cours_id, first_cours.id)
+
+    def test_tolerates_a_missing_or_already_stale_rappel_id(self):
+        ingest_cours(self._cours_payload("rdm-a"))
+
+        cours, created = ingest_cours(self._cours_payload("rdm-does-not-exist"))
+
+        self.assertFalse(created)
+        self.assertEqual(cours.titre, "Cours de test")
+
+
+class CoursPaysFieldToleranceTests(TestCase):
+    """Même champ `pays` que côté exercice (voir PaysFieldToleranceTests), mais dans
+    `meta` pour un cours - voir catalog.ingestion._validate_pays_matches_country. Le
+    pays d'un cours est toujours hérité de l'épreuve source (rappel.exercise.lesson),
+    jamais lu depuis meta.pays lui-même - ce champ ne sert qu'au contrôle."""
+
+    def setUp(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["questions"][0]["rappels_de_methode"] = [
+            {"id": "rdm-a", "competence": "Notion A", "contenu_markdown": "Contenu A."},
+        ]
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+    def _cours_payload(self, pays=None):
+        meta = {"titre": "Cours de test", "matiere": "Mathematiques"}
+        if pays is not None:
+            meta["pays"] = pays
+        return {
+            "cours_id": "cours-test",
+            "meta": meta,
+            "source": {"rappel_id": "rdm-a", "rappels_lies": []},
+            "sections": [],
+        }
+
+    def test_accepts_a_pays_matching_the_source_exercises_country(self):
+        cours, created = ingest_cours(self._cours_payload(pays="cm"))
+        self.assertTrue(created)
+
+    def test_still_works_when_pays_is_absent(self):
+        cours, created = ingest_cours(self._cours_payload())
+        self.assertTrue(created)
+
+    def test_rejects_a_pays_contradicting_the_source_exercises_country(self):
+        with self.assertRaises(IngestionError):
+            ingest_cours(self._cours_payload(pays="sn"))
+
+
+class RappelIdRecoveryFromCoursSiblingTests(TestCase):
+    """Reproduit un blocage d'ingestion réel, rencontré à deux reprises (8 fichiers
+    bac-c-e-physique-2014/2015-cameroun, puis 28 fichiers bac-c(-e)-physique-2017 à
+    2022-cameroun) : une entrée `rappels_de_methode` perdait son `id` requis et ne
+    portait plus que `cours_id` (bookkeeping interne à la compétence, jamais lu par
+    ailleurs) - `KeyError` puis, en cascade, `RappelDeMethode introuvable` sur chaque
+    cours dérivé de cet exercice. Voir catalog.ingestion._cours_sibling_rappel_id_map."""
+
+    def test_recovers_id_from_a_sibling_cours_file_with_matching_cours_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-physique-2019"
+            source_dir.mkdir(parents=True)
+            (source_dir / "bac-physique-2019_cours_test.json").write_text(
+                json.dumps({
+                    "cours_id": "cours-test",
+                    "meta": {"titre": "Cours de test", "matiere": "Physique"},
+                    "source": {"rappel_id": "rdm-recovered-1", "rappels_lies": []},
+                    "sections": [],
+                }),
+                encoding="utf-8",
+            )
+
+            payload = _exercise_payload("bac-physique-2019")
+            payload["questions"][0]["rappels_de_methode"] = [
+                {"cours_id": "cours-test", "contenu_markdown": "Contenu."},
+            ]
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        rappel = exercise.rappels_de_methode.get(external_id="rdm-recovered-1")
+        self.assertEqual(rappel.contenu_markdown, "Contenu.")
+
+    def test_raises_a_clear_error_when_cours_id_has_no_matching_sibling(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-physique-2019"
+            source_dir.mkdir(parents=True)
+
+            payload = _exercise_payload("bac-physique-2019")
+            payload["questions"][0]["rappels_de_methode"] = [
+                {"cours_id": "cours-does-not-exist", "contenu_markdown": "Contenu."},
+            ]
+            with self.assertRaises(IngestionError):
+                ingest_exercise(payload, source_dir=source_dir)
+
+
 class SitemapCountryFanOutTests(TestCase):
     """`/{code}` et `/{code}/cours` doivent apparaître une fois par pays - voir
-    catalog.sitemap._PER_COUNTRY_PAGES (les fiches Lesson/Cours, elles, restent à
-    une URL plate, inchangée)."""
+    catalog.sitemap._PER_COUNTRY_PAGES."""
 
     def setUp(self):
         Country.objects.create(code="BJ", label="Bénin")
@@ -823,6 +1713,76 @@ class SitemapCountryFanOutTests(TestCase):
         for code in ["cm", "bj"]:
             self.assertIn(f"<loc>{base}/{code}</loc>", xml)
             self.assertIn(f"<loc>{base}/{code}/cours</loc>", xml)
+
+    def test_sitemap_prefixes_lesson_urls_with_their_country(self):
+        # Reco d'audit UX : une fiche Lesson doit être indexée sous /{pays}/epreuves/...,
+        # pas à une URL plate - voir catalog.sitemap._all_entries.
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        lesson = Lesson.objects.create(
+            title="Sitemap CM", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(cursus)
+
+        from django.conf import settings
+
+        response = self.client.get(reverse("sitemap-chunk", args=[1]))
+        xml = response.content.decode()
+        base = settings.FRONTEND_URL
+        self.assertIn(f"<loc>{base}/cm/epreuves/{lesson.slug}</loc>", xml)
+
+    def test_sitemap_prefixes_epreuve_inedite_urls_with_their_country(self):
+        # Même reco que pour Lesson ci-dessus, désormais possible depuis qu'EpreuveInedite
+        # a un slug (voir EpreuveInedite.slug) - voir catalog.sitemap._all_entries.
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        blueprint = Blueprint.objects.create(subject=subject, titre="BP Sitemap", statut=StatutContenu.VALIDE)
+        blueprint.cursus.set([cursus])
+        epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=subject, titre="Sitemap Inédite CM", statut=StatutContenu.VALIDE,
+        )
+        epreuve.cursus.set([cursus])
+
+        from django.conf import settings
+
+        response = self.client.get(reverse("sitemap-chunk", args=[1]))
+        xml = response.content.decode()
+        base = settings.FRONTEND_URL
+        self.assertIn(f"<loc>{base}/cm/epreuves-inedites/{epreuve.slug}</loc>", xml)
+
+    def test_sitemap_lists_epreuve_common_to_multiple_series_only_once(self):
+        """Régression : cursus__country__actif traverse le M2M EpreuveInedite.cursus -
+        sans distinct(), une épreuve commune à 2 séries produisait 2 <url> identiques."""
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        cursus_d = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        blueprint = Blueprint.objects.create(subject=subject, titre="BP Sitemap Multi", statut=StatutContenu.VALIDE)
+        blueprint.cursus.set([cursus_c, cursus_d])
+        epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=subject, titre="Sitemap Inédite Multi", statut=StatutContenu.VALIDE,
+        )
+        epreuve.cursus.set([cursus_c, cursus_d])
+
+        from django.conf import settings
+
+        response = self.client.get(reverse("sitemap-chunk", args=[1]))
+        xml = response.content.decode()
+        base = settings.FRONTEND_URL
+        self.assertEqual(xml.count(f"<loc>{base}/cm/epreuves-inedites/{epreuve.slug}</loc>"), 1)
+
+    def test_sitemap_excludes_brouillon_epreuve_inedite(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        blueprint = Blueprint.objects.create(subject=subject, titre="BP Brouillon", statut=StatutContenu.VALIDE)
+        blueprint.cursus.set([cursus])
+        epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=subject, titre="Brouillon Inédite CM", statut=StatutContenu.BROUILLON,
+        )
+        epreuve.cursus.set([cursus])
+
+        response = self.client.get(reverse("sitemap-chunk", args=[1]))
+        xml = response.content.decode()
+        self.assertNotIn(f"/epreuves-inedites/{epreuve.slug}", xml)
 
 
 class SujetPdfTemplateTests(TestCase):
@@ -1059,6 +2019,497 @@ class QuestionModelTests(TestCase):
         self.assertNotIn("**A.2.**", self.exercise.enonce_markdown)
         self.assertNotIn("**B.1.**", self.exercise.enonce_markdown)
 
+    def test_skips_numero_prefix_for_a_compound_numero_already_labeled(self):
+        """Régression réelle (378 questions sur tout le corpus, surtout en
+        physique-chimie) : une sous-question numérotée "1.2"/"2.4.1" (numérotation
+        composée à plusieurs niveaux) qui transcrit déjà ce même repère dans son
+        propre texte recevait quand même un second préfixe par-dessus - voir
+        physique-chimie-bac-c-2015_exercice_1, question 1.2 ("**1.2.** 1.2. Une
+        amine primaire...")."""
+        Question.objects.create(
+            exercise=self.exercise, numero="1.1", ordre=1,
+            enonce_markdown="1.1. La réaction est :", corrige_markdown="Réponse.",
+        )
+        Question.objects.create(
+            exercise=self.exercise, numero="2.4.1", ordre=2,
+            enonce_markdown="2.4.1. Écrire l'équation-bilan.", corrige_markdown="Réponse.",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertIn("1.1. La réaction est :", self.exercise.enonce_markdown)
+        self.assertIn("2.4.1. Écrire l'équation-bilan.", self.exercise.enonce_markdown)
+        self.assertNotIn("**1.1.**", self.exercise.enonce_markdown)
+        self.assertNotIn("**2.4.1.**", self.exercise.enonce_markdown)
+
+    def test_skips_numero_prefix_for_a_compound_numero_without_trailing_punctuation(self):
+        # Variante réelle du cas ci-dessus (physique-chimie-bac-d-2017) : le repère
+        # composé est parfois transcrit sans point final ("1.3.2 l'expression...").
+        Question.objects.create(
+            exercise=self.exercise, numero="1.3.1", ordre=1,
+            enonce_markdown="1.3.1 la période T.", corrige_markdown="Réponse.",
+        )
+        Question.objects.create(
+            exercise=self.exercise, numero="1.3.2", ordre=2,
+            enonce_markdown="1.3.2 l'expression de la tension u(t).", corrige_markdown="Réponse.",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertIn("1.3.2 l'expression de la tension u(t).", self.exercise.enonce_markdown)
+        self.assertNotIn("**1.3.2.**", self.exercise.enonce_markdown)
+
+    def test_skips_numero_prefix_for_other_real_world_labeling_conventions(self):
+        """Autres conventions de numérotation réelles rencontrées sur tout le corpus
+        (voir le commentaire de _ENONCE_ALREADY_LABELED_RE) : composé à séparateur
+        tiret ("1-2"), composé avec niveau lettre ("2.c"), lettre collée sans
+        séparateur ("5a"), ordinal à l'ancienne ("1°-")."""
+        cases = [
+            ("1-2", "1-2. Citer quatre verreries."),
+            ("2.c", "2.c. Avec quelle vitesse."),
+            ("1.a", "1.a) Vérifier que pour tout x."),
+            ("5", "5a. What is a century?"),
+            ("1", "1°- Combien y a-t-il de tirages ?"),
+            ("1", "1- What have scientists tried ?"),
+        ]
+        for index, (numero, enonce) in enumerate(cases):
+            exercise = Exercise.objects.create(
+                lesson=self.lesson, numero_exercice=f"conv-{index}", statut=StatutContenu.VALIDE,
+            )
+            Question.objects.create(exercise=exercise, numero=numero, ordre=1, enonce_markdown=enonce, corrige_markdown="R.")
+            Question.objects.create(exercise=exercise, numero=f"{numero}-bis", ordre=2, enonce_markdown="Autre question.", corrige_markdown="R.")
+
+            exercise.compile_from_questions()
+
+            self.assertIn(enonce, exercise.enonce_markdown, msg=f"case: {enonce!r}")
+            self.assertNotIn(f"**{numero}.**", exercise.enonce_markdown, msg=f"case: {enonce!r}")
+
+    def test_still_prefixes_a_bare_number_followed_by_a_word_with_no_punctuation(self):
+        # Garde-fou : un chiffre nu suivi directement d'un mot ("2 pommes...") n'est
+        # JAMAIS un repère - la ponctuation finale reste obligatoire dans ce cas,
+        # sinon toute sous-question qui commence par une quantité perdrait son
+        # numéro affiché.
+        Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1, enonce_markdown="Premher.", corrige_markdown="R.",
+        )
+        Question.objects.create(
+            exercise=self.exercise, numero="2", ordre=2,
+            enonce_markdown="2 pommes sont posées sur la table.", corrige_markdown="R.",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertIn("**2.** 2 pommes sont posées sur la table.", self.exercise.enonce_markdown)
+
+    def test_still_prefixes_a_question_starting_with_an_algebraic_term(self):
+        # Garde-fou dédié : "2x", "3n"... (chiffre collé à une lettre de variable)
+        # a exactement la même forme qu'un repère lettre collée ("5a") mais n'en est
+        # pas un - régression détectée sur test_compile_from_questions_renders_
+        # numero_and_choix_for_qcm lors de l'ajout de ce dernier.
+        Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1, enonce_markdown="Premier.", corrige_markdown="R.",
+        )
+        Question.objects.create(
+            exercise=self.exercise, numero="2", ordre=2,
+            enonce_markdown="2x est la derivee de :", corrige_markdown="R.",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertIn("**2.** 2x est la derivee de :", self.exercise.enonce_markdown)
+
+    def test_qcm_options_already_embedded_in_prose_are_not_duplicated(self):
+        """Régression réelle (14 questions sur 5 épreuves) : correction-experte
+        recopie parfois les options d'un QCM en prose dans enonce_markdown EN PLUS
+        de les fournir via `choix` (déjà contraire à la règle documentée), et le
+        rendu les affichait alors deux fois de suite - voir
+        physique-chimie-bac-c-2015_exercice_1, question 1.1."""
+        Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1,
+            enonce_markdown="La réaction est :\n\na) athermique\nb) limitée\nc) rapide.",
+            corrige_markdown="c) rapide.",
+            type_reponse=TypeReponse.QCM,
+            choix=[
+                {"lettre": "a", "texte": "athermique"},
+                {"lettre": "b", "texte": "limitée"},
+                {"lettre": "c", "texte": "rapide"},
+            ],
+            reponse_correcte="c",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertEqual(self.exercise.enonce_markdown.count("a) athermique"), 1)
+        self.assertEqual(self.exercise.enonce_markdown.count("b) limitée"), 1)
+        self.assertEqual(self.exercise.enonce_markdown.count("c) rapide"), 1)
+        self.assertIn("La réaction est :", self.exercise.enonce_markdown)
+
+    def test_qcm_options_embedded_inline_in_one_sentence_are_not_duplicated(self):
+        """Variante réelle de la même régression (physique-chimie-bac-d-et-ti-2025,
+        physique-chimie-bac-c-d-et-e-2021/2022) : les options recopiées à tort
+        n'apparaissent pas toujours une par ligne - parfois toutes dans la même
+        phrase, séparées par un espace ou un point-virgule, avec ou sans
+        parenthèses autour de la lettre."""
+        cas = [
+            (
+                "Question à choix multiples. La loi est : (a) attraction (b) Laplace (c) Coulomb.",
+                [{"lettre": "a", "texte": "attraction"}, {"lettre": "b", "texte": "Laplace"}, {"lettre": "c", "texte": "Coulomb"}],
+            ),
+            (
+                "La vitesse d'une réaction : a) reste la même ; b) augmente ; c) diminue.",
+                [{"lettre": "a", "texte": "reste la même"}, {"lettre": "b", "texte": "augmente"}, {"lettre": "c", "texte": "diminue"}],
+            ),
+        ]
+        for index, (enonce, choix) in enumerate(cas):
+            exercise = Exercise.objects.create(
+                lesson=self.lesson, numero_exercice=f"inline-{index}", statut=StatutContenu.VALIDE,
+            )
+            Question.objects.create(
+                exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown="R.",
+                type_reponse=TypeReponse.QCM, choix=choix, reponse_correcte="a",
+            )
+
+            exercise.compile_from_questions()
+
+            for option in choix:
+                needle = f"{option['lettre']}) {option['texte']}"
+                self.assertEqual(exercise.enonce_markdown.count(needle), 1, msg=f"case: {enonce!r}, needle: {needle!r}")
+
+    def test_qcm_options_embedded_across_blank_lines_are_not_duplicated(self):
+        # Variante réelle (physique-chimie-bac-c-2020) : chaque option déjà
+        # recopiée sur son propre paragraphe (ligne vide entre chacune), pas juste
+        # des lignes consécutives.
+        Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1,
+            enonce_markdown="Le composé est :\n\na) Isomère 1\n\nb) Isomère 2\n\nc) Isomère 3",
+            corrige_markdown="b.",
+            type_reponse=TypeReponse.QCM,
+            choix=[
+                {"lettre": "a", "texte": "Isomère 1"},
+                {"lettre": "b", "texte": "Isomère 2"},
+                {"lettre": "c", "texte": "Isomère 3"},
+            ],
+            reponse_correcte="b",
+        )
+
+        self.exercise.compile_from_questions()
+
+        self.assertEqual(self.exercise.enonce_markdown.count("a) Isomère 1"), 1)
+        self.assertEqual(self.exercise.enonce_markdown.count("b) Isomère 2"), 1)
+        self.assertEqual(self.exercise.enonce_markdown.count("c) Isomère 3"), 1)
+
+    def test_qcm_options_render_normally_when_not_duplicated_in_prose(self):
+        # Non-régression : le cas propre (majoritaire) - options fournies
+        # uniquement via `choix` - continue de fonctionner normalement.
+        question = Question.objects.create(
+            exercise=self.exercise, numero="1", ordre=1,
+            enonce_markdown="2x est la derivee de :", corrige_markdown="b.",
+            type_reponse=TypeReponse.QCM,
+            choix=[{"lettre": "a", "texte": "x"}, {"lettre": "b", "texte": "x^2"}],
+            reponse_correcte="b",
+        )
+
+        rendered = _render_question_enonce(question, numbered=False)
+
+        self.assertEqual(rendered, "2x est la derivee de :\n\na) x\nb) x^2")
+
+
+class LessonExercisesBreakdownTests(TestCase):
+    """`Lesson.exercises_breakdown()` - énoncé/corrigé exposés séparément par exercice
+    (voir catalog.rendering.lesson_exercises_breakdown), utilisé par
+    access.views.read_lesson pour replier l'énoncé côté lecture (audit UX)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.lesson = Lesson.objects.create(
+            title="Test", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(cursus)
+
+    def _exercise(self, numero, statut=StatutContenu.VALIDE, enonce="Énoncé.", corrige="Corrigé.", intro="", points=""):
+        exercise = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice=numero, statut=statut, enonce_intro_markdown=intro, points=points,
+        )
+        Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown=corrige,
+        )
+        exercise.compile_from_questions()
+        return exercise
+
+    def test_returns_one_entry_per_validated_exercise_in_order(self):
+        self._exercise("2", enonce="Deuxieme.", corrige="Corrige 2.")
+        self._exercise("1", enonce="Premier.", corrige="Corrige 1.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual([b["numero_exercice"] for b in breakdown], ["1", "2"])
+        self.assertEqual(breakdown[0]["enonce_markdown"], "Premier.")
+        self.assertEqual(breakdown[0]["corrige_markdown"], "Corrige 1.")
+
+    def test_intro_is_exposed_separately_and_stripped_from_enonce(self):
+        # La référence de l'exercice + le préambule partagé doivent rester visibles
+        # même quand l'élève ne déplie pas l'énoncé complet (voir EpreuveReaderPage,
+        # qui affiche enonce_intro_markdown hors du toggle, juste avant le corrigé) -
+        # sans quoi un lecteur du corrigé seul n'a aucun repère sur l'exercice qu'il
+        # lit ni sur le contexte auquel le corrigé fait implicitement référence.
+        self._exercise("1", intro="**Exercice 1 (6 points)**\n\nDonnées communes.", enonce="Question posée.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "**Exercice 1 (6 points)**\n\nDonnées communes.")
+        # Pas de doublon : le préambule ne doit plus apparaître dans enonce_markdown
+        # une fois sorti dans son propre champ.
+        self.assertEqual(breakdown[0]["enonce_markdown"], "Question posée.")
+
+    def test_enonce_markdown_unchanged_when_no_intro(self):
+        self._exercise("1", enonce="Question posée.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "")
+        self.assertEqual(breakdown[0]["enonce_markdown"], "Question posée.")
+
+    def test_excludes_draft_and_rejected_exercises(self):
+        self._exercise("1", statut=StatutContenu.VALIDE)
+        self._exercise("2", statut=StatutContenu.BROUILLON)
+        self._exercise("3", statut=StatutContenu.REJETE)
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual([b["numero_exercice"] for b in breakdown], ["1"])
+
+    def test_corrige_is_cleaned_like_the_flattened_content_markdown(self):
+        # Même nettoyage que _render_exercise_block (fiche d'identité retirée) -
+        # voir _clean_exercise_corrige, partagé par les deux chemins.
+        self._exercise("1", corrige="```\nMatière : Maths\n```\nCorrigé réel.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertNotIn("Matière : Maths", breakdown[0]["corrige_markdown"])
+        self.assertIn("Corrigé réel.", breakdown[0]["corrige_markdown"])
+
+    def test_empty_for_a_lesson_without_exercises(self):
+        fiche = Lesson.objects.create(
+            title="Fiche", subject=self.lesson.subject, lesson_type=LessonType.FICHE, statut=StatutContenu.VALIDE,
+        )
+        self.assertEqual(fiche.exercises_breakdown(), [])
+
+    def test_cours_link_marker_uses_the_cours_slug_not_its_numeric_id(self):
+        # Le frontend route vers "/cours/<slug>" (EpreuveMarkdown.tsx) : le marqueur
+        # injecté ici doit donc porter le slug, pas l'id numérique - sinon "Voir le
+        # cours complet" pointe vers une URL non-slug côté lecture.
+        cours = Cours.objects.create(
+            external_id="cours-test", titre="Résolution d'équations du second degré",
+            subject=self.lesson.subject,
+        )
+        exercise = self._exercise("1", corrige="Corrigé.\n\n### Rappel de méthode\n\nContenu du rappel.")
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-test", competence="Test",
+            contenu_markdown="Contenu du rappel.", cours=cours,
+        )
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", breakdown[0]["corrige_markdown"])
+        self.assertNotIn(f"[COURS_LINK:{cours.id}]", breakdown[0]["corrige_markdown"])
+
+    def test_exposes_titre_and_points_for_the_navigation_sommaire(self):
+        self._exercise("1", intro="**Exercice 1 : Chimie organique (5 points)**\n\nDonnées.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["titre"], "Exercice 1 : Chimie organique")
+        self.assertEqual(breakdown[0]["points"], "5")
+
+
+class LessonPreviewExercisesTests(TestCase):
+    """`Lesson.preview_exercises()` - le sujet public découpé par exercice, servi par
+    access.views.preview_lesson (AllowAny) pour que la fiche renvoie vers le corrigé de
+    l'exercice consulté. Aucun champ de corrigé ne doit en sortir."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson = Lesson.objects.create(
+            title="Test", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C"))
+
+    def _exercise(self, numero, statut=StatutContenu.VALIDE, intro="", enonce="Énoncé.", corrige="Corrigé secret."):
+        exercise = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice=numero, statut=statut, enonce_intro_markdown=intro,
+        )
+        Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown=corrige,
+        )
+        exercise.compile_from_questions()
+        return exercise
+
+    def test_never_exposes_any_corrige(self):
+        # Le vrai risque de cette sortie : elle est publique. Un champ de corrigé qui s'y
+        # glisserait donnerait le contenu payant à n'importe quel visiteur.
+        self._exercise("1", corrige="Corrigé secret.")
+
+        preview = self.lesson.preview_exercises()
+
+        self.assertNotIn("corrige_markdown", preview[0])
+        self.assertNotIn("Corrigé secret.", str(preview))
+
+    def test_keeps_the_preamble_inside_the_enonce(self):
+        # Contrairement à exercises_breakdown (qui sort l'intro à part pour la garder
+        # visible hors du toggle), rien n'est replié dans le sujet : tout est déjà là.
+        self._exercise("1", intro="**Exercice 1 (6 points)**\n\nDonnées communes.", enonce="Question posée.")
+
+        preview = self.lesson.preview_exercises()
+
+        self.assertIn("Données communes.", preview[0]["enonce_markdown"])
+        self.assertIn("Question posée.", preview[0]["enonce_markdown"])
+
+    def test_exposes_the_same_labels_and_order_as_the_reader(self):
+        for numero in ["10", "2", "1"]:
+            self._exercise(numero, intro=f"**Exercice {numero} (5 points)**")
+
+        preview = self.lesson.preview_exercises()
+
+        self.assertEqual([e["numero_exercice"] for e in preview], ["1", "2", "10"])
+        self.assertEqual([e["titre"] for e in preview], ["Exercice 1", "Exercice 2", "Exercice 10"])
+        self.assertEqual(preview[0]["points"], "5")
+
+    def test_excludes_draft_and_rejected_exercises(self):
+        self._exercise("1", statut=StatutContenu.VALIDE)
+        self._exercise("2", statut=StatutContenu.BROUILLON)
+
+        self.assertEqual([e["numero_exercice"] for e in self.lesson.preview_exercises()], ["1"])
+
+    def test_empty_for_a_lesson_without_exercises(self):
+        fiche = Lesson.objects.create(
+            title="Fiche", subject=self.lesson.subject, lesson_type=LessonType.FICHE, statut=StatutContenu.VALIDE,
+        )
+        self.assertEqual(fiche.preview_exercises(), [])
+
+
+class ExerciseSortKeyTests(TestCase):
+    """`numero_exercice` est un CharField : un ORDER BY SQL trie "10"/"11" avant "2".
+    Constaté sur bac-c-svt-2015-cameroun (11 exercices), affichée dans le désordre à la
+    fois en lecture, dans le sujet public et dans content_markdown compilé."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson = Lesson.objects.create(
+            title="Test", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C"))
+
+    def _exercise(self, numero):
+        exercise = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice=numero, statut=StatutContenu.VALIDE,
+        )
+        Question.objects.create(
+            exercise=exercise, numero="1", ordre=1,
+            enonce_markdown=f"Énoncé {numero}.", corrige_markdown=f"Corrigé {numero}.",
+        )
+        exercise.compile_from_questions()
+        return exercise
+
+    def test_orders_numerically_beyond_nine(self):
+        for numero in ["1", "2", "10", "11", "3"]:
+            self._exercise(numero)
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual([b["numero_exercice"] for b in breakdown], ["1", "2", "3", "10", "11"])
+
+    def test_groups_letter_suffixes_behind_their_number(self):
+        for numero in ["3b", "10", "3a", "2"]:
+            self._exercise(numero)
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual([b["numero_exercice"] for b in breakdown], ["2", "3a", "3b", "10"])
+
+    def test_non_numeric_markers_come_after_the_numbered_exercises(self):
+        # "Problème"/"Section III" n'ont pas de rang déductible - en pratique ce sont
+        # les parties finales d'une épreuve, jamais un repère à insérer au milieu.
+        for numero in ["Probleme", "2", "Section III", "1"]:
+            self._exercise(numero)
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(
+            [b["numero_exercice"] for b in breakdown], ["1", "2", "Probleme", "Section III"],
+        )
+
+    def test_preview_and_compiled_content_follow_the_same_order(self):
+        # Les trois sorties visibles par l'élève (lecture, sujet public, content_markdown
+        # compilé) doivent s'accorder - sinon l'exercice 10 du sommaire ne tombe pas au
+        # même endroit que dans le PDF ou dans le sujet.
+        for numero in ["10", "2", "1"]:
+            self._exercise(numero)
+
+        preview = self.lesson.preview_markdown()
+        self.assertLess(preview.index("Énoncé 1."), preview.index("Énoncé 2."))
+        self.assertLess(preview.index("Énoncé 2."), preview.index("Énoncé 10."))
+
+        self.lesson.compile_from_exercises()
+        compiled = self.lesson.content_markdown
+        self.assertLess(compiled.index("Énoncé 1."), compiled.index("Énoncé 2."))
+        self.assertLess(compiled.index("Énoncé 2."), compiled.index("Énoncé 10."))
+
+
+class ExerciseTitreEtPointsTests(TestCase):
+    """`_exercise_titre_et_points` - le libellé d'un exercice n'a pas de champ dédié en
+    base, il vit dans la première ligne de enonce_intro_markdown. Alimente le sommaire
+    de navigation du lecteur (voir EpreuveSommaire côté frontend)."""
+
+    def _titre_et_points(self, intro, points="", enonce=""):
+        return _exercise_titre_et_points(
+            Exercise(enonce_intro_markdown=intro, enonce_markdown=enonce, points=points),
+        )
+
+    def test_markdown_heading(self):
+        self.assertEqual(self._titre_et_points("### Exercice 1 (5 points)"), ("Exercice 1", "5"))
+
+    def test_bold_heading_with_a_descriptive_title(self):
+        self.assertEqual(
+            self._titre_et_points("**Exercice 2 : Acides et bases (5 points)**\n\nPréambule."),
+            ("Exercice 2 : Acides et bases", "5"),
+        )
+
+    def test_bold_heading_followed_by_preamble_on_the_same_line(self):
+        # Forme réelle des épreuves d'anglais (bac-a-anglais-2000-cameroun) : seul le
+        # premier segment en gras est le titre, la suite de la ligne est du préambule.
+        self.assertEqual(
+            self._titre_et_points("**Section D: Essay (10 marks).** Write an essay of 300 words."),
+            ("Section D: Essay", "10"),
+        )
+
+    def test_structured_points_field_wins_over_the_title(self):
+        self.assertEqual(self._titre_et_points("### Problème (10 points)", points="12"), ("Problème", "12"))
+
+    def test_no_title_when_the_intro_is_plain_preamble(self):
+        # Une première phrase d'énoncé n'est pas un repère : mieux vaut un titre vide
+        # (le frontend retombe sur "Exercice {numero}") qu'une étiquette tronquée.
+        self.assertEqual(self._titre_et_points("Une urne contient 12 billes."), ("", ""))
+
+    def test_no_title_when_the_intro_is_empty(self):
+        self.assertEqual(self._titre_et_points(""), ("", ""))
+
+    def test_falls_back_to_the_enonce_when_there_is_no_shared_preamble(self):
+        # Cas réel de chimie-bac-c-1999 : aucun de ses 4 exercices n'a de préambule
+        # partagé, la référence vit en tête de la première sous-question.
+        self.assertEqual(
+            self._titre_et_points("", enonce="**Exercice 1 : Chimie organique (5 points)**\n\n1. Donner..."),
+            ("Exercice 1 : Chimie organique", "5"),
+        )
+
+    def test_a_leading_question_number_is_never_taken_for_a_title(self):
+        # Sans garde-fou, un exercice sans préambule dont l'énoncé ouvre sur "**1.**"
+        # se retrouvait étiqueté "1." dans le sommaire.
+        self.assertEqual(
+            self._titre_et_points("", enonce="**1.** Écris le nombre $A$ sous forme irréductible."),
+            ("", ""),
+        )
+
 
 class ReferencesMissingFigureTests(TestCase):
     """Une question qui renvoie explicitement à une figure ("ci-contre"...) sans
@@ -1246,11 +2697,15 @@ class QuestionIngestionTests(TestCase):
 
     def test_matiere_aliases_physique_chimie_and_langue_francaise_resolve(self):
         # Constaté en production : certaines épreuves (Congo) traitent Physique et
-        # Chimie comme deux matières distinctes alors que le référentiel les regroupe
-        # en une seule Subject PHYSIQUE_CHIMIE, et "Langue française" est un synonyme
+        # Chimie comme deux matières distinctes - chacune sa propre Subject depuis le
+        # 2026-08-08 (voir SUBJECT_FAMILIES) - et "Langue française" est un synonyme
         # de FRANCAIS - voir MATIERE_MAP.
-        for matiere, expected_code in [("Physique", "PHYSIQUE_CHIMIE"), ("Chimie", "PHYSIQUE_CHIMIE"), ("Langue française", "FRANCAIS")]:
-            payload = self._payload(matiere=matiere)
+        for i, (matiere, expected_code) in enumerate([("Physique", "PHYSIQUE"), ("Chimie", "CHIMIE"), ("Physique-Chimie", "PHYSIQUE_CHIMIE"), ("Langue française", "FRANCAIS"), ("Informatique", "INFORMATIQUE"), ("Physique-Chimie-Technologie", "PHYSIQUE_CHIMIE_TECH")]):
+            # epreuve_source distinct par cas : Physique/Chimie/Physique-Chimie partagent
+            # désormais une famille (voir SUBJECT_FAMILIES) - les réutiliser sur le même
+            # epreuve_source les fusionnerait/promouvrait en un seul Lesson, alors que ce
+            # test vérifie une résolution indépendante par matière.
+            payload = self._payload(matiere=matiere, epreuve_source=f"bac-matiere-test-{i}")
             exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
             self.assertEqual(exercise.lesson.subject.code, expected_code)
 
@@ -1348,6 +2803,427 @@ class QuestionIngestionTests(TestCase):
         self.assertIn("/media/figures/", questions[0].enonce_markdown)
         self.assertNotIn("(graphique.png)", questions[1].corrige_markdown)
         self.assertIn("/media/figures/", questions[1].corrige_markdown)
+
+    def test_a_real_figure_is_stored_compressed_as_webp(self):
+        # Contrairement aux autres tests de ce fichier (b"fake-png-bytes", volontairement
+        # illisible par Pillow pour rester rapides) : une vraie image ici, pour vérifier
+        # que la compression (voir _compress_figure_image, reco 5.2 de l'audit UX) est
+        # bien câblée bout en bout, jusqu'à l'URL finalement stockée dans le Markdown.
+        buffer = BytesIO()
+        Image.new("RGB", (50, 50), "red").save(buffer, format="PNG")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "graphique.png").write_bytes(buffer.getvalue())
+
+            payload = self._payload(
+                figures=[{
+                    "id": "fig-1", "fichier": "graphique.png", "page_source": 1,
+                    "type": "courbe", "legende": "Courbe de f", "indispensable": True, "lisibilite": "bonne",
+                }],
+            )
+            payload["questions"][0]["enonce_markdown"] = "Lire fig-1 (graphique.png)."
+
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        figure = exercise.figures.get(external_id="fig-1")
+        self.assertTrue(figure.image.name.endswith(".webp"))
+        self.assertIn(".webp", exercise.questions.first().enonce_markdown)
+
+    def test_figure_placeholder_alt_text_uses_the_legende_when_present(self):
+        # Convention réelle de correction-experte (vérifiée en base de production) :
+        # "![fig-1](nom_original.png)", jamais du texte libre - voir l'audit UX, reco
+        # 6.1 : "fig-1" seul ne dit rien à un lecteur d'écran.
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "graphique.png").write_bytes(b"fake-png-bytes")
+
+            payload = self._payload(
+                figures=[{
+                    "id": "fig-1", "fichier": "graphique.png",
+                    "type": "courbe", "legende": "Courbe de f(x)", "indispensable": True, "lisibilite": "bonne",
+                }],
+            )
+            payload["questions"][0]["enonce_markdown"] = "Voir ![fig-1](graphique.png) ci-dessus."
+
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        enonce = exercise.questions.first().enonce_markdown
+        self.assertIn("![Courbe de f(x)](", enonce)
+        self.assertNotIn("![fig-1]", enonce)
+
+    def test_figure_placeholder_alt_text_falls_back_to_type_figure_without_legende(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "graphique.png").write_bytes(b"fake-png-bytes")
+
+            payload = self._payload(
+                figures=[{"id": "fig-1", "fichier": "graphique.png", "type": "courbe", "indispensable": True}],
+            )
+            payload["questions"][0]["enonce_markdown"] = "Voir ![fig-1](graphique.png) ci-dessus."
+
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        self.assertIn("![courbe](", exercise.questions.first().enonce_markdown)
+
+    def test_figure_placeholder_alt_text_falls_back_to_a_generic_label(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "graphique.png").write_bytes(b"fake-png-bytes")
+
+            payload = self._payload(figures=[{"id": "fig-1", "fichier": "graphique.png", "indispensable": True}])
+            payload["questions"][0]["enonce_markdown"] = "Voir ![fig-1](graphique.png) ci-dessus."
+
+            exercise, _ = ingest_exercise(payload, source_dir=source_dir)
+
+        self.assertIn("![Figure du corrigé](", exercise.questions.first().enonce_markdown)
+
+    def test_figure_without_fichier_is_dropped_with_incertitude_note(self):
+        # Constaté en production (probatoire-c-d-chimie 2008/2011/2013-cameroun) : la
+        # compétence décrit une figure qu'elle sait avoir existé sur le sujet source
+        # (id + description) mais n'a pas pu en extraire une image exploitable (scan
+        # trop ancien/dégradé) - ne doit jamais faire échouer l'ingestion de tout
+        # l'exercice pour ça, juste être ignorée avec une trace dans incertitudes
+        # (voir _attach_figures) : aucune de ces figures n'est référencée par un
+        # placeholder dans enonce/corrige_markdown, donc rien n'est perdu à l'ignorer.
+        payload = self._payload(
+            figures=[{"id": "fig-1", "type": "schema", "description": "Schéma non capturé lors de l'extraction."}],
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.figures.count(), 0)
+        self.assertTrue(any("fig-1" in note for note in exercise.incertitudes))
+
+    def test_figure_entry_as_bare_string_is_dropped_with_incertitude_note(self):
+        # Constaté en production (bac-c-physique-2024, bac-d-physique-2019/2022-
+        # cameroun, 9 fichiers) : la compétence a émis l'id de la figure comme simple
+        # chaîne au lieu de l'objet {"id", "fichier", ...} attendu - même traitement
+        # que le cas "sans fichier" ci-dessus (voir _attach_figures), pas un AttributeError.
+        payload = self._payload(figures=["fig-orpheline"])
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.figures.count(), 0)
+        self.assertTrue(any("fig-orpheline" in note for note in exercise.incertitudes))
+
+
+class PhysiqueChimieClassificationTests(TestCase):
+    """Physique et Chimie sont désormais des Subject distinctes (voir MATIERE_MAP),
+    mais une épreuve qui mélange les deux disciplines au sein d'un même epreuve_source
+    (constaté en production sur bac-d-physique-chimie-1995-cameroun et
+    bac-c-physique-chimie-2016-congo, où le champ matiere varie déjà par exercice) ne
+    doit jamais être fragmentée en plusieurs Lesson - voir SUBJECT_FAMILIES et la
+    promotion dans ingest_exercise."""
+
+    def _payload(self, numero_exercice, matiere, **overrides):
+        payload = {
+            "epreuve_source": "bac-d-physique-chimie-1995-cameroun", "numero_exercice": numero_exercice,
+            "matiere": matiere, "serie": "D", "examen": "BAC", "annee": 1995,
+            "questions": [
+                {"numero": "1", "enonce_markdown": f"Question {numero_exercice}.", "corrige_markdown": "### Corrige\n\nOK."},
+            ],
+        }
+        payload.update(overrides)
+        return payload
+
+    def test_matiere_physique_and_chimie_resolve_to_distinct_subjects(self):
+        # epreuve_source distincts (deux vraies épreuves séparées, pas un mélange) :
+        # deux Lesson indépendantes, chacune sous sa propre discipline - le cas
+        # courant, non combiné.
+        physique, _ = ingest_exercise(
+            self._payload("1", "Physique", epreuve_source="bac-c-physique-2017-cameroun"),
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        chimie, _ = ingest_exercise(
+            self._payload("1", "Chimie", epreuve_source="bac-c-d-chimie-2017-cameroun"),
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+
+        self.assertNotEqual(physique.lesson_id, chimie.lesson_id)
+        self.assertEqual(physique.lesson.subject.code, "PHYSIQUE")
+        self.assertEqual(chimie.lesson.subject.code, "CHIMIE")
+
+    def test_mixed_disciplines_same_epreuve_source_promote_to_combined_subject(self):
+        # Rejoue exactement le motif constaté sur bac-d-physique-chimie-1995-cameroun :
+        # exercices 1-2 déclarés "Physique", exercices 3-4 déclarés "Chimie".
+        ex1, created1 = ingest_exercise(self._payload("1", "Physique"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        ex2, created2 = ingest_exercise(self._payload("2", "Physique"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        ex3, created3 = ingest_exercise(self._payload("3", "Chimie"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        ex4, created4 = ingest_exercise(self._payload("4", "Chimie"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+
+        self.assertTrue(created1 and created2 and created3 and created4)
+        # Un seul Lesson pour les 4 exercices - jamais fragmenté en Lesson "Physique"
+        # + Lesson "Chimie" séparées.
+        lesson_ids = {ex1.lesson_id, ex2.lesson_id, ex3.lesson_id, ex4.lesson_id}
+        self.assertEqual(len(lesson_ids), 1)
+        # Relu depuis la base (pas ex1.lesson, mis en cache au moment de la création
+        # de ex1 - avant la promotion déclenchée par ex3/ex4) : Django ne rafraîchit
+        # jamais tout seul un objet lié déjà chargé.
+        lesson = Lesson.objects.get(pk=ex1.lesson_id)
+        self.assertEqual(lesson.subject.code, "PHYSIQUE_CHIMIE")
+        self.assertEqual(lesson.exercises.count(), 4)
+
+    def test_promotion_is_monotonic_never_narrows_back(self):
+        # Une épreuve déjà promue en Physique-Chimie doit le rester, même si un
+        # exercice ultérieur redéclare une seule discipline.
+        ex1, _ = ingest_exercise(self._payload("1", "Physique"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        ex2, _ = ingest_exercise(self._payload("2", "Chimie"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        # ex2.lesson (pas ex1.lesson, stale) : l'objet Lesson lié à ex2 vient d'être
+        # rechargé/promu par ingest_exercise lui-même, donc déjà à jour.
+        self.assertEqual(ex2.lesson.subject.code, "PHYSIQUE_CHIMIE")
+
+        ex3, _ = ingest_exercise(self._payload("3", "Physique"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+
+        self.assertEqual(ex3.lesson_id, ex1.lesson_id)
+        self.assertEqual(ex3.lesson.subject.code, "PHYSIQUE_CHIMIE")
+
+    def test_explicit_physique_chimie_matiere_joins_and_promotes_existing_lesson(self):
+        # Un premier exercice déclaré "Physique", puis un deuxième déclaré littéralement
+        # "Physique-Chimie" (cas d'incertitude assumée par la compétence, voir §12) -
+        # doit rejoindre le même Lesson et le promouvoir, pas en créer un troisième.
+        ex1, _ = ingest_exercise(self._payload("1", "Physique"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+        ex2, _ = ingest_exercise(self._payload("2", "Physique-Chimie"), source_dir=Path("ingest/cm/bac-d-physique-chimie-1995-cameroun"))
+
+        self.assertEqual(ex1.lesson_id, ex2.lesson_id)
+        self.assertEqual(ex2.lesson.subject.code, "PHYSIQUE_CHIMIE")
+
+    def test_congo_mixed_order_reversed_still_promotes_correctly(self):
+        # Même motif que bac-c-physique-chimie-2016-congo, mais Chimie déclarée avant
+        # Physique cette fois (l'ordre de dépôt des fichiers ne doit rien changer).
+        ex1, _ = ingest_exercise(self._payload("1", "Chimie"), source_dir=Path("ingest/cm/bac-c-physique-chimie-2016-congo"))
+        ex2, _ = ingest_exercise(self._payload("2", "Physique"), source_dir=Path("ingest/cm/bac-c-physique-chimie-2016-congo"))
+
+        self.assertEqual(ex1.lesson_id, ex2.lesson_id)
+        self.assertEqual(ex2.lesson.subject.code, "PHYSIQUE_CHIMIE")
+
+    def test_unrelated_subject_is_never_affected_by_family_lookup(self):
+        # Garde-fou : deux exercices de Maths sur un même epreuve_source ne doivent
+        # jamais être affectés par la logique de famille (Maths hors SUBJECT_FAMILIES).
+        ex1, _ = ingest_exercise(
+            {**self._payload("1", "Mathematiques"), "epreuve_source": "bac-maths-2024"},
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        ex2, _ = ingest_exercise(
+            {**self._payload("2", "Mathematiques"), "epreuve_source": "bac-maths-2024"},
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        self.assertEqual(ex1.lesson_id, ex2.lesson_id)
+        self.assertEqual(ex1.lesson.subject.code, "MATHS")
+
+
+class NatureEpreuveIngestionTests(TestCase):
+    """Champ optionnel (contrairement à examen/origine) : jamais deviné, jamais
+    bloquant en son absence - voir _resolve_nature_epreuve."""
+
+    def _payload(self, **overrides):
+        payload = {
+            "epreuve_source": "bac-c-physique-theorique-2022-cameroun", "numero_exercice": "1",
+            "matiere": "Physique", "serie": "C", "examen": "BAC", "annee": 2022,
+            "questions": [
+                {"numero": "1", "enonce_markdown": "Question.", "corrige_markdown": "### Corrige\n\nOK."},
+            ],
+        }
+        payload.update(overrides)
+        return payload
+
+    def test_theorique_and_pratique_resolve_on_lesson(self):
+        theorique, _ = ingest_exercise(self._payload(nature_epreuve="theorique"), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(theorique.lesson.nature_epreuve, NatureEpreuve.THEORIQUE)
+
+        pratique, _ = ingest_exercise(
+            self._payload(epreuve_source="bac-c-physique-pratique-2022-cameroun", nature_epreuve="pratique"),
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        self.assertEqual(pratique.lesson.nature_epreuve, NatureEpreuve.PRATIQUE)
+
+    def test_absent_nature_epreuve_stays_blank(self):
+        exercise, _ = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(exercise.lesson.nature_epreuve, "")
+
+    def test_invalid_nature_epreuve_raises(self):
+        with self.assertRaises(IngestionError):
+            ingest_exercise(self._payload(nature_epreuve="mixte"), source_dir=Path("ingest/cm/bac-maths-2024"))
+
+    def test_nature_epreuve_filled_by_later_exercise_when_first_omits_it(self):
+        ex1, _ = ingest_exercise(self._payload(numero_exercice="1"), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(ex1.lesson.nature_epreuve, "")
+
+        ex2, _ = ingest_exercise(
+            self._payload(numero_exercice="2", nature_epreuve="theorique"), source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+
+        self.assertEqual(ex1.lesson_id, ex2.lesson_id)
+        ex1.lesson.refresh_from_db()
+        self.assertEqual(ex1.lesson.nature_epreuve, NatureEpreuve.THEORIQUE)
+
+
+class DisciplineAndNatureFilterApiTests(TestCase):
+    """`?discipline=` (recherche "contient cette discipline", inclut Physique-Chimie)
+    et `?nature=` sur /catalog/lessons/ - à distinguer de `?subject=` qui reste une
+    correspondance exacte (voir catalog.views.LessonListView)."""
+
+    def setUp(self):
+        country = Country.objects.get(code="CM")
+        self.physique = Subject.objects.get(country=country, code="PHYSIQUE")
+        self.chimie = Subject.objects.get(country=country, code="CHIMIE")
+        self.physique_chimie = Subject.objects.get(country=country, code="PHYSIQUE_CHIMIE")
+
+        self.lesson_physique = Lesson.objects.create(
+            title="Physique seule", subject=self.physique, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, nature_epreuve=NatureEpreuve.PRATIQUE,
+        )
+        self.lesson_chimie = Lesson.objects.create(
+            title="Chimie seule", subject=self.chimie, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        self.lesson_combinee = Lesson.objects.create(
+            title="Physique-Chimie combinée", subject=self.physique_chimie, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+
+    def test_subject_exact_match_excludes_physique_chimie(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "PHYSIQUE"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertIn("Physique seule", titles)
+        self.assertNotIn("Physique-Chimie combinée", titles)
+
+    def test_discipline_filter_includes_physique_chimie(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"discipline": "PHYSIQUE"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertIn("Physique seule", titles)
+        self.assertIn("Physique-Chimie combinée", titles)
+        self.assertNotIn("Chimie seule", titles)
+
+    def test_discipline_filter_on_unrelated_subject_behaves_like_exact_match(self):
+        maths = Subject.objects.get(country__code="CM", code="MATHS")
+        Lesson.objects.create(title="Maths", subject=maths, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE)
+
+        response = self.client.get(reverse("catalog:lesson-list"), {"discipline": "MATHS"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertEqual(titles, ["Maths"])
+
+    def test_nature_filter(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"nature": "pratique"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertEqual(titles, ["Physique seule"])
+
+
+class EstVitrineFilterApiTests(TestCase):
+    """`?est_vitrine=true` sur /catalog/lessons/ - alimente le CTA "Essayer un
+    corrigé gratuit" du hero (CataloguePage), qui a besoin de trouver une épreuve en
+    accès libre pour le pays courant sans connaître son slug à l'avance."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.vitrine = Lesson.objects.create(
+            title="Vitrine", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, est_vitrine=True,
+        )
+        Lesson.objects.create(
+            title="Non vitrine", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+
+    def test_returns_only_vitrine_lessons(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"est_vitrine": "true"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertEqual(titles, ["Vitrine"])
+
+    def test_absent_returns_all(self):
+        titles = [item["title"] for item in self.client.get(reverse("catalog:lesson-list")).json()["results"]]
+        self.assertIn("Vitrine", titles)
+        self.assertIn("Non vitrine", titles)
+
+
+class LessonSearchApiTests(TestCase):
+    """`?search=` sur /catalog/lessons/ - couvre les 4 canaux (titre, contenu compilé,
+    thèmes, mots-clés) et le bug de fan-out déjà rencontré en production : joindre
+    themes ET mots_cles_recherche dans le même filtre multiplie chaque Lesson par
+    (nb thèmes × nb mots-clés) avant le WHERE - une épreuve à 65 thèmes et 43 mots-
+    clés produisait 2795 lignes fantômes, rendant une recherche par année (ex.
+    "2022") catastrophiquement lente (107s mesurés sur ~225 épreuves) alors que le
+    filtre lui-même était fonctionnellement correct. Voir catalog.views.LessonListView,
+    qui utilise désormais Exists() plutôt qu'un JOIN pour ces deux relations."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson = Lesson.objects.create(
+            title="Mathématiques BAC C 2022", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, content_markdown="Contenu sur les suites numériques.",
+        )
+        self.lesson.themes.set([Tag.objects.create(name="Suites arithmétiques")])
+        self.lesson.mots_cles_recherche.set([Tag.objects.create(name="raison")])
+
+    def _search(self, term):
+        response = self.client.get(reverse("catalog:lesson-list"), {"search": term})
+        return [item["title"] for item in response.json()["results"]]
+
+    def test_matches_on_title(self):
+        self.assertIn(self.lesson.title, self._search("2022"))
+
+    def test_matches_on_content_markdown(self):
+        self.assertIn(self.lesson.title, self._search("suites numériques"))
+
+    def test_matches_on_theme(self):
+        self.assertIn(self.lesson.title, self._search("arithmétiques"))
+
+    def test_matches_on_mot_cle_recherche(self):
+        self.assertIn(self.lesson.title, self._search("raison"))
+
+    def test_no_duplicate_results_when_theme_and_keyword_both_match(self):
+        # Un même terme présent à la fois dans un thème et un mot-clé ne doit renvoyer
+        # la Lesson qu'une seule fois (voir Exists() + distinct() dans la vue) - c'est
+        # précisément le cas qui, avec un JOIN, produisait des doublons avant DISTINCT.
+        self.lesson.themes.add(Tag.objects.create(name="algèbre"))
+        self.lesson.mots_cles_recherche.add(Tag.objects.create(name="algèbre avancée"))
+
+        titles = self._search("algèbre")
+
+        self.assertEqual(titles.count(self.lesson.title), 1)
+
+    def test_many_themes_and_keywords_do_not_multiply_results(self):
+        # Reproduit le motif de fan-out constaté en production (65 thèmes × 43 mots-
+        # clés = 2795 lignes fantômes sur une seule Lesson) à plus petite échelle -
+        # garde-fou contre une régression vers un JOIN qui recréerait le problème.
+        self.lesson.themes.add(*(Tag.objects.create(name=f"theme-{i}") for i in range(15)))
+        self.lesson.mots_cles_recherche.add(*(Tag.objects.create(name=f"motcle-{i}") for i in range(15)))
+
+        titles = self._search("2022")
+
+        self.assertEqual(titles, [self.lesson.title])
+
+
+class CoursSearchApiTests(TestCase):
+    """`?search=` sur /catalog/cours/ - même correction que LessonSearchApiTests
+    (Exists() plutôt qu'un JOIN sur tags, voir catalog.views.CoursListView)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(
+            titre="Résoudre une équation du second degré", subject=subject, statut=StatutContenu.VALIDE,
+            content_markdown="Discriminant et racines.",
+        )
+        self.cours.tags.set([Tag.objects.create(name="discriminant")])
+
+    def _search(self, term):
+        response = self.client.get(reverse("catalog:cours-list"), {"search": term})
+        return [item["titre"] for item in response.json()["results"]]
+
+    def test_matches_on_titre(self):
+        self.assertIn(self.cours.titre, self._search("second degré"))
+
+    def test_matches_on_content_markdown(self):
+        self.assertIn(self.cours.titre, self._search("Discriminant"))
+
+    def test_matches_on_tag(self):
+        self.assertIn(self.cours.titre, self._search("discriminant"))
+
+    def test_no_duplicate_when_title_and_tag_both_match(self):
+        titles = self._search("discriminant")
+        self.assertEqual(titles.count(self.cours.titre), 1)
 
 
 class DoubleJsonEscapingRepairTests(TestCase):
@@ -1611,6 +3487,60 @@ class DoubleJsonEscapingRepairTests(TestCase):
         self.assertEqual(questions[1].corrige_markdown, "Soit $\\theta$ un angle.")
         self.assertTrue(any("doublement échappé" in note for note in exercise.incertitudes))
 
+    def test_repairs_a_newline_glued_to_a_single_letter_row_label_inside_math(self):
+        # Reproduit bac-c-maths-1987 à 1992/bac-d-maths-2007/bac-c-maths-probatoire-2014
+        # (tableaux de variations) : contrairement à \neq/\nabla/\nearrow/\notin/\nu (une
+        # suite de minuscules PRÉCISE, jamais juste "commence par une minuscule"), un vrai
+        # saut de ligne collé à l'étiquette d'une seule lettre de la ligne suivante
+        # ("\nf" pour f(x), "\nx" pour la ligne x, "\ng", "\na") restait à tort protégé par
+        # l'ancienne version (qui ne regardait que LA lettre suivante, pas le mot entier).
+        payload = _exercise_payload("bac-maths-2024")
+        b1 = "\\"
+        b2 = b1 * 2
+        payload["questions"][0]["corrige_markdown"] = (
+            f"$${b1}begin{{array}}{{c|ccc}}x & 0 & & +{b1}infty{b2}"
+            f"{b1}hline{b1}nf'(x) & & + &{b2}"
+            f"{b1}hline{b1}nf(x) & -{b1}infty & {b1}nearrow & "
+            f"{b1}end{{array}}$$"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertIn(f"{b1}hline\nf'(x)", question.corrige_markdown)
+        self.assertIn(f"{b1}hline\nf(x)", question.corrige_markdown)
+        # \nearrow (commande légitime, mot entier "earrow") doit rester intact à côté.
+        self.assertIn(f"{b1}nearrow", question.corrige_markdown)
+        self.assertNotIn(f"{b1}nf", question.corrige_markdown)
+
+    def test_never_mangles_nu_the_greek_letter(self):
+        # \nu (fréquence en physique, voir "conditions-de-l-emission-photoelectrique")
+        # est le seul cas légitime où le mot entier après le backslash+n ne fait qu'UNE
+        # lettre - doit rester protégé même sous la nouvelle règle "mot EXACT, pas préfixe".
+        payload = _exercise_payload("bac-maths-2024")
+        one_backslash = "\\"
+        payload["questions"][0]["corrige_markdown"] = f"$E={one_backslash}nu h$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertEqual(question.corrige_markdown, r"$E=\nu h$.")
+
+    def test_repairs_a_newline_followed_by_a_french_word_starting_with_u_inside_math(self):
+        # "mot EXACT, pas préfixe" (voir _REAL_LOWERCASE_N_LATEX_WORDS) : un vrai saut de
+        # ligne suivi du mot français "utilise" ne doit PAS être confondu avec "\nu" (la
+        # lettre grecque) suivi de "tilise" - KaTeX lui-même lirait "nutilise" comme un
+        # unique nom de commande indéfini, jamais "nu"+"tilise" séparément, donc seule la
+        # correspondance sur le mot ENTIER (pas un préfixe) donne le bon résultat ici.
+        payload = _exercise_payload("bac-maths-2024")
+        one_backslash = "\\"
+        payload["questions"][0]["corrige_markdown"] = f"$x=1{one_backslash}nutilise le théorème.$"
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertEqual(question.corrige_markdown, "$x=1\nutilise le théorème.$")
+
 
 class MissingMatrixRowSeparatorRepairTests(TestCase):
     """Filet de sécurité mécanique pour une erreur d'AUTEUR distincte du double
@@ -1851,6 +3781,215 @@ class MissingExerciseHeadingRepairTests(TestCase):
         # avoir été injecté par _repair_missing_exercise_heading.
         self.assertFalse(any("Titre" in note for note in exercise.incertitudes))
 
+    def test_recognizes_an_unmarked_heading_and_injects_nothing(self):
+        # Reproduit probatoire-c-d-chimie-2003-cameroun : le repère existe bien dans
+        # l'intro, simplement en texte nu (ni "#" ni gras). L'ancienne détection, ancrée
+        # sur "**", le manquait et injectait un SECOND repère juste au-dessus.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "Exercice 1 (5 points) - hydrocarbures et isomérie"
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.enonce_intro_markdown, "Exercice 1 (5 points) - hydrocarbures et isomérie")
+        self.assertEqual(exercise.incertitudes, [])
+
+
+class DuplicateExerciseHeadingDedupeTests(TestCase):
+    """Même repère porté à la fois par l'intro et par la tête d'une question - doublon
+    visible en lecture, puisque compile_exercise_from_questions concatène l'intro puis
+    chaque enonce_markdown (201 questions sur 53 épreuves au scan du 2026-08-15). Voir
+    catalog.ingestion_repairs._dedupe_exercise_heading."""
+
+    def test_removes_the_heading_repeated_at_the_top_of_a_question(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "Exercice 1 (5 points) - hydrocarbures et isomérie"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (5 points)**\n\n1. Nommer le composé $A$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.questions.get().enonce_markdown, "1. Nommer le composé $A$.")
+        self.assertEqual(exercise.enonce_intro_markdown, "Exercice 1 (5 points) - hydrocarbures et isomérie")
+        self.assertEqual(exercise.enonce_markdown.count("Exercice 1"), 1)
+        self.assertTrue(any("dédupliqué" in note for note in exercise.incertitudes))
+
+    def test_matches_a_roman_numbered_heading_with_an_arabic_one(self):
+        # L'intro numérote en arabe, la question en romain (constaté sur les épreuves
+        # de chimie) : c'est le même exercice, donc le même doublon.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice I : Chimie organique (5 pts)**\n\n1. Nommer $A$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.questions.get().enonce_markdown, "1. Nommer $A$.")
+
+    def test_promotes_the_richer_heading_into_the_intro_without_losing_it(self):
+        # Le sous-titre ("Chimie organique") n'existe que côté question : dédupliquer ne
+        # doit pas le perdre, et le repère survivant reste dans l'intro (le sommaire du
+        # lecteur s'y alimente - voir rendering.exercise_display_title).
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice I : Chimie organique (5 pts)**\n\n1. Nommer $A$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.enonce_intro_markdown, "**Exercice I : Chimie organique (5 pts)**")
+
+    def test_keeps_the_intro_body_after_the_heading(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1 (5 points)**\n\nOn donne $M = 56\\,g/mol$."
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (5 points)**\n\n1. Nommer $A$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 1 (5 points)**\n\nOn donne $M = 56\\,g/mol$.",
+        )
+        self.assertEqual(exercise.questions.get().enonce_markdown, "1. Nommer $A$.")
+
+    def test_never_touches_a_question_whose_first_line_carries_real_content(self):
+        # "**Section D: Essay (10 marks).** Write an essay..." : le repère et le début de
+        # l'énoncé partagent la même ligne - la supprimer effacerait l'énoncé. Ici avec
+        # un repère "Exercice" pour rester sur le cas que ce filet vise.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (5 points).** Nommer le composé $A$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.questions.get().enonce_markdown,
+            "**Exercice 1 (5 points).** Nommer le composé $A$.",
+        )
+
+    def test_never_touches_a_different_exercise_number(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 2**\n\nÉnoncé de la partie suivante."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.questions.get().enonce_markdown,
+            "**Exercice 2**\n\nÉnoncé de la partie suivante.",
+        )
+
+    def test_collapses_two_stacked_headings_inside_the_intro(self):
+        # État hérité : l'ancien _repair_missing_exercise_heading injectait un repère
+        # au-dessus d'un repère non balisé qu'il ne savait pas reconnaître. Les deux
+        # fusionnent, en gardant le gras (seul lisible par le sommaire) et le texte le
+        # plus informatif des deux.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "**Exercice 1 (5 points)**\n\nExercice 1 (5 points) - hydrocarbures et isomérie"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 1 (5 points) - hydrocarbures et isomérie**",
+        )
+
+    def test_never_collapses_a_real_sentence_starting_with_the_same_word(self):
+        # "Exercice 2 étudie..." est une phrase d'énoncé, pas un second repère : la
+        # supprimer effacerait du contenu.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "**Exercice 2 (5 points)**\n\nExercice 2 étudie la réaction d'estérification."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 2 (5 points)**\n\nExercice 2 étudie la réaction d'estérification.",
+        )
+
+    def test_never_empties_the_intro_when_only_the_question_carries_the_heading(self):
+        # Intro sans repère : celui de la question est alors le seul du lot (repli
+        # documenté d'exercise_display_title) - le retirer viderait le sommaire.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (4 points)**\n\nCalculer $f'(x)$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.questions.get().enonce_markdown,
+            "**Exercice 1 (4 points)**\n\nCalculer $f'(x)$.",
+        )
+        self.assertEqual(exercise.incertitudes, [])
+
+
+class SeriesFromFolderNameMergeTests(TestCase):
+    """Séries annoncées par le nom du dossier mais absentes du champ `serie` du JSON
+    (62 dossiers / 244 fichiers au scan du 2026-08-15) - voir
+    catalog.ingestion_repairs._merge_series_from_folder_name. Reproduit
+    bac-c-d-chimie-2003-cameroun, rattachée à la seule Série C alors que l'épreuve est
+    commune aux séries C et D, donc introuvable pour un candidat de Série D."""
+
+    def _series_codes(self, exercise):
+        return sorted(c.series.code for c in exercise.lesson.cursus.all() if c.series)
+
+    def test_adds_the_series_the_json_omitted(self):
+        payload = _exercise_payload("bac-c-d-chimie-2003-cameroun")
+        payload["serie"] = "C"
+
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/bac-c-d-chimie-2003-cameroun"),
+        )
+
+        self.assertEqual(self._series_codes(exercise), ["C", "D"])
+        self.assertTrue(any("nom du dossier" in note for note in exercise.incertitudes))
+
+    def test_never_removes_a_series_only_the_json_knows(self):
+        # bac-c-maths-2019-cameroun : le JSON porte C et E quand le nom ne dit que "c" -
+        # c'est le NOM qui est incomplet, la fusion doit rester purement additive.
+        payload = _exercise_payload("bac-c-maths-2019-cameroun")
+        payload["serie"] = "C, E"
+
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/bac-c-maths-2019-cameroun"),
+        )
+
+        self.assertEqual(self._series_codes(exercise), ["C", "E"])
+        self.assertFalse(any("nom du dossier" in note for note in exercise.incertitudes))
+
+    def test_stays_silent_when_folder_and_json_already_agree(self):
+        payload = _exercise_payload("bac-c-d-chimie-2003-cameroun")
+        payload["serie"] = "C, D"
+
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/bac-c-d-chimie-2003-cameroun"),
+        )
+
+        self.assertEqual(self._series_codes(exercise), ["C", "D"])
+        self.assertFalse(any("nom du dossier" in note for note in exercise.incertitudes))
+
+    def test_ignores_a_folder_token_that_is_not_a_known_series(self):
+        # "abi" n'est pas un code de série (voir _SERIE_NOISE_SUFFIX_RE) : le filet doit
+        # l'ignorer, jamais faire échouer une ingestion qui passait avant lui.
+        payload = _exercise_payload("bac-a-abi-maths-2024-cameroun")
+        payload["serie"] = "A"
+
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/bac-a-abi-maths-2024-cameroun"),
+        )
+
+        self.assertEqual(self._series_codes(exercise), ["A"])
+
+    def test_ignores_a_bepc_folder_without_series(self):
+        payload = _exercise_payload("bepc-maths-2019-cameroun")
+        payload["examen"] = "BEPC"
+        payload.pop("serie")
+
+        exercise, _ = ingest_exercise(
+            payload, source_dir=Path("ingest/cm/bepc-maths-2019-cameroun"),
+        )
+
+        self.assertEqual(self._series_codes(exercise), [])
+
 
 class PartHeaderInIntroSafetyNetTests(TestCase):
     """Filet de sécurité mécanique pour l'erreur de composition documentée dans
@@ -1984,6 +4123,60 @@ class ForceReingestionTests(TestCase):
 
                 self.assertFalse(default_storage.exists(old_path))
             self.assertEqual(new_exercise.figures.count(), 0)
+
+
+class CompressFigureImageTests(TestCase):
+    """catalog.ingestion._compress_figure_image - voir l'audit UX, reco 5.2 : chaque
+    figure est reconvertie en WebP et plafonnée en largeur au moment de la
+    correction, jamais à la volée."""
+
+    def _make_png_bytes(self, width, height, mode="RGB", color="red"):
+        buffer = BytesIO()
+        Image.new(mode, (width, height), color).save(buffer, format="PNG")
+        return buffer.getvalue()
+
+    def test_converts_to_webp(self):
+        raw = self._make_png_bytes(100, 100)
+
+        compressed, filename = _compress_figure_image(raw, "figure1.png")
+
+        self.assertEqual(filename, "figure1.webp")
+        self.assertEqual(Image.open(BytesIO(compressed)).format, "WEBP")
+
+    def test_resizes_an_image_wider_than_the_maximum_preserving_aspect_ratio(self):
+        raw = self._make_png_bytes(2400, 1200)
+
+        compressed, _ = _compress_figure_image(raw, "figure1.png")
+
+        result = Image.open(BytesIO(compressed))
+        self.assertEqual((result.width, result.height), (1200, 600))
+
+    def test_never_upscales_an_image_already_smaller_than_the_maximum(self):
+        raw = self._make_png_bytes(300, 200)
+
+        compressed, _ = _compress_figure_image(raw, "figure1.png")
+
+        result = Image.open(BytesIO(compressed))
+        self.assertEqual((result.width, result.height), (300, 200))
+
+    def test_flattens_transparency_onto_a_white_background(self):
+        buffer = BytesIO()
+        Image.new("RGBA", (50, 50), (255, 0, 0, 0)).save(buffer, format="PNG")  # entièrement transparent
+
+        compressed, _ = _compress_figure_image(buffer.getvalue(), "figure1.png")
+
+        result = Image.open(BytesIO(compressed)).convert("RGB")
+        self.assertEqual(result.getpixel((25, 25)), (255, 255, 255))
+
+    def test_falls_back_to_the_original_bytes_and_filename_on_an_unreadable_file(self):
+        # Un fichier corrompu ne doit jamais faire échouer l'ingestion de tout
+        # l'exercice pour une seule figure - voir la docstring de la fonction.
+        raw = b"pas-une-vraie-image"
+
+        compressed, filename = _compress_figure_image(raw, "figure1.png")
+
+        self.assertEqual(compressed, raw)
+        self.assertEqual(filename, "figure1.png")
 
 
 class ReingererDepuisFichierActionTests(TestCase):
@@ -2278,3 +4471,314 @@ class CleanDuplicateQuestionTextCommandTests(TestCase):
         call_command("clean_duplicate_question_text", stdout=StringIO())
 
         self.assertEqual(exercise.questions.get(numero="1").enonce_markdown, "Calculer f'(x).")
+
+
+class TemoignageModelTests(TestCase):
+    """Voir catalog.models.Temoignage - reco 8.3 de l'audit UX."""
+
+    def test_publies_excludes_unpublished(self):
+        Temoignage.objects.create(auteur_nom="Awa", contenu="Très utile.", est_publie=True)
+        Temoignage.objects.create(auteur_nom="Marc", contenu="Brouillon pas encore relu.", est_publie=False)
+
+        publies = list(Temoignage.objects.publies())
+
+        self.assertEqual(len(publies), 1)
+        self.assertEqual(publies[0].auteur_nom, "Awa")
+
+    def test_defaults_to_unpublished(self):
+        temoignage = Temoignage.objects.create(auteur_nom="Awa", contenu="Très utile.")
+        self.assertFalse(temoignage.est_publie)
+
+    def test_note_out_of_range_is_rejected(self):
+        temoignage = Temoignage(auteur_nom="Awa", contenu="Très utile.", note=6)
+        with self.assertRaises(ValidationError):
+            temoignage.full_clean()
+
+
+class TemoignageListApiTests(TestCase):
+    """`GET /catalog/temoignages/` - ne doit jamais exposer un témoignage non publié."""
+
+    def test_only_published_testimonials_are_returned(self):
+        Temoignage.objects.create(auteur_nom="Awa", auteur_description="Terminale D", contenu="Top.", note=5, est_publie=True)
+        Temoignage.objects.create(auteur_nom="Marc", contenu="Pas prêt.", est_publie=False)
+
+        response = self.client.get(reverse("catalog:temoignage-list"))
+        payload = response.json()
+
+        self.assertEqual(len(payload), 1)
+        self.assertEqual(payload[0]["auteur_nom"], "Awa")
+        self.assertEqual(payload[0]["auteur_description"], "Terminale D")
+        self.assertEqual(payload[0]["note"], 5)
+
+    def test_empty_when_nothing_published(self):
+        response = self.client.get(reverse("catalog:temoignage-list"))
+        self.assertEqual(response.json(), [])
+
+
+class PlatformStatsApiTests(TestCase):
+    """`GET /catalog/stats/` - uniquement des comptages de contenu réel, jamais
+    d'effectifs d'abonnés/élèves (voir catalog.views.PlatformStatsView)."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+
+    def test_counts_only_validated_content_in_active_countries(self):
+        Lesson.objects.create(
+            title="Corrigé validé", subject=self.subject, lesson_type=LessonType.CORR,
+            epreuve_source="src", statut=StatutContenu.VALIDE,
+        )
+        Lesson.objects.create(
+            title="Brouillon", subject=self.subject, lesson_type=LessonType.CORR,
+            epreuve_source="src2", statut=StatutContenu.BROUILLON,
+        )
+        Lesson.objects.create(
+            title="Fiche validée", subject=self.subject, lesson_type=LessonType.FICHE,
+            statut=StatutContenu.VALIDE,
+        )
+        Cours.objects.create(external_id="c1", titre="Cours validé", subject=self.subject, statut=StatutContenu.VALIDE)
+
+        inactive_country = Country.objects.create(code="TD", label="Tchad", actif=False)
+        inactive_subject = Subject.objects.create(country=inactive_country, code="MATHS", label="Mathématiques")
+        Lesson.objects.create(
+            title="Pays inactif", subject=inactive_subject, lesson_type=LessonType.CORR,
+            epreuve_source="src3", statut=StatutContenu.VALIDE,
+        )
+
+        response = self.client.get(reverse("catalog:platform-stats"))
+        data = response.json()
+
+        self.assertEqual(data["corriges_disponibles"], 1)
+        self.assertEqual(data["cours_disponibles"], 1)
+        self.assertEqual(data["pays_actifs"], Country.objects.filter(actif=True).count())
+        self.assertNotIn("abonnes", data)
+        self.assertNotIn("eleves", data)
+
+
+class IngestionAdminBackgroundRunTests(TestCase):
+    """Reproduit un blocage réel : le bouton "Lancer l'ingestion" de l'admin renvoyait
+    "Internal Server Error" (page de gunicorn, pas une 500 Django) sur un dossier
+    ingest/ de ~5 200 fichiers. Cause : run_ingestion tournait dans le thread de
+    requête et dépassait le `--timeout 30` de gunicorn (voir backend/entrypoint.sh),
+    qui tuait le worker en plein run - l'ingestion ayant déjà écrit en base, l'erreur
+    ne disait rien de ce qui avait été fait. Le run part désormais dans un processus
+    détaché et le rapport est relu sur disque (voir catalog.ingestion.queue_ingestion)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200077", password="x")
+        self.user.is_staff = True
+        self.user.is_superuser = True
+        self.user.save()
+        self.client.force_login(self.user)
+        self.url = reverse("admin:catalog_lesson_ingestion")
+
+    def test_post_spawns_a_detached_process_instead_of_ingesting_inline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "ingestion_report.json"
+            with patch("catalog.ingestion.subprocess.Popen") as popen, \
+                    patch("catalog.admin.read_ingestion_report", side_effect=lambda: read_ingestion_report(report_path)), \
+                    patch("catalog.admin.queue_ingestion", side_effect=lambda p: queue_ingestion(p, report_path)), \
+                    patch("catalog.ingestion.run_ingestion") as run:
+                response = self.client.post(self.url)
+
+                self.assertEqual(response.status_code, 302)
+                run.assert_not_called()
+                args = popen.call_args[0][0]
+                self.assertIn("ingest_corrections", args)
+                self.assertIn(str(report_path), args)
+
+            # Le rapport "running" est écrit avant même que le processus démarre, pour
+            # que la page affiche tout de suite l'état du run.
+            self.assertEqual(read_ingestion_report(report_path)["status"], "running")
+
+    def test_post_refuses_a_second_run_while_one_is_already_running(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "ingestion_report.json"
+            write_ingestion_report(
+                {"status": "running", "started_at": timezone.now().isoformat()}, report_path,
+            )
+
+            with patch("catalog.ingestion.subprocess.Popen") as popen, \
+                    patch("catalog.admin.read_ingestion_report", side_effect=lambda: read_ingestion_report(report_path)):
+                response = self.client.post(self.url, follow=True)
+
+            popen.assert_not_called()
+            self.assertTrue(any("déjà en cours" in str(m) for m in get_messages(response.wsgi_request)))
+
+    def test_get_shows_the_last_report_and_stays_available_without_any_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "ingestion_report.json"
+
+            with patch("catalog.admin.read_ingestion_report", side_effect=lambda: read_ingestion_report(report_path)):
+                # Aucun run encore effectué : la page doit s'afficher quand même.
+                self.assertEqual(self.client.get(self.url).status_code, 200)
+
+                write_ingestion_report(
+                    {
+                        "status": "done", "started_at": timezone.now().isoformat(),
+                        "finished_at": timezone.now().isoformat(), "files_found": 3, "created": 1,
+                        "skipped": 1, "errors": ["fichier.json: JSON invalide"], "pdf_status": "done",
+                    },
+                    report_path,
+                )
+                response = self.client.get(self.url)
+
+        self.assertContains(response, "JSON invalide")
+
+    def test_command_writes_the_report_the_admin_page_reads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-maths-2024"
+            source_dir.mkdir(parents=True)
+            (source_dir / "exercice_1.json").write_text(
+                json.dumps(_exercise_payload("bac-maths-2024.pdf")), encoding="utf-8",
+            )
+            report_path = Path(tmp) / "ingestion_report.json"
+
+            # generate_sujet_pdfs (Playwright) n'a rien à faire dans un test : seul
+            # compte ici le rapport écrit par l'ingestion elle-même.
+            with patch("catalog.management.commands.ingest_corrections.call_command"):
+                call_command("ingest_corrections", str(Path(tmp) / "ingest"), report_json=str(report_path))
+
+            report = read_ingestion_report(report_path)
+
+        self.assertEqual(report["status"], "done")
+        self.assertEqual(report["created"], 1)
+        self.assertEqual(report["errors"], [])
+        self.assertEqual(report["pdf_status"], "done")
+
+    def test_command_reports_an_error_status_when_the_run_dies_in_one_block(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "ingest").mkdir()
+            report_path = Path(tmp) / "ingestion_report.json"
+
+            with patch("catalog.management.commands.ingest_corrections.run_ingestion", side_effect=OSError("disque")):
+                with self.assertRaises(OSError):
+                    call_command("ingest_corrections", str(Path(tmp) / "ingest"), report_json=str(report_path))
+
+            report = read_ingestion_report(report_path)
+
+        self.assertEqual(report["status"], "error")
+        self.assertIn("disque", report["detail"])
+
+
+class EspagnolSubjectIngestionTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : 5 fichiers (bepc-espagnol-2018-cameroun)
+    échouaient à chaque run sur "Matière inconnue : 'Espagnol'" - l'espagnol, deuxième
+    langue vivante examinée au BEPC camerounais, n'existait ni dans MATIERE_MAP ni au
+    référentiel. Décision utilisateur du 2026-08-15 : Subject à part entière (voir
+    catalog.ingestion.MATIERE_MAP et la migration 0044_seed_espagnol), jamais un alias
+    vers ANGLAIS."""
+
+    def test_espagnol_is_seeded_for_every_country(self):
+        for country in Country.objects.all():
+            self.assertTrue(
+                Subject.objects.filter(country=country, code="ESPAGNOL").exists(),
+                f"Subject ESPAGNOL manquante pour {country}",
+            )
+
+    def test_an_espagnol_exercise_is_ingested_under_its_own_subject(self):
+        payload = _exercise_payload("bepc-espagnol-2018-cameroun.pdf")
+        payload["matiere"] = "Espagnol"
+        payload["examen"] = "bepc"
+        payload.pop("serie", None)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bepc-espagnol-2018-cameroun"
+            source_dir.mkdir(parents=True)
+            (source_dir / "exercice_1.json").write_text(json.dumps(payload), encoding="utf-8")
+
+            report = run_ingestion(Path(tmp))
+
+        self.assertEqual(report["errors"], [])
+        self.assertEqual(report["created"], 1)
+        lesson = Lesson.objects.get(epreuve_source="bepc-espagnol-2018-cameroun.pdf")
+        self.assertEqual(lesson.subject.code, "ESPAGNOL")
+
+
+class CoursSansRappelSourceTests(TestCase):
+    """Reproduit un blocage d'ingestion réel : 87 fichiers cours (bac-a-anglais-2014 à
+    2017-cameroun, 85 ; bac-c-maths-1986-cameroun, 2) échouaient à chaque run sur
+    "RappelDeMethode introuvable". La passe cours avait généré un cours par QUESTION
+    ("rdm-...-ex1-qI.3-0") quand la passe exercices n'émettait qu'un rappel par
+    EXERCICE ("rdm-...-ex1-0") : du contenu réel, jamais publié. Le cours est désormais
+    rattaché à son épreuve via source.epreuve_source (voir ingest_cours) - seul le lien
+    rappel -> cours reste absent, faute de rappel où l'accrocher."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="ANGLAIS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="A")
+        self.lesson = Lesson.objects.create(
+            title="Anglais BAC A 2014", subject=self.subject, lesson_type=LessonType.CORR,
+            epreuve_source="bac-a-anglais-2014-cameroun.pdf", statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(self.cursus)
+
+    def _payload(self, rappel_id, epreuve_source="bac-a-anglais-2014-cameroun.pdf", cours_id="cours-for-vs-since"):
+        return {
+            "cours_id": cours_id,
+            "source": {"rappel_id": rappel_id, "epreuve_source": epreuve_source},
+            "meta": {"titre": "For vs since avec le present perfect", "matiere": "Anglais", "serie": "A"},
+            "sections": [{"type": "definition", "titre": "Définition", "contenu": "For + durée."}],
+        }
+
+    def test_cours_is_published_under_its_epreuve_when_its_rappel_does_not_exist(self):
+        cours, created = ingest_cours(self._payload("rdm-bac-a-anglais-2014-cameroun-ex1-qI.3-0"))
+
+        self.assertTrue(created)
+        self.assertEqual(cours.statut, StatutContenu.VALIDE)
+        # Pays, matière et cursus hérités de l'épreuve, pas devinés.
+        self.assertEqual(cours.subject, self.subject)
+        self.assertEqual(list(cours.cursus.all()), [self.cursus])
+        # Le seul manque assumé : aucun rappel ne pointe vers ce cours.
+        self.assertFalse(RappelDeMethode.objects.filter(cours=cours).exists())
+
+    def test_an_existing_rappel_is_still_linked_as_before(self):
+        exercise = Exercise.objects.create(lesson=self.lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        rappel = RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-bac-a-anglais-2014-cameroun-ex1-0",
+            competence="For vs since", contenu_markdown="...",
+        )
+
+        cours, _ = ingest_cours(self._payload("rdm-bac-a-anglais-2014-cameroun-ex1-0"))
+
+        rappel.refresh_from_db()
+        self.assertEqual(rappel.cours, cours)
+
+    def test_an_unidentifiable_epreuve_still_fails_rather_than_attaching_at_random(self):
+        with self.assertRaises(IngestionError) as ctx:
+            ingest_cours(self._payload("rdm-inconnu-0", epreuve_source="epreuve-qui-nexiste-pas.pdf"))
+
+        self.assertIn("epreuve_source", str(ctx.exception))
+        self.assertFalse(Cours.objects.filter(external_id="cours-for-vs-since").exists())
+
+    def test_the_epreuve_is_found_from_the_folder_when_the_json_does_not_name_it(self):
+        # Cas majoritaire des 87 fichiers : 76 ne portent aucun `source.epreuve_source`.
+        # Seuls les fichiers exercices du dossier le déclarent - voir _lesson_from_source_dir.
+        payload = self._payload("rdm-bac-a-anglais-2014-cameroun-ex1-qI.3-0")
+        payload["source"].pop("epreuve_source")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "bac-a-anglais-2014-cameroun"
+            source_dir.mkdir(parents=True)
+            (source_dir / "exercice_1.json").write_text(
+                json.dumps(_exercise_payload("bac-a-anglais-2014-cameroun.pdf")), encoding="utf-8",
+            )
+
+            cours, created = ingest_cours(payload, source_dir=source_dir)
+
+        self.assertTrue(created)
+        self.assertEqual(list(cours.cursus.all()), [self.cursus])
+
+    def test_a_folder_mixing_several_epreuves_is_refused_rather_than_guessed(self):
+        payload = self._payload("rdm-inconnu-0")
+        payload["source"].pop("epreuve_source")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source_dir = Path(tmp) / "ingest" / "cm" / "lot-melange"
+            source_dir.mkdir(parents=True)
+            for n, src in enumerate(["bac-a-anglais-2014-cameroun.pdf", "bac-a-anglais-2015-cameroun.pdf"]):
+                (source_dir / f"exercice_{n}.json").write_text(
+                    json.dumps(_exercise_payload(src)), encoding="utf-8",
+                )
+
+            with self.assertRaises(IngestionError):
+                ingest_cours(payload, source_dir=source_dir)

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-intersection-sphere-plan-c",
+  "meta": {
+    "titre": "Intersection d'une sphère et d'un plan",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Sphères et plans dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": ["sphère", "plan", "intersection", "cercle", "distance point-plan"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q3c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Coupe une orange avec un couteau : selon l'endroit où tu places la lame, tu obtiens un grand cercle, un petit cercle, ou tu rates complètement le fruit. Une sphère coupée par un plan obéit exactement à la même logique, et un seul nombre suffit à savoir dans quel cas on se trouve : la distance entre le centre de la sphère et le plan."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Distance d'un point à un plan", "Centre et rayon d'une sphère", "Théorème de Pythagore"]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer la distance du centre au plan avec le rayon",
+      "contenu_markdown": "Soit $(S)$ une sphère de centre $\\Omega$ et de rayon $R$, et $(P)$ un plan. On calcule $d=d(\\Omega,(P))$, la distance du centre au plan. Trois cas se présentent :\n\n- si $d>R$ : le plan ne rencontre pas la sphère, l'intersection est vide ;\n- si $d=R$ : le plan est tangent à la sphère, l'intersection se réduit à un point (le projeté orthogonal de $\\Omega$ sur $(P)$) ;\n- si $d<R$ : le plan coupe la sphère selon un cercle, de centre le projeté orthogonal $\\Omega'$ de $\\Omega$ sur $(P)$, et de rayon $r=\\sqrt{R^2-d^2}$ (relation de Pythagore dans le triangle rectangle $\\Omega\\Omega'M$ pour tout point $M$ du cercle).",
+      "formule_principale": "d<R \\Rightarrow r=\\sqrt{R^2-d^2},\\ \\text{centre}=\\Omega'=\\text{projeté orthogonal de }\\Omega\\text{ sur }(P)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La sphère $(S)$ a pour centre $\\Omega\\left(-\\frac{1}{24};\\frac{23}{24};\\frac{47}{24}\\right)$ et pour rayon $R=\\dfrac{5\\sqrt3}{24}$. Le plan $(P)$ a pour équation $x+y+z-3=0$. Préciser l'intersection de $(S)$ et $(P)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance de Ω à (P)",
+          "justification": "Formule de distance d'un point à un plan : |ax0+by0+cz0+d| / sqrt(a²+b²+c²).",
+          "resultat_markdown": "$x_\\Omega+y_\\Omega+z_\\Omega=\\frac{23}{8}$, donc $d=\\dfrac{\\left|\\frac{23}{8}-3\\right|}{\\sqrt3}=\\dfrac{1/8}{\\sqrt3}=\\dfrac{\\sqrt3}{24}$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer d² et R²",
+          "justification": "Pour déterminer dans quel cas on se trouve.",
+          "resultat_markdown": "$d^2=\\dfrac{1}{192}$, $R^2=\\dfrac{25}{192}$ : $d^2<R^2$, donc $d<R$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le rayon du cercle d'intersection",
+          "justification": "Formule r = sqrt(R²-d²).",
+          "resultat_markdown": "$r^2=\\dfrac{25}{192}-\\dfrac{1}{192}=\\dfrac18$, donc $r=\\dfrac{\\sqrt2}{4}$"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer le centre du cercle (projeté orthogonal de Ω sur (P))",
+          "justification": "C'est le centre du cercle d'intersection.",
+          "resultat_markdown": "Le calcul de la projection donne $\\Omega'(0;1;2)$"
+        }
+      ],
+      "conclusion_markdown": "$(S)\\cap(P)$ est le cercle de centre $(0;1;2)$ et de rayon $\\dfrac{\\sqrt2}{4}$, inclus dans le plan $(P)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer directement d et R en gardant des expressions avec racines carrées, au risque d'erreurs de simplification.",
+          "pourquoi_faux": "Comparer deux quantités positives sous racine carrée est équivalent à comparer leurs carrés, ce qui évite de manipuler des racines de fractions parfois peu lisibles.",
+          "correction_markdown": "Compare systématiquement $d^2$ à $R^2$ plutôt que $d$ à $R$ directement : la comparaison est équivalente (les deux quantités sont positives) et les calculs sont plus sûrs."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier si le centre du cercle correspond à un point déjà connu dans l'exercice (économie de calcul et vérification manquée).",
+          "pourquoi_faux": "Dans de nombreux exercices, le centre du cercle d'intersection coïncide avec un point déjà calculé plus tôt (souvent parce que le centre de la sphère est aligné avec ce point sur une droite perpendiculaire au plan) : ne pas le remarquer fait perdre une occasion de vérifier son résultat.",
+          "correction_markdown": "Avant de recalculer le projeté orthogonal du centre de la sphère depuis zéro, vérifie si un point déjà connu de l'exercice (souvent une intersection droite-plan calculée plus tôt) n'est pas justement ce projeté."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La sphère $(S_1)$ a pour centre $\\Omega_1(0;0;0)$ et pour rayon $R=5$. Le plan $(P_1)$ a pour équation $z=3$. Déterminer l'intersection de $(S_1)$ et $(P_1)$.",
+          "solution_markdown": "$d(\\Omega_1,(P_1))=|0-3|=3$ (distance à un plan $z=k$ : simplement $|z_0-k|$). Comme $d=3<R=5$, le plan coupe la sphère selon un cercle de rayon $r=\\sqrt{25-9}=\\sqrt{16}=4$, centré au projeté orthogonal de $\\Omega_1$ sur $(P_1)$, soit $(0;0;3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La sphère $(S_2)$ a pour centre $\\Omega_2(1;2;3)$ et pour rayon $R=\\sqrt3$. Le plan $(P_2)$ a pour équation $x+y+z-6=0$. Déterminer l'intersection.",
+          "solution_markdown": "$d(\\Omega_2,(P_2))=\\dfrac{|1+2+3-6|}{\\sqrt3}=\\dfrac{0}{\\sqrt3}=0$. Comme $d=0<R$, le plan passe par le centre de la sphère : l'intersection est un cercle de rayon $r=\\sqrt{R^2-0}=R=\\sqrt3$ (un grand cercle de la sphère), centré en $\\Omega_2$ lui-même."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La sphère $(S_3)$ a pour centre $\\Omega_3(0;0;0)$ et pour rayon $R=2$. Déterminer les valeurs de $k$ pour lesquelles le plan $(P_k):x+y+z=k$ est tangent à $(S_3)$, puis donner les coordonnées du point de tangence pour la valeur positive de $k$.",
+          "solution_markdown": "$d(\\Omega_3,(P_k))=\\dfrac{|k|}{\\sqrt3}$. Le plan est tangent quand $d=R$ : $\\dfrac{|k|}{\\sqrt3}=2 \\Rightarrow |k|=2\\sqrt3 \\Rightarrow k=2\\sqrt3$ ou $k=-2\\sqrt3$.\n\nPour $k=2\\sqrt3$, le point de tangence est le projeté orthogonal de $\\Omega_3$ sur $(P_k)$, c'est-à-dire $\\Omega_3$ déplacé le long du vecteur normal $(1;1;1)$ d'une longueur telle que la nouvelle somme des coordonnées vaille $k$. Par symétrie (centre à l'origine, vecteur normal à coordonnées égales), ce point est $\\left(\\dfrac{2\\sqrt3}{3};\\dfrac{2\\sqrt3}{3};\\dfrac{2\\sqrt3}{3}\\right)$ (on vérifie : somme des coordonnées $=3\\times\\dfrac{2\\sqrt3}{3}=2\\sqrt3=k$, et distance à l'origine $=\\sqrt{3\\times\\left(\\frac{2\\sqrt3}{3}\\right)^2}=\\sqrt{3\\times\\frac{4}{3}}=\\sqrt4=2=R$, cohérent)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour étudier l'intersection d'une sphère et d'un plan, calcule d'abord la distance $d$ du centre de la sphère au plan, puis compare-la au rayon $R$.",
+        "Trois cas seulement : $d>R$ (aucune intersection), $d=R$ (plan tangent, un seul point), $d<R$ (intersection = cercle de rayon $r=\\sqrt{R^2-d^2}$).",
+        "Le centre du cercle d'intersection est toujours le projeté orthogonal du centre de la sphère sur le plan - jamais le centre de la sphère lui-même, sauf dans le cas particulier où le plan passe par ce centre ($d=0$).",
+        "Compare les carrés $d^2$ et $R^2$ plutôt que $d$ et $R$ directement pour éviter des manipulations de racines carrées inutiles.",
+        "Ce résultat clôt souvent un exercice de géométrie de l'espace au BAC C, après l'établissement de l'équation de la sphère et le calcul de son centre et de son rayon."
+      ]
+    }
+  ]
+}

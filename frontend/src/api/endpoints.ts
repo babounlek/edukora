@@ -1,13 +1,22 @@
-import { apiRequest } from "./client"
+import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
 import type {
   Cours,
   CoursContent,
   CoursPreview,
   Country,
   Cursus,
+  Difficulte,
   Epreuve,
   EpreuveContent,
+  EpreuveInediteListItem,
   EpreuvePreview,
+  Fiche,
+  FicheThemeEligible,
+  InscriptionInedite,
+  InscriptionRepetiteur,
+  MaitriseTheme,
+  ManualPayment,
+  MobileMoneyAccount,
   ModeQuiz,
   Paginated,
   PaymentInitiateResponse,
@@ -18,9 +27,18 @@ import type {
   QuizQuestion,
   QuizResult,
   QuizSession,
+  PlatformStats,
+  RevisionDue,
   Subject,
   Subscription,
+  Temoignage,
+  TentativeInedite,
+  TentativeInediteCorrige,
+  TentativeInediteListItem,
+  TentativeInediteQuestion,
+  TentativeInediteResult,
   User,
+  WhatsAppStatus,
 } from "./types"
 
 export function requestOtp(phoneNumber: string) {
@@ -32,15 +50,63 @@ export function requestOtp(phoneNumber: string) {
 }
 
 export function verifyOtp(phoneNumber: string, code: string, referralCode?: string) {
-  return apiRequest<{ access: string; refresh: string; user: User }>("/auth/otp/verify/", {
+  // Le refresh token ne fait plus partie de la réponse JSON - voir client.ts, posé
+  // en cookie httpOnly directement par la réponse HTTP.
+  return apiRequest<{ access: string; user: User }>("/auth/otp/verify/", {
     method: "POST",
     body: { phone_number: phoneNumber, code, referral_code: referralCode || undefined },
     auth: false,
   })
 }
 
+export function googleSignIn(credential: string, referralCode?: string) {
+  // Même charge utile que verifyOtp (access + user, refresh en cookie httpOnly) :
+  // les deux méthodes de connexion se traitent par le même chemin côté AuthContext.
+  return apiRequest<{ access: string; user: User; created: boolean }>("/auth/google/", {
+    method: "POST",
+    body: { credential, referral_code: referralCode || undefined },
+    auth: false,
+  })
+}
+
+export function linkGoogle(credential: string) {
+  return apiRequest<User>("/auth/google/link/", { method: "POST", body: { credential } })
+}
+
+export function requestPhoneChange(phoneNumber: string) {
+  return apiRequest<{ message: string }>("/auth/phone/change/request/", {
+    method: "POST",
+    body: { phone_number: phoneNumber },
+  })
+}
+
+export function confirmPhoneChange(phoneNumber: string, code: string) {
+  return apiRequest<User>("/auth/phone/change/confirm/", {
+    method: "POST",
+    body: { phone_number: phoneNumber, code },
+  })
+}
+
+export function unlinkIdentity(provider: string) {
+  return apiRequest<User>(`/auth/identities/${provider}/`, { method: "DELETE" })
+}
+
+export interface UpdateProfileParams {
+  full_name?: string
+  pseudo?: string | null
+}
+
+export function updateMe(params: UpdateProfileParams) {
+  return apiRequest<User>("/auth/me/", { method: "PATCH", body: params })
+}
+
 export function getMe() {
-  return apiRequest<User>("/auth/me/")
+  // "optional" (pas le défaut strict) : appelé au démarrage sur TOUTE page, y compris
+  // publiques, pour savoir silencieusement si une session existe déjà (voir
+  // AuthContext) - un visiteur jamais connecté y échoue normalement (401 sans cookie
+  // de refresh valide), ce n'est pas une session qui "expire" et ne doit déclencher
+  // aucun toast "Session expirée".
+  return apiRequest<User>("/auth/me/", { auth: "optional" })
 }
 
 export interface EpreuveFilters {
@@ -49,13 +115,17 @@ export interface EpreuveFilters {
   country?: string
   lesson_type?: string
   origine?: string
+  // Théorique/Pratique - voir NatureEpreuve. Distinct de `subject` : filtre orthogonal
+  // à la matière, jamais encodé dans son code.
+  nature?: string
   search?: string
   page?: number
   exclude_read?: boolean
-  ordering?: "year"
+  ordering?: "year" | "recent" | "popular"
+  est_vitrine?: boolean
 }
 
-export function listEpreuves(filters: EpreuveFilters = {}) {
+export function listEpreuves(filters: EpreuveFilters = {}, signal?: AbortSignal) {
   const params = new URLSearchParams()
   Object.entries(filters).forEach(([key, value]) => {
     if (value !== undefined && value !== "") params.set(key, String(value))
@@ -63,6 +133,7 @@ export function listEpreuves(filters: EpreuveFilters = {}) {
   const query = params.toString()
   return apiRequest<Paginated<Epreuve>>(`/catalog/lessons/${query ? `?${query}` : ""}`, {
     auth: "optional",
+    signal,
   })
 }
 
@@ -70,8 +141,19 @@ export function getEpreuve(slug: string) {
   return apiRequest<Epreuve>(`/catalog/lessons/${slug}/`, { auth: "optional" })
 }
 
+// slugOrId : accepte le slug (URL publique) ou l'id numérique (liens partagés avant
+// l'introduction d'EpreuveInedite.slug) - résolu côté backend, voir
+// inedit.views.epreuve_inedite_detail.
+export function getEpreuveInedite(slugOrId: string) {
+  return apiRequest<Epreuve>(`/inedit/epreuves/${slugOrId}/`, { auth: "optional" })
+}
+
 export function readEpreuve(slug: string) {
-  return apiRequest<EpreuveContent>(`/access/read/${slug}/`)
+  // "optional" (pas le défaut strict) : une Lesson vitrine (voir has_access côté
+  // backend) se lit sans connexion - un visiteur anonyme doit obtenir son contenu
+  // normalement plutôt qu'un événement "session expirée" déclenché à tort par
+  // l'échec du refresh silencieux d'un token qui n'a jamais existé.
+  return apiRequest<EpreuveContent>(`/access/read/${slug}/`, { auth: "optional" })
 }
 
 export function previewEpreuve(slug: string) {
@@ -84,6 +166,7 @@ export interface CoursFilters {
   country?: string
   search?: string
   page?: number
+  exclude_read?: boolean
 }
 
 export function listCours(filters: CoursFilters = {}) {
@@ -97,30 +180,38 @@ export function listCours(filters: CoursFilters = {}) {
   })
 }
 
-export function getCours(id: number) {
-  return apiRequest<Cours>(`/catalog/cours/${id}/`, { auth: "optional" })
+export function getCours(slug: string) {
+  return apiRequest<Cours>(`/catalog/cours/${slug}/`, { auth: "optional" })
 }
 
-export function readCours(id: number) {
-  return apiRequest<CoursContent>(`/access/cours/read/${id}/`)
+export function readCours(slug: string) {
+  return apiRequest<CoursContent>(`/access/cours/read/${slug}/`)
 }
 
-export function previewCours(id: number) {
-  return apiRequest<CoursPreview>(`/access/cours/preview/${id}/`, { auth: false })
+export function previewCours(slug: string) {
+  return apiRequest<CoursPreview>(`/access/cours/preview/${slug}/`, { auth: false })
 }
 
-export function listSubjects(country?: string) {
+export function listSubjects(country?: string, signal?: AbortSignal) {
   const query = country ? `?country=${country}` : ""
-  return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false })
+  return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false, signal })
 }
 
-export function listCursus(country?: string) {
+export function listCursus(country?: string, signal?: AbortSignal) {
   const query = country ? `?country=${country}` : ""
-  return apiRequest<Cursus[]>(`/catalog/cursus/${query}`, { auth: false })
+  return apiRequest<Cursus[]>(`/catalog/cursus/${query}`, { auth: false, signal })
 }
 
 export function listCountries() {
   return apiRequest<Country[]>("/catalog/countries/", { auth: false })
+}
+
+export function listTemoignages() {
+  return apiRequest<Temoignage[]>("/catalog/temoignages/", { auth: false })
+}
+
+export function getPlatformStats() {
+  return apiRequest<PlatformStats>("/catalog/stats/", { auth: false })
 }
 
 export function listPlans(cursusId?: number) {
@@ -144,18 +235,49 @@ export function checkPaymentStatus(transactionId: number) {
   return apiRequest<PaymentStatusResponse>(`/payments/status/${transactionId}/`)
 }
 
+export function listManualPaymentMethods() {
+  return apiRequest<MobileMoneyAccount[]>("/payments/manual/methods/")
+}
+
+export interface DeclareManualPaymentParams {
+  planId: number
+  operator: string
+  amountDeclared: number
+  payerPhoneNumber: string
+  transactionReference: string
+  paidAt?: string
+  proof?: File
+}
+
+export function declareManualPayment(params: DeclareManualPaymentParams) {
+  const formData = new FormData()
+  formData.append("plan", String(params.planId))
+  formData.append("operator", params.operator)
+  formData.append("amount_declared", String(params.amountDeclared))
+  formData.append("payer_phone_number", params.payerPhoneNumber)
+  formData.append("transaction_reference", params.transactionReference)
+  if (params.paidAt) formData.append("paid_at", params.paidAt)
+  if (params.proof) formData.append("proof", params.proof)
+  return apiRequest<ManualPayment>("/payments/manual/declare/", { method: "POST", body: formData })
+}
+
+export function listMyManualPayments() {
+  return apiRequest<ManualPayment[]>("/payments/manual/mine/")
+}
+
 export function listMySubscriptions() {
   return apiRequest<Subscription[]>("/subscriptions/mine/")
 }
 
-export function getMyProgression() {
-  return apiRequest<Progression>("/access/progression/")
+export function getMyProgression(signal?: AbortSignal) {
+  return apiRequest<Progression>("/access/progression/", { signal })
 }
 
 export interface StartQuizSessionParams {
   cursus: number
   mode?: ModeQuiz
   subject?: number
+  theme?: number
   n?: number
 }
 
@@ -188,4 +310,162 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
 
 export function completeQuizSession(sessionId: number) {
   return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
+}
+
+export function listRevisionsDues() {
+  return apiRequest<RevisionDue[]>("/quiz/revisions/")
+}
+
+export function getMaitrise(cursus?: number) {
+  const query = cursus ? `?cursus=${cursus}` : ""
+  return apiRequest<MaitriseTheme[]>(`/quiz/maitrise/${query}`)
+}
+
+export function listQuizSubjects(cursus: number) {
+  return apiRequest<Subject[]>(`/quiz/subjects/?cursus=${cursus}`)
+}
+
+export function listMyInscriptionsInedites() {
+  return apiRequest<InscriptionInedite[]>("/inedit/mes-inscriptions/")
+}
+
+export function listEpreuvesInedites(cursusId: number) {
+  return apiRequest<EpreuveInediteListItem[]>(`/inedit/epreuves/?cursus=${cursusId}`)
+}
+
+export function startTentativeInedite(epreuveId: number) {
+  return apiRequest<TentativeInedite>("/inedit/tentatives/", {
+    method: "POST",
+    body: { epreuve: epreuveId },
+  })
+}
+
+export function getTentativeInedite(id: number) {
+  return apiRequest<TentativeInedite>(`/inedit/tentatives/${id}/`)
+}
+
+export function startExamMode(tentativeId: number) {
+  return apiRequest<TentativeInedite>(`/inedit/tentatives/${tentativeId}/mode-examen/`, { method: "POST" })
+}
+
+export function toggleQuestionMarquee(tentativeId: number, questionId: number) {
+  return apiRequest<{ questions_marquees: number[] }>(
+    `/inedit/tentatives/${tentativeId}/questions/${questionId}/marquer/`, { method: "POST" },
+  )
+}
+
+export function revealTentativeCorrige(tentativeId: number, questionId: number) {
+  return apiRequest<TentativeInediteCorrige>(`/inedit/tentatives/${tentativeId}/questions/${questionId}/corrige/`)
+}
+
+export interface AnswerTentativeQuestionParams {
+  reponse_choisie?: string
+  resultat_declare?: string
+}
+
+export function answerTentativeQuestion(tentativeId: number, questionId: number, params: AnswerTentativeQuestionParams) {
+  return apiRequest<TentativeInediteQuestion>(`/inedit/tentatives/${tentativeId}/questions/${questionId}/answer/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
+export function completeTentative(tentativeId: number) {
+  return apiRequest<TentativeInediteResult>(`/inedit/tentatives/${tentativeId}/completer/`, { method: "POST" })
+}
+
+export function listMyTentativesInedites() {
+  return apiRequest<TentativeInediteListItem[]>("/inedit/mes-tentatives/")
+}
+
+/**
+ * Ouvre un PDF gated dans un nouvel onglet - pas un simple <a href target="_blank">, le
+ * fichier vit sur un storage privé (voir inedit.views.download_sujet_pdf côté backend)
+ * et exige le token JWT en en-tête Authorization, que le navigateur n'attache jamais
+ * tout seul à une navigation classique (contrairement au cookie httpOnly du refresh
+ * token).
+ *
+ * L'onglet est ouvert de façon SYNCHRONE, avant le moindre await : un window.open()
+ * appelé après un fetch échoue silencieusement sous certains bloqueurs de popup (Safari
+ * notamment), qui n'autorisent l'ouverture que dans le prolongement direct du geste
+ * utilisateur. On y navigue ensuite vers l'URL objet une fois le blob récupéré.
+ */
+async function openPdfInNewTab(url: string, errorMessage: string) {
+  const newTab = window.open("", "_blank")
+  const token = getAccessToken()
+  const response = await fetch(url, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    credentials: "include",
+  })
+  if (!response.ok) {
+    newTab?.close()
+    throw new Error(errorMessage)
+  }
+  const blob = await response.blob()
+  const blobUrl = URL.createObjectURL(blob)
+  if (newTab) {
+    newTab.location.href = blobUrl
+  } else {
+    // Onglet bloqué malgré l'ouverture synchrone (rare) - on retombe sur la fenêtre courante.
+    window.location.href = blobUrl
+  }
+  // Révocation différée plutôt qu'immédiate : le nouvel onglet doit avoir le temps de
+  // charger la ressource avant qu'elle ne devienne invalide.
+  window.setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000)
+}
+
+export function downloadSujetPdf(epreuveId: number) {
+  return openPdfInNewTab(
+    `${API_BASE_URL}/inedit/epreuves/${epreuveId}/sujet.pdf`,
+    "Impossible d'ouvrir le sujet pour le moment.",
+  )
+}
+
+export function listMyInscriptionsRepetiteur() {
+  return apiRequest<InscriptionRepetiteur[]>("/fiches/mes-inscriptions/")
+}
+
+export function getFicheEligibilite(cursusId: number, subjectId: number) {
+  return apiRequest<FicheThemeEligible[]>(`/fiches/eligibilite/?cursus=${cursusId}&subject=${subjectId}`)
+}
+
+export interface CreateFicheParams {
+  cursus: number
+  subject: number
+  themes: number[]
+  difficulte?: Difficulte | ""
+  n: number
+  titre: string
+}
+
+export function createFiche(params: CreateFicheParams) {
+  return apiRequest<Fiche>("/fiches/", { method: "POST", body: params })
+}
+
+export function listMyFiches() {
+  return apiRequest<Fiche[]>("/fiches/mes-fiches/")
+}
+
+export function getFiche(id: number) {
+  return apiRequest<Fiche>(`/fiches/${id}/`)
+}
+
+export function downloadFicheSujetPdf(id: number) {
+  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/sujet.pdf`, "Impossible d'ouvrir l'énoncé pour le moment.")
+}
+
+export function downloadFicheCorrigePdf(id: number) {
+  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/corrige.pdf`, "Impossible d'ouvrir le corrigé pour le moment.")
+}
+
+export function getWhatsAppStatus() {
+  return apiRequest<WhatsAppStatus>("/whatsapp/statut/")
+}
+
+export function optInWhatsApp() {
+  return apiRequest<WhatsAppStatus>("/whatsapp/opt-in/", { method: "POST" })
+}
+
+export function optOutWhatsApp() {
+  return apiRequest<WhatsAppStatus>("/whatsapp/opt-out/", { method: "POST" })
 }

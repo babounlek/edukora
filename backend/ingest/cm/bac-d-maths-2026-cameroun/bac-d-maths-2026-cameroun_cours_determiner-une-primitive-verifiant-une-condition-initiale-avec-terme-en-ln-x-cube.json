@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-determiner-une-primitive-verifiant-une-condition-initiale-avec-terme-en-ln-x-cube-terminale-d",
+  "meta": {
+    "titre": "Déterminer une primitive vérifiant une condition initiale, avec un terme en (ln x)³",
+    "cours_id": "cours-determiner-une-primitive-verifiant-une-condition-initiale-avec-terme-en-ln-x-cube-terminale-d",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D",
+    "sous_theme": "Fonctions — primitives",
+    "tags": [
+      "primitive",
+      "condition initiale",
+      "forme u'u²"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-maths-2026-cameroun-ex4-8"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Reconnaître la forme u'u² dans une expression contenant un logarithme au carré permet d'en trouver directement une primitive en u³/3, puis la condition initiale fixe la constante."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Primitives usuelles (x, x², 1/x)",
+        "Reconnaissance de la forme u'uⁿ dont une primitive est uⁿ⁺¹/(n+1)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Primitiver terme à terme puis ajuster la constante",
+      "contenu_markdown": "Pour primitiver une somme de termes, on primitive chaque terme séparément (linéarité de la primitivation). Pour un terme du type $\\dfrac{(\\ln x)^2}{x}$, on reconnaît la forme $u'u^2$ avec $u=\\ln x$ (car $u'=\\frac1x$), dont une primitive est $\\dfrac{u^3}{3}$. La primitive générale contient une constante $k$, déterminée ensuite grâce à la condition initiale donnée (par exemple $F(x_0)=0$).",
+      "formule_principale": "primitive de u'u² est u³/3 ; F(x)=... +k, k déterminé par F(x0)=valeur donnée",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la primitive G de g(x)=1+(ln x)²/x sur ]0;+∞[ telle que G(1)=3.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Primitiver chaque terme",
+          "justification": "Primitive de 1 est x ; primitive de (ln x)²/x est (ln x)³/3 (forme u'u² avec u=ln x).",
+          "resultat_markdown": "G(x) = x + (ln x)³/3 + k"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser la condition initiale",
+          "justification": "G(1)=3 donné.",
+          "resultat_markdown": "G(1) = 1 + (ln1)³/3 + k = 1+0+k = 1+k"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre pour k",
+          "justification": "1+k=3.",
+          "resultat_markdown": "k=2"
+        }
+      ],
+      "conclusion_markdown": "G(x) = x + (ln x)³/3 + 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la constante d'intégration k lors de la primitivation, puis ne plus pouvoir utiliser la condition initiale",
+          "pourquoi_faux": "Une primitive n'est définie qu'à une constante additive près ; sans cette constante explicite, la condition initiale donnée par l'énoncé ne peut pas être exploitée pour déterminer LA primitive demandée (unique).",
+          "correction_markdown": "Toujours écrire explicitement '+k' après la primitivation terme à terme, avant d'utiliser la condition initiale pour déterminer sa valeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est une primitive de (ln x)/x ?",
+          "solution_markdown": "(ln x)²/2 (forme u'u avec u=ln x)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "H(x)=x²/2+k, H(2)=5. Trouver k.",
+          "solution_markdown": "H(2)=2+k=5, donc k=3."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la condition F(1)=0 est-elle particulièrement pratique quand une primitive contient un terme en ln x ?",
+          "solution_markdown": "Parce que ln(1)=0, ce qui annule instantanément tout terme contenant une puissance de ln x évaluée en x=1, simplifiant grandement le calcul de la constante k."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On primitive terme à terme, en reconnaissant les formes usuelles comme u'u² dont une primitive est u³/3.",
+        "La primitive générale contient une constante k, déterminée ensuite par la condition initiale de l'énoncé.",
+        "La valeur x=1 simplifie souvent les calculs quand la primitive contient des puissances de ln x, car ln(1)=0."
+      ]
+    }
+  ]
+}

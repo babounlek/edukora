@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-identifier-la-variable-drapeau-booleenne-dans-un-algorithme-de-recherche-terminale-c",
+  "meta": {
+    "titre": "Identifier la variable drapeau (booléenne) dans un algorithme de recherche",
+    "cours_id": "cours-identifier-la-variable-drapeau-booleenne-dans-un-algorithme-de-recherche-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Algorithmique — recherche séquentielle",
+    "tags": [
+      "variable drapeau",
+      "variable booléenne",
+      "recherche"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un algorithme de recherche, il faut un moyen de \"se souvenir\" qu'on a déjà trouvé ce qu'on cherchait, pour arrêter la boucle au bon moment. C'est exactement le rôle d'une variable drapeau."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une variable booléenne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer la variable drapeau dans un algorithme",
+      "contenu_markdown": "Une **variable drapeau** (ou variable booléenne de contrôle) est une variable de type booléen (vrai/faux) utilisée pour mémoriser si un événement recherché s'est produit au cours de l'exécution. Elle est typiquement initialisée à **faux** avant une boucle, passe à **vrai** dès que la condition recherchée est satisfaite à l'intérieur de la boucle, et sert souvent de condition d'arrêt anticipé de cette boucle.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier la variable drapeau dans l'algorithme de recherche du numéro d'un candidat.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer une variable initialisée à faux avant la boucle",
+          "justification": "Une variable drapeau démarre toujours à faux, avant que la recherche ne commence.",
+          "resultat_markdown": "trouve <- faux (ligne 2)"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier qu'elle passe à vrai lorsque l'élément recherché est localisé",
+          "justification": "C'est ce changement d'état qui signale la découverte de l'élément recherché.",
+          "resultat_markdown": "trouve <- vrai (ligne 6), lorsque numero[i]=x"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier son rôle dans la condition d'arrêt de la boucle",
+          "justification": "La boucle s'arrête notamment quand trouve devient vrai.",
+          "resultat_markdown": "Condition de boucle : (i<=N) et (trouve=faux)"
+        }
+      ],
+      "conclusion_markdown": "La variable drapeau, initialisée à faux, passe à vrai dès que l'élément recherché est trouvé, et conditionne l'arrêt de la boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Désigner \"i\" comme variable drapeau",
+          "pourquoi_faux": "i est un compteur (indice de parcours du tableau), de type entier, incrémenté progressivement ; une variable drapeau est de type booléen (vrai/faux) et ne prend que deux états possibles, ce qui n'est pas le cas de i.",
+          "correction_markdown": "Vérifie toujours le type de la variable suspectée : une variable drapeau est nécessairement booléenne (vrai/faux), jamais un compteur numérique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la valeur initiale typique d'une variable drapeau avant une recherche ?",
+          "solution_markdown": "Faux (0), puisqu'au début de la recherche, l'élément n'a par définition pas encore été trouvé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la variable drapeau permet-elle d'arrêter la boucle plus tôt que si l'on parcourait systématiquement tout le tableau ?",
+          "solution_markdown": "En intégrant \"trouve=faux\" dans la condition de la boucle Tant que, celle-ci s'arrête dès que trouve devient vrai, sans attendre d'avoir parcouru le reste du tableau inutilement ; c'est une optimisation par rapport à un parcours systématique qui irait toujours jusqu'au bout."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans quels autres contextes algorithmiques, en dehors de la recherche, une variable drapeau est-elle couramment utilisée ?",
+          "solution_markdown": "Une variable drapeau est couramment utilisée pour détecter si un tableau est trié (ex. \"tableau_trie <- vrai\" au départ, mis à faux dès qu'une inversion est détectée, utilisé notamment dans le tri à bulles optimisé pour arrêter dès qu'aucun échange n'a eu lieu) ; pour signaler qu'une erreur ou une exception s'est produite au cours d'un traitement ; ou plus généralement chaque fois qu'un algorithme doit \"se souvenir\" qu'un événement binaire (oui/non) s'est produit à un moment donné de son exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable drapeau est de type booléen, initialisée à faux.",
+        "Elle passe à vrai dès que l'événement recherché se produit.",
+        "Elle sert souvent de condition d'arrêt anticipé d'une boucle.",
+        "Elle ne doit pas être confondue avec un compteur numérique comme un indice de boucle."
+      ]
+    }
+  ]
+}

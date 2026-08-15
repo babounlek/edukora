@@ -1,0 +1,118 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2023,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": 3,
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (4 pts)**\n\nConsidérons la base de données « ETABLISSEMENT » décrite par la représentation textuelle suivante :\n\n```\nELEVE (Matricule, Nom, Prénom, Adresse, Sexe, DateNaissance, LieuNaissance, #NumClasse)\nCLASSE (NumClasse, NomClasse)\nMATIERE (IdMatiere, Intitule, #IdProf)\nPROFESSEUR (IdProf, Nom, Prenom, Adresse, NumeroPhone, Quartier)\n```",
+  "mots_cles_recherche": [
+    "clé primaire",
+    "clé étrangère",
+    "CREATE TABLE",
+    "jointure SQL",
+    "SELECT WHERE"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Dire ce que représente chacun des attributs suivants : **Matricule** et **#NumClasse**, pour la table ELEVE. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nDans un schéma relationnel, l'attribut souligné est la clé primaire de la table (identifiant unique de chaque ligne) ; un attribut précédé de # est une clé étrangère, référençant la clé primaire d'une autre table.\n\n### Corrigé\n**Matricule** est la **clé primaire** de la table ELEVE : il identifie de manière unique chaque élève.\n\n**#NumClasse** est une **clé étrangère** : elle référence l'attribut NumClasse de la table CLASSE, et indique la classe à laquelle appartient l'élève.",
+      "themes": [
+        "clé primaire",
+        "clé étrangère",
+        "schéma relationnel"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q1-0",
+          "competence": "Distinguer clé primaire et clé étrangère dans un schéma relationnel",
+          "contenu_markdown": "Dans un schéma relationnel, l'attribut souligné est la clé primaire de la table (identifiant unique de chaque ligne) ; un attribut précédé de # est une clé étrangère, référençant la clé primaire d'une autre table.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-cle-primaire-et-cle-etrangere-dans-un-schema-relationnel-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Écrire la requête SQL qui crée la table ELEVE. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nCREATE TABLE nom (colonne1 type1, colonne2 type2, ..., PRIMARY KEY(colonne), FOREIGN KEY(colonne) REFERENCES autre_table(colonne)); crée une table en définissant ses colonnes, sa clé primaire et ses éventuelles clés étrangères.\n\n### Corrigé\n```sql\nCREATE TABLE ELEVE (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Adresse VARCHAR(50),\n    Sexe CHAR(1),\n    DateNaissance DATE,\n    LieuNaissance VARCHAR(30),\n    NumClasse INT,\n    FOREIGN KEY (NumClasse) REFERENCES CLASSE(NumClasse)\n);\n```\n\n### Piège à éviter\nNe pas oublier la clause FOREIGN KEY pour NumClasse : la table ELEVE référence la table CLASSE via cet attribut (noté #NumClasse dans le schéma), ce lien doit être formalisé dans le CREATE TABLE.",
+      "themes": [
+        "CREATE TABLE",
+        "SQL",
+        "clé étrangère"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q2-0",
+          "competence": "Écrire une requête SQL de création de table (CREATE TABLE)",
+          "contenu_markdown": "CREATE TABLE nom (colonne1 type1, colonne2 type2, ..., PRIMARY KEY(colonne), FOREIGN KEY(colonne) REFERENCES autre_table(colonne)); crée une table en définissant ses colonnes, sa clé primaire et ses éventuelles clés étrangères.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Donner la signification de la requête SQL suivante : (1 pt)\n\n```sql\nSELECT Nom\nFROM PROFESSEUR, MATIERE\nWHERE PROFESSEUR.IdProf = MATIERE.IdProf\nAND MATIERE.Intitule = \"Informatique\" ;\n```",
+      "corrige_markdown": "### Rappel de méthode\nUne requête SELECT portant sur plusieurs tables séparées par une virgule dans la clause FROM réalise une jointure : la condition d'égalité entre les deux clés dans la clause WHERE relie chaque ligne d'une table à la ligne correspondante de l'autre, avant d'appliquer les éventuels filtres supplémentaires.\n\n### Corrigé\nCette requête affiche le(s) **nom(s) du/des professeur(s) qui enseigne(nt) la matière \"Informatique\"**.\n\nElle fonctionne en deux temps : la condition `PROFESSEUR.IdProf = MATIERE.IdProf` relie chaque matière à son professeur (jointure entre les deux tables) ; la condition `MATIERE.Intitule = \"Informatique\"` ne conserve ensuite que les lignes concernant la matière Informatique ; enfin, seule la colonne Nom (du professeur) est affichée.\n\n### Piège à éviter\nNe pas décrire cette requête comme portant sur une seule table : la présence de deux tables dans le FROM, reliées par une condition d'égalité dans le WHERE, signale toujours une jointure entre elles.",
+      "themes": [
+        "jointure SQL",
+        "SELECT"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q3-0",
+          "competence": "Interpréter une requête SQL de jointure entre deux tables (SELECT... FROM table1, table2 WHERE...)",
+          "contenu_markdown": "Une requête SELECT portant sur plusieurs tables séparées par une virgule dans la clause FROM réalise une jointure : la condition d'égalité entre les deux clés dans la clause WHERE relie chaque ligne d'une table à la ligne correspondante de l'autre, avant d'appliquer les éventuels filtres supplémentaires.",
+          "cours_genere": true,
+          "cours_id": "cours-interpreter-une-requete-sql-de-jointure-entre-deux-tables-select-from-table1-table2-where-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Écrire la requête SQL qui affiche les noms et prénoms des élèves filles. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nSELECT colonnes FROM table WHERE condition; affiche, pour les lignes vérifiant la condition, uniquement les colonnes demandées.\n\n### Corrigé\n```sql\nSELECT Nom, Prenom FROM ELEVE WHERE Sexe = 'F';\n```\n\n### Piège à éviter\nNe pas écrire `SELECT * FROM ELEVE WHERE Sexe='F';` : l'énoncé demande précisément les noms et prénoms, pas toutes les colonnes de la table.",
+      "themes": [
+        "SELECT WHERE",
+        "SQL"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q4-0",
+          "competence": "Écrire une requête SQL de sélection avec une condition simple (SELECT colonnes FROM table WHERE condition)",
+          "contenu_markdown": "SELECT colonnes FROM table WHERE condition; affiche, pour les lignes vérifiant la condition, uniquement les colonnes demandées.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-une-condition-simple-select-colonnes-from-table-where-condition-terminale-c"
+        }
+      ]
+    }
+  ],
+  "nature_epreuve": "theorique"
+}

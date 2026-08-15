@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-calculer-probabilite-tirage-simultane-loi-hypergeometrique-terminale-d-ti",
+  "meta": {"titre": "Calculer une probabilité de tirage simultané sans remise avec deux catégories (loi hypergéométrique)", "cours_id": "cours-calculer-probabilite-tirage-simultane-loi-hypergeometrique-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Probabilités — dénombrement, tirage simultané", "tags": ["loi hypergéométrique", "tirage simultané", "combinaisons"], "duree_estimee_minutes": 7, "epreuve_source": "bac-d-ti-maths-2016-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2016-cameroun-ex1-q3a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand on tire simultanément plusieurs éléments sans remise dans une population partagée en deux catégories, la probabilité d'obtenir un nombre précis d'éléments de chaque catégorie se calcule avec la loi hypergéométrique, combinant des coefficients binomiaux."},
+    {"type": "prerequis", "items_markdown": ["Coefficient binomial C(n,k)=n!/(k!(n-k)!)", "Principe du dénombrement par tirage simultané (combinaisons, ordre indifférent)"]},
+    {"type": "regle", "titre": "Combiner les choix dans chaque catégorie sur le total des combinaisons possibles", "contenu_markdown": "Pour une population de $N$ éléments partagée en deux catégories d'effectifs $N_1$ et $N_2$ ($N_1+N_2=N$), la probabilité d'obtenir exactement $k$ éléments de la première catégorie en tirant simultanément $n$ éléments est $P=\\dfrac{\\binom{N_1}k\\times\\binom{N_2}{n-k}}{\\binom Nn}$.", "formule_principale": "P(exactement k de la catégorie 1)=C(N1,k)×C(N2,n-k)/C(N,n)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "8 boules dont 3 rouges et 5 bleues. On tire simultanément 4 boules. Probabilité d'avoir exactement 2 rouges ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Numérateur", "justification": "C(3,2)×C(5,2)", "resultat_markdown": "3×10=30"},
+      {"numero": 2, "action": "Dénominateur", "justification": "C(8,4)", "resultat_markdown": "70"},
+      {"numero": 3, "action": "Probabilité", "justification": "30/70", "resultat_markdown": "3/7"}
+    ], "conclusion_markdown": "P=3/7."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser un coefficient binomial de la loi binomiale (avec remise, tirages indépendants) au lieu de la loi hypergéométrique (sans remise, tirage simultané), en multipliant par des probabilités individuelles élevées à une puissance", "pourquoi_faux": "Un tirage simultané SANS REMISE correspond à un dénombrement par combinaisons (loi hypergéométrique), pas à une répétition d'épreuves indépendantes (loi binomiale) ; confondre les deux modèles conduit à une formule et un résultat totalement différents.", "correction_markdown": "Bien identifier le mode de tirage annoncé par l'énoncé (« simultanément » = sans remise, dénombrement par combinaisons) avant de choisir la formule appropriée."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "10 jetons dont 4 verts et 6 jaunes. On tire simultanément 5 jetons. Probabilité d'avoir exactement 2 verts ?", "solution_markdown": "P=C(4,2)×C(6,3)/C(10,5)=6×20/252=120/252=10/21."},
+      {"numero": 2, "difficulte": "difficile", "enonce_markdown": "Dans l'exercice précédent, pourquoi la somme des exposants (2 verts choisis + 3 jaunes choisis) doit-elle toujours être égale à la taille du tirage (5) ?", "solution_markdown": "Chaque élément tiré appartient nécessairement à l'une des deux catégories : le nombre total d'éléments tirés (5) se répartit donc obligatoirement entre les deux catégories, d'où la contrainte k + (n-k) = n, garantissant la cohérence du dénombrement."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un tirage simultané sans remise se modélise par la loi hypergéométrique (combinaisons), pas par la loi binomiale.", "La probabilité combine les choix dans chaque catégorie séparément, rapportés au nombre total de tirages possibles.", "La somme des effectifs choisis dans chaque catégorie doit toujours égaler la taille totale du tirage."]}
+  ]
+}

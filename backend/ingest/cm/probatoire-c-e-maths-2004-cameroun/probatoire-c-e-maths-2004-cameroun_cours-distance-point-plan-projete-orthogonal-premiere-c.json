@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-distance-point-plan-projete-orthogonal-premiere-c",
+  "meta": {
+    "titre": "Calculer la distance d'un point à un plan via son projeté orthogonal",
+    "cours_id": "cours-distance-point-plan-projete-orthogonal-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Géométrie dans l'espace - distance point-plan",
+    "tags": ["distance point-plan", "projeté orthogonal", "norme"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-c-e-maths-2004-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2004-cameroun_exercice_6_q3"
+  },
+  "sections": {
+    "accroche": "La distance d'un point à un plan n'est jamais mesurée le long d'un chemin quelconque : c'est toujours la longueur du segment perpendiculaire au plan, c'est-à-dire la distance entre le point et son projeté orthogonal.",
+    "prerequis": ["Projeté orthogonal d'un point sur un plan (intersection de la perpendiculaire au plan passant par ce point)", "Formule de distance entre deux points de l'espace"],
+    "regle": {
+      "titre": "Distance d'un point à un plan via le projeté orthogonal",
+      "contenu_markdown": "Si $H$ est le point d'intersection de $(P)$ avec la droite passant par $A$ et orthogonale à $(P)$, alors $H$ est exactement le projeté orthogonal de $A$ sur $(P)$, et la distance de $A$ à $(P)$ est $d(A,(P))=AH=\\sqrt{(x_H-x_A)^2+(y_H-y_A)^2+(z_H-z_A)^2}$. Cette distance peut aussi se calculer directement, sans passer par $H$, avec la formule $d(A,(P))=\\dfrac{|\\alpha x_A+\\beta y_A+\\gamma z_A+\\delta|}{\\sqrt{\\alpha^2+\\beta^2+\\gamma^2}}$ pour un plan d'équation $\\alpha x+\\beta y+\\gamma z+\\delta=0$.",
+      "formule_principale": "$d(A,(P))=AH=\\dfrac{|\\alpha x_A+\\beta y_A+\\gamma z_A+\\delta|}{\\sqrt{\\alpha^2+\\beta^2+\\gamma^2}}$",
+      "variantes": ["Les deux méthodes (via H, ou via la formule directe) doivent donner exactement le même résultat numérique : les comparer est un excellent moyen de vérifier un calcul"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer la distance de A(1;2;3) au plan x-2y+2z-5=0, par la formule directe.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier les coefficients", "justification": "lecture de l'équation du plan", "resultat_markdown": "α=1, β=-2, γ=2, δ=-5"},
+        {"numero": 2, "action": "Calculer le numérateur", "justification": "substitution des coordonnées de A", "resultat_markdown": "|1×1-2×2+2×3-5|=|1-4+6-5|=|-2|=2"},
+        {"numero": 3, "action": "Calculer le dénominateur et conclure", "justification": "norme du vecteur normal", "resultat_markdown": "√(1²+(-2)²+2²)=√9=3 ; d=2/3"}
+      ],
+      "conclusion_markdown": "La distance de A au plan est 2/3."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier la valeur absolue au numérateur de la formule directe, ce qui pourrait donner une distance négative", "pourquoi_faux": "une distance est par définition une longueur, donc toujours positive ou nulle ; sans la valeur absolue, le signe du numérateur dépendrait de la position du point par rapport au plan, ce qui n'a pas de sens pour une distance", "correction_markdown": "Toujours placer une valeur absolue autour de l'expression αx_A+βy_A+γz_A+δ avant de diviser par la norme du vecteur normal, pour garantir un résultat positif."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer la distance de B(0;0;0) au plan 2x+3y-6z+7=0.", "solution_markdown": "d=|7|/√(4+9+36)=7/√49=7/7=1."}
+    ],
+    "synthese": "La distance d'un point A à un plan (P) est la longueur AH, où H est le projeté orthogonal de A sur (P) (intersection de la perpendiculaire à (P) issue de A avec ce plan) ; elle se calcule soit directement à partir des coordonnées de H, soit par la formule |αx_A+βy_A+γz_A+δ|/√(α²+β²+γ²), les deux méthodes devant coïncider exactement."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-decomposition-unique-base-vecteur-image-terminale-c",
+  "meta": {
+    "titre": "Décomposer un vecteur dans une base formée par un vecteur et son image",
+    "cours_id": "cours-decomposition-unique-base-vecteur-image-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - bases adaptées à un endomorphisme",
+    "tags": ["base adaptée", "décomposition unique", "endomorphisme"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_3_qPI-2a"
+  },
+  "sections": {
+    "accroche": "Un vecteur u et son image f(u) par un endomorphisme forment souvent la base la plus naturelle pour étudier f lui-même : toute la dynamique de f s'y lit directement dans les colonnes de sa matrice.",
+    "prerequis": ["Système libre en dimension 2 = base", "Décomposition unique dans une base"],
+    "regle": {
+      "titre": "Base construite à partir d'un vecteur et de son image",
+      "contenu_markdown": "Si $(\\vec u,f(\\vec u))$ est un système libre dans un espace de dimension 2, c'est automatiquement une base de cet espace (tout système libre de cardinal égal à la dimension est une base). Tout vecteur de l'espace, y compris $f(f(\\vec u))$, s'y décompose alors de façon unique : il existe des réels uniques $\\alpha,\\beta$ tels que $f(f(\\vec u))=\\alpha\\vec u+\\beta f(\\vec u)$.",
+      "formule_principale": "$(\\vec u,f(\\vec u))$ libre en dimension 2 $\\Rightarrow$ base, donc $f(f(\\vec u))=\\alpha\\vec u+\\beta f(\\vec u)$ (uniques)",
+      "variantes": ["Cette base, dite adaptée à f, donne à f une matrice particulièrement simple : première colonne (0,1), seconde colonne (α,β)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit f tel que f(u)=v (v non colinéaire à u) et f(v)=3u-2v. Décomposer f(f(u)) dans la base (u,f(u))=(u,v).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer f(f(u))", "justification": "f(u)=v", "resultat_markdown": "f(f(u))=f(v)=3u-2v"},
+        {"numero": 2, "action": "Identifier dans la base (u,v)", "justification": "décomposition directe", "resultat_markdown": "α=3, β=-2"}
+      ],
+      "conclusion_markdown": "f(f(u))=3u-2v=3u-2f(u), donc α=3 et β=-2, valeurs directement lisibles."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Supposer que (u,f(u)) est automatiquement une base sans vérifier la liberté (l'hypothèse de non-colinéarité)", "pourquoi_faux": "si f(u) est colinéaire à u, le système est lié et ne peut engendrer l'espace tout entier", "correction_markdown": "Toujours vérifier ou rappeler explicitement l'hypothèse de liberté (souvent donnée dans l'énoncé comme hypothèse de travail) avant d'invoquer l'unicité de la décomposition."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Soit f(u)=w (w non colinéaire à u) et f(w)=5w. Décomposer f(f(u)) dans (u,w).", "solution_markdown": "f(f(u))=f(w)=5w=0·u+5·w : α=0, β=5."}
+    ],
+    "synthese": "Lorsque (u,f(u)) est un système libre dans un plan, il constitue une base dans laquelle tout vecteur, en particulier f(f(u)), se décompose de façon unique : cette décomposition fournit les deux coefficients α,β qui gouvernent entièrement le comportement de f∘f par rapport à f et à l'identité."
+  }
+}

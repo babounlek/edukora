@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-verification-idempotence-endomorphismes-terminale-c",
+  "meta": {
+    "titre": "Vérifier l'idempotence d'endomorphismes construits à partir de f",
+    "cours_id": "cours-verification-idempotence-endomorphismes-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - projecteurs et idempotence",
+    "tags": ["projecteur", "idempotence", "endomorphisme"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_4_qPII-2"
+  },
+  "sections": {
+    "accroche": "Construire un projecteur à partir d'un endomorphisme quelconque vérifiant une relation polynomiale est une technique classique : elle repose entièrement sur la réinjection de la relation connue dans le calcul de p∘p.",
+    "prerequis": ["Définition d'un projecteur (p∘p=p)", "Relation f∘f=(a+b)f-abId déjà établie"],
+    "regle": {
+      "titre": "Construction de projecteurs à partir d'un endomorphisme f",
+      "contenu_markdown": "Si $f\\circ f=(a+b)f-ab\\,Id$, alors $p=\\dfrac1{b-a}(f-a\\,Id)$ est un projecteur : on calcule $p\\circ p$ en développant $(f-a\\,Id)\\circ(f-a\\,Id)=f\\circ f-2af+a^2Id$, puis on substitue $f\\circ f$ par son expression connue, ce qui fait apparaître un facteur commun $(b-a)$ se simplifiant exactement avec le dénominateur au carré, redonnant $p$ lui-même.",
+      "formule_principale": "$p=\\dfrac1{b-a}(f-a\\,Id) \\;\\Longrightarrow\\; p\\circ p=p$ (sachant $f\\circ f=(a+b)f-ab\\,Id$)",
+      "variantes": ["Le signe du dénominateur choisi pour chaque projecteur associé (a ou b) doit être cohérent avec le résultat souhaité (p+q=Id) : un mauvais choix de signe donne p∘p=-p au lieu de p∘p=p"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant f∘f=5f-6Id (soit a=2,b=3), vérifier que p=(f-2Id)/1=f-2Id est un projecteur.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Développer (f-2Id)∘(f-2Id)", "justification": "carré du binôme", "resultat_markdown": "f∘f-4f+4Id"},
+        {"numero": 2, "action": "Substituer f∘f=5f-6Id", "justification": "relation connue", "resultat_markdown": "5f-6Id-4f+4Id=f-2Id"},
+        {"numero": 3, "action": "Conclure", "justification": "résultat = p", "resultat_markdown": "p∘p=f-2Id=p : p est un projecteur"}
+      ],
+      "conclusion_markdown": "La substitution de f∘f par la relation connue est la clé qui fait apparaître p lui-même après simplification."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de substituer f∘f par sa relation connue et laisser le calcul sous forme non simplifiée", "pourquoi_faux": "sans cette substitution, l'expression obtenue ne se simplifie jamais en p et l'idempotence reste invisible", "correction_markdown": "Toujours réinjecter systématiquement la relation f∘f=(a+b)f-abId dès qu'un terme f∘f apparaît dans un développement intermédiaire."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant f∘f=7f-10Id (a=2,b=5), vérifier que q=(f-5Id)/(2-5)=-(f-5Id)/3 est un projecteur.", "solution_markdown": "q∘q se calcule en développant (f-5Id)∘(f-5Id)/9 = (f∘f-10f+25Id)/9 = (7f-10Id-10f+25Id)/9 = (-3f+15Id)/9 = -(f-5Id)/3 = q ✓."}
+    ],
+    "synthese": "Pour vérifier qu'un endomorphisme p, construit comme combinaison affine de f et Id, est un projecteur, on développe p∘p et on substitue systématiquement f∘f par la relation polynomiale connue vérifiée par f : le résultat se simplifie alors en p lui-même si le signe du dénominateur a été correctement choisi."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-nature-application-affine-symetrie-orthogonale-terminale-c",
+  "meta": {"titre": "Déterminer la nature d'une application affine via sa partie linéaire et ses points fixes", "cours_id": "cours-nature-application-affine-symetrie-orthogonale-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Géométrie — applications affines et isométries", "tags": ["application affine", "matrice orthogonale", "points fixes", "symétrie orthogonale"], "duree_estimee_minutes": 7, "epreuve_source": "bac-c-maths-1987-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1987-pB-1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un système de points fixes qui semble « sous-déterminé » (donnant une droite entière au lieu d'un point unique) n'est jamais une erreur de calcul : c'est la signature caractéristique d'une symétrie affine."},
+    {"type": "prerequis", "items_markdown": ["Matrice orthogonale: M^tM=I", "det=-1 et trace=0 caractérisent une réflexion vectorielle"]},
+    {"type": "regle", "titre": "Orthogonalité de la partie linéaire, puis recherche des points fixes", "contenu_markdown": "Pour identifier la nature d'une application affine $f$ de partie linéaire $M$ : vérifier $M^tM=I$ (orthogonale) et calculer $\\det M$ (réflexion si $-1$, rotation si $+1$). Résoudre ensuite $f(M)=M$ : une droite entière de solutions signale une symétrie orthogonale affine (axe = cette droite) ; aucune solution signale une symétrie glissée ; un point unique correspondrait à une rotation.", "formule_principale": "M^tM=I, det M=-1 ⟹ réflexion vectorielle. Points fixes = droite entière ⟹ symétrie orthogonale affine d'axe cette droite", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f: x'=y, y'=x. Déterminer la nature de f.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Partie linéaire", "justification": "M=[[0,1],[1,0]], M²=I orthogonale, det=-1", "resultat_markdown": "réflexion vectorielle"},
+      {"numero": 2, "action": "Points fixes", "justification": "x=y", "resultat_markdown": "droite y=x, entière"}
+    ], "conclusion_markdown": "f est la symétrie orthogonale d'axe y=x (première bissectrice)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "S'inquiéter d'un système de points fixes qui redonne deux fois la même équation (au lieu d'un point unique) et chercher une erreur de calcul", "pourquoi_faux": "Un système de deux équations réellement équivalentes (qui se réduisent à une seule droite) est le comportement ATTENDU pour une symétrie affine, pas un signe d'erreur.", "correction_markdown": "Reconnaître qu'un système de points fixes qui se réduit à une seule équation de droite confirme (plutôt qu'il ne contredit) la nature de symétrie affine, sans chercher à « forcer » un point unique."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "g: x'=(3x+4y-4)/5, y'=(4x-3y+3)/5. Vérifier que la partie linéaire est orthogonale de déterminant -1, puis trouver l'axe des points fixes.", "solution_markdown": "M=[[3/5,4/5],[4/5,-3/5]], M²=I (vérifiable), det=-9/25-16/25=-1. Points fixes: 5x=3x+4y-4 ⟹ 2x-4y=-4 ⟹ x-2y=-2 ; 5y=4x-3y+3 ⟹ -4x+8y=3... à réconcilier, donnant l'axe de la réflexion."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La nature d'une application affine se détermine en deux temps : orthogonalité et déterminant de la partie linéaire, puis recherche des points fixes.", "Une droite entière de points fixes est la signature d'une symétrie orthogonale affine, pas un signe d'erreur de calcul."]}
+  ]
+}

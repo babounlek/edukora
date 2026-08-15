@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-projection-vectorielle-idempotence-terminale-c",
+  "meta": {"titre": "Trouver les paramètres pour lesquels un endomorphisme est une projection vectorielle (M²=M)", "cours_id": "cours-projection-vectorielle-idempotence-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Algèbre linéaire — projections et idempotence", "tags": ["projection vectorielle", "idempotence", "résolution de système"], "duree_estimee_minutes": 7, "epreuve_source": "bac-c-maths-1987-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1987-pA-1b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Chercher les paramètres rendant un endomorphisme idempotent (M²=M) mène toujours à un système polynomial où une équation se factorise en un produit — c'est ce produit qui sépare la solution triviale (identité) des vraies projections cherchées."},
+    {"type": "prerequis", "items_markdown": ["p est une projection ⟺ p∘p=p ⟺ M²=M", "Identification coefficient par coefficient de deux matrices égales"]},
+    {"type": "regle", "titre": "Calculer M², poser M²=M, factoriser le système", "contenu_markdown": "Pour une famille paramétrée $M(a,b)$, on calcule $M(a,b)^2$ puis on identifie $M^2=M$ coefficient par coefficient, obtenant un système de trois équations. L'une d'elles se factorise généralement en un produit du type $b\\times(\\ldots)=0$, séparant le cas $b=0$ (qui donne souvent l'identité, à écarter) du cas général (qui donne les vraies projections non triviales).", "formule_principale": "M²=M, identifier coefficient par coefficient, factoriser une équation en produit pour séparer les cas", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "M(a)=[[a,1-a],[0,1]]. Trouver a tel que M(a) soit une projection.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Calculer M²", "justification": "produit matriciel", "resultat_markdown": "M²=[[a²,a(1-a)+(1-a)],[0,1]]"},
+      {"numero": 2, "action": "Identifier M²=M", "justification": "a²=a et a(1-a)+(1-a)=1-a", "resultat_markdown": "a²=a ⟹ a=0 ou a=1"}
+    ], "conclusion_markdown": "M(0) et M(1) sont deux projections (l'une l'identité si M(1) en est une, l'autre à examiner séparément)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Ne considérer qu'un seul cas de la factorisation (par exemple ignorer le cas b=0) et manquer ainsi une partie des solutions", "pourquoi_faux": "Une équation factorisée en produit nul donne plusieurs branches de solutions à explorer TOUTES, chacune pouvant apporter des couples valides différents.", "correction_markdown": "Toujours explorer systématiquement chaque branche d'une équation factorisée, même si l'une semble « triviale » : elle peut cacher une solution à exclure explicitement (souvent l'identité) plutôt qu'à ignorer silencieusement."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "M(a,b)=[[a,b],[0,a+b]]. Trouver les couples (a,b) tels que M soit une projection différente de l'identité et de la matrice nulle.", "solution_markdown": "M²=[[a²,ab+b(a+b)],[0,(a+b)²]]. M²=M donne a²=a (a=0 ou 1), (a+b)²=a+b (a+b=0 ou 1), et ab+b(a+b)=b. En croisant les cas en excluant (0,0) et l'identité (a=1,b=0), on trouve des couples non triviaux à vérifier un par un selon la troisième équation."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Trouver les projections dans une famille paramétrée revient à résoudre le système polynomial M²=M, souvent factorisable.", "Toujours écarter explicitement les solutions triviales (identité, endomorphisme nul) exclues par l'énoncé, sans les ignorer silencieusement."]}
+  ]
+}

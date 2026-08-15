@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-calculer-l-aire-sous-une-courbe-a-l-aide-d-une-primitive-terminale-c",
+  "meta": {
+    "titre": "Calculer l'aire sous une courbe à l'aide d'une primitive",
+    "cours_id": "cours-calculer-l-aire-sous-une-courbe-a-l-aide-d-une-primitive-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Analyse — calcul intégral",
+    "tags": [
+      "aire sous une courbe",
+      "intégrale",
+      "fonction positive"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-A.2.c-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer l'aire délimitée par une courbe et l'axe des abscisses ne demande, une fois la fonction reconnue positive, rien de plus qu'une simple différence de deux valeurs d'une primitive."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir qu'une intégrale de fonction positive représente une aire",
+        "Disposer d'une primitive explicite de la fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Aire sous une courbe via une primitive",
+      "contenu_markdown": "Si $f\\geq0$ sur $[m;M]$, l'aire de la partie du plan délimitée par la courbe de $f$, l'axe des abscisses, et les droites $x=m$, $x=M$ est $\\mathcal{A}=\\int_m^M f(x)\\,dx = F(M)-F(m)$, où $F$ est n'importe quelle primitive de $f$ (le résultat ne dépend pas du choix de la primitive, seule la différence compte).",
+      "formule_principale": "Aire = ∫[m,M] f(x)dx = F(M)-F(m), pour f≥0 sur [m;M]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "f(x)=(x+1)²e^(-x)≥0 sur ℝ, et F(x)=-(x²+4x+5)e^(-x)+10/e est la primitive de f qui s'annule en x=1. Calculer l'aire limitée par (C), l'axe des abscisses, et les droites x=1, x=a (a≥1).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier la positivité de f sur l'intervalle",
+          "justification": "(x+1)²≥0 et e^(-x)>0 pour tout x, donc f≥0 sur [1;a].",
+          "resultat_markdown": "f≥0 sur [1;a], l'aire est directement l'intégrale sans valeur absolue"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de l'aire",
+          "justification": "Aire(a)=F(a)-F(1).",
+          "resultat_markdown": "Aire(a) = F(a) - F(1)"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser F(1)=0 (déjà établi)",
+          "justification": "F a été choisie précisément pour s'annuler en x=1.",
+          "resultat_markdown": "Aire(a) = F(a) - 0 = F(a)"
+        },
+        {
+          "numero": 4,
+          "action": "Substituer l'expression de F",
+          "justification": "Remplacement direct.",
+          "resultat_markdown": "Aire(a) = 10/e - (a²+4a+5)e^(-a)"
+        }
+      ],
+      "conclusion_markdown": "Aire(a) = 10/e - (a²+4a+5)e^(-a) unités d'aire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer F(1) au lieu de se souvenir qu'elle vaut 0 par construction",
+          "pourquoi_faux": "Refaire ce calcul par redondance est une perte de temps ; la primitive a été spécifiquement choisie à la question précédente pour s'annuler en x=1, ce résultat doit être directement réutilisé.",
+          "correction_markdown": "Toujours réutiliser les résultats déjà établis dans les questions précédentes du même exercice plutôt que de les recalculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'aire sous f(x)=2x entre x=0 et x=3.",
+          "solution_markdown": "F(x)=x², Aire=F(3)-F(0)=9-0=9 unités d'aire."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi faut-il vérifier la positivité de f avant d'utiliser directement F(M)-F(m) comme aire ?",
+          "solution_markdown": "Si f change de signe sur [m;M], l'intégrale F(M)-F(m) additionne algébriquement des aires positives et négatives, ce qui ne correspond plus à l'aire géométrique réelle (toujours positive) ; il faudrait alors découper l'intervalle et prendre les valeurs absolues sur chaque sous-intervalle où f garde un signe constant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment adapter la formule si l'énoncé demandait l'aire entre x=0 et x=a avec f(0)≠0 dans la primitive choisie ?",
+          "solution_markdown": "Il suffirait d'utiliser Aire(a)=F(a)-F(0) avec la valeur réelle de F(0) (non nécessairement nulle) : la simplification Aire(a)=F(a) n'est possible que parce que la primitive spécifique choisie s'annule précisément à la borne inférieure de l'intervalle considéré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'aire sous une courbe positive entre deux bornes est la différence des valeurs d'une primitive à ces bornes.",
+        "Toujours vérifier la positivité de la fonction sur l'intervalle avant d'appliquer directement la formule.",
+        "Réutiliser une primitive déjà calculée et choisie pour s'annuler à une borne simplifie grandement le calcul."
+      ]
+    }
+  ]
+}

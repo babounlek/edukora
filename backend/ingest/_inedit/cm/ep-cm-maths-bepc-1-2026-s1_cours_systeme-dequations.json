@@ -1,0 +1,114 @@
+{
+  "type": "cours",
+  "cours_id": "cours-systeme-deux-equations-deux-inconnues-bepc",
+  "meta": {
+    "titre": "Résoudre un système de deux équations à deux inconnues",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algèbre - systèmes linéaires",
+    "duree_estimee_min": 20,
+    "tags": ["système d'équations"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bepc-1-2026-s1-ex6-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux quantités inconnues, deux informations différentes sur elles : c'est exactement le nombre d'équations nécessaires pour les retrouver toutes les deux. Une méthode systématique de substitution suffit à chaque fois, sans avoir besoin de deviner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'une équation du premier degré à une inconnue",
+        "Mise en équation d'une situation concrète (achats, partages)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de substitution",
+      "contenu_markdown": "Pour résoudre un système $\\begin{cases}ax+by=c\\\\dx+ey=f\\end{cases}$, on isole une inconnue dans l'une des deux équations (celle qui donne l'expression la plus simple), puis on la remplace dans l'AUTRE équation : on obtient alors une équation à une seule inconnue, que l'on sait résoudre. On revient ensuite dans l'expression isolée pour retrouver la seconde inconnue, et on termine par une vérification dans l'équation qui n'a pas servi à isoler.",
+      "formule_principale": "\\begin{cases}(1)\\\\(2)\\end{cases} \\xrightarrow{\\text{isoler dans (1)}} y=... \\xrightarrow{\\text{substituer dans (2)}} \\text{équation à 1 inconnue} \\to x \\to y"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre le système $\\begin{cases}3x+y=17 & (1)\\\\x+2y=14 & (2)\\end{cases}$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler $y$ dans l'équation $(1)$",
+          "justification": "$(1)$ donne directement $y$ sans division, c'est la plus simple à isoler.",
+          "resultat_markdown": "$y=17-3x$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans l'équation $(2)$",
+          "justification": "On remplace $y$ par son expression dans l'équation qui n'a pas servi à l'isoler.",
+          "resultat_markdown": "$x+2(17-3x)=14$, soit $x+34-6x=14$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'équation à une inconnue obtenue",
+          "justification": "On réduit puis on isole $x$.",
+          "resultat_markdown": "$-5x=-20$, donc $x=4$"
+        },
+        {
+          "numero": 4,
+          "action": "Revenir à $y=17-3x$",
+          "justification": "On utilise l'expression isolée à l'étape 1 avec la valeur de $x$ trouvée.",
+          "resultat_markdown": "$y=17-3\\times4=17-12=5$"
+        }
+      ],
+      "conclusion_markdown": "$x=4$ et $y=5$. Vérification dans $(2)$ : $4+2\\times5=4+10=14$ ✓."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer l'expression isolée dans la MÊME équation qui a servi à l'isoler.",
+          "pourquoi_faux": "Cela ne donne aucune information nouvelle (une identité toujours vraie, comme $0=0$) au lieu de faire progresser la résolution.",
+          "correction_markdown": "Toujours substituer dans l'équation qui n'a PAS encore servi à isoler une inconnue."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la solution trouvée dans l'une des équations de départ.",
+          "pourquoi_faux": "Une erreur de calcul lors de la substitution ou de la résolution peut passer inaperçue sans vérification finale.",
+          "correction_markdown": "Termine toujours par une vérification numérique en remplaçant $x$ et $y$ dans une des deux équations du système."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}x+y=12\\\\2x-y=3\\end{cases}$.",
+          "solution_markdown": "En additionnant les deux équations : $3x=15$, donc $x=5$. Puis $y=12-5=7$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un marchand vend des mangues et des ananas. 3 mangues et 2 ananas coûtent 1 900 FCFA. 5 mangues et 1 ananas coûtent 2 000 FCFA. Détermine le prix d'une mangue et celui d'un ananas.",
+          "solution_markdown": "Système : $\\begin{cases}3x+2y=1\\,900 & (1)\\\\5x+y=2\\,000 & (2)\\end{cases}$. De $(2)$ : $y=2\\,000-5x$. En substituant dans $(1)$ : $3x+2(2\\,000-5x)=1\\,900$, soit $3x+4\\,000-10x=1\\,900$, soit $-7x=-2\\,100$, donc $x=300$. On revient à $y=2\\,000-5\\times300=500$. Vérification dans $(1)$ : $3\\times300+2\\times500=900+1\\,000=1\\,900$ ✓. Une mangue coûte 300 FCFA et un ananas coûte 500 FCFA."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Résoudre le système $\\begin{cases}2x+5y=9\\\\3x-2y=4\\end{cases}$.",
+          "solution_markdown": "De la 1re équation : $x=\\dfrac{9-5y}2$. En substituant dans la 2e : $3\\times\\dfrac{9-5y}2-2y=4$. En multipliant toute l'équation par 2 : $3(9-5y)-4y=8$, soit $27-15y-4y=8$, soit $-19y=-19$, donc $y=1$. On revient à $x=\\dfrac{9-5\\times1}2=\\dfrac42=2$. Vérification : $2\\times2+5\\times1=9$ ✓ et $3\\times2-2\\times1=4$ ✓. $x=2$ et $y=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Isoler une inconnue dans l'équation la plus simple, puis substituer dans l'AUTRE équation.",
+        "Ne jamais substituer dans l'équation qui a servi à isoler : cela ne fait pas progresser la résolution.",
+        "Revenir à l'expression isolée pour retrouver la seconde inconnue une fois la première trouvée.",
+        "Toujours vérifier la solution complète dans une équation du système.",
+        "Dans un problème concret, bien identifier ce que représente chaque inconnue avant d'écrire le système."
+      ]
+    }
+  ]
+}

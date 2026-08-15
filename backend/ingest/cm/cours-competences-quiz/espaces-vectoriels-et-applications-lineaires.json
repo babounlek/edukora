@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-espaces-vectoriels-et-applications-lineaires-tle-c-e",
+  "meta": {
+    "titre": "Espaces vectoriels et applications linéaires : le critère base-vers-base",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Applications linéaires : bijectivité et bases",
+    "duree_estimee_min": 30,
+    "tags": ["Espaces vectoriels et applications (Tle C/E)", "espaces vectoriels", "applications linéaires", "base et dimension", "bijectivité d'une application linéaire", "algèbre linéaire"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1992-MATHS",
+    "epreuve_titre": "Mathématiques BAC C 1992",
+    "exercice_numero": "Probleme-PartieIII-4a",
+    "rappel_id": "rdm-1992-pIII-4a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Prouver qu'une application transforme un espace vectoriel de façon totalement réversible, sans jamais construire explicitement son application réciproque, semble presque trop simple pour être vrai. C'est pourtant exactement ce que permet la notion de base : une application linéaire entre deux espaces vectoriels de même dimension est bijective dès qu'elle envoie une base sur une base, un critère qui se vérifie souvent en une seule résolution de système. Cette compétence est le socle du chapitre de géométrie dans l'espace en Terminale C et E, avant même d'aborder le produit vectoriel : représenter un point, un vecteur ou une transformation de l'espace suppose de savoir manipuler bases, dimensions et applications linéaires avec assurance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir manipuler un espace vectoriel réel : vecteurs, addition, multiplication par un scalaire, combinaison linéaire.",
+        "Tu dois connaître la différence entre une famille libre et une famille liée, ainsi que la notion de sous-espace vectoriel engendré (noté Vect).",
+        "Tu dois savoir ce qu'est une base d'un espace vectoriel et sa dimension.",
+        "Tu dois savoir composer deux applications ($f\\circ g$) et reconnaître un endomorphisme."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère base-vers-base pour la bijectivité",
+      "contenu_markdown": "Soient $E$ et $F$ deux $\\mathbb{R}$-espaces vectoriels de dimension finie, avec $\\dim E = \\dim F = n$, et soit $\\varphi : E \\to F$ une application linéaire. Le théorème central de ce cours énonce :\n\n$$\\varphi \\text{ est bijective} \\iff \\varphi \\text{ envoie une base de } E \\text{ sur une base de } F$$\n\nConcrètement, si $(e_1, \\dots, e_n)$ est une base de $E$, il suffit de vérifier que la famille $(\\varphi(e_1), \\dots, \\varphi(e_n))$ est une famille libre de $F$ : en dimension $n$, une famille libre de $n$ vecteurs est automatiquement une base (elle est alors aussi génératrice). Ce critère dispense de construire explicitement une application réciproque pour conclure à la bijectivité.\n\nDeux conséquences pratiques valent d'être retenues. En dimension finie égale, les trois notions d'application injective, surjective et bijective deviennent équivalentes pour une application linéaire : établir l'une suffit à obtenir les deux autres. Si $E$ et $F$ n'ont pas la même dimension, aucune bijection linéaire ne peut exister entre eux : le théorème ne s'applique donc qu'après avoir vérifié cette égalité des dimensions, jamais avant.",
+      "formule_principale": "\\dim E=\\dim F=n,\\ \\varphi\\text{ linéaire}\\ \\Longrightarrow\\ \\big(\\varphi\\text{ bijective} \\iff (\\varphi(e_1),\\dots,\\varphi(e_n))\\text{ base de }F\\big)",
+      "variantes": [
+        {
+          "nom": "Méthode par le noyau",
+          "quand_utiliser": "Quand résoudre l'équation $\\varphi(x)=0$ est plus rapide que de tester l'image d'une base entière",
+          "contenu_markdown": "En dimension finie avec $\\dim E=\\dim F$, il suffit de montrer que $\\varphi$ est injective, c'est-à-dire que $\\ker\\varphi=\\{0_E\\}$ (seul le vecteur nul a pour image le vecteur nul) : par l'équivalence rappelée plus haut, cela entraîne directement la bijectivité, sans avoir à examiner l'image d'une base."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $(e_1, e_2, e_3)$ la base canonique de $\\mathbb{R}^3$. On définit une application $\\varphi : \\mathbb{R}^3 \\to \\mathbb{R}^3$ par ses valeurs sur cette base : $\\varphi(e_1) = e_1+e_2$, $\\varphi(e_2) = e_2+e_3$, $\\varphi(e_3) = e_1+e_3$, et on admet que $\\varphi$ est linéaire. Montrer que $\\varphi$ est bijective.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'égalité des dimensions",
+          "justification": "Le critère base-vers-base ne s'applique qu'entre deux espaces de même dimension finie.",
+          "resultat_markdown": "$\\varphi$ va de $\\mathbb{R}^3$ vers $\\mathbb{R}^3$, donc $\\dim(\\text{départ}) = \\dim(\\text{arrivée}) = 3$ : la condition est remplie."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire les coordonnées des images de la base dans la base canonique",
+          "justification": "Pour tester la liberté de la famille $(\\varphi(e_1),\\varphi(e_2),\\varphi(e_3))$, il faut d'abord exprimer chaque image comme un triplet de coordonnées.",
+          "resultat_markdown": "$\\varphi(e_1) = (1,1,0)$, $\\varphi(e_2) = (0,1,1)$, $\\varphi(e_3) = (1,0,1)$."
+        },
+        {
+          "numero": 3,
+          "action": "Poser une combinaison linéaire nulle des trois images",
+          "justification": "Une famille est libre si la seule combinaison linéaire qui donne le vecteur nul est celle où tous les coefficients sont nuls.",
+          "resultat_markdown": "Soient $a,b,c \\in \\mathbb{R}$ tels que $a\\,\\varphi(e_1) + b\\,\\varphi(e_2) + c\\,\\varphi(e_3) = (0,0,0)$."
+        },
+        {
+          "numero": 4,
+          "action": "Développer la combinaison coordonnée par coordonnée",
+          "justification": "On additionne les trois vecteurs coordonnée par coordonnée pour obtenir un système d'équations en a, b, c.",
+          "resultat_markdown": "$a(1,1,0) + b(0,1,1) + c(1,0,1) = (a+c,\\ a+b,\\ b+c)$, donc le système à résoudre est :\n\n$$\\begin{cases} a+c=0 \\\\ a+b=0 \\\\ b+c=0 \\end{cases}$$"
+        },
+        {
+          "numero": 5,
+          "action": "Résoudre le système",
+          "justification": "On exprime b et c en fonction de a à partir des deux premières équations, puis on substitue dans la troisième.",
+          "resultat_markdown": "La première équation donne $c=-a$, la deuxième donne $b=-a$. En reportant dans la troisième : $b+c = -a + (-a) = -2a = 0$, donc $a=0$. On en tire $b=-a=0$ et $c=-a=0$."
+        },
+        {
+          "numero": 6,
+          "action": "Conclure sur la liberté de la famille",
+          "justification": "Le système n'a que la solution triviale $a=b=c=0$ : aucune combinaison non nulle des trois images ne donne le vecteur nul.",
+          "resultat_markdown": "$(\\varphi(e_1), \\varphi(e_2), \\varphi(e_3))$ est une famille libre de $\\mathbb{R}^3$."
+        },
+        {
+          "numero": 7,
+          "action": "Appliquer le critère base-vers-base",
+          "justification": "Une famille libre de 3 vecteurs dans un espace de dimension 3 est automatiquement une base ; φ envoie donc la base canonique sur une base de l'espace d'arrivée.",
+          "resultat_markdown": "$(\\varphi(e_1), \\varphi(e_2), \\varphi(e_3))$ est une base de $\\mathbb{R}^3$, et $\\dim \\mathbb{R}^3 = \\dim \\mathbb{R}^3$ : par le théorème, $\\varphi$ est bijective."
+        }
+      ],
+      "conclusion_markdown": "$\\varphi$ est bijective. Sa matrice dans la base canonique, dont les colonnes sont les coordonnées de $\\varphi(e_1)$, $\\varphi(e_2)$, $\\varphi(e_3)$, est\n\n$$M=\\begin{pmatrix} 1 & 0 & 1 \\\\ 1 & 1 & 0 \\\\ 0 & 1 & 1 \\end{pmatrix}$$\n\nUn déterminant non nul de cette matrice (ici égal à 2) confirmerait indépendamment le résultat, mais le critère base-vers-base a suffi à conclure sans ce calcul supplémentaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer le critère base-vers-base entre deux espaces de dimensions différentes, par exemple pour une application de $\\mathbb{R}^2$ vers $\\mathbb{R}^3$.",
+          "pourquoi_faux": "Le théorème suppose $\\dim E = \\dim F$ dès son énoncé. Sans cette égalité, aucune bijection linéaire ne peut exister entre les deux espaces : une application linéaire injective de $\\mathbb{R}^2$ vers $\\mathbb{R}^3$ peut exister, mais elle ne peut jamais être surjective, faute d'assez de dimensions dans l'espace de départ pour atteindre les 3 dimensions de l'arrivée.",
+          "correction_markdown": "Vérifier systématiquement l'égalité des dimensions, dans la toute première ligne de la démonstration, avant d'invoquer le théorème."
+        },
+        {
+          "erreur_markdown": "En dimension 3 ou plus, vérifier que les images de la base sont deux à deux non colinéaires et en conclure directement que la famille est libre.",
+          "pourquoi_faux": "La non-colinéarité deux à deux ne suffit qu'en dimension 2. Dès la dimension 3, trois vecteurs peuvent être deux à deux non colinéaires tout en étant coplanaires, donc liés : par exemple trois vecteurs d'un même plan de $\\mathbb{R}^3$, aucun d'eux n'étant multiple d'un autre.",
+          "correction_markdown": "Résoudre le système complet obtenu en annulant la combinaison linéaire générale, comme dans l'exemple résolu, plutôt que de se fier à une inspection visuelle des vecteurs pris deux par deux."
+        },
+        {
+          "erreur_markdown": "Invoquer directement le théorème pour une application dont la linéarité n'a pas été établie ou admise par l'énoncé.",
+          "pourquoi_faux": "Le critère base-vers-base ne concerne que les applications linéaires : pour une application quelconque, envoyer une base sur une base ne garantit rien sur la bijectivité globale, puisque le comportement de l'application sur les combinaisons linéaires des vecteurs de base pourrait ne pas suivre la même règle que sur les vecteurs de base eux-mêmes.",
+          "correction_markdown": "Rappeler ou démontrer la linéarité de l'application avant d'invoquer le théorème, même quand l'énoncé semble la sous-entendre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $(e_1, e_2)$ la base canonique de $\\mathbb{R}^2$. On définit une application linéaire $\\psi : \\mathbb{R}^2 \\to \\mathbb{R}^2$ par $\\psi(e_1) = (2,1)$ et $\\psi(e_2) = (1,1)$. Montrer que $\\psi$ est bijective.",
+          "solution_markdown": "Les deux espaces de départ et d'arrivée sont tous deux $\\mathbb{R}^2$, donc $\\dim(\\text{départ}) = \\dim(\\text{arrivée}) = 2$ : la condition de dimension est vérifiée.\n\nCherchons si $(\\psi(e_1), \\psi(e_2))$ est une famille libre. Soient $a, b \\in \\mathbb{R}$ tels que $a\\,\\psi(e_1) + b\\,\\psi(e_2) = (0,0)$ :\n\n$$a(2,1) + b(1,1) = (2a+b,\\ a+b) = (0,0)$$\n\ndonc $\\begin{cases} 2a+b=0 \\\\ a+b=0 \\end{cases}$.\n\nLa deuxième équation donne $b=-a$. En reportant dans la première : $2a + (-a) = a = 0$. Donc $a=0$, puis $b=-a=0$.\n\nLa seule solution est $a=b=0$ : $(\\psi(e_1), \\psi(e_2))$ est une famille libre de 2 vecteurs dans $\\mathbb{R}^2$, donc une base de $\\mathbb{R}^2$.\n\n$\\psi$ envoie la base canonique de $\\mathbb{R}^2$ sur une base de $\\mathbb{R}^2$, avec $\\dim(\\text{départ}) = \\dim(\\text{arrivée})$ : par le théorème, $\\psi$ est bijective."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $m$ un réel. On définit une application linéaire $\\chi_m : \\mathbb{R}^2 \\to \\mathbb{R}^2$ par $\\chi_m(e_1) = (1,m)$ et $\\chi_m(e_2) = (m,1)$, où $(e_1,e_2)$ est la base canonique de $\\mathbb{R}^2$. Déterminer, selon les valeurs de $m$, si $\\chi_m$ est bijective.",
+          "solution_markdown": "Les deux espaces sont $\\mathbb{R}^2$ dans les deux cas : la condition de dimension est automatiquement vérifiée, quel que soit $m$.\n\nCherchons pour quelles valeurs de $m$ la famille $(\\chi_m(e_1), \\chi_m(e_2))$ est libre. Soient $a,b\\in\\mathbb{R}$ tels que $a\\,\\chi_m(e_1)+b\\,\\chi_m(e_2)=(0,0)$ :\n\n$$a(1,m) + b(m,1) = (a+bm,\\ am+b) = (0,0)$$\n\ndonc $\\begin{cases} a+bm=0 \\\\ am+b=0 \\end{cases}$.\n\nDe la première équation, $a=-bm$. En reportant dans la deuxième : $(-bm)m + b = -bm^2+b = b(1-m^2)=0$.\n\nDeux cas se présentent. Si $1-m^2 \\neq 0$, c'est-à-dire $m \\neq 1$ et $m \\neq -1$, alors $b=0$, puis $a=-bm=0$ : la seule solution est $a=b=0$, la famille est libre, donc c'est une base de $\\mathbb{R}^2$, et $\\chi_m$ est bijective par le théorème.\n\nSi $m=1$ ou $m=-1$, l'équation $b(1-m^2)=0$ est vérifiée pour tout $b$ réel : en choisissant par exemple $b=1$, on obtient une solution non triviale $(a,b) \\neq (0,0)$. La famille est alors liée, ce n'est pas une base, et $\\chi_m$ n'est pas bijective.\n\n$\\chi_m$ est bijective si et seulement si $m \\notin \\{-1, 1\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 3, muni d'une base $(e_1,e_2,e_3)$. Soit $f$ l'endomorphisme de $E$ défini par $f(e_1)=e_2$, $f(e_2)=e_3$, $f(e_3)=e_1$.\n\na) Montrer que $f$ est bijective.\n\nb) Calculer $f\\circ f\\circ f$, puis en déduire $f^{-1}$ en fonction de $f$.",
+          "solution_markdown": "**a)** $f$ va de $E$ vers $E$, donc $\\dim(\\text{départ}) = \\dim(\\text{arrivée}) = 3$.\n\nLa famille $(f(e_1), f(e_2), f(e_3)) = (e_2, e_3, e_1)$ contient exactement les trois vecteurs $e_1, e_2, e_3$, dans un ordre différent. Le caractère libre et générateur d'une famille de vecteurs ne dépend que de l'ensemble des vecteurs utilisés dans les combinaisons linéaires, jamais de l'ordre dans lequel on les liste : $(e_2,e_3,e_1)$ est donc libre et génératrice exactement comme $(e_1,e_2,e_3)$ l'est, puisque ce sont les mêmes trois vecteurs.\n\n$(e_2,e_3,e_1)$ est donc une base de $E$ : $f$ envoie la base $(e_1,e_2,e_3)$ sur une base de $E$, avec $\\dim(\\text{départ})=\\dim(\\text{arrivée})=3$. Par le théorème, $f$ est bijective.\n\n**b)** Calculons les images successives de chaque vecteur de base.\n\n$f\\circ f(e_1) = f(f(e_1)) = f(e_2) = e_3$. $f\\circ f(e_2) = f(f(e_2)) = f(e_3) = e_1$. $f\\circ f(e_3) = f(f(e_3)) = f(e_1) = e_2$.\n\n$f\\circ f\\circ f(e_1) = f\\big(f\\circ f(e_1)\\big) = f(e_3) = e_1$. $f\\circ f\\circ f(e_2) = f\\big(f\\circ f(e_2)\\big) = f(e_1) = e_2$. $f\\circ f\\circ f(e_3) = f\\big(f\\circ f(e_3)\\big) = f(e_2) = e_3$.\n\n$f\\circ f\\circ f$ envoie chaque vecteur de la base sur lui-même, donc $f\\circ f\\circ f = Id$ (deux applications linéaires qui coïncident sur une base sont égales partout).\n\nDe $f\\circ(f\\circ f) = Id$, on tire que $f\\circ f$ est l'application réciproque de $f$ :\n\n$$f^{-1} = f\\circ f$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'appliquer le critère base-vers-base, vérifie toujours que les deux espaces ont la même dimension finie : sans cette égalité, le théorème ne s'applique pas et aucune bijection linéaire n'existe.",
+        "Pour tester qu'une famille de vecteurs est libre, résous le système obtenu en annulant une combinaison linéaire générale : c'est la méthode qui marche à tout coup, même quand l'inspection visuelle des vecteurs ne suffit plus (dimension 3 et au-delà).",
+        "Une famille libre de $n$ vecteurs dans un espace de dimension $n$ est automatiquement une base : nul besoin de vérifier séparément qu'elle est génératrice.",
+        "En dimension finie égale, injectivité, surjectivité et bijectivité d'une application linéaire sont équivalentes : une seule preuve suffit pour obtenir les trois.",
+        "Ce théorème est l'outil qui te dispense de construire une application réciproque explicite pour prouver une bijectivité : au BAC, il se combine presque toujours avec un calcul de matrice ou une étude de sous-espace engendré, en particulier dans les problèmes de géométrie dans l'espace en Terminale C et E."
+      ]
+    }
+  ]
+}

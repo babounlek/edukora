@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-base-de-donnees-create-database-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de création de base de données (CREATE DATABASE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL — Définition de données (LDD)",
+    "duree_estimee_min": 10,
+    "tags": [
+      "CREATE DATABASE",
+      "SQL"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex3-q3.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute base de données SQL commence par une seule instruction : celle qui la crée. Sans elle, impossible d'y stocker la moindre table."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'un SGBD"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Créer une base de données en SQL : CREATE DATABASE",
+      "contenu_markdown": "L'instruction `CREATE DATABASE nom_base;` crée une nouvelle base de données vide, prête à accueillir des tables, dans le SGBD utilisé.",
+      "formule_principale": "CREATE DATABASE nom_base;",
+      "variantes": [
+        {
+          "nom": "Suppression d'une base",
+          "quand_utiliser": "Quand on veut supprimer entièrement une base de données existante.",
+          "contenu_markdown": "`DROP DATABASE nom_base;` supprime définitivement la base et toutes les tables qu'elle contient."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête SQL de création de la base de données de l'agence.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nom de la base à créer",
+          "justification": "Le nom doit correspondre au contexte de l'énoncé (ex. agence de location).",
+          "resultat_markdown": "ex. agence_location"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'instruction CREATE DATABASE",
+          "justification": "C'est l'instruction SQL standard de création d'une base.",
+          "resultat_markdown": "`CREATE DATABASE agence_location;`"
+        }
+      ],
+      "conclusion_markdown": "CREATE DATABASE nom_base; crée une base de données vide prête à recevoir des tables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le point-virgule final, ou écrire CREATE TABLE au lieu de CREATE DATABASE en pensant créer la base",
+          "pourquoi_faux": "CREATE TABLE crée une table à l'intérieur d'une base déjà existante ; pour créer la base elle-même, il faut impérativement CREATE DATABASE, exécutée avant toute création de table.",
+          "correction_markdown": "Retiens l'ordre logique : d'abord CREATE DATABASE (la base), puis CREATE TABLE (les tables à l'intérieur)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête créant une base de données nommée \"bibliotheque\".",
+          "solution_markdown": "`CREATE DATABASE bibliotheque;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle instruction permet de se placer dans une base de données déjà créée avant d'y créer des tables (en MySQL) ?",
+          "solution_markdown": "`USE nom_base;` sélectionne la base de données courante sur laquelle porteront les instructions suivantes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que se passe-t-il si on exécute CREATE DATABASE avec un nom de base qui existe déjà ?",
+          "solution_markdown": "La plupart des SGBD renvoient une erreur signalant que la base existe déjà. Pour éviter cette erreur dans un script réexécutable, on utilise souvent la variante `CREATE DATABASE IF NOT EXISTS nom_base;`, qui ne crée la base que si elle n'existe pas encore, sans provoquer d'erreur sinon."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE DATABASE nom_base; crée une base de données vide.",
+        "Elle doit précéder toute création de table (CREATE TABLE).",
+        "DROP DATABASE supprime définitivement une base et son contenu.",
+        "CREATE DATABASE IF NOT EXISTS évite l'erreur si la base existe déjà."
+      ]
+    }
+  ]
+}

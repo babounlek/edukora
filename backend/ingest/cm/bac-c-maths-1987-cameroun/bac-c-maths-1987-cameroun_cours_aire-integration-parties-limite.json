@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-aire-integration-parties-limite-terminale-c",
+  "meta": {"titre": "Calculer une aire par intégration par parties puis étudier sa limite quand une borne tend vers une valeur singulière", "cours_id": "cours-aire-integration-parties-limite-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Analyse — calcul d'aire et intégration par parties", "tags": ["intégration par parties", "calcul d'aire", "croissances comparées"], "duree_estimee_minutes": 8, "epreuve_source": "bac-c-maths-1987-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1987-e1-5"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une aire calculée avec une borne variable a proche d'une singularité (souvent 0) peut très bien avoir une limite finie quand cette borne tend vers la singularité, même si la fonction elle-même y diverge — c'est le principe des intégrales impropres convergentes."},
+    {"type": "prerequis", "items_markdown": ["Intégration par parties : ∫u v' = [uv] - ∫u'v", "Croissances comparées : lim x^n ln x = 0 quand x→0⁺ (n>0)"]},
+    {"type": "regle", "titre": "IBP avec u=ln x, puis limite par croissances comparées", "contenu_markdown": "Pour calculer $\\int_a^b P(x)\\ln x\\,dx$ (P polynôme), poser $u=\\ln x$, $dv=P(x)dx$, d'où $du=\\frac1x dx$ et $v$=primitive de $P$. Après application de la formule d'IBP, la limite quand $a\\to0^+$ se calcule en utilisant $\\lim_{a\\to0^+}a^n\\ln a=0$ pour tout $n>0$ (croissances comparées), qui élimine les termes en $a^n\\ln a$ de l'expression.", "formule_principale": "∫u v' = [uv]-∫u'v, avec u=ln x ; lim(a→0⁺) a^n ln a = 0", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer A(a)=∫ₐ¹ x ln x dx puis sa limite quand a→0⁺.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "IBP", "justification": "u=ln x, v'=x, v=x²/2, u'=1/x", "resultat_markdown": "∫x ln x dx = x²ln x/2 - ∫x/2 dx = x²ln x/2 - x²/4"},
+      {"numero": 2, "action": "Évaluer entre a et 1", "justification": "F(1)-F(a) = (0-1/4)-(a²ln a/2-a²/4)", "resultat_markdown": "A(a)=-1/4-a²ln a/2+a²/4"},
+      {"numero": 3, "action": "Limite quand a→0⁺", "justification": "a²ln a→0 et a²→0", "resultat_markdown": "lim A(a)=-1/4"}
+    ], "conclusion_markdown": "L'aire tend vers -1/4 (en valeur absolue 1/4) quand a→0⁺, malgré ln x→-∞ en 0."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Conclure que l'aire diverge (tend vers l'infini) sous prétexte que ln x tend vers -∞ en 0, sans effectuer le calcul de limite du terme a^n ln a", "pourquoi_faux": "C'est le produit a^n ln a qui compte, pas ln a seul : le terme polynomial a^n l'emporte toujours sur la divergence logarithmique quand a→0⁺, donnant une limite nulle pour ce produit.", "correction_markdown": "Toujours calculer explicitement la limite du produit a^n ln a par croissances comparées, jamais conclure hâtivement à partir du comportement de ln a seul."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Calculer B(a)=∫ₐ¹(-ln x)dx puis sa limite quand a→0⁺.", "solution_markdown": "IBP: u=ln x, v'=-1, v=-x. ∫(-ln x)dx=-x ln x-∫(-x)(1/x)dx=-x ln x+x. Évalué entre a et 1: (0+1)-(-a ln a+a)=1+a ln a-a. Limite quand a→0⁺: a ln a→0, a→0, donc lim B(a)=1."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Le calcul d'une aire impliquant un logarithme se fait par intégration par parties avec u=ln x.", "La limite quand la borne tend vers 0 s'obtient par croissances comparées : le terme polynomial l'emporte toujours sur la divergence du logarithme."]}
+  ]
+}

@@ -13,4 +13,7 @@ urlpatterns = [
     ),
     path("sessions/<int:session_id>/questions/<int:quiz_question_id>/answer/", views.answer_question, name="answer-question"),
     path("sessions/<int:session_id>/completer/", views.complete_session, name="complete-session"),
+    path("revisions/", views.list_revisions_dues, name="revisions-dues"),
+    path("maitrise/", views.maitrise, name="maitrise"),
+    path("subjects/", views.list_quiz_subjects, name="quiz-subjects"),
 ]

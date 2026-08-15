@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-application-affine-bijective-determinant-non-nul-inverse-terminale-c",
+  "meta": {
+    "titre": "Bijectivité d'une application linéaire via le déterminant et calcul de la réciproque",
+    "cours_id": "cours-application-affine-bijective-determinant-non-nul-inverse-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Applications linéaires - déterminant, matrice inverse",
+    "tags": ["application linéaire", "bijectivité", "déterminant", "matrice inverse"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_2_q2"
+  },
+  "sections": {
+    "accroche": "Pour une application linéaire du plan donnée par ses formules, la bijectivité et la réciproque se déterminent toutes deux à partir d'un seul calcul : le déterminant de la matrice associée.",
+    "prerequis": ["Matrice associée à une application linéaire", "Calcul d'un déterminant 2×2", "Formule de la matrice inverse 2×2"],
+    "regle": {
+      "titre": "Bijectivité et réciproque via le déterminant",
+      "contenu_markdown": "Une application linéaire $f$ du plan, de matrice $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$, est bijective si et seulement si $\\det M=ad-bc\\neq0$. Dans ce cas, l'application réciproque $f^{-1}$ a pour matrice $M^{-1}=\\dfrac1{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$ (inverse d'une matrice 2×2 : on échange les termes diagonaux, on change le signe des termes antidiagonaux, et on divise par le déterminant).",
+      "formule_principale": "$\\det M\\neq0\\iff f$ bijective ; $M^{-1}=\\dfrac1{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$",
+      "variantes": ["Pour une application affine générale (avec terme constant), la bijectivité dépend uniquement de la partie linéaire ; la réciproque s'obtient en résolvant le système affine complet"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $g(x,y)=(2x+y,\\ x+y)$. Montrer que $g$ est bijective et déterminer $g^{-1}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Écrire la matrice de g", "justification": "coefficients des formules", "resultat_markdown": "$M=\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}$"},
+        {"numero": 2, "action": "Calculer le déterminant", "justification": "ad-bc", "resultat_markdown": "$\\det M=2\\times1-1\\times1=1\\neq0$"},
+        {"numero": 3, "action": "Calculer l'inverse", "justification": "formule de l'inverse 2×2", "resultat_markdown": "$M^{-1}=\\dfrac11\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}=\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}$"}
+      ],
+      "conclusion_markdown": "$g$ est bijective, et $g^{-1}(x,y)=(x-y,\\ -x+2y)$."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre la formule de la matrice inverse avec celle du déterminant, en oubliant d'échanger les termes diagonaux", "pourquoi_faux": "la comatrice transposée nécessite un échange précis des positions et des signes", "correction_markdown": "Toujours vérifier par multiplication $M\\times M^{-1}=I$ après calcul, pour s'assurer de ne pas avoir inversé une position."},
+      {"erreur_markdown": "Affirmer la bijectivité sans calculer explicitement le déterminant", "pourquoi_faux": "la bijectivité n'est pas 'évidente' même si les formules semblent différentes en x et y", "correction_markdown": "Toujours calculer explicitement le déterminant, même si l'intuition suggère que l'application est bijective."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "L'application h(x,y)=(x+y, 2x+2y) est-elle bijective ?", "solution_markdown": "Matrice (1,1;2,2), déterminant = 1×2-1×2=0 : h n'est pas bijective."}
+    ],
+    "synthese": "Une application linéaire est bijective si et seulement si le déterminant de sa matrice est non nul ; dans ce cas, la matrice de la réciproque s'obtient par la formule usuelle de l'inverse d'une matrice 2×2."
+  }
+}

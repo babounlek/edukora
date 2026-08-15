@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-derivee-integrale-bornes-variables-terminale-c",
+  "meta": {
+    "titre": "Dériver une intégrale à bornes variables",
+    "cours_id": "cours-derivee-integrale-bornes-variables-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Analyse - fonctions définies par une intégrale",
+    "tags": ["intégrale à bornes variables", "théorème fondamental de l'analyse", "dérivation composée"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_5_q5"
+  },
+  "sections": {
+    "accroche": "Une fonction définie comme une intégrale dont les DEUX bornes dépendent de la variable se dérive en combinant le théorème fondamental de l'analyse et la dérivation composée, sans jamais avoir besoin de calculer explicitement une primitive.",
+    "prerequis": ["Théorème fondamental de l'analyse (dérivée d'une primitive)", "Dérivation d'une fonction composée"],
+    "regle": {
+      "titre": "Dérivée de G(x)=∫ de u(x) à v(x) de f(t)dt",
+      "contenu_markdown": "Pour $G(x)=\\displaystyle\\int_{u(x)}^{v(x)}f(t)\\,dt$, avec $f$ continue et $u,v$ dérivables : en notant $F$ une primitive de $f$, $G(x)=F(v(x))-F(u(x))$, donc par dérivation composée, $G'(x)=v'(x)f(v(x))-u'(x)f(u(x))$. Cette formule évite tout calcul explicite de primitive : seule la valeur de $f$ aux bornes (composée avec $u$ et $v$) est nécessaire.",
+      "formule_principale": "$G(x)=\\displaystyle\\int_{u(x)}^{v(x)}f(t)\\,dt \\;\\Longrightarrow\\; G'(x)=v'(x)f(v(x))-u'(x)f(u(x))$",
+      "variantes": ["Cas particulier fréquent : si u(x)=a constant, G'(x)=v'(x)f(v(x)) (le terme en u' disparaît car u'=0)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit H(x)=∫ de x à x³ de e^{-t²}dt. Calculer H'(x).",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Identifier u,v,f", "justification": "bornes et intégrande", "resultat_markdown": "u(x)=x, v(x)=x³, f(t)=e^{-t²}"},
+        {"numero": 2, "action": "Appliquer la formule", "justification": "dérivée d'intégrale à bornes variables", "resultat_markdown": "H'(x)=3x²·e^{-x⁶}-1·e^{-x²}"}
+      ],
+      "conclusion_markdown": "H'(x)=3x²e^{-x⁶}-e^{-x²}, obtenu sans calculer aucune primitive explicite de e^{-t²} (qui n'a d'ailleurs pas de forme élémentaire)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier le signe négatif devant le terme provenant de la borne inférieure", "pourquoi_faux": "G(x)=F(v(x))-F(u(x)) comporte un signe moins devant F(u(x)), qui se répercute dans la dérivée sur le terme u'(x)f(u(x))", "correction_markdown": "Toujours écrire explicitement G(x)=F(v(x))-F(u(x)) avant de dériver, pour ne pas oublier le signe moins du terme associé à la borne inférieure."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Soit K(x)=∫ de √x à 2x de ln(t)dt, x>0. Calculer K'(x).", "solution_markdown": "K'(x)=2·ln(2x)-(1/(2√x))·ln(√x), par application directe de la formule avec u(x)=√x, v(x)=2x, f(t)=ln t."}
+    ],
+    "synthese": "La dérivée d'une fonction définie par une intégrale à deux bornes variables s'obtient en combinant le théorème fondamental de l'analyse (via une primitive fictive F) et la dérivation composée, donnant la formule G'(x)=v'(x)f(v(x))-u'(x)f(u(x)), sans jamais nécessiter le calcul explicite d'une primitive de f."
+  }
+}

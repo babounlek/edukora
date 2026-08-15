@@ -1,0 +1,52 @@
+{
+  "epreuve_source": "bac-d-maths-2023-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2023,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 5,
+  "titre_exercice": "Partie B : Évaluation des compétences — Situation-problème : projet de mariage et de voyage de TANG",
+  "points": 5.0,
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE B : ÉVALUATION DES COMPÉTENCES.**\n\n**Situation :** TANG voudrait se marier malgré ses moyens limités, puis voyager avec son épouse, afin de finaliser un projet qu'il avait entamé. Dans le souci de pouvoir acheter le billet d'avion de sa femme, il place l'argent de son billet d'avion dans une banque à un taux d'intérêt annuel composé de $5\\%$. Dans cette banque, pour tout calcul, $\\ln2=0{,}69$ et $\\ln1{,}05=0{,}049$.\n\nPour son mariage, il se rend dans un magasin où le prix de chaque article a subi deux baisses successives de même taux, telle qu'une veste qui coûtait $140\\,000$F avant ces baisses est vendue à $126\\,350$F. TANG ne dispose que de $17\\,500$F pour acheter un sac qui coûtait $20\\,000$F après la 1ère baisse et qui a subi le même taux de baisse que la veste.\n\nPour son projet, TANG ne compte que sur les loyers des maisons que lui a léguées son père. Ces maisons produisent une somme $S(x)=\\dfrac{x^3-15x^2+63x}2$ en millions de francs, où $x$ est le rang de l'année à compter de l'année de leur mise en location. Son projet ne peut être réalisé que si, au cours des neuf premières années, il obtient au moins $41$ millions de francs en un an.",
+  "questions": [
+    {
+      "numero": "Tâche 1",
+      "points": "1,5pt",
+      "enonce_markdown": "À partir de combien d'années les intérêts produits à la banque permettront-ils à TANG d'acheter un autre billet d'avion pour son épouse ?",
+      "rappels_de_methode": [{"cours_id": "cours-determiner-la-duree-minimale-datteinte-dun-seuil-en-interets-composes-terminale-d-ti", "texte": "Trouver au bout de combien de périodes un capital placé à intérêts composés génère des intérêts au moins égaux à un seuil donné revient à résoudre une inéquation exponentielle, linéarisée par passage au logarithme népérien."}],
+      "corrige_markdown": "### Rappel de méthode\nAvec un capital initial $C_0$ placé à intérêts composés au taux annuel $t$, le capital après $n$ années est $C_0(1+t)^n$, et les intérêts produits sont $C_0(1+t)^n-C_0$. Pour trouver le plus petit $n$ tel que ces intérêts atteignent un seuil donné, on résout l'inéquation correspondante en passant au logarithme népérien.\n\n### Corrigé détaillé\nNotons $C_0$ le prix du billet d'avion de TANG (montant placé à la banque). TANG souhaite que les INTÉRÊTS produits (et non le capital total) suffisent à acheter un second billet, de même prix $C_0$.\n\n**Mise en équation.** Après $n$ années, le capital vaut $C_0(1{,}05)^n$ et les intérêts produits valent $C_0(1{,}05)^n-C_0$. On cherche le plus petit entier $n$ tel que :\n$$C_0(1{,}05)^n-C_0\\geq C_0$$\n\n**Simplification.** On divise les deux membres par $C_0>0$ (ce qui conserve le sens de l'inégalité) :\n$$(1{,}05)^n-1\\geq1\\iff(1{,}05)^n\\geq2$$\n\n**Passage au logarithme népérien** (fonction croissante, le sens de l'inégalité est conservé) :\n$$\\ln\\big((1{,}05)^n\\big)\\geq\\ln2\\iff n\\ln(1{,}05)\\geq\\ln2$$\n\n**Isolation de n.** Comme $\\ln(1{,}05)>0$, on divise sans changer le sens :\n$$n\\geq\\frac{\\ln2}{\\ln1{,}05}=\\frac{0{,}69}{0{,}049}\\approx14{,}08$$\n\n**Plus petit entier solution.** $n$ doit être un entier (nombre d'années) strictement supérieur ou égal à $14{,}08$ : le plus petit entier qui convient est $n=15$.\n\n**Conclusion.** C'est à partir de la $15^{\\text{e}}$ année que les intérêts produits par la banque permettront à TANG d'acheter le second billet d'avion.\n\n### Piège à éviter\nNe pas confondre le CAPITAL TOTAL ($C_0(1{,}05)^n$) avec les INTÉRÊTS PRODUITS ($C_0(1{,}05)^n-C_0$) : c'est bien la question des intérêts (le gain, pas le capital total) qui est posée ici, ce qui donne la condition $(1{,}05)^n\\geq2$ et non $(1{,}05)^n\\geq1$.",
+      "figures": []
+    },
+    {
+      "numero": "Tâche 2",
+      "points": "1,5pt",
+      "enonce_markdown": "TANG pourra-t-il, à partir des loyers de ses maisons, réaliser son projet ?",
+      "rappels_de_methode": [{"cours_id": "cours-comparer-le-maximum-dune-fonction-sur-un-intervalle-a-un-seuil-donne-terminale-d", "texte": "Pour savoir si une fonction atteint un seuil donné sur un ensemble de valeurs entières, on étudie ses variations (dérivée, points critiques) pour déterminer sa valeur maximale sur cet ensemble, puis on la compare au seuil."}],
+      "corrige_markdown": "### Rappel de méthode\nPour savoir si une grandeur modélisée par une fonction $S(x)$ atteint un seuil donné pour $x$ parcourant un ensemble de valeurs entières, on étudie les variations de $S$ (à l'aide de $S'$) afin de localiser son maximum sur cet ensemble, puis on compare la valeur maximale obtenue au seuil.\n\n### Corrigé détaillé\nOn étudie $S(x)=\\dfrac{x^3-15x^2+63x}2$ pour $x\\in\\{1,2,\\ldots,9\\}$ (les neuf premières années).\n\n**Recherche des points critiques.**\n$$S'(x)=\\frac{3x^2-30x+63}2=\\frac32(x^2-10x+21)$$\n\nOn résout $x^2-10x+21=0$ : discriminant $\\Delta=100-84=16=4^2$, donc $x=\\dfrac{10\\pm4}2$, soit $x=3$ ou $x=7$.\n\n**Signe de $S'$ et tableau de variations.** Pour $x<3$ : par exemple $S'(2)=\\frac32(4-20+21)=\\frac32\\times5>0$, $S$ croissante. Pour $3<x<7$ : $S'(4)=\\frac32(16-40+21)=\\frac32\\times(-3)<0$, $S$ décroissante. Pour $x>7$ : $S'(8)=\\frac32(64-80+21)=\\frac32\\times5>0$, $S$ croissante. Donc $S$ croît sur $[1;3]$, décroît sur $[3;7]$, puis croît sur $[7;9]$ : $x=3$ est un maximum local, $x=7$ un minimum local.\n\n**Calcul des valeurs entières pertinentes** (aux points critiques et à la borne $x=9$, seule autre valeur candidate au maximum sur $\\{1,\\ldots,9\\}$ du fait de la croissance finale) :\n$$S(3)=\\frac{27-135+189}2=\\frac{81}2=40{,}5$$\n$$S(9)=\\frac{729-1215+567}2=\\frac{81}2=40{,}5$$\n\n**Comparaison.** Sur $\\{1,2,\\ldots,9\\}$, $S$ croît jusqu'à $x=3$ (valeur $40{,}5$), décroît jusqu'à $x=7$, puis recroît jusqu'à $x=9$ (valeur $40{,}5$ également). Le maximum de $S$ sur les neuf premières années est donc $40{,}5$ millions de francs, atteint en $x=3$ et $x=9$.\n\n**Conclusion.** Comme $40{,}5<41$, TANG n'atteint jamais $41$ millions de francs en une seule année au cours des neuf premières années. Il ne pourra donc **pas** réaliser son projet à partir des loyers de ses maisons.\n\n### Conseil\nIl n'est pas nécessaire de calculer $S(x)$ pour toutes les valeurs de $1$ à $9$ : l'étude des variations montre que le maximum ne peut être atteint qu'en un point critique (ici $x=3$) ou, si la fonction recroît en fin d'intervalle, à la borne finale $x=9$. Comparer seulement ces candidats économise du temps.",
+      "figures": []
+    },
+    {
+      "numero": "Tâche 3",
+      "points": "1,5pt",
+      "enonce_markdown": "TANG pourra-t-il acheter ce sac ?",
+      "rappels_de_methode": [{"cours_id": "cours-determiner-un-taux-de-baisse-a-partir-de-deux-baisses-successives-de-meme-taux-terminale-d", "texte": "Si un prix subit deux baisses successives du même taux t, le prix final vaut le prix initial multiplié par (1-t)² ; connaissant prix initial et prix final, on résout cette équation pour retrouver t, puis on applique ce même taux à un autre article."}],
+      "corrige_markdown": "### Rappel de méthode\nSi un prix initial $P_0$ subit deux baisses successives du même taux $t$, le prix final est $P_0(1-t)^2$. Connaissant $P_0$ et le prix final, on résout cette équation pour retrouver $t$.\n\n### Corrigé détaillé\n**Détermination du taux de baisse à partir de la veste.** La veste coûtait $P_0=140\\,000$F et est vendue $126\\,350$F après deux baisses successives du même taux $t$ :\n$$140\\,000\\times(1-t)^2=126\\,350$$\n\n**Isolation de $(1-t)^2$.**\n$$(1-t)^2=\\frac{126\\,350}{140\\,000}=0{,}9025$$\n\n**Résolution.** Comme $1-t>0$ (une baisse de taux $t\\in\\,]0;1[$ donne $1-t\\in\\,]0;1[$), on prend la racine carrée positive :\n$$1-t=\\sqrt{0{,}9025}=0{,}95$$\n\n(on vérifie : $0{,}95^2=0{,}9025$ ✓)\n\n$$t=1-0{,}95=0{,}05=5\\%$$\n\n**Application du même taux au sac.** Le sac coûtait $20\\,000$F après la première baisse. La seconde baisse, au même taux $t=5\\%$, donne le prix final :\n$$\\text{prix final}=20\\,000\\times(1-0{,}05)=20\\,000\\times0{,}95=19\\,000\\text{F}$$\n\n**Comparaison avec les moyens de TANG.** TANG ne dispose que de $17\\,500$F, alors que le sac coûte finalement $19\\,000$F.\n$$17\\,500<19\\,000$$\n\n**Conclusion.** TANG ne pourra **pas** acheter ce sac : il lui manque $19\\,000-17\\,500=1\\,500$F.\n\n### Piège à éviter\nLa seconde baisse du sac s'applique au prix APRÈS la première baisse ($20\\,000$F), pas au prix initial (inconnu) du sac avant toute baisse : il ne faut surtout pas essayer de retrouver un prix initial du sac, l'énoncé donne directement le prix intermédiaire nécessaire.",
+      "figures": []
+    },
+    {
+      "numero": "Présentation",
+      "points": "0,5pt",
+      "enonce_markdown": "Présentation.",
+      "rappels_de_methode": [],
+      "corrige_markdown": "### Rappel de méthode\nCe point évalue la clarté, l'organisation et la présentation générale de la copie (rédaction soignée, unités précisées, résultats mis en évidence) plutôt qu'une compétence mathématique précise. Il n'est pas corrigible automatiquement : il est attribué par le correcteur selon la qualité formelle de la copie du candidat.",
+      "figures": []
+    }
+  ]
+}

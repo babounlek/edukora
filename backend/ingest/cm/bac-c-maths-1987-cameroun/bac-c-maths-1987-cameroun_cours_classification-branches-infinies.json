@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-classification-branches-infinies-terminale-c",
+  "meta": {"titre": "Classifier une branche infinie : asymptote horizontale, oblique ou branche parabolique", "cours_id": "cours-classification-branches-infinies-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Analyse — classification des branches infinies", "tags": ["branche infinie", "asymptote", "branche parabolique"], "duree_estimee_minutes": 6, "epreuve_source": "bac-c-maths-1987-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-1987-e1-4a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Classifier une branche infinie suit toujours le même arbre de décision en trois étapes : d'abord lim f(x), puis si besoin lim f(x)/x, puis si besoin lim(f(x)-ax) — chaque étape n'est nécessaire que si la précédente est infinie."},
+    {"type": "prerequis", "items_markdown": ["Calcul de limites en +∞ ou -∞", "Notion d'asymptote horizontale, oblique, et de branche parabolique"]},
+    {"type": "regle", "titre": "L'arbre de décision à trois étapes", "contenu_markdown": "Étape 1 : calculer $\\lim f(x)$. Si finie (=$\\ell$) : asymptote horizontale $y=\\ell$, terminé. Si infinie, passer à l'étape 2 : calculer $\\lim \\frac{f(x)}{x}$. Si $0$ : branche parabolique de direction $(Ox)$, terminé. Si infinie : branche parabolique de direction $(Oy)$, terminé. Si finie non nulle ($=a$) : passer à l'étape 3, calculer $\\lim(f(x)-ax)$. Si finie ($=b$) : asymptote oblique $y=ax+b$. Si infinie : branche parabolique de direction $y=ax$.", "formule_principale": "lim f(x) fini→horizontale ; sinon lim f(x)/x = 0/∞/fini→ parabolique (Ox)/parabolique (Oy)/étape 3", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f(x)=x+√x pour x→+∞. Classifier la branche infinie.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "lim f(x)", "justification": "x+√x→+∞", "resultat_markdown": "infinie, passer à l'étape 2"},
+      {"numero": 2, "action": "lim f(x)/x", "justification": "(x+√x)/x=1+1/√x→1", "resultat_markdown": "finie non nulle =1, passer à l'étape 3"},
+      {"numero": 3, "action": "lim(f(x)-x)", "justification": "√x→+∞", "resultat_markdown": "infinie"}
+    ], "conclusion_markdown": "Branche parabolique de direction y=x (asymptote oblique « manquée » car le reste diverge)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Sauter directement à l'étape 3 (calcul de f(x)-ax) sans avoir vérifié que lim f(x)/x est bien finie et non nulle", "pourquoi_faux": "Si lim f(x)/x vaut 0 ou l'infini, chercher f(x)-ax n'a pas de sens (il n'y a pas de coefficient directeur a à soustraire) : l'étape 3 ne s'applique QUE dans le cas intermédiaire.", "correction_markdown": "Toujours respecter l'ordre des trois étapes, sans sauter l'étape 2 : elle détermine si l'étape 3 est même pertinente."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "g(x)=x²/(x+1) pour x→+∞. Classifier la branche infinie.", "solution_markdown": "lim g(x)=+∞ (étape 1). lim g(x)/x = x/(x+1)→1 (étape 2, fini non nul). lim(g(x)-x)=lim(x²/(x+1)-x)=lim((x²-x²-x)/(x+1))=lim(-x/(x+1))=-1 (étape 3, finie). Asymptote oblique y=x-1."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La classification d'une branche infinie suit toujours le même arbre de décision en trois étapes successives.", "Chaque étape n'est nécessaire que si la précédente donne un résultat infini ou ambigu ; ne jamais sauter d'étape."]}
+  ]
+}

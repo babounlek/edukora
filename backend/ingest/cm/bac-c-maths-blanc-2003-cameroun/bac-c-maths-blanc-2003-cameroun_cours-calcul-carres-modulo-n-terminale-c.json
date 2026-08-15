@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-calcul-carres-modulo-n-terminale-c",
+  "meta": {
+    "titre": "Calculer les carrés des éléments de ℤ/nℤ",
+    "cours_id": "cours-calcul-carres-modulo-n-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Arithmétique - anneau ℤ/nℤ",
+    "tags": ["ℤ/nℤ", "carrés modulaires", "congruences"],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_1_qII-1"
+  },
+  "sections": {
+    "accroche": "L'anneau ℤ/nℤ étant fini, calculer le carré de chacun de ses éléments est un travail exhaustif et rapide, qui révèle souvent des symétries surprenantes (deux classes distinctes peuvent avoir le même carré).",
+    "prerequis": ["Définition des classes de ℤ/nℤ (représentants 0 à n-1)", "Réduction modulo n"],
+    "regle": {
+      "titre": "Calcul exhaustif des carrés dans ℤ/nℤ",
+      "contenu_markdown": "Pour calculer $\\dot x^2$ pour tout $\\dot x\\in\\mathbb Z/n\\mathbb Z$, on élève au carré chaque représentant entier de $0$ à $n-1$, puis on réduit le résultat modulo $n$. L'ensemble $\\mathbb Z/n\\mathbb Z$ étant fini (n éléments), ce calcul se fait en un nombre fini d'étapes, sans exception ni cas particulier à traiter séparément.",
+      "formule_principale": "$\\dot x^2 = \\overline{x^2 \\bmod n}$, pour $x=0,1,\\ldots,n-1$",
+      "variantes": ["Par symétrie, x et n-x ont toujours le même carré modulo n, car (n-x)²=n²-2nx+x²≡x² (mod n)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer les carrés des éléments de ℤ/4ℤ.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer 0²,1²,2²,3²", "justification": "carrés entiers", "resultat_markdown": "0,1,4,9"},
+        {"numero": 2, "action": "Réduire modulo 4", "justification": "division euclidienne par 4", "resultat_markdown": "0,1,0,1"}
+      ],
+      "conclusion_markdown": "Les valeurs prises sont {0,1} : on observe la symétrie 0²=2²=0 et 1²=3²=1, conforme à la propriété x²≡(n-x)² (mod n)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de réduire le carré obtenu modulo n, et laisser la valeur entière brute", "pourquoi_faux": "les éléments de ℤ/nℤ sont des classes de restes entre 0 et n-1 : une valeur comme 9 n'est pas un élément valide de ℤ/6ℤ, il faut la réduire en 3", "correction_markdown": "Toujours terminer le calcul par une réduction modulo n, en effectuant la division euclidienne si nécessaire."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Calculer tous les carrés des éléments de ℤ/5ℤ.", "solution_markdown": "0²=0, 1²=1, 2²=4, 3²=9≡4, 4²=16≡1 : valeurs prises {0,1,4}."}
+    ],
+    "synthese": "Le calcul des carrés dans ℤ/nℤ est un travail exhaustif fini : élever au carré chaque représentant de 0 à n-1 puis réduire modulo n, en notant que les classes x et n-x partagent toujours le même carré."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-recherche-points-invariants-application-affine-plan-terminale-c",
+  "meta": {
+    "titre": "Rechercher les points invariants d'une application affine du plan donnée par ses formules",
+    "cours_id": "cours-recherche-points-invariants-application-affine-plan-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie affine - application concrète, points invariants",
+    "tags": ["points invariants", "système linéaire", "application affine du plan"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1985-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1985-cameroun_exercice_6_q1"
+  },
+  "sections": {
+    "accroche": "Face à une application affine donnée explicitement par ses formules coordonnée par coordonnée, chercher ses points invariants revient toujours à résoudre un système linéaire : soit il admet une solution unique ou une droite de solutions, soit il est incompatible et l'application n'a aucun point fixe.",
+    "prerequis": ["Résolution de systèmes linéaires à deux inconnues", "Notion de point invariant", "Interprétation d'une incompatibilité de système (0=k avec k≠0)"],
+    "regle": {
+      "titre": "Recherche de points invariants par mise en système",
+      "contenu_markdown": "Pour une application affine $\\rho(x,y)=(x',y')$ donnée par des formules explicites, les points invariants vérifient $x=x'$ et $y=y'$. On substitue et on regroupe pour obtenir un système linéaire en $x,y$. Trois cas se présentent : le système a une solution unique (un seul point invariant), le système est indéterminé (une droite entière de points invariants, cas d'une symétrie ou projection affine), ou le système est incompatible (aboutissant à une égalité fausse du type $0=k$ avec $k\\neq0$), auquel cas $\\rho$ n'admet aucun point invariant — signature typique d'une translation, d'une symétrie glissée, ou d'une rotation vissée.",
+      "formule_principale": "$M(x,y)$ invariant $\\iff x=x'(x,y)$ et $y=y'(x,y)$",
+      "variantes": ["Si le système donne une égalité toujours vraie (0=0) en plus d'une relation linéaire, l'ensemble des points invariants est une droite entière"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $\\rho(x,y)=(x+1,y+2)$. Rechercher les points invariants.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Poser les équations d'invariance", "justification": "définition d'un point invariant", "resultat_markdown": "$x=x+1$ et $y=y+2$"},
+        {"numero": 2, "action": "Simplifier chaque équation", "justification": "isoler les termes constants", "resultat_markdown": "$0=1$ (impossible) et $0=2$ (impossible)"}
+      ],
+      "conclusion_markdown": "Le système est incompatible : $\\rho$ (ici une translation de vecteur $(1,2)$) n'admet aucun point invariant, conformément à la propriété générale des translations non nulles."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure à tort qu'une absence de solution signifie une erreur de calcul, et chercher à 'forcer' une solution", "pourquoi_faux": "de nombreuses applications affines (translations, symétries glissées, rotations vissées) n'ont légitimement aucun point invariant", "correction_markdown": "Accepter qu'une incompatibilité du système (comme 0=25) est un résultat valide en soi, prouvant simplement l'absence de point invariant."},
+      {"erreur_markdown": "Ne résoudre qu'une seule des deux équations du système et en déduire une conclusion prématurée", "pourquoi_faux": "les deux équations doivent être simultanément satisfaites pour qu'un point soit invariant", "correction_markdown": "Toujours résoudre (ou vérifier l'incompatibilité de) l'ensemble du système, pas une seule équation isolée."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Rechercher les points invariants de $\\rho(x,y)=(2x-y,x)$.", "solution_markdown": "$x=2x-y\\Rightarrow y=x$ ; $y=x$ (même condition). Le système est indéterminé sous la contrainte $y=x$ : l'ensemble des points invariants est la droite $y=x$."}
+    ],
+    "synthese": "Rechercher les points invariants d'une application affine explicite revient à résoudre le système x=x', y=y' : solution unique, droite de solutions, ou incompatibilité (aucun point invariant, cas des translations et symétries glissées)."
+  }
+}

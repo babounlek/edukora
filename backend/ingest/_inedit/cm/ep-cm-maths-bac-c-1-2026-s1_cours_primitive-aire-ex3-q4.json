@@ -1,0 +1,115 @@
+{
+  "type": "cours",
+  "cours_id": "cours-primitive-aire-integration-bac-c",
+  "meta": {
+    "titre": "Primitive et calcul d'aire par intégration",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Analyse - calcul intégral",
+    "duree_estimee_min": 25,
+    "tags": ["primitive", "aire"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex3-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Vérifier qu'une fonction donnée est une primitive, puis s'en servir pour calculer une aire : c'est un enchaînement en deux temps qui revient très régulièrement au BAC. La première étape est purement mécanique (dériver et comparer), la seconde demande juste de vérifier un signe avant d'appliquer la formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée d'un produit de fonctions",
+        "Définition d'une primitive",
+        "Lien entre intégrale et primitive : $\\int_a^b q(x)\\,dx=Q(b)-Q(a)$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vérifier une primitive et calculer une aire",
+      "contenu_markdown": "**Vérifier une primitive** : $Q$ est une primitive de $q$ sur un intervalle si et seulement si $Q'=q$ sur cet intervalle. Il suffit de dériver $Q$ et de comparer le résultat à $q$ — aucune autre justification n'est nécessaire.\n\n**Calculer une aire** : si $q$ garde un signe constant sur $[a,b]$, l'aire du domaine délimité par la courbe de $q$, l'axe des abscisses et les droites $x=a$, $x=b$ vaut $\\mathcal A=\\left|\\displaystyle\\int_a^b q(x)\\,dx\\right|=|Q(b)-Q(a)|$, où $Q$ est une primitive de $q$. Si $q\\geqslant0$ sur $[a,b]$, l'aire est directement $Q(b)-Q(a)$ (sans valeur absolue à ajouter).",
+      "formule_principale": "\\mathcal A = \\int_a^b q(x)\\,dx = \\big[Q(x)\\big]_a^b = Q(b)-Q(a) \\quad (q\\geqslant0 \\text{ sur } [a,b])"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $q(x)=(x-1)e^{-x}$. Montrer que $Q(x)=-xe^{-x}$ est une primitive de $q$ sur $\\mathbb R$, puis calculer l'aire du domaine délimité par la courbe de $q$, l'axe des abscisses et les droites $x=1$, $x=4$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $Q$",
+          "justification": "Formule du produit avec $u=-x$, $v=e^{-x}$.",
+          "resultat_markdown": "$Q'(x)=-e^{-x}+xe^{-x}=(x-1)e^{-x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer $Q'$ à $q$",
+          "justification": "$Q$ est une primitive de $q$ si et seulement si $Q'=q$.",
+          "resultat_markdown": "$Q'(x)=q(x)$ pour tout $x$ : $Q$ est bien une primitive de $q$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le signe de $q$ sur $[1;4]$",
+          "justification": "Sur $[1;4]$, $x-1\\geqslant0$ et $e^{-x}>0$, donc $q(x)\\geqslant0$.",
+          "resultat_markdown": "$q$ est positive sur $[1;4]$ : pas de valeur absolue à ajouter"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $Q(4)-Q(1)$",
+          "justification": "L'aire est directement égale à cette différence, $q$ étant positive sur l'intervalle.",
+          "resultat_markdown": "$Q(4)-Q(1)=-4e^{-4}-(-e^{-1})=e^{-1}-4e^{-4}$"
+        }
+      ],
+      "conclusion_markdown": "$Q$ est une primitive de $q$ sur $\\mathbb R$, et l'aire cherchée vaut $\\mathcal A=e^{-1}-4e^{-4}\\approx0{,}29$ unités d'aire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer l'aire par $Q(b)-Q(a)$ sans avoir vérifié le signe de $q$ sur $[a,b]$.",
+          "pourquoi_faux": "Si $q$ change de signe ou est négative sur l'intervalle, $Q(b)-Q(a)$ peut être négatif ou ne pas correspondre à l'aire réelle (toujours positive).",
+          "correction_markdown": "Toujours étudier le signe de $q$ sur $[a,b]$ avant de calculer l'intégrale ; prendre la valeur absolue si $q$ est négative, ou découper l'intervalle si $q$ change de signe."
+        },
+        {
+          "erreur_markdown": "Justifier qu'une fonction est une primitive en la « re-intégrant » au lieu de simplement la dériver.",
+          "pourquoi_faux": "C'est plus long et source d'erreurs : dériver $Q$ et comparer à $q$ est toujours la méthode la plus directe et la plus fiable.",
+          "correction_markdown": "Pour vérifier une primitive DONNÉE, on dérive toujours — on n'intègre jamais pour vérifier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Vérifier que $F(x)=\\dfrac{x^3}{3}$ est une primitive de $f(x)=x^2$ sur $\\mathbb R$.",
+          "solution_markdown": "$F'(x)=\\dfrac{3x^2}{3}=x^2=f(x)$ : $F$ est bien une primitive de $f$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Sachant que $F(x)=xe^x$ est une primitive de $f(x)=(x+1)e^x$ sur $\\mathbb R$, calculer l'aire du domaine délimité par la courbe de $f$, l'axe des abscisses et les droites $x=0$, $x=2$.",
+          "solution_markdown": "Sur $[0;2]$, $(x+1)>0$ et $e^x>0$, donc $f\\geqslant0$. $\\mathcal A=F(2)-F(0)=2e^2-0=2e^2$ unités d'aire (environ $14{,}78$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $g(x)=(3-x)e^{-x}$ sur $\\mathbb R$ et $G(x)=(x-2)e^{-x}$. Vérifier que $G$ est une primitive de $g$, puis calculer l'aire du domaine délimité par la courbe de $g$, l'axe des abscisses et les droites $x=0$, $x=2$ (on vérifiera d'abord le signe de $g$ sur cet intervalle).",
+          "solution_markdown": "$G'(x)=1\\times e^{-x}+(x-2)\\times(-e^{-x})=e^{-x}[1-(x-2)]=(3-x)e^{-x}=g(x)$ : $G$ est bien une primitive de $g$. Sur $[0;2]$, $3-x\\geqslant1>0$ et $e^{-x}>0$, donc $g\\geqslant0$ sur cet intervalle. $\\mathcal A=G(2)-G(0)=0\\times e^{-2}-(-2)\\times e^0=0-(-2)=2$ unités d'aire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Vérifier une primitive : dériver $Q$ et comparer à $q$, jamais l'inverse.",
+        "Aire sous une courbe : $\\mathcal A=\\displaystyle\\int_a^b q(x)\\,dx=Q(b)-Q(a)$, valable directement si $q\\geqslant0$ sur $[a,b]$.",
+        "Toujours vérifier le signe de $q$ AVANT de calculer, pas après.",
+        "Une aire est par nature une quantité positive : si le calcul donne un nombre négatif, il faut en prendre la valeur absolue (signe que $q$ était négative sur l'intervalle).",
+        "Ces deux questions (vérification de primitive, puis calcul d'aire) s'enchaînent presque toujours ensemble au BAC, la primitive vérifiée servant directement au calcul suivant."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-traduire-une-boucle-pour-finpour-de-l-algorithmique-en-boucle-for-du-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire une boucle 'pour...finpour' de l'algorithmique en boucle for du langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Traduction algorithme vers C",
+    "duree_estimee_min": 10,
+    "tags": [
+      "boucle for",
+      "langage C",
+      "pour...finpour"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2021-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Epreuve Theorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex5-q2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La boucle 'pour i allant de a à b faire...finpour' du pseudocode a un équivalent direct et très utilisé en C : la boucle for, dont la syntaxe compacte regroupe initialisation, condition et incrémentation en une seule ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la boucle 'pour' en algorithmique",
+        "Connaître la déclaration d'un tableau en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire une boucle 'pour...finpour' en boucle for du langage C",
+      "contenu_markdown": "En pseudocode, `Pour i allant de a à b Faire ... FinPour` répète un bloc d'instructions pour i variant de a à b. En langage C, l'équivalent est `for (i = a; i <= b; i++) { ... }`, qui regroupe en une seule ligne l'initialisation (i = a), la condition de poursuite (i <= b) et l'incrémentation (i++).",
+      "formule_principale": "for (init; condition; incrementation) { instructions }",
+      "variantes": [
+        {
+          "nom": "Boucle while équivalente",
+          "quand_utiliser": "Quand on préfère séparer explicitement les trois étapes.",
+          "contenu_markdown": "```c\ni = a;\nwhile (i <= b) {\n    // instructions\n    i++;\n}\n```\nStrictement équivalente à la boucle for, mais plus verbeuse."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en C la boucle 'Pour i allant de 0 à n-1 Faire' utilisée pour parcourir un tableau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les bornes de la boucle en pseudocode",
+          "justification": "La boucle pseudocode parcourt i de 0 à n-1.",
+          "resultat_markdown": "i de 0 à n-1"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire en syntaxe for du C",
+          "justification": "L'initialisation, la condition et l'incrémentation se regroupent dans l'en-tête du for.",
+          "resultat_markdown": "`for (i = 0; i < n; i++) { ... }`"
+        }
+      ],
+      "conclusion_markdown": "Pour i allant de a à b Faire...FinPour se traduit par for (i = a; i <= b; i++) { ... } (ou i < n si b = n-1)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `for (i = 0; i < n; i++)` alors que le pseudocode allait jusqu'à n inclus (\"de 0 à n\"), oubliant que < n exclut n",
+          "pourquoi_faux": "Il faut adapter l'opérateur de comparaison aux bornes exactes du pseudocode : \"de a à b\" (b inclus) se traduit par i <= b, tandis que \"de 0 à n-1\" (n exclu) se traduit naturellement par i < n.",
+          "correction_markdown": "Vérifie toujours si la borne supérieure du pseudocode est incluse (utilise alors <=) ou exclue (utilise alors <) avant de choisir l'opérateur de comparaison en C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C : \"Pour i allant de 1 à 5 Faire Écrire(i) FinPour\".",
+          "solution_markdown": "```c\nfor (i = 1; i <= 5; i++) {\n    printf(\"%d\\n\", i);\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C la boucle parcourant tous les éléments d'un tableau tab de taille n pour les afficher.",
+          "solution_markdown": "```c\nfor (i = 0; i < n; i++) {\n    printf(\"%d\\n\", tab[i]);\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment traduire en C une boucle pseudocode qui parcourt un tableau de la fin vers le début (\"Pour i allant de n-1 à 0 Faire\", pas décroissant) ?",
+          "solution_markdown": "```c\nfor (i = n - 1; i >= 0; i--) {\n    // instructions\n}\n```\nL'incrémentation devient une décrémentation (i--), et la condition de poursuite s'inverse en conséquence (i >= 0 au lieu de i < n), puisque i décroît désormais vers 0 plutôt que de croître vers n."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La boucle for du C regroupe initialisation, condition et incrémentation en une ligne.",
+        "Pour i de a à b (b inclus) → for (i = a; i <= b; i++).",
+        "Pour i de 0 à n-1 (n exclu) → for (i = 0; i < n; i++).",
+        "Une boucle décroissante utilise i-- et inverse le sens de la condition (i >= 0)."
+      ]
+    }
+  ]
+}

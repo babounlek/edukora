@@ -1,0 +1,30 @@
+{
+  "cours_id": "cours-montrer-quun-endomorphisme-est-une-isometrie-vectorielle-via-limage-dune-base-orthonormee-terminale-c",
+  "meta": {
+    "titre": "Montrer qu'un endomorphisme est une isométrie vectorielle",
+    "cours_id": "cours-montrer-quun-endomorphisme-est-une-isometrie-vectorielle-via-limage-dune-base-orthonormee-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Isométries de l'espace",
+    "tags": ["isométrie vectorielle", "base orthonormée", "matrice orthogonale"],
+    "duree_estimee_minutes": 20,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex1-3"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Reconnaître une isométrie vectorielle ne nécessite pas de vérifier la conservation des distances pour tous les vecteurs de l'espace : il suffit de contrôler ce qui se passe sur une seule base orthonormée."},
+    {"type": "prerequis", "items_markdown": ["Norme et produit scalaire de vecteurs", "Base orthonormée"]},
+    {"type": "regle", "titre": "Image d'une base orthonormée", "contenu_markdown": "Un endomorphisme $f$ d'un espace euclidien est une isométrie vectorielle si et seulement s'il transforme une base orthonormée $(\\vec e_1,\\vec e_2,\\vec e_3)$ en une base orthonormée $(f(\\vec e_1),f(\\vec e_2),f(\\vec e_3))$, c'est-à-dire si les trois images sont unitaires et deux à deux orthogonales. Cela équivaut à $M^{\\mathsf T}M=I$ pour la matrice $M$ de $f$.", "formule_principale": "||f(ei)||=1 pour tout i, et f(ei)·f(ej)=0 pour i≠j", "variantes": ["M^T M = I (matrice orthogonale)"]},
+    {"type": "exemple_resolu", "enonce_markdown": "M=[[0,1,0],[-1,0,0],[0,0,1]] (rotation d'angle -π/2 autour de l'axe z). Montrer que f est une isométrie.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Normes des colonnes", "justification": "||(0,-1,0)||=1, ||(1,0,0)||=1, ||(0,0,1)||=1.", "resultat_markdown": "les trois colonnes sont unitaires"},
+      {"numero": 2, "action": "Produits scalaires deux à deux", "justification": "(0,-1,0)·(1,0,0)=0, (0,-1,0)·(0,0,1)=0, (1,0,0)·(0,0,1)=0.", "resultat_markdown": "orthogonalité vérifiée dans les trois cas"},
+      {"numero": 3, "action": "Conclure", "justification": "Base orthonormée transformée en base orthonormée.", "resultat_markdown": "f est une isométrie vectorielle"}
+    ], "conclusion_markdown": "Neuf vérifications numériques suffisent (trois normes, trois produits scalaires) pour conclure définitivement."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Vérifier seulement les normes des images, sans contrôler leur orthogonalité deux à deux", "pourquoi_faux": "Trois vecteurs unitaires mais non orthogonaux entre eux ne forment pas une base orthonormée : la conservation des distances n'est alors pas garantie.", "correction_markdown": "Toujours vérifier les deux conditions : normes égales à 1 ET produits scalaires deux à deux nuls."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "f(e1)=(1,0,0), f(e2)=(0,0,1), f(e3)=(0,1,0). f est-elle une isométrie ?", "solution_markdown": "Oui : les trois images sont unitaires et deux à deux orthogonales (simple permutation de la base)."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "f(e1)=(1,1,0), f(e2)=(0,1,0), f(e3)=(0,0,1). f est-elle une isométrie ?", "solution_markdown": "Non : ||f(e1)||=√2≠1, la première condition échoue déjà."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une isométrie vectorielle transforme toute base orthonormée en base orthonormée.", "Il suffit de le vérifier sur UNE base orthonormée pour conclure pour tout l'espace.", "Cette propriété équivaut à M^T M = I pour la matrice de f."]}
+  ]
+}

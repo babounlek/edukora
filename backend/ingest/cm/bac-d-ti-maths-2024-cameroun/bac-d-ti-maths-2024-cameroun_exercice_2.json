@@ -1,0 +1,56 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D et TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2024,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 2,
+  "titre_exercice": "Loi de probabilité du gain total lors de l'achat de deux billets de loterie",
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "Une loterie comporte vingt billets. Parmi eux, il y a un (seul) billet gagnant 1000 francs et trois billets gagnant 500 francs. Les autres billets ne rapportent aucun franc. Les billets gagnants et non gagnants sont indiscernables par le joueur. Une personne achète deux billets. On considère la variable aléatoire $X$ donnant la somme totale (en francs) que ces deux billets lui rapportent.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1pt",
+      "enonce_markdown": "Indiquer toutes les valeurs possibles de $X$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-lister-les-valeurs-possibles-dune-somme-de-deux-tirages-terminale-d-ti",
+          "texte": "Pour lister les valeurs possibles d'une variable somme de deux tirages parmi plusieurs catégories, on énumère systématiquement toutes les combinaisons possibles de deux catégories (y compris deux fois la même catégorie si l'effectif le permet), puis on calcule la somme associée à chacune, en éliminant les doublons de valeur."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nOn énumère systématiquement toutes les combinaisons possibles de deux catégories de billets, puis on calcule la somme associée à chacune.\n\nLes 20 billets se répartissent en 3 catégories : 1 billet « 1000F », 3 billets « 500F », 16 billets « 0F ».\n\n**Combinaisons possibles de 2 billets et sommes associées.**\n\n- deux billets « 0F » : somme $=0+0=0$\n- un billet « 0F » et un billet « 500F » : somme $=0+500=500$\n- un billet « 0F » et le billet « 1000F » : somme $=0+1000=1000$\n- deux billets « 500F » (il y en a 3, donc possible) : somme $=500+500=1000$\n- un billet « 500F » et le billet « 1000F » : somme $=500+1000=1500$\n- deux billets « 1000F » : **impossible**, un seul billet de ce type existe\n\n**Conclusion.** Les valeurs possibles de $X$ sont $\\{0\\,;500\\,;1000\\,;1500\\}$ (la valeur $1000$ pouvant être obtenue de deux façons différentes, mais reste une seule valeur numérique)."
+    },
+    {
+      "numero": "2",
+      "points": "1,5pt",
+      "enonce_markdown": "Dresser le tableau de la loi de probabilité de $X$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-loi-probabilite-somme-tirage-simultane-plusieurs-chemins-terminale-d-ti",
+          "texte": "Pour une valeur de $X$ atteignable par plusieurs combinaisons de catégories distinctes, on additionne les effectifs de dénombrement (combinaisons) de CHAQUE chemin menant à cette valeur, avant de diviser par le nombre total de tirages $\\binom{N}{n}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour une valeur atteignable par plusieurs combinaisons de catégories, on additionne les effectifs de dénombrement de chaque chemin avant de diviser par le total.\n\n**Nombre total de tirages.** $\\binom{20}{2}=\\dfrac{20\\times19}2=190$\n\n**$P(X=0)$.** Deux billets « 0F » parmi les 16 : $\\binom{16}{2}=\\dfrac{16\\times15}2=120$. $P(X=0)=\\dfrac{120}{190}=\\dfrac{12}{19}$\n\n**$P(X=500)$.** Un « 0F » (16 choix) et un « 500F » (3 choix) : $16\\times3=48$. $P(X=500)=\\dfrac{48}{190}=\\dfrac{24}{95}$\n\n**$P(X=1000)$.** Deux chemins : un « 0F » et le « 1000F » ($16\\times1=16$), OU deux « 500F » parmi 3 ($\\binom{3}{2}=3$). Total $=16+3=19$. $P(X=1000)=\\dfrac{19}{190}=\\dfrac1{10}$\n\n**$P(X=1500)$.** Un « 500F » (3 choix) et le « 1000F » (1 choix) : $3\\times1=3$. $P(X=1500)=\\dfrac3{190}$\n\n**Vérification.** $120+48+19+3=190$, donc la somme des probabilités vaut $\\dfrac{190}{190}=1$ ✓\n\n**Tableau de la loi de $X$.**\n\n$$\\begin{array}{|c|c|c|c|c|}\\hline x_i & 0 & 500 & 1000 & 1500\\\\\\hline P(X=x_i) & \\dfrac{12}{19} & \\dfrac{24}{95} & \\dfrac1{10} & \\dfrac3{190}\\\\\\hline\\end{array}$$"
+    },
+    {
+      "numero": "3",
+      "points": "0,5pt",
+      "enonce_markdown": "Quelle est la probabilité pour que ce joueur puisse gagner plus de 500 francs ?",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-strictement-superieure-a-un-seuil-terminale-d-ti",
+          "texte": "« Gagner plus de $s$ francs » signifie $X>s$ (inégalité STRICTE, excluant la valeur $s$ elle-même) : on additionne les probabilités de toutes les valeurs strictement supérieures à $s$ dans le tableau de loi."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n« Gagner plus de $s$ francs » signifie $X>s$ (strictement), donc on additionne les probabilités des valeurs strictement supérieures à $s$.\n\nOn cherche $P(X>500)$, c'est-à-dire $P(X=1000)+P(X=1500)$ (les valeurs strictement supérieures à $500$ dans le tableau) :\n\n$$P(X>500)=\\dfrac1{10}+\\dfrac3{190}=\\dfrac{19}{190}+\\dfrac3{190}=\\dfrac{22}{190}=\\dfrac{11}{95}$$\n\n**Conclusion.** $P(X>500)=\\dfrac{11}{95}\\approx0,116$.\n\n### Piège à éviter\n« Plus de 500 francs » exclut la valeur $500$ elle-même (inégalité stricte) : inclure $P(X=500)$ dans la somme serait une erreur, car gagner exactement 500 francs n'est pas gagner « plus de » 500 francs."
+    }
+  ]
+}

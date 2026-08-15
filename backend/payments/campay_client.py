@@ -7,6 +7,8 @@ aucun webhook dans son SDK officiel, le pattern supporté est le polling côté 
 import requests
 from decouple import config
 
+from users.phone import to_msisdn
+
 CAMPAY_HOST = "https://demo.campay.net" if config("CAMPAY_ENVIRONMENT", default="DEV") == "DEV" else "https://www.campay.net"
 
 
@@ -54,9 +56,11 @@ def _get_token():
 def init_collect(amount, phone_number, description, external_reference):
     """Déclenche une demande de paiement Mobile Money. Retourne la référence CamPay (statut PENDING)."""
     token = _get_token()
-    # CamPay exige le format international ; on stocke/affiche partout ailleurs le format
-    # local à 9 chiffres, donc l'indicatif Cameroun n'est ajouté qu'à cette frontière API.
-    international_number = f"237{phone_number}"
+    # CamPay exige le format international sans '+'. Passe par to_msisdn plutôt que de
+    # concaténer "237" : depuis la refonte du compte unique, un numéro peut arriver ici
+    # au format local (payments.Transaction, saisi par le payeur) comme en E.164
+    # (users.User.phone_number) - concaténer produirait "237+237..." dans le second cas.
+    international_number = to_msisdn(phone_number)
     response = _request(
         "post",
         f"{CAMPAY_HOST}/api/collect/",

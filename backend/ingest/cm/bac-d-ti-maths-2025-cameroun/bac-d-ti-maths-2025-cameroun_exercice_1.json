@@ -1,0 +1,92 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D-TI",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 1,
+  "titre_exercice": "Probabilités : tirage simultané dans une urne à trois couleurs",
+  "points": 4,
+  "figures": [],
+  "enonce_intro_markdown": "Une urne contient 12 boules indiscernables au toucher parmi lesquelles 5 boules blanches, 3 boules bleues et 4 boules rouges. On tire au hasard et simultanément 3 boules de cette urne.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "points": "1pt",
+      "enonce_markdown": "Calculer la probabilité de l'événement $E_1$ : « Les boules tirées ont la même couleur ».",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-toutes-boules-de-meme-couleur-terminale-d-ti",
+          "texte": "Pour un tirage simultané (donc sans ordre) de $n$ objets, le nombre total de tirages possibles est $\\binom{N}{n}$ ($N$ = effectif total). L'événement « toutes les boules tirées ont la même couleur » se dénombre en sommant, pour chaque couleur, le nombre de façons de tirer $n$ boules exclusivement dans cette couleur : $\\sum_{\\text{couleur}}\\binom{\\text{effectif de la couleur}}{n}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour un tirage simultané de 3 boules, le nombre total de tirages possibles est $\\binom{12}{3}$. L'événement « même couleur » se dénombre en sommant, pour chaque couleur, $\\binom{\\text{effectif}}{3}$.\n\n**Nombre total de tirages.** $\\binom{12}{3}=\\dfrac{12\\times11\\times10}{3\\times2\\times1}=\\dfrac{1320}{6}=220$\n\n**Dénombrement de $E_1$.** Les 3 boules tirées sont toutes blanches, ou toutes bleues, ou toutes rouges :\n\n$\\binom{5}{3}=\\dfrac{5\\times4\\times3}{6}=10$ (toutes blanches)\n\n$\\binom{3}{3}=1$ (toutes bleues)\n\n$\\binom{4}{3}=\\dfrac{4\\times3\\times2}{6}=4$ (toutes rouges)\n\nCard($E_1$) $=10+1+4=15$\n\n**Calcul de la probabilité.** $P(E_1)=\\dfrac{15}{220}=\\dfrac{3}{44}$ (en divisant par 5)\n\n**Conclusion.** $P(E_1)=\\dfrac{3}{44}\\approx0,068$."
+    },
+    {
+      "numero": "1.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer la probabilité de l'événement $E_2$ : « Les boules tirées présentent trois couleurs ».",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-une-boule-de-chaque-couleur-terminale-d-ti",
+          "texte": "L'événement « une boule de chaque couleur » (pour un tirage simultané avec autant de catégories que de boules tirées) se dénombre par le produit des choix indépendants dans chaque catégorie : $\\binom{\\text{effectif couleur 1}}{1}\\times\\binom{\\text{effectif couleur 2}}{1}\\times\\binom{\\text{effectif couleur 3}}{1}$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'événement « une boule de chaque couleur » se dénombre par le produit des choix indépendants dans chacune des trois couleurs.\n\n**Dénombrement de $E_2$.** Une blanche, une bleue, une rouge :\n\nCard($E_2$) $=\\binom{5}{1}\\times\\binom{3}{1}\\times\\binom{4}{1}=5\\times3\\times4=60$\n\n**Calcul de la probabilité.** $P(E_2)=\\dfrac{60}{220}=\\dfrac{3}{11}$ (en divisant par 20)\n\n**Conclusion.** $P(E_2)=\\dfrac{3}{11}\\approx0,273$."
+    },
+    {
+      "numero": "1.c",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer la probabilité de l'événement $E_3$ : « Les boules tirées ont des couleurs différentes ».",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-reconnaitre-quand-deux-formulations-decrivent-le-meme-evenement-terminale-d-ti",
+          "texte": "Avant de recompter un événement, il faut vérifier s'il coïncide avec un événement déjà traité : ici, comme on tire exactement 3 boules et qu'il n'existe exactement que 3 couleurs disponibles, « les trois boules ont des couleurs deux à deux différentes » revient exactement à « les trois couleurs sont représentées », qui est la définition même de $E_2$."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nAvant de recompter, il faut vérifier si l'événement décrit coïncide avec un événement déjà traité.\n\n**Analyse de l'événement $E_3$.** « Les boules tirées ont des couleurs différentes » signifie que les 3 boules ont des couleurs deux à deux distinctes. Comme on tire exactement 3 boules et qu'il n'existe exactement que 3 couleurs possibles (blanc, bleu, rouge) dans l'urne, avoir 3 couleurs deux à deux différentes revient exactement à avoir les 3 couleurs toutes représentées à la fois : c'est très exactement la définition de l'événement $E_2$ de la question précédente.\n\n**Conclusion.** $E_3=E_2$, donc $P(E_3)=P(E_2)=\\dfrac{3}{11}\\approx0,273$.\n\n### Piège à éviter\nNe pas se précipiter à refaire un dénombrement pour $E_3$ sans avoir d'abord comparé sa définition à celle de $E_2$ : ici, avec exactement 3 tirages et exactement 3 couleurs disponibles, les deux événements sont rigoureusement identiques, et non simplement de même probabilité par coïncidence numérique."
+    },
+    {
+      "numero": "2.a",
+      "points": "1pt",
+      "enonce_markdown": "On appelle $X$ la variable aléatoire qui à tout tirage de 3 boules de cette urne associe le nombre de boules rouges tirées. Justifier que la loi de probabilité de $X$ est celle donnée par le tableau : $P(X=0)=56/220$, $P(X=1)=112/220$, $P(X=2)=48/220$, $P(X=3)=4/220$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-la-loi-hypergeometrique-dun-tirage-simultane-terminale-d-ti",
+          "texte": "Pour $X$ = nombre de boules d'une catégorie particulière (effectif $K$) parmi $n$ boules tirées simultanément dans une population de taille $N$, $P(X=k)=\\dfrac{\\binom{K}{k}\\binom{N-K}{n-k}}{\\binom{N}{n}}$ (loi hypergéométrique) : on choisit $k$ boules parmi les $K$ de la catégorie, et les $n-k$ restantes parmi les $N-K$ boules des autres catégories."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$P(X=k)=\\dfrac{\\binom{K}{k}\\binom{N-K}{n-k}}{\\binom{N}{n}}$ : on choisit $k$ boules rouges parmi les $4$, et les $3-k$ restantes parmi les $8$ boules non rouges (5 blanches + 3 bleues).\n\nIci $N=12$, $n=3$, $K=4$ (boules rouges), $N-K=8$ (boules non rouges), et $\\binom{12}{3}=220$ (question 1.a).\n\n**Cas $X=0$.** $P(X=0)=\\dfrac{\\binom{4}{0}\\binom{8}{3}}{220}=\\dfrac{1\\times56}{220}=\\dfrac{56}{220}$ (avec $\\binom{8}{3}=\\frac{8\\times7\\times6}{6}=56$)\n\n**Cas $X=1$.** $P(X=1)=\\dfrac{\\binom{4}{1}\\binom{8}{2}}{220}=\\dfrac{4\\times28}{220}=\\dfrac{112}{220}$ (avec $\\binom{8}{2}=\\frac{8\\times7}{2}=28$)\n\n**Cas $X=2$.** $P(X=2)=\\dfrac{\\binom{4}{2}\\binom{8}{1}}{220}=\\dfrac{6\\times8}{220}=\\dfrac{48}{220}$ (avec $\\binom{4}{2}=\\frac{4\\times3}{2}=6$)\n\n**Cas $X=3$.** $P(X=3)=\\dfrac{\\binom{4}{3}\\binom{8}{0}}{220}=\\dfrac{4\\times1}{220}=\\dfrac{4}{220}$\n\n**Vérification.** $56+112+48+4=220$, donc la somme des probabilités vaut $220/220=1$ ✓.\n\n**Conclusion.** La loi de $X$ est bien celle annoncée dans le tableau, chaque valeur étant justifiée par la loi hypergéométrique."
+    },
+    {
+      "numero": "2.b",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer l'espérance mathématique de $X$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-lesperance-dune-variable-aleatoire-a-partir-du-tableau-de-loi-terminale-d-ti",
+          "texte": "L'espérance d'une variable aléatoire discrète est $E(X)=\\sum_i x_i\\,P(X=x_i)$, la somme des valeurs pondérées par leur probabilité."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$E(X)=\\sum_i x_i\\,P(X=x_i)$.\n\n$$E(X)=0\\times\\dfrac{56}{220}+1\\times\\dfrac{112}{220}+2\\times\\dfrac{48}{220}+3\\times\\dfrac{4}{220}=\\dfrac{0+112+96+12}{220}=\\dfrac{220}{220}=1$$\n\n**Conclusion.** $E(X)=1$.\n\n### Conseil\nOn peut vérifier ce résultat par la formule de l'espérance de la loi hypergéométrique, $E(X)=n\\times\\dfrac{K}{N}=3\\times\\dfrac{4}{12}=1$ : elle confirme immédiatement le résultat sans refaire la somme."
+    },
+    {
+      "numero": "2.c",
+      "points": "0,5pt",
+      "enonce_markdown": "Calculer la variance de $X$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-la-variance-dune-variable-aleatoire-a-partir-du-tableau-de-loi-terminale-d-ti",
+          "texte": "$V(X)=E(X^2)-\\left(E(X)\\right)^2$, avec $E(X^2)=\\sum_i x_i^2\\,P(X=x_i)$ calculé séparément."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n$V(X)=E(X^2)-\\left(E(X)\\right)^2$, avec $E(X^2)=\\sum_i x_i^2\\,P(X=x_i)$.\n\n**Calcul de $E(X^2)$.** $E(X^2)=0^2\\times\\dfrac{56}{220}+1^2\\times\\dfrac{112}{220}+2^2\\times\\dfrac{48}{220}+3^2\\times\\dfrac{4}{220}=\\dfrac{0+112+192+36}{220}=\\dfrac{340}{220}=\\dfrac{17}{11}$\n\n**Calcul de $V(X)$.** $V(X)=\\dfrac{17}{11}-1^2=\\dfrac{17}{11}-\\dfrac{11}{11}=\\dfrac{6}{11}$\n\n**Conclusion.** $V(X)=\\dfrac{6}{11}\\approx0,545$."
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-selection-combinant-plusieurs-conditions-avec-and-select-where-and-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de sélection combinant plusieurs conditions avec AND (SELECT... WHERE... AND...)",
+    "cours_id": "cours-ecrire-une-requete-sql-de-selection-combinant-plusieurs-conditions-avec-and-select-where-and-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Langage SQL — Interrogation de données",
+    "tags": [
+      "SELECT",
+      "WHERE",
+      "AND",
+      "conditions multiples"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2022-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2022-cameroun-ex3-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Filtrer sur un seul critère est rarement suffisant en pratique : \"les filles de moins de 18 ans\" combine déjà deux conditions qui doivent être vraies en même temps. L'opérateur AND permet précisément cette combinaison."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir écrire une requête SELECT ... WHERE avec une seule condition"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Combiner plusieurs conditions avec AND dans une clause WHERE",
+      "contenu_markdown": "L'opérateur **AND** relie plusieurs conditions dans une clause WHERE ; une ligne n'est retenue dans le résultat que si **toutes** les conditions reliées par AND sont vraies simultanément. Syntaxe : `SELECT colonnes FROM table WHERE condition1 AND condition2;`",
+      "formule_principale": "SELECT colonnes FROM table WHERE condition1 AND condition2;",
+      "variantes": [
+        {
+          "nom": "Opérateur OR",
+          "quand_utiliser": "Quand il suffit qu'une seule des conditions soit vraie pour retenir la ligne.",
+          "contenu_markdown": "`WHERE condition1 OR condition2` retient une ligne dès qu'AU MOINS une des deux conditions est vraie, contrairement à AND qui exige que les deux le soient."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une requête qui affiche la liste de tous les élèves de sexe féminin, ayant moins de 18 ans.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux conditions à combiner",
+          "justification": "L'énoncé impose \"sexe féminin\" ET \"moins de 18 ans\" simultanément.",
+          "resultat_markdown": "Sexe = 'F' et Age < 18"
+        },
+        {
+          "numero": 2,
+          "action": "Les relier avec AND dans la clause WHERE",
+          "justification": "Les deux conditions doivent être vraies en même temps pour chaque ligne retenue.",
+          "resultat_markdown": "`SELECT * FROM Eleve WHERE Sexe = 'F' AND Age < 18;`"
+        }
+      ],
+      "conclusion_markdown": "AND exige que toutes les conditions reliées soient vraies simultanément pour qu'une ligne soit retenue dans le résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser OR au lieu de AND (\"Sexe = 'F' OR Age < 18\")",
+          "pourquoi_faux": "Avec OR, une ligne serait retenue dès qu'une SEULE des deux conditions est vraie (par exemple un garçon de 15 ans serait inclus), ce qui ne correspond pas à l'énoncé qui exige les DEUX conditions à la fois.",
+          "correction_markdown": "Utilise AND quand l'énoncé demande que plusieurs critères soient vrais EN MÊME TEMPS (souvent traduit par \"et\", \"à la fois\"), et OR quand un seul suffit (souvent traduit par \"ou\")."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête affichant les élèves de sexe masculin ayant 18 ans exactement.",
+          "solution_markdown": "`SELECT * FROM Eleve WHERE Sexe = 'M' AND Age = 18;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête affichant les élèves ayant entre 16 et 18 ans inclus.",
+          "solution_markdown": "`SELECT * FROM Eleve WHERE Age >= 16 AND Age <= 18;` (équivalent à `WHERE Age BETWEEN 16 AND 18;` dans la plupart des SGBD)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment combiner AND et OR dans une même requête pour exprimer \"les filles de moins de 18 ans, OU les garçons de plus de 20 ans\" ?",
+          "solution_markdown": "`SELECT * FROM Eleve WHERE (Sexe = 'F' AND Age < 18) OR (Sexe = 'M' AND Age > 20);` — les parenthèses sont indispensables ici pour regrouper chaque paire de conditions liées par AND avant de les combiner par OR ; sans elles, l'ordre de priorité naturel de AND sur OR pourrait produire un résultat different de celui voulu selon le SGBD, d'où l'importance de toujours parenthéser explicitement les combinaisons complexes de AND/OR."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "AND exige que toutes les conditions reliées soient vraies simultanément.",
+        "OR exige qu'au moins une des conditions soit vraie.",
+        "Le choix entre AND et OR dépend du sens exact de l'énoncé (\"et\" vs \"ou\").",
+        "Pour combiner AND et OR dans une même requête, toujours parenthéser explicitement les groupes de conditions."
+      ]
+    }
+  ]
+}

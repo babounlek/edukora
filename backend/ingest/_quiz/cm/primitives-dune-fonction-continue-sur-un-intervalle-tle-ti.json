@@ -1,0 +1,138 @@
+[
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-faible-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x)=6x^2-10x+4$. Déterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(1)=5$.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour une fonction polynôme, on primitive terme à terme en utilisant $x^n \\mapsto \\dfrac{x^{n+1}}{n+1}$ pour chaque monôme, ce qui donne une famille de primitives à une constante additive $C$ près. La valeur de $C$ se détermine ensuite en exploitant la condition supplémentaire fournie sur $F$.\n\n### Corrigé\nOn primitive terme à terme : une primitive de $6x^2$ est $2x^3$, une primitive de $-10x$ est $-5x^2$, une primitive de $4$ est $4x$. Les primitives de $f$ sur $\\mathbb{R}$ sont donc les fonctions :\n$$F(x)=2x^3-5x^2+4x+C,\\qquad C\\in\\mathbb{R}$$\n\nLa condition $F(1)=5$ donne $2\\times1^3-5\\times1^2+4\\times1+C=5$, soit $2-5+4+C=5$, c'est-à-dire $1+C=5$, donc $C=4$.\n\n$$\\boxed{F(x)=2x^3-5x^2+4x+4}$$\n\n**Vérification** : $F'(x)=6x^2-10x+4=f(x)$ pour tout $x$, et $F(1)=2-5+4+4=5$. Les deux conditions demandées sont satisfaites.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-faible-1",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Quelle expression est une primitive sur $\\mathbb{R}$ de la fonction $f$ définie par $f(x)=\\sin(4x)$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour une fonction de la forme $x\\mapsto\\sin(kx)$ avec $k\\ne0$, une primitive s'obtient en divisant par $k$ et en changeant le signe, soit $x\\mapsto-\\dfrac1k\\cos(kx)$, car dériver $\\cos(kx)$ fait apparaître $-k\\sin(kx)$. Il suffit d'identifier $k$ dans l'expression donnée et d'appliquer directement cette formule.\n\n### Corrigé\nPour une fonction de la forme $x\\mapsto\\sin(kx)$ (avec $k\\ne0$), une primitive est $x\\mapsto-\\dfrac1k\\cos(kx)$ : on divise par $k$ et on change le signe, car c'est ce qu'introduit la dérivation de $\\cos(kx)$ par la règle de dérivation des fonctions composées. Ici $k=4$, donc une primitive de $f$ sur $\\mathbb{R}$ est :\n$$F(x)=-\\dfrac14\\cos(4x)$$\n\n**Vérification** : $F'(x)=-\\dfrac14\\times(-4\\sin(4x))=\\sin(4x)=f(x)$.\n\n**Réponse correcte : A.**\n\nLes distracteurs correspondent à des erreurs classiques : (B) oublie le changement de signe ; (C) multiplie par $4$ au lieu de diviser par $4$ ; (D) confond avec la primitive de $\\cos(4x)$, qui est $\\dfrac14\\sin(4x)$, en l'appliquant à tort à $\\sin(4x)$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$-\\dfrac14\\cos(4x)$" },
+      { "lettre": "B", "texte": "$\\dfrac14\\cos(4x)$" },
+      { "lettre": "C", "texte": "$-4\\cos(4x)$" },
+      { "lettre": "D", "texte": "$\\dfrac14\\sin(4x)$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [6528]
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-moyenne-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x)=\\dfrac{6x-3}{3x^2-3x+5}$. On admet que $f$ est continue sur $\\mathbb{R}$. Déterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(0)=3$.",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une fonction s'écrit sous la forme $\\dfrac{u'}{u}$ avec $u$ ne s'annulant pas, ses primitives sont $\\ln|u|+C$ (ou $\\ln(u)+C$ si $u$ reste strictement positif). Il faut donc repérer que le numérateur est bien la dérivée du dénominateur, puis étudier le signe de ce dénominateur pour choisir la bonne écriture.\n\n### Corrigé\n**Étude du dénominateur.** Le trinôme $3x^2-3x+5$ a pour discriminant $\\Delta=(-3)^2-4\\times3\\times5=9-60=-51<0$. Comme $\\Delta<0$ et que le coefficient dominant ($3$) est positif, $3x^2-3x+5>0$ pour tout $x\\in\\mathbb{R}$ : le dénominateur ne s'annule jamais, ce qui confirme que $f$ est bien définie et continue sur $\\mathbb{R}$ entier.\n\n**Reconnaissance de la forme $u'/u$.** Posons $u(x)=3x^2-3x+5$. Alors $u'(x)=6x-3$, qui est exactement le numérateur de $f$. On a donc $f=\\dfrac{u'}{u}$ avec $u>0$ sur $\\mathbb{R}$ : les primitives de $f$ sur $\\mathbb{R}$ sont les fonctions $x\\mapsto\\ln(u(x))+C$ (pas besoin de valeur absolue puisque $u$ reste strictement positif) :\n$$F(x)=\\ln(3x^2-3x+5)+C,\\qquad C\\in\\mathbb{R}$$\n\n**Détermination de $C$.** La condition $F(0)=3$ donne $\\ln(3\\times0^2-3\\times0+5)+C=3$, soit $\\ln5+C=3$, donc $C=3-\\ln5$.\n\n$$\\boxed{F(x)=\\ln(3x^2-3x+5)+3-\\ln5}$$\n\n**Vérification** : $F'(x)=\\dfrac{6x-3}{3x^2-3x+5}=f(x)$ pour tout $x$ réel, et $F(0)=\\ln5+3-\\ln5=3$. Les deux conditions sont satisfaites.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-moyenne-1",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Quelle expression est une primitive sur $\\mathbb{R}$ de la fonction $f$ définie par $f(x)=(4x-6)e^{2x^2-6x+1}$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une fonction s'écrit sous la forme $u'e^u$, une primitive est directement $e^u$, sans autre calcul. La démarche consiste donc à identifier une fonction $u$ dont la dérivée $u'$ correspond exactement au facteur multipliant l'exponentielle dans l'expression donnée.\n\n### Corrigé\nPosons $u(x)=2x^2-6x+1$, de sorte que $u'(x)=4x-6$, exactement le facteur qui multiplie l'exponentielle dans $f$. On reconnaît donc la forme $f=u'e^u$, dont une primitive est $e^u$ :\n$$F(x)=e^{2x^2-6x+1}$$\n\n**Vérification** : $F'(x)=(4x-6)\\times e^{2x^2-6x+1}=f(x)$ pour tout $x$ réel.\n\n**Réponse correcte : A.**\n\nLes distracteurs correspondent à des erreurs classiques : (B) multiplie l'exponentielle par $u(x)$ au lieu de garder $e^{u(x)}$ seul, en confondant avec une règle de dérivation d'un produit ; (C) commet une erreur de signe ; (D) recopie $f(x)$ lui-même, en croyant à tort qu'une primitive d'une fonction de cette forme reproduit l'expression de départ.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$e^{2x^2-6x+1}$" },
+      { "lettre": "B", "texte": "$(2x^2-6x+1)e^{2x^2-6x+1}$" },
+      { "lettre": "C", "texte": "$-e^{2x^2-6x+1}$" },
+      { "lettre": "D", "texte": "$(4x-6)e^{2x^2-6x+1}$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-moyenne-2",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $]3;+\\infty[$ par $f(x)=\\dfrac{2x^2-x-21}{x-3}$. Montrer que, pour tout $x\\in]3;+\\infty[$, $f(x)=2x+5-\\dfrac{6}{x-3}$, puis déterminer la primitive $F$ de $f$ sur cet intervalle telle que $F(4)=10$.",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une fraction rationnelle a un numérateur de degré supérieur ou égal à celui du dénominateur, on effectue une division euclidienne pour la réécrire comme somme d'un polynôme et d'un terme de la forme $\\dfrac{k}{x-a}$, plus facile à primitiver terme à terme (le polynôme directement, le terme en $\\dfrac{k}{x-a}$ via $k\\ln|x-a|$). La constante d'intégration se détermine ensuite avec la condition donnée.\n\n### Corrigé\n**Division euclidienne de $2x^2-x-21$ par $x-3$.**\n\nOn divise le terme de plus haut degré : $2x^2\\div x=2x$. On multiplie : $2x(x-3)=2x^2-6x$. On soustrait :\n$$(2x^2-x-21)-(2x^2-6x)=5x-21$$\n\nOn continue : $5x\\div x=5$. On multiplie : $5(x-3)=5x-15$. On soustrait :\n$$(5x-21)-(5x-15)=-6$$\n\nLe quotient est $2x+5$ et le reste est $-6$ :\n$$2x^2-x-21=(x-3)(2x+5)-6$$\n\n(Vérification : $(x-3)(2x+5)-6=2x^2+5x-6x-15-6=2x^2-x-21$, ce qui correspond bien au numérateur de départ.)\n\nEn divisant par $x-3$ (non nul car $x\\ne3$) :\n$$f(x)=\\dfrac{(x-3)(2x+5)-6}{x-3}=(2x+5)-\\dfrac6{x-3}$$\n\ncomme annoncé.\n\n**Primitive sur $]3;+\\infty[$.** Sur cet intervalle, $x-3>0$ : la valeur absolue n'est pas nécessaire. Une primitive de $2x+5$ est $x^2+5x$, et une primitive de $\\dfrac6{x-3}$ est $6\\ln(x-3)$. Les primitives de $f$ sur $]3;+\\infty[$ sont donc les fonctions :\n$$F(x)=x^2+5x-6\\ln(x-3)+C,\\qquad C\\in\\mathbb{R}$$\n\n**Détermination de $C$.** La condition $F(4)=10$ donne :\n$$4^2+5\\times4-6\\ln(4-3)+C=10 \\iff 16+20-6\\ln1+C=10 \\iff 36-0+C=10$$\n\nD'où $C=10-36=-26$.\n\n$$\\boxed{F(x)=x^2+5x-6\\ln(x-3)-26}$$\n\n**Vérification** : $F'(x)=2x+5-\\dfrac6{x-3}=f(x)$ pour tout $x\\in\\,]3;+\\infty[$, et $F(4)=16+20-6\\ln1-26=36-0-26=10$. Les deux conditions demandées sont satisfaites.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6485]
+  },
+  {
+    "external_id": "cqc-primitives-dune-fonction-continue-sur-un-intervalle-tle-ti-elevee-0",
+    "theme": "Primitives d'une fonction continue sur un intervalle (Tle TI)",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "TI",
+      "module_numero": "24",
+      "savoir_numero": "V"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x)=2x\\,e^{-x^2}$, et soit $F$ la primitive de $f$ sur $\\mathbb{R}$ telle que $F(0)=0$.\n\n1. Déterminer l'expression de $F(x)$.\n2. Démontrer que, pour tout réel $x$, $0\\leq F(x)<1$.",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une fonction s'écrit sous la forme $-u'e^u$ (l'opposé de $u'e^u$), une primitive est $-e^u$. Pour encadrer ensuite l'expression obtenue, on part d'un encadrement de $u(x)$, puis on exploite la stricte positivité et la croissance de la fonction exponentielle pour transformer cet encadrement en encadrement de $F(x)$.\n\n### Corrigé\n**1. Calcul de $F(x)$.** Posons $u(x)=-x^2$, de sorte que $u'(x)=-2x$. On peut alors écrire $f(x)=2x\\,e^{-x^2}=-u'(x)\\,e^{u(x)}$ : c'est l'opposé de la forme $u'e^u$, dont une primitive est $e^u$. Une primitive de $f$ sur $\\mathbb{R}$ est donc $-e^{-x^2}$, et les primitives de $f$ sur $\\mathbb{R}$ sont les fonctions :\n$$F(x)=-e^{-x^2}+C,\\qquad C\\in\\mathbb{R}$$\n\nLa condition $F(0)=0$ donne $-e^{0}+C=0$, soit $-1+C=0$, donc $C=1$.\n\n$$\\boxed{F(x)=1-e^{-x^2}}$$\n\n**Vérification** : $F'(x)=-(-2x)e^{-x^2}=2x\\,e^{-x^2}=f(x)$ pour tout $x$, et $F(0)=1-e^{0}=1-1=0$. Les deux conditions demandées sont satisfaites.\n\n**2. Encadrement de $F(x)$.** Pour tout réel $x$, $x^2\\geq0$, donc $-x^2\\leq0$. La fonction exponentielle étant strictement croissante sur $\\mathbb{R}$ et valant $1$ en $0$, on en déduit :\n$$0<e^{-x^2}\\leq e^{0}=1$$\n\n(l'exponentielle d'un réel est toujours strictement positive, quel que soit le signe de cet argument, ce qui justifie l'inégalité stricte de gauche ; l'inégalité de droite vient de $-x^2\\leq0$ et de la croissance de l'exponentielle).\n\nEn multipliant cet encadrement par $-1$ (ce qui renverse les inégalités), puis en ajoutant $1$ partout :\n$$-1\\leq-e^{-x^2}<0 \\quad\\Longrightarrow\\quad 1-1\\leq1-e^{-x^2}<1-0 \\quad\\Longrightarrow\\quad 0\\leq F(x)<1$$\n\n**Conclusion** : pour tout réel $x$, $0\\leq F(x)<1$, l'égalité $F(x)=0$ n'étant atteinte qu'en $x=0$ (le seul point où $e^{-x^2}=1$), et la valeur $1$ n'étant elle-même jamais atteinte, quelle que soit l'amplitude de $x$.\n\n### Piège à éviter\nNe pas confondre inégalité large et inégalité stricte : $e^{-x^2}$ est strictement positif pour tout $x$ (jamais nul, même quand $x$ devient très grand), donc $F(x)$ est strictement inférieur à $1$ et non « inférieur ou égal » à $1$ ; en revanche $e^{-x^2}\\leq1$ n'est pas strict, car l'égalité a bien lieu en $x=0$, d'où $F(x)\\geq0$ avec égalité possible.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6515, 6523]
+  }
+]

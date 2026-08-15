@@ -1,0 +1,50 @@
+{
+  "epreuve_source": "bac-c-e-physique-2021-cameroun.pdf",
+  "numero_exercice": "5",
+  "matiere": "Physique",
+  "serie": "C, E",
+  "examen": "Baccalauréat",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2021,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "points": 8,
+  "figures": [],
+  "enonce_intro_markdown": "**SITUATION PROBLÈME 2 (Série C) — 8 points**\n\nUn vendeur de composants électroniques reçoit très souvent les plaintes de ses clients sur la qualité des pièces et décide de vérifier les caractéristiques des pièces restantes dans le magasin. Il fait appel à sa fille Angélique, élève en classe de terminale C, pour l'aider. Au laboratoire, l'élève réalise les expériences suivantes.\n\n**Document — Composants disponibles dans le magasin :** Résistor (R=85Ω) ; bobine (L=1,2H ; r=15Ω) ; condensateur (C=6µF).\n\n**Expérience 1 :** Elle monte le résistor aux bornes d'un générateur de tension constante U=6V. L'intensité du courant est alors I=0,0706A.\n\n**Expérience 2 :** Elle monte la bobine et le résistor en série. Ce circuit est alimenté par un générateur de tension constante U=6V. L'intensité du courant est alors I=0,06A.\n\n**Expérience 3 :** Elle monte le condensateur initialement déchargé en série avec le résistor. Ce circuit est alimenté par un générateur de tension constante. Un dispositif approprié a permis de constater que la constante de temps du dipôle est τ=0,5ms.\n\n**Expérience 4 :** Le résistor, la bobine et le condensateur sont montés en série et alimentés par un générateur basse fréquence (GBF) qui délivre une tension sinusoïdale. Un oscillographe est branché et permet de suivre les variations des deux tensions. On fait varier la fréquence délivrée par le GBF dans le circuit ; les deux courbes obtenues sur l'oscillographe sont en phase. L'intensité du courant dans le circuit est de la forme i(t)=Im cos(136πt).\n\n**En exploitant les informations ci-dessus et à partir d'un raisonnement logique, propose à Angélique la réponse qu'elle doit donner à son père.**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "En exploitant les quatre expériences, déterminer, pour chaque composant (résistor, bobine, condensateur), si ses caractéristiques annoncées (R=85Ω ; L=1,2H, r=15Ω ; C=6µF) sont conformes aux mesures effectuées, et proposer une conclusion à donner au vendeur.",
+      "corrige_markdown": "### Rappel de méthode\nChaque expérience permet de tester une caractéristique précise d'un composant, en s'appuyant sur les résultats déjà validés par les expériences précédentes : loi d'Ohm (Exp1), résistance d'une bobine en régime continu (Exp2), constante de temps d'un dipôle RC (Exp3), et condition de résonance d'intensité (Exp4) pour tester l'inductance L, dernière caractéristique non encore vérifiée directement.\n\n### Corrigé\n**Expérience 1 — vérification de R :** en régime continu, la loi d'Ohm donne :\n$$R_{mesur\\acute{e}} = \\dfrac{U}{I} = \\dfrac{6}{0{,}0706} \\approx 85{,}0\\ \\Omega$$\nCette valeur coïncide avec l'étiquette R=85Ω : **le résistor est conforme**.\n\n**Expérience 2 — vérification de r (résistance de la bobine) :** en régime continu établi, la bobine idéale n'oppose aucune réactance ; seule sa résistance interne r compte. Le circuit équivaut alors à (R+r) en série :\n$$R+r = \\dfrac{U}{I} = \\dfrac{6}{0{,}06} = 100\\ \\Omega \\quad\\Longrightarrow\\quad r_{mesur\\acute{e}} = 100-85 = 15\\ \\Omega$$\nCette valeur coïncide avec l'étiquette r=15Ω (en utilisant R=85Ω déjà validé) : **la résistance interne de la bobine est conforme**.\n\n**Expérience 3 — vérification de C :** pour un dipôle RC en charge sous tension constante, la constante de temps vaut τ=RC. Avec R=85Ω déjà validé :\n$$C_{mesur\\acute{e}} = \\dfrac{\\tau}{R} = \\dfrac{0{,}5\\times10^{-3}}{85} \\approx 5{,}88\\times10^{-6}\\ \\text{F} = 5{,}88\\ \\mu\\text{F}$$\nCette valeur est très proche de l'étiquette C=6µF (écart d'environ 2%, imputable aux incertitudes de mesure) : **le condensateur est conforme**.\n\n**Expérience 4 — vérification de L :** les deux courbes en phase sur l'oscillographe indiquent que le circuit RLC série est à la **résonance d'intensité**, donc $L\\omega_0=\\dfrac{1}{C\\omega_0}$, soit $\\omega_0^2=\\dfrac{1}{LC}$. La pulsation de résonance se lit dans i(t)=Im cos(136πt) : $\\omega_0=136\\pi\\approx427{,}3$rad/s.\n\nEn utilisant C=6µF (déjà validé) :\n$$L_{mesur\\acute{e}} = \\dfrac{1}{C\\,\\omega_0^2} = \\dfrac{1}{6\\times10^{-6}\\times(136\\pi)^2} \\approx 0{,}913\\ \\text{H}$$\n\nCette valeur (≈0,91H) est **très différente** de l'étiquette L=1,2H (écart d'environ 24%, largement supérieur à une simple incertitude de mesure) : **l'inductance de la bobine n'est PAS conforme à son étiquette**.\n\n**Conclusion à transmettre au père :** parmi les composants testés, le résistor (85Ω), la résistance interne de la bobine (15Ω) et le condensateur (6µF) sont conformes à leurs étiquettes. En revanche, **l'inductance annoncée de la bobine (1,2H) est incorrecte** : la valeur réelle mesurée est d'environ 0,91H. Ce défaut d'étiquetage sur l'inductance de la bobine explique très probablement les plaintes des clients ; il faudrait retirer ou ré-étiqueter correctement ce lot de bobines.\n\n### Piège à éviter\nNe pas conclure que « toute la bobine » est défectueuse : sa résistance r=15Ω est parfaitement conforme (validée par l'expérience 2), seule son inductance L est en cause.\n\n### Conseil\nCette démarche (valider chaque composant successivement en s'appuyant sur les résultats déjà établis) est une méthode de diagnostic rigoureuse, transposable à toute situation d'identification de composants défectueux dans un circuit.",
+      "themes": [
+        "Loi d'Ohm",
+        "Constante de temps RC",
+        "Résonance d'intensité",
+        "Diagnostic de composants"
+      ],
+      "difficulte_estimee": 5,
+      "type_reponse": "calcul",
+      "choix": null,
+      "reponse_correcte": "R, r et C conformes ; L non conforme (≈0,91H mesuré au lieu de 1,2H étiqueté)",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "contenu_markdown": "Chaque expérience permet de tester une caractéristique précise d'un composant, en s'appuyant sur les résultats déjà validés par les expériences précédentes : loi d'Ohm (Exp1), résistance d'une bobine en régime continu (Exp2), constante de temps d'un dipôle RC (Exp3), et condition de résonance d'intensité (Exp4) pour tester l'inductance L, dernière caractéristique non encore vérifiée directement.",
+          "id": "cours-diagnostiquer-la-conformite-des-composants-electroniques-r-l-c"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "loi d'Ohm",
+    "bobine réelle",
+    "constante de temps",
+    "circuit RC",
+    "résonance d'intensité",
+    "diagnostic de composants",
+    "situation problème"
+  ],
+  "incertitudes": [],
+  "statut": "corrige"
+}

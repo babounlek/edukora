@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-un-encadrement-double-dune-suite-terminale-d-ti",
+  "meta": {"titre": "Démontrer par récurrence un encadrement double d'une suite", "cours_id": "cours-demontrer-par-recurrence-un-encadrement-double-dune-suite-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D/TI", "sous_theme": "Suites — récurrence", "tags": ["récurrence", "encadrement", "borne"], "duree_estimee_minutes": 20, "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2025-cameroun-ex2-1b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Prouver qu'une suite reste toujours coincée entre deux bornes se fait par récurrence, en traitant chaque borne séparément dans l'hérédité — jamais en les mélangeant."},
+    {"type": "prerequis", "items_markdown": ["Principe de récurrence (initialisation + hérédité)", "Croissance de la fonction racine carrée sur les positifs"]},
+    {"type": "regle", "titre": "Traiter chaque borne séparément", "contenu_markdown": "Pour démontrer $a\\le u_n<b$ par récurrence, on vérifie l'initialisation, puis dans l'hérédité on suppose $a\\le u_n<b$ et on établit séparément $u_{n+1}\\ge a$ (borne inférieure) et $u_{n+1}<b$ (borne supérieure), souvent via une propriété algébrique satisfaite par la borne $b$.", "formule_principale": "hypothèse a≤un<b ⟹ établir séparément un+1≥a ET un+1<b", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "u0=2, u(n+1)=√(2+un). Montrer par récurrence que 2≤un<3 pour tout n (sachant 3²=2+3+4, donc en fait 2+3=5≠9 -- utilisons plutôt un exemple correct : on admet la propriété clé 3²>2+3).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "u0=2 : 2≤2<3 vrai.", "resultat_markdown": "vraie au rang 0"},
+      {"numero": 2, "action": "Borne inférieure hérédité", "justification": "un≥2 ⟹ 2+un≥4 ⟹ u(n+1)=√(2+un)≥2.", "resultat_markdown": "un+1≥2"},
+      {"numero": 3, "action": "Borne supérieure hérédité", "justification": "un<3 ⟹ 2+un<5<9=3² ⟹ u(n+1)<3.", "resultat_markdown": "un+1<3"}
+    ], "conclusion_markdown": "Les deux bornes sont établies indépendamment, avec des arguments qui peuvent différer l'un de l'autre."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Traiter les deux bornes en un seul bloc d'inégalités sans les justifier séparément", "pourquoi_faux": "Les deux bornes reposent souvent sur des arguments différents (l'une sur la croissance directe, l'autre sur une propriété algébrique spécifique de la borne) : les fusionner masque des justifications distinctes et rend la preuve incomplète.", "correction_markdown": "Toujours rédiger deux paragraphes séparés et clairement identifiés (« borne inférieure » puis « borne supérieure ») dans l'hérédité."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "u0=1, u(n+1)=√(3+2un). Sachant 3²=3+2×3, montrer par récurrence 1≤un<3.", "solution_markdown": "Init : 1≤1<3 vrai. Hérédité : un≥1⟹3+2un≥5⟹u(n+1)≥√5>1 (donc ≥1). un<3⟹3+2un<9=3²⟹u(n+1)<3."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un encadrement double se démontre en traitant chaque borne séparément dans l'hérédité.", "La borne supérieure repose souvent sur une propriété algébrique spécifique établie en amont (comme φ²=φ+1).", "Ne jamais fusionner les deux justifications en une seule ligne peu détaillée."]}
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-symetrie-orthogonale-plan-c",
+  "meta": {
+    "titre": "Expression analytique d'une symétrie orthogonale par rapport à un plan",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Transformations de l'espace",
+    "duree_estimee_min": 30,
+    "tags": ["symétrie orthogonale", "projection orthogonale", "plan", "espace"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q2a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Réfléchir un point par rapport à un plan, comme un miroir dans l'espace : c'est exactement ce que fait la symétrie orthogonale. Le point de départ, son image, et le plan sont alignés d'une façon très précise - le plan coupe le segment qui les relie exactement en son milieu, à angle droit. Traduire cette idée géométrique en formule algébrique permet ensuite de manipuler cette transformation aussi facilement qu'une translation ou une rotation."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Vecteur normal à un plan", "Projection orthogonale d'un point sur un plan", "Notion de milieu d'un segment en coordonnées"]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction en deux temps : projeté puis symétrique",
+      "contenu_markdown": "Soit $(P)$ un plan d'équation $ax+by+cz+d=0$ et $M(x;y;z)$ un point quelconque de l'espace. La symétrie orthogonale $s$ par rapport à $(P)$ associe à $M$ le point $M'=s(M)$ défini de deux façons équivalentes :\n\n1. **Géométriquement :** le projeté orthogonal $H$ de $M$ sur $(P)$ est le milieu de $[MM']$.\n2. **Algébriquement :** on calcule d'abord $H$, puis $M'=2H-M$ (coordonnée par coordonnée).\n\nLe projeté orthogonal $H$ s'obtient en reculant $M$ le long du vecteur normal $\\vec n(a;b;c)$ d'une quantité proportionnelle à $ax+by+cz+d$ :\n$$H=M-\\frac{ax+by+cz+d}{a^2+b^2+c^2}\\,\\vec n$$\n\nEn posant $t=\\dfrac{ax+by+cz+d}{a^2+b^2+c^2}$, on obtient directement les coordonnées de $M'=s(M)$ :\n$$x'=x-2at,\\quad y'=y-2bt,\\quad z'=z-2ct$$",
+      "formule_principale": "M' = 2H - M,\\quad H = M - \\dfrac{ax+by+cz+d}{a^2+b^2+c^2}\\,\\vec n",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le plan $(P)$ a pour équation $x+y+z-3=0$. Soit $s$ la symétrie orthogonale par rapport à $(P)$. Pour $M(x;y;z)$ quelconque, exprimer $x'$, $y'$, $z'$ en fonction de $x$, $y$, $z$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier a, b, c, d et calculer la norme au carré du vecteur normal",
+          "justification": "Ce sont les données nécessaires à la formule du projeté orthogonal.",
+          "resultat_markdown": "$a=b=c=1$, $d=-3$ ; $\\vec n(1;1;1)$ et $a^2+b^2+c^2=3$."
+        },
+        {
+          "numero": 2,
+          "action": "Poser t en fonction de x, y, z",
+          "justification": "$t$ représente la quantité, proportionnelle à la distance signée de $M$ au plan, dont on recule $M$ le long de $\\vec n$.",
+          "resultat_markdown": "$t=\\dfrac{x+y+z-3}{3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les coordonnées du projeté H",
+          "justification": "$H=M-t\\,\\vec n$, coordonnée par coordonnée.",
+          "resultat_markdown": "$H\\left(x-t\\,;\\,y-t\\,;\\,z-t\\right)$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire M' = 2H - M",
+          "justification": "H est le milieu de [MM'], donc M' = 2H - M.",
+          "resultat_markdown": "$x'=2(x-t)-x=x-2t$, et de même $y'=y-2t$, $z'=z-2t$."
+        },
+        {
+          "numero": 5,
+          "action": "Remplacer t par son expression et réduire au même dénominateur",
+          "justification": "On obtient une formule explicite en x, y, z.",
+          "resultat_markdown": "$x'=x-\\dfrac{2(x+y+z-3)}{3}=\\dfrac{x-2y-2z+6}{3}$, $y'=\\dfrac{-2x+y-2z+6}{3}$, $z'=\\dfrac{-2x-2y+z+6}{3}$."
+        }
+      ],
+      "conclusion_markdown": "On dispose maintenant d'une formule explicite pour l'image de n'importe quel point par $s$ : il suffit d'y substituer les coordonnées du point de départ, comme pour $A(1;2;3)$ qui donne $A'(-1;0;1)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $M'=H-M$ au lieu de $M'=2H-M$.",
+          "pourquoi_faux": "$H$ est le milieu de $[MM']$, donc $H=\\dfrac{M+M'}{2}$, ce qui donne $M'=2H-M$ et non $H-M$. Oublier le facteur $2$ divise par deux l'écart entre $M$ et son image.",
+          "correction_markdown": "Repars toujours de la définition du milieu $H=\\dfrac{M+M'}{2}$ et isole $M'$ proprement avant de substituer, plutôt que de mémoriser une formule finale sans la revérifier."
+        },
+        {
+          "erreur_markdown": "Vérifier le résultat en prenant un point M qui n'appartient pas au plan et s'attendre à M'=M.",
+          "pourquoi_faux": "Seuls les points du plan $(P)$ sont invariants par la symétrie orthogonale par rapport à $(P)$ ; un point hors du plan a une image distincte de lui-même.",
+          "correction_markdown": "Pour vérifier ta formule, choisis un point dont tu sais déjà qu'il appartient au plan (il vérifie l'équation $ax+by+cz+d=0$), et assure-toi alors que $M'=M$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le plan $(P')$ a pour équation $z=0$ (le plan $(xOy)$). Donner directement, sans calcul, l'expression de $s'(M)$ pour $M(x;y;z)$, où $s'$ est la symétrie orthogonale par rapport à $(P')$.",
+          "solution_markdown": "Le plan $(xOy)$ a pour vecteur normal $\\vec k(0;0;1)$. La symétrie orthogonale par rapport à ce plan conserve $x$ et $y$ (coordonnées dans le plan) et change le signe de $z$ (coordonnée perpendiculaire au plan) : $s'(x;y;z)=(x;y;-z)$. On peut le retrouver avec la formule générale : $a=0,b=0,c=1,d=0$, donc $t=z$, et $z'=z-2t=z-2z=-z$, $x'=x-2\\times0\\times t=x$, $y'=y$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En reprenant le plan $(P):x+y+z-3=0$ et les formules établies dans l'exemple, calculer les coordonnées de $B'=s(B)$ pour $B(0;0;0)$.",
+          "solution_markdown": "On calcule $t=\\dfrac{0+0+0-3}{3}=-1$. Donc $x'=0-2(-1)=2$, $y'=0-2(-1)=2$, $z'=0-2(-1)=2$. Donc $B'(2;2;2)$. Vérification : le milieu de $[BB']$ est $(1;1;1)$, qui vérifie bien $1+1+1-3=0$, donc appartient à $(P)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, à partir de la formule générale $x'=x-2at,\\ y'=y-2bt,\\ z'=z-2ct$ avec $t=\\dfrac{ax+by+cz+d}{a^2+b^2+c^2}$, que $s(s(M))=M$ pour tout point $M$ (autrement dit, que $s$ est involutive).",
+          "solution_markdown": "Notons $M'=s(M)$ de coordonnées $(x';y';z')$ comme ci-dessus, et calculons $t'$, le paramètre associé à $M'$ : $t'=\\dfrac{ax'+by'+cz'+d}{a^2+b^2+c^2}$.\n\nOn calcule $ax'+by'+cz'+d = a(x-2at)+b(y-2bt)+c(z-2ct)+d = (ax+by+cz+d) - 2t(a^2+b^2+c^2)$.\n\nOr $ax+by+cz+d = t(a^2+b^2+c^2)$ par définition de $t$, donc $ax'+by'+cz'+d = t(a^2+b^2+c^2) - 2t(a^2+b^2+c^2) = -t(a^2+b^2+c^2)$.\n\nDonc $t' = \\dfrac{-t(a^2+b^2+c^2)}{a^2+b^2+c^2} = -t$.\n\nAppliquons alors $s$ à $M'$ : $x''=x'-2at' = (x-2at) - 2a(-t) = x-2at+2at = x$. De même $y''=y$ et $z''=z$. Donc $s(M')=M$, c'est-à-dire $s(s(M))=M$ : $s$ est bien une involution, comme toute symétrie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La démarche pour construire l'image par une symétrie orthogonale par rapport à un plan se fait toujours en deux temps : calculer le projeté orthogonal $H$, puis utiliser $M'=2H-M$.",
+        "Le projeté orthogonal $H$ s'obtient en reculant $M$ le long du vecteur normal du plan d'une quantité $t$ proportionnelle à $ax+by+cz+d$.",
+        "Un point du plan est invariant par la symétrie par rapport à ce plan : c'est le test de vérification le plus rapide à effectuer une fois la formule établie.",
+        "La symétrie orthogonale par rapport à un plan est une involution : appliquée deux fois de suite, elle redonne le point de départ.",
+        "Au BAC C, cette formule sert souvent d'étape intermédiaire pour retrouver, sans repasser par une représentation paramétrique, le point d'intersection d'une droite perpendiculaire au plan avec ce plan (le milieu de $[MM']$)."
+      ]
+    }
+  ]
+}

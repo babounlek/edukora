@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-cayley-hamilton-matrice-2x2-terminale-c",
+  "meta": {
+    "titre": "Appliquer le théorème de Cayley-Hamilton pour une matrice 2x2",
+    "cours_id": "cours-cayley-hamilton-matrice-2x2-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire - trace, déterminant et polynôme caractéristique",
+    "tags": ["Cayley-Hamilton", "trace", "déterminant", "matrice 2x2"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_3_qPI-2c"
+  },
+  "sections": {
+    "accroche": "Pour toute matrice carrée 2x2, un raccourci redoutablement efficace permet d'exprimer son carré directement à partir de deux seuls nombres, la trace et le déterminant, sans jamais calculer de valeurs propres.",
+    "prerequis": ["Trace et déterminant d'une matrice 2x2", "Produit matriciel"],
+    "regle": {
+      "titre": "Théorème de Cayley-Hamilton en dimension 2",
+      "contenu_markdown": "Pour toute matrice $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$, le théorème de Cayley-Hamilton donne $M^2-\\mathrm{tr}(M)M+\\det(M)I=0$, c'est-à-dire $M^2=\\mathrm{tr}(M)M-\\det(M)I$, avec $\\mathrm{tr}(M)=a+d$ et $\\det(M)=ad-bc$. Si un endomorphisme f vérifie $f\\circ f=\\beta f+\\alpha\\,Id$ dans une base quelconque (donc en particulier dans la base canonique via sa matrice M), on identifie $\\beta=\\mathrm{tr}(M)$ et $\\alpha=-\\det(M)$.",
+      "formule_principale": "$M^2=\\mathrm{tr}(M)\\,M-\\det(M)\\,I$",
+      "variantes": ["Ce résultat se généralise en dimension n avec le polynôme caractéristique complet, mais reste particulièrement simple en dimension 2"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer M² pour $M=\\begin{pmatrix}1&2\\\\0&3\\end{pmatrix}$ via Cayley-Hamilton.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer trace et déterminant", "justification": "définitions", "resultat_markdown": "tr(M)=1+3=4, det(M)=1×3-2×0=3"},
+        {"numero": 2, "action": "Appliquer la formule", "justification": "Cayley-Hamilton", "resultat_markdown": "$M^2=4M-3I=\\begin{pmatrix}4&8\\\\0&12\\end{pmatrix}-\\begin{pmatrix}3&0\\\\0&3\\end{pmatrix}=\\begin{pmatrix}1&8\\\\0&9\\end{pmatrix}$"},
+        {"numero": 3, "action": "Vérifier par calcul direct", "justification": "produit matriciel", "resultat_markdown": "$M^2=\\begin{pmatrix}1&2\\\\0&3\\end{pmatrix}^2=\\begin{pmatrix}1&2+6\\\\0&9\\end{pmatrix}=\\begin{pmatrix}1&8\\\\0&9\\end{pmatrix}$ ✓"}
+      ],
+      "conclusion_markdown": "Les deux méthodes coïncident, confirmant la formule de Cayley-Hamilton en dimension 2."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre le signe du déterminant dans la formule (écrire M²=tr(M)M+det(M)I)", "pourquoi_faux": "le polynôme caractéristique est λ²-tr(M)λ+det(M), donc c'est bien -det(M)I qui apparaît isolé, soit +det(M)I du mauvais côté à corriger en le passant de l'autre côté de l'égalité", "correction_markdown": "Toujours repartir de χ_M(M)=M²-tr(M)M+det(M)I=0 puis isoler M²=tr(M)M-det(M)I, en gardant le signe moins devant det(M)."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Pour M=[[0,1],[-1,0]] (rotation de π/2), calculer M² via Cayley-Hamilton puis vérifier.", "solution_markdown": "tr(M)=0, det(M)=0×0-1×(-1)=1 ; M²=0×M-1×I=-I. Vérification directe : M²=[[-1,0],[0,-1]]=-I ✓."}
+    ],
+    "synthese": "Le théorème de Cayley-Hamilton en dimension 2 permet d'exprimer directement M² en fonction de M et de l'identité, via seulement la trace et le déterminant de M, sans passer par les valeurs propres ni la diagonalisation."
+  }
+}

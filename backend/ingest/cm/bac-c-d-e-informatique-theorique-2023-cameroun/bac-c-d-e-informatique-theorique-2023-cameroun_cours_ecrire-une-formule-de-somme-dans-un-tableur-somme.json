@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-somme-dans-un-tableur-somme-terminale-c",
+  "meta": {
+    "titre": "Écrire une formule de somme dans un tableur (SOMME)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Tableur - fonctions de base",
+    "tags": ["SOMME", "tableur"],
+    "duree_estimee_min": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qC5a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner une colonne entière de valeurs à la main, cellule par cellule, prend du temps et multiplie les risques d'erreur. Une seule formule d'un tableur fait ce calcul instantanément, quel que soit le nombre de lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Savoir sélectionner une plage de cellules dans un tableur"]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction SOMME(plage)",
+      "contenu_markdown": "La fonction SOMME(plage) additionne toutes les valeurs numériques contenues dans la plage de cellules indiquée entre parenthèses. La plage se note par sa première et sa dernière cellule séparées par deux-points (ex. E3:E7 désigne toutes les cellules de E3 à E7 inclus). Une cellule vide ou contenant du texte à l'intérieur de la plage est simplement ignorée par SOMME, sans provoquer d'erreur.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une feuille de calcul liste les coefficients de plusieurs matières en E3:E7. Écrire la formule à saisir dans la cellule E9 pour calculer le total des coefficients.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la plage exacte de cellules à additionner",
+          "justification": "L'énoncé précise que les coefficients occupent les cellules E3 à E7.",
+          "resultat_markdown": "Plage à additionner : E3:E7."
+        },
+        {
+          "numero": 2,
+          "action": "Assembler la formule SOMME avec cette plage",
+          "justification": "La syntaxe générale est `=SOMME(plage)`, précédée du signe = obligatoire dans toute formule de tableur.",
+          "resultat_markdown": "`=SOMME(E3:E7)`"
+        }
+      ],
+      "conclusion_markdown": "La formule `=SOMME(E3:E7)`, saisie en E9, additionne automatiquement les 5 coefficients et affiche leur total."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe = au début de la formule",
+          "pourquoi_faux": "Sans le signe =, le tableur interprète le contenu de la cellule comme du texte brut et n'effectue aucun calcul.",
+          "correction_markdown": "Vérifie toujours que ta formule commence par =, avant même le nom de la fonction."
+        },
+        {
+          "erreur_markdown": "Additionner une plage qui ne couvre pas exactement toutes les cellules à sommer (plage trop courte ou trop longue)",
+          "pourquoi_faux": "Une plage E3:E6 au lieu de E3:E7 ignorerait la dernière valeur, tandis qu'une plage trop large risquerait d'additionner une cellule vide ou étrangère au calcul voulu.",
+          "correction_markdown": "Vérifie la première ET la dernière cellule de ta plage avant de valider la formule, en les comparant à la zone réellement concernée par le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Des notes sont saisies en B2:B6. Écrire la formule qui calcule leur somme en B8.",
+          "solution_markdown": "`=SOMME(B2:B6)`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un tableau de dépenses occupe les cellules C4 à C15. Écrire la formule qui calcule le total des dépenses, à placer dans la cellule C16.",
+          "solution_markdown": "`=SOMME(C4:C15)`, saisie dans la cellule C16 - la plage démarre à la première ligne du tableau de dépenses (C4) et se termine à sa dernière ligne (C15)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève veut calculer le total général de deux tableaux séparés, l'un en A1:A5, l'autre en C1:C5. Écrire une seule formule SOMME qui calcule ce total combiné, sans créer de cellule intermédiaire pour chaque sous-total.",
+          "solution_markdown": "`=SOMME(A1:A5;C1:C5)` - SOMME accepte plusieurs plages séparées par un point-virgule (ou une virgule selon le tableur), et additionne l'ensemble des valeurs de toutes les plages indiquées en un seul calcul, sans qu'il soit nécessaire de calculer d'abord chaque sous-total séparément."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SOMME(plage) additionne toutes les valeurs numériques d'une plage de cellules.",
+        "Toute formule de tableur commence obligatoirement par le signe =.",
+        "Une plage se note par sa première et sa dernière cellule séparées par deux-points (ex. E3:E7).",
+        "SOMME peut additionner plusieurs plages à la fois, séparées par un point-virgule.",
+        "Au BAC, cette compétence sert souvent de première étape avant des fonctions plus complexes comme SOMME.SI."
+      ]
+    }
+  ]
+}

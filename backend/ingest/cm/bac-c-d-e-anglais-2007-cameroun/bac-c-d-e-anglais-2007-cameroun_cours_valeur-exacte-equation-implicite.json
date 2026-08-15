@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-valeur-exacte-equation-implicite-c",
+  "meta": {
+    "titre": "Utiliser une équation implicite pour obtenir une valeur exacte",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Étude de fonctions - valeurs remarquables",
+    "duree_estimee_min": 20,
+    "tags": ["équation implicite", "substitution", "valeur exacte", "simplification"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qB5a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment donner la valeur exacte de $\\ell(\\lambda)$ quand $\\lambda$ lui-même n'a pas de forme exacte connue ? La réponse est presque paradoxale : on n'a pas besoin de connaître $\\lambda$ numériquement. Il suffit de savoir qu'il vérifie une certaine équation, et d'utiliser cette équation comme une règle de remplacement pour faire disparaître le terme gênant (souvent un logarithme) dans l'expression à calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Résolution formelle d'une équation en une inconnue", "Substitution d'une expression dans une autre", "Simplification par un facteur commun"]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer plutôt que résoudre",
+      "contenu_markdown": "Lorsqu'un réel $\\lambda$ est défini implicitement comme solution d'une équation $h(\\lambda)=0$ (sans qu'on en connaisse la valeur exacte), et qu'on cherche la valeur exacte d'une autre expression $E(\\lambda)$ faisant intervenir le même terme que celui isolé dans l'équation $h(\\lambda)=0$ :\n\n1. Isoler, dans l'équation $h(\\lambda)=0$, le terme gênant (souvent $\\ln\\lambda$) en fonction du reste.\n2. Substituer cette expression dans $E(\\lambda)$, à la place du terme gênant.\n3. Simplifier algébriquement l'expression obtenue (factorisations, simplifications par un facteur commun non nul).\n\nCette méthode évite complètement d'avoir besoin de la valeur numérique de $\\lambda$ : le résultat final est une expression exacte en $\\lambda$, sans logarithme.",
+      "formule_principale": "h(\\lambda)=0 \\Rightarrow \\ln\\lambda = (\\text{expression algébrique en }\\lambda) \\Rightarrow \\text{substituer dans } E(\\lambda)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $\\lambda$ vérifie $h(\\lambda)=0$ avec $h(x)=\\dfrac{x+1}{2x+1}-\\ln x$, démontrer que $\\ell(\\lambda)=\\dfrac{2}{\\lambda(2\\lambda+1)}$, où $\\ell(x)=\\dfrac{2\\ln x}{x(x+1)}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler ln(lambda) dans l'équation h(lambda)=0",
+          "justification": "C'est le terme gênant qui apparaît aussi dans l'expression à simplifier.",
+          "resultat_markdown": "$h(\\lambda)=0 \\Rightarrow \\ln\\lambda=\\dfrac{\\lambda+1}{2\\lambda+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'expression à calculer avec ce terme explicite",
+          "justification": "On repart de la définition de l(lambda).",
+          "resultat_markdown": "$\\ell(\\lambda)=\\dfrac{2\\ln\\lambda}{\\lambda(\\lambda+1)}$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer ln(lambda) par son expression",
+          "justification": "Remplacement direct.",
+          "resultat_markdown": "$\\ell(\\lambda)=\\dfrac{2\\times\\frac{\\lambda+1}{2\\lambda+1}}{\\lambda(\\lambda+1)}=\\dfrac{2(\\lambda+1)}{(2\\lambda+1)\\lambda(\\lambda+1)}$"
+        },
+        {
+          "numero": 4,
+          "action": "Simplifier par (lambda+1), non nul car lambda>1",
+          "justification": "lambda appartient à ]1;2[, donc lambda+1 est non nul.",
+          "resultat_markdown": "$\\ell(\\lambda)=\\dfrac{2}{\\lambda(2\\lambda+1)}$"
+        }
+      ],
+      "conclusion_markdown": "On obtient la valeur exacte demandée, sans jamais avoir eu besoin de connaître la valeur numérique de $\\lambda$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer de calculer une valeur approchée de λ à la calculatrice puis substituer cette valeur approchée pour \"vérifier\" une égalité exacte.",
+          "pourquoi_faux": "Une valeur approchée ne permet jamais de démontrer une égalité exacte : au mieux, elle sert à vérifier la plausibilité du résultat, jamais à en constituer la preuve attendue dans un corrigé.",
+          "correction_markdown": "Utilise la valeur approchée uniquement comme vérification finale (elle doit être cohérente avec le résultat exact obtenu par substitution), jamais comme méthode de démonstration."
+        },
+        {
+          "erreur_markdown": "Oublier de justifier que le facteur simplifié (ici λ+1) est non nul avant de diviser par lui.",
+          "pourquoi_faux": "Simplifier une fraction par un facteur suppose implicitement que ce facteur est non nul ; ne pas le justifier laisse un trou dans le raisonnement, même si le résultat final est correct.",
+          "correction_markdown": "Avant toute simplification par un facteur, rappelle en une courte phrase pourquoi ce facteur est non nul (ici, en utilisant l'intervalle connu pour λ)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $\\mu$ un réel tel que $e^\\mu=3\\mu$. Exprimer $\\dfrac{e^\\mu}{\\mu}$ en fonction de $\\mu$ sans utiliser d'exponentielle.",
+          "solution_markdown": "On remplace directement $e^\\mu$ par $3\\mu$ dans l'expression : $\\dfrac{e^\\mu}{\\mu}=\\dfrac{3\\mu}{\\mu}=3$ (pour $\\mu\\neq0$, ce qui est le cas puisque $e^\\mu>0$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $\\nu$ un réel strictement positif tel que $\\ln\\nu=\\dfrac{1}{\\nu}$. Exprimer $\\nu\\ln\\nu-1$ en fonction de $\\nu$, sous une forme la plus simple possible.",
+          "solution_markdown": "On remplace $\\ln\\nu$ par $\\dfrac1\\nu$ : $\\nu\\ln\\nu-1=\\nu\\times\\dfrac1\\nu-1=1-1=0$. L'expression vaut donc $0$, quelle que soit la valeur exacte de $\\nu$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $\\rho$ un réel de $]0;+\\infty[$ tel que $2\\rho e^{-\\rho}=1$. Démontrer que $\\dfrac{1}{\\rho}-e^{-\\rho}=\\dfrac{1}{\\rho}-\\dfrac{1}{2\\rho}$, puis simplifier cette expression.",
+          "solution_markdown": "De l'équation $2\\rho e^{-\\rho}=1$, on isole $e^{-\\rho}$ (possible car $\\rho\\neq0$) : $e^{-\\rho}=\\dfrac{1}{2\\rho}$.\n\nOn substitue dans l'expression demandée : $\\dfrac1\\rho-e^{-\\rho}=\\dfrac1\\rho-\\dfrac{1}{2\\rho}$, ce qui est bien l'égalité annoncée.\n\nOn réduit au même dénominateur : $\\dfrac1\\rho-\\dfrac{1}{2\\rho}=\\dfrac{2}{2\\rho}-\\dfrac{1}{2\\rho}=\\dfrac{1}{2\\rho}$. L'expression $\\dfrac1\\rho-e^{-\\rho}$ vaut donc exactement $\\dfrac{1}{2\\rho}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une expression exacte à calculer en un point défini implicitement par une équation, isole d'abord le terme gênant (souvent un logarithme ou une exponentielle) dans cette équation.",
+        "Substitue ensuite cette expression dans le calcul demandé plutôt que de chercher une valeur numérique de l'inconnue.",
+        "Simplifie algébriquement le résultat, en justifiant explicitement chaque simplification par un facteur (non-nullité du facteur).",
+        "Une valeur approchée obtenue à la calculatrice ne sert qu'à vérifier la cohérence du résultat final, jamais à démontrer l'égalité exacte demandée.",
+        "Cette technique de substitution est un classique du BAC C dans les exercices où une fonction auxiliaire (souvent appelée h ou g) introduit un point remarquable dont on demande ensuite une propriété algébrique exacte."
+      ]
+    }
+  ]
+}

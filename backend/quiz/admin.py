@@ -9,7 +9,7 @@ from django.urls import path
 from catalog.models import Country, StatutContenu
 
 from .ingestion import SELECTION_FLOOR, SELECTION_LIMIT, run_ingestion, select_quiz_batch
-from .models import CompetenceItem, QuizAnswer, QuizQuestion, QuizSession
+from .models import CompetenceItem, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
 # Sous-dossier de catalog.admin.INGEST_DIR réservé aux lots CompetenceItem du skill
 # concepteur-quiz-competence - voir quiz.ingestion (docstring de module) pour la
@@ -46,6 +46,17 @@ class QuizAnswerAdmin(admin.ModelAdmin):
     list_display = ["quiz_question", "reponse_choisie", "resultat_declare", "est_correcte", "answered_at"]
     list_filter = ["resultat_declare", "answered_at"]
     readonly_fields = ["quiz_question", "reponse_choisie", "resultat_declare", "temps_secondes", "answered_at"]
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(RevisionSchedule)
+class RevisionScheduleAdmin(admin.ModelAdmin):
+    list_display = ["user", "theme", "cursus", "palier", "due_at", "updated_at"]
+    list_filter = ["cursus", "due_at"]
+    search_fields = ["user__phone_number", "theme__name"]
+    readonly_fields = ["user", "cursus", "subject", "theme", "palier", "due_at", "updated_at"]
 
     def has_add_permission(self, request):
         return False

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-perpendicularite-droite-plan-espace-c",
+  "meta": {
+    "titre": "Perpendicularité droite-plan dans l'espace",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Géométrie analytique de l'espace",
+    "duree_estimee_min": 20,
+    "tags": ["vecteur normal", "vecteur directeur", "colinéarité", "droite", "plan"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans l'espace, montrer qu'une droite est perpendiculaire à un plan par la géométrie pure (angles, projections) peut vite devenir laborieux. Avec les coordonnées, ce même problème se résout en une ligne : il suffit de comparer deux vecteurs. Cette méthode transforme une question de géométrie dans l'espace en un simple test de colinéarité, exactement le genre de raccourci que les correcteurs du BAC C attendent de voir mobilisé sans hésitation."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Équation cartésienne d'un plan et vecteur normal associé", "Vecteur directeur d'une droite", "Colinéarité de deux vecteurs dans l'espace"]
+    },
+    {
+      "type": "regle",
+      "titre": "Critère de perpendicularité droite-plan",
+      "contenu_markdown": "Soit $(P)$ un plan d'équation cartésienne $ax+by+cz+d=0$ et $(D)$ une droite de vecteur directeur $\\vec{u}$. Le vecteur $\\vec{n}(a;b;c)$ est un vecteur normal à $(P)$ : il est orthogonal à tout vecteur du plan.\n\nOn a l'équivalence :\n$$(D)\\perp(P) \\iff \\vec{u} \\text{ et } \\vec{n} \\text{ sont colinéaires}$$\n\nDeux vecteurs $\\vec{u}(u_1;u_2;u_3)$ et $\\vec{n}(a;b;c)$ sont colinéaires si et seulement s'il existe un réel $k$ tel que $\\vec{u}=k\\vec{n}$, ce qui revient à vérifier que les coordonnées sont proportionnelles.",
+      "formule_principale": "(D)\\perp(P) \\iff \\vec{u} = k\\,\\vec{n},\\ k\\in\\mathbb{R}^*",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'espace muni du repère $(O,\\vec{i},\\vec{j},\\vec{k})$, on considère le plan $(P):x+y+z-3=0$ et la droite $(D)$ passant par $A(1;2;3)$ de vecteur directeur $\\vec{u}=\\vec{i}+\\vec{j}+\\vec{k}$. Démontrer que $(D)$ et $(P)$ sont perpendiculaires.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le vecteur normal au plan",
+          "justification": "Dans une équation $ax+by+cz+d=0$, les coefficients $(a;b;c)$ sont les coordonnées d'un vecteur normal au plan.",
+          "resultat_markdown": "Pour $(P):x+y+z-3=0$, un vecteur normal est $\\vec n(1;1;1)$."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le vecteur directeur de la droite",
+          "justification": "Il est donné directement dans l'énoncé.",
+          "resultat_markdown": "$\\vec u=\\vec i+\\vec j+\\vec k$, soit $\\vec u(1;1;1)$."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer les deux vecteurs",
+          "justification": "On vérifie s'ils sont colinéaires en cherchant un coefficient de proportionnalité commun aux trois coordonnées.",
+          "resultat_markdown": "$\\vec u = 1\\times \\vec n$ : les deux vecteurs sont égaux, donc colinéaires (coefficient $k=1$)."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "$\\vec u$ colinéaire à $\\vec n$ équivaut à $(D)\\perp(P)$.",
+          "resultat_markdown": "$(D)$ est perpendiculaire à $(P)$."
+        }
+      ],
+      "conclusion_markdown": "On a démontré que $(D)\\perp(P)$ sans calcul de distance ni d'angle : la seule comparaison des coordonnées du vecteur directeur et du vecteur normal a suffi."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre vecteur normal au plan et vecteur directeur d'une droite contenue dans le plan.",
+          "pourquoi_faux": "Un vecteur directeur d'une droite du plan $(P)$ est orthogonal à $\\vec n$ (donc dans le plan), alors que le critère de perpendicularité droite-plan exige au contraire la colinéarité avec $\\vec n$. Confondre les deux inverse complètement la conclusion.",
+          "correction_markdown": "Avant de comparer, rappelle-toi la règle : colinéaire à $\\vec n$ → perpendiculaire au plan ; orthogonal à $\\vec n$ → parallèle au plan (ou contenu dans le plan)."
+        },
+        {
+          "erreur_markdown": "Conclure à la colinéarité en comparant seulement une ou deux coordonnées sur les trois.",
+          "pourquoi_faux": "Deux vecteurs de l'espace peuvent coïncider sur une ou deux coordonnées sans être colinéaires : la colinéarité exige un même coefficient de proportionnalité sur les trois coordonnées simultanément.",
+          "correction_markdown": "Calcule explicitement le rapport coordonnée par coordonnée ($u_1/a$, $u_2/b$, $u_3/c$) et vérifie qu'il est constant sur les trois, ou exhibe directement le réel $k$ tel que $\\vec u=k\\vec n$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le plan $(Q)$ a pour équation $2x-y+3z-5=0$. La droite $(\\Delta)$ passe par un point quelconque et a pour vecteur directeur $\\vec v(4;-2;6)$. Démontrer que $(\\Delta)\\perp(Q)$.",
+          "solution_markdown": "Un vecteur normal à $(Q)$ est $\\vec n(2;-1;3)$. On observe que $\\vec v(4;-2;6)=2\\times(2;-1;3)=2\\vec n$. Les vecteurs $\\vec v$ et $\\vec n$ sont colinéaires (coefficient $k=2$), donc $(\\Delta)\\perp(Q)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le plan $(R)$ a pour équation $x-2y+z+1=0$. Déterminer, parmi les vecteurs $\\vec{w_1}(1;-2;1)$ et $\\vec{w_2}(2;-4;3)$, celui qui peut être vecteur directeur d'une droite perpendiculaire à $(R)$, en justifiant.",
+          "solution_markdown": "Un vecteur normal à $(R)$ est $\\vec n(1;-2;1)$. On compare : $\\vec{w_1}=(1;-2;1)=1\\times\\vec n$, colinéaire à $\\vec n$ (coefficient $1$) : $\\vec{w_1}$ convient. Pour $\\vec{w_2}(2;-4;3)$, le rapport sur les deux premières coordonnées donne $2/1=2$ et $-4/-2=2$, mais sur la troisième $3/1=3\\neq2$ : les rapports ne sont pas tous égaux, $\\vec{w_2}$ n'est pas colinéaire à $\\vec n$. Seul $\\vec{w_1}$ convient."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(P)$ le plan d'équation $x+y+z-3=0$ et $A(1;2;3)$ un point n'appartenant pas à $(P)$ (à vérifier). Donner une représentation paramétrique de l'unique droite $(D)$ passant par $A$ et perpendiculaire à $(P)$, puis déterminer les coordonnées du point d'intersection de $(D)$ et $(P)$.",
+          "solution_markdown": "On vérifie d'abord que $A\\notin(P)$ : $1+2+3-3=3\\neq0$, donc $A\\notin(P)$, confirmé.\n\nLa droite $(D)$ perpendiculaire à $(P)$ passant par $A$ a pour vecteur directeur le vecteur normal $\\vec n(1;1;1)$ de $(P)$ (c'est la seule direction orthogonale au plan). Une représentation paramétrique de $(D)$ est :\n$$\\begin{cases}x=1+t\\\\y=2+t\\\\z=3+t\\end{cases},\\ t\\in\\mathbb{R}$$\n\nOn cherche $t$ tel que le point associé appartienne à $(P)$ : $(1+t)+(2+t)+(3+t)-3=0 \\iff 3+3t=0 \\iff t=-1$. Le point d'intersection est donc $H(0;1;2)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour tester si une droite est perpendiculaire à un plan, compare toujours son vecteur directeur au vecteur normal du plan (coefficients de l'équation cartésienne) - jamais à un vecteur du plan lui-même.",
+        "La colinéarité de deux vecteurs de l'espace exige un même coefficient multiplicateur sur les trois coordonnées simultanément : vérifie-le explicitement, pas seulement sur une ou deux coordonnées.",
+        "Ce critère transforme un problème géométrique (angles, orthogonalité) en un simple calcul algébrique de proportionnalité - toujours plus rapide et plus sûr le jour de l'examen.",
+        "Une fois la perpendicularité établie, le vecteur normal du plan devient automatiquement un vecteur directeur valide pour toute droite perpendiculaire à ce plan, ce qui sert directement à écrire une représentation paramétrique.",
+        "Au BAC C, ce résultat est rarement demandé seul : il sert le plus souvent d'étape intermédiaire pour localiser un projeté orthogonal ou construire une symétrie par rapport à un plan."
+      ]
+    }
+  ]
+}

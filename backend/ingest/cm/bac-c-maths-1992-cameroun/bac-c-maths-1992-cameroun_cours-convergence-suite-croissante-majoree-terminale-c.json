@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-convergence-suite-croissante-majoree-terminale-c",
+  "meta": {
+    "titre": "Prouver la convergence d'une suite croissante et majorée",
+    "cours_id": "cours-convergence-suite-croissante-majoree-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Suites numériques - théorème de la limite monotone",
+    "tags": ["théorème de la limite monotone", "convergence", "majoration"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_2_q4"
+  },
+  "sections": {
+    "accroche": "Prouver qu'une suite converge sans jamais connaître sa limite exacte est possible grâce à un seul théorème puissant : croissance plus majoration suffisent, aucun calcul de limite n'est requis.",
+    "prerequis": ["Définition d'une suite majorée", "Théorème de la limite monotone (admis en Terminale)"],
+    "regle": {
+      "titre": "Théorème de la limite monotone",
+      "contenu_markdown": "Toute suite réelle croissante et majorée converge (vers une limite finie, qui est la borne supérieure de l'ensemble des valeurs de la suite). Symétriquement, toute suite décroissante et minorée converge. Ce théorème permet d'affirmer la convergence sans calculer explicitement la limite, ce qui est précieux quand cette limite n'a pas d'expression simple (comme la constante d'Euler-Mascheroni).",
+      "formule_principale": "$(U_n)$ croissante et majorée $\\;\\Longrightarrow\\;(U_n)$ converge",
+      "variantes": ["Le majorant utilisé pour prouver la convergence n'est pas nécessairement la limite elle-même : il suffit qu'il existe un majorant, même grossier"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Soit $S_n=\\displaystyle\\sum_{k=1}^n\\dfrac1{k^2}$. Montrer que $(S_n)$ converge, sans calculer sa limite.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Montrer la croissance", "justification": "S(n+1)-S(n)=1/(n+1)²>0", "resultat_markdown": "(S_n) est strictement croissante"},
+        {"numero": 2, "action": "Trouver un majorant", "justification": "1/k²≤1/(k(k-1))=1/(k-1)-1/k pour k≥2, télescopage", "resultat_markdown": "$S_n\\leqslant1+\\left(1-\\dfrac1n\\right)<2$"},
+        {"numero": 3, "action": "Conclure", "justification": "théorème de la limite monotone", "resultat_markdown": "(S_n) converge (vers π²/6, résultat hors programme, mais la convergence seule est acquise ici)"}
+      ],
+      "conclusion_markdown": "La convergence est établie sans connaître la valeur exacte de la limite."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Chercher à calculer la limite exacte alors que l'énoncé précise explicitement qu'elle n'est pas demandée", "pourquoi_faux": "cela fait perdre un temps précieux sur une question qui n'exige que l'application du théorème de la limite monotone", "correction_markdown": "Lire attentivement la consigne : si la limite n'est pas demandée, se limiter à établir croissance et majoration, puis invoquer le théorème."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Soit T_n=2-1/n pour n≥1. Montrer que (T_n) converge sans calculer sa limite (bien qu'ici la limite soit évidente).", "solution_markdown": "T(n+1)-T(n)=1/n-1/(n+1)>0 : croissante. T_n=2-1/n<2 pour tout n : majorée par 2. Par le théorème de la limite monotone, (T_n) converge."}
+    ],
+    "synthese": "Pour prouver la convergence d'une suite sans en calculer la limite, établir sa stricte croissance puis exhiber un majorant (même non optimal) : le théorème de la limite monotone garantit alors la convergence vers une limite finie, sans qu'il soit nécessaire de la déterminer."
+  }
+}

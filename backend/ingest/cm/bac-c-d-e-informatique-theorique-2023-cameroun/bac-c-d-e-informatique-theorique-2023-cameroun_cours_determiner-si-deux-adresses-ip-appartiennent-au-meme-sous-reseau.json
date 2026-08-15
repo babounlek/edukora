@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-determiner-si-deux-adresses-ip-appartiennent-au-meme-sous-reseau-terminale-c",
+  "meta": {
+    "titre": "Déterminer si deux adresses IP appartiennent au même sous-réseau",
+    "cours_id": "cours-determiner-si-deux-adresses-ip-appartiennent-au-meme-sous-reseau-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Adressage IP",
+    "tags": [
+      "sous-réseau",
+      "communication réseau",
+      "masque"
+    ],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB4a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs peuvent partager les mêmes deux premiers chiffres d'adresse IP et pourtant être incapables de se parler directement : tout dépend de ce que le masque de sous-réseau considère comme \"la partie réseau\"."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir déterminer l'adresse réseau à partir d'une adresse IP et de son masque"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vérifier si deux machines appartiennent au même sous-réseau",
+      "contenu_markdown": "Deux machines ne peuvent communiquer **directement** (sans passer par un routeur) que si elles appartiennent au **même sous-réseau**, c'est-à-dire si la partie réseau de leurs adresses IP respectives (déterminée par le masque) est identique. Pour un masque /24 (255.255.255.0), il faut comparer les 3 premiers octets des deux adresses : s'ils diffèrent, même d'un seul chiffre, les machines sont sur des réseaux distincts.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine du réseau 192.168.0.0/24 peut-elle communiquer directement avec une machine configurée en 192.168.1.21 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la partie réseau de chaque adresse selon le masque /24",
+          "justification": "Le masque /24 retient les 3 premiers octets comme partie réseau.",
+          "resultat_markdown": "192.168.0 pour la première, 192.168.1 pour la seconde"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer les deux parties réseau obtenues",
+          "justification": "Des parties réseau différentes signifient des sous-réseaux différents.",
+          "resultat_markdown": "192.168.0 ≠ 192.168.1 → sous-réseaux différents"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la communication directe",
+          "justification": "Sans routeur, seules des machines du même sous-réseau communiquent directement.",
+          "resultat_markdown": "Communication directe impossible"
+        }
+      ],
+      "conclusion_markdown": "Comparer les parties réseau (déterminées par le masque) de deux adresses IP : identiques ⇒ même sous-réseau (communication directe possible) ; différentes ⇒ sous-réseaux distincts (routeur nécessaire)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure \"oui, elles communiquent\" simplement parce que les 2 premiers octets (192.168) sont identiques",
+          "pourquoi_faux": "Avec un masque /24, ce sont les 3 premiers octets qui définissent la partie réseau, pas seulement les 2 premiers ; une différence sur le 3e octet suffit à placer les machines sur des réseaux distincts.",
+          "correction_markdown": "Compare toujours autant d'octets que l'indique le masque (3 pour un /24), pas un nombre arbitraire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les adresses 10.0.0.5/24 et 10.0.0.8/24 peuvent-elles communiquer directement ?",
+          "solution_markdown": "Oui, leurs 3 premiers octets (10.0.0) sont identiques : elles appartiennent au même sous-réseau."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les adresses 172.16.5.10/16 et 172.16.9.20/16 peuvent-elles communiquer directement ?",
+          "solution_markdown": "Oui : avec un masque /16, seuls les 2 premiers octets (172.16) définissent le réseau ; les 3es octets (5 et 9) peuvent différer sans changer le sous-réseau."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment deux machines de sous-réseaux différents (ex. 192.168.0.x et 192.168.1.x) peuvent-elles malgré tout communiquer entre elles ?",
+          "solution_markdown": "Elles doivent passer par un routeur (ou un équipement faisant office de passerelle) connecté aux deux sous-réseaux, qui achemine les paquets de l'un vers l'autre ; chaque machine doit alors avoir configuré ce routeur comme passerelle par défaut (default gateway) pour que ses paquets destinés à un autre réseau lui soient transmis, plutôt que d'être envoyés directement (ce qui échouerait sur le réseau local)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux machines communiquent directement seulement si elles ont la même partie réseau.",
+        "Le masque détermine combien d'octets constituent cette partie réseau.",
+        "Une différence sur un seul octet couvert par le masque suffit à créer des réseaux distincts.",
+        "Deux sous-réseaux différents communiquent via un routeur configuré comme passerelle par défaut."
+      ]
+    }
+  ]
+}

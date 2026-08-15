@@ -1,0 +1,108 @@
+{
+  "type": "cours",
+  "cours_id": "cours-moyenne-ponderee-serie-statistique-bac-c",
+  "meta": {
+    "titre": "Moyenne pondérée d'une série statistique",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques descriptives",
+    "duree_estimee_min": 15,
+    "tags": ["moyenne d'une série statistique"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'un tableau donne des valeurs ET leurs effectifs, la moyenne ne se calcule jamais en additionnant simplement les valeurs et en divisant par leur nombre — il faut pondérer chaque valeur par son effectif. Une erreur fréquente qui coûte des points sur une question par ailleurs très simple."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau statistique (valeurs, effectifs)",
+        "Somme et division de nombres décimaux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne pondérée d'une série à effectifs",
+      "contenu_markdown": "Pour une série statistique donnée par un tableau de valeurs $x_i$ associées à des effectifs $n_i$, la moyenne est la moyenne pondérée : $\\bar x=\\dfrac{\\sum n_ix_i}{N}$, où $N=\\sum n_i$ est l'effectif total (la somme de tous les effectifs, pas le nombre de VALEURS distinctes dans le tableau).",
+      "formule_principale": "\\bar x = \\dfrac{\\sum n_i x_i}{N}, \\quad N=\\sum n_i"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un tableau donne les valeurs $x_i$ (0, 1, 2, 3, 5) avec les effectifs $n_i$ correspondants (4, 6, 5, 3, 2). Calculer la moyenne $\\bar x$ de cette série.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'effectif total $N$",
+          "justification": "$N$ est la somme de tous les effectifs du tableau, pas le nombre de valeurs distinctes.",
+          "resultat_markdown": "$N=4+6+5+3+2=20$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme pondérée $\\sum n_ix_i$",
+          "justification": "Chaque valeur $x_i$ est multipliée par son propre effectif $n_i$ avant d'être additionnée.",
+          "resultat_markdown": "$0\\times4+1\\times6+2\\times5+3\\times3+5\\times2=0+6+10+9+10=35$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser la somme pondérée par l'effectif total",
+          "justification": "C'est la définition même de la moyenne pondérée.",
+          "resultat_markdown": "$\\bar x=\\dfrac{35}{20}=1{,}75$"
+        }
+      ],
+      "conclusion_markdown": "La moyenne de la série est $\\bar x=1{,}75$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser par le nombre de valeurs distinctes du tableau (ici $5$) au lieu de l'effectif total (ici $20$).",
+          "pourquoi_faux": "La moyenne pondère chaque valeur par sa fréquence réelle d'apparition, donc le dénominateur doit être le nombre total d'individus/observations, pas le nombre de lignes du tableau.",
+          "correction_markdown": "Toujours calculer $N=\\sum n_i$ (somme des effectifs) séparément avant de diviser, et vérifier qu'il correspond bien à l'effectif total annoncé dans l'énoncé s'il est donné."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier une valeur par son effectif et l'ajouter directement à la somme.",
+          "pourquoi_faux": "Chaque terme de la somme au numérateur doit être un produit $n_i\\times x_i$, jamais $x_i$ seul.",
+          "correction_markdown": "Écrire explicitement chaque produit $n_i\\times x_i$ avant de les additionner, plutôt que de calculer de tête."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un tableau donne les valeurs $2$, $4$, $6$ avec effectifs respectifs $5$, $3$, $2$. Calculer la moyenne.",
+          "solution_markdown": "$N=5+3+2=10$. $\\sum n_ix_i=2\\times5+4\\times3+6\\times2=10+12+12=34$. $\\bar x=\\dfrac{34}{10}=3{,}4$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une classe de $25$ élèves a obtenu les notes suivantes à un devoir : $8$ élèves ont eu $10$, $10$ élèves ont eu $12$, et le reste a eu $15$. Calculer la moyenne de la classe.",
+          "solution_markdown": "Effectif restant : $25-8-10=7$ élèves à $15$. $\\sum n_ix_i=8\\times10+10\\times12+7\\times15=80+120+105=305$. $\\bar x=\\dfrac{305}{25}=12{,}2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Deux classes de $20$ et $30$ élèves ont respectivement pour moyennes $12$ et $14$ à un même devoir. Calculer la moyenne globale des $50$ élèves réunis.",
+          "solution_markdown": "La moyenne globale est la moyenne pondérée des deux moyennes de classe, pondérées par leurs effectifs respectifs : $\\bar x=\\dfrac{20\\times12+30\\times14}{20+30}=\\dfrac{240+420}{50}=\\dfrac{660}{50}=13{,}2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Moyenne pondérée : $\\bar x=\\dfrac{\\sum n_ix_i}{N}$, avec $N=\\sum n_i$ l'effectif TOTAL.",
+        "Ne jamais diviser par le nombre de lignes/valeurs distinctes du tableau : c'est l'effectif total qui compte.",
+        "Chaque terme du numérateur est un produit valeur × effectif, jamais la valeur seule.",
+        "La moyenne de deux groupes réunis se calcule comme une moyenne pondérée des deux moyennes, pondérée par les effectifs de chaque groupe.",
+        "Au BAC : cette question est souvent la plus rapide à traiter dans un exercice « Évaluation des compétences » — l'essentiel est de bien lire le tableau avant de calculer."
+      ]
+    }
+  ]
+}

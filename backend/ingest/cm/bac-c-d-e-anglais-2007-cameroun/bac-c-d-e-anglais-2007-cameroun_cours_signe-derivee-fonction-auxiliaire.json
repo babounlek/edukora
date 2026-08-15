@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-signe-derivee-fonction-auxiliaire-c",
+  "meta": {
+    "titre": "Étude du signe d'une dérivée via une fonction auxiliaire",
+    "matiere": "Mathématiques",
+    "serie": "C",
+    "sous_theme": "Étude de fonctions - dérivation",
+    "duree_estimee_min": 25,
+    "tags": ["fonction auxiliaire", "signe d'une dérivée", "factorisation", "quotient"],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2007-MATHS-CMR",
+    "epreuve_titre": "BAC séries C et E - Mathématiques - 2007 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-anglais-2007-cameroun-ex3-qB3c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certains numérateurs de dérivées, une fois calculés, ressemblent à un magma d'exponentielles et de logarithmes impossible à mettre en signe directement. La technique de la fonction auxiliaire consiste à définir une seconde fonction, plus simple à étudier isolément, dont le signe pilote entièrement celui de la dérivée d'origine : diviser le problème en deux études plus courtes, au lieu d'une seule étude complexe."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Dérivée d'un quotient", "Factorisation d'une expression algébrique", "Signe d'un produit de facteurs"]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser le numérateur pour isoler le facteur à étudier",
+      "contenu_markdown": "Pour démontrer qu'une dérivée $\\ell'(x)$ a le même signe qu'une expression donnée $\\varphi(x)$ (souvent construite à partir d'une fonction auxiliaire $h$ introduite dans une question précédente) :\n\n1. Calculer $\\ell'(x)$ par la formule du quotient (ou du produit), sans chercher à simplifier trop tôt.\n2. Mettre le numérateur obtenu sous la forme la plus factorisée possible.\n3. Faire apparaître $\\varphi(x)$ en factorisant explicitement par les termes communs.\n4. Identifier le signe du dénominateur (souvent un carré, donc toujours positif) et des éventuels facteurs positifs constants du numérateur, pour ne garder que $\\varphi(x)$ comme facteur dont le signe reste à étudier.",
+      "formule_principale": "\\ell'(x) = \\dfrac{(\\text{facteur positif})\\times \\varphi(x)}{(\\text{dénominateur toujours positif})} \\ \\Rightarrow\\ \\text{signe}(\\ell'(x)) = \\text{signe}(\\varphi(x))",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $\\ell(x)=\\dfrac{2\\ln x}{x(x+1)}$ et $h(x)=\\dfrac{x+1}{2x+1}-\\ln x$, calculer $\\ell'(x)$ et démontrer qu'elle a le même signe que $(2x+1)h(x)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver ℓ par la formule du quotient",
+          "justification": "u=2ln x, u'=2/x ; v=x²+x, v'=2x+1.",
+          "resultat_markdown": "$\\ell'(x)=\\dfrac{\\frac2x(x^2+x)-2\\ln x(2x+1)}{(x^2+x)^2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Simplifier le premier terme du numérateur",
+          "justification": "(2/x)(x²+x) = 2(x+1) après simplification par x.",
+          "resultat_markdown": "$\\dfrac2x(x^2+x)=2(x+1)$, donc le numérateur devient $2(x+1)-2(2x+1)\\ln x$"
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser le numérateur par 2(2x+1)",
+          "justification": "Le but est de faire apparaître exactement h(x).",
+          "resultat_markdown": "$2(x+1)-2(2x+1)\\ln x=2(2x+1)\\left[\\dfrac{x+1}{2x+1}-\\ln x\\right]=2(2x+1)h(x)$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier le signe du dénominateur et conclure",
+          "justification": "Le dénominateur est un carré, donc strictement positif.",
+          "resultat_markdown": "$\\ell'(x)=\\dfrac{2(2x+1)h(x)}{[x(x+1)]^2}$, avec $[x(x+1)]^2>0$"
+        }
+      ],
+      "conclusion_markdown": "Comme le dénominateur est strictement positif et le facteur $2$ également, le signe de $\\ell'(x)$ est exactement celui de $(2x+1)h(x)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter au numérateur brut sans chercher à le factoriser, et conclure qu'on ne peut pas déterminer son signe.",
+          "pourquoi_faux": "Un numérateur qui semble complexe cache souvent une factorisation qui fait apparaître une expression déjà étudiée (la fonction auxiliaire) : abandonner avant de tenter cette factorisation fait perdre tout le bénéfice de la question précédente qui a introduit cette fonction.",
+          "correction_markdown": "Quand l'énoncé introduit une fonction auxiliaire avant de demander l'étude du signe d'une dérivée, considère que c'est un indice fort : cherche activement à faire apparaître cette fonction en facteur dans le numérateur obtenu."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le signe du dénominateur avant de conclure que le signe de la dérivée est celui du numérateur entier.",
+          "pourquoi_faux": "Si le dénominateur n'est pas de signe constant (rarement le cas pour un carré, mais possible pour d'autres formes), le signe de la dérivée ne se réduit pas simplement à celui du numérateur.",
+          "correction_markdown": "Vérifie systématiquement, même brièvement, que le dénominateur obtenu est un carré (ou toute expression dont le signe constant est évident) avant d'affirmer que le signe de la dérivée est celui du numérateur seul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $p(x)=\\dfrac{x}{\\ln x}$ sur $]0;1[\\cup]1;+\\infty[$, et $q(x)=\\ln x-1$. Calculer $p'(x)$ et exprimer son signe en fonction de celui de $q(x)$.",
+          "solution_markdown": "$u=x,u'=1$ ; $v=\\ln x,v'=1/x$. $p'(x)=\\dfrac{1\\times\\ln x-x\\times\\frac1x}{(\\ln x)^2}=\\dfrac{\\ln x-1}{(\\ln x)^2}=\\dfrac{q(x)}{(\\ln x)^2}$. Le dénominateur $(\\ln x)^2$ est un carré, strictement positif (car $x\\neq1$ exclut l'annulation de $\\ln x$). Donc le signe de $p'(x)$ est exactement celui de $q(x)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $r(x)=\\dfrac{e^x}{x^2+1}$ sur $\\mathbb{R}$. Calculer $r'(x)$ et l'exprimer sous la forme d'un facteur positif multiplié par une fonction auxiliaire simple à étudier.",
+          "solution_markdown": "$u=e^x,u'=e^x$ ; $v=x^2+1,v'=2x$. $r'(x)=\\dfrac{e^x(x^2+1)-e^x\\times2x}{(x^2+1)^2}=\\dfrac{e^x\\left[(x^2+1)-2x\\right]}{(x^2+1)^2}=\\dfrac{e^x(x-1)^2}{(x^2+1)^2}$. Le facteur $e^x>0$ et $(x^2+1)^2>0$ sont toujours positifs ; le facteur $(x-1)^2\\geq0$ est toujours positif ou nul. Donc $r'(x)\\geq0$ pour tout $x$, avec égalité seulement en $x=1$ : $r$ est strictement croissante sur $\\mathbb{R}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $s(x)=\\dfrac{\\ln x}{x-1}$ sur $]0;1[\\cup]1;+\\infty[$. Calculer $s'(x)$ et l'exprimer en fonction de la fonction auxiliaire $t(x)=\\dfrac{x-1}{x}-\\ln x$.",
+          "solution_markdown": "$u=\\ln x,u'=1/x$ ; $v=x-1,v'=1$. $s'(x)=\\dfrac{\\frac1x(x-1)-\\ln x\\times1}{(x-1)^2}=\\dfrac{\\frac{x-1}{x}-\\ln x}{(x-1)^2}=\\dfrac{t(x)}{(x-1)^2}$.\n\nLe dénominateur $(x-1)^2$ est un carré, strictement positif sur le domaine (qui exclut $x=1$). Donc le signe de $s'(x)$ est exactement celui de $t(x)=\\dfrac{x-1}{x}-\\ln x$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand un énoncé introduit une fonction auxiliaire avant de demander le signe d'une dérivée, cherche systématiquement à la faire apparaître par factorisation dans le numérateur de la dérivée calculée.",
+        "Ne simplifie jamais le numérateur d'un quotient dérivé sans garder l'objectif de factorisation en tête - le calcul brut cache presque toujours une structure plus lisible.",
+        "Vérifie toujours le signe du dénominateur (souvent un carré, donc positif) avant de transférer l'étude du signe de la dérivée à celle du numérateur seul.",
+        "Cette technique évite d'avoir à étudier directement le signe d'une expression compliquée mêlant exponentielle, logarithme et polynôme : on ramène le problème au signe d'une fonction déjà étudiée dans une question antérieure.",
+        "C'est l'un des enchaînements les plus caractéristiques des problèmes d'analyse du BAC C : une fonction auxiliaire étudiée en première partie sert ensuite de clé de voûte pour l'étude complète d'une seconde fonction."
+      ]
+    }
+  ]
+}

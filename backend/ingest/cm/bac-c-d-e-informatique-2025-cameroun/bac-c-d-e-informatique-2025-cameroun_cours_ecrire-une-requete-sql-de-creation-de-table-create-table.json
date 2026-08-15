@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de création de table (CREATE TABLE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Langage SQL : définition de données",
+    "duree_estimee_min": 15,
+    "tags": [
+      "CREATE TABLE",
+      "SQL",
+      "types de données"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir insérer ou interroger des données, il faut créer la table qui va les accueillir. La commande CREATE TABLE est la première commande SQL à maîtriser, et l'une des plus demandées au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la signification de SGBD et SQL",
+        "Savoir identifier les colonnes d'une table à partir d'un tableau de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La commande CREATE TABLE",
+      "contenu_markdown": "CREATE TABLE nom_table (colonne1 type1, colonne2 type2, ..., PRIMARY KEY (colonne_cle)) crée une nouvelle table. Chaque colonne est définie par son nom et son type de données (VARCHAR pour du texte, INT pour un entier...). PRIMARY KEY désigne la colonne identifiant de façon unique chaque ligne ; FOREIGN KEY... REFERENCES... relie la table à une autre table.",
+      "formule_principale": "CREATE TABLE nom_table (colonne type, ..., PRIMARY KEY (colonne));",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête permettant de créer la table tissu (ref, typeTissu, modele, numCNI).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes et choisir un type pour chacune",
+          "justification": "ref, typeTissu, modele et numCNI sont tous des codes ou du texte : VARCHAR convient à chacun.",
+          "resultat_markdown": "ref VARCHAR(10), typeTissu VARCHAR(30), modele VARCHAR(30), numCNI VARCHAR(20)"
+        },
+        {
+          "numero": 2,
+          "action": "Désigner la clé primaire",
+          "justification": "ref identifie chaque ligne de façon unique.",
+          "resultat_markdown": "PRIMARY KEY (ref)"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la clé étrangère vers la table client",
+          "justification": "numCNI référence le client propriétaire, enregistré dans la table client.",
+          "resultat_markdown": "FOREIGN KEY (numCNI) REFERENCES client(numcni)"
+        }
+      ],
+      "conclusion_markdown": "La requête CREATE TABLE crée la table tissu avec ses quatre colonnes, sa clé primaire ref et sa clé étrangère numCNI vers client."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de terminer la requête par un point-virgule",
+          "pourquoi_faux": "En SQL, chaque instruction se termine par un point-virgule ; son absence peut provoquer une erreur ou empêcher l'exécution de la requête suivante.",
+          "correction_markdown": "Prends l'habitude de toujours terminer chaque requête SQL par un point-virgule."
+        },
+        {
+          "erreur_markdown": "Utiliser un type numérique (INT) pour ref",
+          "pourquoi_faux": "ref contient des codes comme \"0111\", avec un zéro non significatif en tête ; un type numérique stockerait 111 et perdrait le zéro.",
+          "correction_markdown": "Utilise VARCHAR pour tout code qui n'est jamais utilisé dans un calcul, même s'il ressemble à un nombre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la requête CREATE TABLE pour une table eleve(matricule, nom, classe), matricule étant la clé primaire.",
+          "solution_markdown": "```sql\nCREATE TABLE eleve (\n    matricule VARCHAR(10) PRIMARY KEY,\n    nom VARCHAR(30),\n    classe VARCHAR(10)\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Modifie la requête de la table tissu pour rendre la colonne typeTissu obligatoire (jamais vide).",
+          "solution_markdown": "On ajoute la contrainte NOT NULL après le type de la colonne. Réponse : ```sql\nCREATE TABLE tissu (\n    ref VARCHAR(10) PRIMARY KEY,\n    typeTissu VARCHAR(30) NOT NULL,\n    modele VARCHAR(30),\n    numCNI VARCHAR(20),\n    FOREIGN KEY (numCNI) REFERENCES client(numcni)\n);\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la contrainte FOREIGN KEY (numCNI) REFERENCES client(numcni) empêche-t-elle d'insérer un tissu dont le numCNI ne correspond à aucun client existant ?",
+          "solution_markdown": "La contrainte de clé étrangère impose que toute valeur de numCNI présente dans la table tissu existe déjà comme valeur de numcni dans la table client (intégrité référentielle) : le SGBD refuse toute insertion qui violerait cette règle, ce qui empêche de créer une ligne \"orpheline\" faisant référence à un client inexistant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE définit le nom de la table et le type de chaque colonne.",
+        "PRIMARY KEY désigne la colonne identifiant unique de chaque ligne.",
+        "FOREIGN KEY... REFERENCES... relie une table à une autre.",
+        "Utilise VARCHAR pour les codes qui ne servent jamais à un calcul, même s'ils ressemblent à des nombres."
+      ]
+    }
+  ]
+}

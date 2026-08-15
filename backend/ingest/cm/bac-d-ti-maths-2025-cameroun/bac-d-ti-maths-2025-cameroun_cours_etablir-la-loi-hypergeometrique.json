@@ -1,0 +1,22 @@
+{
+  "cours_id": "cours-etablir-la-loi-hypergeometrique-dun-tirage-simultane-terminale-d-ti",
+  "meta": {"titre": "Établir la loi hypergéométrique d'un tirage simultané", "cours_id": "cours-etablir-la-loi-hypergeometrique-dun-tirage-simultane-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D/TI", "sous_theme": "Probabilités — loi hypergéométrique", "tags": ["loi hypergéométrique", "variable aléatoire", "tirage sans remise"], "duree_estimee_minutes": 20, "epreuve_source": "bac-d-ti-maths-2025-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2025-cameroun-ex1-2a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand une variable aléatoire compte le nombre d'objets d'une catégorie parmi un tirage simultané, sa loi suit systématiquement le même schéma : la loi hypergéométrique, à établir terme par terme."},
+    {"type": "prerequis", "items_markdown": ["Coefficient binomial", "Tirage simultané et combinaisons"]},
+    {"type": "regle", "titre": "Formule de la loi hypergéométrique", "contenu_markdown": "Pour $X$ = nombre d'objets d'une catégorie d'effectif $K$ parmi $n$ objets tirés simultanément dans une population de taille $N$ : $P(X=k)=\\dfrac{\\binom{K}{k}\\binom{N-K}{n-k}}{\\binom{N}{n}}$, pour $k$ variant de $\\max(0,n-(N-K))$ à $\\min(n,K)$.", "formule_principale": "P(X=k) = C(K,k)×C(N-K,n-k) / C(N,n)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Urne de 15 boules dont 6 rouges. Tirage simultané de 4. Loi de X = nombre de rouges tirées.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Identifier les paramètres", "justification": "N=15, K=6, n=4.", "resultat_markdown": "N=15, K=6, n=4"},
+      {"numero": 2, "action": "Total des tirages", "justification": "C(15,4)=1365", "resultat_markdown": "1365"},
+      {"numero": 3, "action": "P(X=0)", "justification": "C(6,0)C(9,4)/1365=1×126/1365", "resultat_markdown": "126/1365"},
+      {"numero": 4, "action": "P(X=1)", "justification": "C(6,1)C(9,3)/1365=6×84/1365", "resultat_markdown": "504/1365"}
+    ], "conclusion_markdown": "Le même schéma se répète pour k=2,3,4, en changeant simplement les coefficients binomiaux."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de vérifier que la somme des probabilités obtenues vaut bien 1", "pourquoi_faux": "Une erreur de calcul dans un des coefficients binomiaux passe souvent inaperçue si on ne vérifie pas que la somme des cas favorables sur toutes les valeurs de k redonne exactement le total C(N,n).", "correction_markdown": "Toujours additionner les numérateurs obtenus pour toutes les valeurs de k et vérifier que la somme est égale à C(N,n)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Urne de 10 boules dont 3 rouges. Tirage de 2. Calculer P(X=0).", "solution_markdown": "C(10,2)=45. P(X=0)=C(3,0)C(7,2)/45=21/45=7/15."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Même urne. Calculer P(X=2).", "solution_markdown": "P(X=2)=C(3,2)C(7,0)/45=3/45=1/15."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La loi hypergéométrique s'applique à tout tirage simultané où l'on compte les objets d'une catégorie.", "Chaque probabilité combine un choix dans la catégorie ciblée et un choix dans le reste de la population.", "Vérifier systématiquement que la somme des probabilités obtenues vaut 1."]}
+  ]
+}

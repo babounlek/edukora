@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-utiliser-la-fonction-nb-si-countif-d-un-tableur-pour-compter-des-valeurs-verifiant-un-critere-terminale-c",
+  "meta": {
+    "titre": "Utiliser la fonction NB.SI (COUNTIF) d'un tableur pour compter des valeurs vérifiant un critère",
+    "cours_id": "cours-utiliser-la-fonction-nb-si-countif-d-un-tableur-pour-compter-des-valeurs-verifiant-un-critere-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Fonctions de tableur",
+    "tags": [
+      "NB.SI",
+      "COUNTIF",
+      "comptage conditionnel"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qC5b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Compter combien d'élèves ont une note trimestrielle suffisante ne demande pas de les additionner, mais simplement de les dénombrer. La fonction NB.SI répond exactement à ce besoin de comptage conditionnel."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir utiliser la fonction SOMME.SI d'un tableur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction NB.SI (COUNTIF) dans un tableur",
+      "contenu_markdown": "La fonction `NB.SI(plage, critère)` (COUNTIF en anglais) **compte le nombre de cellules** d'une plage donnée qui vérifient le critère indiqué, sans additionner leurs valeurs. Elle se distingue de SOMME.SI, qui additionne les valeurs vérifiant un critère au lieu de les compter.",
+      "formule_principale": "=NB.SI(plage; critère)",
+      "variantes": [
+        {
+          "nom": "SOMME.SI (comptage vs addition)",
+          "quand_utiliser": "Quand il faut additionner des valeurs plutôt que les compter.",
+          "contenu_markdown": "SOMME.SI(plage, critère) additionne les valeurs vérifiant le critère ; NB.SI compte simplement combien de cellules le vérifient, sans tenir compte de leur valeur exacte au-delà du test du critère."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la formule comptant le nombre de notes trimestrielles (colonne D, lignes 3 à 7) supérieures ou égales à 10.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la plage à examiner et le critère",
+          "justification": "Il faut examiner les notes trimestrielles (D3:D7) selon le critère \">=10\".",
+          "resultat_markdown": "Plage D3:D7, critère \">=10\""
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule avec NB.SI",
+          "justification": "NB.SI compte les cellules de la plage vérifiant le critère.",
+          "resultat_markdown": "`=NB.SI(D3:D7;\">=10\")`"
+        }
+      ],
+      "conclusion_markdown": "NB.SI(plage, critère) compte le nombre de cellules d'une plage vérifiant un critère, sans additionner leurs valeurs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser SOMME.SI(D3:D7,\">=10\") en pensant obtenir le NOMBRE de notes suffisantes",
+          "pourquoi_faux": "SOMME.SI(D3:D7,\">=10\") additionnerait les VALEURS des notes supérieures ou égales à 10 (par exemple 10+11+12=33), ce qui n'est pas la même chose que COMPTER combien de notes le sont (ici 3 notes).",
+          "correction_markdown": "Pose-toi la question : veut-on \"combien de\" (NB.SI) ou \"la somme de\" (SOMME.SI) ? Le mot \"nombre\" dans l'énoncé signale toujours NB.SI."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la formule comptant le nombre de cellules de A1:A10 contenant une valeur strictement supérieure à 15.",
+          "solution_markdown": "`=NB.SI(A1:A10;\">15\")`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la formule comptant le nombre d'élèves de sexe 'F' dans la plage C2:C20.",
+          "solution_markdown": "`=NB.SI(C2:C20;\"F\")` — le critère peut aussi être une valeur textuelle exacte, pas seulement une comparaison numérique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment compter le nombre de notes trimestrielles supérieures ou égales à 10 ET appartenant à des matières de coefficient supérieur à 2, en combinant deux critères sur deux colonnes différentes ?",
+          "solution_markdown": "NB.SI ne gère qu'un seul critère sur une seule plage ; pour combiner deux critères sur deux plages différentes, il faut utiliser la fonction NB.SI.ENS (COUNTIFS) : `=NB.SI.ENS(D3:D7;\">=10\";E3:E7;\">2\")`, qui ne compte que les lignes où les DEUX conditions sont vérifiées simultanément, une extension multi-critères de NB.SI."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "NB.SI(plage, critère) compte les cellules d'une plage vérifiant un critère.",
+        "Elle se distingue de SOMME.SI, qui additionne les valeurs au lieu de les compter.",
+        "Le critère peut être numérique (\">=10\") ou textuel (\"F\").",
+        "NB.SI.ENS étend NB.SI à plusieurs critères combinés sur plusieurs plages."
+      ]
+    }
+  ]
+}

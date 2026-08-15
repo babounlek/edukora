@@ -15,6 +15,9 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config, Csv
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,6 +34,32 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 # (utilisé pour pré-remplir le login admin en dev - jamais actif si DEBUG=False).
 INTERNAL_IPS = ["127.0.0.1"]
 
+# Supervision d'erreurs (Sentry) - voir l'audit UX, reco 5.1 : jusqu'ici "la seule
+# remontée de bug possible est un message spontané d'un utilisateur". Inerte tant que
+# SENTRY_DSN n'est pas renseigné (aucun projet Sentry n'a encore été créé pour ce
+# dépôt) - sentry_sdk.init() n'est alors jamais appelé, et tout appel sentry_sdk.*
+# ailleurs dans le code (voir payments/views.py, la chaîne de paiement étant la
+# priorité citée dans le rapport) devient un no-op silencieux plutôt que de lever une
+# erreur - sûr à laisser dans le code même avant qu'un DSN existe.
+SENTRY_DSN = config("SENTRY_DSN", default="")
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=config("SENTRY_ENVIRONMENT", default="production"),
+        integrations=[DjangoIntegration()],
+        # Échantillon prudent par défaut (pas 1.0) : un site à trafic modeste n'a pas
+        # besoin de tracer 100% des requêtes pour repérer une régression de
+        # performance, et un taux plus bas laisse de la marge sur un plan Sentry
+        # gratuit avant d'ajuster ce réglage consciemment.
+        traces_sample_rate=config("SENTRY_TRACES_SAMPLE_RATE", default=0.2, cast=float),
+        enable_logs=True,
+        # False par défaut : ne jamais envoyer IP/cookies/utilisateur à un service
+        # tiers sans décision explicite, sur un produit qui traite des numéros de
+        # téléphone (voir users.models.User) - à activer via l'environnement plus
+        # tard si besoin, jamais un choix par défaut.
+        send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=False, cast=bool),
+    )
+
 
 # Application definition
 
@@ -45,15 +74,43 @@ INSTALLED_APPS = [
     "corsheaders",
     "users",
     "catalog",
+    "programme",
     "subscriptions",
     "payments",
     "access",
     "quiz",
+    "analytics",
+    "inedit",
+    "fiches",
+    "whatsapp",
 ]
 
 AUTH_USER_MODEL = "users.User"
 
 SMS_BACKEND = config("SMS_BACKEND", default="users.sms_backends.ConsoleSMSBackend")
+# Même patron : WHATSAPP_BACKEND reste sur le backend console (journalise au lieu
+# d'envoyer) tant que WHATSAPP_ACCESS_TOKEN/WHATSAPP_PHONE_NUMBER_ID (lus directement
+# via decouple dans whatsapp.backends.MetaCloudAPIBackend, pas ici) ne sont pas
+# réellement configurés - voir whatsapp.backends pour le détail des deux backends.
+WHATSAPP_BACKEND = config("WHATSAPP_BACKEND", default="whatsapp.backends.ConsoleWhatsAppBackend")
+
+# Plafonds d'envoi d'OTP (voir users.otp_service.request_otp pour la mécanique). Réglages
+# d'exploitation, donc lus dans l'environnement : le bon niveau dépend du trafic réel et
+# du tarif SMS du fournisseur, et doit pouvoir être ajusté sans redéploiement.
+#
+# Volontairement large : les abonnés mobiles camerounais sortent massivement derrière le
+# CGNAT de leur opérateur, donc des milliers d'utilisateurs légitimes peuvent partager
+# une seule IP publique - un plafond serré ici ne bloquerait pas un attaquant seul, il
+# couperait l'authentification à tous les clients MTN d'un coup. Ce plafond ne vise que
+# le pumping grossier depuis une source unique ; c'est OTP_DAILY_GLOBAL_CAP qui borne
+# réellement la facture. Ne pas baisser cette valeur sans avoir vérifié la distribution
+# des IP dans OTPCode.
+OTP_MAX_PER_IP_PER_HOUR = config("OTP_MAX_PER_IP_PER_HOUR", default=30, cast=int)
+# Dernier filet, sur 24 h glissantes, toutes sources confondues. À monter délibérément à
+# mesure que la base d'utilisateurs grandit : l'atteindre coupe l'authentification pour
+# TOUT LE MONDE (voir OTPCapReached, journalisé en ERROR donc remonté à Sentry) - c'est
+# un choix assumé de préférer une panne visible et bornée à une facture SMS illimitée.
+OTP_DAILY_GLOBAL_CAP = config("OTP_DAILY_GLOBAL_CAP", default=1000, cast=int)
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -71,18 +128,45 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    "USER_ID_FIELD": "phone_number",
-    "USER_ID_CLAIM": "phone_number",
+    # Sujet du token = la clé primaire, jamais le numéro de téléphone (ce qu'on
+    # faisait jusqu'à la refonte du compte unique). Un identifiant de token doit être
+    # immuable et toujours présent : le numéro n'est plus ni l'un (il se change, et un
+    # numéro rendu est réattribué par l'opérateur - un token encore valide désignerait
+    # alors le nouveau titulaire) ni l'autre (un compte créé via un fournisseur tiers
+    # n'en a pas). Conséquence assumée au déploiement : les tokens déjà émis portent
+    # l'ancienne claim et ne résolvent plus, donc une reconnexion unique pour tout le
+    # monde - y compris via le refresh cookie de 30 jours.
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
 
 CORS_ALLOWED_ORIGINS = config(
     "CORS_ALLOWED_ORIGINS", default="http://localhost",  cast=Csv(),
 )
+# Le cookie httpOnly du refresh token (voir users.views._set_refresh_cookie) doit
+# pouvoir être posé/relu depuis l'origine du frontend, servie sur un port/domaine
+# distinct de cette API - sans credentials autorisés ici, le navigateur ignore
+# silencieusement tout Set-Cookie sur une réponse cross-origin, quelle que soit la
+# configuration du cookie lui-même. Sûr uniquement parce que CORS_ALLOWED_ORIGINS
+# ci-dessus liste des origines explicites, jamais "*" (interdit par les navigateurs
+# de toute façon dès que credentials=true est demandé).
+CORS_ALLOW_CREDENTIALS = True
 
 # Nom et domaine de la plateforme - provisoires tant que le produit est en conception,
 # donc jamais codés en dur ailleurs que via ces deux réglages (voir aussi les
 # variables VITE_SITE_NAME/VITE_SITE_URL côté frontend, qui doivent rester en phase).
 SITE_NAME = config("SITE_NAME", default="EduKamer")
+
+# Identifiant client OAuth Google (« Web application »), celui-là même que le
+# frontend passe à Google Identity Services : les deux DOIVENT correspondre, c'est
+# la claim `aud` vérifiée par users.google.verify_google_id_token qui garantit qu'un
+# ID token émis pour une autre application ne peut pas ouvrir un compte Edukora.
+# Aucun client_secret ici : le flux est un ID token vérifié par signature, jamais un
+# échange de code côté serveur - il n'y a donc pas de secret à détenir.
+# Vide par défaut : la connexion Google répond alors 503 plutôt que d'accepter
+# n'importe quel jeton, ce qui est le comportement voulu tant qu'elle n'est pas
+# configurée sur un environnement.
+GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID", default="")
 # Domaine du frontend (SPA Vite, servie séparément de cette API) - utilisé pour
 # construire les URLs absolues du sitemap.xml (catalog.sitemap), qui doivent pointer
 # vers les pages consultables par un visiteur, jamais vers cette API.
@@ -225,11 +309,41 @@ if SPACES_BUCKET:
     STORAGES = {
         "default": {"BACKEND": "storages.backends.s3.S3Storage"},
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+        # PDF sujet d'Épreuve Inédite (voir inedit/sujet_pdf.py) : contrairement au
+        # reste de "default" (public par nature, voir plus haut), ce contenu reste
+        # payant (une épreuve jamais publiée ailleurs, même sans les réponses) -
+        # jamais public-read, jamais d'URL construite côté client. Seul point de
+        # sortie : inedit.views.download_sujet_pdf, gated par has_access_inedite, qui
+        # lit le fichier côté serveur et le stream en réponse. Le corrigé, lui, ne
+        # génère jamais de PDF (voir inedit/sujet_pdf.py, docstring de module).
+        "inedit_protected": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {"default_acl": "private", "querystring_auth": True},
+        },
+        # PDF sujet/corrigé d'une fiche répétiteur (voir fiches/pdf.py) - même
+        # raisonnement que "inedit_protected" ci-dessus (jamais public-read, jamais
+        # d'URL construite côté client, seul point de sortie : fiches.views.download_*,
+        # gated par ownership). Emplacement dédié plutôt que de réutiliser
+        # "inedit_protected" : une fiche n'a rien à voir avec une Épreuve Inédite.
+        "fiches_protected": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {"default_acl": "private", "querystring_auth": True},
+        },
     }
 else:
     STORAGES = {
         "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+        # Répertoire hors MEDIA_ROOT : jamais servi par le static() de urls.py (DEBUG)
+        # ni par Caddy en production - voir le commentaire "inedit_protected" ci-dessus.
+        "inedit_protected": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": str(BASE_DIR / "protected_media")},
+        },
+        "fiches_protected": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "fiches")},
+        },
     }
 
 

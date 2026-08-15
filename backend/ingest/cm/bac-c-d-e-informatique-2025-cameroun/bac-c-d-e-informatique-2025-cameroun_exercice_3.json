@@ -1,0 +1,123 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2024,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": "3",
+  "points": "4",
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (4 pts)**\n\nM. ABBA a implémenté une base de données dans son atelier de couture. Elle est nommée Couture_DB et contient deux tables ; pour son exploitation, on utilise le SGBD MySQL. Les deux tables sont présentées ci-dessous :\n\n**table client**\n\n| numcni | contact | MesureClient |\n|---|---|---|\n| 11750032 | 677786011 | P180M90T105 |\n| 11750052 | 697777780 | P180M98T105 |\n| 11750802 | 652114112 | P190M90T115 |\n| 11750072 | 680112114 | P190M90T110 |\n\n**table tissu**\n\n| ref | typeTissu | modele | numCNI |\n|---|---|---|---|\n| 0111 | wax | kaba ngondo | 11750052 |\n| 0112 | wax | kaba ngondo | 11750802 |\n| 0113 | mohair | costume | 11750032 |\n| 0114 | tergal | gandoura 3 | 11750052 |\n| 0115 | wax | jupe | 11750802 |\n| 0116 | wax | tailleur | 11750072 |\n| 0117 | super cent | pantalon | 11750802 |",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Donner la signification des sigles : SGBD, SQL. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nComme tout sigle technique, SGBD et SQL se développent d'abord dans leur forme complète avant d'être expliqués.\n\n### Corrigé\n**SGBD** : Système de Gestion de Base de Données (logiciel qui permet de créer, modifier, interroger et administrer une base de données - ici MySQL).\n\n**SQL** : Structured Query Language (langage de requête structuré), le langage standard utilisé pour interroger et manipuler les données d'une base de données relationnelle.",
+      "themes": [
+        "bases de données",
+        "sigles"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q1-0",
+          "competence": "Signification des sigles SGBD et SQL",
+          "contenu_markdown": "Comme tout sigle technique, SGBD et SQL se développent d'abord dans leur forme complète avant d'être expliqués.",
+          "cours_genere": true,
+          "cours_id": "cours-signification-des-sigles-sgbd-et-sql-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Écrire la requête permettant de créer la table tissu. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa commande CREATE TABLE définit le nom de la table et, pour chaque colonne, son nom et son type de données ; une clé primaire identifie de façon unique chaque ligne, une clé étrangère relie la table à une autre table.\n\n### Corrigé\nLa table tissu comporte quatre colonnes : ref (identifiant de la ligne, ex. \"0111\"), typeTissu, modele (textes), et numCNI (référence au client propriétaire, présent dans la table client).\n\n```sql\nCREATE TABLE tissu (\n    ref VARCHAR(10) PRIMARY KEY,\n    typeTissu VARCHAR(30),\n    modele VARCHAR(30),\n    numCNI VARCHAR(20),\n    FOREIGN KEY (numCNI) REFERENCES client(numcni)\n);\n```\n\n### Conseil\nUtilise VARCHAR plutôt qu'un type numérique pour ref et numCNI dès que ces codes peuvent comporter un zéro non significatif en tête (comme \"0111\") ou ne servent jamais à un calcul : un type numérique perdrait ce zéro.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q2-0",
+          "competence": "Écrire une requête SQL de création de table (CREATE TABLE)",
+          "contenu_markdown": "La commande CREATE TABLE définit le nom de la table et, pour chaque colonne, son nom et son type de données ; une clé primaire identifie de façon unique chaque ligne, une clé étrangère relie la table à une autre table.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) Écrire la requête qui insère le client ('1170033', '676201527', 'P185M90T102'). (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa commande INSERT INTO ajoute une nouvelle ligne dans une table, en indiquant la table, la liste des colonnes concernées, puis la liste des valeurs correspondantes, dans le même ordre.\n\n### Corrigé\nLes trois valeurs fournies correspondent, dans l'ordre, aux colonnes numcni, contact et MesureClient de la table client.\n\n```sql\nINSERT INTO client (numcni, contact, MesureClient)\nVALUES ('1170033', '676201527', 'P185M90T102');\n```",
+      "themes": [
+        "SQL",
+        "INSERT INTO"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q3-0",
+          "competence": "Écrire une requête SQL d'insertion de données (INSERT INTO)",
+          "contenu_markdown": "La commande INSERT INTO ajoute une nouvelle ligne dans une table, en indiquant la table, la liste des colonnes concernées, puis la liste des valeurs correspondantes, dans le même ordre.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-d-insertion-de-donnees-insert-into-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4) Présenter sous forme de tableau le résultat donné par la requête suivante :\n\n```sql\nSELECT * FROM tissu\nWHERE (tissu.typeTissu = 'wax');\n``` (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nSELECT * FROM table WHERE condition renvoie toutes les colonnes des lignes de la table qui respectent la condition indiquée ; il faut parcourir chaque ligne et ne garder que celles qui satisfont exactement le critère.\n\n### Corrigé\nOn parcourt la table tissu et on garde uniquement les lignes où typeTissu vaut exactement \"wax\" : les lignes 0111, 0112, 0115 et 0116 correspondent (0113 est \"mohair\", 0114 est \"tergal\", 0117 est \"super cent\").\n\n| ref | typeTissu | modele | numCNI |\n|---|---|---|---|\n| 0111 | wax | kaba ngondo | 11750052 |\n| 0112 | wax | kaba ngondo | 11750802 |\n| 0115 | wax | jupe | 11750802 |\n| 0116 | wax | tailleur | 11750072 |",
+      "themes": [
+        "SQL",
+        "SELECT WHERE"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex3-q4-0",
+          "competence": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT... WHERE)",
+          "contenu_markdown": "SELECT * FROM table WHERE condition renvoie toutes les colonnes des lignes de la table qui respectent la condition indiquée ; il faut parcourir chaque ligne et ne garder que celles qui satisfont exactement le critère.",
+          "cours_genere": true,
+          "cours_id": "cours-interpreter-le-resultat-d-une-requete-sql-de-selection-avec-condition-select-where-terminale-c"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "base de données",
+    "SQL",
+    "SGBD",
+    "MySQL",
+    "CREATE TABLE",
+    "INSERT INTO",
+    "SELECT WHERE",
+    "bac c d e informatique 2024"
+  ],
+  "incertitudes": [
+    "Le champ serie est fixé à C, comme pour les autres exercices de cette même épreuve combinée C,D,E.",
+    "L'en-tête de la dernière colonne de la table tissu est imprimé « nunCNI » dans l'épreuve source (coquille probable pour « numCNI », cohérent avec la colonne numcni de la table client, qui reçoit les mêmes valeurs) ; l'en-tête est restitué en « numCNI » dans l'énoncé reproduit pour la cohérence de la base de données, sous réserve de vérification du sujet original avant publication.",
+    "La requête CREATE TABLE proposée dans le corrigé choisit des types de données (VARCHAR) raisonnables pour ref et numCNI, non précisés par l'énoncé ; toute réponse d'élève utilisant des types cohérents doit être acceptée."
+  ],
+  "statut": "brouillon"
+}

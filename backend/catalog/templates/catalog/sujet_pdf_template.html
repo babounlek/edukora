@@ -101,20 +101,26 @@
     }
     .cta {
         margin-top: 40px;
-        padding: 20px 24px;
+        padding: 22px 26px;
         background: #e8f5ef;
         border: 1px solid #0a6e4e;
         border-radius: 6px;
         font-family: "Helvetica Neue", Arial, sans-serif;
-        text-align: center;
-        /* Bloc publicitaire = une seule unité visuelle (accroche + CTA) : ne doit
-           jamais être coupé au milieu par un saut de page Chromium, sans quoi la
-           moitié atterrit en bas d'une page et l'autre moitié en haut de la
-           suivante. break-inside (norme actuelle) + page-break-inside (alias
-           historique, gardé pour la compatibilité du moteur d'impression) disent
-           tous deux la même chose ici - redondant par prudence, pas par erreur. */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        /* Bloc publicitaire = une seule unité visuelle (accroche + QR + CTA) : ne doit
+           jamais être coupé au milieu par un saut de page Chromium, sans quoi une
+           partie atterrit en bas d'une page et le reste en haut de la suivante.
+           break-inside (norme actuelle) + page-break-inside (alias historique, gardé
+           pour la compatibilité du moteur d'impression) disent tous deux la même
+           chose ici - redondant par prudence, pas par erreur. */
         break-inside: avoid;
         page-break-inside: avoid;
+    }
+    .cta-copy {
+        flex: 1;
     }
     .cta p.title {
         font-weight: bold;
@@ -135,6 +141,24 @@
         border-radius: 4px;
         font-size: 13px;
         text-decoration: none;
+    }
+    .cta-qr {
+        flex-shrink: 0;
+        text-align: center;
+    }
+    .cta-qr .qr-image {
+        /* Surcharge la règle générique `img` ci-dessus (margin/max-width pensés pour
+           les figures d'exercice, pas pour cet asset généré) - la bordure claire y est
+           en revanche gardée, elle donne au QR un effet "carte" cohérent avec le reste. */
+        width: 84px;
+        height: 84px;
+        margin: 0;
+    }
+    .cta-qr .qr-caption {
+        margin: 6px 0 0 0;
+        font-size: 9px;
+        font-weight: 600;
+        color: #0a6e4e;
     }
     .footer-note {
         margin-top: 14px;
@@ -170,11 +194,19 @@
     {{ content_html|safe }}
 
     <div class="cta">
-        <p class="title">Envie de vérifier tes réponses ?</p>
-        <p class="body">La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {{ site_name }} dès 10 FCFA.</p>
-        <a href="{{ site_url }}" class="link">{{ site_url_display }}</a>
+        <div class="cta-copy">
+            <p class="title">Envie de vérifier tes réponses ?</p>
+            <p class="body">La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {{ site_name }} dès 10 FCFA.</p>
+            <a href="{{ lesson_url }}" class="link">Voir la correction</a>
+        </div>
+        {% if qr_code_data_uri %}
+        <div class="cta-qr">
+            <img src="{{ qr_code_data_uri }}" alt="QR code vers la correction" class="qr-image">
+            <p class="qr-caption">Scanne-moi</p>
+        </div>
+        {% endif %}
     </div>
-    <p class="footer-note"><a href="{{ site_url }}">{{ site_url_display }}</a> - Sujet en libre accès, à partager. La correction reste réservée aux abonnés.</p>
+    <p class="footer-note"><a href="{{ lesson_url }}">{{ site_url_display }}</a> - Sujet en libre accès, à partager. La correction reste réservée aux abonnés.</p>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

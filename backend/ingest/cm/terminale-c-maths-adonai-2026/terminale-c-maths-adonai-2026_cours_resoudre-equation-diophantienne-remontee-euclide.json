@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-resoudre-une-equation-diophantienne-par-remontee-de-lalgorithme-deuclide-terminale-c",
+  "meta": {"titre": "Résoudre une équation diophantienne par remontée de l'algorithme d'Euclide", "cours_id": "cours-resoudre-une-equation-diophantienne-par-remontee-de-lalgorithme-deuclide-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Arithmétique — équations diophantiennes", "tags": ["algorithme d'Euclide", "identité de Bézout", "équation diophantienne"], "duree_estimee_minutes": 15, "epreuve_source": "terminale-c-maths-adonai-2026.pdf"},
+  "source": {"rappel_id": "rdm-terminale-c-maths-adonai-2026-ex3-ii1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Résoudre ax+by=1 avec de grands coefficients demande une méthode systématique : la descente de l'algorithme d'Euclide pour obtenir le pgcd, suivie d'une remontée qui exprime 1 comme combinaison exacte de a et b."},
+    {"type": "prerequis", "items_markdown": ["Algorithme d'Euclide pour calculer un pgcd", "Théorème de Gauss : si a|bc et pgcd(a,b)=1, alors a|c"]},
+    {"type": "regle", "titre": "Descente (Euclide) puis remontée (Bézout), puis solution générale", "contenu_markdown": "On effectue la division euclidienne successive jusqu'au reste nul (descente), obtenant $\\mathrm{pgcd}(a,b)$. On remonte ensuite chaque étape pour exprimer ce pgcd comme combinaison $au_0+bv_0$ (identité de Bézout). Si $(u_0,v_0)$ est une solution particulière de $au+bv=1$, la solution générale est $u=u_0+bk$, $v=v_0-ak$ pour $k\\in\\mathbb Z$ (obtenue en soustrayant l'équation homogène et en appliquant le théorème de Gauss).", "formule_principale": "Solution générale : x=x0+bk, y=y0-ak, k∈ℤ (si pgcd(a,b)=1)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Résoudre 17x+5y=1 dans ℤ².", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Descente d'Euclide", "justification": "17=3×5+2, 5=2×2+1, 2=2×1+0", "resultat_markdown": "pgcd(17,5)=1"},
+      {"numero": 2, "action": "Remontée", "justification": "1=5-2×2=5-2×(17-3×5)=7×5-2×17", "resultat_markdown": "1=(-2)×17+7×5"},
+      {"numero": 3, "action": "Solution générale", "justification": "x0=-2,y0=7", "resultat_markdown": "x=-2+5k, y=7-17k, k∈ℤ"}
+    ], "conclusion_markdown": "Vérification : 17×(-2)+5×7=-34+35=1 ✓."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Se tromper de signe ou d'ordre lors de la remontée de l'algorithme d'Euclide, en substituant les restes dans le mauvais sens", "pourquoi_faux": "La remontée doit toujours repartir de la DERNIÈRE égalité avant le reste nul et substituer successivement les restes précédents, dans l'ordre inverse exact de la descente ; toute inversion casse la combinaison linéaire obtenue.", "correction_markdown": "Toujours vérifier le résultat final par substitution directe dans l'équation de départ (au0+bv0=1) avant de poursuivre : cela détecte immédiatement toute erreur de remontée."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Résoudre 7x+3y=1 dans ℤ².", "solution_markdown": "7=2×3+1, donc 1=7-2×3. x0=1,y0=-2. Solution générale : x=1+3k, y=-2-7k, k∈ℤ."},
+      {"numero": 2, "difficulte": "difficile", "enonce_markdown": "Pourquoi la solution générale s'obtient-elle en ajoutant bk à x0 et en soustrayant ak à y0 (et pas l'inverse) ?", "solution_markdown": "L'équation homogène a(x-x0)+b(y-y0)=0 s'écrit a(x-x0)=-b(y-y0) ; comme pgcd(a,b)=1, le théorème de Gauss impose b|(x-x0), donc x-x0=bk, et en reportant, y-y0=-ak. C'est cette dérivation, pas une règle à mémoriser, qui garantit la forme correcte."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La descente de l'algorithme d'Euclide donne le pgcd ; la remontée exprime ce pgcd comme combinaison linéaire exacte des deux nombres.", "La solution générale s'obtient en ajoutant/soustrayant des multiples de b et a respectivement, jamais l'inverse.", "Une vérification numérique directe de la solution particulière est indispensable avant de conclure."]}
+  ]
+}

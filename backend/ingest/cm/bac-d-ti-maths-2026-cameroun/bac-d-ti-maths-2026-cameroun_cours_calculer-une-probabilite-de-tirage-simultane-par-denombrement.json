@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-par-denombrement-terminale-d-ti",
+  "meta": {
+    "titre": "Calculer une probabilité de tirage simultané par dénombrement",
+    "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-par-denombrement-terminale-d-ti",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale D/TI",
+    "sous_theme": "Probabilités — dénombrement",
+    "tags": [
+      "combinaisons",
+      "tirage simultané",
+      "dénombrement"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-d-ti-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-d-ti-maths-2026-cameroun-ex4-I2a"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tirage simultané de plusieurs éléments, sans tenir compte de l'ordre, se dénombre par des combinaisons, qu'il s'agisse de compter le nombre total de tirages ou les seuls tirages favorables."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Formule des combinaisons C(n,k)=n!/(k!(n-k)!)",
+        "Principe : probabilité = favorables/total en situation d'équiprobabilité"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dénombrer favorables et total par combinaisons",
+      "contenu_markdown": "Pour un tirage simultané de $k$ éléments parmi $n$, le nombre total de tirages possibles est $\\binom nk$. La probabilité d'un événement se calcule alors comme $p=\\dfrac{\\text{nombre de tirages favorables}}{\\binom nk}$, chaque tirage favorable étant lui-même compté par une combinaison adaptée à la structure de l'événement.",
+      "formule_principale": "p = (nombre de tirages favorables) / C(n,k)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une urne contient 8 jetons numérotés dont 3 rouges. On tire simultanément 2 jetons. Calculer la probabilité d'obtenir 2 jetons rouges.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre total de tirages",
+          "justification": "C(8,2).",
+          "resultat_markdown": "C(8,2)=28"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de tirages favorables",
+          "justification": "C(3,2), choisir 2 rouges parmi les 3.",
+          "resultat_markdown": "C(3,2)=3"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la probabilité",
+          "justification": "favorables/total.",
+          "resultat_markdown": "p=3/28"
+        }
+      ],
+      "conclusion_markdown": "p=3/28."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser des arrangements (en tenant compte de l'ordre) au lieu de combinaisons pour un tirage simultané",
+          "pourquoi_faux": "Un tirage simultané ne distingue pas l'ordre dans lequel les éléments sont extraits ; utiliser des arrangements compterait chaque tirage plusieurs fois, faussant le calcul de probabilité (bien que le résultat final reste correct si l'erreur est appliquée de façon cohérente au numérateur ET au dénominateur, elle complique inutilement le calcul).",
+          "correction_markdown": "Toujours utiliser des combinaisons (et non des arrangements) pour dénombrer un tirage simultané, où l'ordre des éléments tirés n'a pas d'importance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer C(6,2).",
+          "solution_markdown": "6×5/2=15."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Urne de 10 jetons dont 4 verts, tirage simultané de 3. Probabilité d'obtenir 3 verts ?",
+          "solution_markdown": "C(4,3)/C(10,3)=4/120=1/30."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi C(n,k) compte-t-il exactement les tirages simultanés, et pas les tirages successifs sans remise ?",
+          "solution_markdown": "C(n,k) compte les sous-ensembles de k éléments parmi n, sans distinction d'ordre — exactement la structure d'un tirage simultané. Un tirage successif sans remise, en revanche, distingue l'ordre d'obtention, ce qui correspondrait plutôt à un arrangement A(n,k)=n!/(n-k)!, k! fois plus grand que C(n,k)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tirage simultané de k parmi n se dénombre par combinaisons C(n,k), sans tenir compte de l'ordre.",
+        "La probabilité est le rapport favorables/total, tous deux dénombrés par combinaisons cohérentes.",
+        "Ne jamais utiliser des arrangements pour un tirage dont l'ordre n'a pas d'importance."
+      ]
+    }
+  ]
+}

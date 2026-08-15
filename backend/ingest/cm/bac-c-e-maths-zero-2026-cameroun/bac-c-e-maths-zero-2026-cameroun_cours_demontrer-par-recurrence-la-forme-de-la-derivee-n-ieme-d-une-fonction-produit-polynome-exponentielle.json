@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-demontrer-par-recurrence-la-forme-de-la-derivee-n-ieme-d-une-fonction-produit-polynome-exponentielle-terminale-c",
+  "meta": {
+    "titre": "Démontrer par récurrence la forme de la dérivée n-ième d'une fonction produit polynôme-exponentielle",
+    "cours_id": "cours-demontrer-par-recurrence-la-forme-de-la-derivee-n-ieme-d-une-fonction-produit-polynome-exponentielle-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C/E",
+    "sous_theme": "Analyse — récurrence et dérivation",
+    "tags": [
+      "récurrence",
+      "dérivée n-ième",
+      "produit polynôme-exponentielle"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-e-maths-zero-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-e-maths-zero-2026-cameroun-ex2-B.1.a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dériver une fonction produit polynôme-exponentielle une fois, dix fois, ou n fois obéit toujours à la même structure : un raisonnement par récurrence en dévoile la forme générale sans jamais avoir à dériver explicitement n fois de suite."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Maîtriser le principe de démonstration par récurrence",
+        "Savoir dériver un produit polynôme-exponentielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Structure d'une démonstration par récurrence sur une dérivée n-ième",
+      "contenu_markdown": "Pour montrer que $f^{(n)}(x)$ garde une forme fixe $(-1)^n(x^2+u_nx+v_n)e^{-x}$ pour tout $n\\geq1$, on initialise en calculant $f'$ directement (cas $n=1$), puis on suppose la propriété vraie au rang $n$ (hypothèse de récurrence) et on dérive l'expression supposée pour obtenir $f^{(n+1)}$, ce qui doit redonner la même forme avec de nouveaux coefficients $u_{n+1},v_{n+1}$ exprimés en fonction de $u_n,v_n$.",
+      "formule_principale": "Récurrence : initialisation (n=1) + hérédité (dériver l'expression supposée au rang n pour retrouver la forme au rang n+1)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer par récurrence que pour f(x)=(x+1)²e^(-x), f^(n)(x)=(-1)^n(x²+u_nx+v_n)e^(-x) pour tout n≥1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser au rang n=1",
+          "justification": "Calculer f' directement à partir de f.",
+          "resultat_markdown": "f'(x)=e^(-x)(1-x²)=(-1)^1(x²+0·x-1)e^(-x) : vrai avec u1=0,v1=-1"
+        },
+        {
+          "numero": 2,
+          "action": "Supposer la propriété vraie au rang n (hypothèse de récurrence)",
+          "justification": "f^(n)(x)=(-1)^n(x²+unx+vn)e^(-x).",
+          "resultat_markdown": "Hypothèse de récurrence posée"
+        },
+        {
+          "numero": 3,
+          "action": "Dériver l'expression supposée pour obtenir f^(n+1)",
+          "justification": "Dérivation du produit polynôme×exponentielle.",
+          "resultat_markdown": "f^(n+1)(x)=(-1)^(n+1)[x²+(un-2)x+(vn-un)]e^(-x)"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par le principe de récurrence",
+          "justification": "Propriété vraie au rang 1, héréditaire, donc vraie pour tout n.",
+          "resultat_markdown": "f^(n)(x)=(-1)^n(x²+unx+vn)e^(-x) pour tout n∈ℕ*, avec un+1=un-2, vn+1=vn-un"
+        }
+      ],
+      "conclusion_markdown": "La forme est établie pour tout n, et f est ainsi indéfiniment dérivable sur ℝ (chaque f^(n) restant dérivable, produit d'un polynôme et de l'exponentielle)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de conclure sur le caractère indéfiniment dérivable de f à la fin de la récurrence",
+          "pourquoi_faux": "La récurrence établit la forme de f^(n) pour tout n, mais il faut encore remarquer explicitement que chaque expression obtenue (polynôme×exponentielle) est elle-même dérivable, ce qui permet de passer au rang suivant indéfiniment et donc de conclure que f est C^∞ sur ℝ.",
+          "correction_markdown": "Toujours conclure explicitement sur le caractère indéfiniment dérivable en notant que la forme obtenue à chaque rang reste dérivable, permettant de poursuivre la récurrence à l'infini."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Vérifier que f'(x)=e^(-x)(1-x²) peut s'écrire sous la forme (-1)^1(x²+u1x+v1)e^(-x).",
+          "solution_markdown": "e^(-x)(1-x²)=-e^(-x)(x²-1)=(-1)(x²+0x-1)e^(-x), donc u1=0, v1=-1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une récurrence, pourquoi faut-il dériver l'expression 'supposée' plutôt que de calculer directement f^(n+1) à partir de f ?",
+          "solution_markdown": "Le principe de récurrence consiste précisément à utiliser l'hypothèse faite au rang n (la forme supposée de f^(n)) comme point de départ du calcul au rang n+1 ; calculer f^(n+1) directement depuis f reviendrait à ignorer la structure du raisonnement par récurrence et ne prouverait rien pour un rang n quelconque."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Cette méthode de récurrence sur la dérivée n-ième se généralise-t-elle à un polynôme de degré supérieur à 2 multiplié par e^(-x) ?",
+          "solution_markdown": "Oui : le même raisonnement s'applique, mais la forme conjecturée à démontrer doit être un polynôme de même degré que le polynôme initial (par exemple, pour un polynôme de degré 3, on chercherait f^(n)(x)=(-1)^n(x³+u_nx²+v_nx+w_n)e^(-x), avec trois suites de coefficients à faire évoluer par récurrence au lieu de deux)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une récurrence sur une dérivée n-ième s'initialise en calculant f' directement, puis dérive l'expression supposée au rang n pour obtenir le rang n+1.",
+        "La conclusion doit inclure explicitement le caractère indéfiniment dérivable, obtenu car chaque forme reste dérivable.",
+        "Cette méthode se généralise à des polynômes de degré quelconque multipliés par une exponentielle."
+      ]
+    }
+  ]
+}

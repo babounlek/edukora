@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-utiliser-la-fonction-somme-si-sumif-d-un-tableur-terminale-c",
+  "meta": {
+    "titre": "Utiliser la fonction SOMME.SI (SUMIF) d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Formules conditionnelles de tableur",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SOMME.SI",
+      "SUMIF",
+      "fonction conditionnelle"
+    ],
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-D-E-2024-INFORMATIQUE",
+    "epreuve_titre": "BAC C, D, E Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-2025-cameroun-ex1-q5.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner seulement certaines valeurs, celles qui respectent une condition, c'est le rôle de SOMME.SI - la fonction conditionnelle la plus utilisée d'un tableur. La question posée sur le devis de la PME en est un exemple direct."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Maîtriser la fonction SOMME()",
+        "Savoir écrire une condition de comparaison (>=, <=, =)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction SOMME.SI (SUMIF) d'un tableur",
+      "contenu_markdown": "SOMME.SI(plage_test; critère; plage_somme) additionne les valeurs de plage_somme uniquement pour les lignes où la cellule correspondante de plage_test respecte le critère indiqué. Les trois plages doivent avoir le même nombre de lignes, ligne par ligne correspondantes.",
+      "formule_principale": "=SOMME.SI(plage_test; critère; plage_somme)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le résultat de la formule suivante : =SOMME.SI(C2:C4;\">=2\"; B2:B4)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les trois plages de la formule",
+          "justification": "plage_test=C2:C4 (Quantité), critère=\">=2\", plage_somme=B2:B4 (Prix).",
+          "resultat_markdown": "C2:C4 testée, B2:B4 additionnée si le critère est vrai"
+        },
+        {
+          "numero": 2,
+          "action": "Tester le critère ligne par ligne",
+          "justification": "On compare chaque valeur de C2:C4 à \">=2\".",
+          "resultat_markdown": "C2=1 (faux), C3=2 (vrai), C4=3 (vrai)"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les valeurs de B correspondant aux lignes vraies",
+          "justification": "Seules les lignes 3 et 4 sont retenues.",
+          "resultat_markdown": "25 000 + 16 500 = 41 500"
+        }
+      ],
+      "conclusion_markdown": "Le résultat de la formule est 41 500 : seules les lignes dont la quantité est supérieure ou égale à 2 contribuent à la somme des prix."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les valeurs de la colonne C (Quantité) au lieu de la colonne B (Prix)",
+          "pourquoi_faux": "SOMME.SI additionne toujours la troisième plage (plage_somme), jamais la plage testée elle-même, sauf si les deux plages sont volontairement identiques.",
+          "correction_markdown": "Repère bien laquelle des trois plages de la formule est la plage_somme (la dernière) avant de calculer."
+        },
+        {
+          "erreur_markdown": "Inclure la ligne 2 (Switch, quantité 1) dans la somme",
+          "pourquoi_faux": "1 ne respecte pas le critère \">=2\" (supérieur ou égal à 2) : la ligne doit être exclue du calcul.",
+          "correction_markdown": "Vérifie chaque valeur testée une par une contre le critère exact avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec les mêmes données, que donne =SOMME.SI(C2:C4;\"=1\"; B2:B4) ?",
+          "solution_markdown": "Seule la ligne où Quantité=1 est retenue (ligne 2, Switch). Réponse : 70 000."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que donne =SOMME.SI(C2:C4;\">1\"; D2:D4), en supposant que D2=70000, D3=50000 et D4=49500 (montants déjà calculés) ?",
+          "solution_markdown": "Le critère \">1\" (strictement supérieur à 1) exclut la ligne 2 (Quantité=1) et retient les lignes 3 et 4 (Quantité=2 et 3). Réponse : 50 000 + 49 500 = 99 500."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi =SOMME.SI(C2:C4;\">=2\";C2:C4) donnerait un résultat différent de la formule de l'énoncé, tout en utilisant le même critère.",
+          "solution_markdown": "Dans cette variante, la plage_somme (C2:C4) est identique à la plage_test : on additionnerait alors les quantités elles-mêmes des lignes qui vérifient le critère (2+3=5), et non les prix correspondants (25000+16500=41500) comme dans la formule de l'énoncé. Changer la troisième plage change entièrement la nature du résultat, même si le critère de test reste identique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SOMME.SI(plage_test; critère; plage_somme) additionne conditionnellement.",
+        "Le critère s'écrit entre guillemets (ex. \">=2\").",
+        "La somme porte toujours sur plage_somme, jamais sur plage_test (sauf si elles sont volontairement identiques).",
+        "Teste chaque ligne individuellement contre le critère avant d'additionner : c'est la source d'erreur la plus fréquente."
+      ]
+    }
+  ]
+}

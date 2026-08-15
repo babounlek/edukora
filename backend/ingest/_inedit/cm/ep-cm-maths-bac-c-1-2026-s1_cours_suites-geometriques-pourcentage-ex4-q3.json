@@ -1,0 +1,120 @@
+{
+  "type": "cours",
+  "cours_id": "cours-suites-geometriques-evolutions-pourcentage-bac-c",
+  "meta": {
+    "titre": "Suites géométriques et évolutions en pourcentage",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 20,
+    "tags": ["suites geometriques", "pourcentages"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex4-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une grandeur qui évolue chaque année (ou chaque mois) d'un même pourcentage se modélise toujours par une suite géométrique — jamais arithmétique. C'est le lien entre « augmenter de $t\\%$ » et « multiplier par $1+t$ » qui débloque tout le reste du calcul : terme général, somme, et interprétation concrète du résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition et terme général d'une suite géométrique",
+        "Somme des premiers termes d'une suite géométrique",
+        "Calcul d'un pourcentage d'évolution (augmentation, diminution)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Modéliser une évolution en pourcentage par une suite géométrique",
+      "contenu_markdown": "Si une grandeur $u_0$ évolue chaque période d'un taux constant $t\\%$ (augmentation si $t>0$, diminution si $t<0$), alors la suite $(u_n)$ de ses valeurs successives est géométrique de raison $q=1+\\dfrac{t}{100}$, et $u_n=u_0\\times q^n$.\n\nLa somme des $n+1$ premiers termes (de $u_0$ à $u_n$) vaut $S=u_0\\times\\dfrac{1-q^{n+1}}{1-q}$ (pour $q\\neq1$) — utile pour cumuler une grandeur sur plusieurs périodes (ex. chiffre d'affaires total sur plusieurs années).",
+      "formule_principale": "q = 1+\\dfrac{t}{100}, \\quad u_n = u_0\\,q^n, \\quad S=\\sum_{k=0}^{n}u_k = u_0\\,\\dfrac{1-q^{n+1}}{1-q}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une entreprise réalise un chiffre d'affaires de $500\\,000$ FCFA la première année. Ce chiffre d'affaires augmente ensuite de $8\\%$ chaque année. Calculer le chiffre d'affaires de la 5e année, puis le chiffre d'affaires total cumulé sur les 5 premières années.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la raison de la suite géométrique",
+          "justification": "Une augmentation constante de $8\\%$ par an correspond à une multiplication par $1+\\dfrac{8}{100}$ chaque année.",
+          "resultat_markdown": "$q=1{,}08$, avec $u_0=500\\,000$ (chiffre d'affaires de la 1re année)"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer le chiffre d'affaires de la 5e année",
+          "justification": "La 5e année correspond à $u_4$ (4 augmentations successives depuis $u_0$).",
+          "resultat_markdown": "$u_4=u_0\\,q^4=500\\,000\\times1{,}08^4$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement $u_4$",
+          "justification": "$1{,}08^4\\approx1{,}3605$.",
+          "resultat_markdown": "$u_4\\approx500\\,000\\times1{,}3605\\approx680\\,244$ FCFA"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la somme cumulée $S=u_0+u_1+u_2+u_3+u_4$",
+          "justification": "On applique la formule de la somme géométrique avec $n+1=5$ termes.",
+          "resultat_markdown": "$S=500\\,000\\times\\dfrac{1-1{,}08^5}{1-1{,}08}\\approx500\\,000\\times\\dfrac{1-1{,}4693}{-0{,}08}\\approx500\\,000\\times5{,}8666\\approx2\\,933\\,300$ FCFA"
+        }
+      ],
+      "conclusion_markdown": "Le chiffre d'affaires de la 5e année est d'environ $680\\,244$ FCFA, et le total cumulé sur les 5 premières années est d'environ $2\\,933\\,300$ FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $q=\\dfrac{t}{100}$ au lieu de $q=1+\\dfrac{t}{100}$.",
+          "pourquoi_faux": "$q$ est le facteur MULTIPLICATIF total d'une période à l'autre (la grandeur ne disparaît pas, elle varie de $t\\%$), pas seulement la variation elle-même.",
+          "correction_markdown": "Toujours écrire explicitement $q=1+\\dfrac{t}{100}$ (avec $t$ négatif pour une diminution) avant tout calcul."
+        },
+        {
+          "erreur_markdown": "Confondre l'indice $n$ du terme avec le numéro de l'année/période, par exemple prendre $u_5$ pour « la 5e année » au lieu de $u_4$.",
+          "pourquoi_faux": "Si $u_0$ désigne la 1re période, alors la $k$-ième période correspond à l'indice $k-1$, pas $k$.",
+          "correction_markdown": "Toujours écrire clairement la correspondance « $u_0$ = 1re année, $u_1$ = 2e année, ..., $u_{n}$ = $(n+1)$-ième année » avant de substituer un indice."
+        },
+        {
+          "erreur_markdown": "Utiliser la formule de la somme arithmétique (ou une simple multiplication par le nombre de termes) pour cumuler une grandeur qui évolue en pourcentage.",
+          "pourquoi_faux": "Les termes ne sont pas également espacés en valeur (ils croissent ou décroissent d'un facteur constant, pas d'une différence constante) : seule la formule de somme géométrique s'applique.",
+          "correction_markdown": "Dès qu'une évolution est en pourcentage constant, réflexe : suite géométrique, donc formule de somme géométrique $S=u_0\\dfrac{1-q^{n+1}}{1-q}$, jamais la formule arithmétique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un capital de $100\\,000$ FCFA augmente de $5\\%$ chaque année. Calculer sa valeur après 3 ans (c'est-à-dire $u_3$, avec $u_0=100\\,000$ la valeur initiale).",
+          "solution_markdown": "$q=1{,}05$. $u_3=100\\,000\\times1{,}05^3\\approx100\\,000\\times1{,}1576\\approx115\\,763$ FCFA."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Le nombre d'abonnés d'un service diminue de $4\\%$ chaque mois, partant de $2\\,000$ abonnés. Combien d'abonnés reste-t-il après 6 mois (arrondir à l'unité) ?",
+          "solution_markdown": "$q=1-\\dfrac{4}{100}=0{,}96$. $u_6=2\\,000\\times0{,}96^6\\approx2\\,000\\times0{,}7828\\approx1\\,566$ abonnés."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un artisan produit $200$ objets la première année. Sa production augmente de $10\\%$ chaque année. Calculer la production totale cumulée sur les 4 premières années (arrondir à l'unité).",
+          "solution_markdown": "$q=1{,}10$, $u_0=200$. $S=u_0\\dfrac{1-q^4}{1-q}=200\\times\\dfrac{1-1{,}10^4}{1-1{,}10}=200\\times\\dfrac{1-1{,}4641}{-0{,}10}=200\\times4{,}641=928{,}2\\approx928$ objets."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Évolution de $t\\%$ par période $\\Rightarrow$ suite géométrique de raison $q=1+\\dfrac{t}{100}$ (jamais $q=\\dfrac{t}{100}$).",
+        "Terme général : $u_n=u_0\\,q^n$, avec $u_0$ la valeur de la 1re période.",
+        "Bien faire correspondre l'indice $n$ au numéro réel de la période avant de substituer.",
+        "Somme cumulée sur plusieurs périodes : $S=u_0\\dfrac{1-q^{n+1}}{1-q}$, jamais une formule arithmétique.",
+        "Diminution : $t<0$ dans la formule de $q$, donc $q<1$ — la méthode et les formules restent identiques."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-determiner-le-mode-d-adressage-ip-utilise-statique-ou-dynamique-dhcp-a-partir-d-une-configuration-reseau-terminale-c",
+  "meta": {
+    "titre": "Déterminer le mode d'adressage IP utilisé (statique ou dynamique/DHCP) à partir d'une configuration réseau",
+    "cours_id": "cours-determiner-le-mode-d-adressage-ip-utilise-statique-ou-dynamique-dhcp-a-partir-d-une-configuration-reseau-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Adressage IP",
+    "tags": [
+      "DHCP",
+      "adressage statique",
+      "adressage dynamique"
+    ],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex1-qB2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse IP peut être configurée \"à la main\" une fois pour toutes, ou distribuée automatiquement par le réseau à chaque connexion. La ligne \"DHCP Activated\" d'une configuration réseau révèle immédiatement laquelle des deux méthodes est utilisée."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Adressage statique et adressage dynamique (DHCP)",
+      "contenu_markdown": "En **adressage statique**, l'adresse IP d'un poste est configurée manuellement une fois pour toutes. En **adressage dynamique**, un serveur **DHCP** (Dynamic Host Configuration Protocol) attribue automatiquement une adresse IP (temporaire, renouvelable) à chaque équipement qui se connecte au réseau. La ligne \"DHCP Activated: Yes/No\" d'une configuration réseau indique directement quel mode est utilisé.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le mode d'adressage utilisé, sachant que la configuration affiche \"DHCP Activated: Yes\".",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne DHCP Activated",
+          "justification": "Cette ligne indique directement si le DHCP est actif ou non.",
+          "resultat_markdown": "DHCP Activated: Yes"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire le mode d'adressage",
+          "justification": "DHCP actif signifie que l'adresse est attribuée automatiquement.",
+          "resultat_markdown": "Mode dynamique"
+        }
+      ],
+      "conclusion_markdown": "\"DHCP Activated: Yes\" signale un adressage dynamique (automatique) ; \"No\" signalerait un adressage statique (manuel)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"statique\" alors que DHCP Activated indique \"Yes\"",
+          "pourquoi_faux": "DHCP est précisément le protocole d'attribution AUTOMATIQUE des adresses IP ; \"DHCP Activated: Yes\" signifie que ce mécanisme automatique est en fonctionnement, donc le mode est dynamique, pas statique.",
+          "correction_markdown": "Associe systématiquement \"DHCP Activated: Yes\" à \"adressage dynamique\", et \"DHCP Activated: No\" à \"adressage statique\"."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une configuration affiche \"DHCP Activated: No\". Quel est le mode d'adressage ?",
+          "solution_markdown": "Le mode statique : l'adresse IP a été configurée manuellement, sans intervention d'un serveur DHCP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi un serveur d'entreprise utilise-t-il généralement une adresse IP statique plutôt que dynamique ?",
+          "solution_markdown": "Un serveur doit rester joignable à une adresse stable et connue à l'avance (par les autres postes, par le DNS interne, par les règles de pare-feu) ; une adresse dynamique pourrait changer périodiquement, ce qui casserait ces configurations dépendant de son adresse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quel est l'avantage principal du DHCP pour l'administration d'un grand réseau de postes clients ?",
+          "solution_markdown": "Le DHCP évite d'avoir à configurer manuellement l'adresse IP de chaque poste un par un (tâche longue et source d'erreurs, notamment de conflits d'adresses) ; il attribue et gère automatiquement les adresses disponibles, ce qui simplifie considérablement l'administration d'un réseau comportant de nombreux postes clients."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DHCP Activated: Yes indique un adressage dynamique (automatique).",
+        "DHCP Activated: No indique un adressage statique (manuel).",
+        "Un serveur utilise généralement une adresse statique pour rester joignable de façon stable.",
+        "Le DHCP simplifie l'administration des adresses IP sur un réseau comportant de nombreux postes."
+      ]
+    }
+  ]
+}

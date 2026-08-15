@@ -1,0 +1,31 @@
+{
+  "cours_id": "cours-ecrire-la-matrice-dun-endomorphisme-dans-une-base-terminale-c",
+  "meta": {
+    "titre": "Écrire la matrice d'un endomorphisme de l'espace dans une base",
+    "cours_id": "cours-ecrire-la-matrice-dun-endomorphisme-dans-une-base-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Algèbre linéaire — endomorphismes de l'espace",
+    "tags": ["matrice", "endomorphisme", "base", "espace vectoriel"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "terminale-c-maths-jean-tabi-2025-2026.pdf"
+  },
+  "source": {"rappel_id": "rdm-terminale-c-maths-jean-tabi-2025-2026-ex1-1a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "La matrice d'un endomorphisme n'est rien d'autre qu'une façon compacte de ranger les coordonnées des images des vecteurs de base : une compétence purement mécanique, mais qui doit être sans faute pour la suite de l'exercice."},
+    {"type": "prerequis", "items_markdown": ["Notion de base d'un espace vectoriel de dimension 3", "Coordonnées d'un vecteur dans une base"]},
+    {"type": "regle", "titre": "Les images de base en colonnes", "contenu_markdown": "Si $f$ est un endomorphisme de $E$ et $\\mathcal B=(\\vec e_1,\\vec e_2,\\vec e_3)$ une base de $E$, la matrice $\\text{Mat}_{\\mathcal B}(f)$ a pour $j$-ième colonne les coordonnées de $f(\\vec e_j)$ exprimées dans $\\mathcal B$. L'ordre des colonnes suit l'ordre des vecteurs de base.", "formule_principale": "Mat_B(f) = [ [f(e1)]_B | [f(e2)]_B | [f(e3)]_B ]", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Soit $f$ défini par $f(\\vec e_1)=\\vec e_1+2\\vec e_2$, $f(\\vec e_2)=-\\vec e_2+\\vec e_3$, $f(\\vec e_3)=3\\vec e_1$. Écrire $\\text{Mat}_{\\mathcal B}(f)$.", "epreuve_source": true, "etapes": [
+      {"numero": 1, "action": "Coordonnées de f(e1)", "justification": "f(e1)=1.e1+2.e2+0.e3", "resultat_markdown": "(1,2,0)"},
+      {"numero": 2, "action": "Coordonnées de f(e2)", "justification": "f(e2)=0.e1-1.e2+1.e3", "resultat_markdown": "(0,-1,1)"},
+      {"numero": 3, "action": "Coordonnées de f(e3)", "justification": "f(e3)=3.e1+0.e2+0.e3", "resultat_markdown": "(3,0,0)"},
+      {"numero": 4, "action": "Assembler en colonnes", "justification": "Chaque triplet devient une colonne, dans l'ordre e1,e2,e3.", "resultat_markdown": "Mat_B(f) = [[1,0,3],[2,-1,0],[0,1,0]]"}
+    ], "conclusion_markdown": "La matrice est obtenue directement, sans calcul, en juxtaposant les colonnes de coordonnées."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Placer les images en lignes plutôt qu'en colonnes", "pourquoi_faux": "La convention standard range les images de base en colonnes ; les inverser donne la matrice transposée, qui n'est pas la bonne matrice de f en général.", "correction_markdown": "Toujours vérifier : la j-ième colonne correspond à f(e_j), pas la j-ième ligne."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "f(e1)=e2, f(e2)=e3, f(e3)=e1. Écrire Mat_B(f).", "solution_markdown": "[[0,0,1],[1,0,0],[0,1,0]]"},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "f(e1)=2e1, f(e2)=2e2, f(e3)=2e3. Écrire Mat_B(f) et commenter sa forme.", "solution_markdown": "[[2,0,0],[0,2,0],[0,0,2]] : matrice diagonale, car f est une homothétie de rapport 2."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Chaque colonne de la matrice contient les coordonnées de l'image du vecteur de base correspondant.", "L'ordre des colonnes suit strictement l'ordre des vecteurs de la base.", "Une matrice diagonale traduit une action indépendante sur chaque vecteur de base (souvent une homothétie ou une projection)."]}
+  ]
+}

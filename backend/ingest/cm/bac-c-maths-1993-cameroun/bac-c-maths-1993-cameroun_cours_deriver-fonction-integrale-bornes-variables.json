@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-deriver-fonction-integrale-bornes-variables-doubles-terminale-c",
+  "meta": {"titre": "Dériver une fonction définie par une intégrale à deux bornes variables", "cours_id": "cours-deriver-fonction-integrale-bornes-variables-doubles-terminale-c", "matiere": "Mathématiques", "niveau": "Terminale C", "sous_theme": "Calcul intégral — dérivation avec bornes variables des deux côtés", "tags": ["dérivée d'une intégrale", "bornes variables", "formule de Leibniz"], "duree_estimee_minutes": 4, "epreuve_source": "bac-c-maths-1993-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-c-maths-1993-cameroun-ex2-q2"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Quand les deux bornes d'une intégrale dépendent de la variable, la dérivée combine l'évaluation de l'intégrande à chaque borne, pondérée par la dérivée de cette borne."},
+    {"type": "prerequis", "items_markdown": ["Cas simple : d/dx ∫[a,v(x)] h(t)dt = h(v(x))v'(x)", "Relation de Chasles pour décomposer une intégrale à bornes doubles variables"]},
+    {"type": "regle", "titre": "g'(x)=h(v(x))v'(x)-h(u(x))u'(x)", "contenu_markdown": "Pour $g(x)=\\displaystyle\\int_{u(x)}^{v(x)}h(t)\\,dt$, on décompose via la relation de Chasles : $g(x)=\\displaystyle\\int_{a}^{v(x)}h(t)\\,dt-\\displaystyle\\int_a^{u(x)}h(t)\\,dt$ (pour un point fixe $a$ quelconque), puis on dérive chaque terme séparément par la règle de dérivation d'une intégrale à borne supérieure variable : $g'(x)=h(v(x))v'(x)-h(u(x))u'(x)$.", "formule_principale": "g(x)=∫[u(x),v(x)]h(t)dt ⟹ g'(x)=h(v(x))v'(x)-h(u(x))u'(x)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "g(x)=∫[x²,3x] t²dt. Calculer g'(x).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Identifier", "justification": "u(x)=x², v(x)=3x, u'=2x, v'=3", "resultat_markdown": "h(t)=t²"},
+      {"numero": 2, "action": "Appliquer la formule", "justification": "h(3x)(3)-h(x²)(2x)", "resultat_markdown": "9x²(3)-x⁴(2x)=27x²-2x⁵"}
+    ], "conclusion_markdown": "g'(x)=27x²-2x⁵."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Inverser le signe entre les deux termes, en additionnant au lieu de soustraire la contribution de la borne inférieure", "pourquoi_faux": "La formule provient d'une décomposition par Chasles où le terme associé à la borne inférieure apparaît avec un signe négatif (soustraction) ; inverser ce signe donne une dérivée fausse.", "correction_markdown": "Toujours soustraire (et non additionner) la contribution de la borne inférieure : g'(x)=h(v(x))v'(x)-h(u(x))u'(x), jamais un signe +."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "g(x)=∫[x,x²] e^t dt. Calculer g'(x).", "solution_markdown": "g'(x)=e^(x²)(2x)-e^x(1)=2xe^(x²)-e^x."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une fonction définie par une intégrale à deux bornes variables se dérive en évaluant l'intégrande à chaque borne, pondérée par la dérivée de cette borne.", "Le terme associé à la borne inférieure est toujours soustrait, jamais additionné."]}
+  ]
+}

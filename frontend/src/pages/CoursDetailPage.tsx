@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { CoursSection } from "@/components/CoursSection"
+import { RelatedCours } from "@/components/RelatedCours"
 import { CountryBadge } from "@/components/CountryBadge"
-import { coursListPath } from "@/lib/countryPath"
+import { coursListPath, coursReaderPath } from "@/lib/countryPath"
 
 export function CoursDetailPage() {
-  const { id } = useParams<{ id: string }>()
+  const { slug } = useParams<{ slug: string }>()
 
   const [cours, setCours] = useState<Cours | null>(null)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
@@ -27,13 +29,13 @@ export function CoursDetailPage() {
   })
 
   useEffect(() => {
-    if (!id) return
-    getCours(Number(id)).then(setCours)
-  }, [id])
+    if (!slug) return
+    getCours(slug).then(setCours)
+  }, [slug])
 
   useEffect(() => {
     if (!cours || cours.has_access) return
-    previewCours(cours.id).then(setPreview).catch(() => {})
+    previewCours(cours.slug).then(setPreview).catch(() => {})
   }, [cours])
 
   if (!cours) {
@@ -89,7 +91,7 @@ export function CoursDetailPage() {
         <div className="mt-2 border-t border-border pt-5">
           {cours.has_access ? (
             <Button asChild size="lg">
-              <Link to={`/cours/${cours.id}/lire`}>
+              <Link to={coursReaderPath(cours.slug)}>
                 <BookOpenText />
                 Lire le cours
               </Link>
@@ -102,9 +104,17 @@ export function CoursDetailPage() {
                     <Lock className="size-3.5 shrink-0" />
                     Aperçu - la méthode seulement
                   </div>
-                  <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
-                    <EpreuveMarkdown markdown={preview.preview_markdown} />
-                  </article>
+                  {preview.sections.length > 0 ? (
+                    <div className="flex flex-col gap-6">
+                      {preview.sections.map((section) => (
+                        <CoursSection key={section.type} section={section} />
+                      ))}
+                    </div>
+                  ) : (
+                    <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                      <EpreuveMarkdown markdown={preview.preview_markdown} />
+                    </article>
+                  )}
                 </>
               )}
 
@@ -132,6 +142,14 @@ export function CoursDetailPage() {
             </div>
           )}
         </div>
+
+        <RelatedCours
+          subjectCode={cours.subject.code}
+          subjectLabel={cours.subject.label}
+          countryCode={cours.subject.country.code.toLowerCase()}
+          cursusId={cours.cursus[0]?.id}
+          excludeId={cours.id}
+        />
       </div>
     </div>
   )

@@ -1,0 +1,101 @@
+{
+  "cours_id": "cours-traduire-l-instruction-de-lecture-lire-de-l-algorithmique-en-scanf-du-langage-c-terminale-c",
+  "meta": {
+    "titre": "Traduire l'instruction de lecture (Lire) de l'algorithmique en scanf() du langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Programmation - traduction algorithme vers C",
+    "tags": ["scanf", "langage C", "lecture clavier"],
+    "duree_estimee_min": 15,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex5-q1a-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Demander une valeur à l'utilisateur semble simple en algorithmique (« Lire(x) »), mais sa traduction en C cache un piège récurrent : il faut transmettre non pas la variable elle-même, mais son adresse mémoire."
+    },
+    {
+      "type": "prerequis",
+      "items": ["Connaître les types de base du langage C (int, float, char)", "Savoir ce qu'est une variable"]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire Lire(variable) par scanf()",
+      "contenu_markdown": "L'instruction `Lire(variable)` de l'algorithmique se traduit en C par `scanf(\"%d\", &variable);` pour un entier (`%f` pour un réel, `%c` pour un caractère - le spécificateur de format doit correspondre exactement au type de la variable). Le symbole **&** devant le nom de la variable transmet à scanf() son adresse mémoire, pas sa valeur : scanf() a besoin de savoir OÙ écrire la valeur saisie au clavier, ce que seule l'adresse mémoire de la variable permet.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C l'instruction algorithmique `Lire(x)`, où x est une variable entière.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le spécificateur de format correspondant au type de la variable",
+          "justification": "x est un entier : le spécificateur correct est %d.",
+          "resultat_markdown": "Spécificateur : %d"
+        },
+        {
+          "numero": 2,
+          "action": "Assembler l'instruction scanf() complète, en transmettant l'adresse de x",
+          "justification": "scanf() doit recevoir l'adresse mémoire de la variable à remplir, symbolisée par &, jamais la variable seule.",
+          "resultat_markdown": "`scanf(\"%d\", &x);`"
+        }
+      ],
+      "conclusion_markdown": "`Lire(x);` se traduit par `scanf(\"%d\", &x);`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le symbole & devant le nom de la variable",
+          "pourquoi_faux": "Sans &, scanf() reçoit la VALEUR actuelle de la variable plutôt que son adresse - il ne sait alors pas où écrire la valeur saisie au clavier, ce qui provoque un comportement indéfini (souvent un plantage) à l'exécution.",
+          "correction_markdown": "Vérifie systématiquement la présence du symbole & devant chaque variable simple passée à scanf() (sauf pour une chaîne de caractères déclarée en tableau, qui fait exception à cette règle)."
+        },
+        {
+          "erreur_markdown": "Utiliser un spécificateur de format qui ne correspond pas au type réel de la variable (ex. %d pour un réel)",
+          "pourquoi_faux": "scanf() interprète les octets lus selon le spécificateur fourni - un mauvais spécificateur (%d pour un float, par exemple) produit une valeur totalement incorrecte, sans forcément provoquer d'erreur visible immédiatement.",
+          "correction_markdown": "Fais correspondre systématiquement le spécificateur au type déclaré de la variable : %d pour int, %f pour float, %c pour char."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C l'instruction algorithmique `Lire(n)`, où n est une variable entière.",
+          "solution_markdown": "`scanf(\"%d\", &n);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C l'instruction algorithmique `Lire(moyenne)`, où moyenne est une variable réelle (float).",
+          "solution_markdown": "`scanf(\"%f\", &moyenne);` - le spécificateur %f correspond au type réel (float), à la différence de %d réservé aux entiers."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève traduit `Lire(a); Lire(b);` (deux variables entières lues successivement) en une seule ligne : `scanf(\"%d %d\", a, b);`, en oubliant le symbole & sur les deux variables. Explique le risque de cette erreur, et corrige le code.",
+          "solution_markdown": "Sans le symbole &, scanf() reçoit les VALEURS actuelles de a et b (potentiellement des valeurs indéterminées, puisque non encore initialisées) plutôt que leurs adresses mémoire. scanf() interprète alors ces valeurs comme des adresses où écrire les données saisies, ce qui tente d'écrire à des emplacements mémoire arbitraires et provoque très probablement un plantage du programme (comportement indéfini, potentiellement une erreur de segmentation). La correction consiste à restaurer le symbole & devant chaque variable : `scanf(\"%d %d\", &a, &b);` - une seule instruction scanf() peut lire plusieurs valeurs à la fois, à condition de fournir un spécificateur de format ET une adresse pour chacune."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`Lire(variable)` se traduit par `scanf(\"specificateur\", &variable);`.",
+        "Le symbole & transmet l'adresse mémoire de la variable, jamais sa valeur - scanf() doit savoir OÙ écrire.",
+        "Le spécificateur de format doit correspondre exactement au type de la variable : %d (entier), %f (réel), %c (caractère).",
+        "Une seule instruction scanf() peut lire plusieurs variables à la fois, à condition de fournir un spécificateur ET une adresse par variable.",
+        "Au BAC, cette traduction accompagne presque toujours la traduction d'une déclaration de variable et d'une structure de contrôle dans le même exercice."
+      ]
+    }
+  ]
+}

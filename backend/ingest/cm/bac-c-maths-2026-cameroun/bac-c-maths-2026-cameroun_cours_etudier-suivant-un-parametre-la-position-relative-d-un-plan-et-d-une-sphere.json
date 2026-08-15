@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-etudier-suivant-un-parametre-la-position-relative-d-un-plan-et-d-une-sphere-terminale-c",
+  "meta": {
+    "titre": "Étudier suivant un paramètre la position relative d'un plan et d'une sphère",
+    "cours_id": "cours-etudier-suivant-un-parametre-la-position-relative-d-un-plan-et-d-une-sphere-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Géométrie dans l'espace — sphères",
+    "tags": [
+      "distance point-plan",
+      "position relative",
+      "plan sécant tangent disjoint"
+    ],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-2026-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-maths-2026-cameroun-ex2-II.2.b-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La position relative d'un plan fixe et d'une sphère dont le centre se déplace selon un paramètre bascule entre trois régimes (sécant, tangent, disjoint), et une simple comparaison de distance au rayon suffit à trancher pour chaque valeur du paramètre."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la formule de distance d'un point à un plan",
+        "Savoir comparer cette distance au rayon d'une sphère pour déterminer leur position relative"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer distance centre-plan et rayon",
+      "contenu_markdown": "Pour un plan $(P): ax+by+cz+d=0$ et une sphère de centre $\\Omega$ et de rayon $R$, on calcule $d(\\Omega,(P))=\\dfrac{|a x_\\Omega+by_\\Omega+cz_\\Omega+d|}{\\sqrt{a^2+b^2+c^2}}$. Si cette distance dépend d'un paramètre, on résout les inégalités/égalité $d(\\Omega,(P))<R$, $=R$, $>R$ pour déterminer, selon les valeurs du paramètre, si le plan est sécant (intersection = cercle), tangent, ou disjoint de la sphère.",
+      "formule_principale": "d(Ω,(P))<R : sécant ; d=R : tangent ; d>R : disjoint",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Plan (ABC): -y+z-2=0. Sphère (S_θ) de centre (θ;sinθ;0), rayon √2. Étudier la position relative selon θ∈]-π;π[.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance du centre au plan",
+          "justification": "Formule de distance point-plan, normal (0;-1;1).",
+          "resultat_markdown": "d = |0-sinθ+0-2|/√2 = |−sinθ−2|/√2 = (sinθ+2)/√2 (car sinθ+2>0 toujours)"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer à R=√2 : résoudre d<R",
+          "justification": "(sinθ+2)/√2 < √2 ⟺ sinθ+2<2.",
+          "resultat_markdown": "sinθ<0"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre d=R",
+          "justification": "sinθ+2=2 ⟺ sinθ=0.",
+          "resultat_markdown": "θ=0 (seule solution dans ]-π;π[)"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le cas d>R",
+          "justification": "Cas complémentaire.",
+          "resultat_markdown": "sinθ>0, soit θ∈]0;π["
+        }
+      ],
+      "conclusion_markdown": "Plan sécant pour θ∈]-π;0[, tangent pour θ=0, disjoint pour θ∈]0;π[."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de retirer la valeur absolue en justifiant le signe de l'expression à l'intérieur",
+          "pourquoi_faux": "Sans justifier que sinθ+2 est toujours strictement positif (car sinθ≥-1), on ne peut pas simplifier |−sinθ−2| en (sinθ+2) directement, ce qui peut mener à une erreur de signe dans la comparaison finale.",
+          "correction_markdown": "Toujours justifier explicitement le signe de l'expression sous la valeur absolue avant de la retirer, en s'appuyant sur les bornes connues des fonctions trigonométriques."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un plan est à distance 3 d'une sphère de rayon 5. Quelle est leur position relative ?",
+          "solution_markdown": "3<5 : le plan est sécant à la sphère."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour quelle distance d le plan devient-il tangent à une sphère de rayon 4 ?",
+          "solution_markdown": "d=4 (distance égale au rayon)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi n'existe-t-il, dans l'exemple résolu, qu'une seule valeur de θ donnant la tangence, et non plusieurs ?",
+          "solution_markdown": "L'équation sinθ=0 n'a qu'une seule solution sur l'intervalle ouvert ]-π;π[ (à savoir θ=0), car sinθ s'annule aussi en θ=±π mais ces valeurs sont exclues de l'intervalle ouvert donné par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La position relative d'un plan et d'une sphère se détermine en comparant la distance centre-plan au rayon.",
+        "Trois régimes : sécant (d<R), tangent (d=R), disjoint (d>R).",
+        "Toujours justifier explicitement le signe d'une expression avant de retirer une valeur absolue."
+      ]
+    }
+  ]
+}

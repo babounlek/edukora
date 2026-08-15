@@ -1,0 +1,34 @@
+{
+  "epreuve_source": "bac-c-maths-1993-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 1993,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 2,
+  "titre_exercice": "Exercice 2 : encadrement d'une intégrale par la méthode des bornes, dérivée d'une fonction définie par une intégrale à bornes variables",
+  "points": 3,
+  "figures": [],
+  "enonce_intro_markdown": "Soit $I=\\displaystyle\\int_0^{\\pi/4}\\dfrac{2\\,dt}{(1+\\cos t)^2}$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1,5pt",
+      "enonce_markdown": "Montrer que $\\dfrac\\pi8\\leqslant I\\leqslant\\pi(3-2\\sqrt2)$.",
+      "rappels_de_methode": [{"cours_id": "cours-encadrer-integrale-minimum-maximum-integrande-terminale-c", "texte": "Pour encadrer une intégrale sans la calculer, on encadre l'intégrande par ses valeurs extrêmes (minimum et maximum) sur l'intervalle d'intégration, puis on multiplie ces bornes par la longueur de l'intervalle."}],
+      "corrige_markdown": "### Rappel de méthode\nPour encadrer une intégrale $\\displaystyle\\int_a^bh(t)\\,dt$ sans la calculer explicitement, on encadre l'intégrande $h(t)$ par son minimum $m$ et son maximum $M$ sur $[a,b]$ (souvent obtenus via la monotonie de $h$), puis on multiplie ces bornes par la longueur de l'intervalle : $m(b-a)\\leqslant\\displaystyle\\int_a^bh(t)\\,dt\\leqslant M(b-a)$.\n\n**Étude de la monotonie de l'intégrande $h(t)=\\dfrac2{(1+\\cos t)^2}$ sur $\\left[0;\\dfrac\\pi4\\right]$.**\n\nSur cet intervalle, $\\cos t$ est décroissante de $\\cos0=1$ à $\\cos\\dfrac\\pi4=\\dfrac{\\sqrt2}2$ : donc $1+\\cos t$ décroît de $2$ à $1+\\dfrac{\\sqrt2}2$, donc $(1+\\cos t)^2$ décroît également (car $1+\\cos t>0$), et par conséquent $h(t)=\\dfrac2{(1+\\cos t)^2}$ est CROISSANTE sur $\\left[0;\\dfrac\\pi4\\right]$ (le dénominateur diminue, le quotient augmente).\n\n**Valeur minimale de $h$, en $t=0$.**\n\n$$h(0)=\\dfrac2{(1+1)^2}=\\dfrac24=\\dfrac12$$\n\n**Valeur maximale de $h$, en $t=\\dfrac\\pi4$.**\n\n$$1+\\cos\\dfrac\\pi4=1+\\dfrac{\\sqrt2}2\\qquad\\left(1+\\dfrac{\\sqrt2}2\\right)^2=1+\\sqrt2+\\dfrac12=\\dfrac32+\\sqrt2$$\n\n$$h\\left(\\dfrac\\pi4\\right)=\\dfrac2{\\frac32+\\sqrt2}=\\dfrac4{3+2\\sqrt2}$$\n\n**Rationalisation**, en multipliant par $\\dfrac{3-2\\sqrt2}{3-2\\sqrt2}$ (avec $(3+2\\sqrt2)(3-2\\sqrt2)=9-8=1$) :\n\n$$h\\left(\\dfrac\\pi4\\right)=\\dfrac{4(3-2\\sqrt2)}{9-8}=4(3-2\\sqrt2)=12-8\\sqrt2$$\n\n**Encadrement de l'intégrale**, avec la longueur de l'intervalle $\\dfrac\\pi4-0=\\dfrac\\pi4$ :\n\n$$\\dfrac12\\times\\dfrac\\pi4\\leqslant I\\leqslant(12-8\\sqrt2)\\times\\dfrac\\pi4$$\n\n$$\\dfrac\\pi8\\leqslant I\\leqslant\\dfrac{12\\pi-8\\sqrt2\\pi}4=3\\pi-2\\sqrt2\\pi=\\pi(3-2\\sqrt2)$$\n\n**L'encadrement demandé $\\dfrac\\pi8\\leqslant I\\leqslant\\pi(3-2\\sqrt2)$ est établi.**\n\n### Conseil\nToujours vérifier le sens de variation de l'intégrande avant d'attribuer le minimum et le maximum aux bonnes bornes de l'intervalle : ici, comme le dénominateur $(1+\\cos t)^2$ décroît, l'intégrande (son inverse, à un facteur près) croît, contrairement à l'intuition qui pourrait suggérer le contraire."
+    },
+    {
+      "numero": "2",
+      "points": "1,5pt",
+      "enonce_markdown": "Calculer la dérivée de la fonction $g$ définie dans l'intervalle $\\left[0;\\dfrac\\pi4\\right]$ par $g(x)=\\displaystyle\\int_x^{2x}\\dfrac{dt}{(1+\\cos t)^2}$.",
+      "rappels_de_methode": [{"cours_id": "cours-deriver-fonction-integrale-bornes-variables-doubles-terminale-c", "texte": "Pour dériver g(x)=∫[u(x),v(x)] h(t)dt, on applique g'(x)=h(v(x))v'(x)-h(u(x))u'(x), en évaluant l'intégrande aux deux bornes puis en multipliant par leurs dérivées respectives."}],
+      "corrige_markdown": "### Rappel de méthode\nPour dériver une fonction définie par une intégrale à bornes variables $g(x)=\\displaystyle\\int_{u(x)}^{v(x)}h(t)\\,dt$, on applique la formule $g'(x)=h\\big(v(x)\\big)v'(x)-h\\big(u(x)\\big)u'(x)$ : on évalue l'intégrande aux deux bornes, puis on multiplie chaque évaluation par la dérivée de la borne correspondante.\n\n**Identification des éléments**, avec $h(t)=\\dfrac1{(1+\\cos t)^2}$, $u(x)=x$, $v(x)=2x$ : $u'(x)=1$, $v'(x)=2$.\n\n**Application de la formule.**\n\n$$g'(x)=h(2x)\\times2-h(x)\\times1=\\dfrac2{(1+\\cos2x)^2}-\\dfrac1{(1+\\cos x)^2}$$\n\n**Simplification du premier terme via $1+\\cos2x=2\\cos^2x$** (formule de duplication du cosinus) :\n\n$$(1+\\cos2x)^2=(2\\cos^2x)^2=4\\cos^4x$$\n\n$$\\dfrac2{(1+\\cos2x)^2}=\\dfrac2{4\\cos^4x}=\\dfrac1{2\\cos^4x}$$\n\n**Forme simplifiée de $g'(x)$ :**\n\n$$g'(x)=\\dfrac1{2\\cos^4x}-\\dfrac1{(1+\\cos x)^2}$$\n\n### Conseil\nLa forme simplifiée avec $\\cos^4x$ (obtenue via la formule de duplication) est souvent plus exploitable pour une étude de signe ultérieure que la forme brute avec $\\cos(2x)$ : toujours chercher à simplifier via les formules de trigonométrie usuelles après application de la formule de dérivation."
+    }
+  ]
+}

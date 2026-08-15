@@ -1,0 +1,107 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-une-condition-simple-select-colonnes-from-table-where-condition-terminale-c",
+  "meta": {
+    "titre": "Écrire une requête SQL de sélection avec une condition simple (SELECT colonnes FROM table WHERE condition)",
+    "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-une-condition-simple-select-colonnes-from-table-where-condition-terminale-c",
+    "matiere": "Informatique",
+    "niveau": "Terminale C, D, E",
+    "sous_theme": "Langage SQL — Interrogation de données",
+    "tags": [
+      "SELECT",
+      "WHERE",
+      "colonnes spécifiques"
+    ],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-d-e-informatique-theorique-2023-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2023-cameroun-ex3-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Afficher uniquement certaines colonnes, pour certaines lignes précises, est la requête la plus fréquemment demandée en SQL — la brique de base à maîtriser avant toute requête plus complexe."
+    },
+    {
+      "type": "prerequis",
+      "items_markdown": [
+        "Connaître la syntaxe générale SELECT ... FROM ... WHERE ..."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire une requête de sélection avec une condition simple",
+      "contenu_markdown": "La syntaxe générale `SELECT colonne1, colonne2 FROM table WHERE condition;` affiche, pour chaque ligne de la table vérifiant la condition, uniquement les valeurs des colonnes explicitement nommées après SELECT (et non toutes les colonnes, contrairement à SELECT *).",
+      "formule_principale": "SELECT colonne1, colonne2 FROM table WHERE condition;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête affichant les noms et prénoms des élèves filles (table ELEVE, colonne Sexe).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les colonnes à afficher",
+          "justification": "L'énoncé demande les noms ET les prénoms, donc deux colonnes précises.",
+          "resultat_markdown": "Nom, Prenom"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la condition de filtrage",
+          "justification": "Seules les élèves \"filles\" doivent être affichées.",
+          "resultat_markdown": "Sexe = 'F'"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "On combine colonnes, table et condition selon la syntaxe SELECT...FROM...WHERE.",
+          "resultat_markdown": "`SELECT Nom, Prenom FROM ELEVE WHERE Sexe = 'F';`"
+        }
+      ],
+      "conclusion_markdown": "SELECT colonne1, colonne2 FROM table WHERE condition; affiche uniquement les colonnes nommées, pour les lignes vérifiant la condition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire SELECT * FROM ELEVE WHERE Sexe='F'; en pensant répondre correctement",
+          "pourquoi_faux": "SELECT * afficherait TOUTES les colonnes de la table (Matricule, Adresse, DateNaissance...), alors que l'énoncé demande précisément les noms ET prénoms, rien de plus.",
+          "correction_markdown": "Nomme toujours explicitement les colonnes demandées après SELECT lorsque l'énoncé précise quelles informations afficher, plutôt que d'utiliser * par facilité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête affichant le matricule des élèves de la classe \"Tle C1\".",
+          "solution_markdown": "`SELECT Matricule FROM ELEVE WHERE NumClasse = 'Tle C1';` (en supposant que NumClasse contient directement le nom de la classe, ou via une jointure avec CLASSE si NumClasse est un code numérique)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête affichant le nom et l'adresse des élèves nés avant le 1er janvier 2006.",
+          "solution_markdown": "`SELECT Nom, Adresse FROM ELEVE WHERE DateNaissance < '2006-01-01';`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comment adapter cette requête pour trier les élèves filles affichées par ordre alphabétique de nom ?",
+          "solution_markdown": "En ajoutant une clause ORDER BY à la fin de la requête : `SELECT Nom, Prenom FROM ELEVE WHERE Sexe = 'F' ORDER BY Nom;` — ORDER BY trie le résultat final selon la colonne indiquée (ordre croissant par défaut, ou DESC pour un ordre décroissant), une clause qui s'ajoute toujours après WHERE dans une requête SELECT."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT colonne1, colonne2 FROM table WHERE condition; cible précisément les colonnes demandées.",
+        "Ne pas utiliser SELECT * quand l'énoncé demande des colonnes précises.",
+        "La condition WHERE filtre les lignes selon un critère.",
+        "ORDER BY, ajouté après WHERE, permet de trier le résultat final."
+      ]
+    }
+  ]
+}

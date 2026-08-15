@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-resolution-equation-idempotente-modulo-n-terminale-c",
+  "meta": {
+    "titre": "Résoudre l'équation idempotente x²=x dans ℤ/nℤ",
+    "cours_id": "cours-resolution-equation-idempotente-modulo-n-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Arithmétique - équations dans ℤ/nℤ",
+    "tags": ["idempotents", "ℤ/nℤ", "résolution d'équation modulaire"],
+    "duree_estimee_minutes": 8,
+    "epreuve_source": "bac-c-maths-blanc-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-blanc-2003-cameroun_exercice_1_qII-2"
+  },
+  "sections": {
+    "accroche": "Une fois le tableau des carrés d'un anneau fini établi, résoudre une équation comme x²=x devient une simple lecture comparative, sans nouveau calcul.",
+    "prerequis": ["Tableau des carrés déjà calculé dans ℤ/nℤ", "Notion d'élément idempotent (x²=x)"],
+    "regle": {
+      "titre": "Résolution de x²=x par réutilisation du tableau des carrés",
+      "contenu_markdown": "Pour résoudre $\\dot x^2=\\dot x$ dans $\\mathbb Z/n\\mathbb Z$, il suffit de comparer, pour chaque élément, la valeur de son carré (déjà calculée) à l'élément lui-même : les solutions sont exactement les éléments dits idempotents pour la multiplication (ceux dont le carré redonne l'élément de départ). $\\dot0$ et $\\dot1$ sont toujours solutions (idempotents triviaux) ; d'autres solutions non triviales peuvent exister si $n$ n'est pas premier.",
+      "formule_principale": "$\\dot x^2=\\dot x \\iff \\dot x(\\dot x-\\dot1)=\\dot0$",
+      "variantes": ["Le nombre de solutions non triviales de x²=x dans ℤ/nℤ est lié à la décomposition de n en facteurs premiers (théorème des restes chinois)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Résoudre x²=x dans ℤ/4ℤ, sachant 0²=0,1²=1,2²=0,3²=1.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Comparer chaque carré à l'élément", "justification": "lecture du tableau", "resultat_markdown": "0²=0=0 ✓ ; 1²=1=1 ✓ ; 2²=0≠2 ; 3²=1≠3"},
+        {"numero": 2, "action": "Conclure", "justification": "solutions identifiées", "resultat_markdown": "solutions : {0,1}"}
+      ],
+      "conclusion_markdown": "Dans ℤ/4ℤ, seuls les idempotents triviaux 0 et 1 sont solutions (contrairement à ℤ/6ℤ qui en a 4, car 6 a deux facteurs premiers distincts 2 et 3)."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Résoudre x²=x comme dans ℝ (en factorisant x(x-1)=0 et en concluant x=0 ou x=1 uniquement)", "pourquoi_faux": "dans ℤ/nℤ avec n non premier, il peut exister des diviseurs de zéro (produits nuls sans qu'aucun facteur ne soit nul), donnant des solutions supplémentaires à x(x-1)=0", "correction_markdown": "Dans ℤ/nℤ avec n composé, ne jamais conclure directement de x(x-1)=0 à x=0 ou x=1 : il faut vérifier exhaustivement tous les éléments, à cause des diviseurs de zéro éventuels."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Sachant que dans ℤ/10ℤ, 5²=5 et 6²=6, quels sont donc au moins 4 idempotents de ℤ/10ℤ ?", "solution_markdown": "0, 1, 5, 6 (les deux triviaux plus les deux non triviaux donnés)."}
+    ],
+    "synthese": "Résoudre x²=x dans ℤ/nℤ, une fois le tableau des carrés établi, se réduit à comparer terme à terme chaque carré à l'élément de départ ; dans un anneau ℤ/nℤ avec n composé, il existe généralement des solutions non triviales en plus de 0 et 1, à cause de l'existence de diviseurs de zéro."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-pgcd-ppcm-diviseurs-bac-c",
+  "meta": {
+    "titre": "PGCD, PPCM et diviseurs d'un entier",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Arithmétique dans Z",
+    "duree_estimee_min": 25,
+    "tags": ["PGCD"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-1-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lister tous les diviseurs d'un nombre à la main, un par un, c'est lent et on en oublie facilement. La décomposition en facteurs premiers donne une méthode systématique — et la relation $\\text{PGCD}\\times\\text{PPCM}=n\\times m$ transforme d'un coup un problème qui semblait demander de tester des dizaines de valeurs en une simple équation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposition d'un entier en produit de facteurs premiers",
+        "Définition du PGCD et du PPCM de deux entiers",
+        "Notion de diviseur et de multiple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Diviseurs, PGCD et PPCM à partir de la décomposition en facteurs premiers",
+      "contenu_markdown": "Si $n=p_1^{\\alpha_1}\\times p_2^{\\alpha_2}\\times\\cdots\\times p_k^{\\alpha_k}$ (décomposition en facteurs premiers), alors :\n- tout diviseur de $n$ s'écrit $p_1^{\\beta_1}\\times\\cdots\\times p_k^{\\beta_k}$ avec $0\\leqslant\\beta_i\\leqslant\\alpha_i$ ; le nombre total de diviseurs positifs est $(\\alpha_1+1)(\\alpha_2+1)\\cdots(\\alpha_k+1)$ ;\n- pour tout couple d'entiers naturels non nuls $(n,m)$ : $\\text{PGCD}(n,m)\\times\\text{PPCM}(n,m)=n\\times m$ ;\n- le PGCD de $n$ et $m$ divise toujours $n$ (et $m$) : il appartient donc à l'ensemble des diviseurs de $n$.",
+      "formule_principale": "\\text{PGCD}(n,m)\\times\\text{PPCM}(n,m)=n\\times m"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On note $D(84)$ l'ensemble des diviseurs positifs de $84$. Déterminer $D(84)$, puis, sachant que $d=\\text{PGCD}(n\\,;84)$ et $\\text{PPCM}(n\\,;84)=420$, déterminer les valeurs possibles de $n$ avec $100<n<300$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer $84$ en facteurs premiers",
+          "justification": "C'est le point de départ pour lister systématiquement tous les diviseurs.",
+          "resultat_markdown": "$84=2^2\\times3\\times7$"
+        },
+        {
+          "numero": 2,
+          "action": "Lister tous les diviseurs en combinant les exposants possibles",
+          "justification": "$\\alpha\\in\\{0,1,2\\}$ pour $2$, $\\beta\\in\\{0,1\\}$ pour $3$, $\\gamma\\in\\{0,1\\}$ pour $7$, soit $3\\times2\\times2=12$ combinaisons.",
+          "resultat_markdown": "$D(84)=\\{1,2,3,4,6,7,12,14,21,28,42,84\\}$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer $n$ en fonction de $d=\\text{PGCD}(n\\,;84)$",
+          "justification": "La relation $\\text{PGCD}\\times\\text{PPCM}=n\\times84$ avec $\\text{PPCM}=420$ donne $d\\times420=84n$.",
+          "resultat_markdown": "$n=\\dfrac{420d}{84}=5d$"
+        },
+        {
+          "numero": 4,
+          "action": "Tester chaque $d\\in D(84)$ et garder ceux qui donnent $100<5d<300$",
+          "justification": "$d$ doit vérifier $20<d<60$ parmi les diviseurs de $84$.",
+          "resultat_markdown": "$d\\in\\{21,28,42\\}$, donc $n\\in\\{105,140,210\\}$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier chaque candidat en recalculant réellement le PPCM",
+          "justification": "L'égalité $\\text{PGCD}\\times\\text{PPCM}=n\\times84$ est toujours vraie, elle ne garantit pas à elle seule que $\\text{PPCM}(n;84)=420$ précisément.",
+          "resultat_markdown": "$105$, $140$ et $210$ vérifient bien $\\text{PPCM}(n;84)=420$"
+        }
+      ],
+      "conclusion_markdown": "$D(84)=\\{1,2,3,4,6,7,12,14,21,28,42,84\\}$, et les valeurs possibles de $n$ sont $105$, $140$ et $210$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter à la relation $\\text{PGCD}\\times\\text{PPCM}=n\\times m$ sans revérifier chaque solution trouvée.",
+          "pourquoi_faux": "Cette relation est une condition nécessaire mais pas toujours suffisante à elle seule pour garantir la valeur exacte du PPCM annoncée dans l'énoncé.",
+          "correction_markdown": "Toujours recalculer $\\text{PGCD}$ et $\\text{PPCM}$ pour chaque candidat trouvé et comparer aux valeurs de l'énoncé."
+        },
+        {
+          "erreur_markdown": "Oublier un facteur premier ou une combinaison d'exposants en listant les diviseurs à la main.",
+          "pourquoi_faux": "Une énumération non systématique fait facilement sauter une combinaison, surtout avec 2 ou 3 facteurs premiers distincts.",
+          "correction_markdown": "Passer par la formule $(\\alpha_1+1)(\\alpha_2+1)\\cdots$ pour connaître à l'avance le nombre total de diviseurs attendu, et vérifier qu'on en a bien listé autant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Décomposer $60$ en facteurs premiers et déterminer l'ensemble $D(60)$ de ses diviseurs positifs.",
+          "solution_markdown": "$60=2^2\\times3\\times5$. Diviseurs : $D(60)=\\{1,2,3,4,5,6,10,12,15,20,30,60\\}$ (soit $3\\times2\\times2=12$ diviseurs)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Sachant que $\\text{PGCD}(n\\,;60)=12$ et $\\text{PPCM}(n\\,;60)=180$, déterminer $n$.",
+          "solution_markdown": "$12\\times180=60\\times n\\Rightarrow n=\\dfrac{2160}{60}=36$. Vérification : $36=2^2\\times3^2$, $60=2^2\\times3\\times5$, donc $\\text{PGCD}(36;60)=2^2\\times3=12$ ✓ et $\\text{PPCM}(36;60)=2^2\\times3^2\\times5=180$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Déterminer tous les entiers naturels $n$ tels que $\\text{PGCD}(n\\,;90)=18$ et $50<n<200$.",
+          "solution_markdown": "$18$ divise $90=2\\times3^2\\times5$ et $18=2\\times3^2$ : on cherche donc $n=18k$ avec $k$ non multiple de $3$ ni de $5$ (sinon le PGCD serait strictement supérieur à $18$). Pour $50<18k<200$, $k\\in\\{3,4,5,6,7,8,9,10,11\\}$ ; en excluant les $k$ multiples de $3$ ou $5$ ($k=3,5,6,9,10$), il reste $k\\in\\{4,7,8,11\\}$, soit $n\\in\\{72,126,144,198\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décomposer en facteurs premiers avant toute recherche de diviseurs, de PGCD ou de PPCM.",
+        "Nombre de diviseurs positifs de $n=p_1^{\\alpha_1}\\cdots p_k^{\\alpha_k}$ : $(\\alpha_1+1)\\cdots(\\alpha_k+1)$.",
+        "Relation clé : $\\text{PGCD}(n,m)\\times\\text{PPCM}(n,m)=n\\times m$, valable pour tout couple d'entiers naturels non nuls.",
+        "Le PGCD de $n$ et $m$ est toujours un diviseur de $n$ (et de $m$).",
+        "Une valeur trouvée via cette relation doit toujours être revérifiée en recalculant PGCD et PPCM.",
+        "Au BAC : cette relation permet souvent de transformer un problème à deux inconnues (PGCD et $n$) en une seule équation à résoudre."
+      ]
+    }
+  ]
+}

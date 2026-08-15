@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-sommation-encadrement-chasles-integrales-terminale-c",
+  "meta": {
+    "titre": "Sommer un encadrement et utiliser la relation de Chasles pour les intégrales",
+    "cours_id": "cours-sommation-encadrement-chasles-integrales-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Intégration - télescopage d'intégrales consécutives",
+    "tags": ["relation de Chasles pour les intégrales", "encadrement de somme", "télescopage"],
+    "duree_estimee_minutes": 15,
+    "epreuve_source": "bac-c-maths-1992-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1992-cameroun_exercice_2_q3b"
+  },
+  "sections": {
+    "accroche": "Sommer un encadrement valable indice par indice fait apparaître, presque par magie, une seule grande intégrale au milieu : c'est la relation de Chasles qui recolle les petits intervalles consécutifs en un seul.",
+    "prerequis": ["Relation de Chasles pour les intégrales", "Sommation d'inégalités membre à membre"],
+    "regle": {
+      "titre": "Télescopage d'une somme d'intégrales consécutives",
+      "contenu_markdown": "Si un encadrement $A_k\\leqslant\\displaystyle\\int_k^{k+1}\\varphi(t)\\,dt\\leqslant B_k$ est vrai pour chaque $k=1,\\ldots,n$, on peut sommer membre à membre : $\\displaystyle\\sum_{k=1}^nA_k\\leqslant\\sum_{k=1}^n\\int_k^{k+1}\\varphi(t)\\,dt\\leqslant\\sum_{k=1}^nB_k$. Le terme du milieu se télescope, par la relation de Chasles pour les intégrales, en une seule intégrale sur l'intervalle global : $\\displaystyle\\sum_{k=1}^n\\int_k^{k+1}\\varphi(t)\\,dt=\\int_1^{n+1}\\varphi(t)\\,dt$.",
+      "formule_principale": "$\\displaystyle\\sum_{k=1}^n\\int_k^{k+1}\\varphi=\\int_1^{n+1}\\varphi$ (Chasles)",
+      "variantes": ["Le même télescopage s'applique à toute suite d'intervalles consécutifs, pas seulement de longueur 1"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Sachant $\\dfrac1{k+1}\\leqslant\\int_k^{k+1}\\dfrac{dt}t\\leqslant\\dfrac1k$ pour tout k, en déduire un encadrement de $\\ln(n+1)$.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Sommer pour k=1 à n", "justification": "sommation membre à membre", "resultat_markdown": "$\\sum_{k=1}^n\\dfrac1{k+1}\\leqslant\\sum_{k=1}^n\\int_k^{k+1}\\dfrac{dt}t\\leqslant\\sum_{k=1}^n\\dfrac1k$"},
+        {"numero": 2, "action": "Télescoper le membre central", "justification": "Chasles", "resultat_markdown": "$\\sum_{k=1}^n\\int_k^{k+1}\\dfrac{dt}t=\\int_1^{n+1}\\dfrac{dt}t=\\ln(n+1)$"},
+        {"numero": 3, "action": "Conclure", "justification": "substitution", "resultat_markdown": "$\\dfrac12+\\cdots+\\dfrac1{n+1}\\leqslant\\ln(n+1)\\leqslant1+\\cdots+\\dfrac1n$"}
+      ],
+      "conclusion_markdown": "Cet encadrement classique du logarithme par les sommes harmoniques est la clé de voûte de nombreux problèmes sur la constante d'Euler."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Oublier de réindexer correctement les bornes de sommation (par exemple confondre Σ 1/(k+1) pour k=1..n avec Σ 1/k pour k=1..n)", "pourquoi_faux": "un décalage d'indice change entièrement la somme obtenue (1/2+...+1/(n+1) n'est pas 1+1/2+...+1/n)", "correction_markdown": "Toujours écrire explicitement les premiers et derniers termes de chaque somme avant de conclure, pour vérifier visuellement le décalage d'indice."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "En utilisant 1/(2k+2)≤∫₂ₖ^(2k+2) dt/(2t) ≤1/(2k) pour k=1..n, que devient la somme télescopée au milieu ?", "solution_markdown": "Elle se télescope en (1/2)∫₂^(2n+2) dt/t = (1/2)[ln(2n+2)-ln2], toujours par la relation de Chasles appliquée aux bornes consécutives 2,4,...,2n+2."}
+    ],
+    "synthese": "Sommer un encadrement valable pour chaque indice k, puis reconnaître que la somme des intégrales sur des intervalles consécutifs se télescope en une seule intégrale globale (relation de Chasles), permet de transformer un encadrement local en un encadrement global d'une somme ou d'un logarithme."
+  }
+}

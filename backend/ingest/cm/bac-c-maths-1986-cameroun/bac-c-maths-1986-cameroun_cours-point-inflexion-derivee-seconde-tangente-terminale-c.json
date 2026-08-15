@@ -1,0 +1,44 @@
+{
+  "cours_id": "cours-point-inflexion-derivee-seconde-tangente-terminale-c",
+  "meta": {
+    "titre": "Déterminer un point d'inflexion via la dérivée seconde et sa tangente",
+    "cours_id": "cours-point-inflexion-derivee-seconde-tangente-terminale-c",
+    "matiere": "Mathématiques",
+    "niveau": "Terminale C",
+    "sous_theme": "Étude de fonctions - concavité, point d'inflexion",
+    "tags": ["dérivée seconde", "point d'inflexion", "concavité", "tangente"],
+    "duree_estimee_minutes": 18,
+    "epreuve_source": "bac-c-maths-1986-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "bac-c-maths-1986-cameroun_exercice_3_qA2"
+  },
+  "sections": {
+    "accroche": "Un point d'inflexion marque le moment où une courbe change de sens de courbure ; il se détecte systématiquement par un changement de signe de la dérivée seconde, jamais par simple observation graphique.",
+    "prerequis": ["Calcul de la dérivée seconde", "Notion de concavité/convexité", "Équation de la tangente en un point"],
+    "regle": {
+      "titre": "Détection et tangente d'un point d'inflexion",
+      "contenu_markdown": "Un point d'abscisse $x_0$ est un point d'inflexion de $f$ si $f''$ change de signe en $x_0$ (concavité vers convexité, ou l'inverse). Pour l'établir : calculer $f''$, résoudre $f''(x)=0$, puis vérifier le changement de signe de part et d'autre de la racine trouvée. La tangente en ce point s'obtient ensuite normalement, via $y=f(x_0)+f'(x_0)(x-x_0)$.",
+      "formule_principale": "f'' change de signe en x₀ ⟺ point d'inflexion en x₀",
+      "variantes": ["Attention : f''(x₀)=0 est nécessaire mais non suffisant ; il faut vérifier le changement de signe effectif (sinon c'est un simple point où f'' s'annule sans inflexion, comme pour x⁴ en 0)"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Montrer que $h(x)=x^3-3x$ admet un point d'inflexion et donner sa tangente.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calculer h'' ", "justification": "h'(x)=3x²-3, h''(x)=6x", "resultat_markdown": "$h''(x)=6x$"},
+        {"numero": 2, "action": "Résoudre h''(x)=0 et vérifier le changement de signe", "justification": "6x change de signe en x=0", "resultat_markdown": "négatif pour x<0, positif pour x>0 : inflexion en x=0"},
+        {"numero": 3, "action": "Calculer la tangente", "justification": "h(0)=0, h'(0)=-3", "resultat_markdown": "y=-3(x-0)+0=-3x"}
+      ],
+      "conclusion_markdown": "Point d'inflexion en (0,0), tangente y=-3x."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure à un point d'inflexion dès que f''(x₀)=0, sans vérifier le changement de signe effectif", "pourquoi_faux": "f'' peut s'annuler sans changer de signe (contact d'ordre supérieur), auquel cas il n'y a pas d'inflexion", "correction_markdown": "Toujours vérifier explicitement le signe de f'' de part et d'autre de la racine trouvée, pas seulement son annulation."},
+      {"erreur_markdown": "Utiliser f'(x₀) au lieu de la valeur correcte pour la pente de la tangente en un point d'inflexion", "pourquoi_faux": "la tangente en tout point (y compris un point d'inflexion) utilise toujours le nombre dérivé premier, pas la dérivée seconde", "correction_markdown": "Toujours utiliser f'(x₀) (dérivée première) pour la pente de la tangente, même en un point d'inflexion où f''(x₀)=0."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "La fonction k(x)=x⁴ a-t-elle un point d'inflexion en x=0 ?", "solution_markdown": "k''(x)=12x², qui s'annule en x=0 mais reste positif (ou nul) de part et d'autre : pas de changement de signe, donc pas de point d'inflexion en x=0."}
+    ],
+    "synthese": "Pour établir un point d'inflexion, calculer f'', résoudre f''=0, puis vérifier explicitement le changement de signe autour de la racine ; la tangente en ce point s'obtient ensuite via le nombre dérivé premier f'(x₀)."
+  }
+}

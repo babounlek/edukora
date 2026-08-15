@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-auto-induction-inductance-solenoide-premiere-c",
+  "meta": {
+    "titre": "Calculer la fem d'auto-induction d'un solénoïde",
+    "cours_id": "cours-auto-induction-inductance-solenoide-premiere-c",
+    "matiere": "Physique",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Électromagnétisme - auto-induction",
+    "tags": ["auto-induction", "inductance", "solénoïde"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-c-physique-2003-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-physique-2003-cameroun_exercice_3_q3_2"
+  },
+  "sections": {
+    "accroche": "Un solénoïde parcouru par un courant variable induit une fem sur lui-même (auto-induction), proportionnelle à la vitesse de variation du courant et à son inductance propre, laquelle dépend du carré du nombre de spires par unité de longueur.",
+    "prerequis": ["Loi de Faraday appliquée à l'auto-induction", "Inductance d'un solénoïde L=μ0n²Sℓ"],
+    "regle": {
+      "titre": "e = -L × dI/dt, avec L = μ0×n²×S×ℓ",
+      "contenu_markdown": "La fem d'auto-induction dans un solénoïde parcouru par un courant variable est $e=-L\\times\\dfrac{dI}{dt}$, où $L$ est son inductance propre. Pour un solénoïde de $n$ spires par unité de longueur, de section $S$ et de longueur $\\ell$, l'inductance est $L=\\mu_0\\times n^2\\times S\\times\\ell$ (proportionnelle au CARRÉ de $n$, contrairement au champ $B=\\mu_0nI$ qui est linéaire en $n$).",
+      "formule_principale": "$L=\\mu_0n^2S\\ell$, $e=-L\\dfrac{dI}{dt}$",
+      "variantes": ["L peut aussi s'exprimer via le nombre total de spires N=nℓ : L=μ0N²S/ℓ"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Solénoïde n=1000 spires/m, S=5×10⁻³m², ℓ=0,2m. I passe de 1A à 0 en 0,05s. Calculer e.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Inductance", "justification": "L=μ0n²Sℓ", "resultat_markdown": "L=4π×10⁻⁷×10⁶×5×10⁻³×0,2=4π×10⁻⁷×1000≈1,257×10⁻³H"},
+        {"numero": 2, "action": "dI/dt", "justification": "ΔI/Δt", "resultat_markdown": "dI/dt=(0-1)/0,05=-20A/s"},
+        {"numero": 3, "action": "fem d'auto-induction", "justification": "e=-L×dI/dt", "resultat_markdown": "e=-1,257×10⁻³×(-20)≈0,0251V"}
+      ],
+      "conclusion_markdown": "e≈0,0251V."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Utiliser n (spires par unité de longueur) au lieu de son carré n² dans la formule de l'inductance L, par analogie erronée avec la formule du champ B=μ0nI qui elle est linéaire en n", "pourquoi_faux": "l'inductance dépend du carré de n car elle relie le flux total (qui dépend déjà de n via B) au nombre de spires qui 'voient' ce flux (qui dépend aussi de n) : les deux facteurs n se multiplient, d'où n² ; oublier ce carré sous-estime fortement l'inductance", "correction_markdown": "Toujours utiliser n² (et non n) dans la formule de l'inductance d'un solénoïde, en se rappelant que cette dépendance quadratique distingue L de la formule du champ B (linéaire en n)."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "Solénoïde n=2000 spires/m, S=3×10⁻³m², ℓ=0,25m. I passe de 2A à 0 en 0,1s. Calculer e.", "solution_markdown": "L=4π×10⁻⁷×4×10⁶×3×10⁻³×0,25=4π×10⁻⁷×3000≈3,77×10⁻³H ; dI/dt=-20A/s ; e=-3,77×10⁻³×(-20)≈0,0754V."}
+    ],
+    "synthese": "La fem d'auto-induction d'un solénoïde parcouru par un courant variable est e=-L×dI/dt, l'inductance L=μ0n²Sℓ dépendant du CARRÉ du nombre de spires par unité de longueur, ce qui la distingue de la formule linéaire du champ magnétique."
+  }
+}
