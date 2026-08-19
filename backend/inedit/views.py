@@ -155,6 +155,10 @@ def _tentative_payload(tentative):
                 "id": exercice.id,
                 "numero_exercice": exercice.numero_exercice,
                 "points": exercice.points,
+                # Support partagé, affiché une fois en tête d'exercice côté frontend (voir
+                # ExerciceInedite.enonce_intro_markdown) - jamais recopié dans chaque
+                # _question_payload, qui resterait sinon illisible en mode correction.
+                "enonce_intro_markdown": exercice.enonce_intro_markdown,
                 "questions": [
                     _question_payload(
                         question, reponses_by_question.get(question.pk), correction_disponible=correction_disponible,

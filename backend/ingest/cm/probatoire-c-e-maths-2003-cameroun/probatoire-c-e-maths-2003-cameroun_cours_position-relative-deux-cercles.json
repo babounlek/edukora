@@ -1,0 +1,177 @@
+{
+ "cours_id": "cours-position-relative-deux-cercles-1ere-ce",
+ "meta": {
+  "titre": "Déterminer la position relative de deux cercles",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie analytique du plan",
+  "duree_estimee_min": 30,
+  "tags": [
+   "position relative",
+   "cercles sécants",
+   "tangence",
+   "distance des centres",
+   "comparaison de radicaux"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "I"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex1-q3-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Deux cercles tracés sur une feuille : se coupent-ils, se touchent-ils, s'ignorent-ils ? L'œil répond, mais l'œil ne démontre rien, et un tracé approximatif peut tromper quand les cercles sont presque tangents. Un seul nombre tranche à coup sûr : la distance entre les centres, comparée à la somme et à la différence des rayons. Trois quantités, deux inégalités, et la question est réglée."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Calculer la distance entre deux points dans un repère orthonormal",
+    "Déterminer le centre et le rayon d'un cercle à partir de son équation",
+    "Comparer deux nombres positifs en comparant leurs carrés"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Cinq positions, un seul critère",
+   "contenu_markdown": "Soient deux cercles $(\\mathcal{C})$ de centre $\\Omega$ et de rayon $r$, et $(\\mathcal{C}')$ de centre $\\Omega'$ et de rayon $r'$. Tout se joue sur la comparaison de $\\Omega\\Omega'$ avec $\\left|r-r'\\right|$ et $r+r'$.\n\n| Situation | Critère | Points communs |\n|---|---|---|\n| Extérieurs l'un à l'autre | $\\Omega\\Omega'>r+r'$ | $0$ |\n| Tangents extérieurement | $\\Omega\\Omega'=r+r'$ | $1$ |\n| **Sécants** | $\\left\\|r-r'\\right\\|<\\Omega\\Omega'<r+r'$ | $2$ |\n| Tangents intérieurement | $\\Omega\\Omega'=\\left\\|r-r'\\right\\|$ | $1$ |\n| Intérieurs, sans contact | $\\Omega\\Omega'<\\left\\|r-r'\\right\\|$ | $0$ |\n\n**Le cas des cercles concentriques** ($\\Omega=\\Omega'$) rentre dans la dernière ligne dès que $r\\neq r'$.\n\n**Méthode de rédaction, en trois temps.**\n\n1. Calculer $\\Omega\\Omega'$, puis $\\left|r-r'\\right|$ et $r+r'$.\n2. Démontrer **séparément** chacune des deux inégalités du double encadrement. C'est là que se trouvent les points : une inégalité admise n'est pas une inégalité démontrée.\n3. Conclure en citant le critère.\n\n**Comparer des radicaux sans calculatrice.** Pour établir $2\\sqrt{2}<5$, on n'utilise jamais de valeur approchée : les deux membres étant positifs, on compare leurs carrés, $\\left(2\\sqrt{2}\\right)^{2}=8$ et $5^{2}=25$. Comme $8<25$, l'inégalité de départ est vraie. Ce procédé est exact, alors qu'un arrondi ne démontre rien.",
+   "formule_principale": "\\left|r-r'\\right|<\\Omega\\Omega'<r+r'\\iff\\text{cercles sécants}",
+   "variantes": [
+    {
+     "nom": "Recherche directe des points communs",
+     "quand_utiliser": "Quand l'énoncé demande de toute façon les coordonnées des intersections",
+     "contenu_markdown": "On soustrait les deux équations pour obtenir l'axe radical, on reporte dans l'un des cercles et l'on examine le discriminant de l'équation du second degré obtenue : positif donne deux points, nul un point, négatif aucun. Cette voie donne la position **et** les points, mais elle est plus longue ; le critère des distances reste préférable quand seule la position est demandée."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$(\\mathcal{C})$ a pour centre $\\Omega(2\\,;\\,2)$ et pour rayon $r=2\\sqrt{2}$ ; $(\\mathcal{C}')$ a pour centre $\\Omega'\\left(\\dfrac{9}{2}\\,;\\,2\\right)$ et pour rayon $r'=\\dfrac{5}{2}$. Démontrer que ces deux cercles sont sécants. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer la distance des centres",
+     "justification": "Les deux centres ont la même ordonnée $2$ : la distance se réduit à l'écart des abscisses",
+     "resultat_markdown": "$\\Omega\\Omega'=\\sqrt{\\left(\\dfrac{9}{2}-2\\right)^{2}+0^{2}}=\\dfrac{5}{2}$"
+    },
+    {
+     "numero": 2,
+     "action": "Comparer les deux rayons",
+     "justification": "$2\\sqrt{2}=\\sqrt{8}$ et $\\dfrac{5}{2}=\\sqrt{\\dfrac{25}{4}}=\\sqrt{6{,}25}$ ; comme $8>6{,}25$, le premier est le plus grand",
+     "resultat_markdown": "$2\\sqrt{2}>\\dfrac{5}{2}$, donc $\\left|r-r'\\right|=2\\sqrt{2}-\\dfrac{5}{2}$"
+    },
+    {
+     "numero": 3,
+     "action": "Écrire la somme des rayons",
+     "justification": "Aucune valeur absolue ici",
+     "resultat_markdown": "$r+r'=2\\sqrt{2}+\\dfrac{5}{2}$"
+    },
+    {
+     "numero": 4,
+     "action": "Démontrer l'inégalité de droite",
+     "justification": "$\\Omega\\Omega'<r+r'$ équivaut à $\\dfrac{5}{2}<2\\sqrt{2}+\\dfrac{5}{2}$, donc à $0<2\\sqrt{2}$",
+     "resultat_markdown": "Vraie, car $\\sqrt{2}>0$"
+    },
+    {
+     "numero": 5,
+     "action": "Ramener l'inégalité de gauche à une comparaison simple",
+     "justification": "$\\left|r-r'\\right|<\\Omega\\Omega'$ s'écrit $2\\sqrt{2}-\\dfrac{5}{2}<\\dfrac{5}{2}$, soit $2\\sqrt{2}<5$",
+     "resultat_markdown": "Il reste à établir $2\\sqrt{2}<5$"
+    },
+    {
+     "numero": 6,
+     "action": "Comparer par les carrés",
+     "justification": "Les deux membres sont positifs, on peut élever au carré sans changer le sens de l'inégalité",
+     "resultat_markdown": "$\\left(2\\sqrt{2}\\right)^{2}=4\\times 2=8$ et $5^{2}=25$ ; comme $8<25$, on a bien $2\\sqrt{2}<5$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure",
+     "justification": "Les deux inégalités du critère sont établies",
+     "resultat_markdown": "$\\left|r-r'\\right|<\\Omega\\Omega'<r+r'$ : les cercles sont **sécants**"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler numériquement",
+     "justification": "Valeurs approchées, à titre de vérification seulement",
+     "resultat_markdown": "$2\\sqrt{2}\\approx 2{,}83$, donc $\\left|r-r'\\right|\\approx 0{,}33$ et $r+r'\\approx 5{,}33$, encadrant bien $\\Omega\\Omega'=2{,}5$"
+    }
+   ],
+   "conclusion_markdown": "Les cercles $(\\mathcal{C})$ et $(\\mathcal{C}')$ sont sécants : ils ont exactement deux points communs. Chacune des deux inégalités a été démontrée séparément, et la comparaison de radicaux s'est faite par élévation au carré, sans jamais recourir à une valeur approchée."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Conclure à partir de valeurs approchées : « $2{,}83-2{,}5=0{,}33<2{,}5$, donc sécants »",
+     "pourquoi_faux": "Un arrondi ne démontre rien. Si les deux quantités comparées avaient été proches, l'arrondi aurait pu inverser l'inégalité et conduire à une conclusion fausse. Le calcul approché sert à contrôler, jamais à prouver.",
+     "correction_markdown": "Compare les carrés de deux nombres positifs : c'est exact et aussi rapide. Réserve les valeurs approchées à une vérification finale, en le signalant explicitement."
+    },
+    {
+     "erreur_markdown": "Oublier la valeur absolue et écrire $r-r'<\\Omega\\Omega'$",
+     "pourquoi_faux": "Sans valeur absolue, l'inégalité perd son sens dès que $r'>r$ : le membre de gauche devient négatif et l'inégalité est automatiquement vraie, ce qui ne prouve plus rien. Le critère porte bien sur $\\left|r-r'\\right|$.",
+     "correction_markdown": "Détermine d'abord lequel des deux rayons est le plus grand, puis écris la valeur absolue sous forme explicite. C'est en une ligne, et cela rend la suite du calcul lisible."
+    },
+    {
+     "erreur_markdown": "Ne vérifier qu'une seule des deux inégalités",
+     "pourquoi_faux": "Le critère est un **double** encadrement. Vérifier seulement $\\Omega\\Omega'<r+r'$ n'exclut pas le cas où un cercle serait intérieur à l'autre sans contact, qui vérifie aussi cette inégalité.",
+     "correction_markdown": "Traite les deux inégalités comme deux sous-questions distinctes, chacune avec sa justification. Le barème les compte séparément."
+    },
+    {
+     "erreur_markdown": "Utiliser les rayons au carré dans le critère",
+     "pourquoi_faux": "Le critère compare des **longueurs** : $\\Omega\\Omega'$, $r$ et $r'$, jamais leurs carrés. Écrire $\\left|r^{2}-r'^{2}\\right|<\\Omega\\Omega'^{2}$ n'a aucun fondement et donne des conclusions fausses.",
+     "correction_markdown": "Extrais toujours les racines avant de comparer : si l'équation donne $r^{2}=8$, écris $r=2\\sqrt{2}$ et travaille avec cette valeur."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soient $(\\mathcal{C})$ de centre $A(0\\,;\\,0)$ et de rayon $3$, et $(\\mathcal{C}')$ de centre $B(6\\,;\\,0)$ et de rayon $2$. Déterminer leur position relative.",
+     "solution_markdown": "**Distance des centres.** $AB=\\sqrt{(6-0)^{2}+0^{2}}=6$.\n\n**Somme et différence des rayons.**\n\n$$r+r'=3+2=5\\qquad;\\qquad\\left|r-r'\\right|=\\left|3-2\\right|=1$$\n\n**Comparaison.** On a $6>5$, c'est-à-dire $AB>r+r'$.\n\n**Conclusion.** Les deux cercles sont **extérieurs l'un à l'autre** : ils n'ont aucun point commun.\n\n**Interprétation.** La distance entre les centres dépasse la somme des rayons : même en se tendant l'un vers l'autre, les deux cercles ne se rejoignent pas, il reste un écart de $6-5=1$ entre eux."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Déterminer la position relative des cercles $(\\mathcal{C})\\;:\\;x^{2}+y^{2}-2x-2y-7=0$ et $(\\mathcal{C}')\\;:\\;x^{2}+y^{2}-10x-8y+37=0$.",
+     "solution_markdown": "**Étape 1 — centre et rayon de $(\\mathcal{C})$.**\n\n$$x^{2}-2x=(x-1)^{2}-1\\qquad;\\qquad y^{2}-2y=(y-1)^{2}-1$$\n\n$$(x-1)^{2}+(y-1)^{2}=1+1+7=9$$\n\nCentre $\\Omega(1\\,;\\,1)$, rayon $r=3$.\n\n**Étape 2 — centre et rayon de $(\\mathcal{C}')$.**\n\n$$x^{2}-10x=(x-5)^{2}-25\\qquad;\\qquad y^{2}-8y=(y-4)^{2}-16$$\n\n$$(x-5)^{2}+(y-4)^{2}=25+16-37=4$$\n\nCentre $\\Omega'(5\\,;\\,4)$, rayon $r'=2$.\n\n**Étape 3 — distance des centres.**\n\n$$\\Omega\\Omega'=\\sqrt{(5-1)^{2}+(4-1)^{2}}=\\sqrt{16+9}=\\sqrt{25}=5$$\n\n**Étape 4 — comparaison.**\n\n$$r+r'=3+2=5\\qquad;\\qquad\\left|r-r'\\right|=1$$\n\nOn a exactement $\\Omega\\Omega'=r+r'=5$.\n\n**Conclusion.** Les deux cercles sont **tangents extérieurement** : ils ont un unique point commun.\n\n**Étape 5 — trouver ce point.** Le point de tangence appartient au segment $[\\Omega\\Omega']$, à la distance $r=3$ de $\\Omega$. Comme $\\Omega\\Omega'=5$, il partage le segment dans le rapport $\\dfrac{3}{5}$ :\n\n$$T=\\Omega+\\frac{3}{5}\\overrightarrow{\\Omega\\Omega'}=\\left(1+\\frac{3}{5}\\times 4\\;;\\;1+\\frac{3}{5}\\times 3\\right)=\\left(1+\\frac{12}{5}\\;;\\;1+\\frac{9}{5}\\right)=\\left(\\frac{17}{5}\\;;\\;\\frac{14}{5}\\right)$$\n\n**Vérification.** $\\Omega T=\\sqrt{\\left(\\dfrac{12}{5}\\right)^{2}+\\left(\\dfrac{9}{5}\\right)^{2}}=\\dfrac{\\sqrt{144+81}}{5}=\\dfrac{15}{5}=3=r$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $(\\mathcal{C})$ le cercle de centre $O(0\\,;\\,0)$ et de rayon $4$, et $(\\mathcal{C}_{t})$ le cercle de centre $A(t\\,;\\,0)$ et de rayon $1$, où $t$ est un réel positif. Déterminer, selon les valeurs de $t$, la position relative des deux cercles.",
+     "solution_markdown": "**Étape 1 — les trois quantités.**\n\n$$OA=\\left|t-0\\right|=t\\quad\\text{(car }t\\geqslant 0)\\qquad;\\qquad r+r'=4+1=5\\qquad;\\qquad\\left|r-r'\\right|=\\left|4-1\\right|=3$$\n\n**Étape 2 — appliquer le critère intervalle par intervalle.**\n\n- $0\\leqslant t<3$ : alors $OA<\\left|r-r'\\right|$. Le petit cercle est **intérieur** à $(\\mathcal{C})$, sans point commun.\n- $t=3$ : alors $OA=\\left|r-r'\\right|$. Les cercles sont **tangents intérieurement**, un point commun.\n- $3<t<5$ : alors $\\left|r-r'\\right|<OA<r+r'$. Les cercles sont **sécants**, deux points communs.\n- $t=5$ : alors $OA=r+r'$. Les cercles sont **tangents extérieurement**, un point commun.\n- $t>5$ : alors $OA>r+r'$. Les cercles sont **extérieurs**, aucun point commun.\n\n**Étape 3 — vérifier deux cas limites.**\n\nPour $t=0$, les cercles sont concentriques : le petit, de rayon $1$, est bien à l'intérieur du grand, de rayon $4$, sans contact. Cohérent avec le premier cas.\n\nPour $t=3$, le point $(4\\,;\\,0)$ appartient aux deux cercles : il est à la distance $4$ de $O$ et à la distance $\\left|4-3\\right|=1$ de $A(3\\,;\\,0)$. C'est bien l'unique point de tangence.\n\n**Synthèse.**\n\n| Valeurs de $t$ | Position | Points communs |\n|---|---|---|\n| $0\\leqslant t<3$ | intérieurs | $0$ |\n| $t=3$ | tangents intérieurement | $1$ |\n| $3<t<5$ | sécants | $2$ |\n| $t=5$ | tangents extérieurement | $1$ |\n| $t>5$ | extérieurs | $0$ |\n\n**Interprétation.** En éloignant progressivement le petit cercle du centre, on passe par les cinq positions dans l'ordre : c'est exactement ce que décrit le critère, lu comme un balayage continu de $OA$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Trois quantités seulement décident de tout : $\\Omega\\Omega'$, $\\left|r-r'\\right|$ et $r+r'$.",
+    "Sécants signifie $\\left|r-r'\\right|<\\Omega\\Omega'<r+r'$ : un **double** encadrement, donc deux inégalités à démontrer séparément.",
+    "L'égalité avec l'une des deux bornes signifie tangence : extérieure du côté de la somme, intérieure du côté de la différence.",
+    "N'oublie jamais la valeur absolue : sans elle, le critère ne fonctionne plus quand $r'>r$.",
+    "Pour comparer deux radicaux, élève au carré, ne calcule pas d'arrondi : une valeur approchée ne démontre rien.",
+    "Le critère porte sur des longueurs, jamais sur des carrés de rayons.",
+    "Au Probatoire, cette question précède le calcul des points d'intersection : elle t'annonce combien tu dois en trouver, et sert donc aussi de contrôle sur la question suivante."
+   ]
+  }
+ ]
+}

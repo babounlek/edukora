@@ -1,0 +1,178 @@
+{
+ "cours_id": "cours-distance-point-plan-1ere-ce",
+ "meta": {
+  "titre": "Calculer la distance d'un point à un plan dans l'espace",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie analytique de l'espace",
+  "duree_estimee_min": 25,
+  "tags": [
+   "distance point-plan",
+   "vecteur normal",
+   "équation cartésienne de plan",
+   "espace",
+   "repère orthonormal"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La distance d'un point à un plan, c'est la longueur du plus court chemin pour le rejoindre : celui qui suit la perpendiculaire. On pourrait la calculer en cherchant le projeté orthogonal, ce qui demande un système et plusieurs minutes. Une formule fait le travail en trois lignes, à condition de ne pas se tromper sur ce qui est en valeur absolue et ce qui est sous la racine."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Reconnaître l'équation cartésienne d'un plan et son vecteur normal",
+    "Calculer la norme d'un vecteur de l'espace",
+    "Manipuler la valeur absolue"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Une formule, deux pièges",
+   "contenu_markdown": "**Le vecteur normal.** Le plan $\\mathcal{P}$ d'équation cartésienne\n\n$$ax+by+cz+d=0$$\n\nadmet pour vecteur normal $\\vec{n}(a\\,;\\,b\\,;\\,c)$ : les coefficients de l'équation se lisent directement comme les coordonnées d'un vecteur orthogonal au plan.\n\n**La formule.** Dans un repère **orthonormal**, la distance d'un point $A\\left(x_{A}\\,;\\,y_{A}\\,;\\,z_{A}\\right)$ à ce plan vaut\n\n$$d(A,\\mathcal{P})=\\frac{\\left|ax_{A}+by_{A}+cz_{A}+d\\right|}{\\sqrt{a^{2}+b^{2}+c^{2}}}$$\n\n**Lecture de la formule.** Le numérateur est la valeur du premier membre de l'équation, évaluée en $A$, prise en **valeur absolue** : une distance est positive, quel que soit le côté du plan où se trouve $A$. Le dénominateur est la **norme** du vecteur normal, donc une racine carrée.\n\n**Deux pièges, toujours les mêmes.**\n\n1. Mettre $a^{2}+b^{2}+c^{2}$ au dénominateur au lieu de $\\sqrt{a^{2}+b^{2}+c^{2}}$.\n2. Placer la racine sur toute la fraction, ce qui donnerait $\\sqrt{\\dfrac{\\ldots}{\\ldots}}$.\n\nCes deux erreurs sont systématiquement proposées comme distracteurs dans les QCM : les quatre réponses ne diffèrent souvent que par la place de la racine.\n\n**Contrôle rapide.** Le numérateur s'annule si et seulement si $A$ appartient au plan, auquel cas la distance est nulle. Si tu obtiens $0$ sans que $A$ soit sur le plan, ton calcul est faux.\n\n**Rationaliser.** Le résultat $\\dfrac{k}{\\sqrt{m}}$ peut s'écrire $\\dfrac{k\\sqrt{m}}{m}$. Les deux formes sont correctes ; en QCM, compare celle qui est proposée plutôt que de convertir dans un sens ou dans l'autre.",
+   "formule_principale": "d(A,\\mathcal{P})=\\frac{\\left|ax_{A}+by_{A}+cz_{A}+d\\right|}{\\sqrt{a^{2}+b^{2}+c^{2}}}",
+   "variantes": [
+    {
+     "nom": "Passage par le projeté orthogonal",
+     "quand_utiliser": "Quand l'énoncé demande aussi les coordonnées du projeté, pas seulement la distance",
+     "contenu_markdown": "On écrit la droite passant par $A$ et de vecteur directeur $\\vec{n}$ sous forme paramétrique, on cherche son point d'intersection $H$ avec le plan en reportant dans l'équation, puis on calcule $AH$. C'est nettement plus long, mais cette voie fournit en prime les coordonnées de $H$, ce que la formule seule ne donne pas."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans l'espace rapporté à un repère orthonormal, calculer la distance du point $A(1\\,;\\,-2\\,;\\,3)$ au plan d'équation cartésienne $x-2y+4z-4=0$. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier les coefficients",
+     "justification": "On les lit directement dans l'équation, en n'oubliant pas les signes",
+     "resultat_markdown": "$a=1$, $b=-2$, $c=4$, $d=-4$ ; vecteur normal $\\vec{n}(1\\,;\\,-2\\,;\\,4)$"
+    },
+    {
+     "numero": 2,
+     "action": "Évaluer le premier membre en $A$",
+     "justification": "On remplace $x$, $y$, $z$ par les coordonnées de $A$",
+     "resultat_markdown": "$1\\times 1+(-2)\\times(-2)+4\\times 3-4$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer terme à terme",
+     "justification": "Attention au produit de deux nombres négatifs, qui est positif",
+     "resultat_markdown": "$1+4+12-4=13$"
+    },
+    {
+     "numero": 4,
+     "action": "Prendre la valeur absolue",
+     "justification": "Une distance est positive",
+     "resultat_markdown": "$\\left|13\\right|=13$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer la norme du vecteur normal",
+     "justification": "$\\sqrt{a^{2}+b^{2}+c^{2}}$, en n'oubliant pas que $(-2)^{2}=4$",
+     "resultat_markdown": "$\\sqrt{1^{2}+(-2)^{2}+4^{2}}=\\sqrt{1+4+16}=\\sqrt{21}$"
+    },
+    {
+     "numero": 6,
+     "action": "Former le quotient",
+     "justification": "Numérateur sur dénominateur",
+     "resultat_markdown": "$d(A,\\mathcal{P})=\\dfrac{13}{\\sqrt{21}}$"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler l'ordre de grandeur",
+     "justification": "$\\sqrt{21}$ est compris entre $4$ et $5$ puisque $16<21<25$",
+     "resultat_markdown": "$d\\approx\\dfrac{13}{4{,}58}\\approx 2{,}84$"
+    },
+    {
+     "numero": 8,
+     "action": "Vérifier que $A$ n'est pas sur le plan",
+     "justification": "Le numérateur $13$ est non nul",
+     "resultat_markdown": "$A$ n'appartient pas au plan, la distance est bien strictement positive"
+    }
+   ],
+   "conclusion_markdown": "La distance vaut $\\dfrac{13}{\\sqrt{21}}$, soit environ $2{,}84$. On peut aussi l'écrire $\\dfrac{13\\sqrt{21}}{21}$ en rationalisant le dénominateur, mais c'est la forme $\\dfrac{13}{\\sqrt{21}}$ qui figure parmi les propositions du QCM."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $\\dfrac{13}{21}$ au lieu de $\\dfrac{13}{\\sqrt{21}}$",
+     "pourquoi_faux": "Le dénominateur est la **norme** du vecteur normal, donc $\\sqrt{a^{2}+b^{2}+c^{2}}$ et non $a^{2}+b^{2}+c^{2}$. Le résultat obtenu est alors environ $0{,}62$ au lieu de $2{,}84$, soit plus de quatre fois trop petit.",
+     "correction_markdown": "Retiens que le dénominateur est une **longueur**, celle du vecteur normal : une longueur s'obtient toujours par une racine carrée."
+    },
+    {
+     "erreur_markdown": "Écrire $\\sqrt{\\dfrac{13}{21}}$",
+     "pourquoi_faux": "La racine ne porte que sur la somme des carrés des coefficients, pas sur la fraction entière. Cette confusion donne environ $0{,}79$, sans rapport avec la distance cherchée.",
+     "correction_markdown": "Écris la formule complète avant de substituer, avec la barre de fraction bien tracée et la racine limitée au dénominateur."
+    },
+    {
+     "erreur_markdown": "Oublier la valeur absolue au numérateur",
+     "pourquoi_faux": "Si $A$ se trouve de l'autre côté du plan, le numérateur est négatif et l'on obtient une « distance » négative, ce qui n'a aucun sens. La valeur absolue rend la formule valable quel que soit le côté.",
+     "correction_markdown": "Écris les barres de valeur absolue dès l'énoncé de la formule, avant même de calculer. Si le résultat sort négatif, c'est qu'elles ont été oubliées."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe en substituant : calculer $-2\\times(-2)=-4$",
+     "pourquoi_faux": "Le produit de deux nombres négatifs est positif : $-2\\times(-2)=+4$. Cette étourderie donne $1-4+12-4=5$ au lieu de $13$, et c'est précisément la valeur du distracteur b) du QCM.",
+     "correction_markdown": "Écris chaque produit isolément avant de sommer. Le fait qu'un distracteur corresponde exactement à cette erreur montre qu'elle est anticipée par le concepteur."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer la distance du point $B(2\\,;\\,1\\,;\\,-1)$ au plan d'équation $2x-y+2z+3=0$.",
+     "solution_markdown": "**Coefficients.** $a=2$, $b=-1$, $c=2$, $d=3$.\n\n**Numérateur.**\n\n$$2\\times 2+(-1)\\times 1+2\\times(-1)+3=4-1-2+3=4$$\n\nEn valeur absolue : $\\left|4\\right|=4$.\n\n**Dénominateur.**\n\n$$\\sqrt{2^{2}+(-1)^{2}+2^{2}}=\\sqrt{4+1+4}=\\sqrt{9}=3$$\n\n**Distance.**\n\n$$d(B,\\mathcal{P})=\\frac{4}{3}$$\n\n**Contrôle.** La norme du vecteur normal tombe ronde, ce qui est fréquent avec le triplet $(2\\,;\\,-1\\,;\\,2)$ dont la somme des carrés vaut $9$. Le numérateur étant non nul, $B$ n'est pas sur le plan."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $\\mathcal{P}$ le plan d'équation $x+y+z-3=0$ et $A(4\\,;\\,1\\,;\\,2)$. Calculer $d(A,\\mathcal{P})$, puis déterminer les coordonnées du projeté orthogonal $H$ de $A$ sur $\\mathcal{P}$ et vérifier que $AH$ vaut bien la distance trouvée.",
+     "solution_markdown": "**Étape 1 — la distance par la formule.**\n\nNumérateur : $4+1+2-3=4$, donc $\\left|4\\right|=4$.\n\nDénominateur : $\\sqrt{1+1+1}=\\sqrt{3}$.\n\n$$d(A,\\mathcal{P})=\\frac{4}{\\sqrt{3}}$$\n\n**Étape 2 — la droite perpendiculaire.** Elle passe par $A$ et a pour vecteur directeur le vecteur normal $\\vec{n}(1\\,;\\,1\\,;\\,1)$. Sa représentation paramétrique est\n\n$$\\begin{cases} x=4+t \\\\ y=1+t \\\\ z=2+t \\end{cases}\\qquad t\\in\\mathbb{R}$$\n\n**Étape 3 — intersection avec le plan.** On reporte dans l'équation du plan :\n\n$$(4+t)+(1+t)+(2+t)-3=0\\;\\Longrightarrow\\;3t+4=0\\;\\Longrightarrow\\;t=-\\frac{4}{3}$$\n\n**Étape 4 — coordonnées de $H$.**\n\n$$H\\left(4-\\frac{4}{3}\\;;\\;1-\\frac{4}{3}\\;;\\;2-\\frac{4}{3}\\right)=\\left(\\frac{8}{3}\\;;\\;-\\frac{1}{3}\\;;\\;\\frac{2}{3}\\right)$$\n\n**Vérification que $H$ est sur le plan :** $\\dfrac{8}{3}-\\dfrac{1}{3}+\\dfrac{2}{3}-3=\\dfrac{9}{3}-3=0$.\n\n**Étape 5 — calculer $AH$.**\n\n$$\\overrightarrow{AH}\\left(\\frac{8}{3}-4\\;;\\;-\\frac{1}{3}-1\\;;\\;\\frac{2}{3}-2\\right)=\\left(-\\frac{4}{3}\\;;\\;-\\frac{4}{3}\\;;\\;-\\frac{4}{3}\\right)$$\n\n$$AH=\\sqrt{3\\times\\left(\\frac{4}{3}\\right)^{2}}=\\sqrt{3\\times\\frac{16}{9}}=\\sqrt{\\frac{16}{3}}=\\frac{4}{\\sqrt{3}}$$\n\n**Conclusion.** Les deux méthodes concordent : $d(A,\\mathcal{P})=AH=\\dfrac{4}{\\sqrt{3}}=\\dfrac{4\\sqrt{3}}{3}\\approx 2{,}31$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Déterminer l'ensemble des points $M(x\\,;\\,y\\,;\\,z)$ situés à la distance $2$ du plan $\\mathcal{P}$ d'équation $2x-y+2z-1=0$. Préciser la nature de cet ensemble.",
+     "solution_markdown": "**Étape 1 — écrire la condition.**\n\n$$d(M,\\mathcal{P})=2\\iff\\frac{\\left|2x-y+2z-1\\right|}{\\sqrt{2^{2}+(-1)^{2}+2^{2}}}=2$$\n\nLe dénominateur vaut $\\sqrt{4+1+4}=\\sqrt{9}=3$, donc\n\n$$\\frac{\\left|2x-y+2z-1\\right|}{3}=2\\iff\\left|2x-y+2z-1\\right|=6$$\n\n**Étape 2 — lever la valeur absolue.** Une équation $\\left|X\\right|=6$ équivaut à $X=6$ ou $X=-6$.\n\n$$2x-y+2z-1=6\\qquad\\text{ou}\\qquad 2x-y+2z-1=-6$$\n\nsoit\n\n$$2x-y+2z-7=0\\qquad\\text{ou}\\qquad 2x-y+2z+5=0$$\n\n**Étape 3 — identifier la nature de l'ensemble.**\n\nCes deux équations sont celles de deux plans. Ils ont le même vecteur normal $\\vec{n}(2\\,;\\,-1\\,;\\,2)$ que $\\mathcal{P}$, donc ils lui sont **parallèles**.\n\n**L'ensemble cherché est la réunion de deux plans parallèles à $\\mathcal{P}$, situés de part et d'autre de celui-ci, à la distance $2$.**\n\n**Étape 4 — vérifier.** Prenons un point du premier plan, par exemple $\\left(\\dfrac{7}{2}\\,;\\,0\\,;\\,0\\right)$ : il vérifie $2\\times\\dfrac{7}{2}-0+0-7=0$. Sa distance à $\\mathcal{P}$ vaut\n\n$$\\frac{\\left|2\\times\\dfrac{7}{2}-0+0-1\\right|}{3}=\\frac{\\left|7-1\\right|}{3}=\\frac{6}{3}=2$$\n\nDe même, le point $\\left(-\\dfrac{5}{2}\\,;\\,0\\,;\\,0\\right)$ appartient au second plan, et sa distance à $\\mathcal{P}$ vaut $\\dfrac{\\left|-5-1\\right|}{3}=\\dfrac{6}{3}=2$.\n\n**Interprétation.** C'est l'analogue dans l'espace de ce qui se passe dans le plan : l'ensemble des points à distance donnée d'une droite est formé de deux droites parallèles. La valeur absolue de la formule est exactement ce qui produit les deux solutions."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le vecteur normal se lit dans l'équation du plan : ce sont les coefficients de $x$, $y$ et $z$.",
+    "Numérateur : le premier membre évalué au point, en valeur absolue. Dénominateur : la **norme** du vecteur normal, donc une racine carrée.",
+    "Ne mets jamais $a^{2}+b^{2}+c^{2}$ au dénominateur sans la racine : c'est le distracteur numéro un des QCM.",
+    "La racine ne porte que sur le dénominateur, jamais sur la fraction entière.",
+    "La valeur absolue est indispensable : sans elle, la distance peut sortir négative selon le côté du plan.",
+    "Contrôle : le numérateur est nul si et seulement si le point appartient au plan.",
+    "$\\dfrac{k}{\\sqrt{m}}$ et $\\dfrac{k\\sqrt{m}}{m}$ sont deux écritures du même nombre : en QCM, compare avec la forme proposée.",
+    "Au Probatoire, cette formule tombe surtout en QCM ou comme sous-question d'un exercice de géométrie dans l'espace : elle doit être un réflexe de trente secondes."
+   ]
+  }
+ ]
+}

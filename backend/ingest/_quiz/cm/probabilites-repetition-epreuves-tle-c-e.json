@@ -1,0 +1,180 @@
+{
+  "cours_id": "cours-probabilites-repetition-epreuves-tle-c-e",
+  "meta": {
+    "titre": "Probabilités : répétition d'épreuves indépendantes et événement contraire (Terminale C/E)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Répétition d'épreuves indépendantes, événement contraire et résolution par logarithme",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Probabilités (Tle C/E)",
+      "événement contraire",
+      "épreuves indépendantes",
+      "logarithme népérien",
+      "au moins une fois",
+      "schéma de répétition",
+      "équiprobabilité"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "26",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Mathématiques BAC C et E 2024",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-2024-e1-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un exercice de BAC démarre parfois par une phrase inoffensive du style : « combien de fois faut-il répéter cette expérience pour être sûr à 99% d'obtenir au moins une fois tel résultat ? ». La question paraît redoutable parce qu'elle porte sur un nombre $n$ de répétitions inconnu, caché dans un exposant. Elle se résout pourtant avec une méthode fixe, toujours la même : basculer sur l'événement contraire (« ne jamais obtenir ce résultat »), écrire sa probabilité comme une puissance de $n$, puis résoudre l'inéquation qui en résulte à l'aide du logarithme népérien. Cette méthode revient très régulièrement au BAC C et E dès qu'un exercice de probabilités évoque une expérience répétée plusieurs fois de façon indépendante - urne avec remise, lancers de dé, tirages successifs. Ce cours donne la méthode complète, du calcul de la probabilité initiale jusqu'à la détermination du nombre minimal de répétitions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une probabilité sur un univers fini muni de l'équiprobabilité : $P(A) = \\dfrac{\\text{nombre de cas favorables}}{\\text{nombre de cas possibles}}$.",
+        "Connaître l'événement contraire $\\bar A$ d'un événement $A$ et la relation $P(\\bar A) = 1-P(A)$.",
+        "Savoir que deux expériences (ou plus) sont indépendantes lorsque la réalisation de l'une ne modifie pas la probabilité de l'autre, et que dans ce cas $P(A\\cap B)=P(A)\\times P(B)$.",
+        "Manipuler les puissances d'un nombre compris entre $0$ et $1$ : le résultat décroît quand l'exposant augmente.",
+        "Connaître les propriétés de base du logarithme népérien : $\\ln$ est strictement croissante sur $]0;+\\infty[$, $\\ln(1)=0$, et $\\ln(x)<0$ pour $0<x<1$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le schéma de répétition d'épreuves indépendantes : événement contraire et résolution par logarithme",
+      "contenu_markdown": "Beaucoup d'exercices de probabilités du BAC C et E reposent sur une même expérience répétée plusieurs fois, toujours dans les mêmes conditions et de façon indépendante : un tirage avec remise, un lancer de dé, un test recommencé. Soit $A$ un événement associé à une seule répétition de cette expérience, de probabilité $p=P(A)$.\n\nQuand l'expérience est répétée $n$ fois de façon indépendante, la probabilité que $A$ ne se réalise à aucune des $n$ répétitions se calcule directement à partir de l'indépendance : chaque répétition doit échouer, donc les probabilités d'échec se multiplient $n$ fois entre elles. $P(\\bar A\\text{ à chaque répétition}) = (1-p)^n$.\n\nL'événement « obtenir $A$ au moins une fois parmi les $n$ répétitions » est exactement le contraire de « ne jamais obtenir $A$ ». Cette bascule vers l'événement contraire est le point de départ obligé de la méthode : calculer directement « au moins une fois » en additionnant les cas (une fois, deux fois, ..., $n$ fois) demanderait de considérer $n$ situations différentes, alors que son événement contraire, « jamais », ne correspond qu'à une seule situation.\n\nPour déterminer le plus petit entier $n$ garantissant une probabilité supérieure ou égale à un seuil $s$ (souvent donné en pourcentage, par exemple 98% donne $s=0,98$), on résout l'inéquation $1-(1-p)^n \\geqslant s$, ce qui équivaut à $(1-p)^n \\leqslant 1-s$. Le nombre $1-p$ est strictement compris entre $0$ et $1$ (puisque $0<p<1$), donc $\\ln(1-p)$ est strictement négatif. En appliquant $\\ln$ aux deux membres de l'inéquation (une fonction croissante préserve le sens d'une inégalité), puis en divisant par $\\ln(1-p)$, qui est négatif, le sens de l'inégalité s'inverse une seconde fois. La résolution donne alors un minorant réel pour $n$, et il faut retenir le plus petit entier qui le dépasse ou qui lui est égal : un arrondi à l'entier supérieur, jamais un arrondi classique.",
+      "formule_principale": "P(A\\text{ au moins une fois en }n\\text{ répétitions indépendantes}) = 1-(1-p)^n",
+      "variantes": [
+        {
+          "nom": "Vérification par balayage direct (sans logarithme)",
+          "quand_utiliser": "Une fois le minorant réel de $n$ obtenu par le calcul avec le logarithme, ou quand seule une calculatrice sans fonction $\\ln$ est disponible.",
+          "contenu_markdown": "On calcule directement $(1-p)^n$ pour des valeurs entières successives de $n$, en partant d'un encadrement obtenu par tâtonnement ou du résultat du calcul logarithmique, jusqu'à trouver le premier entier $n$ pour lequel $(1-p)^n\\leqslant 1-s$. Cette méthode confirme le résultat obtenu par logarithme : elle sert de vérification systématique, jamais de méthode principale en rédaction, car elle ne prouve pas à elle seule qu'aucun entier plus petit ne convient si les valeurs voisines n'ont pas été testées."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une urne contient 5 boules blanches et 3 boules noires, indiscernables au toucher. On tire une boule au hasard, on note sa couleur, puis on la remet dans l'urne avant de recommencer un nouveau tirage identique et indépendant du précédent.\n\n1. Exprimer, en fonction de $n$, la probabilité $p_n$ d'obtenir au moins une boule noire au cours de $n$ tirages.\n2. Déterminer le plus petit entier $n$ pour lequel $p_n \\geqslant 0,99$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la probabilité $p$ de l'événement étudié pour un seul tirage",
+          "justification": "L'urne contient $5+3=8$ boules indiscernables au toucher et le tirage est équiprobable : $A$ : « obtenir une boule noire » a pour probabilité le nombre de boules noires sur le nombre total de boules.",
+          "resultat_markdown": "$p = P(A) = \\dfrac{3}{8}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la probabilité de l'événement contraire pour un seul tirage",
+          "justification": "L'événement contraire de $A$ est $\\bar A$ : « obtenir une boule blanche », et $P(\\bar A)=1-P(A)$.",
+          "resultat_markdown": "$1-p = 1-\\dfrac38 = \\dfrac58$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer la probabilité de ne jamais obtenir de boule noire en $n$ tirages",
+          "justification": "Les tirages sont indépendants (tirage avec remise, conditions identiques à chaque fois) : la probabilité que $\\bar A$ se réalise aux $n$ tirages est le produit de $n$ facteurs égaux à $P(\\bar A)$.",
+          "resultat_markdown": "$P(\\bar A\\text{ à chaque tirage}) = \\left(\\dfrac58\\right)^n$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire $p_n$ par passage à l'événement contraire",
+          "justification": "« Obtenir au moins une boule noire en $n$ tirages » est l'événement contraire de « ne jamais obtenir de boule noire en $n$ tirages ».",
+          "resultat_markdown": "$p_n = 1-\\left(\\dfrac58\\right)^n$"
+        },
+        {
+          "numero": 5,
+          "action": "Poser l'inéquation correspondant à la condition $p_n\\geqslant 0,99$",
+          "justification": "On remplace $p_n$ par l'expression trouvée et on isole la puissance.",
+          "resultat_markdown": "$1-\\left(\\dfrac58\\right)^n\\geqslant 0,99 \\Longleftrightarrow \\left(\\dfrac58\\right)^n\\leqslant 0,01$"
+        },
+        {
+          "numero": 6,
+          "action": "Passer au logarithme népérien et isoler $n$",
+          "justification": "$\\dfrac58\\in\\,]0;1[$ donc $\\ln\\left(\\dfrac58\\right)<0$. La fonction $\\ln$ est strictement croissante, donc l'application de $\\ln$ aux deux membres conserve le sens $\\leqslant$ ; diviser ensuite par $\\ln\\left(\\dfrac58\\right)$, qui est négatif, inverse ce sens.",
+          "resultat_markdown": "$n\\ln\\left(\\dfrac58\\right)\\leqslant\\ln(0,01) \\Longleftrightarrow n\\geqslant\\dfrac{\\ln(0,01)}{\\ln\\left(\\frac58\\right)}$"
+        },
+        {
+          "numero": 7,
+          "action": "Calculer la valeur numérique du minorant de $n$",
+          "justification": "$\\ln(0,01)=\\ln(10^{-2})=-2\\ln(10)\\approx -4,6052$ et $\\ln\\left(\\dfrac58\\right)=\\ln(5)-\\ln(8)\\approx 1,6094-2,0794=-0,4700$.",
+          "resultat_markdown": "$n\\geqslant\\dfrac{-4,6052}{-0,4700}\\approx 9,80$"
+        },
+        {
+          "numero": 8,
+          "action": "Retenir le plus petit entier vérifiant l'inégalité",
+          "justification": "$n$ est un nombre de tirages, donc un entier naturel : le plus petit entier supérieur ou égal à $9,80$ est $10$, pas $9$.",
+          "resultat_markdown": "$n=10$"
+        },
+        {
+          "numero": 9,
+          "action": "Vérifier directement le résultat, sans logarithme",
+          "justification": "On calcule $\\left(\\dfrac58\\right)^9$ et $\\left(\\dfrac58\\right)^{10}$ pour confirmer que $n=10$ est bien le plus petit entier qui convient.",
+          "resultat_markdown": "$\\left(\\dfrac58\\right)^9\\approx 0,01455>0,01$ (insuffisant) et $\\left(\\dfrac58\\right)^{10}\\approx 0,00909\\leqslant 0,01$ (convient)"
+        }
+      ],
+      "conclusion_markdown": "$p_n=1-\\left(\\dfrac58\\right)^n$, et il faut répéter le tirage au minimum $10$ fois pour être sûr à au moins 99% d'obtenir une boule noire au moins une fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Pour la probabilité d'obtenir au moins une boule noire en $n$ tirages, écrire directement $p_n = n\\times P(A) = n\\times\\dfrac38$, en multipliant simplement la probabilité d'un tirage par le nombre de répétitions.",
+          "pourquoi_faux": "Cette formule additionne des probabilités qui ne sont pas mutuellement exclusives : obtenir une boule noire au premier tirage et en obtenir une aussi au deuxième ne sont pas des événements disjoints, donc leurs probabilités ne s'additionnent pas simplement. Le défaut devient flagrant dès que $n$ dépasse $\\dfrac{1}{P(A)}$ : la formule $n\\times P(A)$ dépasse alors $1$, ce qui est impossible pour une probabilité.",
+          "correction_markdown": "Passe systématiquement par l'événement contraire : calcule $P(\\bar A)^n$ (probabilité de n'obtenir jamais l'événement), puis $p_n=1-P(\\bar A)^n$. C'est la seule formule valable pour « au moins une fois » sur des répétitions indépendantes."
+        },
+        {
+          "erreur_markdown": "Après avoir écrit $n\\ln\\left(\\dfrac58\\right)\\leqslant\\ln(0,01)$, diviser les deux membres par $\\ln\\left(\\dfrac58\\right)$ sans changer le sens de l'inégalité, ce qui donne $n\\leqslant\\dfrac{\\ln(0,01)}{\\ln(5/8)}$ au lieu de $n\\geqslant\\dfrac{\\ln(0,01)}{\\ln(5/8)}$.",
+          "pourquoi_faux": "$\\ln\\left(\\dfrac58\\right)$ est un nombre négatif, puisque $\\dfrac58<1$. Diviser une inégalité par un nombre négatif inverse toujours son sens - une règle valable pour tout nombre réel négatif, pas seulement pour un logarithme. Garder le sens $\\leqslant$ ici conduit à une valeur de $n$ trop petite, qui ne garantit pas réellement le seuil demandé.",
+          "correction_markdown": "Avant de diviser une inégalité par une expression contenant un logarithme, détermine d'abord le signe de cette expression en comparant l'argument à $1$. Si le nombre à l'intérieur du logarithme est inférieur à $1$, le logarithme est négatif et la division inverse le sens de l'inégalité."
+        },
+        {
+          "erreur_markdown": "Écrire la probabilité de ne jamais obtenir l'événement $A$ en $n$ répétitions comme $1-p^n$ au lieu de $(1-p)^n$, en appliquant le complément à $p^n$ plutôt qu'à $p$ avant de mettre à la puissance $n$.",
+          "pourquoi_faux": "$(1-p)^n$ et $1-p^n$ ne sont égaux que dans des cas particuliers (par exemple $n=1$) : ce sont deux quantités différentes en général. $(1-p)^n$ correspond bien à « échouer à chaque répétition, $n$ fois de suite », tandis que $1-p^n$ n'a pas d'interprétation probabiliste directe dans ce contexte.",
+          "correction_markdown": "Construis toujours l'expression dans l'ordre : calcule d'abord $P(\\bar A)=1-p$ pour une seule répétition, puis élève ce résultat à la puissance $n$ pour tenir compte de l'indépendance des $n$ répétitions. Le complément à $1$ se fait avant la mise à la puissance, jamais après."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une expérience aléatoire a une probabilité de succès $p=0,2$ à chaque répétition. On répète cette expérience $5$ fois de façon indépendante. Calculer, arrondie à $10^{-3}$ près, la probabilité d'obtenir au moins un succès parmi les $5$ répétitions.",
+          "solution_markdown": "### Rappel de méthode\nPour « au moins un succès en $n$ répétitions indépendantes », on calcule d'abord la probabilité de l'événement contraire « aucun succès », égale à $(1-p)^n$, puis on soustrait ce résultat à $1$.\n\n**Calcul de la probabilité de l'événement contraire.**\n\n$1-p = 1-0,2 = 0,8$\n\nLes $5$ répétitions étant indépendantes, la probabilité de n'obtenir aucun succès sur les $5$ répétitions est :\n\n$(0,8)^5 = 0,8\\times0,8\\times0,8\\times0,8\\times0,8$\n\n$0,8\\times0,8=0,64$\n\n$0,64\\times0,8=0,512$\n\n$0,512\\times0,8=0,4096$\n\n$0,4096\\times0,8=0,32768$\n\nDonc $(0,8)^5=0,32768$.\n\n**Passage à l'événement contraire.**\n\n$P(\\text{au moins un succès}) = 1-0,32768 = 0,67232$\n\nArrondie à $10^{-3}$ près, la probabilité d'obtenir au moins un succès parmi les $5$ répétitions vaut $0,672$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On lance un dé cubique équilibré, dont les faces sont numérotées de $1$ à $6$, et on note $A$ l'événement « obtenir un $6$ ». On répète ce lancer $n$ fois de façon indépendante.\n\na) Exprimer, en fonction de $n$, la probabilité $q_n$ d'obtenir au moins un $6$ au cours des $n$ lancers.\n\nb) Déterminer le plus petit entier $n$ pour lequel $q_n>0,9$.",
+          "solution_markdown": "### Rappel de méthode\nOn identifie d'abord $P(A)$ pour un seul lancer, puis on applique le schéma « événement contraire, puissance $n$, passage au logarithme » présenté dans le cours.\n\n**a) Expression de $q_n$.**\n\nLe dé est équilibré à $6$ faces : $P(A) = \\dfrac16$, donc $P(\\bar A) = 1-\\dfrac16 = \\dfrac56$.\n\nLes $n$ lancers sont indépendants, donc $P(\\bar A\\text{ à chaque lancer}) = \\left(\\dfrac56\\right)^n$, et par événement contraire :\n\n$q_n = 1-\\left(\\dfrac56\\right)^n$\n\n**b) Recherche du plus petit entier $n$ tel que $q_n>0,9$.**\n\n$1-\\left(\\dfrac56\\right)^n>0,9 \\Longleftrightarrow \\left(\\dfrac56\\right)^n<0,1$\n\n$\\dfrac56\\in\\,]0;1[$ donc $\\ln\\left(\\dfrac56\\right)<0$. En passant au logarithme népérien puis en divisant par $\\ln\\left(\\dfrac56\\right)$ (négatif, donc le sens de l'inégalité s'inverse) :\n\n$n\\ln\\left(\\dfrac56\\right)<\\ln(0,1) \\Longleftrightarrow n>\\dfrac{\\ln(0,1)}{\\ln\\left(\\frac56\\right)}$\n\nCalcul numérique : $\\ln(0,1)=-\\ln(10)\\approx-2,3026$ et $\\ln\\left(\\dfrac56\\right)=\\ln5-\\ln6\\approx1,6094-1,7918=-0,1823$.\n\n$n>\\dfrac{-2,3026}{-0,1823}\\approx12,63$\n\nLe plus petit entier strictement supérieur à $12,63$ est $13$.\n\n**Vérification directe.** $\\left(\\dfrac56\\right)^{12}\\approx0,1122>0,1$ (insuffisant) tandis que $\\left(\\dfrac56\\right)^{13}\\approx0,0935<0,1$ (convient).\n\nIl faut donc au minimum $n=13$ lancers pour que la probabilité d'obtenir au moins un $6$ dépasse $0,9$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une urne contient $4$ jetons rouges et $6$ jetons verts, indiscernables au toucher. On tire simultanément $2$ jetons de l'urne et on note $A$ l'événement « les deux jetons tirés sont de couleurs différentes ». On remet ensuite les jetons dans l'urne avant de recommencer un nouveau tirage de $2$ jetons, indépendant du précédent.\n\na) Montrer que $P(A) = \\dfrac{8}{15}$.\n\nb) On répète ce tirage de $2$ jetons $n$ fois de façon indépendante. Déterminer le plus petit entier $n$ tel que la probabilité d'obtenir au moins une fois l'événement $A$ soit supérieure ou égale à $0,999$.",
+          "solution_markdown": "### Rappel de méthode\nCe type d'exercice combine deux compétences : calculer une probabilité par dénombrement dans un univers équiprobable (question a), puis appliquer le schéma de répétition d'épreuves indépendantes du cours (question b).\n\n**a) Calcul de $P(A)$.**\n\nL'urne contient $4+6=10$ jetons. Le nombre de façons de tirer $2$ jetons parmi les $10$, sans tenir compte de l'ordre, est :\n\n$\\dbinom{10}{2} = \\dfrac{10\\times9}{2} = 45$\n\nL'événement $A$ (couleurs différentes) est réalisé en choisissant $1$ jeton rouge parmi $4$ ET $1$ jeton vert parmi $6$ :\n\n$\\dbinom{4}{1}\\times\\dbinom{6}{1} = 4\\times6 = 24$\n\nLes tirages étant équiprobables :\n\n$P(A) = \\dfrac{24}{45}$\n\nEn simplifiant par $3$ : $P(A) = \\dfrac{8}{15}$, ce qu'il fallait démontrer.\n\n**b) Recherche du plus petit entier $n$.**\n\n$P(\\bar A) = 1-\\dfrac{8}{15} = \\dfrac{7}{15}$\n\nLes $n$ répétitions sont indépendantes, donc la probabilité de n'obtenir jamais l'événement $A$ en $n$ répétitions est $\\left(\\dfrac{7}{15}\\right)^n$, et par événement contraire, la probabilité d'obtenir $A$ au moins une fois est $1-\\left(\\dfrac{7}{15}\\right)^n$.\n\nOn cherche le plus petit entier $n$ tel que :\n\n$1-\\left(\\dfrac{7}{15}\\right)^n\\geqslant0,999 \\Longleftrightarrow \\left(\\dfrac{7}{15}\\right)^n\\leqslant0,001$\n\n$\\dfrac{7}{15}\\in\\,]0;1[$ donc $\\ln\\left(\\dfrac{7}{15}\\right)<0$. En passant au logarithme népérien puis en divisant par $\\ln\\left(\\dfrac{7}{15}\\right)$ (négatif, le sens s'inverse) :\n\n$n\\geqslant\\dfrac{\\ln(0,001)}{\\ln\\left(\\frac{7}{15}\\right)}$\n\nCalcul numérique : $\\ln(0,001)=\\ln(10^{-3})=-3\\ln(10)\\approx-6,9078$ et $\\ln\\left(\\dfrac{7}{15}\\right)=\\ln7-\\ln15\\approx1,9459-2,7081=-0,7621$.\n\n$n\\geqslant\\dfrac{-6,9078}{-0,7621}\\approx9,06$\n\nLe plus petit entier supérieur ou égal à $9,06$ est $10$.\n\n**Vérification directe.** $\\left(\\dfrac{7}{15}\\right)^{9}\\approx0,00105>0,001$ (insuffisant) tandis que $\\left(\\dfrac{7}{15}\\right)^{10}\\approx0,00049\\leqslant0,001$ (convient).\n\nIl faut donc répéter le tirage au minimum $n=10$ fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "« Au moins une fois en $n$ répétitions » se traite toujours par l'événement contraire : calcule d'abord la probabilité de ne jamais obtenir l'événement, $(1-p)^n$, jamais l'inverse.",
+        "Les répétitions doivent être indépendantes et dans des conditions identiques (souvent un tirage avec remise) pour que les probabilités se multiplient simplement : vérifie toujours cette hypothèse avant d'écrire une puissance $n$.",
+        "Pour isoler $n$ dans une inéquation du type $(1-p)^n\\leqslant k$, passe au logarithme népérien puis divise par $\\ln(1-p)$, qui est négatif : le sens de l'inégalité s'inverse à cette étape, pas avant.",
+        "Le résultat numérique du calcul avec logarithme donne un minorant réel, jamais un entier directement : arrondis toujours à l'entier immédiatement supérieur, jamais au plus proche.",
+        "Une vérification directe par calcul de $(1-p)^n$ pour l'entier trouvé et l'entier précédent confirme le résultat en quelques secondes et évite une erreur d'arrondi non détectée.",
+        "Au BAC C et E, ce schéma apparaît en fin d'exercice de probabilités, souvent après une première question qui demande de calculer $P(A)$ par dénombrement : maîtriser les deux enchaînées est un classique très rentable en termes de points."
+      ]
+    }
+  ]
+}

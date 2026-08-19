@@ -489,6 +489,41 @@ class IngestEpreuveInediteTests(TestCase):
         with self.assertRaises(IngestionError):
             ingest_epreuve_inedite(payload, self.country)
 
+    def test_exercice_intro_is_ingested_and_em_dash_stripped(self):
+        """Support partagé par les questions d'un exercice (voir
+        ExerciceInedite.enonce_intro_markdown) - le cas SVT "Document 1 + questions qui
+        l'exploitent", d'où le tableau Markdown ci-dessous plutôt qu'un texte nu."""
+        blueprint = self._valid_blueprint()
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+
+        intro = "**Document 1** - résultats de l'expérience\n\n| t (min) | 0 | 10 |\n| --- | --- | --- |\n| Glycémie (g/L) | 0,90 | 1,45 |"
+        payload = _epreuve_payload(exercices=[{
+            "numero_exercice": "1", "points": "8",
+            "enonce_intro_markdown": intro,
+            "questions": [{
+                "numero": "1", "ordre": 1,
+                "enonce_markdown": "Exploite le document 1.", "corrige_markdown": "Corrigé.",
+            }],
+        }])
+
+        epreuve, _ = ingest_epreuve_inedite(payload, self.country)
+
+        exercice = epreuve.exercices.get()
+        self.assertIn("Glycémie", exercice.enonce_intro_markdown)
+        self.assertNotIn("—", exercice.enonce_intro_markdown)  # _strip_em_dash appliqué comme partout ailleurs
+
+    def test_exercice_intro_defaults_to_empty_when_absent(self):
+        """Champ optionnel : la grande majorité des exercices (hors SVT) n'a aucun support
+        partagé, et son absence ne doit jamais échouer ni valoir "None" en base."""
+        blueprint = self._valid_blueprint()
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+
+        epreuve, _ = ingest_epreuve_inedite(_epreuve_payload(), self.country)
+
+        self.assertEqual(epreuve.exercices.get().enonce_intro_markdown, "")
+
 
 class IngestQuestionRappelsDeMethodeTests(TestCase):
     """Voir inedit.ingestion._ingest_question_inedite - rattachement à l'ExerciceInedite,
@@ -1256,6 +1291,22 @@ class TentativeFlowAPITests(TestCase):
         response = self.client.get(f"/inedit/tentatives/{self.tentative.id}/")
         self.assertEqual(response.status_code, 404)
 
+    def test_tentative_payload_exposes_exercice_intro(self):
+        """Le support partagé est servi au niveau de l'exercice, jamais recopié dans
+        chaque question : le frontend l'affiche une fois en tête d'exercice (voir
+        InediteTentativePage.tsx). Sans ce champ dans le payload, un exercice de SVT
+        bâti sur un document deviendrait insoluble question par question."""
+        exercice = self.epreuve.exercices.get()
+        exercice.enonce_intro_markdown = "**Document 1** : protocole expérimental."
+        exercice.save(update_fields=["enonce_intro_markdown"])
+
+        response = self.client.get(f"/inedit/tentatives/{self.tentative.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        exercice_payload = response.data["exercices"][0]
+        self.assertEqual(exercice_payload["enonce_intro_markdown"], "**Document 1** : protocole expérimental.")
+        self.assertNotIn("enonce_intro_markdown", exercice_payload["questions"][0])
+
     def test_reveal_corrige_does_not_record_an_answer(self):
         response = self.client.get(
             f"/inedit/tentatives/{self.tentative.id}/questions/{self.ouverte_question.id}/corrige/",
@@ -1603,3 +1654,33 @@ class CompileFromExercicesTests(TestCase):
 
         epreuve.refresh_from_db()
         self.assertIn("Réponse Q1.", epreuve.corrige_markdown)
+
+    def test_exercice_intro_precedes_questions_once_in_both_documents(self):
+        """Le support partagé doit précéder les questions dans l'énoncé compilé (dont
+        dérive le PDF du sujet, voir inedit.sujet_pdf._render_html) ET dans le corrigé
+        autonome - une seule fois, jamais répété par question."""
+        blueprint, _ = ingest_blueprint(_blueprint_payload(), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=blueprint.subject, titre="Test intro",
+        )
+        epreuve.cursus.set(blueprint.cursus.all())
+        exercice = ExerciceInedite.objects.create(
+            epreuve=epreuve, numero_exercice="1", points="8",
+            enonce_intro_markdown="**Document 1** : courbe de croissance.",
+        )
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="1", ordre=1,
+            enonce_markdown="Énoncé Q1.", corrige_markdown="Réponse Q1.",
+        )
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="2", ordre=2,
+            enonce_markdown="Énoncé Q2.", corrige_markdown="Réponse Q2.",
+        )
+
+        epreuve.compile_from_exercices()
+
+        for document in (epreuve.enonce_markdown, epreuve.corrige_markdown):
+            self.assertEqual(document.count("**Document 1** : courbe de croissance."), 1)
+            self.assertLess(document.index("Document 1"), document.index("Énoncé Q1."))

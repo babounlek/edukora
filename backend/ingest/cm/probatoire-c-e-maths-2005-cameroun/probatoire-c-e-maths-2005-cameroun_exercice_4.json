@@ -1,0 +1,621 @@
+{
+ "epreuve_source": "probatoire-c-e-maths-2005-cameroun",
+ "pays": "cm",
+ "matiere": "Mathématiques",
+ "nature_epreuve": null,
+ "partie_epreuve_francais": null,
+ "variante_sujet": null,
+ "filiere_serie_a": null,
+ "serie": "C, E",
+ "examen": "probatoire",
+ "origine": "officiel",
+ "etablissement": null,
+ "institution": null,
+ "annee": 2005,
+ "duree_epreuve": "3 heures",
+ "coefficient": 6,
+ "statut": "brouillon",
+ "numero_exercice": "4",
+ "titre_exercice": "Fonction homographique et suite récurrente, ajustement affine, rotation et cercles sécants",
+ "points": 11,
+ "figures": [],
+ "enonce_intro_markdown": "**Problème : 11 points**",
+ "questions": [
+  {
+   "numero": "A.1.a",
+   "points": 0.75,
+   "enonce_markdown": "**Partie A**\n\n$f$ est la fonction numérique d'une variable réelle $x$ définie par $f(x)=\\dfrac{x+1}{x+2}$.\n\n1. a) Calculer les limites de $f$ à gauche de $-2$, à droite de $-2$ et en $+\\infty$. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nPour une fonction rationnelle, la limite en une valeur interdite se détermine par le signe du dénominateur, après avoir vérifié que le numérateur ne s'y annule pas. La limite à l'infini est celle du quotient des termes de plus haut degré.\n\n**Étape 1 — vérifier qu'il n'y a pas d'indétermination en $-2$.**\n\nLe numérateur vaut $-2+1=-1$ en $x=-2$ : il est non nul. Le dénominateur, lui, s'annule. Il n'y a donc aucune forme indéterminée, et seul le signe de $x+2$ décide.\n\n**Étape 2 — signe du dénominateur au voisinage de $-2$.**\n\n$$x<-2\\;\\Longrightarrow\\;x+2<0\\qquad;\\qquad x>-2\\;\\Longrightarrow\\;x+2>0$$\n\n**Étape 3 — limite à gauche de $-2$.**\n\nLe numérateur tend vers $-1<0$ et le dénominateur vers $0^{-}$. Un quotient de deux quantités négatives, dont l'une tend vers zéro, tend vers $+\\infty$ :\n\n$$\\lim_{\\substack{x\\to-2 \\\\ x<-2}}f(x)=+\\infty$$\n\n**Étape 4 — limite à droite de $-2$.**\n\nLe numérateur tend vers $-1<0$ et le dénominateur vers $0^{+}$ :\n\n$$\\lim_{\\substack{x\\to-2 \\\\ x>-2}}f(x)=-\\infty$$\n\n**Étape 5 — limite en $+\\infty$.**\n\nNumérateur et dénominateur sont tous deux de degré $1$. On factorise par $x$ :\n\n$$f(x)=\\frac{x\\left(1+\\dfrac{1}{x}\\right)}{x\\left(1+\\dfrac{2}{x}\\right)}=\\frac{1+\\dfrac{1}{x}}{1+\\dfrac{2}{x}}$$\n\nQuand $x\\to+\\infty$, $\\dfrac{1}{x}\\to 0$ et $\\dfrac{2}{x}\\to 0$, donc\n\n$$\\lim_{x\\to+\\infty}f(x)=\\frac{1}{1}=1$$\n\n**Conclusion.** La droite d'équation $x=-2$ est asymptote verticale à la courbe de $f$, et la droite d'équation $y=1$ en est asymptote horizontale en $+\\infty$.\n\n### Piège à éviter\nLes deux limites en $-2$ sont **opposées** : $+\\infty$ à gauche, $-\\infty$ à droite. C'est le signe du numérateur, ici négatif, qui inverse la conclusion par rapport au réflexe habituel. Écris explicitement le signe des deux facteurs avant de conclure.\n\n### Conseil\nL'écriture $f(x)=1-\\dfrac{1}{x+2}$, obtenue en remarquant que $x+1=(x+2)-1$, donne les trois limites d'un seul coup d'œil : le terme $\\dfrac{1}{x+2}$ explose en $-2$ et s'annule à l'infini. Garde cette forme sous la main, elle resservira pour la dérivée et pour le tracé.",
+   "themes": [
+    "limites",
+    "fonction rationnelle",
+    "asymptote verticale",
+    "asymptote horizontale",
+    "valeur interdite"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "V"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA1a-1",
+     "competence": "Calculer les limites d'une fonction homographique en une valeur interdite et à l'infini",
+     "contenu_markdown": "Pour une fonction rationnelle, la limite en une valeur interdite se détermine par le signe du dénominateur, après avoir vérifié que le numérateur ne s'y annule pas. La limite à l'infini est celle du quotient des termes de plus haut degré.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.1.b",
+   "points": 0.75,
+   "enonce_markdown": "b) Étudier les variations de $f$ sur $\\left]-2\\,;\\,+\\infty\\right[$ et dresser son tableau de variation. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nOn dérive avec la formule du quotient $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^{2}}$, sans jamais développer le dénominateur : laissé sous forme de carré, il est visiblement positif, et le signe de la dérivée se lit sur le seul numérateur.\n\n**Étape 1 — dériver.**\n\nOn pose $u(x)=x+1$ et $v(x)=x+2$, donc $u'(x)=1$ et $v'(x)=1$.\n\n$$f'(x)=\\frac{1\\times(x+2)-(x+1)\\times 1}{(x+2)^{2}}$$\n\n**Étape 2 — réduire le numérateur.**\n\n$$(x+2)-(x+1)=x+2-x-1=1$$\n\n$$f'(x)=\\frac{1}{(x+2)^{2}}$$\n\n**Étape 3 — étudier le signe.**\n\nPour tout $x>-2$, le dénominateur $(x+2)^{2}$ est strictement positif, et le numérateur vaut $1>0$. Donc\n\n$$f'(x)>0\\qquad\\text{pour tout }x\\in\\left]-2\\,;\\,+\\infty\\right[$$\n\n**La fonction $f$ est strictement croissante sur $\\left]-2\\,;\\,+\\infty\\right[$.**\n\n**Étape 4 — dresser le tableau de variation.**\n\nLes limites ont été établies à la question précédente : $-\\infty$ à droite de $-2$, et $1$ en $+\\infty$.\n\n$$\n\\begin{array}{|c|ccc|}\n\\hline x & -2 & & +\\infty \\\\\n\\hline f'(x) & \\| & + & \\\\\n\\hline & & & 1 \\\\\nf & & \\nearrow & \\\\\n & -\\infty & & \\\\\n\\hline\n\\end{array}\n$$\n\n**Étape 5 — contrôler.**\n\n$f(-1)=\\dfrac{0}{1}=0$ et $f(0)=\\dfrac{1}{2}$ : la fonction augmente bien entre ces deux abscisses. Et toutes les valeurs prises restent strictement inférieures à $1$, conformément à l'asymptote horizontale approchée par en dessous.\n\n### Conseil\nLe numérateur de $f'$ étant une constante, le signe de la dérivée ne dépend de rien : $f$ est croissante sur chacun des deux intervalles de son ensemble de définition. Attention toutefois, elle n'est pas croissante sur leur réunion, et l'énoncé a d'ailleurs pris soin de restreindre l'étude à $\\left]-2\\,;\\,+\\infty\\right[$.",
+   "themes": [
+    "dérivée d'un quotient",
+    "sens de variation",
+    "tableau de variation",
+    "fonction homographique"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VI"
+   },
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA1b-1",
+     "competence": "Étudier les variations d'une fonction homographique",
+     "contenu_markdown": "On dérive avec la formule du quotient $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^{2}}$, sans jamais développer le dénominateur : laissé sous forme de carré, il est visiblement positif, et le signe de la dérivée se lit sur le seul numérateur.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.2.a",
+   "points": 0.75,
+   "enonce_markdown": "2. a) Déterminer les coordonnées des points de rencontre de la courbe $\\left(\\mathcal{C}_{f}\\right)$ de $f$ et de la droite d'équation $y=x$. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nLes points communs à une courbe d'équation $y=f(x)$ et à une droite d'équation $y=g(x)$ ont pour abscisses les solutions de l'équation $f(x)=g(x)$. Pour une fonction rationnelle, on chasse le dénominateur en veillant à exclure la valeur interdite, ce qui ramène à une équation polynomiale.\n\n**Étape 1 — poser l'équation.**\n\n$$f(x)=x\\iff\\frac{x+1}{x+2}=x\\qquad\\text{avec }x\\neq-2$$\n\n**Étape 2 — chasser le dénominateur.**\n\nEn multipliant les deux membres par $x+2$, non nul :\n\n$$x+1=x(x+2)=x^{2}+2x$$\n\n**Étape 3 — ramener à une équation du second degré.**\n\n$$0=x^{2}+2x-x-1\\;\\Longrightarrow\\;x^{2}+x-1=0$$\n\n**Étape 4 — résoudre.**\n\n$$\\Delta=1^{2}-4\\times 1\\times(-1)=1+4=5>0$$\n\n$$x_{1}=\\frac{-1-\\sqrt{5}}{2}\\qquad;\\qquad x_{2}=\\frac{-1+\\sqrt{5}}{2}$$\n\n**Étape 5 — vérifier la compatibilité avec l'ensemble de définition.**\n\nNumériquement, $\\sqrt{5}\\approx 2{,}236$, donc $x_{1}\\approx-1{,}618$ et $x_{2}\\approx 0{,}618$. Les deux sont différents de $-2$, et tous deux appartiennent à $\\left]-2\\,;\\,+\\infty\\right[$ : ils conviennent.\n\n**Étape 6 — donner les coordonnées.**\n\nLes points cherchés sont sur la droite $y=x$, donc leur ordonnée est égale à leur abscisse :\n\n$$M_{1}\\left(\\frac{-1-\\sqrt{5}}{2}\\;;\\;\\frac{-1-\\sqrt{5}}{2}\\right)\\qquad;\\qquad M_{2}\\left(\\frac{-1+\\sqrt{5}}{2}\\;;\\;\\frac{-1+\\sqrt{5}}{2}\\right)$$\n\nsoit approximativement $M_{1}(-1{,}62\\,;\\,-1{,}62)$ et $M_{2}(0{,}62\\,;\\,0{,}62)$.\n\n**Étape 7 — contrôler.**\n\nPour $x_{2}$, on vérifie que $x_{2}^{2}+x_{2}=1$, donc $x_{2}\\left(x_{2}+2\\right)=x_{2}^{2}+2x_{2}=1+x_{2}$, ce qui redonne bien $\\dfrac{x_{2}+1}{x_{2}+2}=x_{2}$.\n\n### Piège à éviter\nMultiplier par $x+2$ n'est licite que parce que $x\\neq-2$. Écris cette condition avant de le faire : sans elle, on risque d'introduire $-2$ comme solution parasite. Ici $-2$ n'annule pas $x^{2}+x-1$, donc le problème ne se pose pas, mais la vérification fait partie de la rédaction attendue.\n\n### Conseil\nCes deux abscisses sont les **points fixes** de $f$, c'est-à-dire les réels vérifiant $f(x)=x$. Retiens-les : la question 4 étudie la suite $u_{n+1}=f\\left(u_{n}\\right)$, et c'est précisément vers l'un de ces points fixes qu'elle va converger.",
+   "themes": [
+    "intersection courbe-droite",
+    "équation du second degré",
+    "point fixe",
+    "discriminant"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA2a-1",
+     "competence": "Déterminer les points d'intersection d'une courbe et d'une droite",
+     "contenu_markdown": "Les points communs à une courbe d'équation $y=f(x)$ et à une droite d'équation $y=g(x)$ ont pour abscisses les solutions de l'équation $f(x)=g(x)$. Pour une fonction rationnelle, on chasse le dénominateur en veillant à exclure la valeur interdite, ce qui ramène à une équation polynomiale.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.2.b",
+   "points": 0.5,
+   "enonce_markdown": "b) Représenter graphiquement la partie de la courbe de $f$ correspondant aux abscisses supérieures à $-2$, dans un repère orthonormé du plan. Unité sur les axes : $2$ cm. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nLe tracé se construit dans un ordre fixe : les asymptotes en pointillés, puis les points remarquables, puis un tableau de valeurs, puis la courbe elle-même. La droite $y=x$, déjà utilisée à la question précédente, se trace au passage : elle fournit deux points de contrôle gratuits.\n\n**Étape 1 — tracer les asymptotes.**\n\n- L'asymptote verticale $x=-2$, droite verticale en pointillés.\n- L'asymptote horizontale $y=1$, droite horizontale en pointillés.\n\n**Étape 2 — construire un tableau de valeurs.**\n\nL'écriture $f(x)=1-\\dfrac{1}{x+2}$ rend les calculs immédiats.\n\n| $x$ | $-1{,}8$ | $-1{,}5$ | $-1$ | $0$ | $1$ | $2$ | $3$ | $6$ |\n|---|---|---|---|---|---|---|---|---|\n| $f(x)$ | $-4$ | $-1$ | $0$ | $0{,}5$ | $\\approx 0{,}67$ | $0{,}75$ | $0{,}8$ | $\\approx 0{,}88$ |\n\nDétail de deux valeurs : $f(-1{,}5)=1-\\dfrac{1}{0{,}5}=1-2=-1$ et $f(2)=1-\\dfrac{1}{4}=0{,}75$.\n\n**Étape 3 — placer les points particuliers.**\n\n- Le point $(-1\\,;\\,0)$, intersection avec l'axe des abscisses, puisque $f(x)=0$ équivaut à $x=-1$.\n- Le point $\\left(0\\,;\\,\\dfrac{1}{2}\\right)$, intersection avec l'axe des ordonnées.\n- Les deux points fixes trouvés à la question 2.a), d'abscisses $\\approx-1{,}62$ et $\\approx 0{,}62$, qui appartiennent à la fois à la courbe et à la droite $y=x$.\n\n**Étape 4 — tracer.**\n\nLe repère étant orthonormé avec $2$ cm par unité, on gradue les deux axes de la même façon. La courbe part de $-\\infty$ juste à droite de la verticale $x=-2$, monte régulièrement en traversant l'axe des abscisses en $-1$, puis s'aplatit en se rapprochant de l'asymptote $y=1$ sans jamais l'atteindre.\n\n**Étape 5 — contrôler.**\n\nLa courbe reste **strictement en dessous** de $y=1$ sur tout l'intervalle, puisque $f(x)-1=-\\dfrac{1}{x+2}<0$ pour $x>-2$. Et elle coupe la droite $y=x$ exactement aux deux points fixes : si ton tracé les manque, une valeur est mal reportée.\n\n### Piège à éviter\nLe repère est **orthonormé** : la même unité doit figurer sur les deux axes. Comprimer l'axe des ordonnées pour gagner de la place fausse l'allure de la courbe et rend impossible le contrôle par la droite $y=x$, qui doit apparaître à $45^{\\circ}$.\n\n### Conseil\nTrace la droite $y=x$ dès maintenant, même si l'énoncé ne le demande pas explicitement. Elle sert de contrôle ici, et elle sera indispensable à la question 4.b) pour construire les termes de la suite en escalier.",
+   "themes": [
+    "tracé de courbe",
+    "fonction homographique",
+    "asymptotes",
+    "tableau de valeurs",
+    "repère orthonormé"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA2b-1",
+     "competence": "Tracer la courbe d'une fonction homographique avec ses asymptotes",
+     "contenu_markdown": "Le tracé se construit dans un ordre fixe : les asymptotes en pointillés, puis les points remarquables, puis un tableau de valeurs, puis la courbe elle-même. La droite $y=x$, déjà utilisée à la question précédente, se trace au passage : elle fournit deux points de contrôle gratuits.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.3.a",
+   "points": 0.5,
+   "enonce_markdown": "3. Soit $g$ la fonction numérique d'une variable réelle $x$ définie sur $\\left]-2\\,;\\,+\\infty\\right[$ par $g(x)=2-f(x)$.\n\na) Donner un programme de construction de la courbe $\\left(\\mathcal{C}_{g}\\right)$ de $g$ à partir de celle de $f$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne relation du type $g(x)=k-f(x)$ se lit comme une transformation géométrique agissant sur les **ordonnées**. Pour l'identifier, on compare les ordonnées de deux points de même abscisse : si leur demi-somme est constante, la transformation est la symétrie orthogonale par rapport à la droite horizontale d'ordonnée cette constante.\n\n**Étape 1 — comparer les deux ordonnées.**\n\nPour un même réel $x$ de $\\left]-2\\,;\\,+\\infty\\right[$, la courbe de $f$ porte le point $M\\left(x\\,;\\,f(x)\\right)$ et celle de $g$ le point $M'\\left(x\\,;\\,g(x)\\right)=\\left(x\\,;\\,2-f(x)\\right)$.\n\n**Étape 2 — calculer l'ordonnée du milieu de $\\left[MM'\\right]$.**\n\n$$\\frac{f(x)+\\left(2-f(x)\\right)}{2}=\\frac{2}{2}=1$$\n\nCette valeur ne dépend pas de $x$.\n\n**Étape 3 — conclure.**\n\nLes points $M$ et $M'$ ont la même abscisse, et le milieu de $\\left[MM'\\right]$ a pour ordonnée $1$ quel que soit $x$. Le segment $\\left[MM'\\right]$ est donc vertical, et son milieu décrit la droite horizontale d'équation $y=1$.\n\n**$\\left(\\mathcal{C}_{g}\\right)$ est l'image de $\\left(\\mathcal{C}_{f}\\right)$ par la symétrie orthogonale d'axe la droite d'équation $y=1$.**\n\n**Programme de construction.** Pour chaque point de la courbe de $f$, on trace la verticale qui le porte, et l'on place le point situé à la même distance de la droite $y=1$, de l'autre côté. En pratique : un point d'ordonnée $h$ sur $\\left(\\mathcal{C}_{f}\\right)$ donne un point d'ordonnée $2-h$ sur $\\left(\\mathcal{C}_{g}\\right)$.\n\n**Étape 4 — contrôler sur deux points.**\n\n$f(-1)=0$ donne $g(-1)=2$ : les ordonnées $0$ et $2$ sont bien symétriques par rapport à $1$.\n\n$f(0)=0{,}5$ donne $g(0)=1{,}5$ : les ordonnées $0{,}5$ et $1{,}5$ sont symétriques par rapport à $1$. Cohérent.\n\n**Remarque.** On peut aussi décrire la transformation comme la composée de la symétrie d'axe $(Ox)$, qui envoie $f(x)$ sur $-f(x)$, suivie de la translation de vecteur $2\\vec{\\jmath}$. Les deux descriptions sont acceptées.\n\n### Piège à éviter\nNe confonds pas $g(x)=2-f(x)$ avec $g(x)=f(x)+2$ ou $g(x)=-f(x)$. La première est une translation verticale, la seconde une symétrie par rapport à $(Ox)$ ; ici les deux se combinent, ce qui donne une symétrie par rapport à la droite $y=1$, et non par rapport à $(Ox)$.\n\n### Conseil\nLe calcul de l'ordonnée du milieu est le test le plus rapide : dès qu'elle est constante, tu as affaire à une symétrie d'axe horizontal, et cette constante **est** l'ordonnée de l'axe. Deux lignes de calcul, et la transformation est identifiée.",
+   "themes": [
+    "transformation de courbe",
+    "symétrie axiale",
+    "axe horizontal",
+    "lecture graphique"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA3a-1",
+     "competence": "Identifier la transformation reliant les courbes de f et de k - f",
+     "contenu_markdown": "Une relation du type $g(x)=k-f(x)$ se lit comme une transformation géométrique agissant sur les **ordonnées**. Pour l'identifier, on compare les ordonnées de deux points de même abscisse : si leur demi-somme est constante, la transformation est la symétrie orthogonale par rapport à la droite horizontale d'ordonnée cette constante.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.3.b",
+   "points": 0.5,
+   "enonce_markdown": "b) Tracer $\\left(\\mathcal{C}_{g}\\right)$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nQuand une courbe est l'image d'une autre par une symétrie, on ne recalcule rien : on transforme point par point les points déjà placés. Il suffit d'appliquer la transformation aux points remarquables et aux asymptotes.\n\n**Étape 1 — transformer les asymptotes.**\n\nLa symétrie d'axe $y=1$ laisse les droites verticales globalement inchangées : l'asymptote verticale reste $x=-2$.\n\nElle transforme la droite $y=1$ en elle-même : l'asymptote horizontale $y=1$ de $\\left(\\mathcal{C}_{f}\\right)$ est donc aussi asymptote horizontale de $\\left(\\mathcal{C}_{g}\\right)$.\n\n**Étape 2 — transformer les points remarquables.**\n\nÀ chaque point $\\left(x\\,;\\,h\\right)$ de $\\left(\\mathcal{C}_{f}\\right)$ correspond le point $\\left(x\\,;\\,2-h\\right)$ de $\\left(\\mathcal{C}_{g}\\right)$ :\n\n| $x$ | $-1{,}8$ | $-1{,}5$ | $-1$ | $0$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|\n| $f(x)$ | $-4$ | $-1$ | $0$ | $0{,}5$ | $0{,}75$ | $0{,}8$ |\n| $g(x)=2-f(x)$ | $6$ | $3$ | $2$ | $1{,}5$ | $1{,}25$ | $1{,}2$ |\n\n**Étape 3 — tracer.**\n\nLa courbe de $g$ descend de $+\\infty$ juste à droite de $x=-2$, puis décroît régulièrement en se rapprochant de l'asymptote $y=1$ par au-dessus. On la trace en traits distincts de ceux de $\\left(\\mathcal{C}_{f}\\right)$, par exemple en pointillés ou d'une autre couleur.\n\n**Étape 4 — contrôler.**\n\nLes deux courbes se coupent exactement là où $f(x)=g(x)$, c'est-à-dire $f(x)=2-f(x)$, soit $f(x)=1$. Or $f(x)=1-\\dfrac{1}{x+2}$ ne vaut jamais $1$ : les deux courbes **ne se coupent pas**. Sur ta figure, elles doivent rester de part et d'autre de la droite $y=1$, l'une en dessous, l'autre au-dessus.\n\nSecond contrôle : $g$ est décroissante là où $f$ est croissante, ce qui se lit immédiatement sur $g'(x)=-f'(x)$.\n\n### Piège à éviter\nNe trace pas $\\left(\\mathcal{C}_{g}\\right)$ en refaisant une étude de fonction complète : l'énoncé demande de la **déduire** de $\\left(\\mathcal{C}_{f}\\right)$. Un tracé obtenu par transformation, avec les points reportés un à un, est exactement ce qui est attendu et se fait en deux minutes.\n\n### Conseil\nDistingue nettement les deux courbes sur la figure, par un trait différent et par une légende. Deux courbes tracées à l'identique dans un même repère font perdre les points de présentation, et rendent la vérification impossible pour le correcteur comme pour toi.",
+   "themes": [
+    "tracé de courbe",
+    "symétrie axiale",
+    "image d'une courbe",
+    "asymptotes"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA3b-1",
+     "competence": "Tracer l'image d'une courbe par une symétrie d'axe horizontal",
+     "contenu_markdown": "Quand une courbe est l'image d'une autre par une symétrie, on ne recalcule rien : on transforme point par point les points déjà placés. Il suffit d'appliquer la transformation aux points remarquables et aux asymptotes.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.4.a",
+   "points": 0.75,
+   "enonce_markdown": "4. $\\left(u_{n}\\right)$ est la suite définie par $u_{0}=0$ et $u_{n+1}=\\dfrac{u_{n}+1}{u_{n}+2}$ pour tout entier naturel $n$.\n\na) Calculer $u_{1}$, $u_{2}$ et $u_{3}$. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne suite définie par récurrence se calcule de proche en proche : chaque terme s'obtient en appliquant la relation au terme précédent. Ici la relation s'écrit $u_{n+1}=f\\left(u_{n}\\right)$ avec la fonction $f$ étudiée dans la partie A, ce qui permet de réutiliser les calculs déjà faits.\n\n**Étape 1 — calculer $u_{1}$.**\n\n$$u_{1}=\\frac{u_{0}+1}{u_{0}+2}=\\frac{0+1}{0+2}=\\frac{1}{2}$$\n\n**Étape 2 — calculer $u_{2}$.**\n\n$$u_{2}=\\frac{u_{1}+1}{u_{1}+2}=\\frac{\\dfrac{1}{2}+1}{\\dfrac{1}{2}+2}=\\frac{\\dfrac{3}{2}}{\\dfrac{5}{2}}$$\n\nDiviser deux fractions de même dénominateur revient à diviser leurs numérateurs :\n\n$$u_{2}=\\frac{3}{5}$$\n\n**Étape 3 — calculer $u_{3}$.**\n\n$$u_{3}=\\frac{u_{2}+1}{u_{2}+2}=\\frac{\\dfrac{3}{5}+1}{\\dfrac{3}{5}+2}=\\frac{\\dfrac{3}{5}+\\dfrac{5}{5}}{\\dfrac{3}{5}+\\dfrac{10}{5}}=\\frac{\\dfrac{8}{5}}{\\dfrac{13}{5}}=\\frac{8}{13}$$\n\n**Résultats.**\n\n$$u_{1}=\\frac{1}{2}=0{,}5\\qquad;\\qquad u_{2}=\\frac{3}{5}=0{,}6\\qquad;\\qquad u_{3}=\\frac{8}{13}\\approx 0{,}615$$\n\n**Étape 4 — observer.**\n\nLes valeurs $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ augmentent, en se resserrant. Elles semblent s'approcher de $0{,}618$, valeur approchée du point fixe $\\dfrac{-1+\\sqrt{5}}{2}$ trouvé à la question 2.a).\n\n### Conseil\nNe convertis pas en décimaux pendant le calcul : garde les fractions jusqu'au bout, elles restent exactes et les divisions de fractions de même dénominateur se simplifient d'elles-mêmes. Les valeurs décimales ne servent qu'à la fin, pour observer la tendance.",
+   "themes": [
+    "suite récurrente",
+    "calcul de termes",
+    "fraction",
+    "point fixe"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4a-1",
+     "competence": "Calculer les premiers termes d'une suite définie par récurrence",
+     "contenu_markdown": "Une suite définie par récurrence se calcule de proche en proche : chaque terme s'obtient en appliquant la relation au terme précédent. Ici la relation s'écrit $u_{n+1}=f\\left(u_{n}\\right)$ avec la fonction $f$ étudiée dans la partie A, ce qui permet de réutiliser les calculs déjà faits.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.4.b",
+   "points": 0.75,
+   "enonce_markdown": "b) Construire sur l'axe des abscisses du repère les cinq premiers termes de $\\left(u_{n}\\right)$. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nPour représenter les termes d'une suite définie par $u_{n+1}=f\\left(u_{n}\\right)$, on construit un **escalier** entre la courbe de $f$ et la droite $\\Delta$ d'équation $y=x$ : partant de $u_{n}$ sur l'axe des abscisses, on monte verticalement jusqu'à la courbe pour lire $u_{n+1}$ en ordonnée, puis on se déplace horizontalement jusqu'à $\\Delta$ pour reporter cette valeur en abscisse.\n\n**Étape 1 — tracer les deux supports.**\n\nLa courbe $\\left(\\mathcal{C}_{f}\\right)$ est déjà tracée depuis la question 2.b). On ajoute, si ce n'est pas déjà fait, la droite $\\Delta$ d'équation $y=x$, qui passe par l'origine et fait un angle de $45^{\\circ}$ avec l'axe des abscisses puisque le repère est orthonormé.\n\n**Étape 2 — repérer le point fixe.**\n\n$\\left(\\mathcal{C}_{f}\\right)$ et $\\Delta$ se coupent aux deux points trouvés à la question 2.a). Celui qui nous intéresse ici est $M_{2}$, d'abscisse\n\n$$\\ell=\\frac{-1+\\sqrt{5}}{2}\\approx 0{,}618$$\n\n**Étape 3 — construire l'escalier.**\n\n1. Placer $u_{0}=0$ sur l'axe des abscisses.\n2. Monter verticalement jusqu'à $\\left(\\mathcal{C}_{f}\\right)$ : l'ordonnée atteinte est $u_{1}=0{,}5$.\n3. Se déplacer horizontalement jusqu'à $\\Delta$ : le point obtenu a pour abscisse $0{,}5$, que l'on projette sur l'axe des abscisses. C'est $u_{1}$.\n4. Monter verticalement jusqu'à $\\left(\\mathcal{C}_{f}\\right)$ : on lit $u_{2}=0{,}6$.\n5. Se déplacer horizontalement jusqu'à $\\Delta$, projeter : c'est $u_{2}$.\n6. Répéter deux fois pour obtenir $u_{3}\\approx 0{,}615$ puis $u_{4}$.\n\n**Étape 4 — calculer $u_{4}$ pour contrôler le placement.**\n\n$$u_{4}=\\frac{\\dfrac{8}{13}+1}{\\dfrac{8}{13}+2}=\\frac{\\dfrac{21}{13}}{\\dfrac{34}{13}}=\\frac{21}{34}\\approx 0{,}618$$\n\n**Étape 5 — lire la figure.**\n\nLes cinq abscisses $0$ ; $0{,}5$ ; $0{,}6$ ; $\\approx 0{,}615$ ; $\\approx 0{,}618$ se succèdent de gauche à droite en se resserrant très vite autour de $\\ell\\approx 0{,}618$. L'escalier est **montant** et ses marches rétrécissent.\n\n### Piège à éviter\nLa droite $y=x$ n'est pas décorative : c'est elle qui permet de reporter une ordonnée en abscisse. Sans elle, la construction est impossible. Et prends garde à ne pas la confondre avec la courbe de $f$, qui la coupe justement en deux points.\n\n### Conseil\nChoisis une échelle généreuse sur l'intervalle $[0\\,;\\,0{,}7]$, quitte à faire un agrandissement en marge : les quatre premiers termes tiennent dans un intervalle de moins d'un centimètre à l'échelle imposée de $2$ cm par unité. Sans cet agrandissement, l'escalier est illisible.",
+   "themes": [
+    "suite récurrente",
+    "construction en escalier",
+    "point fixe",
+    "lecture graphique"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4b-1",
+     "competence": "Construire graphiquement les termes d'une suite définie par récurrence",
+     "contenu_markdown": "Pour représenter les termes d'une suite définie par $u_{n+1}=f\\left(u_{n}\\right)$, on construit un **escalier** entre la courbe de $f$ et la droite $\\Delta$ d'équation $y=x$ : partant de $u_{n}$ sur l'axe des abscisses, on monte verticalement jusqu'à la courbe pour lire $u_{n+1}$ en ordonnée, puis on se déplace horizontalement jusqu'à $\\Delta$ pour reporter cette valeur en abscisse.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.4.c",
+   "points": 0.5,
+   "enonce_markdown": "c) En déduire une conjecture sur le sens de variation et la convergence de la suite $\\left(u_{n}\\right)$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne conjecture se lit sur la figure et se formule en deux temps : le sens de variation, donné par la façon dont l'escalier progresse, et la limite éventuelle, donnée par le point vers lequel il s'accumule. Ce point ne peut être qu'un point fixe de $f$, c'est-à-dire une intersection de la courbe avec la droite $y=x$.\n\n**Étape 1 — lire le sens de variation.**\n\nL'escalier construit à la question précédente progresse **vers la droite** : chaque terme est placé plus loin que le précédent sur l'axe des abscisses. Les valeurs calculées le confirment :\n\n$$0<0{,}5<0{,}6<0{,}615<0{,}618$$\n\n**Conjecture 1 : la suite $\\left(u_{n}\\right)$ est croissante.**\n\n**Étape 2 — lire la convergence.**\n\nLes marches de l'escalier se resserrent très rapidement, et les points s'accumulent autour de l'abscisse du point d'intersection $M_{2}$ de $\\left(\\mathcal{C}_{f}\\right)$ et de $\\Delta$.\n\n**Conjecture 2 : la suite $\\left(u_{n}\\right)$ converge vers**\n\n$$\\ell=\\frac{-1+\\sqrt{5}}{2}\\approx 0{,}618$$\n\n**Étape 3 — justifier le choix de ce point fixe plutôt que de l'autre.**\n\nL'équation $f(x)=x$ a deux solutions, $\\dfrac{-1-\\sqrt{5}}{2}\\approx-1{,}618$ et $\\dfrac{-1+\\sqrt{5}}{2}\\approx 0{,}618$. Comme la suite démarre en $u_{0}=0$ et croît, elle ne peut pas s'approcher de la première, qui est négative : c'est bien vers la seconde qu'elle converge.\n\n**Étape 4 — contrôler la cohérence.**\n\nSi la suite converge vers un réel $\\ell$, alors en passant à la limite dans $u_{n+1}=f\\left(u_{n}\\right)$, la continuité de $f$ sur $\\left]-2\\,;\\,+\\infty\\right[$ donne $\\ell=f(\\ell)$ : la limite est nécessairement un point fixe. La conjecture est donc compatible avec ce que l'on sait de la suite.\n\n### Piège à éviter\nLe mot « conjecture » signifie que la lecture graphique **suggère** un résultat sans le démontrer. N'écris pas « la suite est croissante » comme une certitude établie : formule bien « on conjecture que ». Une démonstration exigerait une récurrence, que l'énoncé ne demande pas ici.\n\n### Conseil\nRetiens le principe : la limite d'une suite $u_{n+1}=f\\left(u_{n}\\right)$, si elle existe et si $f$ est continue, est toujours un point fixe de $f$. C'est pour cela que la question 2.a) faisait chercher les intersections avec $y=x$ : elle préparait celle-ci depuis le début.",
+   "themes": [
+    "suite récurrente",
+    "conjecture",
+    "sens de variation",
+    "convergence",
+    "point fixe"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4c-1",
+     "competence": "Conjecturer le sens de variation et la limite d'une suite à partir d'une construction graphique",
+     "contenu_markdown": "Une conjecture se lit sur la figure et se formule en deux temps : le sens de variation, donné par la façon dont l'escalier progresse, et la limite éventuelle, donnée par le point vers lequel il s'accumule. Ce point ne peut être qu'un point fixe de $f$, c'est-à-dire une intersection de la courbe avec la droite $y=x$.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.1.a",
+   "points": 1.0,
+   "enonce_markdown": "**Partie B**\n\nLe tableau ci-dessous indique la puissance $x$ en chevaux et la cylindrée $y$ (en cm$^{3}$) de huit voitures à moteur Diesel.\n\n| Numéro voiture | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ |\n|---|---|---|---|---|---|---|---|---|\n| Puissance $x$ | $35$ | $55$ | $60$ | $60$ | $65$ | $70$ | $72$ | $75$ |\n| Cylindrée $y$ | $1000$ | $1600$ | $1800$ | $1700$ | $1900$ | $2000$ | $2100$ | $2500$ |\n\n1. a) Représenter le nuage de la série $(x\\,;\\,y)$. Choisir sur l'axe des abscisses $1$ cm pour $10$ chevaux et sur l'axe des ordonnées $2$ cm pour $1000$ cm$^{3}$. *(1 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nReprésenter un nuage de points consiste à placer, dans un repère, les $n$ points $M_{i}\\left(x_{i}\\,;\\,y_{i}\\right)$ de la série double, sans jamais les relier. Les échelles étant imposées par l'énoncé, la première chose à faire est de traduire chaque unité en centimètres.\n\n**Étape 1 — traduire les échelles.**\n\n- En abscisse : $1$ cm pour $10$ chevaux, donc $1$ cheval correspond à $0{,}1$ cm. Les puissances vont de $35$ à $75$, soit une plage de $4$ cm.\n- En ordonnée : $2$ cm pour $1000$ cm$^{3}$, donc $1000$ cm$^{3}$ correspondent à $2$ cm. Les cylindrées vont de $1000$ à $2500$, soit une plage de $3$ cm.\n\nLe repère n'est donc **pas** orthonormé, ce qui est normal pour un nuage statistique : les deux grandeurs n'ont ni la même nature ni le même ordre de grandeur.\n\n**Étape 2 — dresser la liste des huit points.**\n\n$$M_{1}(35\\,;\\,1000)\\quad M_{2}(55\\,;\\,1600)\\quad M_{3}(60\\,;\\,1800)\\quad M_{4}(60\\,;\\,1700)$$\n\n$$M_{5}(65\\,;\\,1900)\\quad M_{6}(70\\,;\\,2000)\\quad M_{7}(72\\,;\\,2100)\\quad M_{8}(75\\,;\\,2500)$$\n\n**Étape 3 — graduer et placer.**\n\nOn gradue l'axe des abscisses de $10$ en $10$ à partir de $30$, et l'axe des ordonnées de $500$ en $500$ à partir de $1000$. On place ensuite les huit points par une croix ou un point net.\n\n**Étape 4 — repérer les points particuliers.**\n\nLes voitures $3$ et $4$ ont la même puissance $60$ mais des cylindrées différentes, $1800$ et $1700$ : elles donnent deux points **superposés en abscisse**, à ne pas confondre avec un seul point. Il faut les distinguer clairement sur la figure.\n\n**Étape 5 — placer le point moyen.**\n\nIl sera calculé à la question 2 : $G(61{,}5\\,;\\,1825)$. Le placer dès maintenant facilite le contrôle des questions suivantes.\n\n### Piège à éviter\nNe relie jamais les points d'un nuage statistique. Une ligne brisée suggérerait que les valeurs intermédiaires ont été mesurées, ce qui est faux : chaque point correspond à une voiture précise, et il n'y a rien entre deux voitures.\n\n### Conseil\nLes échelles imposées ne sont pas un détail de présentation : elles sont notées. Écris-les explicitement en marge de ta figure, sous la forme « $1$ cm $\\leftrightarrow$ $10$ ch » et « $2$ cm $\\leftrightarrow$ $1000$ cm$^{3}$ ». Cela prend cinq secondes et prouve au correcteur que la consigne a été lue.",
+   "themes": [
+    "nuage de points",
+    "série statistique double",
+    "échelle",
+    "représentation graphique"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB1a-1",
+     "competence": "Représenter le nuage de points d'une série statistique double avec des échelles imposées",
+     "contenu_markdown": "Représenter un nuage de points consiste à placer, dans un repère, les $n$ points $M_{i}\\left(x_{i}\\,;\\,y_{i}\\right)$ de la série double, sans jamais les relier. Les échelles étant imposées par l'énoncé, la première chose à faire est de traduire chaque unité en centimètres.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.1.b",
+   "points": 0.5,
+   "enonce_markdown": "b) Le nuage ainsi représenté laisse-t-il entrevoir un ajustement linéaire ? *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUn ajustement affine est envisageable lorsque les points du nuage se répartissent au voisinage d'une même droite, sans courbure ni dispersion excessive. La réponse est d'abord graphique ; on peut la conforter en observant que les deux caractères varient dans le même sens de façon régulière.\n\n**Étape 1 — décrire l'allure du nuage.**\n\nLes huit points progressent régulièrement du bas à gauche vers le haut à droite : lorsque la puissance augmente, la cylindrée augmente aussi. Aucun point ne s'écarte fortement de cette tendance, et le nuage ne présente ni courbure marquée ni changement de direction.\n\n**Étape 2 — vérifier la régularité par le calcul.**\n\nEn passant d'une voiture à la suivante, le rapport de la variation de cylindrée à la variation de puissance reste du même ordre de grandeur :\n\n$$\\frac{1600-1000}{55-35}=\\frac{600}{20}=30\\qquad;\\qquad\\frac{1900-1600}{65-55}=\\frac{300}{10}=30$$\n\n$$\\frac{2100-1900}{72-65}=\\frac{200}{7}\\approx 29\\qquad;\\qquad\\frac{2500-2100}{75-72}=\\frac{400}{3}\\approx 133$$\n\nLes trois premiers rapports sont très proches de $30$ : la croissance est bien quasi linéaire sur l'essentiel du nuage. Seul le dernier saut, entre les voitures $7$ et $8$, est nettement plus marqué.\n\n**Étape 3 — conclure.**\n\n**Oui, le nuage laisse entrevoir un ajustement linéaire** : les points sont sensiblement alignés selon une direction croissante. La voiture $8$, de cylindrée $2500$ cm$^{3}$, s'écarte un peu de cette tendance en se situant au-dessus, et la voiture $4$ légèrement en dessous, mais ces écarts restent modérés au regard de la plage de valeurs.\n\n### Conseil\nUne réponse en un mot ne rapporte pas les $0{,}5$ point : justifie brièvement, en décrivant l'allure du nuage et en signalant les éventuels points atypiques. Deux phrases suffisent, mais elles doivent s'appuyer sur ce que montre la figure.",
+   "themes": [
+    "ajustement affine",
+    "nuage de points",
+    "corrélation",
+    "lecture graphique"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB1b-1",
+     "competence": "Justifier la pertinence d'un ajustement affine à partir d'un nuage de points",
+     "contenu_markdown": "Un ajustement affine est envisageable lorsque les points du nuage se répartissent au voisinage d'une même droite, sans courbure ni dispersion excessive. La réponse est d'abord graphique ; on peut la conforter en observant que les deux caractères varient dans le même sens de façon régulière.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.2",
+   "points": 0.5,
+   "enonce_markdown": "2. Calculer la puissance moyenne et la cylindrée moyenne des huit voitures. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nLa moyenne d'une série de $n$ valeurs est la somme de ces valeurs divisée par $n$. Pour une série double, on calcule les deux moyennes séparément ; le point $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$ ainsi obtenu est le **point moyen** du nuage, par lequel passera la droite d'ajustement.\n\n**Étape 1 — puissance moyenne.**\n\nSomme des puissances, terme à terme :\n\n$$35+55=90\\;;\\;+60=150\\;;\\;+60=210\\;;\\;+65=275\\;;\\;+70=345\\;;\\;+72=417\\;;\\;+75=492$$\n\n$$\\bar{x}=\\frac{492}{8}=61{,}5$$\n\n**La puissance moyenne est de $61{,}5$ chevaux.**\n\n**Étape 2 — cylindrée moyenne.**\n\nSomme des cylindrées, terme à terme :\n\n$$1000+1600=2600\\;;\\;+1800=4400\\;;\\;+1700=6100\\;;\\;+1900=8000$$\n\n$$8000+2000=10\\,000\\;;\\;+2100=12\\,100\\;;\\;+2500=14\\,600$$\n\n$$\\bar{y}=\\frac{14\\,600}{8}=1825$$\n\n**La cylindrée moyenne est de $1825$ cm$^{3}$.**\n\n**Étape 3 — contrôler.**\n\nLes deux moyennes doivent tomber à l'intérieur de la plage des valeurs observées : $61{,}5$ est bien compris entre $35$ et $75$, et $1825$ entre $1000$ et $2500$. Par ailleurs, $61{,}5$ est proche du milieu de la plage des puissances, ce qui est cohérent avec un nuage assez régulier.\n\n**Le point moyen du nuage est donc $G(61{,}5\\,;\\,1825)$**, à placer sur la figure de la question 1.a).\n\n### Conseil\nAdditionne toujours terme à terme en écrivant les résultats intermédiaires, comme ci-dessus. Une somme de huit nombres faite mentalement est la première source d'erreur de tout l'exercice, et cette erreur se propage ensuite sur la droite de régression et sur l'estimation finale.",
+   "themes": [
+    "moyenne",
+    "série statistique double",
+    "point moyen"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB2-1",
+     "competence": "Calculer les moyennes d'une série statistique double",
+     "contenu_markdown": "La moyenne d'une série de $n$ valeurs est la somme de ces valeurs divisée par $n$. Pour une série double, on calcule les deux moyennes séparément ; le point $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$ ainsi obtenu est le **point moyen** du nuage, par lequel passera la droite d'ajustement.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.3.a",
+   "points": 0.75,
+   "enonce_markdown": "3. Sachant que la covariance du couple $(x\\,;\\,y)$ vaut $4662{,}5$ :\n\na) Écrire une équation cartésienne de la droite de régression de $x$ en $y$. *(0,75 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nLa droite de régression de $x$ en $y$ a pour équation $x=a'y+b'$, avec\n\n$$a'=\\frac{\\operatorname{Cov}(x,y)}{V(y)}\\qquad\\text{et}\\qquad b'=\\bar{x}-a'\\bar{y}$$\n\nC'est la droite qu'on utilise pour **prévoir une puissance connaissant une cylindrée**. Elle passe par le point moyen $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$.\n\n**Étape 1 — calculer la variance de $y$.**\n\nOn utilise la formule développée $V(y)=\\dfrac{1}{n}\\sum y_{i}^{2}-\\bar{y}^{2}$.\n\n| $y_{i}$ | $1000$ | $1600$ | $1800$ | $1700$ | $1900$ | $2000$ | $2100$ | $2500$ |\n|---|---|---|---|---|---|---|---|---|\n| $y_{i}^{2}$ | $10^{6}$ | $2{,}56\\cdot 10^{6}$ | $3{,}24\\cdot 10^{6}$ | $2{,}89\\cdot 10^{6}$ | $3{,}61\\cdot 10^{6}$ | $4\\cdot 10^{6}$ | $4{,}41\\cdot 10^{6}$ | $6{,}25\\cdot 10^{6}$ |\n\nSomme, en millions : $1+2{,}56=3{,}56$ ; $+3{,}24=6{,}80$ ; $+2{,}89=9{,}69$ ; $+3{,}61=13{,}30$ ; $+4=17{,}30$ ; $+4{,}41=21{,}71$ ; $+6{,}25=27{,}96$.\n\n$$\\sum y_{i}^{2}=27\\,960\\,000$$\n\n$$V(y)=\\frac{27\\,960\\,000}{8}-1825^{2}=3\\,495\\,000-3\\,330\\,625=164\\,375$$\n\n**Étape 2 — calculer le coefficient directeur.**\n\n$$a'=\\frac{\\operatorname{Cov}(x,y)}{V(y)}=\\frac{4662{,}5}{164\\,375}\\approx 0{,}028\\,365$$\n\nsoit $a'\\approx 0{,}0284$ à $10^{-4}$ près.\n\n**Étape 3 — calculer l'ordonnée à l'origine.**\n\n$$b'=\\bar{x}-a'\\bar{y}=61{,}5-0{,}028\\,365\\times 1825$$\n\nCalcul du produit : $0{,}028\\,365\\times 1825\\approx 51{,}77$.\n\n$$b'\\approx 61{,}5-51{,}77=9{,}73$$\n\n**Étape 4 — écrire l'équation.**\n\n$$\\boxed{x=0{,}0284\\,y+9{,}73}$$\n\n**Étape 5 — contrôler par le point moyen.**\n\nLa droite doit passer par $G(61{,}5\\,;\\,1825)$. En remplaçant $y$ par $1825$ :\n\n$$0{,}028\\,365\\times 1825+9{,}73\\approx 51{,}77+9{,}73=61{,}50$$\n\nOn retrouve bien $\\bar{x}$.\n\n### Piège à éviter\nLa droite de régression de $x$ en $y$ n'est pas celle de $y$ en $x$ : son coefficient directeur est $\\dfrac{\\operatorname{Cov}}{V(y)}$, et non $\\dfrac{\\operatorname{Cov}}{V(x)}$. C'est bien celle-ci qu'il faut ici, puisque la question suivante demande de prévoir une **puissance** à partir d'une **cylindrée**. Se tromper de droite donne un résultat sans rapport.\n\n### Conseil\nFais attention à l'ordre de grandeur des nombres : la cylindrée se compte en milliers, la puissance en dizaines, donc le coefficient directeur est nécessairement très petit, de l'ordre du centième. Si tu trouves un $a'$ proche de $1$ ou de $30$, c'est que les deux variances ont été interverties.",
+   "themes": [
+    "droite de régression",
+    "variance",
+    "covariance",
+    "ajustement affine",
+    "point moyen"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB3a-1",
+     "competence": "Déterminer la droite de régression de x en y",
+     "contenu_markdown": "La droite de régression de $x$ en $y$ a pour équation $x=a'y+b'$, avec\n\n$$a'=\\frac{\\operatorname{Cov}(x,y)}{V(y)}\\qquad\\text{et}\\qquad b'=\\bar{x}-a'\\bar{y}$$\n\nC'est la droite qu'on utilise pour **prévoir une puissance connaissant une cylindrée**. Elle passe par le point moyen $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.3.b",
+   "points": 0.5,
+   "enonce_markdown": "b) Donner une estimation au cheval près de la puissance d'un moteur de cylindrée $3500$ cm$^{3}$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nEstimer à l'aide d'un ajustement affine consiste à remplacer la variable connue par sa valeur dans l'équation de la droite de régression adaptée, puis à arrondir selon la précision demandée.\n\n**Étape 1 — choisir la bonne droite.**\n\nOn connaît la cylindrée $y=3500$ et l'on cherche la puissance $x$ : c'est la droite de régression de $x$ en $y$, établie à la question précédente, qu'il faut utiliser.\n\n**Étape 2 — substituer.**\n\n$$x=0{,}028\\,365\\times 3500+9{,}73$$\n\nCalcul du produit : $0{,}028\\,365\\times 3500=99{,}28$.\n\n$$x=99{,}28+9{,}73=109{,}01$$\n\n**Étape 3 — arrondir.**\n\nÀ l'unité près, c'est-à-dire au cheval près :\n\n$$x\\approx 109$$\n\n**On estime à environ $109$ chevaux la puissance d'un moteur de cylindrée $3500$ cm$^{3}$.**\n\n**Étape 4 — apprécier la fiabilité de cette estimation.**\n\nLa cylindrée $3500$ cm$^{3}$ est très supérieure à la plus grande valeur observée, $2500$ cm$^{3}$. Il s'agit donc d'une **extrapolation** : elle suppose que la relation quasi affine constatée entre $1000$ et $2500$ cm$^{3}$ se prolonge au-delà, ce que rien dans les données ne garantit. La valeur obtenue doit être présentée comme un ordre de grandeur, pas comme une prévision fiable.\n\n### Piège à éviter\nNe remplace pas $x$ par $3500$ : c'est $y$, la cylindrée, qui vaut $3500$. L'équation $x=a'y+b'$ exprime la puissance **en fonction de** la cylindrée, et non l'inverse. Vérifie toujours quelle lettre désigne quelle grandeur avant de substituer.\n\n### Conseil\nUne phrase sur les limites de l'extrapolation est valorisée au barème et ne coûte qu'une ligne. Signale que $3500$ sort largement de la plage étudiée : c'est le genre de remarque qui distingue une copie qui comprend d'une copie qui applique.",
+   "themes": [
+    "estimation",
+    "extrapolation",
+    "droite de régression",
+    "interprétation"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB3b-1",
+     "competence": "Estimer une valeur à l'aide de la droite de régression de x en y",
+     "contenu_markdown": "Estimer à l'aide d'un ajustement affine consiste à remplacer la variable connue par sa valeur dans l'équation de la droite de régression adaptée, puis à arrondir selon la précision demandée.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "C.1",
+   "points": 0.5,
+   "enonce_markdown": "**Partie C**\n\nOn considère deux cercles $(\\mathcal{C})$ et $(\\mathcal{C}')$ de même rayon, de centres respectifs $O$ et $O'$, sécants en deux points $A$ et $B$. On considère la rotation $r$ de centre $A$ qui transforme $O$ en $O'$.\n\n1. Déterminer l'image de $(\\mathcal{C})$ par $r$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne rotation est une isométrie : elle conserve les distances. L'image d'un cercle de centre $\\Omega$ et de rayon $R$ est donc le cercle de centre $r(\\Omega)$ et de **même** rayon $R$. Il suffit de connaître l'image du centre.\n\n**Étape 1 — appliquer la propriété.**\n\nNotons $R$ le rayon commun aux deux cercles. La rotation $r$ transforme $(\\mathcal{C})$, cercle de centre $O$ et de rayon $R$, en le cercle de centre $r(O)$ et de rayon $R$.\n\n**Étape 2 — identifier le centre image.**\n\nPar définition de $r$, on a $r(O)=O'$.\n\n**Étape 3 — conclure.**\n\nL'image de $(\\mathcal{C})$ par $r$ est le cercle de centre $O'$ et de rayon $R$. Or $(\\mathcal{C}')$ est précisément le cercle de centre $O'$ et de rayon $R$, puisque les deux cercles ont **même rayon** par hypothèse.\n\n$$r\\left(\\mathcal{C}\\right)=\\mathcal{C}'$$\n\n**Étape 4 — contrôler la cohérence.**\n\nLa rotation $r$ est bien définie : son centre $A$ appartient aux deux cercles, et $AO=AO'=R$ puisque $A$ est sur $(\\mathcal{C})$ et sur $(\\mathcal{C}')$. Une rotation de centre $A$ transformant $O$ en $O'$ existe donc effectivement, son angle étant $\\left(\\overrightarrow{AO}\\,,\\,\\overrightarrow{AO'}\\right)$.\n\n### Piège à éviter\nL'égalité des rayons est l'hypothèse décisive : sans elle, l'image de $(\\mathcal{C})$ serait un cercle de centre $O'$ mais de rayon $R$, qui ne coïnciderait pas avec $(\\mathcal{C}')$. Cite explicitement cette hypothèse dans ta rédaction, c'est elle qui fait la conclusion.\n\n### Conseil\nVérifie toujours qu'une rotation de centre donné transformant un point en un autre existe bel et bien : il faut que le centre soit équidistant des deux points. Ici, $A$ est sur les deux cercles, donc $AO=AO'=R$. Cette remarque d'une ligne sécurise toute la partie.",
+   "themes": [
+    "rotation",
+    "image d'un cercle",
+    "isométrie",
+    "cercles sécants"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "23",
+    "savoir_numero": "IV"
+   },
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC1-1",
+     "competence": "Déterminer l'image d'un cercle par une rotation",
+     "contenu_markdown": "Une rotation est une isométrie : elle conserve les distances. L'image d'un cercle de centre $\\Omega$ et de rayon $R$ est donc le cercle de centre $r(\\Omega)$ et de **même** rayon $R$. Il suffit de connaître l'image du centre.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "C.2.a",
+   "points": 0.25,
+   "enonce_markdown": "2. On désigne respectivement par $C$ et $D$ les points diamétralement opposés à $A$ sur $(\\mathcal{C})$ et $(\\mathcal{C}')$.\n\na) Montrer que $r(C)=D$. *(0,25 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne rotation conserve les milieux : si $\\Omega$ est le milieu de $[PQ]$, alors $r(\\Omega)$ est le milieu de $\\left[r(P)\\,r(Q)\\right]$. Cette propriété permet de transporter une relation de milieu d'une figure à son image.\n\n**Étape 1 — traduire l'hypothèse sur $C$.**\n\n$C$ est le point diamétralement opposé à $A$ sur $(\\mathcal{C})$ : le segment $[AC]$ est donc un diamètre de $(\\mathcal{C})$, et son milieu est le centre $O$.\n\n**Étape 2 — appliquer la conservation des milieux.**\n\nLa rotation $r$ transforme $A$ en $A$, puisque $A$ est son centre, et $O$ en $O'$. Comme $O$ est le milieu de $[AC]$, son image $O'$ est le milieu de\n\n$$\\left[r(A)\\;r(C)\\right]=\\left[A\\;r(C)\\right]$$\n\n**Étape 3 — interpréter.**\n\nLe point $r(C)$ est donc tel que $O'$ soit le milieu de $\\left[A\\,r(C)\\right]$ : autrement dit, $\\left[A\\,r(C)\\right]$ est un diamètre de $(\\mathcal{C}')$, et $r(C)$ est le point diamétralement opposé à $A$ sur $(\\mathcal{C}')$.\n\n**Étape 4 — conclure.**\n\nPar définition, ce point est $D$.\n\n$$r(C)=D$$\n\n**Contrôle.** Le point $r(C)$ appartient à $r\\left(\\mathcal{C}\\right)=\\mathcal{C}'$ d'après la question 1, ce qui est cohérent avec $r(C)=D$, puisque $D$ est bien sur $(\\mathcal{C}')$.\n\n### Conseil\nLe fait que $A$ soit **invariant** est le pivot du raisonnement : c'est le centre de la rotation. Chaque fois qu'une rotation apparaît dans un exercice, commence par écrire $r(\\text{centre})=\\text{centre}$ ; cette égalité gratuite débloque très souvent la question.",
+   "themes": [
+    "rotation",
+    "conservation des milieux",
+    "diamètre",
+    "point invariant"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "23",
+    "savoir_numero": "IV"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC2a-1",
+     "competence": "Déterminer l'image d'un point par une rotation grâce à la conservation des milieux",
+     "contenu_markdown": "Une rotation conserve les milieux : si $\\Omega$ est le milieu de $[PQ]$, alors $r(\\Omega)$ est le milieu de $\\left[r(P)\\,r(Q)\\right]$. Cette propriété permet de transporter une relation de milieu d'une figure à son image.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "C.2.b",
+   "points": 0.25,
+   "enonce_markdown": "b) Montrer que les points $B$, $C$ et $D$ sont alignés. *(0,25 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nTout point d'un cercle, distinct des extrémités d'un diamètre, voit ce diamètre sous un angle droit. Pour démontrer un alignement, on montre que deux droites issues d'un même point sont perpendiculaires à une même troisième : elles sont alors confondues.\n\n**Étape 1 — utiliser le diamètre de $(\\mathcal{C})$.**\n\nLe point $B$ appartient à $(\\mathcal{C})$ et est distinct de $A$. Or $[AC]$ est un diamètre de $(\\mathcal{C})$. Le triangle $ABC$ est donc rectangle en $B$ :\n\n$$(BC)\\perp(AB)$$\n\n**Étape 2 — utiliser le diamètre de $(\\mathcal{C}')$.**\n\nLe point $B$ appartient aussi à $(\\mathcal{C}')$, et $[AD]$ en est un diamètre. Le triangle $ABD$ est donc rectangle en $B$ :\n\n$$(BD)\\perp(AB)$$\n\n**Étape 3 — conclure.**\n\nLes droites $(BC)$ et $(BD)$ passent toutes deux par $B$ et sont toutes deux perpendiculaires à $(AB)$. Or, par un point donné, il ne passe qu'une seule perpendiculaire à une droite donnée. Ces deux droites sont donc confondues.\n\n**Les points $B$, $C$ et $D$ sont alignés**, sur la perpendiculaire à $(AB)$ passant par $B$.\n\n**Étape 4 — vérifier les conditions d'application.**\n\nIl faut que $B$ soit distinct de $A$, ce qui est le cas puisque les deux cercles sont sécants en **deux** points distincts. Il faut aussi $B\\neq C$ et $B\\neq D$, ce qui est assuré tant que $B$ n'est pas diamétralement opposé à $A$ ; dans ce cas particulier, $B$ coïnciderait avec $C$ et l'alignement serait trivial.\n\n### Piège à éviter\nLe théorème utilisé est celui du cercle circonscrit à un triangle rectangle, dans son sens « diamètre implique angle droit ». Ne l'applique pas à une corde quelconque : il faut impérativement que $[AC]$ et $[AD]$ soient des **diamètres**, ce que la question 2 garantit par la définition de $C$ et $D$.\n\n### Conseil\nCette propriété d'alignement est classique et resservira : les points diamétralement opposés à l'un des points d'intersection de deux cercles sécants sont toujours alignés avec l'autre point d'intersection. Retiens la configuration, elle revient régulièrement au Probatoire.",
+   "themes": [
+    "alignement",
+    "angle inscrit",
+    "diamètre",
+    "cercles sécants",
+    "perpendicularité"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "23",
+    "savoir_numero": "IV"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC2b-1",
+     "competence": "Démontrer un alignement à l'aide de l'angle droit inscrit dans un demi-cercle",
+     "contenu_markdown": "Tout point d'un cercle, distinct des extrémités d'un diamètre, voit ce diamètre sous un angle droit. Pour démontrer un alignement, on montre que deux droites issues d'un même point sont perpendiculaires à une même troisième : elles sont alors confondues.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "C.3.a",
+   "points": 0.5,
+   "enonce_markdown": "3. Soit $M$ un point de $(\\mathcal{C})$ autre que $A$ et $B$. On pose $M'=r(M)$.\n\na) Comparer les angles $\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)$ et $\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM'}\\right)$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nUne rotation d'angle $\\theta$ fait tourner de $\\theta$ tout vecteur issu de son centre : si $r(P)=P'$ et si $A$ est le centre, alors $\\left(\\overrightarrow{AP}\\,,\\,\\overrightarrow{AP'}\\right)=\\theta$. On compare ensuite deux angles en les reliant par la relation de Chasles.\n\n**Étape 1 — écrire ce que donne la rotation.**\n\nNotons $\\theta$ l'angle de $r$. Comme $A$ est le centre de $r$ :\n\n- $r(C)=D$ d'après la question 2.a), donc $\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AD}\\right)=\\theta$ ;\n- $r(M)=M'$ par hypothèse, donc $\\left(\\overrightarrow{AM}\\,,\\,\\overrightarrow{AM'}\\right)=\\theta$.\n\n**Étape 2 — décomposer le premier angle par Chasles.**\n\n$$\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)=\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AD}\\right)+\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM}\\right)=\\theta+\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM}\\right)$$\n\n**Étape 3 — décomposer le second angle par Chasles.**\n\n$$\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM'}\\right)=\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM}\\right)+\\left(\\overrightarrow{AM}\\,,\\,\\overrightarrow{AM'}\\right)=\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM}\\right)+\\theta$$\n\n**Étape 4 — conclure.**\n\nLes deux expressions obtenues sont identiques, l'addition des angles étant commutative :\n\n$$\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)=\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM'}\\right)\\quad[2\\pi]$$\n\n**Les deux angles sont égaux.**\n\n**Interprétation.** La rotation fait tourner d'un même angle $\\theta$ le couple $\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)$ tout entier : l'écart angulaire entre les deux vecteurs est donc conservé. C'est une manifestation du fait qu'une rotation conserve les angles orientés.\n\n### Conseil\nRetiens ce principe général : une rotation conserve les angles orientés, donc l'angle entre deux vecteurs issus du centre est le même que l'angle entre leurs images. Ici, cela évite tout calcul : $\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)$ et son image $\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM'}\\right)$ sont égaux par définition d'une isométrie directe.",
+   "themes": [
+    "rotation",
+    "angles orientés",
+    "relation de Chasles",
+    "conservation des angles"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "23",
+    "savoir_numero": "IV"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC3a-1",
+     "competence": "Comparer deux angles orientés à l'aide de la conservation des angles par une rotation",
+     "contenu_markdown": "Une rotation d'angle $\\theta$ fait tourner de $\\theta$ tout vecteur issu de son centre : si $r(P)=P'$ et si $A$ est le centre, alors $\\left(\\overrightarrow{AP}\\,,\\,\\overrightarrow{AP'}\\right)=\\theta$. On compare ensuite deux angles en les reliant par la relation de Chasles.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "C.3.b",
+   "points": 0.5,
+   "enonce_markdown": "b) En déduire une construction simple du point $M'$. *(0,5 pt)*",
+   "corrige_markdown": "### Rappel de méthode\nConstruire l'image d'un point par une rotation revient à réunir deux conditions : une condition de **distance** au centre, et une condition d'**angle**. Chacune définit une ligne, et le point cherché est à leur intersection.\n\n**Étape 1 — la condition de distance.**\n\nLa rotation $r$ est une isométrie de centre $A$, donc\n\n$$AM'=AM$$\n\nLe point $M'$ appartient donc au cercle de centre $A$ et de rayon $AM$. Il appartient aussi à $(\\mathcal{C}')$, puisque $M\\in(\\mathcal{C})$ et $r\\left(\\mathcal{C}\\right)=\\mathcal{C}'$.\n\n**Étape 2 — la condition d'angle.**\n\nLa question 3.a) donne\n\n$$\\left(\\overrightarrow{AD}\\,,\\,\\overrightarrow{AM'}\\right)=\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AM}\\right)$$\n\nL'angle que fait $\\left[AM'\\right)$ avec $[AD)$ est donc **connu** : c'est exactement celui que fait $[AM)$ avec $[AC)$, un angle directement lisible sur la figure.\n\n**Étape 3 — programme de construction.**\n\n1. Tracer les demi-droites $[AC)$ et $[AM)$, et mesurer l'angle orienté qu'elles forment.\n2. Reporter ce même angle, dans le **même sens**, à partir de la demi-droite $[AD)$ : on obtient une demi-droite $[Ax)$.\n3. Le point $M'$ est le second point d'intersection de $[Ax)$ avec le cercle $(\\mathcal{C}')$, le premier étant $A$ lui-même.\n\n**Étape 4 — construction plus rapide encore.**\n\nLes points $B$, $M$ et $M'$ sont alignés : la droite $(BM)$ recoupe $(\\mathcal{C}')$ exactement en $M'$.\n\n*Justification.* Dans le cercle $(\\mathcal{C})$, les points $A$, $B$, $C$, $M$ sont cocycliques, donc les angles de droites vérifient $\\left((BM)\\,,\\,(BA)\\right)=\\left((CM)\\,,\\,(CA)\\right)$. Dans $(\\mathcal{C}')$, les points $A$, $B$, $D$, $M'$ sont cocycliques, donc $\\left((BM')\\,,\\,(BA)\\right)=\\left((DM')\\,,\\,(DA)\\right)$. Or la rotation $r$ transforme le triangle $CMA$ en le triangle $DM'A$, et conserve donc les angles : $\\left((CM)\\,,\\,(CA)\\right)=\\left((DM')\\,,\\,(DA)\\right)$. Par transitivité, $\\left((BM)\\,,\\,(BA)\\right)=\\left((BM')\\,,\\,(BA)\\right)$, donc les droites $(BM)$ et $(BM')$ sont confondues.\n\n**Le point $M'$ se construit donc à la règle seule : on trace la droite $(BM)$, et $M'$ est son second point d'intersection avec $(\\mathcal{C}')$.**\n\n### Piège à éviter\nLe cercle de centre $A$ et de rayon $AM$ coupe $(\\mathcal{C}')$ en **deux** points en général. C'est la condition d'angle, avec son **sens**, qui départage les deux candidats. Reporter l'angle sans tenir compte du sens de rotation conduit une fois sur deux au point symétrique, qui n'est pas $M'$.\n\n### Conseil\nLa construction par la droite $(BM)$ est celle que le barème appelle « simple » : elle ne demande qu'une règle, alors que le report d'angle exige un rapporteur ou un compas. Mentionne les deux, en signalant que la seconde découle de la première.",
+   "themes": [
+    "rotation",
+    "construction géométrique",
+    "angles orientés",
+    "points cocycliques",
+    "alignement"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "23",
+    "savoir_numero": "IV"
+   },
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC3b-1",
+     "competence": "Construire l'image d'un point par une rotation à partir d'une égalité d'angles",
+     "contenu_markdown": "Construire l'image d'un point par une rotation revient à réunir deux conditions : une condition de **distance** au centre, et une condition d'**angle**. Chacune définit une ligne, et le point cherché est à leur intersection.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  }
+ ],
+ "mots_cles_recherche": [
+  "probatoire",
+  "C et E",
+  "mathématiques",
+  "2005",
+  "Cameroun",
+  "fonction homographique",
+  "asymptote",
+  "suite récurrente",
+  "construction en escalier",
+  "point fixe",
+  "nuage de points",
+  "droite de régression",
+  "covariance",
+  "rotation",
+  "cercles sécants",
+  "angle inscrit",
+  "angles orientés"
+ ],
+ "incertitudes": [
+  "Épreuve issue du recueil commercial « Prépas Probatoire » (pagination « p462 / p463 / p464 » en pied de page) ; la couche texte du PDF est exploitable et la transcription en est directement issue. L'émetteur imprimé (MINESEC - OBC) établit le pays sans ambiguïté.",
+  "Coefficient 6 en série C, 5 en série E ; le champ `coefficient` retient la valeur de la série C.",
+  "Le fichier de référentiel `programme_officiel_cm_maths.json` n'était pas accessible depuis l'environnement de traitement : les valeurs de `savoir_officiel` retenues sont celles, déjà utilisées et validées sur les épreuves Probatoire C-E du corpus, dont l'intitulé recouvre sans ambiguïté la notion mobilisée. Les sous-questions de statistique (Partie B) restent à `null`, aucun savoir confirmé du module de Première C-E ne couvrant les séries statistiques à deux variables.",
+  "Partie C : le sujet emploie la lettre C à la fois pour l'un des deux cercles et pour le point diamétralement opposé à A sur ce cercle. La transcription note les cercles $(\\mathcal{C})$ et $(\\mathcal{C}')$ et réserve C au point, afin de lever l'ambiguïté sans modifier l'énoncé.",
+  "Partie B, question 3.a : le sujet fournit la covariance (4662,5) mais pas la variance de y, qu'il faut donc calculer. Elle vaut 164 375, ce qui donne a' ≈ 0,0284 et b' ≈ 9,73 ; la droite passe bien par le point moyen G(61,5 ; 1825), ce qui valide le calcul.",
+  "Aucun fichier de cours n'a été généré pour cette épreuve dans cette passe : les rappels de méthode restent sans cours associé et sont à couvrir lors d'une passe ultérieure."
+ ]
+}

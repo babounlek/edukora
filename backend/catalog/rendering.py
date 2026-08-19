@@ -372,9 +372,37 @@ def exercise_sort_key(exercise):
     return (1, 0, numero.lower())
 
 
-# Barème en fin de titre ("(5 points)", "(10 marks)", "(2,5 pts)") - retiré du libellé
-# exposé au frontend, qui reçoit `points` comme champ à part.
-_POINTS_SUFFIX_RE = re.compile(r"\s*\(\s*([\d.,/]+)\s*(?:points?|pts?|marks?)\s*\)\s*$", re.IGNORECASE)
+# Barème en fin de titre - retiré du libellé exposé au frontend, qui reçoit `points`
+# comme champ à part. Trois formes vues dans le corpus : parenthésée ("(5 points)",
+# "(10 marks)", "(2,5 pts)"), séparée par un tiret ("### Exercice 2 - 3 points", tiret
+# -/–/—) ou par deux-points ("**Exercice 2 : 3 points**", **Problème : 11 points**" -
+# probatoire-c-e-maths 2003/2005). Un seul groupe capturant : les deux formes non
+# parenthésées se rejoignent car la parenthèse fermante n'est pas optionnelle côté forme
+# parenthésée (sans ça "Exercice 2 - 3 points)" resterait accepté par erreur).
+_POINTS_SUFFIX_RE = re.compile(
+    r"\s*(?:\(\s*([\d.,/]+)\s*(?:points?|pts?|marks?)\s*\)|[:\-–—]\s*([\d.,/]+)\s*(?:points?|pts?|marks?))\s*$",
+    re.IGNORECASE,
+)
+
+# Barème répété au milieu d'un titre à rallonge fusionnant plusieurs parties ("Exercice
+# I : ... (6 points). Partie A : ... (3,5 points). Partie B : ...", "Problème (11
+# points) - Partie A" - séries physique/maths bac-C-et-E 2009/2012/2013, probatoire
+# 2004) : contrairement à _POINTS_SUFFIX_RE (un seul repère, ancré en fin de titre, qui
+# alimente aussi `points`), ce nettoyage est global et ne conditionne jamais `points` -
+# volontairement restreint aux parenthèses ne contenant RIEN d'autre qu'un nombre et son
+# unité, jamais un groupe portant du texte en plus ("(série C uniquement, 2,5 points)"
+# reste intact : impossible de savoir si "série C uniquement" reste utile au lecteur une
+# fois isolé du reste du titre).
+_POINTS_PAREN_ANYWHERE_RE = re.compile(r"\s*\(\s*[\d.,/]+\s*(?:points?|pts?|marks?)\s*\)", re.IGNORECASE)
+
+# Même repère de barème, mais accolé en fin d'une parenthèse qui porte aussi une
+# précision utile ("(série C uniquement, 2,5 points)", "(poulie et deux masses, 3
+# points)") : _POINTS_PAREN_ANYWHERE_RE ne le retire pas (la parenthèse ne contient pas
+# QUE le barème), donc on retire seulement la queue ", N points" - jamais la parenthèse
+# entière - pour garder "(série C uniquement)"/"(poulie et deux masses)" au lieu de tout
+# jeter. Ancré par lookahead sur la parenthèse fermante : ne touche pas un barème suivi
+# d'autre texte avant elle (ex. une répartition en plusieurs points séparés par ";").
+_POINTS_TRAILING_IN_PAREN_RE = re.compile(r",?\s*[\d.,/]+\s*(?:points?|pts?|marks?)\s*(?=\))", re.IGNORECASE)
 
 # Un segment en gras en tête d'énoncé est tantôt la référence de l'exercice
 # ("**Exercice 1 : Chimie organique (5 points)**"), tantôt le simple numéro de la
@@ -426,7 +454,10 @@ def _exercise_titre_et_points(exercise):
     match = _POINTS_SUFFIX_RE.search(titre)
     if match:
         titre = titre[: match.start()].rstrip(" .:")
-        points = points or match.group(1)
+        points = points or match.group(1) or match.group(2)
+
+    titre = _POINTS_PAREN_ANYWHERE_RE.sub("", titre)
+    titre = _POINTS_TRAILING_IN_PAREN_RE.sub("", titre).strip()
 
     return titre, points
 

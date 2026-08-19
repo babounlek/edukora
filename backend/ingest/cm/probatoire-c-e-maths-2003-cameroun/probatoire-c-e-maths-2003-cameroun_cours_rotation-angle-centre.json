@@ -1,0 +1,192 @@
+{
+ "cours_id": "cours-rotation-angle-centre-1ere-ce",
+ "meta": {
+  "titre": "Déterminer l'angle et le centre d'une rotation définie par deux couples de points",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Transformations du plan",
+  "duree_estimee_min": 35,
+  "tags": [
+   "rotation",
+   "centre",
+   "angle",
+   "médiatrice",
+   "isométrie",
+   "Chasles"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qC3-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "On te donne deux points et leurs images, et on te demande de retrouver la rotation qui fait le travail. Où est le centre ? De combien tourne-t-elle ? La réponse tient dans une observation simple : une rotation conserve les distances au centre, donc le centre est à égale distance de chaque point et de son image. Deux couples de points, deux médiatrices, un point d'intersection : le centre est trouvé. Quant à l'angle, il se lit sur n'importe quel vecteur et son image."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir qu'une rotation conserve les longueurs",
+    "Connaître la caractérisation de la médiatrice d'un segment",
+    "Calculer une mesure d'angle orienté par la relation de Chasles",
+    "Savoir que deux droites non parallèles se coupent en un point unique"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Existence, angle, centre",
+   "contenu_markdown": "On se donne quatre points $M$, $M'$, $N$, $N'$ et l'on cherche une rotation $r$ telle que $r(M)=M'$ et $r(N)=N'$.\n\n**Condition d'existence.** Une rotation conserve les distances, donc il faut\n\n$$MN=M'N'$$\n\nCette égalité garantit l'existence d'une isométrie directe transformant $M$ en $M'$ et $N$ en $N'$.\n\n**Angle.** L'angle de cette isométrie est la mesure de l'angle entre un vecteur et son image :\n\n$$\\theta=\\left(\\overrightarrow{MN}\\,,\\,\\overrightarrow{M'N'}\\right)$$\n\n- Si $\\theta\\neq 0$, l'isométrie est une **rotation** d'angle $\\theta$.\n- Si $\\theta=0$, c'est une **translation**, de vecteur $\\overrightarrow{MM'}$.\n\nC'est cette alternative qu'il faut trancher pour répondre à la question « démontrer qu'il existe une rotation ».\n\n**Centre.** Le centre $\\Omega$ vérifie $\\Omega M=\\Omega M'$ et $\\Omega N=\\Omega N'$, donc\n\n$$\\Omega\\in\\text{médiatrice de }[MM']\\qquad\\text{et}\\qquad\\Omega\\in\\text{médiatrice de }[NN']$$\n\nCes deux médiatrices ne sont pas parallèles dès que $\\theta\\neq 0$ : elles se coupent en un point unique, qui est le centre.\n\n**Démarche complète, en quatre temps.**\n\n1. Vérifier $MN=M'N'$.\n2. Calculer $\\theta=\\left(\\overrightarrow{MN}\\,,\\,\\overrightarrow{M'N'}\\right)$ par Chasles, et vérifier $\\theta\\neq 0$.\n3. Exhiber un point appartenant aux deux médiatrices, souvent fourni par la figure.\n4. Justifier l'unicité du point d'intersection, donc l'identification du centre.\n\n**Le raccourci qui fait gagner du temps.** Un point équidistant de trois sommets d'un triangle équilatéral, par exemple son centre, appartient gratuitement à la médiatrice de chacun de ses côtés. Les figures d'examen sont construites pour que ce point serve de centre.",
+   "formule_principale": "\\theta=\\left(\\overrightarrow{MN}\\,,\\,\\overrightarrow{M'N'}\\right)\\quad;\\quad\\Omega=\\text{med}[MM']\\cap\\text{med}[NN']",
+   "variantes": [
+    {
+     "nom": "Recherche du centre comme point invariant",
+     "quand_utiliser": "Quand la rotation est donnée par une expression analytique ou complexe",
+     "contenu_markdown": "Le centre est l'unique point invariant d'une rotation d'angle non nul : on le trouve en résolvant $r(\\Omega)=\\Omega$. Cette voie est efficace en écriture complexe, où l'équation $z'=az+b$ avec $\\left|a\\right|=1$ et $a\\neq 1$ donne immédiatement l'affixe du centre $\\omega=\\dfrac{b}{1-a}$. En géométrie synthétique, en revanche, la méthode des médiatrices reste la plus rapide."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABDC$ est un losange tel que $ABC$ soit équilatéral et direct, avec $\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{AC}\\right)=\\dfrac{\\pi}{3}$. On note $O$ l'isobarycentre du triangle équilatéral $BCD$ et $A'$ le symétrique de $A$ par rapport à $B$. On sait déjà que $O$ appartient à la médiatrice de $[AA']$. Démontrer qu'il existe une rotation transformant $C$ en $B$ et $A$ en $A'$, et déterminer son angle et son centre. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier la conservation de la longueur",
+     "justification": "Notons $a$ le côté du losange. $CA=a$ car $ABC$ est équilatéral ; $BA'=BA=a$ car $B$ est le milieu de $[AA']$",
+     "resultat_markdown": "$CA=BA'=a$ : une isométrie directe existe"
+    },
+    {
+     "numero": 2,
+     "action": "Simplifier le vecteur image",
+     "justification": "$B$ étant le milieu de $[AA']$, on a $\\overrightarrow{BA'}=\\overrightarrow{AB}$",
+     "resultat_markdown": "$\\theta=\\left(\\overrightarrow{CA}\\,,\\,\\overrightarrow{BA'}\\right)=\\left(\\overrightarrow{CA}\\,,\\,\\overrightarrow{AB}\\right)$"
+    },
+    {
+     "numero": 3,
+     "action": "Insérer un vecteur intermédiaire",
+     "justification": "On passe par $\\overrightarrow{AC}$, dont l'angle avec $\\overrightarrow{AB}$ est donné par l'énoncé",
+     "resultat_markdown": "$\\theta=\\left(\\overrightarrow{CA}\\,,\\,\\overrightarrow{AC}\\right)+\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{AB}\\right)$"
+    },
+    {
+     "numero": 4,
+     "action": "Évaluer les deux termes",
+     "justification": "$\\overrightarrow{CA}$ et $\\overrightarrow{AC}$ sont opposés, d'où $\\pi$ ; et échanger les vecteurs inverse le signe de l'angle donné",
+     "resultat_markdown": "$\\theta=\\pi+\\left(-\\dfrac{\\pi}{3}\\right)=\\dfrac{3\\pi}{3}-\\dfrac{\\pi}{3}=\\dfrac{2\\pi}{3}$"
+    },
+    {
+     "numero": 5,
+     "action": "Conclure sur la nature de l'isométrie",
+     "justification": "Un angle non nul exclut la translation",
+     "resultat_markdown": "$\\theta=\\dfrac{2\\pi}{3}\\neq 0$ : c'est bien une **rotation**, d'angle $\\dfrac{2\\pi}{3}$"
+    },
+    {
+     "numero": 6,
+     "action": "Localiser le centre sur la première médiatrice",
+     "justification": "$O$ est l'isobarycentre du triangle **équilatéral** $BCD$, donc le centre de son cercle circonscrit : $OB=OC=OD$",
+     "resultat_markdown": "$OB=OC$, donc $O$ appartient à la médiatrice de $[CB]$"
+    },
+    {
+     "numero": 7,
+     "action": "Localiser le centre sur la seconde médiatrice",
+     "justification": "Résultat déjà établi à la question précédente du problème",
+     "resultat_markdown": "$O$ appartient à la médiatrice de $[AA']$"
+    },
+    {
+     "numero": 8,
+     "action": "Justifier l'unicité du point d'intersection",
+     "justification": "Les deux médiatrices sont perpendiculaires respectivement à $(CB)$ et à $(AB)$ ; ces deux droites sont sécantes en $B$ et distinctes puisque $A$, $B$, $C$ ne sont pas alignés",
+     "resultat_markdown": "Les deux médiatrices ne sont pas parallèles : elles se coupent en un point unique"
+    },
+    {
+     "numero": 9,
+     "action": "Identifier le centre",
+     "justification": "$O$ appartient aux deux médiatrices, et ce point d'intersection est unique",
+     "resultat_markdown": "Le centre de la rotation est $O$"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler",
+     "justification": "La rotation de centre le centre d'un triangle équilatéral et d'angle $\\dfrac{2\\pi}{3}$ permute circulairement ses trois sommets",
+     "resultat_markdown": "Elle transforme bien $C$ en $B$, comme attendu"
+    }
+   ],
+   "conclusion_markdown": "La transformation cherchée est la rotation de centre $O$ et d'angle $\\dfrac{2\\pi}{3}$. Les trois éléments de la réponse (existence, angle, centre) correspondent aux trois blocs du barème : l'égalité des longueurs, le calcul de Chasles, et l'intersection des deux médiatrices."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Calculer l'angle sur $\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{A'B}\\right)$ au lieu de $\\left(\\overrightarrow{CA}\\,,\\,\\overrightarrow{BA'}\\right)$",
+     "pourquoi_faux": "L'ordre des points doit se correspondre : si $C\\mapsto B$ et $A\\mapsto A'$, alors l'image de $\\overrightarrow{CA}$ est $\\overrightarrow{BA'}$, qui va de l'image de $C$ vers l'image de $A$. Inverser les deux vecteurs simultanément donne le même angle, mais n'en inverser qu'un ajoute $\\pi$ et fausse le résultat.",
+     "correction_markdown": "Écris d'abord la correspondance sous la forme $C\\mapsto B$ et $A\\mapsto A'$, puis déduis-en mécaniquement que $\\overrightarrow{CA}\\mapsto\\overrightarrow{BA'}$. Ne construis jamais les vecteurs de mémoire."
+    },
+    {
+     "erreur_markdown": "Affirmer que le centre est $O$ parce que « $O$ est le centre de la figure »",
+     "pourquoi_faux": "Une figure n'a pas de « centre » qui serait automatiquement celui de toute rotation la concernant. Le centre d'une rotation se caractérise par l'équidistance à chaque point et à son image, et rien d'autre.",
+     "correction_markdown": "Démontre les deux appartenances aux médiatrices, puis l'unicité du point d'intersection. Ces trois lignes sont exactement ce que le barème attend."
+    },
+    {
+     "erreur_markdown": "Oublier de vérifier que $\\theta\\neq 0$ avant de parler de rotation",
+     "pourquoi_faux": "Si l'angle était nul, l'isométrie serait une translation et il n'y aurait aucun centre à chercher. L'énoncé demande de **démontrer** qu'il existe une rotation : cette vérification en est le cœur.",
+     "correction_markdown": "Calcule l'angle avant le centre, et conclus explicitement : « comme $\\theta\\neq 0$, l'isométrie est une rotation ». Cet ordre logique est aussi le plus rapide."
+    },
+    {
+     "erreur_markdown": "Négliger de justifier que les deux médiatrices sont sécantes",
+     "pourquoi_faux": "Si elles étaient parallèles ou confondues, elles n'auraient pas un unique point commun, et exhiber un point appartenant aux deux ne prouverait pas qu'il s'agit du centre. La justification repose sur le fait que $(CB)$ et $(AB)$ ne sont pas parallèles.",
+     "correction_markdown": "Ajoute la phrase : « $A$, $B$ et $C$ n'étant pas alignés, les droites $(AB)$ et $(CB)$ sont sécantes, donc leurs perpendiculaires respectives aussi ». Une ligne, un point au barème."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $ABCD$ un carré direct de centre $O$. Démontrer qu'il existe une rotation transformant $A$ en $B$ et $B$ en $C$, et préciser son angle et son centre.",
+     "solution_markdown": "**Étape 1 — conservation des longueurs.** Notons $a$ le côté du carré. On a $AB=a$ et $BC=a$, donc $AB=BC$ : une isométrie directe existe.\n\n**Étape 2 — angle.** La correspondance est $A\\mapsto B$ et $B\\mapsto C$, donc l'image de $\\overrightarrow{AB}$ est $\\overrightarrow{BC}$ :\n\n$$\\theta=\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{BC}\\right)$$\n\nPar Chasles, en passant par $\\overrightarrow{AD}$, et puisque $\\overrightarrow{BC}=\\overrightarrow{AD}$ dans le parallélogramme $ABCD$ :\n\n$$\\theta=\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\right)=\\frac{\\pi}{2}$$\n\ncar le carré est direct. Comme $\\theta\\neq 0$, c'est une rotation d'angle $\\dfrac{\\pi}{2}$.\n\n**Étape 3 — centre.** Le centre appartient à la médiatrice de $[AB]$ et à celle de $[BC]$. Or $O$, centre du carré, est équidistant des quatre sommets : $OA=OB=OC=OD$. Donc $OA=OB$ place $O$ sur la médiatrice de $[AB]$, et $OB=OC$ le place sur celle de $[BC]$.\n\nCes deux médiatrices sont perpendiculaires respectivement à $(AB)$ et à $(BC)$, deux droites perpendiculaires entre elles donc non parallèles : elles se coupent en un point unique.\n\n**Conclusion.** La rotation cherchée est celle de centre $O$ et d'angle $\\dfrac{\\pi}{2}$. Elle permute circulairement les sommets : $A\\mapsto B\\mapsto C\\mapsto D\\mapsto A$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soient $A$, $B$, $C$ trois points tels que $ABC$ soit un triangle rectangle isocèle direct, rectangle en $A$, avec $\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{AC}\\right)=\\dfrac{\\pi}{2}$. Soit $I$ le milieu de $[BC]$. Démontrer qu'il existe une rotation transformant $B$ en $C$ et $A$ en $A$, et déterminer son centre et son angle.",
+     "solution_markdown": "**Étape 1 — conservation des longueurs.** L'image de $B$ est $C$ et celle de $A$ est $A$, donc il faut vérifier $BA=CA$. Le triangle étant isocèle rectangle en $A$, on a bien $AB=AC$.\n\n**Étape 2 — angle.** L'image de $\\overrightarrow{BA}$ est $\\overrightarrow{CA}$, donc\n\n$$\\theta=\\left(\\overrightarrow{BA}\\,,\\,\\overrightarrow{CA}\\right)$$\n\nPar Chasles, en passant par $\\overrightarrow{AB}$ :\n\n$$\\theta=\\left(\\overrightarrow{BA}\\,,\\,\\overrightarrow{AB}\\right)+\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{AC}\\right)+\\left(\\overrightarrow{AC}\\,,\\,\\overrightarrow{CA}\\right)$$\n\nLe premier terme vaut $\\pi$ (vecteurs opposés), le deuxième $\\dfrac{\\pi}{2}$ (donnée), le troisième $\\pi$ (vecteurs opposés) :\n\n$$\\theta=\\pi+\\frac{\\pi}{2}+\\pi=2\\pi+\\frac{\\pi}{2}\\equiv\\frac{\\pi}{2}\\quad[2\\pi]$$\n\nComme $\\theta\\neq 0$, il s'agit d'une rotation d'angle $\\dfrac{\\pi}{2}$.\n\n**Étape 3 — centre.** Le point $A$ est sa propre image : il est donc **invariant**. Or une rotation d'angle non nul admet un unique point invariant, son centre.\n\n**Conclusion.** Le centre est $A$, et la rotation a pour angle $\\dfrac{\\pi}{2}$.\n\n**Contrôle.** La rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$ envoie $B$ sur le point situé à la distance $AB$ de $A$, après un quart de tour direct : c'est bien $C$, puisque $AB=AC$ et $\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{AC}\\right)=\\dfrac{\\pi}{2}$.\n\n**Remarque.** Dès qu'un point est sa propre image, inutile de chercher les médiatrices : ce point **est** le centre. Repère toujours ce cas de figure, il fait gagner plusieurs minutes."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $ABC$ un triangle équilatéral direct de centre $O$. On construit à l'extérieur du triangle le point $D$ tel que $BCD$ soit équilatéral. Démontrer qu'il existe une rotation transformant $A$ en $D$ et $B$ en $C$, puis déterminer son angle et son centre.",
+     "solution_markdown": "**Étape 1 — conservation des longueurs.** Notons $a$ le côté commun. On a $AB=a$ et, l'image de $A$ étant $D$ et celle de $B$ étant $C$, il faut $AB=DC$. Or $DC=a$ puisque $BCD$ est équilatéral de côté $BC=a$.\n\n$$AB=DC=a$$\n\nUne isométrie directe existe.\n\n**Étape 2 — angle.** L'image de $\\overrightarrow{AB}$ est $\\overrightarrow{DC}$, donc\n\n$$\\theta=\\left(\\overrightarrow{AB}\\,,\\,\\overrightarrow{DC}\\right)$$\n\nPlaçons-nous en coordonnées pour identifier la configuration sans ambiguïté : $A(0\\,;\\,0)$, $B(1\\,;\\,0)$, $C\\left(\\dfrac{1}{2}\\,;\\,\\dfrac{\\sqrt{3}}{2}\\right)$, ce qui rend $ABC$ direct. Le point $D$, tel que $BCD$ soit équilatéral et situé à l'extérieur de $ABC$, est le symétrique de $A$ par rapport à la droite $(BC)$, soit $D\\left(\\dfrac{3}{2}\\,;\\,\\dfrac{\\sqrt{3}}{2}\\right)$.\n\nOn a alors $\\overrightarrow{AB}(1\\,;\\,0)$, d'angle $0$ avec l'axe des abscisses, et $\\overrightarrow{DC}\\left(\\dfrac{1}{2}-\\dfrac{3}{2}\\,;\\,0\\right)=(-1\\,;\\,0)$, d'angle $\\pi$.\n\n$$\\theta=\\pi-0=\\pi$$\n\nComme $\\theta=\\pi\\neq 0$, il s'agit d'une rotation d'angle $\\pi$, c'est-à-dire d'une **symétrie centrale**.\n\n**Étape 3 — centre.** Le centre appartient à la médiatrice de $[AD]$ et à celle de $[BC]$.\n\nPour une rotation d'angle $\\pi$, le centre est plus simplement le milieu de chaque segment joignant un point à son image : il est donc le milieu de $[AD]$, soit\n\n$$\\Omega\\left(\\frac{0+3/2}{2}\\,;\\,\\frac{0+\\sqrt{3}/2}{2}\\right)=\\left(\\frac{3}{4}\\,;\\,\\frac{\\sqrt{3}}{4}\\right)$$\n\n**Étape 4 — vérification.** Ce point doit aussi être le milieu de $[BC]$ :\n\n$$\\left(\\frac{1+1/2}{2}\\,;\\,\\frac{0+\\sqrt{3}/2}{2}\\right)=\\left(\\frac{3}{4}\\,;\\,\\frac{\\sqrt{3}}{4}\\right)$$\n\nLes deux milieux coïncident.\n\n**Conclusion.** La transformation est la symétrie centrale de centre le milieu $I$ de $[BC]$, c'est-à-dire la rotation de centre $I$ et d'angle $\\pi$.\n\n**Interprétation.** Ce résultat était prévisible : $ABDC$ est un losange, et la symétrie de centre le milieu de $[BC]$ échange ses deux triangles équilatéraux. Elle envoie $A$ sur $D$ et $B$ sur $C$, comme demandé.\n\n**Remarque de méthode.** Quand l'angle trouvé vaut $\\pi$, ne cherche pas l'intersection de deux médiatrices : le centre est directement le milieu de $[AD]$, et la vérification sur $[BC]$ confirme le tout en deux lignes."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Trois questions, trois réponses : l'existence vient de $MN=M'N'$, l'angle de $\\left(\\overrightarrow{MN}\\,,\\,\\overrightarrow{M'N'}\\right)$, le centre de l'intersection de deux médiatrices.",
+    "Vérifie $\\theta\\neq 0$ avant de parler de rotation : un angle nul signifierait une translation, sans centre.",
+    "Respecte la correspondance des points : si $M\\mapsto M'$ et $N\\mapsto N'$, alors $\\overrightarrow{MN}\\mapsto\\overrightarrow{M'N'}$, dans cet ordre exactement.",
+    "Le centre est équidistant de chaque point et de son image : c'est la seule caractérisation, pas le « milieu visuel » de la figure.",
+    "Si un point est sa propre image, c'est le centre, et tu n'as plus rien à chercher.",
+    "Si l'angle vaut $\\pi$, le centre est le milieu de chaque segment point-image : la symétrie centrale est le cas particulier le plus rapide.",
+    "N'oublie pas de justifier que les deux médiatrices sont sécantes : c'est cette phrase qui transforme « $O$ convient » en « $O$ est le centre ».",
+    "Au Probatoire, la figure est toujours construite pour qu'un point remarquable, centre d'un carré ou d'un triangle équilatéral, soit le centre cherché. Repère-le tôt, puis démontre-le proprement."
+   ]
+  }
+ ]
+}

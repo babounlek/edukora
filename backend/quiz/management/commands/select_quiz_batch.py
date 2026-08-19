@@ -3,7 +3,12 @@ import json
 from django.core.management.base import BaseCommand, CommandError
 
 from catalog.models import Country
-from quiz.ingestion import SELECTION_FLOOR, SELECTION_LIMIT, select_quiz_batch
+from quiz.ingestion import (
+    SELECTION_FLOOR,
+    SELECTION_LIMIT,
+    SELECTION_MIN_QUESTIONS,
+    select_quiz_batch,
+)
 
 
 class Command(BaseCommand):
@@ -24,6 +29,15 @@ class Command(BaseCommand):
             "--floor", type=int, default=SELECTION_FLOOR,
             help=f"Couverture cible en CompetenceItem validés par compétence (défaut {SELECTION_FLOOR}).",
         )
+        parser.add_argument(
+            "--min-questions", type=int, default=SELECTION_MIN_QUESTIONS,
+            help=(
+                f"Nombre minimal de Question validées portant un couple (thème, matière) pour "
+                f"qu'il soit proposé (défaut {SELECTION_MIN_QUESTIONS}). Abaisser à 1 rétablit "
+                "l'ancien comportement, au prix de compétences adossées à un unique exercice - "
+                "dont le nom du tag ne suffit alors pas à savoir ce qu'elles recouvrent."
+            ),
+        )
         parser.add_argument("--output", help="Fichier où écrire le JSON (défaut : stdout).")
 
     def handle(self, *args, **options):
@@ -32,7 +46,12 @@ class Command(BaseCommand):
         except Country.DoesNotExist:
             raise CommandError(f"Pays inconnu : {options['pays']!r}.")
 
-        requests = select_quiz_batch(country, limit=options["limit"], floor=options["floor"])
+        requests = select_quiz_batch(
+            country,
+            limit=options["limit"],
+            floor=options["floor"],
+            min_questions=options["min_questions"],
+        )
 
         output = json.dumps(requests, ensure_ascii=False, indent=2)
         if options["output"]:

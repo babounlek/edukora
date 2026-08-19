@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-primitives-fonction-intervalle-tle-a",
+  "meta": {
+    "titre": "Primitives d'une fonction sur un intervalle (Terminale A)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Calcul de primitives - primitives usuelles, linéarité, condition initiale",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Primitives d'une fonction sur un intervalle (Tle A)",
+      "primitive",
+      "primitives usuelles",
+      "linéarité des primitives",
+      "forme u'/u",
+      "condition initiale"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "A",
+      "module_numero": "21",
+      "savoir_numero": "V"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-A-2015-MATHS",
+    "epreuve_titre": "Mathématiques BAC A 2015",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-maths-2015-ex3-7",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu sais déjà passer d'une fonction $f$ à sa dérivée $f'$. Ce cours te demande de faire le chemin inverse : retrouver une fonction $F$ à partir d'une fonction $f$ donnée, en sachant que $F'=f$. Cette opération s'appelle chercher une primitive, et elle revient dans de nombreux problèmes concrets - retrouver une quantité totale à partir d'un taux de variation, reconstruire une fonction connaissant seulement sa pente en chaque point. Une fois que tu maîtrises les primitives des fonctions usuelles et que tu sais fixer la constante manquante grâce à une condition donnée, ce type de question devient un automatisme rapide, régulièrement présent au BAC série A."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les dérivées usuelles : $x^n$, $\\dfrac1x$, $e^x$, une fonction affine.",
+        "Savoir dériver une somme et un produit par un réel : $(u+v)'=u'+v'$ et $(ku)'=ku'$.",
+        "Reconnaître la dérivée d'une fonction composée simple, en particulier $u'e^u$ et $\\dfrac{u'}{u}$.",
+        "Savoir résoudre une équation du premier degré (pour déterminer la constante $C$)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La primitive d'une fonction : définition et primitives usuelles",
+      "contenu_markdown": "Soit $f$ une fonction définie sur un intervalle $I$. Une fonction $F$ est une **primitive de $f$ sur $I$** lorsque $F$ est dérivable sur $I$ et que $F'(x)=f(x)$ pour tout $x$ de $I$. Chercher une primitive, c'est donc faire exactement le chemin inverse de la dérivation.\n\nToute fonction continue sur un intervalle $I$ y admet des primitives (résultat admis en Terminale). Si $F_0$ est une primitive de $f$ sur $I$, alors **toutes** les primitives de $f$ sur $I$ s'écrivent $F(x)=F_0(x)+C$, où $C$ est une constante réelle quelconque : il en existe une infinité, qui ne diffèrent que d'une constante. Pour isoler une primitive précise parmi cette famille, il faut une information supplémentaire, une condition du type $F(x_0)=y_0$, qui permet de calculer $C$.\n\n**Primitives des fonctions usuelles**, valables sur un intervalle où chaque fonction est définie ($u$ désignant une fonction dérivable, $u'$ sa dérivée) :\n\n| Fonction $f$ | Une primitive $F$ | Condition |\n|---|---|---|\n| $k$ (constante) | $kx$ | - |\n| $x^n$, $n\\in\\mathbb{N}$ | $\\dfrac{x^{n+1}}{n+1}$ | - |\n| $\\dfrac1x$ | $\\ln x$ | sur $]0;+\\infty[$ |\n| $\\dfrac1{x-a}$ | $\\ln\\lvert x-a\\rvert$ | sur un intervalle ne contenant pas $a$ |\n| $e^x$ | $e^x$ | - |\n| $u'e^u$ | $e^u$ | - |\n| $\\dfrac{u'}{u}$ | $\\ln\\lvert u\\rvert$ | sur un intervalle où $u$ ne s'annule pas |\n\nDeux règles de **linéarité** permettent de combiner ces formes usuelles pour primitiver une somme ou un produit par un réel : si $F$ est une primitive de $f$ et $H$ une primitive de $h$ sur $I$, alors $F+H$ est une primitive de $f+h$ sur $I$, et $kF$ est une primitive de $kf$ sur $I$ pour tout réel $k$. En combinant ces deux règles, on primitive terme à terme n'importe quelle somme de fonctions usuelles, chaque terme étant traité indépendamment des autres.\n\nUne fois la primitive générale $F_0(x)+C$ obtenue, si l'énoncé impose $F(x_0)=y_0$, on remplace $x$ par $x_0$ dans $F_0(x)+C$, on pose cette expression égale à $y_0$, puis on résout l'équation du premier degré obtenue en $C$.",
+      "formule_principale": "F(x)=F_0(x)+C,\\quad C\\in\\mathbb{R}",
+      "variantes": [
+        {
+          "nom": "Vérifier une primitive donnée par dérivation",
+          "quand_utiliser": "Quand l'énoncé propose déjà une expression candidate pour $F$ et demande de contrôler qu'il s'agit bien d'une primitive de $f$, plutôt que de la retrouver depuis les formes usuelles.",
+          "contenu_markdown": "Il suffit de dériver la fonction $F$ proposée et de comparer le résultat à $f$. Si $F'(x)=f(x)$ pour tout $x$ de $I$, alors $F$ est bien une primitive de $f$ sur $I$ - sinon, ce n'est pas la bonne fonction, ou il manque un facteur ou un signe quelque part. Cette vérification par dérivation est souvent plus rapide que de reconstruire la primitive depuis le tableau des formes usuelles, car dériver mobilise des règles plus directes que primitiver."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer, sur l'intervalle $]2;+\\infty[$, la primitive $F$ de la fonction $f$ définie par $f(x)=6x^2-4x+\\dfrac{3}{x-2}$ qui vérifie $F(3)=5$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Séparer $f$ en trois termes à primitiver indépendamment",
+          "justification": "D'après la linéarité des primitives, chaque terme d'une somme peut être primitivé séparément, puis les résultats s'additionnent.",
+          "resultat_markdown": "$f(x)=6x^2-4x+\\dfrac{3}{x-2}$ se traite terme à terme : $6x^2$, puis $-4x$, puis $\\dfrac{3}{x-2}$."
+        },
+        {
+          "numero": 2,
+          "action": "Primitiver le terme $6x^2$",
+          "justification": "Une primitive de $x^n$ est $\\dfrac{x^{n+1}}{n+1}$ ; ici $n=2$, donc une primitive de $x^2$ est $\\dfrac{x^3}{3}$. On multiplie ensuite par le coefficient $6$.",
+          "resultat_markdown": "Une primitive de $6x^2$ est $6\\times\\dfrac{x^3}{3}=2x^3$."
+        },
+        {
+          "numero": 3,
+          "action": "Primitiver le terme $-4x$",
+          "justification": "Une primitive de $x$ (soit $x^1$) est $\\dfrac{x^2}{2}$. On multiplie ensuite par le coefficient $-4$.",
+          "resultat_markdown": "Une primitive de $-4x$ est $-4\\times\\dfrac{x^2}{2}=-2x^2$."
+        },
+        {
+          "numero": 4,
+          "action": "Primitiver le terme $\\dfrac{3}{x-2}$ en reconnaissant la forme $\\dfrac{u'}{u}$",
+          "justification": "En posant $u(x)=x-2$, on a $u'(x)=1$, donc $\\dfrac{3}{x-2}=3\\times\\dfrac{u'(x)}{u(x)}$, dont une primitive est $3\\ln\\lvert u(x)\\rvert$. Sur $]2;+\\infty[$, $x-2>0$, donc $\\lvert x-2\\rvert=x-2$.",
+          "resultat_markdown": "Une primitive de $\\dfrac{3}{x-2}$ sur $]2;+\\infty[$ est $3\\ln(x-2)$."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler la primitive générale",
+          "justification": "La primitive de $f$ est la somme des trois primitives trouvées, à une constante $C$ près.",
+          "resultat_markdown": "$$F_0(x)=2x^3-2x^2+3\\ln(x-2)+C,\\quad C\\in\\mathbb{R}$$"
+        },
+        {
+          "numero": 6,
+          "action": "Utiliser la condition $F(3)=5$ pour déterminer $C$",
+          "justification": "On remplace $x$ par $3$ dans l'expression générale, puis on résout l'équation obtenue en $C$.",
+          "resultat_markdown": "$$F(3)=2\\times3^3-2\\times3^2+3\\ln(3-2)+C=54-18+3\\ln1+C=36+C$$\n\nComme $\\ln1=0$ et $F(3)=5$ :\n$$36+C=5 \\iff C=-31$$"
+        }
+      ],
+      "conclusion_markdown": "La primitive de $f$ sur $]2;+\\infty[$ qui vérifie $F(3)=5$ est $F(x)=2x^3-2x^2+3\\ln(x-2)-31$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Après avoir primitivé $f(x)=4x-1$, écrire directement $F(x)=2x^2-x$ comme « la » primitive de $f$, sans mentionner qu'il en existe une infinité d'autres.",
+          "pourquoi_faux": "$2x^2-x$ n'est qu'une primitive parmi une infinité d'autres : pour tout réel $C$, $2x^2-x+C$ est également une primitive de $f$, puisque la dérivée d'une constante est nulle. Omettre $C$ revient à choisir une primitive particulière sans le dire, ce qui devient franchement faux dès qu'une condition impose une valeur précise de $F$.",
+          "correction_markdown": "Écris toujours la primitive générale sous la forme $F(x)=2x^2-x+C$ avant de chercher une condition éventuelle. Si l'énoncé ne donne aucune condition, $C$ reste indéterminé - la réponse doit le mentionner explicitement."
+        },
+        {
+          "erreur_markdown": "Pour primitiver $x^3$, appliquer par réflexe la règle de dérivation et écrire $3x^2$ au lieu de $\\dfrac{x^4}{4}$.",
+          "pourquoi_faux": "Primitiver est l'opération inverse de dériver : l'exposant doit augmenter de $1$ avant de diviser par ce nouvel exposant, jamais diminuer. Écrire $3x^2$ redonne la dérivée de $x^3$, pas sa primitive - c'est le mouvement inverse de celui demandé.",
+          "correction_markdown": "Retiens le sens du mouvement : pour dériver $x^n$, l'exposant descend ($nx^{n-1}$) ; pour primitiver $x^n$, l'exposant monte ($\\dfrac{x^{n+1}}{n+1}$). Un rapide contrôle en dérivant le résultat obtenu permet de vérifier immédiatement si tu es parti dans le bon sens."
+        },
+        {
+          "erreur_markdown": "Pour primitiver $\\dfrac{1}{2x+1}$, écrire directement $\\ln\\lvert2x+1\\rvert$.",
+          "pourquoi_faux": "Ici $u(x)=2x+1$ et $u'(x)=2$, pas $1$. La fraction $\\dfrac{1}{2x+1}$ n'est donc pas exactement $\\dfrac{u'}{u}$, mais $\\dfrac12\\times\\dfrac{u'}{u}$ : il manque le facteur $\\dfrac12$ devant le logarithme.",
+          "correction_markdown": "Avant d'appliquer la forme $\\dfrac{u'}{u}\\to\\ln\\lvert u\\rvert$, vérifie toujours si $u'$ apparaît réellement au numérateur avec le bon coefficient. Si ce n'est pas le cas, fais apparaître ce coefficient en multipliant et divisant par la valeur manquante : $\\dfrac{1}{2x+1}=\\dfrac12\\times\\dfrac{2}{2x+1}$, donc une primitive est $\\dfrac12\\ln\\lvert2x+1\\rvert$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer, sur $\\mathbb{R}$, la primitive $F$ de la fonction $f$ définie par $f(x)=5x^4-6x^2+4$ qui vérifie $F(0)=1$.",
+          "solution_markdown": "On primitive chaque terme séparément, grâce à la linéarité des primitives.\n\nUne primitive de $5x^4$ est $5\\times\\dfrac{x^5}{5}=x^5$.\n\nUne primitive de $-6x^2$ est $-6\\times\\dfrac{x^3}{3}=-2x^3$.\n\nUne primitive de $4$ (fonction constante) est $4x$.\n\nLa primitive générale de $f$ sur $\\mathbb{R}$ est donc :\n$$F_0(x)=x^5-2x^3+4x+C,\\quad C\\in\\mathbb{R}$$\n\nOn détermine $C$ à l'aide de la condition $F(0)=1$ :\n$$F(0)=0^5-2\\times0^3+4\\times0+C=C$$\n\nComme $F(0)=1$, on obtient $C=1$.\n\nLa primitive cherchée est $F(x)=x^5-2x^3+4x+1$.\n\n**Vérification** : $F'(x)=5x^4-6x^2+4=f(x)$. Conforme."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer, sur l'intervalle $]-\\infty;1[$, la primitive $G$ de la fonction $g$ définie par $g(x)=\\dfrac{-4}{x-1}+2x-3$ qui vérifie $G(-1)=0$.",
+          "solution_markdown": "On primitive chaque terme séparément.\n\nPour $\\dfrac{-4}{x-1}$ : en posant $u(x)=x-1$, on a $u'(x)=1$, donc $\\dfrac{-4}{x-1}=-4\\times\\dfrac{u'(x)}{u(x)}$, dont une primitive est $-4\\ln\\lvert u(x)\\rvert=-4\\ln\\lvert x-1\\rvert$. Sur $]-\\infty;1[$, on a $x-1<0$, donc $\\lvert x-1\\rvert=1-x$ : une primitive de ce terme s'écrit $-4\\ln(1-x)$.\n\nUne primitive de $2x$ est $x^2$.\n\nUne primitive de $-3$ est $-3x$.\n\nLa primitive générale de $g$ sur $]-\\infty;1[$ est donc :\n$$G_0(x)=-4\\ln(1-x)+x^2-3x+C,\\quad C\\in\\mathbb{R}$$\n\nOn détermine $C$ à l'aide de la condition $G(-1)=0$ :\n$$G(-1)=-4\\ln\\big(1-(-1)\\big)+(-1)^2-3\\times(-1)+C=-4\\ln2+1+3+C=-4\\ln2+4+C$$\n\nComme $G(-1)=0$ :\n$$-4\\ln2+4+C=0 \\iff C=4\\ln2-4$$\n\nLa primitive cherchée est $G(x)=-4\\ln(1-x)+x^2-3x+4\\ln2-4$.\n\n**Vérification** : $G'(x)=-4\\times\\dfrac{-1}{1-x}+2x-3=\\dfrac{4}{1-x}+2x-3=\\dfrac{-4}{x-1}+2x-3=g(x)$. Conforme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h$ la fonction définie sur $]0;+\\infty[$ par $h(x)=2x+\\dfrac{a}{x}$, où $a$ est un réel à déterminer, et soit $H$ une primitive de $h$ sur $]0;+\\infty[$, de la forme $H(x)=x^2+a\\ln x+C$. On sait que $H(1)=5$ et que $h(2)=7$. Déterminer les réels $a$ et $C$, puis donner l'expression de $H(x)$.",
+          "solution_markdown": "**Utilisation de $H(1)=5$.** On calcule $H(1)$ à partir de l'expression générale :\n$$H(1)=1^2+a\\ln1+C=1+0+C=1+C$$\n\nComme $H(1)=5$ :\n$$1+C=5 \\iff C=4$$\n\n**Utilisation de $h(2)=7$.** $H$ est une primitive de $h$ sur $]0;+\\infty[$, donc $H'=h$ : la condition porte directement sur $h$, pas sur $H$. On calcule $h(2)$ :\n$$h(2)=2\\times2+\\dfrac{a}{2}=4+\\dfrac{a}{2}$$\n\nComme $h(2)=7$ :\n$$4+\\dfrac{a}{2}=7 \\iff \\dfrac{a}{2}=3 \\iff a=6$$\n\n**Conclusion.** Avec $a=6$ et $C=4$ :\n$$H(x)=x^2+6\\ln x+4$$\n\n**Vérification** : $H'(x)=2x+6\\times\\dfrac1x=2x+\\dfrac6x$, qui correspond bien à $h(x)=2x+\\dfrac{a}{x}$ avec $a=6$. Conforme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une primitive de $f$ sur $I$ est une fonction $F$ telle que $F'=f$ sur $I$ : primitiver, c'est dériver à l'envers.",
+        "Il n'existe jamais une seule primitive mais une famille infinie $F_0(x)+C$ : n'oublie jamais la constante $C$ tant qu'aucune condition ne la fixe.",
+        "Primitive terme à terme grâce à la linéarité : chaque terme d'une somme se primitive indépendamment, avec son propre coefficient.",
+        "Repère les deux formes composées les plus fréquentes : $u'e^u$ se primitive en $e^u$, et $\\dfrac{u'}{u}$ se primitive en $\\ln\\lvert u\\rvert$ - vérifie toujours que $u'$ apparaît bien tel quel au numérateur, sinon fais apparaître le facteur manquant.",
+        "Une condition du type $F(x_0)=y_0$ se traite en deux temps : calculer $F_0(x_0)+C$, puis résoudre l'équation du premier degré obtenue en $C$.",
+        "Au BAC série A, ce savoir est presque toujours testé par une question qui demande de vérifier ou de déterminer une primitive avant d'exploiter une condition donnée - un automatisme à avoir sous la main dès la lecture de l'énoncé."
+      ]
+    }
+  ]
+}

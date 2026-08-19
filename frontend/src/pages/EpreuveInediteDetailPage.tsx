@@ -75,14 +75,16 @@ export function EpreuveInediteDetailPage() {
   useEffect(() => {
     // Prix d'appel affiché sur le mur payant (voir plus bas) - inutile si l'élève a
     // déjà accès. Formule la moins chère qui débloque réellement l'add-on (inclut_inedit),
-    // jamais le prix d'Essentiel/Performance qui ne débloqueraient pas cette épreuve.
+    // jamais le prix de Mensuel qui ne débloquerait pas cette épreuve. effective_price
+    // (pas price, qui n'est qu'un plafond pour Jusqu'à l'Examen) - voir
+    // subscriptions.models.Plan.effective_price.
     if (!epreuve || epreuve.has_access) return
     const cursusId = epreuve.cursus[0]?.id
     if (!cursusId) return
     listPlans(cursusId).then((plans) => {
       const eligibles = plans.filter((p) => p.inclut_inedit)
       if (eligibles.length === 0) return
-      setMinPrice(Math.min(...eligibles.map((p) => p.price)))
+      setMinPrice(Math.min(...eligibles.map((p) => p.effective_price)))
     })
   }, [epreuve])
 

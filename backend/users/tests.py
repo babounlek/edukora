@@ -5,10 +5,15 @@ ou un parrainage attribué après coup à un compte existant sont chacun une fai
 d'authentification ou d'intégrité, pas un simple bug fonctionnel.
 """
 
+import time
 from datetime import timedelta
+from types import SimpleNamespace
 from io import StringIO
 from unittest.mock import patch
 
+import jwt
+from cryptography.hazmat.primitives.asymmetric import rsa
+from django.core import mail
 from django.core.management import call_command
 from django.core.exceptions import ValidationError
 from django.core.management.base import CommandError
@@ -19,7 +24,16 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .management.commands.purge_otp_codes import MIN_RETENTION_DAYS
-from .models import AuthIdentity, AuthProvider, OTPCode, User
+from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
+from .email_service import (
+    EmailAlreadyTaken,
+    EmailCapReached,
+    EmailInvalid,
+    EmailSendFailed,
+    EmailThrottled,
+    request_email_code,
+    verify_email_code,
+)
 from .google import GoogleAuthError, GoogleNotConfigured, verify_google_id_token
 from .phone import to_e164, to_msisdn
 from .otp_service import (
@@ -39,7 +53,7 @@ class RequestOTPTests(TestCase):
     def test_creates_otp_code_and_sends_sms(self, mock_get_backend):
         request_otp("677200001")
 
-        otp = OTPCode.objects.get(phone_number="+237677200001")
+        otp = OTPCode.objects.get(destination="+237677200001")
         self.assertFalse(otp.is_used)
         self.assertEqual(otp.attempts, 0)
         mock_get_backend.return_value.send.assert_called_once()
@@ -50,18 +64,18 @@ class RequestOTPTests(TestCase):
         with self.assertRaises(OTPThrottled):
             request_otp("677200002")
 
-        self.assertEqual(OTPCode.objects.filter(phone_number="+237677200002").count(), 1)
+        self.assertEqual(OTPCode.objects.filter(destination="+237677200002").count(), 1)
 
     @patch("users.otp_service.get_sms_backend")
     def test_allows_new_request_once_interval_has_elapsed(self, mock_get_backend):
         request_otp("677200003")
-        OTPCode.objects.filter(phone_number="+237677200003").update(
+        OTPCode.objects.filter(destination="+237677200003").update(
             created_at=timezone.now() - timedelta(seconds=OTP_MIN_INTERVAL_SECONDS + 1),
         )
 
         request_otp("677200003")  # ne doit pas lever OTPThrottled
 
-        self.assertEqual(OTPCode.objects.filter(phone_number="+237677200003").count(), 2)
+        self.assertEqual(OTPCode.objects.filter(destination="+237677200003").count(), 2)
 
 
 class VerifyOTPTests(TestCase):
@@ -70,7 +84,7 @@ class VerifyOTPTests(TestCase):
         # du SMS mais doivent écrire la ligne au format réellement stocké, sans quoi
         # ils valideraient un chemin qui n'existe pas en production.
         defaults = {
-            "phone_number": to_e164(phone_number),
+            "destination": to_e164(phone_number),
             "code": code,
             "expires_at": timezone.now() + timedelta(minutes=5),
         }
@@ -175,7 +189,7 @@ class OTPFlowAPITests(TestCase):
         response = self.client.post("/auth/otp/request/", {"phone_number": "677200020"})
         self.assertEqual(response.status_code, 200)
 
-        otp = OTPCode.objects.get(phone_number="+237677200020")
+        otp = OTPCode.objects.get(destination="+237677200020")
         response = self.client.post("/auth/otp/verify/", {"phone_number": "677200020", "code": otp.code})
 
         self.assertEqual(response.status_code, 200)
@@ -204,7 +218,7 @@ class OTPFlowAPITests(TestCase):
 
     def test_verify_rejects_wrong_code(self):
         OTPCode.objects.create(
-            phone_number="677200022", code="123456", expires_at=timezone.now() + timedelta(minutes=5),
+            destination="677200022", code="123456", expires_at=timezone.now() + timedelta(minutes=5),
         )
 
         response = self.client.post("/auth/otp/verify/", {"phone_number": "677200022", "code": "999999"})
@@ -426,7 +440,7 @@ class OTPSpendingCapsTests(TestCase):
 
     def test_records_the_requesting_ip(self, mock_get_backend):
         request_otp("677400010", ip_address="41.202.9.9")
-        self.assertEqual(OTPCode.objects.get(phone_number="+237677400010").ip_address, "41.202.9.9")
+        self.assertEqual(OTPCode.objects.get(destination="+237677400010").ip_address, "41.202.9.9")
 
 
 class ClientIPTests(TestCase):
@@ -501,7 +515,7 @@ class PurgeOTPCodesCommandTests(TestCase):
 
     def _create_otp(self, phone_number, age_days=0):
         otp = OTPCode.objects.create(
-            phone_number=to_e164(phone_number), code="123456", expires_at=timezone.now() + timedelta(minutes=5),
+            destination=to_e164(phone_number), code="123456", expires_at=timezone.now() + timedelta(minutes=5),
         )
         if age_days:
             OTPCode.objects.filter(pk=otp.pk).update(created_at=timezone.now() - timedelta(days=age_days))
@@ -515,7 +529,35 @@ class PurgeOTPCodesCommandTests(TestCase):
         call_command("purge_otp_codes", stdout=StringIO())
 
         self.assertEqual(
-            list(OTPCode.objects.values_list("phone_number", flat=True)), ["+237677600003"],
+            list(OTPCode.objects.values_list("destination", flat=True)), ["+237677600003"],
+        )
+
+    def test_purge_les_codes_e_mail_aussi(self):
+        """
+        Le help_text d'OTPCode.ip_address promet que l'adresse du demandeur est purgée
+        avec la ligne : sans ce test, la promesse tiendrait au seul fait que personne
+        n'a restreint la commande au seul canal SMS.
+        """
+        ancien = OTPCode.objects.create(
+            canal=CodeCanal.EMAIL, destination="vieux@example.com", code="123456",
+            expires_at=timezone.now() + timedelta(minutes=15),
+        )
+        OTPCode.objects.filter(pk=ancien.pk).update(
+            created_at=timezone.now() - timedelta(days=30),
+        )
+        OTPCode.objects.create(
+            canal=CodeCanal.EMAIL, destination="recent@example.com", code="123456",
+            expires_at=timezone.now() + timedelta(minutes=15),
+        )
+
+        call_command("purge_otp_codes", stdout=StringIO())
+
+        self.assertEqual(
+            list(
+                OTPCode.objects.filter(canal=CodeCanal.EMAIL)
+                .values_list("destination", flat=True)
+            ),
+            ["recent@example.com"],
         )
 
     def test_dry_run_reports_without_deleting(self):
@@ -622,7 +664,7 @@ class AuthIdentityTests(TestCase):
 
     def test_login_updates_last_used_at(self):
         OTPCode.objects.create(
-            phone_number="+237677900004", code="151515", expires_at=timezone.now() + timedelta(minutes=5),
+            destination="+237677900004", code="151515", expires_at=timezone.now() + timedelta(minutes=5),
         )
         user = verify_otp("677900004", "151515")
 
@@ -905,7 +947,7 @@ class PhoneChangeTests(TestCase):
             )
 
     def _code(self, numero):
-        return OTPCode.objects.get(phone_number=to_e164(numero), is_used=False).code
+        return OTPCode.objects.get(destination=to_e164(numero), is_used=False).code
 
     def test_full_change_moves_the_account_to_the_new_number(self):
         self._demander("677700002")
@@ -926,7 +968,7 @@ class PhoneChangeTests(TestCase):
         self._confirmer("677700003", self._code("677700003"))
 
         OTPCode.objects.create(
-            phone_number="+237677700001", code="424242",
+            destination="+237677700001", code="424242",
             expires_at=timezone.now() + timedelta(minutes=5),
         )
         repreneur = verify_otp("677700001", "424242")
@@ -938,7 +980,7 @@ class PhoneChangeTests(TestCase):
         self._confirmer("677700004", self._code("677700004"))
 
         OTPCode.objects.create(
-            phone_number="+237677700004", code="434343",
+            destination="+237677700004", code="434343",
             expires_at=timezone.now() + timedelta(minutes=5),
         )
         reconnecte = verify_otp("677700004", "434343")
@@ -1079,3 +1121,390 @@ class UnlinkIdentityTests(TestCase):
         response = self.client.delete("/auth/identities/apple/")
 
         self.assertEqual(response.status_code, 404)
+
+
+@override_settings(GOOGLE_CLIENT_ID="edukora-test.apps.googleusercontent.com")
+class GoogleRealSignatureTests(TestCase):
+    """
+    Vérification RS256 RÉELLE, sans mocker jwt.decode.
+
+    Existe à cause d'une panne constatée en local : les tests de
+    GoogleTokenVerificationTests mockent le décodeur pour contrôler les claims, si
+    bien qu'aucun n'exerçait la cryptographie. PyJWT sans le paquet `cryptography`
+    ne gère que HMAC et lève « RS256 requires 'cryptography' to be installed » -
+    toute connexion Google répondait 401, suite verte comprise.
+
+    Seul le client JWKS est remplacé ici (il appellerait Google) : la signature, elle,
+    est bel et bien produite puis vérifiée.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # 2048 bits, généré une fois pour toute la classe : c'est la taille des clés
+        # de signature de Google, et la génération est trop lente pour chaque test.
+        cls.cle_privee = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+
+    def _jeton(self, **remplacements):
+        maintenant = int(time.time())
+        claims = {
+            "iss": "https://accounts.google.com",
+            "sub": "google-sub-signe",
+            "aud": "edukora-test.apps.googleusercontent.com",
+            "email": "eleve@gmail.com",
+            "email_verified": True,
+            "iat": maintenant,
+            "exp": maintenant + 300,
+        }
+        claims.update(remplacements)
+        return jwt.encode(claims, self.cle_privee, algorithm="RS256")
+
+    def _verifier(self, jeton):
+        with patch("users.google._jwk_client") as mock_client:
+            mock_client.get_signing_key_from_jwt.return_value = SimpleNamespace(
+                key=self.cle_privee.public_key(),
+            )
+            return verify_google_id_token(jeton)
+
+    def test_accepts_a_genuinely_signed_token(self):
+        """Échoue si `cryptography` disparaît des dépendances - c'est tout l'objet du test."""
+        claims = self._verifier(self._jeton())
+
+        self.assertEqual(claims["sub"], "google-sub-signe")
+        self.assertEqual(claims["email"], "eleve@gmail.com")
+
+    def test_rejects_a_token_issued_for_another_application(self):
+        """
+        Le contrôle décisif : sans lui, un ID token émis par Google pour n'importe
+        quelle autre application ouvrirait n'importe quel compte Edukora.
+        """
+        with self.assertRaises(GoogleAuthError):
+            self._verifier(self._jeton(aud="une-autre-app.apps.googleusercontent.com"))
+
+    def test_rejects_an_expired_token(self):
+        maintenant = int(time.time())
+        with self.assertRaises(GoogleAuthError):
+            self._verifier(self._jeton(iat=maintenant - 3600, exp=maintenant - 3000))
+
+    def test_rejects_a_token_signed_by_another_key(self):
+        """Signature valide en apparence, mais pas par la clé annoncée par le JWKS."""
+        autre_cle = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        maintenant = int(time.time())
+        jeton = jwt.encode(
+            {
+                "iss": "https://accounts.google.com", "sub": "s",
+                "aud": "edukora-test.apps.googleusercontent.com",
+                "iat": maintenant, "exp": maintenant + 300,
+            },
+            autre_cle,
+            algorithm="RS256",
+        )
+
+        with self.assertRaises(GoogleAuthError):
+            self._verifier(jeton)
+
+
+LOCMEM = "django.core.mail.backends.locmem.EmailBackend"
+
+
+@override_settings(EMAIL_BACKEND=LOCMEM)
+class EmailCodeSendingTests(TestCase):
+    def test_envoi_cree_une_ligne_et_un_message(self):
+        request_email_code("Eleve@Example.COM")
+
+        entry = OTPCode.objects.get(canal=CodeCanal.EMAIL)
+        self.assertEqual(entry.destination, "eleve@example.com")
+        self.assertEqual(len(mail.outbox), 1)
+        # Le code doit figurer dans l'objet : c'est ce qui le rend lisible depuis la
+        # notification du téléphone, sans ouvrir le message.
+        self.assertIn(entry.code, mail.outbox[0].subject)
+        self.assertEqual(mail.outbox[0].to, ["eleve@example.com"])
+
+    def test_deuxieme_demande_immediate_refusee(self):
+        request_email_code("eleve@example.com")
+        with self.assertRaises(EmailThrottled):
+            request_email_code("eleve@example.com")
+        self.assertEqual(len(mail.outbox), 1)
+
+    @override_settings(EMAIL_CODE_MAX_PER_IP_PER_HOUR=2)
+    def test_plafond_par_ip(self):
+        for i in range(2):
+            request_email_code(f"eleve{i}@example.com", ip_address="41.202.1.1")
+        with self.assertRaises(EmailThrottled):
+            request_email_code("autre@example.com", ip_address="41.202.1.1")
+        # Une autre source n'est pas affectée par le plafond de celle-ci.
+        request_email_code("autre@example.com", ip_address="41.202.9.9")
+
+    @override_settings(EMAIL_CODE_DAILY_GLOBAL_CAP=1)
+    def test_plafond_global(self):
+        request_email_code("un@example.com")
+        with self.assertRaises(EmailCapReached):
+            request_email_code("deux@example.com")
+
+    def test_echec_smtp_remonte_en_exception_dediee(self):
+        with patch("users.email_service.send_mail", side_effect=OSError("smtp down")):
+            with self.assertRaises(EmailSendFailed):
+                request_email_code("eleve@example.com")
+        # La ligne est conservée volontairement : elle fait courir le délai anti-renvoi.
+        self.assertEqual(OTPCode.objects.filter(canal=CodeCanal.EMAIL).count(), 1)
+
+
+@override_settings(EMAIL_BACKEND="users.email_backends.ConsoleEmailBackend")
+class ConsoleEmailBackendTests(TestCase):
+    """
+    Le backend de développement doit rendre le code aussi facile à relever que celui du
+    canal SMS. Sans ce test, le jour où quelqu'un revient au backend console de Django,
+    la régression est invisible : les messages continuent de « partir », simplement le
+    code se perd au milieu des en-têtes MIME.
+    """
+
+    def test_le_code_est_affiche_en_une_ligne_lisible(self):
+        sortie = StringIO()
+        with patch("sys.stdout", sortie):
+            request_email_code("eleve@example.com")
+
+        affiche = sortie.getvalue()
+        code = OTPCode.objects.get(canal=CodeCanal.EMAIL).code
+        self.assertIn("[E-MAIL -> eleve@example.com]", affiche)
+        self.assertIn(code, affiche)
+
+    def test_send_mail_retourne_bien_un_envoi(self):
+        # BaseEmailBackend doit retourner le nombre de messages envoyés : un 0 ferait
+        # croire à un échec chez tout appelant qui teste la valeur de retour.
+        from django.core.mail import send_mail
+
+        with patch("sys.stdout", StringIO()):
+            envoyes = send_mail("Objet", "Corps", None, ["eleve@example.com"])
+        self.assertEqual(envoyes, 1)
+
+
+@override_settings(EMAIL_BACKEND=LOCMEM)
+class EmailAndSMSBudgetsAreSeparateTests(TestCase):
+    """
+    Le point de conception le plus facile à casser par mégarde : les deux canaux ont des
+    coûts sans rapport, leurs compteurs ne doivent jamais se croiser. Si un jour quelqu'un
+    fusionne les deux tables, ces deux tests tombent.
+    """
+
+    @override_settings(OTP_DAILY_GLOBAL_CAP=1)
+    def test_plafond_sms_atteint_nempeche_pas_les_e_mails(self):
+        request_otp("+237677100001")
+        with self.assertRaises(OTPCapReached):
+            request_otp("+237677100002")
+
+        request_email_code("eleve@example.com")
+        self.assertEqual(len(mail.outbox), 1)
+
+    @override_settings(OTP_DAILY_GLOBAL_CAP=2)
+    def test_les_e_mails_ne_consomment_pas_le_budget_sms(self):
+        for i in range(5):
+            request_email_code(f"eleve{i}@example.com")
+        # Le budget SMS est intact malgré les cinq e-mails envoyés. Le filtre sur le
+        # canal EST l'assertion : depuis que les deux canaux partagent la table, compter
+        # les lignes sans lui compterait aussi les e-mails, et ce test ne prouverait
+        # plus rien de ce pour quoi il a été écrit.
+        request_otp("+237677100001")
+        self.assertEqual(OTPCode.objects.filter(canal=CodeCanal.SMS).count(), 1)
+        self.assertEqual(OTPCode.objects.filter(canal=CodeCanal.EMAIL).count(), 5)
+
+
+@override_settings(EMAIL_BACKEND=LOCMEM)
+class VerifyEmailCodeTests(TestCase):
+    def _code_pour(self, email):
+        request_email_code(email)
+        return OTPCode.objects.filter(
+            canal=CodeCanal.EMAIL, destination=email.strip().lower(),
+        ).latest("created_at").code
+
+    def test_cree_un_compte_verifie_avec_son_identite(self):
+        code = self._code_pour("eleve@example.com")
+        user, cree = verify_email_code("eleve@example.com", code)
+
+        self.assertTrue(cree)
+        self.assertEqual(user.email, "eleve@example.com")
+        self.assertTrue(user.email_verified)
+        self.assertIsNone(user.phone_number)
+        self.assertEqual(
+            list(user.identities.values_list("provider", flat=True)), [AuthProvider.EMAIL],
+        )
+
+    def test_deuxieme_connexion_rouvre_le_meme_compte(self):
+        code = self._code_pour("eleve@example.com")
+        premier, _ = verify_email_code("eleve@example.com", code)
+
+        OTPCode.objects.filter(canal=CodeCanal.EMAIL).delete()
+        code = self._code_pour("eleve@example.com")
+        second, cree = verify_email_code("eleve@example.com", code)
+
+        self.assertFalse(cree)
+        self.assertEqual(premier.pk, second.pk)
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_la_casse_ne_cree_pas_deux_comptes(self):
+        code = self._code_pour("Eleve@Example.com")
+        premier, _ = verify_email_code("ELEVE@example.COM", code)
+
+        OTPCode.objects.filter(canal=CodeCanal.EMAIL).delete()
+        code = self._code_pour("eleve@example.com")
+        second, cree = verify_email_code("eleve@example.com", code)
+
+        self.assertFalse(cree)
+        self.assertEqual(premier.pk, second.pk)
+        self.assertEqual(AuthIdentity.objects.filter(provider=AuthProvider.EMAIL).count(), 1)
+
+    def test_adresse_attestee_par_google_ouvre_le_compte_existant(self):
+        google_user = User.objects.create_user(
+            phone_number=None, email="eleve@example.com", email_verified=True,
+        )
+        AuthIdentity.objects.create(
+            user=google_user, provider=AuthProvider.GOOGLE, provider_uid="sub-123",
+        )
+
+        code = self._code_pour("eleve@example.com")
+        user, cree = verify_email_code("eleve@example.com", code)
+
+        self.assertFalse(cree)
+        self.assertEqual(user.pk, google_user.pk)
+        self.assertEqual(User.objects.count(), 1)
+        # L'identité e-mail est rattachée au passage : la méthode devient utilisable seule.
+        self.assertTrue(user.identities.filter(provider=AuthProvider.EMAIL).exists())
+
+    def test_adresse_non_attestee_dun_autre_compte_refusee(self):
+        autre = User.objects.create_user(phone_number="677100001")
+        User.objects.filter(pk=autre.pk).update(email="eleve@example.com", email_verified=False)
+
+        code = self._code_pour("eleve@example.com")
+        with self.assertRaises(EmailAlreadyTaken):
+            verify_email_code("eleve@example.com", code)
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_code_faux_puis_epuisement_des_tentatives(self):
+        self._code_pour("eleve@example.com")
+        for _ in range(5):
+            with self.assertRaises(EmailInvalid):
+                verify_email_code("eleve@example.com", "000000")
+        # Au-delà du plafond, redemander un code est la seule issue.
+        with self.assertRaises(EmailInvalid):
+            verify_email_code("eleve@example.com", "000000")
+        self.assertEqual(User.objects.count(), 0)
+
+    def test_code_expire_refuse(self):
+        code = self._code_pour("eleve@example.com")
+        OTPCode.objects.filter(canal=CodeCanal.EMAIL).update(
+            expires_at=timezone.now() - timedelta(minutes=1),
+        )
+        with self.assertRaises(EmailInvalid):
+            verify_email_code("eleve@example.com", code)
+
+    def test_parrainage_pris_en_compte_a_la_creation(self):
+        parrain = User.objects.create_user(phone_number="677100001")
+        code = self._code_pour("eleve@example.com")
+        user, _ = verify_email_code("eleve@example.com", code, referral_code=parrain.referral_code)
+        self.assertEqual(user.referred_by_id, parrain.pk)
+
+
+@override_settings(EMAIL_BACKEND=LOCMEM)
+class EmailAuthAPITests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def _code(self, email):
+        return OTPCode.objects.filter(
+            canal=CodeCanal.EMAIL, destination=email,
+        ).latest("created_at").code
+
+    def test_flux_complet_connexion(self):
+        reponse = self.client.post("/auth/email/request/", {"email": "Eleve@example.com"})
+        self.assertEqual(reponse.status_code, 200)
+
+        reponse = self.client.post("/auth/email/verify/", {
+            "email": "eleve@example.com", "code": self._code("eleve@example.com"),
+        })
+        self.assertEqual(reponse.status_code, 200)
+        self.assertIn("access", reponse.data)
+        self.assertTrue(reponse.data["created"])
+        self.assertEqual(reponse.data["user"]["email"], "eleve@example.com")
+        self.assertIn(REFRESH_COOKIE_NAME, reponse.cookies)
+        self.assertIn(AuthProvider.EMAIL, reponse.data["user"]["auth_methods"])
+
+    def test_adresse_invalide_rejetee_avant_tout_envoi(self):
+        reponse = self.client.post("/auth/email/request/", {"email": "pas-une-adresse"})
+        self.assertEqual(reponse.status_code, 400)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_code_faux_renvoie_400(self):
+        self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        reponse = self.client.post("/auth/email/verify/", {
+            "email": "eleve@example.com", "code": "000000",
+        })
+        self.assertEqual(reponse.status_code, 400)
+
+    @override_settings(EMAIL_CODE_DAILY_GLOBAL_CAP=0)
+    def test_plafond_global_renvoie_503(self):
+        reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 503)
+
+    def test_panne_smtp_renvoie_503_et_pas_500(self):
+        with patch("users.email_service.send_mail", side_effect=OSError("smtp down")):
+            reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 503)
+
+
+@override_settings(EMAIL_BACKEND=LOCMEM)
+class EmailLinkTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(phone_number="677100001")
+        self.client.force_authenticate(user=self.user)
+
+    def _code(self, email):
+        return OTPCode.objects.filter(
+            canal=CodeCanal.EMAIL, destination=email,
+        ).latest("created_at").code
+
+    def test_rattachement_complet(self):
+        reponse = self.client.post("/auth/email/link/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 200)
+
+        reponse = self.client.post("/auth/email/link/confirm/", {
+            "email": "eleve@example.com", "code": self._code("eleve@example.com"),
+        })
+        self.assertEqual(reponse.status_code, 200)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, "eleve@example.com")
+        self.assertTrue(self.user.email_verified)
+        self.assertTrue(self.user.identities.filter(provider=AuthProvider.EMAIL).exists())
+        self.assertEqual(
+            sorted(reponse.data["auth_methods"]), [AuthProvider.EMAIL, AuthProvider.PHONE],
+        )
+
+    def test_adresse_dun_autre_compte_refusee_avant_envoi(self):
+        autre = User.objects.create_user(phone_number="677100002")
+        AuthIdentity.objects.create(
+            user=autre, provider=AuthProvider.EMAIL, provider_uid="pris@example.com",
+        )
+
+        reponse = self.client.post("/auth/email/link/request/", {"email": "pris@example.com"})
+        self.assertEqual(reponse.status_code, 409)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_rattachement_anonyme_refuse(self):
+        client = APIClient()
+        reponse = client.post("/auth/email/link/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 401)
+
+    def test_detacher_libere_ladresse(self):
+        self.client.post("/auth/email/link/request/", {"email": "eleve@example.com"})
+        self.client.post("/auth/email/link/confirm/", {
+            "email": "eleve@example.com", "code": self._code("eleve@example.com"),
+        })
+
+        reponse = self.client.delete(f"/auth/identities/{AuthProvider.EMAIL}/")
+        self.assertEqual(reponse.status_code, 200)
+
+        self.user.refresh_from_db()
+        # L'adresse est libérée, sinon elle resterait réservée par unicité sans qu'aucune
+        # identité ne la prouve - et son titulaire réel ne pourrait plus s'en servir.
+        self.assertIsNone(self.user.email)
+        self.assertFalse(self.user.email_verified)

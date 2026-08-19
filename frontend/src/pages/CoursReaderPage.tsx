@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Unlock } from "lucide-react"
 
 import { getCours, readCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -27,8 +27,11 @@ export function CoursReaderPage() {
   const [error, setError] = useState<string | null>(null)
   // Requête séparée de readCours (voir EpreuveReaderPage.getEpreuve, même raison) :
   // CoursContent.header ne porte que des libellés d'affichage (matiere, pas
-  // subject.code ; pas de cursus.id), insuffisant pour RelatedCours ci-dessous.
+  // subject.code ; pas de cursus.id), insuffisant pour RelatedCours ci-dessous. Sert
+  // aussi, pour un visiteur non connecté, à savoir si ce cours est "vitrine" (voir
+  // l'effet ci-dessous) avant de décider de rediriger ou non vers la connexion.
   const [cours, setCours] = useState<Cours | null>(null)
+  const [coursFailed, setCoursFailed] = useState(false)
 
   useSeo({ title: content?.title ?? "Cours" })
 
@@ -36,23 +39,33 @@ export function CoursReaderPage() {
     if (!slug) return
     getCours(slug)
       .then(setCours)
-      .catch(() => {})
+      .catch(() => setCoursFailed(true))
   }, [slug])
 
   useEffect(() => {
     if (isLoading) return
-    if (!isAuthenticated) {
-      navigate("/connexion", { state: { from: coursReaderPath(slug ?? "") } })
-      return
-    }
     if (!slug) return
+
+    if (!isAuthenticated) {
+      // Un visiteur anonyme peut lire un cours vitrine sans connexion (voir
+      // catalog.Cours.est_vitrine, dérivé de sa/ses épreuve(s) source(s)) - il faut
+      // d'abord savoir si c'en est un (voir l'effet ci-dessus) avant de trancher ; en
+      // cas d'échec de cette requête, on retombe sur le comportement d'origine
+      // (connexion requise) plutôt que de rester bloqué indéfiniment. Même patron
+      // que EpreuveReaderPage.
+      if (!cours && !coursFailed) return
+      if (!cours?.has_access) {
+        navigate("/connexion", { state: { from: coursReaderPath(slug) } })
+        return
+      }
+    }
 
     readCours(slug)
       .then(setContent)
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce contenu.")
       })
-  }, [slug, isLoading, isAuthenticated, navigate])
+  }, [slug, isLoading, isAuthenticated, navigate, cours, coursFailed])
 
   if (isLoading || (!content && !error)) {
     return (
@@ -95,6 +108,12 @@ export function CoursReaderPage() {
       {content?.header && (
         <div className="mb-6 mt-3 flex flex-wrap gap-1.5">
           <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
+          {cours?.est_vitrine && (
+            <Badge variant="success">
+              <Unlock className="mr-1 size-3" />
+              Cours en accès libre
+            </Badge>
+          )}
           <Badge variant="secondary">{content.header.matiere}</Badge>
           {content.header.serie && <Badge variant="outline">Série {content.header.serie}</Badge>}
           {content.header.sous_theme && <Badge variant="outline">{content.header.sous_theme}</Badge>}

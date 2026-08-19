@@ -1,0 +1,177 @@
+{
+ "cours_id": "cours-asymptote-oblique-position-1ere-ce",
+ "meta": {
+  "titre": "Déterminer une asymptote oblique et la position de la courbe par rapport à elle",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Étude de fonctions rationnelles",
+  "duree_estimee_min": 30,
+  "tags": [
+   "asymptote oblique",
+   "position relative",
+   "décomposition",
+   "fonction rationnelle",
+   "limite"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "V"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qB2b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Quand une courbe part vers l'infini, elle ne le fait pas n'importe comment : très souvent, elle finit par longer une droite oblique sans jamais la rejoindre. Savoir trouver cette droite, c'est savoir dessiner correctement les deux branches infinies d'une courbe. Et savoir de quel côté la courbe se tient, c'est éviter l'erreur de tracé que les correcteurs repèrent en premier."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Calculer une limite de fonction rationnelle à l'infini",
+    "Effectuer une division euclidienne de polynômes, ou identifier des coefficients",
+    "Étudier le signe d'un quotient"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Asymptote oblique et position relative",
+   "contenu_markdown": "**Définition.** La droite $(\\Delta)$ d'équation $y=ax+b$, avec $a\\neq 0$, est **asymptote oblique** à la courbe $(\\mathcal{C})$ de $f$ en $+\\infty$ lorsque\n\n$$\\lim_{x\\to+\\infty}\\left[f(x)-(ax+b)\\right]=0$$\n\nOn définit de même l'asymptote oblique en $-\\infty$.\n\n**Comment la trouver.** Pour une fonction rationnelle dont le degré du numérateur dépasse d'exactement une unité celui du dénominateur, la division euclidienne donne\n\n$$f(x)=ax+b+\\frac{R(x)}{D(x)}$$\n\noù le degré de $R$ est strictement inférieur à celui de $D$. La fraction résiduelle tend alors vers $0$ à l'infini, et $y=ax+b$ est l'asymptote oblique, en $+\\infty$ comme en $-\\infty$.\n\n**Comment déterminer la position.** Tout est dans le **signe** de la différence\n\n$$d(x)=f(x)-(ax+b)=\\frac{R(x)}{D(x)}$$\n\n- si $d(x)>0$, alors $f(x)>ax+b$ : la courbe est **au-dessus** de $(\\Delta)$ ;\n- si $d(x)<0$ : la courbe est **en dessous** ;\n- si $d(x)=0$ : la courbe **coupe** $(\\Delta)$ en ce point.\n\nOn dresse donc un tableau de signes de $d(x)$ sur l'ensemble de définition, et l'on conclut intervalle par intervalle.\n\n**Repère utile.** Le degré du numérateur moins celui du dénominateur annonce le type de branche infinie : égal à $0$, asymptote horizontale ; égal à $1$, asymptote oblique ; supérieur à $1$, branche parabolique.",
+   "formule_principale": "y=ax+b\\text{ asymptote}\\iff\\lim_{x\\to\\pm\\infty}\\left[f(x)-(ax+b)\\right]=0",
+   "variantes": [
+    {
+     "nom": "Recherche de $a$ et $b$ par les limites",
+     "quand_utiliser": "Quand la fonction n'est pas rationnelle et qu'aucune division n'est possible",
+     "contenu_markdown": "On calcule successivement $a=\\displaystyle\\lim_{x\\to+\\infty}\\frac{f(x)}{x}$, puis $b=\\displaystyle\\lim_{x\\to+\\infty}\\left[f(x)-ax\\right]$. Si ces deux limites existent et sont finies avec $a\\neq 0$, la droite $y=ax+b$ est asymptote oblique. Cette méthode est générale mais plus longue : pour une fonction rationnelle, la division euclidienne donne $a$, $b$ **et** la position en une seule opération."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ définie pour $x\\neq-1$ par $f(x)=\\dfrac{x^{2}+3}{x+1}$. Sachant que $f(x)=x-1+\\dfrac{4}{x+1}$, montrer que la courbe $(\\mathcal{C})$ de $f$ admet une asymptote oblique et préciser, suivant les valeurs de $x$, la position de $(\\mathcal{C})$ par rapport à cette asymptote. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Isoler la différence entre la fonction et la droite candidate",
+     "justification": "La décomposition fournie sépare la partie affine de la fraction résiduelle",
+     "resultat_markdown": "$f(x)-(x-1)=\\dfrac{4}{x+1}$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer la limite de cette différence en $+\\infty$",
+     "justification": "$x+1\\to+\\infty$, donc l'inverse tend vers $0$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}\\frac{4}{x+1}=0$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer la limite en $-\\infty$",
+     "justification": "$x+1\\to-\\infty$, donc l'inverse tend encore vers $0$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to-\\infty}\\frac{4}{x+1}=0$"
+    },
+    {
+     "numero": 4,
+     "action": "Conclure sur l'asymptote",
+     "justification": "La différence tend vers $0$ aux deux infinis, et le coefficient directeur $1$ est non nul",
+     "resultat_markdown": "La droite $(\\Delta)\\;:\\;y=x-1$ est asymptote oblique à $(\\mathcal{C})$ en $+\\infty$ et en $-\\infty$"
+    },
+    {
+     "numero": 5,
+     "action": "Étudier le signe de la différence",
+     "justification": "Le numérateur $4$ est strictement positif, donc le signe du quotient est celui de $x+1$",
+     "resultat_markdown": "$\\dfrac{4}{x+1}>0$ pour $x>-1$ et $\\dfrac{4}{x+1}<0$ pour $x<-1$"
+    },
+    {
+     "numero": 6,
+     "action": "Traduire en position relative",
+     "justification": "Différence positive signifie courbe au-dessus, différence négative signifie courbe en dessous",
+     "resultat_markdown": "$(\\mathcal{C})$ est au-dessus de $(\\Delta)$ sur $\\left]-1\\,;\\,+\\infty\\right[$, en dessous sur $\\left]-\\infty\\,;\\,-1\\right[$"
+    },
+    {
+     "numero": 7,
+     "action": "Examiner l'existence de points d'intersection",
+     "justification": "Il faudrait $\\dfrac{4}{x+1}=0$, ce qui exigerait $4=0$",
+     "resultat_markdown": "La courbe ne coupe jamais son asymptote"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler sur deux valeurs",
+     "justification": "On compare $f(x)$ et $x-1$ de part et d'autre de $-1$",
+     "resultat_markdown": "Pour $x=1$ : $f(1)=2$ et $x-1=0$, donc au-dessus. Pour $x=-3$ : $f(-3)=-6$ et $x-1=-4$, donc en dessous"
+    }
+   ],
+   "conclusion_markdown": "La droite $y=x-1$ est asymptote oblique à $(\\mathcal{C})$ aux deux infinis. La courbe se tient au-dessus d'elle pour $x>-1$ et en dessous pour $x<-1$, sans jamais la traverser : le changement de côté se produit au franchissement de l'asymptote **verticale** $x=-1$, et non par une intersection avec $(\\Delta)$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Affirmer que la courbe coupe son asymptote au point où la position change",
+     "pourquoi_faux": "Ici le changement de position a lieu en $x=-1$, qui est la valeur **interdite** : la fonction n'y est pas définie, il ne peut donc pas y avoir de point de la courbe. La courbe s'échappe vers l'infini de part et d'autre de l'asymptote verticale, ce qui la fait réapparaître de l'autre côté de l'asymptote oblique.",
+     "correction_markdown": "Une intersection avec l'asymptote correspond à $d(x)=0$, avec $x$ dans l'ensemble de définition. Résous cette équation : si elle n'a pas de solution, écris explicitement que la courbe ne coupe pas $(\\Delta)$."
+    },
+    {
+     "erreur_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}f(x)$ et conclure qu'il n'y a pas d'asymptote parce que la limite est infinie",
+     "pourquoi_faux": "Une asymptote oblique est justement compatible avec une limite infinie : la courbe part vers l'infini **le long** d'une droite. Ce qui doit tendre vers $0$, c'est la **différence** $f(x)-(ax+b)$, pas $f(x)$.",
+     "correction_markdown": "Retiens la définition sous forme d'écart : « la distance verticale entre la courbe et la droite tend vers zéro ». C'est cette formulation qui évite la confusion."
+    },
+    {
+     "erreur_markdown": "Chercher une asymptote horizontale pour une fonction rationnelle de degrés $2$ et $1$",
+     "pourquoi_faux": "L'écart des degrés vaut $1$ : la fonction se comporte à l'infini comme $\\dfrac{x^{2}}{x}=x$, elle ne peut donc pas tendre vers une constante. Une asymptote horizontale supposerait un écart de degrés nul.",
+     "correction_markdown": "Compare les degrés dès le début : écart $0$ donne une asymptote horizontale, écart $1$ une asymptote oblique, écart $\\geqslant 2$ une branche parabolique. Ce réflexe t'oriente en trois secondes."
+    },
+    {
+     "erreur_markdown": "Étudier le signe de $d(x)$ sans dresser de tableau, en se fiant à un seul essai numérique",
+     "pourquoi_faux": "Le signe peut changer, et un unique essai ne montre qu'un seul intervalle. Ici le calcul en $x=1$ donnerait « au-dessus » et laisserait croire que c'est vrai partout, ce qui est faux pour $x<-1$.",
+     "correction_markdown": "Dresse un tableau de signes complet sur l'ensemble de définition, en y faisant figurer les valeurs interdites et les racines du numérateur. Les essais numériques servent ensuite de contrôle, pas de démonstration."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{2x^{2}-x+1}{x}$, définie pour $x\\neq 0$. Montrer que $(\\mathcal{C})$ admet une asymptote oblique et préciser la position de $(\\mathcal{C})$ par rapport à elle.",
+     "solution_markdown": "**Étape 1 — décomposer.** On divise chaque terme du numérateur par $x$ :\n\n$$f(x)=\\frac{2x^{2}}{x}-\\frac{x}{x}+\\frac{1}{x}=2x-1+\\frac{1}{x}$$\n\n**Étape 2 — calculer la différence.**\n\n$$f(x)-(2x-1)=\\frac{1}{x}$$\n\n**Étape 3 — limites.**\n\n$$\\lim_{x\\to+\\infty}\\frac{1}{x}=0\\qquad\\text{et}\\qquad\\lim_{x\\to-\\infty}\\frac{1}{x}=0$$\n\nLa droite $(\\Delta)\\;:\\;y=2x-1$ est donc asymptote oblique à $(\\mathcal{C})$ en $+\\infty$ et en $-\\infty$.\n\n**Étape 4 — position.** Le signe de $\\dfrac{1}{x}$ est celui de $x$ :\n\n- pour $x>0$ : $f(x)-(2x-1)>0$, la courbe est **au-dessus** de $(\\Delta)$ ;\n- pour $x<0$ : la courbe est **en dessous**.\n\nLa courbe ne coupe pas $(\\Delta)$, car $\\dfrac{1}{x}$ ne s'annule jamais.\n\n**Contrôle.** Pour $x=1$ : $f(1)=\\dfrac{2-1+1}{1}=2$ et $2x-1=1$. On a bien $2>1$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}-3x+1}{x-2}$, définie pour $x\\neq 2$. Déterminer trois réels $a$, $b$ et $c$ tels que $f(x)=ax+b+\\dfrac{c}{x-2}$, en déduire l'asymptote oblique, puis étudier la position de $(\\mathcal{C})$ par rapport à elle.",
+     "solution_markdown": "**Étape 1 — division euclidienne de $x^{2}-3x+1$ par $x-2$.**\n\nPremier terme du quotient : $\\dfrac{x^{2}}{x}=x$. On soustrait $x(x-2)=x^{2}-2x$ :\n\n$$x^{2}-3x+1-\\left(x^{2}-2x\\right)=-x+1$$\n\nDeuxième terme : $\\dfrac{-x}{x}=-1$. On soustrait $-1\\times(x-2)=-x+2$ :\n\n$$-x+1-(-x+2)=-1$$\n\nLe reste vaut $-1$, de degré $0$ : la division est terminée.\n\n$$x^{2}-3x+1=(x-2)(x-1)-1$$\n\n**Étape 2 — décomposition.**\n\n$$f(x)=x-1-\\frac{1}{x-2}$$\n\ndonc $a=1$, $b=-1$ et $c=-1$.\n\n*Vérification :* $x-1-\\dfrac{1}{x-2}=\\dfrac{(x-1)(x-2)-1}{x-2}=\\dfrac{x^{2}-3x+2-1}{x-2}=\\dfrac{x^{2}-3x+1}{x-2}$.\n\n**Étape 3 — asymptote oblique.**\n\n$$f(x)-(x-1)=-\\frac{1}{x-2}$$\n\nCette différence tend vers $0$ en $+\\infty$ et en $-\\infty$ : la droite $(\\Delta)\\;:\\;y=x-1$ est asymptote oblique.\n\n**Étape 4 — position.** Le signe de $-\\dfrac{1}{x-2}$ est l'**opposé** de celui de $x-2$ :\n\n- pour $x>2$ : $x-2>0$, donc la différence est négative, la courbe est **en dessous** de $(\\Delta)$ ;\n- pour $x<2$ : la différence est positive, la courbe est **au-dessus**.\n\nAttention au signe moins de $c$ : la conclusion est ici inversée par rapport à l'exercice précédent.\n\n**Contrôle.** Pour $x=3$ : $f(3)=\\dfrac{9-9+1}{1}=1$ et $x-1=2$. On a bien $1<2$, la courbe est en dessous."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}+mx+1}{x+1}$, définie pour $x\\neq-1$, où $m$ est un réel. Déterminer $m$ pour que la courbe de $f$ admette pour asymptote oblique la droite d'équation $y=x-2$. Étudier alors la position de la courbe par rapport à cette asymptote.",
+     "solution_markdown": "**Étape 1 — division euclidienne de $x^{2}+mx+1$ par $x+1$.**\n\nPremier terme du quotient : $x$. On soustrait $x(x+1)=x^{2}+x$ :\n\n$$x^{2}+mx+1-\\left(x^{2}+x\\right)=(m-1)x+1$$\n\nDeuxième terme : $\\dfrac{(m-1)x}{x}=m-1$. On soustrait $(m-1)(x+1)=(m-1)x+(m-1)$ :\n\n$$(m-1)x+1-\\left[(m-1)x+m-1\\right]=1-m+1=2-m$$\n\nD'où la décomposition\n\n$$f(x)=x+(m-1)+\\frac{2-m}{x+1}$$\n\n**Étape 2 — identifier l'asymptote.** La fraction résiduelle tend vers $0$ à l'infini, donc l'asymptote oblique a pour équation\n\n$$y=x+(m-1)$$\n\nPour qu'elle soit $y=x-2$, il faut $m-1=-2$, soit\n\n$$m=-1$$\n\n**Étape 3 — vérifier que l'asymptote existe bien.** Pour $m=-1$, le reste vaut $2-m=2-(-1)=3\\neq 0$. La fraction résiduelle est donc réellement présente ; si le reste avait été nul, $f$ se réduirait à la fonction affine $x-2$ et sa courbe serait la droite elle-même, sans asymptote au sens propre.\n\nPour $m=-1$ :\n\n$$f(x)=\\frac{x^{2}-x+1}{x+1}=x-2+\\frac{3}{x+1}$$\n\n**Étape 4 — position de la courbe.**\n\n$$f(x)-(x-2)=\\frac{3}{x+1}$$\n\nLe numérateur $3$ est positif, donc le signe est celui de $x+1$ :\n\n- pour $x>-1$ : la courbe est **au-dessus** de l'asymptote ;\n- pour $x<-1$ : la courbe est **en dessous**.\n\nLa courbe ne coupe jamais son asymptote, puisque $\\dfrac{3}{x+1}$ ne s'annule pas.\n\n**Contrôle.** Pour $x=0$ : $f(0)=\\dfrac{1}{1}=1$ et $x-2=-2$. On a bien $1>-2$, la courbe est au-dessus."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une asymptote oblique n'empêche pas la fonction de tendre vers l'infini : c'est la **différence** $f(x)-(ax+b)$ qui doit tendre vers $0$.",
+    "Pour une fonction rationnelle, la division euclidienne te donne l'asymptote et la position en une seule opération : la partie affine est l'asymptote, la fraction résiduelle est l'écart.",
+    "La position se lit sur le signe de cet écart : positif au-dessus, négatif en dessous.",
+    "Regarde le signe du reste : un reste positif et un dénominateur qui change de signe donnent une courbe qui passe d'un côté à l'autre, sans forcément couper la droite.",
+    "Une intersection avec l'asymptote correspond à un écart **nul** ; si le reste est une constante non nulle, il n'y en a jamais.",
+    "Compare les degrés dès le début : écart $0$ pour une asymptote horizontale, écart $1$ pour une oblique, écart $\\geqslant 2$ pour une branche parabolique.",
+    "Au Probatoire, cette question précède toujours le tracé de la courbe : la position que tu établis ici est exactement ce que le correcteur vérifiera sur ton dessin."
+   ]
+  }
+ ]
+}

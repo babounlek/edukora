@@ -23,7 +23,7 @@ import { formatDuration } from "@/lib/duration"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
 function ChoixText({ texte }: { texte: string }) {
@@ -41,6 +41,11 @@ function ChoixText({ texte }: { texte: string }) {
 interface FlatQuestion extends TentativeInediteQuestion {
   numero_exercice: string
   points: string
+  // Renommé (et non `enonce_intro_markdown`) une fois aplati sur la question : à ce
+  // niveau, plus rien ne rappelle qu'il appartient à l'exercice, et le confondre avec
+  // l'énoncé de la question elle-même le ferait afficher autant de fois qu'il y a de
+  // questions - voir le rendu conditionné par isNewExercice plus bas.
+  exercice_intro_markdown: string
 }
 
 function flattenQuestions(tentative: TentativeInedite): FlatQuestion[] {
@@ -49,6 +54,7 @@ function flattenQuestions(tentative: TentativeInedite): FlatQuestion[] {
       ...question,
       numero_exercice: exercice.numero_exercice,
       points: exercice.points,
+      exercice_intro_markdown: exercice.enonce_intro_markdown,
     })),
   )
 }
@@ -123,7 +129,7 @@ export function InediteTentativePage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link
-          to={tentative ? `${catalogueHomePath(tentative.country.toLowerCase())}?origine=INEDITE#catalogue` : "/"}
+          to={tentative ? `${epreuvesListPath(tentative.country.toLowerCase())}?origine=INEDITE` : "/"}
           className="mt-3 inline-block text-sm text-primary hover:underline"
         >
           Retour au catalogue
@@ -235,7 +241,7 @@ export function InediteTentativePage() {
   return (
     <div className="mx-auto max-w-2xl animate-fade-up px-4 py-8 sm:px-6">
       <Link
-        to={`${catalogueHomePath(tentative.country.toLowerCase())}?origine=INEDITE#catalogue`}
+        to={`${epreuvesListPath(tentative.country.toLowerCase())}?origine=INEDITE`}
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
       >
         <ArrowLeft className="size-4" />
@@ -308,10 +314,21 @@ export function InediteTentativePage() {
         return (
           <div key={question.id}>
             {isNewExercice && (
-              <div className={cn("mb-3 flex items-center gap-1.5", index > 0 && "mt-8 border-t border-border pt-6")}>
-                <Badge variant="outline">Exercice {question.numero_exercice}</Badge>
-                {question.points && <Badge variant="outline">{question.points} pts</Badge>}
-              </div>
+              <>
+                <div className={cn("mb-3 flex items-center gap-1.5", index > 0 && "mt-8 border-t border-border pt-6")}>
+                  <Badge variant="outline">Exercice {question.numero_exercice}</Badge>
+                  {question.points && <Badge variant="outline">{question.points} pts</Badge>}
+                </div>
+                {/* Support commun aux questions de l'exercice - rendu une seule fois,
+                    ici et pas dans chaque question (voir ExerciceInedite.enonce_intro_markdown).
+                    Encadré : l'élève doit pouvoir le distinguer d'un énoncé de question au
+                    premier coup d'œil, et y revenir en remontant pendant qu'il répond. */}
+                {question.exercice_intro_markdown && (
+                  <article className="mb-5 rounded-md border border-border bg-muted/40 px-4 py-3 prose prose-neutral max-w-none text-justify prose-sm dark:prose-invert">
+                    <EpreuveMarkdown markdown={question.exercice_intro_markdown} />
+                  </article>
+                )}
+              </>
             )}
 
             <div className="flex items-start justify-between gap-2">

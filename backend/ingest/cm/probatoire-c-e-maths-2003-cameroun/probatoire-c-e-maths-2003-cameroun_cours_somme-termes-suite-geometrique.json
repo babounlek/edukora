@@ -1,0 +1,190 @@
+{
+ "cours_id": "cours-somme-termes-suite-geometrique-1ere-ce",
+ "meta": {
+  "titre": "Calculer la somme des termes consécutifs d'une suite géométrique",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Suites numériques",
+  "duree_estimee_min": 30,
+  "tags": [
+   "suite géométrique",
+   "somme de termes",
+   "nombre de termes",
+   "raison",
+   "premier terme"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VIII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q7-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Additionner $V_{0}+V_{1}+\\ldots+V_{n}$ quand $n$ vaut plusieurs dizaines, c'est impensable terme à terme. Une formule règle le problème en une ligne, et elle ne demande que trois données : le premier terme, la raison, et le nombre de termes. C'est ce dernier qui fait perdre le plus de points, parce qu'une somme d'indice $0$ à $n$ compte $n+1$ termes, et non $n$."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Reconnaître une suite géométrique et identifier sa raison",
+    "Manipuler les puissances : $q^{n+1}=q\\times q^{n}$",
+    "Comprendre la notation $\\displaystyle\\sum_{k=0}^{n}$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Trois données, une formule, un piège",
+   "contenu_markdown": "**Reconnaître une suite géométrique.** $\\left(V_{n}\\right)$ est géométrique s'il existe un réel $q$, la **raison**, tel que $V_{n+1}=q\\,V_{n}$ pour tout $n$. Son terme général s'écrit alors $V_{n}=V_{0}\\,q^{n}$, où $V_{0}$ est le premier terme.\n\nSur une expression du type $V_{n}=A\\,q^{n}$, on lit directement $V_{0}=A$ et la raison $q$.\n\n**La formule de la somme.** Pour $q\\neq 1$ :\n\n$$\\text{somme}=\\text{premier terme}\\times\\frac{1-q^{\\text{nombre de termes}}}{1-q}$$\n\nAutrement dit, pour une somme allant de l'indice $p$ à l'indice $n$ :\n\n$$\\sum_{k=p}^{n}V_{k}=V_{p}\\times\\frac{1-q^{\\,n-p+1}}{1-q}$$\n\n**Le piège du nombre de termes.** De l'indice $p$ à l'indice $n$ inclus, il y a\n\n$$n-p+1\\ \\text{termes}$$\n\nEn particulier, de $0$ à $n$, il y a $n+1$ termes, et non $n$. C'est l'erreur la plus fréquente, et les QCM proposent systématiquement la variante avec $q^{n}$ au lieu de $q^{n+1}$ comme distracteur.\n\n**Deux écritures équivalentes.** On peut présenter le résultat de deux façons :\n\n$$V_{p}\\times\\frac{1-q^{m}}{1-q}=V_{p}\\times\\frac{q^{m}-1}{q-1}$$\n\nen multipliant numérateur et dénominateur par $-1$. La seconde forme est plus commode quand $q>1$, car les deux termes restent positifs.\n\n**Le contrôle imparable.** Substitue la plus petite valeur possible de $n$. La somme se réduit alors à un seul terme, et une seule formule le redonne. Ce test départage instantanément deux propositions qui ne diffèrent que par un exposant.",
+   "formule_principale": "\\sum_{k=0}^{n}V_{k}=V_{0}\\times\\frac{1-q^{\\,n+1}}{1-q}\\qquad(q\\neq 1)",
+   "variantes": [
+    {
+     "nom": "Démonstration par télescopage",
+     "quand_utiliser": "Quand on ne se souvient plus de la formule et qu'il faut la retrouver",
+     "contenu_markdown": "On pose $S=V_{0}+V_{1}+\\ldots+V_{n}$, puis on calcule $qS=V_{1}+V_{2}+\\ldots+V_{n+1}$. En soustrayant, tous les termes intermédiaires s'éliminent : $S-qS=V_{0}-V_{n+1}$, d'où $S(1-q)=V_{0}-V_{0}q^{n+1}$ et enfin $S=V_{0}\\dfrac{1-q^{n+1}}{1-q}$. Cette démonstration se refait en trente secondes et fait apparaître naturellement l'exposant $n+1$, ce qui règle le piège du nombre de termes."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit la suite géométrique $\\left(V_{n}\\right)_{n\\in\\mathbb{N}}$ de terme général $V_{n}=\\sqrt{3}\\,(1{,}01)^{n}$. Calculer $S_{n}=\\displaystyle\\sum_{k=0}^{n}V_{k}$. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier le premier terme",
+     "justification": "On donne à $n$ la valeur $0$, en se souvenant que $q^{0}=1$",
+     "resultat_markdown": "$V_{0}=\\sqrt{3}\\,(1{,}01)^{0}=\\sqrt{3}$"
+    },
+    {
+     "numero": 2,
+     "action": "Identifier la raison",
+     "justification": "Elle se lit sur la base de la puissance",
+     "resultat_markdown": "$q=1{,}01$"
+    },
+    {
+     "numero": 3,
+     "action": "Vérifier que la formule s'applique",
+     "justification": "Elle exige $q\\neq 1$",
+     "resultat_markdown": "$1{,}01\\neq 1$ : la formule est utilisable"
+    },
+    {
+     "numero": 4,
+     "action": "Compter les termes",
+     "justification": "Les indices vont de $0$ à $n$ inclus, donc il y en a $n-0+1$",
+     "resultat_markdown": "$n+1$ termes"
+    },
+    {
+     "numero": 5,
+     "action": "Appliquer la formule",
+     "justification": "Premier terme multiplié par $\\dfrac{1-q^{\\text{nombre de termes}}}{1-q}$",
+     "resultat_markdown": "$S_{n}=\\sqrt{3}\\times\\dfrac{1-(1{,}01)^{n+1}}{1-1{,}01}$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer le dénominateur",
+     "justification": "$1-1{,}01=-0{,}01$",
+     "resultat_markdown": "$S_{n}=\\dfrac{\\sqrt{3}\\left(1-(1{,}01)^{n+1}\\right)}{-0{,}01}$"
+    },
+    {
+     "numero": 7,
+     "action": "Faire remonter le signe moins",
+     "justification": "Diviser par $-0{,}01$ revient à changer le signe puis diviser par $0{,}01$",
+     "resultat_markdown": "$S_{n}=\\dfrac{-\\sqrt{3}\\left(1-(1{,}01)^{n+1}\\right)}{0{,}01}$"
+    },
+    {
+     "numero": 8,
+     "action": "Écrire la forme sans signe moins",
+     "justification": "On distribue le signe dans la parenthèse en inversant l'ordre des termes",
+     "resultat_markdown": "$S_{n}=\\dfrac{\\sqrt{3}\\left((1{,}01)^{n+1}-1\\right)}{0{,}01}$"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler avec $n=0$",
+     "justification": "La somme se réduit alors à $V_{0}=\\sqrt{3}$",
+     "resultat_markdown": "$\\dfrac{\\sqrt{3}\\left((1{,}01)^{1}-1\\right)}{0{,}01}=\\dfrac{\\sqrt{3}\\times 0{,}01}{0{,}01}=\\sqrt{3}$"
+    },
+    {
+     "numero": 10,
+     "action": "Écarter la variante avec l'exposant $n$",
+     "justification": "Même test avec $n=0$",
+     "resultat_markdown": "$\\dfrac{\\sqrt{3}\\left((1{,}01)^{0}-1\\right)}{0{,}01}=\\dfrac{\\sqrt{3}\\times 0}{0{,}01}=0\\neq\\sqrt{3}$ : cette forme est fausse"
+    }
+   ],
+   "conclusion_markdown": "La somme vaut $S_{n}=\\dfrac{-\\sqrt{3}\\left(1-(1{,}01)^{n+1}\\right)}{0{,}01}$, ou de façon équivalente $\\dfrac{\\sqrt{3}\\left((1{,}01)^{n+1}-1\\right)}{0{,}01}$. Le contrôle avec $n=0$ a départagé en dix secondes les deux propositions qui ne différaient que par l'exposant."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Utiliser $q^{n}$ au lieu de $q^{n+1}$",
+     "pourquoi_faux": "Une somme de l'indice $0$ à l'indice $n$ comporte $n+1$ termes. Avec l'exposant $n$, on calcule en réalité $V_{0}+\\ldots+V_{n-1}$ : il manque le dernier terme, et le résultat est faux pour toute valeur de $n$.",
+     "correction_markdown": "Compte les termes explicitement : de $p$ à $n$, il y en a $n-p+1$. Puis teste avec la plus petite valeur de $n$ : la formule doit redonner un seul terme."
+    },
+    {
+     "erreur_markdown": "Prendre $V_{1}$ comme premier terme alors que la somme commence à $k=0$",
+     "pourquoi_faux": "La formule multiplie par le **premier terme de la somme**, celui d'indice $p$. Si la somme commence à $0$, c'est $V_{0}$ ; si elle commence à $1$, c'est $V_{1}$. Confondre les deux introduit un facteur $q$ parasite.",
+     "correction_markdown": "Repère l'indice de départ écrit sous le symbole somme, et calcule le terme correspondant avant toute chose."
+    },
+    {
+     "erreur_markdown": "Oublier que $q^{0}=1$ et écrire $V_{0}=0$",
+     "pourquoi_faux": "Toute puissance d'exposant nul vaut $1$, donc $V_{0}=\\sqrt{3}\\times 1=\\sqrt{3}$. Prendre $V_{0}=0$ annule toute la somme.",
+     "correction_markdown": "Rappelle-toi que $q^{0}=1$ pour tout $q\\neq 0$. Un premier terme nul rendrait d'ailleurs toute la suite nulle, ce qui contredirait l'énoncé."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe en divisant par $1-q$ quand $q>1$",
+     "pourquoi_faux": "Pour $q=1{,}01$, on a $1-q=-0{,}01$, négatif. Diviser par un nombre négatif change le signe du résultat : oublier ce changement inverse le signe de toute la somme, qui devient négative alors que tous ses termes sont positifs.",
+     "correction_markdown": "Contrôle le signe du résultat : une somme de termes positifs est positive. Si tu obtiens un nombre négatif, cherche l'erreur du côté du dénominateur."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $\\left(U_{n}\\right)$ la suite géométrique de premier terme $U_{0}=5$ et de raison $q=2$. Calculer $S=U_{0}+U_{1}+\\ldots+U_{9}$.",
+     "solution_markdown": "**Données.** Premier terme $U_{0}=5$, raison $q=2$.\n\n**Nombre de termes.** Les indices vont de $0$ à $9$, donc il y a $9-0+1=10$ termes.\n\n**Application de la formule.**\n\n$$S=5\\times\\frac{1-2^{10}}{1-2}=5\\times\\frac{1-1\\,024}{-1}=5\\times\\frac{-1\\,023}{-1}=5\\times 1\\,023$$\n\n$$S=5\\,115$$\n\n**Contrôle sur les premiers termes.** $U_{0}=5$, $U_{1}=10$, $U_{2}=20$, $U_{3}=40$. La somme des quatre premiers vaut $75$, et la formule avec $4$ termes donne $5\\times\\dfrac{1-16}{-1}=5\\times 15=75$. Cohérent."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $\\left(W_{n}\\right)$ définie par $W_{n}=3\\times\\left(\\dfrac{1}{2}\\right)^{n}$. Calculer $T=W_{2}+W_{3}+\\ldots+W_{7}$.",
+     "solution_markdown": "**Étape 1 — identifier la suite.** $\\left(W_{n}\\right)$ est géométrique de raison $q=\\dfrac{1}{2}$.\n\n**Étape 2 — premier terme de la somme.** La somme commence à l'indice $2$, donc le premier terme est\n\n$$W_{2}=3\\times\\left(\\frac{1}{2}\\right)^{2}=3\\times\\frac{1}{4}=\\frac{3}{4}$$\n\n**Étape 3 — nombre de termes.** De l'indice $2$ à l'indice $7$ inclus :\n\n$$7-2+1=6\\ \\text{termes}$$\n\n**Étape 4 — appliquer la formule.**\n\n$$T=\\frac{3}{4}\\times\\frac{1-\\left(\\dfrac{1}{2}\\right)^{6}}{1-\\dfrac{1}{2}}$$\n\nCalcul du dénominateur : $1-\\dfrac{1}{2}=\\dfrac{1}{2}$.\n\nCalcul de la puissance : $\\left(\\dfrac{1}{2}\\right)^{6}=\\dfrac{1}{64}$.\n\n$$T=\\frac{3}{4}\\times\\frac{1-\\dfrac{1}{64}}{\\dfrac{1}{2}}=\\frac{3}{4}\\times\\frac{\\dfrac{63}{64}}{\\dfrac{1}{2}}$$\n\nDiviser par $\\dfrac{1}{2}$ revient à multiplier par $2$ :\n\n$$T=\\frac{3}{4}\\times\\frac{63}{64}\\times 2=\\frac{3\\times 63}{2\\times 64}=\\frac{189}{128}$$\n\n**Valeur approchée.** $T\\approx 1{,}477$.\n\n**Contrôle.** $W_{2}=0{,}75$, $W_{3}=0{,}375$, $W_{4}=0{,}1875$, $W_{5}=0{,}09375$, $W_{6}=0{,}046875$, $W_{7}=0{,}0234375$. La somme vaut environ $1{,}477$. Cohérent."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $\\left(U_{n}\\right)$ la suite définie par $U_{0}=2$ et $U_{n+1}=3U_{n}+4$ pour tout $n\\geqslant 0$. On pose $V_{n}=U_{n}+2$. Démontrer que $\\left(V_{n}\\right)$ est géométrique, en déduire $U_{n}$ en fonction de $n$, puis calculer $S_{n}=U_{0}+U_{1}+\\ldots+U_{n}$.",
+     "solution_markdown": "**Étape 1 — montrer que $\\left(V_{n}\\right)$ est géométrique.**\n\n$$V_{n+1}=U_{n+1}+2=3U_{n}+4+2=3U_{n}+6=3\\left(U_{n}+2\\right)=3V_{n}$$\n\nLa suite $\\left(V_{n}\\right)$ est donc géométrique de raison $q=3$, de premier terme\n\n$$V_{0}=U_{0}+2=2+2=4$$\n\n**Étape 2 — terme général de $\\left(V_{n}\\right)$.**\n\n$$V_{n}=V_{0}\\,q^{n}=4\\times 3^{n}$$\n\n**Étape 3 — revenir à $U_{n}$.** Comme $V_{n}=U_{n}+2$, on a $U_{n}=V_{n}-2$ :\n\n$$U_{n}=4\\times 3^{n}-2$$\n\n*Contrôle :* $U_{0}=4-2=2$, conforme. $U_{1}=12-2=10$, et la relation de récurrence donne $3\\times 2+4=10$. Cohérent.\n\n**Étape 4 — calculer la somme.** On sépare la somme en deux :\n\n$$S_{n}=\\sum_{k=0}^{n}U_{k}=\\sum_{k=0}^{n}\\left(4\\times 3^{k}-2\\right)=4\\sum_{k=0}^{n}3^{k}-\\sum_{k=0}^{n}2$$\n\n**Étape 5 — la partie géométrique.** La somme $\\displaystyle\\sum_{k=0}^{n}3^{k}$ comporte $n+1$ termes, de premier terme $3^{0}=1$ et de raison $3$ :\n\n$$\\sum_{k=0}^{n}3^{k}=1\\times\\frac{1-3^{\\,n+1}}{1-3}=\\frac{1-3^{\\,n+1}}{-2}=\\frac{3^{\\,n+1}-1}{2}$$\n\n**Étape 6 — la partie constante.** On additionne $n+1$ fois le nombre $2$ :\n\n$$\\sum_{k=0}^{n}2=2(n+1)$$\n\n**Étape 7 — assembler.**\n\n$$S_{n}=4\\times\\frac{3^{\\,n+1}-1}{2}-2(n+1)=2\\left(3^{\\,n+1}-1\\right)-2(n+1)$$\n\n$$S_{n}=2\\times 3^{\\,n+1}-2-2n-2=2\\times 3^{\\,n+1}-2n-4$$\n\n**Étape 8 — contrôler avec $n=0$.** La somme se réduit à $U_{0}=2$. La formule donne\n\n$$2\\times 3^{1}-0-4=6-4=2$$\n\n**Contrôle avec $n=1$.** La somme vaut $U_{0}+U_{1}=2+10=12$. La formule donne\n\n$$2\\times 3^{2}-2-4=18-6=12$$\n\n**Conclusion.** $S_{n}=2\\times 3^{\\,n+1}-2n-4$.\n\n**Ce que montre cet exercice.** Une suite arithmético-géométrique ne se somme pas directement : il faut d'abord la ramener à une suite géométrique par une suite auxiliaire, puis découper la somme en une partie géométrique et une partie constante. Le nombre de termes, $n+1$, intervient dans les deux."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Trois données suffisent : le premier terme de la somme, la raison, et le nombre de termes.",
+    "De l'indice $p$ à l'indice $n$, il y a $n-p+1$ termes. De $0$ à $n$, il y en a $n+1$, jamais $n$.",
+    "La formule est premier terme $\\times\\dfrac{1-q^{\\text{nombre de termes}}}{1-q}$, valable pour $q\\neq 1$.",
+    "$\\dfrac{1-q^{m}}{1-q}$ et $\\dfrac{q^{m}-1}{q-1}$ sont deux écritures du même nombre : choisis celle qui évite les signes négatifs.",
+    "Teste avec la plus petite valeur de $n$ : la somme se réduit à un terme, et une seule formule le redonne.",
+    "Une somme de termes positifs est positive : un résultat négatif signale une erreur de signe au dénominateur.",
+    "En cas d'oubli, retrouve la formule par télescopage : calcule $S-qS$, tout s'élimine sauf deux termes.",
+    "Pour une suite arithmético-géométrique, passe d'abord par une suite auxiliaire géométrique, puis découpe la somme."
+   ]
+  }
+ ]
+}

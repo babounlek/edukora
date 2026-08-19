@@ -68,14 +68,34 @@ def _corrige_deep_link(fiche):
     return f"{settings.FRONTEND_URL}/fiches?ref=pdf_fiche_corrige"
 
 
-def _combined_markdown(fiche, field):
-    items = fiche.items.select_related("competence_item").order_by("ordre")
-    blocs = [f"### Question {item.ordre}\n\n{getattr(item.competence_item, field)}" for item in items]
+def _bloc_question(item, *, avec_corrige):
+    """
+    Un bloc "Question N" du PDF. Le corrigé reprend l'énoncé AVANT la solution : le
+    répétiteur travaille sur le seul document qu'il garde (voir _corrige_deep_link), il
+    ne doit pas avoir à le lire à côté du PDF sujet distribué à ses élèves pour savoir
+    de quoi parle la solution qu'il relit.
+    """
+    competence_item = item.competence_item
+    blocs = [f"## Question {item.ordre}", competence_item.enonce_markdown.strip()]
+    if avec_corrige:
+        corrige = competence_item.corrige_markdown.strip()
+        # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
+        # titres ("### Rappel de méthode", puis "### Corrigé") ; les plus anciens n'en ont
+        # aucun - sans ce repli, l'énoncé et sa solution se toucheraient sans démarcation
+        # visible, exactement ce que l'ordre voulu ci-dessus cherche à éviter.
+        if not corrige.startswith("#"):
+            corrige = f"### Corrigé\n\n{corrige}"
+        blocs.append(corrige)
     return "\n\n".join(blocs)
 
 
-def _render_html(fiche, *, field, template_name, deep_link):
-    markdown_text = _resolve_media_paths(_combined_markdown(fiche, field))
+def _combined_markdown(fiche, *, avec_corrige):
+    items = fiche.items.select_related("competence_item").order_by("ordre")
+    return "\n\n".join(_bloc_question(item, avec_corrige=avec_corrige) for item in items)
+
+
+def _render_html(fiche, *, avec_corrige, template_name, deep_link):
+    markdown_text = _resolve_media_paths(_combined_markdown(fiche, avec_corrige=avec_corrige))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
     content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
@@ -126,11 +146,11 @@ def _render_pdf_bytes(html):
 def generate_fiche_pdfs(fiche):
     """Retourne (sujet_bytes, corrige_bytes). Bas niveau : voir save_fiche_pdfs pour l'usage normal."""
     sujet_html = _render_html(
-        fiche, field="enonce_markdown", template_name="fiches/fiche_sujet_pdf_template.html",
+        fiche, avec_corrige=False, template_name="fiches/fiche_sujet_pdf_template.html",
         deep_link=_sujet_deep_link(fiche),
     )
     corrige_html = _render_html(
-        fiche, field="corrige_markdown", template_name="fiches/fiche_corrige_pdf_template.html",
+        fiche, avec_corrige=True, template_name="fiches/fiche_corrige_pdf_template.html",
         deep_link=_corrige_deep_link(fiche),
     )
     return _render_pdf_bytes(sujet_html), _render_pdf_bytes(corrige_html)

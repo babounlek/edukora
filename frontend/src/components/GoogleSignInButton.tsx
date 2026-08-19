@@ -59,10 +59,10 @@ interface GoogleSignInButtonProps {
   onCredential: (credential: string) => void
   disabled?: boolean
   /**
-   * Affiche un séparateur « ou » au-dessus du bouton. Vrai sur l'écran de connexion,
-   * où Google est une ALTERNATIVE au formulaire téléphone. Faux ailleurs - sur la page
-   * compte, le bouton sert à RATTACHER une méthode supplémentaire, et un « ou » y
-   * laisserait croire à un choix exclusif entre le numéro et Google.
+   * Affiche un séparateur « ou » SOUS le bouton. Vrai sur l'écran de connexion, où
+   * Google est proposé en premier et le formulaire en est l'alternative. Faux ailleurs -
+   * sur la page compte, le bouton sert à RATTACHER une méthode supplémentaire, et un
+   * « ou » y laisserait croire à un choix exclusif entre les méthodes déjà rattachées.
    */
   withSeparator?: boolean
 }
@@ -120,12 +120,18 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
   }, [])
 
   // Le séparateur appartient au composant, pas à la page : sans ça, un « OU »
-  // resterait affiché tout seul sous le formulaire partout où la connexion Google
-  // n'est pas configurée - c'est-à-dire par défaut.
+  // resterait affiché tout seul au-dessus du formulaire partout où la connexion
+  // Google n'est pas configurée - c'est-à-dire par défaut.
   if (indisponible) return null
 
   return (
     <>
+      <div
+        ref={containerRef}
+        className="flex justify-center [&>div]:w-full"
+        aria-busy={disabled}
+        style={disabled ? { pointerEvents: "none", opacity: 0.6 } : undefined}
+      />
       {withSeparator && (
         <div className="my-4 flex items-center gap-3">
           <span className="h-px flex-1 bg-border" />
@@ -133,12 +139,6 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
           <span className="h-px flex-1 bg-border" />
         </div>
       )}
-      <div
-        ref={containerRef}
-        className="flex justify-center [&>div]:w-full"
-        aria-busy={disabled}
-        style={disabled ? { pointerEvents: "none", opacity: 0.6 } : undefined}
-      />
     </>
   )
 }

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, ListChecks, Lock, Unlock } from "lucide-react"
+import { CheckCircle2, Clock, ListChecks, Lock, Unlock } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
@@ -29,18 +29,35 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
       style={style}
     >
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
           <SubjectIcon className="size-4" aria-hidden="true" />
         </div>
-        <div className="flex min-w-0 flex-1 items-baseline gap-2">
-          <h2 className="truncate font-display text-sm font-medium">{cours.titre}</h2>
-          {cours.duree_estimee_min && (
-            <span className="shrink-0 text-xs text-muted-foreground">{cours.duree_estimee_min} min</span>
-          )}
+        {/* Le chapitre (sous_theme) passe sur une seconde ligne plutôt que d'être
+            omis : deux cours d'une même matière portent souvent des titres proches,
+            c'est lui qui les distingue au survol de la liste. */}
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate font-display text-sm font-medium">{cours.titre}</h3>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            {cours.sous_theme && <span className="truncate">{cours.sous_theme}</span>}
+            {cours.duree_estimee_min && (
+              <span className="flex shrink-0 items-center gap-0.5">
+                <Clock className="size-3" />
+                {cours.duree_estimee_min} min
+              </span>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
-        <Badge variant="secondary" className="hidden sm:inline-flex">{cours.subject.label}</Badge>
+        {cours.is_read && (
+          <span className="hidden items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success sm:inline-flex">
+            <CheckCircle2 className="size-3" />
+            Lu
+          </span>
+        )}
+        <Badge variant="secondary" className="hidden sm:inline-flex">
+          {cours.subject.label}
+        </Badge>
         {cours.apercu_contenu.exercices_count > 0 && (
           <span className="hidden items-center gap-0.5 text-xs text-muted-foreground sm:inline-flex">
             <ListChecks className="size-3" />
@@ -48,11 +65,13 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
           </span>
         )}
         {cours.has_access ? (
-          <Unlock className="size-3.5 shrink-0 text-success" />
+          <Unlock className="size-3.5 shrink-0 text-success" aria-label="Accès inclus dans ton abonnement" />
         ) : (
-          <Lock className="size-3.5 shrink-0 text-muted-foreground" />
+          <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label="Abonnement requis" />
         )}
-        {cours.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success" />}
+        {/* Repli mobile du badge "Lu" masqué ci-dessus : la coche seule tient dans la
+            largeur d'un téléphone, le badge texte non. */}
+        {cours.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success sm:hidden" aria-label="Déjà lu" />}
       </div>
     </Link>
   )

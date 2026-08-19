@@ -188,19 +188,42 @@ class User(AbstractBaseUser, PermissionsMixin):
         raise RuntimeError("Impossible de générer un code de parrainage unique.")
 
 
+class CodeCanal(models.TextChoices):
+    SMS = "sms", "SMS"
+    EMAIL = "email", "E-mail"
+
+
 class OTPCode(models.Model):
     """
-    Code à usage unique envoyé par SMS pour l'authentification par téléphone.
+    Code à usage unique envoyé pour l'authentification, tous canaux confondus.
 
-    Chaque ligne vaut aussi pour un SMS réellement envoyé (request_otp n'en crée une
-    qu'après avoir passé tous les garde-fous, voir users.otp_service) : cette table sert
-    donc de registre de facturation autant que de registre d'authentification, et c'est
-    elle qu'interrogent les plafonds par IP et le plafond global quotidien - plutôt
-    qu'un compteur en cache, qui serait local à chaque worker gunicorn et donc
-    contournable en frappant l'API assez vite pour tomber sur un autre worker.
+    Une seule table pour le SMS et l'e-mail, distingués par `canal` : un code est un
+    code, et deux tables jumelles auraient fini par diverger (une correction de sécurité
+    appliquée à l'une, oubliée sur l'autre).
+
+    L'INVARIANT à ne jamais perdre de vue en la lisant : seul le canal SMS coûte de
+    l'argent. Cette table sert de registre de facturation autant que d'authentification,
+    et c'est elle qu'interrogent les plafonds par IP et le plafond global. Tout comptage
+    servant un plafond DOIT donc filtrer sur `canal` - sans ce filtre, un afflux
+    d'e-mails gratuits ferait atteindre le plafond SMS et couperait l'authentification
+    par SMS pour tout le monde sans qu'un seul SMS de plus ait été envoyé. C'est ce
+    filtre, et non deux tables séparées, qui protège désormais le budget.
+
+    Le comptage se fait en base plutôt que dans un compteur en cache, qui serait local à
+    chaque worker gunicorn et donc contournable en frappant l'API assez vite pour tomber
+    sur un autre worker.
     """
 
-    phone_number = models.CharField(max_length=16)
+    canal = models.CharField(
+        max_length=10, choices=CodeCanal.choices, default=CodeCanal.SMS,
+        help_text="Canal d'envoi. Seul `sms` est facturé, d'où les plafonds distincts.",
+    )
+    destination = models.CharField(
+        max_length=254,
+        help_text="Numéro au format E.164 pour le canal SMS, adresse e-mail en "
+                  "minuscules pour le canal e-mail. Longueur dimensionnée sur l'adresse "
+                  "e-mail, la plus longue des deux (254 caractères, RFC 5321).",
+    )
     code = models.CharField(max_length=6)
     expires_at = models.DateTimeField()
     is_used = models.BooleanField(default=False)
@@ -214,26 +237,31 @@ class OTPCode(models.Model):
     )
 
     class Meta:
+        verbose_name = "code à usage unique"
+        verbose_name_plural = "codes à usage unique"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=["phone_number", "is_used"]),
-            # Sert la fenêtre glissante par IP de request_otp (filtre sur ip_address
-            # + created_at récent), qui tourne sur CHAQUE demande de code - la table
-            # n'est purgée que périodiquement, donc elle peut être longue.
-            models.Index(fields=["ip_address", "created_at"]),
-            # Idem pour le plafond global, qui ne filtre que sur created_at.
-            models.Index(fields=["created_at"]),
+            models.Index(fields=["canal", "destination", "is_used"]),
+            # Sert la fenêtre glissante par IP (filtre canal + ip_address + created_at
+            # récent), qui tourne sur CHAQUE demande de code - la table n'est purgée que
+            # périodiquement, donc elle peut être longue. `canal` en tête parce que tous
+            # les comptages de plafond commencent par lui.
+            models.Index(fields=["canal", "ip_address", "created_at"]),
+            # Idem pour le plafond global, qui ne filtre que sur canal + created_at.
+            models.Index(fields=["canal", "created_at"]),
         ]
 
     def __str__(self):
-        return f"{self.phone_number} ({'utilisé' if self.is_used else 'actif'})"
+        return f"{self.destination} ({'utilisé' if self.is_used else 'actif'})"
 
 
 class AuthProvider(models.TextChoices):
     PHONE = "phone", "Téléphone (OTP)"
     GOOGLE = "google", "Google"
     APPLE = "apple", "Apple"
-    EMAIL = "email", "E-mail (lien magique)"
+    # « code » et non « lien magique » : voir users.email_service pour pourquoi le lien
+    # a été écarté (il change de navigateur en route sur mobile).
+    EMAIL = "email", "E-mail (code)"
     PASSKEY = "passkey", "Clé d'accès"
 
 

@@ -10,6 +10,17 @@ class DureeMode(models.TextChoices):
     JUSQUA_EXAMEN = "JUSQUA_EXAMEN", "Jusqu'à l'examen"
 
 
+# Référence de prix pour Plan.effective_price : le palier Jusqu'à l'Examen ne coûte
+# jamais plus cher au jour que Mensuel (PRIX_MENSUEL_REFERENCE / DUREE_MENSUEL_REFERENCE_JOURS),
+# jusqu'à un plancher minimum. Décision utilisateur du 2026-08-19 - remplace un filet de
+# sécurité à seuils choisis à la main par une règle continue ancrée sur des nombres déjà
+# déterminés ailleurs dans la grille (le prix de Mensuel, le plancher historique de
+# l'ancien Pack Examen) plutôt que des seuils arbitraires.
+PRIX_MENSUEL_REFERENCE = 2000
+DUREE_MENSUEL_REFERENCE_JOURS = 30
+PLANCHER_JUSQUA_EXAMEN = 3000
+
+
 class ProductType(models.TextChoices):
     """
     Ce que l'achat de ce Plan active - ABONNEMENT active/prolonge Subscription (accès de
@@ -77,6 +88,21 @@ class Plan(models.Model):
             return self.duration_days
         jours = (session.date_debut - timezone.now().date()).days
         return max(jours, 1)
+
+    def effective_price(self):
+        """
+        Prix réel à facturer/afficher. Pour JUSQUA_EXAMEN, `price` sert de plafond
+        (payé par qui achète loin de l'examen) : en dessous, le prix suit
+        exactement le taux journalier de Mensuel (jamais plus cher au jour qu'un
+        abonnement mensuel), jusqu'à PLANCHER_JUSQUA_EXAMEN qui protège un ticket
+        minimum même acheté la veille de l'examen. Voir effective_duration_days
+        pour le même principe appliqué à la durée.
+        """
+        if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
+            return self.price
+        jours = self.effective_duration_days()
+        taux_journalier = PRIX_MENSUEL_REFERENCE / DUREE_MENSUEL_REFERENCE_JOURS
+        return min(self.price, max(PLANCHER_JUSQUA_EXAMEN, round(jours * taux_journalier)))
 
 
 class SubscriptionManager(models.Manager):

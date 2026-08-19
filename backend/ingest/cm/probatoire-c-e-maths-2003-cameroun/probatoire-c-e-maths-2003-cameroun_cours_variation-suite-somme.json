@@ -1,0 +1,172 @@
+{
+ "cours_id": "cours-variation-suite-somme-1ere-ce",
+ "meta": {
+  "titre": "Étudier le sens de variation d'une suite par la différence de deux termes consécutifs",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Suites numériques",
+  "duree_estimee_min": 25,
+  "tags": [
+   "suite",
+   "sens de variation",
+   "différence de termes consécutifs",
+   "série harmonique",
+   "somme de termes positifs"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VIII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q2-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une suite définie par une somme qui s'allonge, $U_{n}=1+\\dfrac{1}{2}+\\dfrac{1}{3}+\\ldots+\\dfrac{1}{n}$ : monte-t-elle ou descend-elle ? L'intuition hésite, parce que les termes ajoutés deviennent de plus en plus petits. Mais petits ne veut pas dire négatifs, et c'est là que tout se joue. Un calcul d'une ligne, la différence de deux termes consécutifs, tranche définitivement."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir ce qu'est une suite croissante, décroissante, monotone",
+    "Manipuler une somme écrite avec des points de suspension",
+    "Étudier le signe d'une expression"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Comparer deux termes consécutifs",
+   "contenu_markdown": "**Définitions.** Une suite $\\left(U_{n}\\right)$ est\n\n- **croissante** si $U_{n+1}\\geqslant U_{n}$ pour tout $n$ ;\n- **décroissante** si $U_{n+1}\\leqslant U_{n}$ pour tout $n$ ;\n- **constante** si $U_{n+1}=U_{n}$ pour tout $n$.\n\nElle est dite strictement croissante ou décroissante si les inégalités sont strictes.\n\n**La méthode universelle.** On calcule la différence\n\n$$U_{n+1}-U_{n}$$\n\net l'on étudie son signe. Positive pour tout $n$, la suite croît ; négative, elle décroît ; changeante, elle n'est pas monotone.\n\n**Le cas des sommes.** Quand $U_{n}$ est une somme de $n$ termes, l'écriture de $U_{n+1}$ reprend **exactement** les mêmes termes, plus un. La différence se réduit donc au seul terme ajouté :\n\n$$U_{n}=a_{1}+a_{2}+\\ldots+a_{n}\\;\\Longrightarrow\\;U_{n+1}-U_{n}=a_{n+1}$$\n\n**Conséquence à retenir.** Une suite définie comme une somme de termes **tous positifs** est croissante, sans aucune exception. Le fait que les termes ajoutés deviennent de plus en plus petits ne change rien : on continue d'ajouter.\n\n**La méthode du quotient**, pour les suites à termes strictement positifs. On compare $\\dfrac{U_{n+1}}{U_{n}}$ à $1$ : supérieur à $1$, la suite croît ; inférieur, elle décroît. Cette variante est commode pour les suites définies par des produits ou des puissances, où la différence se simplifie mal.",
+   "formule_principale": "U_{n+1}-U_{n}>0\\;\\forall n\\iff\\left(U_{n}\\right)\\ \\text{strictement croissante}",
+   "variantes": [
+    {
+     "nom": "Étude de la fonction associée",
+     "quand_utiliser": "Quand $U_{n}=f(n)$ avec $f$ une fonction dérivable sur $\\left[0\\,;\\,+\\infty\\right[$",
+     "contenu_markdown": "On étudie le sens de variation de $f$ par sa dérivée : si $f$ est croissante sur $\\left[0\\,;\\,+\\infty\\right[$, alors la suite $\\left(f(n)\\right)$ l'est aussi. Attention, la réciproque est fausse, et cette méthode ne s'applique **pas** aux suites définies par récurrence ou par une somme, pour lesquelles aucune fonction $f$ simple n'existe."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Déterminer le sens de variation de la suite de terme général $U_{n}=1+\\dfrac{1}{2}+\\dfrac{1}{3}+\\ldots+\\dfrac{1}{n}$. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Écrire $U_{n}$",
+     "justification": "C'est la somme des inverses des entiers de $1$ à $n$",
+     "resultat_markdown": "$U_{n}=1+\\dfrac{1}{2}+\\dfrac{1}{3}+\\ldots+\\dfrac{1}{n}$"
+    },
+    {
+     "numero": 2,
+     "action": "Écrire $U_{n+1}$",
+     "justification": "On remplace $n$ par $n+1$ : la somme va jusqu'à $\\dfrac{1}{n+1}$, et contient donc un terme de plus",
+     "resultat_markdown": "$U_{n+1}=1+\\dfrac{1}{2}+\\dfrac{1}{3}+\\ldots+\\dfrac{1}{n}+\\dfrac{1}{n+1}$"
+    },
+    {
+     "numero": 3,
+     "action": "Repérer la partie commune",
+     "justification": "Tous les termes de $U_{n}$ figurent dans $U_{n+1}$, dans le même ordre",
+     "resultat_markdown": "$U_{n+1}=U_{n}+\\dfrac{1}{n+1}$"
+    },
+    {
+     "numero": 4,
+     "action": "Former la différence",
+     "justification": "Les termes communs s'éliminent",
+     "resultat_markdown": "$U_{n+1}-U_{n}=\\dfrac{1}{n+1}$"
+    },
+    {
+     "numero": 5,
+     "action": "Étudier le signe",
+     "justification": "Pour tout entier $n\\geqslant 1$, on a $n+1\\geqslant 2>0$, donc l'inverse est strictement positif",
+     "resultat_markdown": "$U_{n+1}-U_{n}=\\dfrac{1}{n+1}>0$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure",
+     "justification": "La différence de deux termes consécutifs est strictement positive pour tout $n$",
+     "resultat_markdown": "La suite $\\left(U_{n}\\right)$ est **strictement croissante**"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler sur les premiers termes",
+     "justification": "On calcule pour vérifier la cohérence",
+     "resultat_markdown": "$U_{1}=1$, $U_{2}=1{,}5$, $U_{3}\\approx 1{,}83$, $U_{4}\\approx 2{,}08$ : la suite monte bien"
+    }
+   ],
+   "conclusion_markdown": "La suite est strictement croissante : la réponse est a). Le raisonnement tient en deux lignes, à condition d'avoir vu que $U_{n+1}$ contient tous les termes de $U_{n}$ plus un seul terme supplémentaire."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Répondre « décroissante » parce que les termes ajoutés diminuent",
+     "pourquoi_faux": "C'est la confusion entre la suite des **termes ajoutés**, $\\dfrac{1}{n}$, qui décroît effectivement, et la suite des **sommes partielles**, $U_{n}$, qui croît. Ajouter des quantités de plus en plus petites mais toujours positives fait bien augmenter le total.",
+     "correction_markdown": "Distingue clairement les deux suites. Le contrôle numérique de l'étape 7 lève tout doute en dix secondes : $1$, puis $1{,}5$, puis $1{,}83$."
+    },
+    {
+     "erreur_markdown": "Chercher à calculer $U_{n}$ sous forme close avant de conclure",
+     "pourquoi_faux": "La somme $1+\\dfrac{1}{2}+\\ldots+\\dfrac{1}{n}$ ne s'exprime par aucune formule simple, contrairement aux sommes arithmétiques ou géométriques. Chercher une telle formule est une impasse, et elle n'est de toute façon pas nécessaire.",
+     "correction_markdown": "Pour un sens de variation, on n'a jamais besoin de la forme close : seule la différence $U_{n+1}-U_{n}$ compte, et elle se calcule toujours."
+    },
+    {
+     "erreur_markdown": "Écrire $U_{n+1}=1+\\dfrac{1}{2}+\\ldots+\\dfrac{1}{n+1}$ et soustraire terme à terme sans repérer la structure",
+     "pourquoi_faux": "En soustrayant maladroitement, on peut croire qu'il faut comparer $\\dfrac{1}{n}$ et $\\dfrac{1}{n+1}$, ce qui n'a aucun sens ici : ce sont deux termes de la somme, pas deux termes de la suite.",
+     "correction_markdown": "Écris explicitement $U_{n+1}=U_{n}+\\dfrac{1}{n+1}$ avant de soustraire. Cette ligne rend l'élimination évidente et évite toute manipulation hasardeuse."
+    },
+    {
+     "erreur_markdown": "Conclure « croissante » sans préciser pour quels $n$",
+     "pourquoi_faux": "Le signe de $U_{n+1}-U_{n}$ doit être établi **pour tout** $n$ de l'ensemble d'indices. Une justification qui ne vaudrait que pour les premiers rangs ne démontre rien.",
+     "correction_markdown": "Écris « pour tout entier $n\\geqslant 1$ » devant ton inégalité. C'est une formule de trois mots, et elle transforme un constat en démonstration."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Étudier le sens de variation de la suite définie pour $n\\geqslant 1$ par $U_{n}=1+4+9+\\ldots+n^{2}$.",
+     "solution_markdown": "**Écriture des deux termes.**\n\n$$U_{n}=1^{2}+2^{2}+\\ldots+n^{2}\\qquad;\\qquad U_{n+1}=1^{2}+2^{2}+\\ldots+n^{2}+(n+1)^{2}$$\n\n**Différence.** La seconde somme contient exactement les termes de la première, plus $(n+1)^{2}$ :\n\n$$U_{n+1}-U_{n}=(n+1)^{2}$$\n\n**Signe.** Pour tout entier $n\\geqslant 1$, on a $n+1\\geqslant 2$, donc $(n+1)^{2}\\geqslant 4>0$.\n\n**Conclusion.** $U_{n+1}-U_{n}>0$ pour tout $n\\geqslant 1$ : la suite est **strictement croissante**.\n\n**Contrôle.** $U_{1}=1$, $U_{2}=1+4=5$, $U_{3}=5+9=14$. La suite monte, et de plus en plus vite."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Étudier le sens de variation de la suite définie pour $n\\geqslant 1$ par $V_{n}=\\dfrac{3^{n}}{n}$.",
+     "solution_markdown": "**Choix de la méthode.** La suite est à termes strictement positifs et fait intervenir une puissance : la méthode du **quotient** est plus commode que celle de la différence.\n\n**Calcul du quotient.**\n\n$$\\frac{V_{n+1}}{V_{n}}=\\frac{\\dfrac{3^{n+1}}{n+1}}{\\dfrac{3^{n}}{n}}=\\frac{3^{n+1}}{n+1}\\times\\frac{n}{3^{n}}$$\n\nOr $\\dfrac{3^{n+1}}{3^{n}}=3$, donc\n\n$$\\frac{V_{n+1}}{V_{n}}=\\frac{3n}{n+1}$$\n\n**Comparaison à $1$.**\n\n$$\\frac{3n}{n+1}>1\\iff 3n>n+1\\iff 2n>1\\iff n>\\frac{1}{2}$$\n\nCette condition est vérifiée pour tout entier $n\\geqslant 1$.\n\n**Conclusion.** $\\dfrac{V_{n+1}}{V_{n}}>1$ et $V_{n}>0$, donc $V_{n+1}>V_{n}$ pour tout $n\\geqslant 1$ : la suite est **strictement croissante**.\n\n**Contrôle.** $V_{1}=3$, $V_{2}=\\dfrac{9}{2}=4{,}5$, $V_{3}=\\dfrac{27}{3}=9$. Cohérent.\n\n**Remarque.** La méthode du quotient n'est légitime que parce que tous les termes sont strictement positifs : sans cette hypothèse, multiplier par $V_{n}$ pourrait changer le sens de l'inégalité."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $\\left(W_{n}\\right)$ définie pour $n\\geqslant 1$ par $W_{n}=\\dfrac{1}{n+1}+\\dfrac{1}{n+2}+\\ldots+\\dfrac{1}{2n}$. Étudier son sens de variation.",
+     "solution_markdown": "**Attention.** Ici, le nombre de termes **et** les termes eux-mêmes changent quand $n$ augmente : on ne peut pas se contenter de repérer un terme ajouté.\n\n**Étape 1 — écrire les deux termes explicitement.**\n\n$$W_{n}=\\frac{1}{n+1}+\\frac{1}{n+2}+\\ldots+\\frac{1}{2n}$$\n\n$$W_{n+1}=\\frac{1}{n+2}+\\frac{1}{n+3}+\\ldots+\\frac{1}{2n}+\\frac{1}{2n+1}+\\frac{1}{2n+2}$$\n\nEn passant de $n$ à $n+1$, la somme **perd** son premier terme $\\dfrac{1}{n+1}$ et **gagne** deux termes, $\\dfrac{1}{2n+1}$ et $\\dfrac{1}{2n+2}$.\n\n**Étape 2 — former la différence.** Les termes de $\\dfrac{1}{n+2}$ à $\\dfrac{1}{2n}$ sont communs et s'éliminent :\n\n$$W_{n+1}-W_{n}=\\frac{1}{2n+1}+\\frac{1}{2n+2}-\\frac{1}{n+1}$$\n\n**Étape 3 — simplifier.** On remarque que $\\dfrac{1}{2n+2}=\\dfrac{1}{2(n+1)}=\\dfrac{1}{2}\\times\\dfrac{1}{n+1}$, donc\n\n$$\\frac{1}{2n+2}-\\frac{1}{n+1}=\\frac{1}{2(n+1)}-\\frac{2}{2(n+1)}=-\\frac{1}{2(n+1)}=-\\frac{1}{2n+2}$$\n\n$$W_{n+1}-W_{n}=\\frac{1}{2n+1}-\\frac{1}{2n+2}$$\n\n**Étape 4 — étudier le signe.** Deux fractions de numérateur $1$ se comparent par leurs dénominateurs : comme $2n+1<2n+2$, on a\n\n$$\\frac{1}{2n+1}>\\frac{1}{2n+2}$$\n\ndonc $W_{n+1}-W_{n}>0$.\n\nOn peut aussi réduire au même dénominateur :\n\n$$\\frac{1}{2n+1}-\\frac{1}{2n+2}=\\frac{(2n+2)-(2n+1)}{(2n+1)(2n+2)}=\\frac{1}{(2n+1)(2n+2)}>0$$\n\n**Conclusion.** La suite $\\left(W_{n}\\right)$ est **strictement croissante**.\n\n**Contrôle.** $W_{1}=\\dfrac{1}{2}=0{,}5$ ; $W_{2}=\\dfrac{1}{3}+\\dfrac{1}{4}\\approx 0{,}583$ ; $W_{3}=\\dfrac{1}{4}+\\dfrac{1}{5}+\\dfrac{1}{6}\\approx 0{,}617$. La suite monte bien, tout en semblant plafonner : elle converge en fait vers $\\ln 2\\approx 0{,}693$.\n\n**Ce que montre cet exercice.** Le réflexe « la différence est le terme ajouté » ne vaut que si la somme s'allonge par la fin sans rien perdre au début. Ici, il faut écrire les deux sommes complètes avant de simplifier."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le sens de variation d'une suite se lit sur le signe de $U_{n+1}-U_{n}$ : c'est la méthode universelle.",
+    "Quand $U_{n}$ est une somme qui s'allonge par la fin, la différence se réduit au terme ajouté.",
+    "Une somme de termes tous positifs définit toujours une suite croissante, même si les termes ajoutés diminuent.",
+    "Ne confonds pas la suite des termes ajoutés et la suite des sommes : la première peut décroître pendant que la seconde croît.",
+    "Tu n'as jamais besoin de la forme close de $U_{n}$ pour étudier son sens de variation.",
+    "Pour une suite à termes strictement positifs faisant intervenir des puissances, compare $\\dfrac{U_{n+1}}{U_{n}}$ à $1$.",
+    "Écris toujours « pour tout entier $n\\geqslant \\ldots$ » devant ton inégalité de signe : c'est ce qui fait la démonstration.",
+    "Si la somme perd des termes au début en même temps qu'elle en gagne à la fin, écris les deux sommes en entier avant de simplifier."
+   ]
+  }
+ ]
+}

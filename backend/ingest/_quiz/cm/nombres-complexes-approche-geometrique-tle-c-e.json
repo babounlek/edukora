@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-nombres-complexes-geometrique-tle-c-e",
+  "meta": {
+    "titre": "Nombres complexes : interprétation géométrique et transformations du plan (Terminale C/E)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Affixes, distances, angles et transformations élémentaires du plan",
+    "duree_estimee_min": 40,
+    "tags": [
+      "Nombres complexes - approche géométrique (Tle C/E)",
+      "affixe",
+      "nombre complexe",
+      "module et argument",
+      "rotation",
+      "translation",
+      "homothétie",
+      "similitude directe",
+      "lieu géométrique",
+      "médiatrice"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "27",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Mathématiques BAC D et TI 2017",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bacdtimaths2017cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un examinateur du BAC demande souvent de prouver qu'un triangle est rectangle, qu'une figure est un carré, ou de décrire précisément une transformation du plan, sans donner accès à une règle ni à un rapporteur. Les nombres complexes résolvent ce genre de problème par le calcul pur : une distance devient un module, un angle devient un argument, une rotation devient une simple multiplication par $e^{i\\theta}$. Tu connais déjà la forme algébrique, le module et l'argument depuis la classe de Première - ce cours te montre comment ces outils, une fois posés sur le plan complexe, remplacent entièrement la règle et le compas. Alignement, orthogonalité, nature d'un triangle, translations, rotations, homothéties et similitudes : toute cette géométrie se traite alors avec la même méthode, sans jamais avoir besoin de tracer une figure exacte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un nombre complexe sous forme algébrique $x+iy$ et calculer avec (somme, produit, quotient, conjugué).",
+        "Calculer le module et l'argument d'un nombre complexe, et connaître la forme trigonométrique $z=r(\\cos\\theta+i\\sin\\theta)=re^{i\\theta}$.",
+        "Connaître les valeurs de $\\cos$ et $\\sin$ pour les angles remarquables $0,\\ \\dfrac{\\pi}{6},\\ \\dfrac{\\pi}{4},\\ \\dfrac{\\pi}{3},\\ \\dfrac{\\pi}{2}$.",
+        "Manipuler les vecteurs du plan : coordonnées, norme, angle orienté entre deux vecteurs.",
+        "Savoir ce qu'est la médiatrice d'un segment et écrire l'équation cartésienne d'une droite."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Affixes, distances, angles : le dictionnaire entre géométrie et nombres complexes",
+      "contenu_markdown": "Le plan complexe est un plan muni d'un repère orthonormé direct $(O\\,;\\vec u,\\vec v)$ dans lequel chaque point est identifié par un nombre complexe unique, appelé son affixe. Le point $M$ de coordonnées $(x\\,;y)$ a pour affixe $z_M = x+iy$ : la partie réelle donne l'abscisse, la partie imaginaire donne l'ordonnée. Cette correspondance est bijective, donc travailler sur des affixes revient exactement à travailler sur des points.\n\nCette correspondance s'étend aux vecteurs. Pour deux points $P$ et $Q$ d'affixes $z_P$ et $z_Q$, le vecteur $\\overrightarrow{PQ}$ a pour affixe $z_Q - z_P$. Deux conséquences immédiates font tout l'intérêt de cette écriture : le module $|z_Q-z_P|$ est la longueur $PQ$, et pour un vecteur de référence non nul $\\vec u$, l'argument de $z_Q-z_P$ donne l'angle orienté $(\\vec u\\,;\\overrightarrow{PQ})$.\n\nQuand deux vecteurs partagent la même origine, comparer leurs affixes par un quotient donne à la fois leur rapport de longueurs et l'angle qui les sépare, en un seul calcul : c'est la relation encadrée ci-dessus. Elle permet en particulier de caractériser un triangle sans figure : si $\\dfrac{z_R-z_P}{z_Q-z_P}$ a pour module $1$, le triangle $PQR$ est isocèle en $P$ ; si son argument vaut $\\pm\\dfrac{\\pi}{2}$, il est de plus rectangle en $P$.\n\nCette même relation gouverne les transformations usuelles du plan, qui s'écrivent toutes sous la forme $z' = az+b$ avec $a,b\\in\\mathbb{C}$ : le réel $|a|$ donne le rapport de la transformation, et $\\arg(a)$ (quand $a\\neq 0$) donne son angle. Un point $\\Omega$ d'affixe $\\omega$ est invariant par cette transformation lorsque $\\omega = a\\omega+b$, ce qui permet de retrouver le centre par un simple calcul.\n\nEnfin, un lieu géométrique défini par une condition sur les modules se reconnaît directement : $|z-a|=r$ (avec $r>0$) décrit le cercle de centre $A$ et de rayon $r$, tandis que $|z-a|=|z-b|$ décrit la médiatrice du segment $[AB]$ - c'est la traduction immédiate de l'égalité de distances $MA=MB$.",
+      "formule_principale": "\\dfrac{z_S-z_R}{z_Q-z_P}=k\\,e^{i\\theta}\\quad\\text{avec}\\quad k=\\dfrac{RS}{PQ}\\ \\ \\text{et}\\ \\ \\theta=\\left(\\overrightarrow{PQ}\\,;\\overrightarrow{RS}\\right)",
+      "variantes": [
+        {
+          "nom": "Translation et homothétie (un seul paramètre réel)",
+          "quand_utiliser": "Quand la transformation ne modifie aucune direction (translation), ou multiplie toutes les distances au centre par un même réel sans changer les directions (homothétie).",
+          "contenu_markdown": "La translation de vecteur $\\vec u$ d'affixe $b$ transforme $M(z)$ en $M'(z')$ avec $z' = z+b$ : elle ne fait qu'ajouter une constante, aucune rotation ni changement d'échelle.\n\nL'homothétie de centre $\\Omega$ (affixe $\\omega$) et de rapport $k\\in\\mathbb{R}^*$ transforme $M(z)$ en $M'(z')$ avec $z'-\\omega = k(z-\\omega)$. Le rapport $k$ peut être négatif (l'image se place alors du côté opposé du centre)."
+        },
+        {
+          "nom": "Rotation et similitude directe (angle et éventuellement rapport)",
+          "quand_utiliser": "Quand la transformation conserve les distances mais fait tourner les directions (rotation), ou combine une rotation et une homothétie en une seule transformation (similitude directe).",
+          "contenu_markdown": "La rotation de centre $\\Omega$ (affixe $\\omega$) et d'angle $\\theta$ transforme $M(z)$ en $M'(z')$ avec $z'-\\omega = e^{i\\theta}(z-\\omega)$ : $e^{i\\theta}$ se calcule toujours en revenant à $\\cos\\theta$ et $\\sin\\theta$, jamais en le récitant de mémoire.\n\nLa similitude directe de rapport $k>0$, d'angle $\\theta$ et de centre $\\Omega$ combine les deux : $z'-\\omega = ke^{i\\theta}(z-\\omega)$, ce qui s'écrit encore $z'=az+b$ avec $a=ke^{i\\theta}$. Le rapport et l'angle se lisent directement sur $a$ : $k=|a|$ et $\\theta=\\arg(a)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé direct $(O\\,;\\vec u,\\vec v)$. On considère les points $P$, $Q$ et $R$ d'affixes respectives $p = 2+i$, $q = 5+5i$ et $r = -2+4i$.\n\n1. Calculer $\\dfrac{r-p}{q-p}$ sous forme algébrique, puis en déduire la nature précise du triangle $PQR$.\n2. On note $S$ l'image de $Q$ par la rotation de centre $P$ et d'angle $\\dfrac{\\pi}{2}$. Déterminer l'affixe de $S$ et comparer $S$ et $R$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les affixes des vecteurs $\\overrightarrow{PQ}$ et $\\overrightarrow{PR}$",
+          "justification": "L'affixe d'un vecteur $\\overrightarrow{PQ}$ est $z_Q-z_P$ : c'est le point de départ de tout calcul géométrique sur des affixes.",
+          "resultat_markdown": "$q-p = (5+5i)-(2+i) = 3+4i$\n\n$r-p = (-2+4i)-(2+i) = -4+3i$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le quotient $\\dfrac{r-p}{q-p}$ sous forme algébrique",
+          "justification": "Ce quotient réunit en un seul calcul le rapport des longueurs $PR/PQ$ et l'angle $(\\overrightarrow{PQ}\\,;\\overrightarrow{PR})$ : on multiplie par le conjugué du dénominateur pour obtenir la forme algébrique.",
+          "resultat_markdown": "$\\dfrac{r-p}{q-p} = \\dfrac{-4+3i}{3+4i} = \\dfrac{(-4+3i)(3-4i)}{(3+4i)(3-4i)}$\n\nNumérateur : $(-4+3i)(3-4i) = -12+16i+9i-12i^2 = -12+25i+12 = 25i$\n\nDénominateur : $(3+4i)(3-4i) = 3^2-(4i)^2 = 9+16 = 25$\n\n$\\dfrac{r-p}{q-p} = \\dfrac{25i}{25} = i$"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter géométriquement le résultat $i$",
+          "justification": "Le module de $i$ vaut $|i|=\\sqrt{0^2+1^2}=1$, donc $PR=PQ$. Son argument s'obtient en identifiant $\\cos\\theta=0$ et $\\sin\\theta=1$ : ces deux valeurs correspondent à $\\theta=\\dfrac{\\pi}{2}$, donc $(\\overrightarrow{PQ}\\,;\\overrightarrow{PR})=\\dfrac{\\pi}{2}$.",
+          "resultat_markdown": "$PQ=PR$ et l'angle en $P$ vaut $\\dfrac{\\pi}{2}$ : le triangle $PQR$ est rectangle et isocèle en $P$."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule de la rotation de centre $P$ et d'angle $\\dfrac{\\pi}{2}$ au point $Q$",
+          "justification": "La rotation de centre $\\Omega$ (affixe $\\omega$) et d'angle $\\theta$ transforme $M(z)$ en $M'(z')$ avec $z'-\\omega=e^{i\\theta}(z-\\omega)$. Ici $\\Omega=P$, $\\theta=\\dfrac{\\pi}{2}$, $M=Q$. On calcule $e^{i\\pi/2}=\\cos\\left(\\dfrac{\\pi}{2}\\right)+i\\sin\\left(\\dfrac{\\pi}{2}\\right)=0+i=i$.",
+          "resultat_markdown": "$s-p = i\\,(q-p) = i\\,(3+4i) = 3i+4i^2 = -4+3i$\n\n$s = p+(-4+3i) = (2+i)+(-4+3i) = -2+4i$"
+        },
+        {
+          "numero": 5,
+          "action": "Comparer $S$ et $R$",
+          "justification": "On compare l'affixe trouvée pour $S$ à l'affixe donnée pour $R$.",
+          "resultat_markdown": "$s = -2+4i = r$, donc $S=R$."
+        }
+      ],
+      "conclusion_markdown": "Le triangle $PQR$ est rectangle et isocèle en $P$, et $R$ est exactement l'image de $Q$ par le quart de tour direct de centre $P$ : deux lectures différentes de la même relation géométrique, l'une obtenue par le quotient des affixes, l'autre par la formule de rotation, et elles se confirment l'une l'autre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Pour déterminer l'angle $(\\overrightarrow{PQ}\\,;\\overrightarrow{PR})$, calculer $\\dfrac{z_Q-z_P}{z_R-z_P}$ au lieu de $\\dfrac{z_R-z_P}{z_Q-z_P}$, puis conclure directement sans vérifier quel quotient correspond réellement à l'angle demandé.",
+          "pourquoi_faux": "Les deux quotients ne sont pas égaux en général : inverser un quotient de nombres complexes inverse son module (le rapport des longueurs devient son inverse) et change le signe de son argument (l'angle devient son opposé). Le triangle peut rester isocèle si le module obtenu vaut $1$ dans les deux sens, mais l'angle trouvé n'est alors plus celui que l'énoncé demande - une confusion de ce type fait annoncer $-\\dfrac{\\pi}{2}$ à la place de $\\dfrac{\\pi}{2}$, ou l'inverse.",
+          "correction_markdown": "Repère d'abord clairement quel sommet est l'origine commune des deux vecteurs comparés. Pour l'angle $(\\overrightarrow{PQ}\\,;\\overrightarrow{PR})$, le vecteur qui arrive en second dans l'écriture de l'angle va toujours au numérateur : calcule $\\dfrac{z_R-z_P}{z_Q-z_P}$, jamais l'inverse par habitude."
+        },
+        {
+          "erreur_markdown": "Pour l'image d'un point par la rotation d'angle $-\\dfrac{\\pi}{3}$, écrire $e^{-i\\pi/3}=\\cos\\left(\\dfrac{\\pi}{3}\\right)-i\\sin\\left(\\dfrac{\\pi}{3}\\right)$ puis remplacer $\\sin\\left(\\dfrac{\\pi}{3}\\right)$ par $-\\dfrac{\\sqrt3}{2}$ au lieu de $\\dfrac{\\sqrt3}{2}$, en confondant la parité du cosinus et celle du sinus.",
+          "pourquoi_faux": "Le cosinus est une fonction paire ($\\cos(-\\theta)=\\cos\\theta$) mais le sinus est une fonction impaire ($\\sin(-\\theta)=-\\sin\\theta$). Le signe négatif de l'angle ne change donc jamais le cosinus, mais il change systématiquement le signe du sinus. Une confusion ici inverse le sens de la rotation et place l'image du mauvais côté du centre.",
+          "correction_markdown": "Traite toujours séparément $\\cos(-\\theta)$ et $\\sin(-\\theta)$ avant de composer $e^{-i\\theta}$, sans jamais deviner le signe. $\\cos\\left(-\\dfrac{\\pi}{3}\\right)=\\cos\\left(\\dfrac{\\pi}{3}\\right)=\\dfrac{1}{2}$ et $\\sin\\left(-\\dfrac{\\pi}{3}\\right)=-\\sin\\left(\\dfrac{\\pi}{3}\\right)=-\\dfrac{\\sqrt3}{2}$, donc $e^{-i\\pi/3}=\\dfrac{1}{2}-i\\dfrac{\\sqrt3}{2}$."
+        },
+        {
+          "erreur_markdown": "Pour comparer les longueurs $PQ$ et $PR$, écrire une inégalité directement entre les nombres complexes, du type $z_Q-z_P > z_R-z_P$, pour conclure lequel des deux segments est le plus long.",
+          "pourquoi_faux": "$\\mathbb{C}$ n'est pas muni d'une relation d'ordre compatible avec ses opérations : une expression comme $z_Q-z_P > z_R-z_P$ n'a pas de sens mathématique, même si les deux membres semblent être des quantités comparables. Une longueur est un réel positif, jamais un nombre complexe.",
+          "correction_markdown": "Compare toujours les modules, pas les nombres complexes eux-mêmes : $PQ>PR$ s'écrit $|z_Q-z_P|>|z_R-z_P|$. Le module transforme chaque affixe de vecteur en un réel positif, seule quantité que l'on peut légitimement comparer avec les symboles $<,\\ >,\\ \\leqslant,\\ \\geqslant$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé direct $(O\\,;\\vec u,\\vec v)$. On considère les points $U$ et $V$ d'affixes respectives $u=1+2i$ et $v=4+6i$. Calculer l'affixe du vecteur $\\overrightarrow{UV}$, puis en déduire la distance $UV$.",
+          "solution_markdown": "### Rappel de méthode\nL'affixe d'un vecteur $\\overrightarrow{UV}$ est $z_V-z_U$, et sa longueur $UV$ est le module de cette affixe : $UV = |z_V-z_U|$.\n\n**Calcul de l'affixe du vecteur.**\n\n$z_{\\overrightarrow{UV}} = v-u = (4+6i)-(1+2i) = 3+4i$\n\n**Calcul de la distance $UV$.**\n\n$UV = |3+4i| = \\sqrt{3^2+4^2} = \\sqrt{9+16} = \\sqrt{25} = 5$\n\nLa distance $UV$ vaut $5$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le plan complexe est muni d'un repère orthonormé direct $(O\\,;\\vec u,\\vec v)$. On considère les points $A$ et $B$ d'affixes respectives $a=-1+3i$ et $b=2-i$. Déterminer l'ensemble $(\\mathscr{E})$ des points $M$ d'affixe $z=x+iy$ (avec $x,y\\in\\mathbb{R}$) tels que $|z-a|=|z-b|$, en précisant sa nature et son équation cartésienne.",
+          "solution_markdown": "### Rappel de méthode\nPour un point $M$ d'affixe $z$, $|z-a|=MA$ et $|z-b|=MB$. La condition $|z-a|=|z-b|$ équivaut donc à $MA=MB$ : l'ensemble cherché est la médiatrice du segment $[AB]$. Pour en obtenir l'équation cartésienne, on pose $z=x+iy$ et on élève les deux membres au carré.\n\n**Nature de $(\\mathscr{E})$.** $|z-a|=|z-b| \\iff MA=MB \\iff M$ appartient à la médiatrice de $[AB]$. $(\\mathscr{E})$ est donc la médiatrice du segment $[AB]$.\n\n**Équation cartésienne.** Avec $z=x+iy$ :\n\n$|z-a|^2 = (x-(-1))^2+(y-3)^2 = (x+1)^2+(y-3)^2$\n\n$|z-b|^2 = (x-2)^2+(y-(-1))^2 = (x-2)^2+(y+1)^2$\n\nL'égalité $|z-a|=|z-b|$ équivaut à $|z-a|^2=|z-b|^2$ (deux réels positifs égaux ont des carrés égaux, et réciproquement) :\n\n$(x+1)^2+(y-3)^2 = (x-2)^2+(y+1)^2$\n\nOn développe le membre de gauche : $(x+1)^2+(y-3)^2 = x^2+2x+1+y^2-6y+9 = x^2+y^2+2x-6y+10$\n\nOn développe le membre de droite : $(x-2)^2+(y+1)^2 = x^2-4x+4+y^2+2y+1 = x^2+y^2-4x+2y+5$\n\nOn égalise et on simplifie les termes en $x^2$ et $y^2$, présents des deux côtés :\n\n$2x-6y+10 = -4x+2y+5$\n\n$2x-6y+10+4x-2y-5 = 0$\n\n$6x-8y+5 = 0$\n\n$(\\mathscr{E})$ est la droite d'équation $6x-8y+5=0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f$ la transformation du plan complexe qui, à tout point $M$ d'affixe $z$, associe le point $M'$ d'affixe $z' = (1+i\\sqrt3)z - 2i\\sqrt3$.\n\n**a)** Déterminer la nature précise de $f$ en précisant son rapport et son angle.\n\n**b)** Déterminer l'affixe $\\omega$ du point invariant $\\Omega$ de $f$.\n\n**c)** En déduire l'affixe du point $C'$, image du point $C$ d'affixe $c=1+i$ par $f$.",
+          "solution_markdown": "### Rappel de méthode\nToute transformation de la forme $z'=az+b$ (avec $a\\in\\mathbb{C}^*$, $a\\neq 1$) est une similitude directe de rapport $|a|$, d'angle $\\arg(a)$ et de centre $\\Omega$ d'affixe $\\omega$ solution de $\\omega=a\\omega+b$, c'est-à-dire $\\omega=\\dfrac{b}{1-a}$.\n\n**a) Nature de $f$.** Ici $a=1+i\\sqrt3$ et $b=-2i\\sqrt3$.\n\nModule de $a$ : $|a| = \\sqrt{1^2+(\\sqrt3)^2} = \\sqrt{1+3} = \\sqrt4 = 2$\n\nArgument de $a$ : on identifie $\\cos\\theta = \\dfrac{1}{2}$ et $\\sin\\theta = \\dfrac{\\sqrt3}{2}$ (en divisant partie réelle et partie imaginaire de $a$ par $|a|=2$). Ces deux valeurs correspondent à $\\theta=\\dfrac{\\pi}{3}$.\n\n$f$ est donc la similitude directe de rapport $2$ et d'angle $\\dfrac{\\pi}{3}$.\n\n**b) Centre de $f$.** Le point invariant vérifie $\\omega=a\\omega+b$, soit $\\omega(1-a)=b$, donc $\\omega=\\dfrac{b}{1-a}$ (l'équation admet une unique solution car $a\\neq 1$).\n\n$1-a = 1-(1+i\\sqrt3) = -i\\sqrt3$\n\n$\\omega = \\dfrac{-2i\\sqrt3}{-i\\sqrt3} = 2$\n\nLe centre $\\Omega$ a pour affixe $\\omega=2$.\n\n**c) Image de $C$.** On calcule $c' = a\\,c+b$ avec $c=1+i$.\n\n$a\\,c = (1+i\\sqrt3)(1+i) = 1\\times1 + 1\\times i + i\\sqrt3\\times1 + i\\sqrt3\\times i = 1+i+i\\sqrt3+i^2\\sqrt3 = 1+i+i\\sqrt3-\\sqrt3$\n\nOn regroupe partie réelle et partie imaginaire : $a\\,c = (1-\\sqrt3) + i(1+\\sqrt3)$\n\n$c' = a\\,c+b = (1-\\sqrt3)+i(1+\\sqrt3) - 2i\\sqrt3 = (1-\\sqrt3) + i\\big[(1+\\sqrt3)-2\\sqrt3\\big] = (1-\\sqrt3)+i(1-\\sqrt3)$\n\nL'affixe de $C'$ est $c' = (1-\\sqrt3)(1+i)$.\n\n### Piège à éviter\nNe confonds pas le rapport $|a|$ et l'angle $\\arg(a)$ avec les coefficients $1$ et $\\sqrt3$ lus directement dans $a=1+i\\sqrt3$ : il faut d'abord calculer le module pour normaliser, puis identifier $\\cos\\theta$ et $\\sin\\theta$ à partir des coefficients divisés par ce module - jamais les lire tels quels sur $a$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une affixe est une carte d'identité : celle d'un point donne ses coordonnées, celle d'un vecteur donne sa direction et sa longueur.",
+        "Pour deux vecteurs de même origine, le quotient de leurs affixes te donne tout en un seul calcul : le rapport des longueurs dans le module, l'angle entre eux dans l'argument.",
+        "Une translation ajoute une constante, une homothétie multiplie par un réel, une rotation multiplie par $e^{i\\theta}$ : la même écriture $z'-\\omega=a(z-\\omega)$ couvre les trois cas et se généralise en similitude directe dès que $a$ combine les deux effets.",
+        "Identifie toujours un angle en calculant $\\cos\\theta$ et $\\sin\\theta$ séparément - ne le récite jamais de mémoire, une erreur de signe se glisse facilement, en particulier avec un angle négatif.",
+        "Un lieu défini par une égalité de modules est presque toujours reconnaissable d'un coup d'œil : $|z-a|=r$ donne un cercle, $|z-a|=|z-b|$ donne une médiatrice.",
+        "Au BAC, ce savoir apparaît en exercice autonome (nature d'un triangle, étude d'une transformation) ou comme point de départ d'un exercice de géométrie analytique plus long : maîtriser le passage affixe-point-vecteur est un prérequis silencieux de nombreux autres exercices."
+      ]
+    }
+  ]
+}

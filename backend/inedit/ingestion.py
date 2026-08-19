@@ -200,9 +200,9 @@ def _savoirs_prioritaires(subject, cursus, limit=5):
     savoirs = Savoir.objects.filter(module__subject=subject, module__cursus=cursus).select_related("module")
     counted = [
         (
-            Question.objects.filter(
-                themes__savoir_officiel=savoir, exercise__lesson__subject=subject,
-                exercise__lesson__cursus=cursus, exercise__statut=StatutContenu.VALIDE,
+            Question.objects.rattachees_au_savoir(savoir).filter(
+                exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
+                exercise__statut=StatutContenu.VALIDE,
             ).count(),
             savoir,
         )
@@ -369,6 +369,10 @@ def _ingest_exercice_inedite(epreuve, data, subject):
 
     exercice = ExerciceInedite.objects.create(
         epreuve=epreuve, numero_exercice=numero_exercice, points=str(data.get("points") or ""),
+        # Support partagé par les questions de l'exercice (voir
+        # ExerciceInedite.enonce_intro_markdown) - optionnel, vide pour la plupart des
+        # matières, attendu en SVT où l'exploitation de documents est la forme normale.
+        enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
     )
 
     questions_data = data.get("questions") or []

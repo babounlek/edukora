@@ -1,0 +1,179 @@
+{
+ "cours_id": "cours-vecteur-noyau-application-lineaire-1ere-ce",
+ "meta": {
+  "titre": "Déterminer un vecteur du noyau d'une application linéaire donnée par sa matrice",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Applications linéaires du plan vectoriel",
+  "duree_estimee_min": 25,
+  "tags": [
+   "noyau",
+   "application linéaire",
+   "matrice",
+   "déterminant",
+   "système homogène",
+   "QCM"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q8-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Trouver un vecteur non nul que l'application écrase sur $\\vec{0}$ : voilà ce que demande la recherche d'un vecteur du noyau. Encore faut-il qu'il en existe un, et cela ne se produit que dans un cas bien précis, celui où le déterminant s'annule. Un calcul de dix secondes tranche donc la question avant même de chercher : c'est le réflexe qui structure toute la résolution."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Lire les coordonnées de l'image d'un vecteur sur la matrice d'une application linéaire",
+    "Calculer le déterminant d'une matrice carrée d'ordre 2",
+    "Résoudre un système linéaire homogène de deux équations à deux inconnues"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Le déterminant décide, le système décrit",
+   "contenu_markdown": "**Définition.** Le noyau de l'application linéaire $f$ est\n\n$$\\ker f=\\left\\{\\vec{u}\\in E\\;\\middle|\\;f(\\vec{u})=\\vec{0}\\right\\}$$\n\nIl contient toujours $\\vec{0}$ ; la question est de savoir s'il contient autre chose.\n\n**Mise en équations.** Si $f$ a pour matrice $M=\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ dans une base $\\left(\\vec{\\imath}\\,;\\,\\vec{\\jmath}\\right)$, alors pour $\\vec{u}=x\\,\\vec{\\imath}+y\\,\\vec{\\jmath}$ :\n\n$$f(\\vec{u})=\\vec{0}\\iff\\begin{cases} ax+by=0 \\\\ cx+dy=0 \\end{cases}$$\n\nChaque **ligne** de la matrice donne une équation.\n\n**Le critère.** Notons $\\det M=ad-bc$.\n\n- Si $\\det M\\neq 0$ : le système n'admet que la solution nulle, donc $\\ker f=\\left\\{\\vec{0}\\right\\}$ et il n'existe **aucun** vecteur non nul dans le noyau.\n- Si $\\det M=0$ et $M\\neq 0$ : le noyau est une **droite vectorielle**, et il existe une infinité de vecteurs non nuls, tous colinéaires entre eux.\n\n**Résolution quand $\\det M=0$.** Les deux équations sont alors proportionnelles : la seconde n'apporte rien. On tire de la première une relation entre $x$ et $y$, par exemple $y=-\\dfrac{a}{b}x$, et l'on choisit une valeur commode de $x$ pour exhiber un vecteur directeur.\n\n**La méthode en QCM.** Plutôt que de résoudre, on teste chaque proposition dans les deux équations. Attention : il faut vérifier les **deux** lignes, sauf si l'on a déjà établi que le déterminant est nul, auquel cas la seconde est automatiquement satisfaite.\n\n**Un piège de colinéarité.** L'opposé de $\\vec{\\imath}-2\\vec{\\jmath}$ est $-\\vec{\\imath}+2\\vec{\\jmath}$, avec un $+2$. Le vecteur $-\\vec{\\imath}-2\\vec{\\jmath}$ ne lui est **pas** colinéaire : vérifie toujours les deux coordonnées.",
+   "formule_principale": "\\vec{u}\\in\\ker f\\iff\\begin{cases} ax+by=0 \\\\ cx+dy=0 \\end{cases}\\qquad;\\qquad\\ker f\\neq\\left\\{\\vec{0}\\right\\}\\iff\\det M=0",
+   "variantes": [
+    {
+     "nom": "Lecture directe du vecteur directeur",
+     "quand_utiliser": "Quand $\\det M=0$ et qu'on veut aller vite",
+     "contenu_markdown": "Quand $\\det M=0$, un vecteur directeur du noyau se lit immédiatement sur la première ligne $(a\\,;\\,b)$ de la matrice : le vecteur de coordonnées $(-b\\,;\\,a)$ convient, puisque $a\\times(-b)+b\\times a=0$. Sur la matrice $\\begin{pmatrix} 2 & 1 \\\\ -3 & -1{,}5 \\end{pmatrix}$, la première ligne $(2\\,;\\,1)$ donne le vecteur $(-1\\,;\\,2)$, colinéaire à $(1\\,;\\,-2)$. Ce raccourci est très rapide, mais rédige quand même le système dans un exercice noté."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$f$ est une application du plan vectoriel $E_{2}$, muni d'une base $\\left(\\vec{\\imath}\\,,\\,\\vec{\\jmath}\\right)$, dans lui-même, de matrice $\\begin{pmatrix} 2 & 1 \\\\ -3 & -1{,}5 \\end{pmatrix}$. Parmi $\\vec{\\imath}+2\\vec{\\jmath}$, $\\vec{\\imath}-2\\vec{\\jmath}$, $-\\vec{\\imath}-2\\vec{\\jmath}$ et $2\\vec{\\imath}+\\vec{\\jmath}$, lequel appartient au noyau de $f$ ? (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer le déterminant",
+     "justification": "$\\det M=ad-bc$ ; ce calcul dit s'il existe seulement un vecteur non nul dans le noyau",
+     "resultat_markdown": "$\\det M=2\\times(-1{,}5)-1\\times(-3)=-3+3=0$"
+    },
+    {
+     "numero": 2,
+     "action": "Interpréter",
+     "justification": "Un déterminant nul avec une matrice non nulle signifie que le noyau est une droite vectorielle",
+     "resultat_markdown": "Il existe bien des vecteurs non nuls dans le noyau : la question a un sens"
+    },
+    {
+     "numero": 3,
+     "action": "Écrire le système homogène",
+     "justification": "Chaque ligne de la matrice donne une équation",
+     "resultat_markdown": "$\\begin{cases} 2x+y=0 \\\\ -3x-1{,}5y=0 \\end{cases}$"
+    },
+    {
+     "numero": 4,
+     "action": "Résoudre la première équation",
+     "justification": "On exprime $y$ en fonction de $x$",
+     "resultat_markdown": "$y=-2x$"
+    },
+    {
+     "numero": 5,
+     "action": "Reporter dans la seconde",
+     "justification": "On vérifie qu'elle n'apporte aucune contrainte nouvelle",
+     "resultat_markdown": "$-3x-1{,}5\\times(-2x)=-3x+3x=0$, vraie pour tout $x$"
+    },
+    {
+     "numero": 6,
+     "action": "Décrire le noyau",
+     "justification": "Les vecteurs du noyau sont les $\\vec{u}=x\\,\\vec{\\imath}-2x\\,\\vec{\\jmath}$",
+     "resultat_markdown": "$\\ker f=\\operatorname{Vect}\\left(\\vec{\\imath}-2\\vec{\\jmath}\\right)$"
+    },
+    {
+     "numero": 7,
+     "action": "Exhiber un vecteur",
+     "justification": "On prend $x=1$",
+     "resultat_markdown": "$\\vec{u}=\\vec{\\imath}-2\\vec{\\jmath}$, soit la proposition b)"
+    },
+    {
+     "numero": 8,
+     "action": "Écarter les autres propositions",
+     "justification": "On teste chacune dans la première équation $2x+y=0$",
+     "resultat_markdown": "a) $2+2=4\\neq 0$ ; c) $-2-2=-4\\neq 0$ ; d) $4+1=5\\neq 0$"
+    }
+   ],
+   "conclusion_markdown": "Le vecteur $\\vec{\\imath}-2\\vec{\\jmath}$ appartient au noyau : la réponse est b). Le calcul du déterminant, mené en premier, garantissait qu'une réponse existait ; sans lui, on aurait pu tester les quatre propositions en vain."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ne tester qu'une seule ligne de la matrice",
+     "pourquoi_faux": "Un vecteur du noyau doit annuler les **deux** coordonnées de son image, donc vérifier les deux équations. Tester une seule ligne peut retenir un vecteur qui ne convient pas, sauf si l'on a préalablement établi que $\\det M=0$, cas où la seconde équation est redondante.",
+     "correction_markdown": "Calcule $\\det M$ en premier. S'il est nul, une seule équation suffit ; sinon, il faut les deux, et de toute façon le noyau est réduit au vecteur nul."
+    },
+    {
+     "erreur_markdown": "Croire que $-\\vec{\\imath}-2\\vec{\\jmath}$ est colinéaire à $\\vec{\\imath}-2\\vec{\\jmath}$",
+     "pourquoi_faux": "L'opposé de $\\vec{\\imath}-2\\vec{\\jmath}$ est $-\\vec{\\imath}+2\\vec{\\jmath}$. Le vecteur $-\\vec{\\imath}-2\\vec{\\jmath}$ a ses deux coordonnées de même signe, ce qui n'est pas le cas du premier : ils ne sont pas colinéaires.",
+     "correction_markdown": "Vérifie la colinéarité sur les deux coordonnées à la fois : $(x\\,;\\,y)$ et $(x'\\,;\\,y')$ sont colinéaires si et seulement si $xy'-yx'=0$."
+    },
+    {
+     "erreur_markdown": "Chercher un vecteur du noyau sans vérifier que le déterminant est nul",
+     "pourquoi_faux": "Si $\\det M\\neq 0$, le noyau est réduit au vecteur nul et aucune des propositions non nulles ne peut convenir. On teste alors les quatre en pure perte, avant de comprendre que l'énoncé a été mal lu.",
+     "correction_markdown": "Fais du calcul de $\\det M$ ton premier réflexe : dix secondes, et tu sais si la question a une réponse."
+    },
+    {
+     "erreur_markdown": "Confondre lignes et colonnes de la matrice",
+     "pourquoi_faux": "Les **colonnes** donnent les images des vecteurs de la base, et engendrent donc l'image de $f$. Ce sont les **lignes** qui donnent les équations du système homogène, donc le noyau. Inverser les deux conduit à un système différent et à un mauvais vecteur.",
+     "correction_markdown": "Retiens : colonnes pour l'image, lignes pour le noyau. Et vérifie toujours ton vecteur en le testant dans les équations."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $f$ l'application linéaire de matrice $M=\\begin{pmatrix} 3 & 6 \\\\ 1 & 2 \\end{pmatrix}$. Déterminer un vecteur non nul du noyau de $f$.",
+     "solution_markdown": "**Étape 1 — déterminant.**\n\n$$\\det M=3\\times 2-6\\times 1=6-6=0$$\n\nLe noyau n'est donc pas réduit au vecteur nul.\n\n**Étape 2 — système homogène.**\n\n$$\\begin{cases} 3x+6y=0 \\\\ x+2y=0 \\end{cases}$$\n\n**Étape 3 — résolution.** La seconde équation, plus simple, donne $x=-2y$. En reportant dans la première :\n\n$$3\\times(-2y)+6y=-6y+6y=0$$\n\nVraie pour tout $y$ : la première équation est redondante, ce qui confirme $\\det M=0$.\n\n**Étape 4 — vecteur directeur.** En prenant $y=1$, on obtient $x=-2$ :\n\n$$\\vec{u}=-2\\vec{\\imath}+\\vec{\\jmath}$$\n\n**Vérification.** $3\\times(-2)+6\\times 1=-6+6=0$ et $-2+2\\times 1=0$. Les deux équations sont satisfaites.\n\n$$\\ker f=\\operatorname{Vect}\\left(-2\\vec{\\imath}+\\vec{\\jmath}\\right)$$"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f$ l'application linéaire de matrice $M=\\begin{pmatrix} 1 & 3 \\\\ 2 & 5 \\end{pmatrix}$. Déterminer $\\ker f$, puis dire si le vecteur $\\vec{v}=3\\vec{\\imath}-\\vec{\\jmath}$ lui appartient.",
+     "solution_markdown": "**Étape 1 — déterminant.**\n\n$$\\det M=1\\times 5-3\\times 2=5-6=-1\\neq 0$$\n\n**Étape 2 — conséquence immédiate.** Le déterminant étant non nul, le système homogène n'admet que la solution nulle :\n\n$$\\ker f=\\left\\{\\vec{0}\\right\\}$$\n\n**Étape 3 — vérification par le système.** Pour $\\vec{u}=x\\,\\vec{\\imath}+y\\,\\vec{\\jmath}$ :\n\n$$\\begin{cases} x+3y=0 \\\\ 2x+5y=0 \\end{cases}$$\n\nLa première donne $x=-3y$. En reportant dans la seconde :\n\n$$2\\times(-3y)+5y=-6y+5y=-y=0\\;\\Longrightarrow\\;y=0$$\n\npuis $x=-3\\times 0=0$. Seul le vecteur nul convient, ce qui confirme l'étape 2.\n\n**Étape 4 — le vecteur $\\vec{v}$.** Il est non nul, donc il ne peut pas appartenir à $\\ker f=\\left\\{\\vec{0}\\right\\}$.\n\n*Vérification directe :* $3+3\\times(-1)=0$, la première équation est satisfaite. Mais $2\\times 3+5\\times(-1)=6-5=1\\neq 0$ : la seconde ne l'est pas.\n\n**Conclusion.** $\\vec{v}$ n'appartient pas au noyau. Cet exemple montre pourquoi il faut tester les **deux** équations : la première seule aurait laissé croire le contraire."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel et $f_{m}$ l'application linéaire de matrice $M_{m}=\\begin{pmatrix} m-1 & 2 \\\\ 3 & m \\end{pmatrix}$. Déterminer les valeurs de $m$ pour lesquelles $\\ker f_{m}$ n'est pas réduit au vecteur nul, et donner alors un vecteur directeur du noyau.",
+     "solution_markdown": "**Étape 1 — déterminant en fonction de $m$.**\n\n$$\\det M_{m}=(m-1)\\times m-2\\times 3=m^{2}-m-6$$\n\n**Étape 2 — annuler le déterminant.** Le noyau contient un vecteur non nul si et seulement si $\\det M_{m}=0$ :\n\n$$m^{2}-m-6=0$$\n\nDiscriminant : $\\Delta=(-1)^{2}-4\\times 1\\times(-6)=1+24=25$, donc $\\sqrt{\\Delta}=5$.\n\n$$m_{1}=\\frac{1-5}{2}=-2\\qquad;\\qquad m_{2}=\\frac{1+5}{2}=3$$\n\n**Étape 3 — premier cas, $m=-2$.** La matrice devient $\\begin{pmatrix} -3 & 2 \\\\ 3 & -2 \\end{pmatrix}$, non nulle.\n\nSystème : $-3x+2y=0$, soit $y=\\dfrac{3}{2}x$. La seconde équation, $3x-2y=0$, est l'opposée de la première : elle n'apporte rien.\n\nEn prenant $x=2$, on obtient $y=3$ :\n\n$$\\ker f_{-2}=\\operatorname{Vect}\\left(2\\vec{\\imath}+3\\vec{\\jmath}\\right)$$\n\n*Vérification :* $-3\\times 2+2\\times 3=-6+6=0$ et $3\\times 2-2\\times 3=0$.\n\n**Étape 4 — second cas, $m=3$.** La matrice devient $\\begin{pmatrix} 2 & 2 \\\\ 3 & 3 \\end{pmatrix}$, non nulle.\n\nSystème : $2x+2y=0$, soit $y=-x$. La seconde équation, $3x+3y=0$, donne la même relation.\n\nEn prenant $x=1$, on obtient $y=-1$ :\n\n$$\\ker f_{3}=\\operatorname{Vect}\\left(\\vec{\\imath}-\\vec{\\jmath}\\right)$$\n\n*Vérification :* $2-2=0$ et $3-3=0$.\n\n**Conclusion.**\n\n| Valeurs de $m$ | $\\ker f_{m}$ |\n|---|---|\n| $m\\notin\\{-2\\,;\\,3\\}$ | $\\left\\{\\vec{0}\\right\\}$, $f_{m}$ est un automorphisme |\n| $m=-2$ | droite dirigée par $2\\vec{\\imath}+3\\vec{\\jmath}$ |\n| $m=3$ | droite dirigée par $\\vec{\\imath}-\\vec{\\jmath}$ |\n\n**Remarque.** Le raccourci de lecture directe se vérifie ici : pour $m=3$, la première ligne vaut $(2\\,;\\,2)$, et le vecteur $(-2\\,;\\,2)$ qu'elle fournit est bien colinéaire à $(1\\,;\\,-1)$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le noyau contient un vecteur non nul si et seulement si $\\det M=0$ : commence toujours par ce calcul.",
+    "Chaque **ligne** de la matrice donne une équation du système homogène ; les **colonnes**, elles, engendrent l'image.",
+    "Quand $\\det M=0$, les deux équations sont proportionnelles : la seconde est redondante, une suffit.",
+    "Quand $\\det M\\neq 0$, le noyau est réduit à $\\left\\{\\vec{0}\\right\\}$ et aucun vecteur non nul ne convient.",
+    "En QCM, teste les propositions dans les **deux** équations, sauf si tu as déjà établi que le déterminant est nul.",
+    "Vérifie la colinéarité sur les deux coordonnées : $-\\vec{\\imath}-2\\vec{\\jmath}$ n'est pas colinéaire à $\\vec{\\imath}-2\\vec{\\jmath}$.",
+    "Raccourci : si $\\det M=0$, la première ligne $(a\\,;\\,b)$ fournit le vecteur $(-b\\,;\\,a)$ du noyau.",
+    "Termine toujours par une vérification : reporte ton vecteur dans les deux équations, c'est cinq secondes."
+   ]
+  }
+ ]
+}

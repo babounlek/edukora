@@ -36,7 +36,7 @@ def initiate_payment(request):
 
     plan = get_object_or_404(Plan, pk=plan_id, is_active=True)
     transaction = Transaction.objects.create(
-        user=request.user, plan=plan, amount=plan.price, phone_number=phone_number,
+        user=request.user, plan=plan, amount=plan.effective_price(), phone_number=phone_number,
     )
 
     try:

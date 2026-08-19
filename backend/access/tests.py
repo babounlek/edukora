@@ -12,7 +12,7 @@ from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 
-from catalog.models import Cours, Cursus, Examen, Exercise, Lesson, LessonType, StatutContenu, Subject
+from catalog.models import Cours, Cursus, Examen, Exercise, Lesson, LessonType, RappelDeMethode, StatutContenu, Subject
 from inedit.models import Blueprint, EpreuveInedite
 from subscriptions.models import InscriptionInedite, Subscription
 from users.models import User
@@ -74,6 +74,53 @@ class HasAccessTests(TestCase):
     def test_cours_toutes_series_denies_access_without_any_subscription(self):
         cours = Cours.objects.create(titre="Notion commune", subject=self.subject, statut=StatutContenu.VALIDE)
         self.assertFalse(has_access(self.user, cours))
+
+    def test_cours_linked_to_a_vitrine_lesson_grants_access_without_subscription(self):
+        # Cours.est_vitrine (property, jamais stockée) : dérivée de ses rappels de
+        # méthode source - voir sa docstring. Même court-circuit que Lesson.est_vitrine
+        # dans has_access(), donc accessible même à un visiteur anonyme.
+        vitrine_lesson = Lesson.objects.create(
+            title="Maths BEPC vitrine", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, est_vitrine=True,
+        )
+        exercise = Exercise.objects.create(lesson=vitrine_lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        cours = Cours.objects.create(titre="Notion vitrine", subject=self.subject, statut=StatutContenu.VALIDE)
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-vitrine-test", competence="Test",
+            contenu_markdown="Contenu.", cours=cours,
+        )
+
+        self.assertTrue(cours.est_vitrine)
+        self.assertTrue(has_access(AnonymousUser(), cours))
+
+    def test_cours_shared_with_a_paid_lesson_stays_free_via_its_vitrine_source(self):
+        # Un même Cours peut être la source de plusieurs épreuves (voir
+        # RappelDeMethode.cours : "Deux épreuves distinctes couvrant la même
+        # compétence produisent légitimement le même cours_id") - une seule vitrine
+        # parmi elles suffit à le rendre gratuit, y compris pour l'épreuve payante.
+        paid_lesson = Lesson.objects.create(
+            title="Maths BAC C payant", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, est_vitrine=False,
+        )
+        vitrine_lesson = Lesson.objects.create(
+            title="Maths BEPC vitrine", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, est_vitrine=True,
+        )
+        paid_exercise = Exercise.objects.create(lesson=paid_lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        vitrine_exercise = Exercise.objects.create(
+            lesson=vitrine_lesson, numero_exercice="1", statut=StatutContenu.VALIDE,
+        )
+        cours = Cours.objects.create(titre="Notion partagée", subject=self.subject, statut=StatutContenu.VALIDE)
+        RappelDeMethode.objects.create(
+            exercise=paid_exercise, external_id="rdm-payant", competence="Test",
+            contenu_markdown="C.", cours=cours,
+        )
+        RappelDeMethode.objects.create(
+            exercise=vitrine_exercise, external_id="rdm-vitrine", competence="Test",
+            contenu_markdown="C.", cours=cours,
+        )
+
+        self.assertTrue(has_access(AnonymousUser(), cours))
 
 
 class HasAccessInediteTests(TestCase):
@@ -252,6 +299,25 @@ class ReadLessonAPITests(TestCase):
         self.assertEqual(exercise_data["enonce_intro_markdown"], "**Exercice 1 (6 points)**\n\nDonnées communes.")
         self.assertEqual(exercise_data["enonce_markdown"], "Question posée.")
 
+    def test_read_exposes_the_epreuve_wide_introduction_separately_from_the_exercises(self):
+        # Distinct de enonce_intro_markdown (propre à UN exercice, voir le test
+        # ci-dessus) : une consigne d'épreuve entière ne doit apparaître qu'une seule
+        # fois, jamais nichée dans un exercice en particulier - voir
+        # Lesson.introduction_markdown et EpreuveReaderPage.tsx.
+        self.lesson.introduction_markdown = "Le candidat traitera au choix l'un des trois sujets proposés."
+        self.lesson.save(update_fields=["introduction_markdown"])
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/access/read/{self.lesson.id}/")
+
+        self.assertEqual(
+            response.data["introduction_markdown"],
+            "Le candidat traitera au choix l'un des trois sujets proposés.",
+        )
+
 
 class PreviewLessonAPITests(TestCase):
     """Le point d'entrée public : jamais authentifié, jamais le corrigé."""
@@ -291,6 +357,14 @@ class PreviewLessonAPITests(TestCase):
         self.assertEqual(exercise_data["numero_exercice"], "1")
         self.assertIn("Énoncé public", exercise_data["enonce_markdown"])
         self.assertNotIn("corrige_markdown", exercise_data)
+
+    def test_preview_exposes_the_epreuve_wide_introduction(self):
+        self.lesson.introduction_markdown = "L'épreuve comporte deux parties indépendantes."
+        self.lesson.save(update_fields=["introduction_markdown"])
+
+        response = self.client.get(f"/access/preview/{self.lesson.id}/")
+
+        self.assertEqual(response.data["introduction_markdown"], "L'épreuve comporte deux parties indépendantes.")
 
 
 class ReadCoursAPITests(TestCase):
@@ -349,6 +423,32 @@ class ReadCoursAPITests(TestCase):
         response = self.client.get(f"/access/cours/preview/{self.cours.slug}/")
         self.assertEqual(response.status_code, 200)
         self.assertIn("Accroche publique", response.data["preview_markdown"])
+
+    def test_read_cours_allowed_anonymously_when_linked_to_a_vitrine_lesson(self):
+        # Non-régression : read_cours n'avait pas @permission_classes([AllowAny])
+        # (contrairement à read_lesson) - un visiteur anonyme se faisait rejeter par
+        # DRF avant même que has_access()/Cours.est_vitrine n'aient leur mot à dire.
+        vitrine_lesson = Lesson.objects.create(
+            title="Maths BEPC vitrine", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, est_vitrine=True,
+        )
+        exercise = Exercise.objects.create(lesson=vitrine_lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-vitrine-anon", competence="Test",
+            contenu_markdown="Contenu.", cours=self.cours,
+        )
+
+        response = self.client.get(f"/access/cours/read/{self.cours.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Exemple payant", response.data["content_markdown"])
+        # Jamais de suivi de lecture pour un visiteur anonyme (pas de user à qui
+        # l'attacher) - voir le garde `if request.user.is_authenticated` côté vue.
+        self.assertFalse(LectureProgress.objects.filter(cours=self.cours).exists())
+
+    def test_read_cours_still_denied_anonymously_without_a_vitrine_source(self):
+        response = self.client.get(f"/access/cours/read/{self.cours.id}/")
+        self.assertEqual(response.status_code, 403)
 
 
 class MyProgressionAPITests(TestCase):

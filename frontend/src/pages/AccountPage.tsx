@@ -30,9 +30,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { tauxBarClassName } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
-import { catalogueHomePath, coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
+import { catalogueHomePath, coursReaderPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 // Au-delà de ce nombre, une liste (thèmes de maîtrise, lectures, tentatives, fiches)
 // passe derrière un "voir plus" - voir ExpandableList. Un compte actif de longue date
@@ -40,12 +41,6 @@ import { catalogueHomePath, coursReaderPath, epreuveReaderPath } from "@/lib/cou
 // d'un bloc est la source concrète du "très touffu" signalé sur cette page, pas
 // seulement les 7 cartes elles-mêmes.
 const PREVIEW_COUNT = 5
-
-function tauxBarClassName(taux: number): string {
-  if (taux < 40) return "bg-destructive"
-  if (taux < 70) return "bg-warning"
-  return "bg-success"
-}
 
 /** Regroupe une liste plate de thèmes par matière, en gardant l'ordre déjà trié
  * (le plus faible d'abord) de quiz.services.maitrise_par_theme à l'intérieur de
@@ -357,7 +352,7 @@ export function AccountPage() {
                   Épreuves Inédites
                 </span>
                 <Link
-                  to={`${catalogueHomePath(country)}?origine=INEDITE#catalogue`}
+                  to={`${epreuvesListPath(country)}?origine=INEDITE`}
                   className="text-xs font-normal text-primary hover:underline"
                 >
                   Voir les épreuves disponibles
@@ -463,7 +458,7 @@ export function AccountPage() {
               {!tentativesInedites || tentativesInedites.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
                   Aucune épreuve inédite tentée pour l'instant -{" "}
-                  <Link to={`${catalogueHomePath(country)}?origine=INEDITE#catalogue`} className="text-primary hover:underline">
+                  <Link to={`${epreuvesListPath(country)}?origine=INEDITE`} className="text-primary hover:underline">
                     découvre les épreuves inédites
                   </Link>
                   .

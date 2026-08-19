@@ -8,16 +8,20 @@ from .models import Plan, Subscription
 class PlanSerializer(serializers.ModelSerializer):
     cursus = CursusSerializer(read_only=True)
     effective_duration_days = serializers.SerializerMethodField()
+    effective_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Plan
         fields = [
             "id", "name", "cursus", "product_type", "price", "duration_mode", "duration_days",
-            "effective_duration_days", "inclut_inedit",
+            "effective_duration_days", "effective_price", "inclut_inedit",
         ]
 
     def get_effective_duration_days(self, obj):
         return obj.effective_duration_days()
+
+    def get_effective_price(self, obj):
+        return obj.effective_price()
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

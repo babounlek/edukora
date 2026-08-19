@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.urls import path
 
 from .ingestion import IngestionError, ingest_exercise, queue_ingestion, read_ingestion_report
-from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
+from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Filiere, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
 from .sujet_pdf import queue_sujet_pdf_generation
 
 # Phrase à taper pour confirmer la purge (voir LessonAdmin.purge_view) - une action qui
@@ -35,10 +35,17 @@ class SubjectAdmin(admin.ModelAdmin):
     search_fields = ["code", "label"]
 
 
-@admin.register(Series)
-class SeriesAdmin(admin.ModelAdmin):
+@admin.register(Filiere)
+class FiliereAdmin(admin.ModelAdmin):
     list_display = ["code", "label", "country"]
     list_filter = ["country"]
+    search_fields = ["code", "label"]
+
+
+@admin.register(Series)
+class SeriesAdmin(admin.ModelAdmin):
+    list_display = ["code", "label", "groupe", "filiere", "country"]
+    list_filter = ["country", "groupe", "filiere"]
     search_fields = ["code", "label"]
 
 
@@ -96,8 +103,8 @@ class RappelDeMethodeInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ["title", "subject", "nature_epreuve", "cursus_list", "lesson_type", "origine", "year", "statut", "est_vitrine", "updated_at"]
-    list_filter = ["statut", "lesson_type", "origine", "subject", "nature_epreuve", "cursus", "est_vitrine"]
+    list_display = ["title", "subject", "nature_epreuve", "partie_epreuve_francais", "cursus_list", "lesson_type", "origine", "institution", "year", "statut", "est_vitrine", "updated_at"]
+    list_filter = ["statut", "lesson_type", "origine", "subject", "nature_epreuve", "partie_epreuve_francais", "institution", "cursus", "est_vitrine"]
     list_editable = ["est_vitrine"]
     search_fields = ["title", "epreuve_source", "slug"]
     filter_horizontal = ["cursus", "themes", "mots_cles_recherche"]

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from catalog.models import Country, Cursus, Examen, Series, Subject
+from catalog.models import Country, Cursus, Examen, Filiere, Groupe, Series, Subject
 
 # Référentiel repris de celui du Cameroun (voir migrations 0003_seed_referentiel,
 # 0011_seed_litterature, 0018_seed_eps) : point de départ raisonnable pour un pays qui
@@ -30,25 +30,61 @@ SUBJECTS = [
 ]
 
 SERIES = [
-    ("A", "Lettres-Philo"),
-    ("SES", "Sciences Économiques et Sociales"),
-    ("C", "Maths"),
-    ("D", "Sciences"),
-    ("E", "Mathématiques et Techniques"),
-    ("TI", "Techniques Industrielles"),
-    ("COM", "Techniques Commerciales et de Gestion"),
+    ("A", "Lettres-Philo", Groupe.GENERAL),
+    ("C", "Maths", Groupe.GENERAL),
+    ("D", "Sciences", Groupe.GENERAL),
+    ("E", "Mathématiques et Techniques", Groupe.GENERAL),
+    # TI = Technologie de l'Information (dominante du général), pas la filière
+    # industrielle - voir la correction de libellé en 0052_series_groupe.
+    ("TI", "Technologie de l'Information", Groupe.GENERAL),
+    # Pas de série technique "générique" ici : depuis l'introduction de Filiere, le
+    # technique se raisonne en spécialité rattachée à une famille - voir SPECIALITES.
+]
+
+# Grandes familles de l'enseignement technique - contrairement au général (où la
+# Series EST la filière - A, C, D...), le technique se raisonne en famille +
+# spécialité (précision utilisateur, 2026-08-19).
+FILIERES = [
+    ("STT", "Sciences et Technologies du Tertiaire"),
+    ("STI", "Sciences et Technologies Industrielles"),
+    ("ESF_SMS", "Économie Sociale et Familiale / Sciences Médico-Sociales"),
+    ("HOTELLERIE_TOURISME", "Hôtellerie et Tourisme"),
+    ("AGRICULTURE", "Agriculture et domaines connexes"),
+]
+
+# (filiere_code, series_code, series_label) - une spécialité = une Series technique
+# rattachée à sa Filiere. Pas de code officiel court connu (contrairement à A/C/D/E) -
+# codes dérivés du libellé. ESF/SMS et Agriculture : aucune spécialité listée par
+# l'utilisateur ("selon les établissements") - Filiere créée ci-dessus, sans
+# spécialité enfant pour l'instant plutôt que d'en inventer.
+SPECIALITES = [
+    ("STT", "COMPTABILITE_GESTION", "Comptabilité et Gestion"),
+    ("STT", "SECRETARIAT_BUREAUTIQUE", "Secrétariat / Bureautique"),
+    ("STT", "COMMERCE", "Commerce"),
+    ("STT", "BANQUE", "Banque"),
+    ("STI", "ELECTRICITE", "Électricité"),
+    ("STI", "ELECTROTECHNIQUE", "Électrotechnique"),
+    ("STI", "ELECTRONIQUE", "Électronique"),
+    ("STI", "MECANIQUE", "Mécanique"),
+    ("STI", "GENIE_CIVIL", "Génie Civil"),
+    ("STI", "CONSTRUCTION", "Construction"),
+    ("STI", "FABRICATION_MECANIQUE", "Fabrication Mécanique"),
+    ("HOTELLERIE_TOURISME", "RESTAURATION", "Restauration"),
+    ("HOTELLERIE_TOURISME", "HEBERGEMENT", "Hébergement"),
+    ("HOTELLERIE_TOURISME", "TOURISME", "Tourisme"),
 ]
 
 
 class Command(BaseCommand):
     help = (
-        "Amorce le référentiel (Country, Subject, Series, Cursus) d'un nouveau pays à "
-        "partir de celui du Cameroun, pour éviter d'écrire une migration de données "
-        "ponctuelle à chaque nouveau pays (voir 0015_country.py pour l'ancien procédé). "
-        "Idempotent : ré-exécuter ne duplique rien, et complète un pays déjà partiellement "
-        "seedé. Le résultat est un point de départ à ajuster ensuite depuis l'admin. Le "
-        "pays est créé inactif (Country.actif=False) : un clonage de référentiel n'est pas "
-        "une localisation réelle, l'activation publique reste un geste manuel délibéré."
+        "Amorce le référentiel (Country, Subject, Series, Filiere, Cursus) d'un nouveau "
+        "pays à partir de celui du Cameroun, pour éviter d'écrire une migration de "
+        "données ponctuelle à chaque nouveau pays (voir 0015_country.py pour l'ancien "
+        "procédé). Idempotent : ré-exécuter ne duplique rien, et complète un pays déjà "
+        "partiellement seedé. Le résultat est un point de départ à ajuster ensuite "
+        "depuis l'admin. Le pays est créé inactif (Country.actif=False) : un clonage de "
+        "référentiel n'est pas une localisation réelle, l'activation publique reste un "
+        "geste manuel délibéré."
     )
 
     def add_arguments(self, parser):
@@ -90,27 +126,51 @@ class Command(BaseCommand):
 
             series_objs = {}
             series_created = 0
-            for series_code, series_label in SERIES:
+            for series_code, series_label, series_groupe in SERIES:
                 series, was_created = Series.objects.get_or_create(
-                    country=country, code=series_code, defaults={"label": series_label},
+                    country=country, code=series_code, defaults={"label": series_label, "groupe": series_groupe},
+                )
+                series_objs[series_code] = series
+                series_created += was_created
+
+            filiere_objs = {}
+            filieres_created = 0
+            for filiere_code, filiere_label in FILIERES:
+                filiere, was_created = Filiere.objects.get_or_create(
+                    country=country, code=filiere_code, defaults={"label": filiere_label},
+                )
+                filiere_objs[filiere_code] = filiere
+                filieres_created += was_created
+
+            for filiere_code, series_code, series_label in SPECIALITES:
+                series, was_created = Series.objects.get_or_create(
+                    country=country, code=series_code,
+                    defaults={"label": series_label, "groupe": Groupe.TECHNIQUE, "filiere": filiere_objs[filiere_code]},
                 )
                 series_objs[series_code] = series
                 series_created += was_created
 
             _, bepc_created = Cursus.objects.get_or_create(country=country, examen=Examen.BEPC, series=None)
             cursus_created = int(bepc_created)
-            for series in series_objs.values():
+            for series_code, series in series_objs.items():
                 _, prob_created = Cursus.objects.get_or_create(country=country, examen=Examen.PROBATOIRE, series=series)
                 _, bac_created = Cursus.objects.get_or_create(country=country, examen=Examen.BAC, series=series)
                 cursus_created += int(prob_created) + int(bac_created)
+                if series.filiere_id:
+                    # Le CAP réutilise les mêmes spécialités que le Bac technique
+                    # (précision utilisateur, 2026-08-19) - pas de Cursus(CAP,
+                    # series=None) comme le BEPC : le CAP n'existe qu'avec une
+                    # spécialité (une Series rattachée à une Filiere).
+                    _, cap_created = Cursus.objects.get_or_create(country=country, examen=Examen.CAP, series=series)
+                    cursus_created += int(cap_created)
 
         self.stdout.write(self.style.SUCCESS(
             f"{country.label} ({country.code}) : {subjects_created} matière(s), "
-            f"{series_created} série(s), {cursus_created} cursus créé(s).",
+            f"{series_created} série(s), {filieres_created} filière(s), {cursus_created} cursus créé(s).",
         ))
         self.stdout.write(
             "Référentiel calqué sur celui du Cameroun - vérifie et ajuste depuis l'admin "
-            "(Subject/Series) si ce pays n'a pas exactement les mêmes matières/séries.",
+            "(Subject/Series/Filiere) si ce pays n'a pas exactement les mêmes matières/séries.",
         )
         if country_created:
             self.stdout.write(self.style.WARNING(

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from .email_service import normalize_email
 from .models import User
 from .phone import to_e164, to_local
 
@@ -32,6 +33,33 @@ class OTPVerifySerializer(serializers.Serializer):
     phone_number = NormalizedPhoneField()
     code = serializers.RegexField(regex=r"^\d{6}$")
     referral_code = serializers.CharField(required=False, allow_blank=True, max_length=10)
+
+
+class NormalizedEmailField(serializers.EmailField):
+    """
+    Même rôle que NormalizedPhoneField : le format de stockage ne fuit pas dans le
+    contrat d'API, et aucune vue n'a à se demander sous quelle casse lui arrive une
+    adresse. Voir users.email_service.normalize_email pour le choix de tout mettre en
+    minuscules, partie locale comprise.
+    """
+
+    def to_internal_value(self, data):
+        return normalize_email(super().to_internal_value(data))
+
+
+class EmailCodeRequestSerializer(serializers.Serializer):
+    email = NormalizedEmailField()
+
+
+class EmailCodeVerifySerializer(serializers.Serializer):
+    email = NormalizedEmailField()
+    code = serializers.RegexField(regex=r"^\d{6}$")
+    referral_code = serializers.CharField(required=False, allow_blank=True, max_length=10)
+
+
+class EmailLinkConfirmSerializer(serializers.Serializer):
+    email = NormalizedEmailField()
+    code = serializers.RegexField(regex=r"^\d{6}$")
 
 
 class PhoneChangeRequestSerializer(serializers.Serializer):

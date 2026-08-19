@@ -28,6 +28,12 @@ import logging
 
 from django.db import transaction
 
+from .email_service import (
+    EmailAlreadyTaken,
+    consume_email_code,
+    normalize_email,
+    request_email_code,
+)
 from .models import AuthIdentity, AuthProvider, User
 from .otp_service import consume_otp, request_otp
 from .phone import to_e164, to_local
@@ -155,6 +161,73 @@ def _notifier_ancien_numero(ancien_numero, nouveau_numero):
         logger.exception("Notification de changement de numéro non envoyée")
 
 
+def _verifier_email_disponible(email, user):
+    """
+    Même précaution que pour le numéro : l'adresse ne doit ouvrir aucun AUTRE compte, et
+    c'est vérifié sur les deux tables. Regarder seulement User.email laisserait passer
+    une adresse encore rattachée comme identité à un compte qui en a changé - la
+    contrainte unique sur AuthIdentity ferait alors échouer l'opération après l'envoi du
+    message, avec une erreur incompréhensible.
+    """
+    conflit = (
+        User.objects.filter(email__iexact=email).exclude(pk=user.pk).exists()
+        or AuthIdentity.objects.filter(
+            provider=AuthProvider.EMAIL, provider_uid=email,
+        ).exclude(user=user).exists()
+    )
+    if conflit:
+        raise EmailAlreadyTaken(
+            "Cette adresse est déjà utilisée par un autre compte. Connecte-toi avec "
+            "cette adresse, ou utilises-en une autre.",
+        )
+
+
+def request_email_link(user, email, ip_address=None):
+    """
+    Envoie un code à l'adresse que l'utilisateur veut rattacher. La session prouve déjà
+    la possession du compte ; c'est la possession de la boîte qui reste à établir.
+
+    La disponibilité est contrôlée AVANT l'envoi, comme pour le changement de numéro :
+    sans ça, on ferait recopier un code à quelqu'un dont le rattachement est de toute
+    façon condamné à échouer à l'étape suivante.
+    """
+    email = normalize_email(email)
+    _verifier_email_disponible(email, user)
+    request_email_code(email, ip_address=ip_address)
+    return email
+
+
+@transaction.atomic
+def confirm_email_link(user, email, code):
+    """
+    Consomme le code puis rattache l'adresse au compte connecté.
+
+    Passe par consume_email_code et non verify_email_code : ce dernier créerait un compte
+    sur cette adresse s'il n'en existait pas, alors qu'ici le compte est déjà connu -
+    c'est exactement la distinction consume_otp / verify_otp côté téléphone.
+
+    La disponibilité est revérifiée après coup : plusieurs minutes séparent la demande de
+    la confirmation, et quelqu'un a pu s'inscrire avec cette adresse entre-temps.
+    """
+    email = normalize_email(email)
+    _verifier_email_disponible(email, user)
+
+    consume_email_code(email, code)
+
+    user.email = email
+    user.email_verified = True
+    user.save(update_fields=["email", "email_verified"])
+
+    # update_or_create : l'utilisateur peut rattacher une adresse alors qu'il en avait
+    # déjà une (il en change), auquel cas la contrainte unique par (user, provider)
+    # rejetterait une seconde ligne.
+    AuthIdentity.objects.update_or_create(
+        user=user, provider=AuthProvider.EMAIL,
+        defaults={"provider_uid": email, "email": email},
+    )
+    return user
+
+
 def unlink_identity(user, provider):
     """
     Détache une méthode de connexion.
@@ -185,4 +258,11 @@ def unlink_identity(user, provider):
         # identité ne prouve - et le bloquerait pour tout autre compte, par unicité.
         user.phone_number = None
         user.save(update_fields=["phone_number"])
+    elif provider == AuthProvider.EMAIL:
+        # Exactement la même raison : User.email est unique lui aussi, le laisser en
+        # place réserverait indéfiniment une adresse que plus rien ne prouve, et
+        # empêcherait son titulaire réel de s'en servir sur un autre compte.
+        user.email = None
+        user.email_verified = False
+        user.save(update_fields=["email", "email_verified"])
     return user

@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-statistiques-moyenne-variance-ecart-type-tle-d",
+  "meta": {
+    "titre": "Statistiques : moyenne, variance et écart-type d'une série groupée (Terminale D)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Statistique descriptive : caractéristiques de position et de dispersion d'une série groupée",
+    "duree_estimee_min": 40,
+    "tags": ["Statistiques (Tle D)", "statistiques", "moyenne", "variance", "écart-type", "série statistique groupée", "König-Huygens"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "D", "module_numero": "26", "savoir_numero": "I"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-2002-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 2002",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-2002d-ex2-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un censeur qui reçoit les résultats du dernier devoir commun de deux classes de Terminale D ne se contente jamais de comparer leurs moyennes. Deux classes peuvent afficher exactement la même moyenne de $11$ sur $20$, alors que l'une regroupe des notes toutes proches de cette moyenne et l'autre mélange des élèves en grande difficulté avec d'autres très à l'aise : la moyenne seule ne dit rien de cet écart. Pour décrire vraiment une série de données (notes, tailles, salaires, durées de trajet), il faut donc un second indicateur qui mesure la dispersion autour de la moyenne, pas seulement sa position centrale. Ce cours présente les trois outils qui permettent de résumer n'importe quelle série statistique groupée en quelques nombres : la moyenne, la variance et l'écart-type, avec la méthode de calcul rapide utilisée dans la quasi-totalité des exercices du BAC série D."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir organiser une série statistique en tableau, avec les valeurs $x_i$ du caractère étudié et leurs effectifs $n_i$, et calculer l'effectif total $N=\\sum_i n_i$ - notion vue en Seconde et Première.",
+        "Tu dois savoir calculer une fréquence $f_i=\\dfrac{n_i}{N}$ et l'exprimer en pourcentage.",
+        "Tu dois être à l'aise avec le symbole somme $\\sum$, les fractions et le calcul d'une racine carrée à la calculatrice.",
+        "Pour une série groupée en classes, tu dois savoir calculer le centre d'une classe $[a\\,;b[$, égal à $\\dfrac{a+b}{2}$, qui remplace $x_i$ dans tous les calculs."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne, variance et écart-type d'une série statistique groupée",
+      "contenu_markdown": "Une série statistique groupée se présente sous la forme d'un tableau à deux lignes : les valeurs $x_1, x_2, \\ldots, x_p$ du caractère étudié, et les effectifs correspondants $n_1, n_2, \\ldots, n_p$. L'effectif total est $N=\\displaystyle\\sum_{i=1}^{p} n_i$.\n\nLa moyenne $\\bar x$ de la série est la somme des valeurs, chacune pondérée par son effectif, divisée par l'effectif total. Elle situe le « centre » de la série, mais deux séries de moyennes identiques peuvent avoir des répartitions très différentes autour de cette moyenne : une classe où toutes les notes valent $11$ et une classe où la moitié des notes vaut $5$ et l'autre moitié $17$ ont la même moyenne de $11$, sans rien de comparable dans leur homogénéité.\n\nLa variance $V(x)$ mesure cet écart : c'est la moyenne des carrés des écarts entre chaque valeur et la moyenne $\\bar x$. Un carré est utilisé plutôt qu'une simple différence parce que la somme des écarts non élevés au carré à la moyenne est toujours nulle par construction (les écarts positifs et négatifs se compensent exactement) - élever au carré évite cette compensation et donne un indicateur qui grandit avec la dispersion réelle des valeurs.\n\nCalculer la variance directement à partir de sa définition, en calculant chaque écart $(x_i-\\bar x)$ puis en l'élevant au carré, oblige à refaire un calcul complet après avoir déjà déterminé $\\bar x$. La formule de König-Huygens évite ce détour : elle exprime la variance uniquement à partir de $\\displaystyle\\sum_i n_i x_i^2$ (la somme des carrés des valeurs, pondérée par les effectifs) et de $\\bar x^2$, deux quantités calculables dans la même passe que la moyenne.\n\nLa variance s'exprime dans le carré de l'unité de la série (des notes au carré, des kilomètres carrés...), ce qui la rend peu lisible directement. L'écart-type $\\sigma(x)=\\sqrt{V(x)}$ ramène l'indicateur de dispersion dans l'unité d'origine de la série : c'est lui qu'on cite pour décrire concrètement la dispersion d'une série de notes ou de distances.",
+      "formule_principale": "\\bar{x}=\\dfrac{1}{N}\\sum_{i=1}^{p} n_i x_i \\quad ; \\quad V(x)=\\dfrac{1}{N}\\sum_{i=1}^{p} n_i x_i^{2}-\\bar x^{2} \\quad ; \\quad \\sigma(x)=\\sqrt{V(x)}",
+      "variantes": [
+        {
+          "nom": "Série groupée en classes",
+          "quand_utiliser": "Quand les valeurs du caractère sont regroupées en classes $[a_i\\,;b_i[$ plutôt que données individuellement (cas très fréquent pour des données continues comme un âge, une distance, un salaire).",
+          "contenu_markdown": "On remplace chaque valeur $x_i$ par le centre de sa classe $c_i=\\dfrac{a_i+b_i}{2}$, puis on applique exactement les mêmes formules de moyenne, variance et écart-type avec $c_i$ à la place de $x_i$. Cette substitution suppose que les valeurs sont réparties uniformément à l'intérieur de chaque classe : le résultat obtenu est donc une approximation, jamais une valeur exacte, contrairement au cas d'une série à valeurs individuelles."
+        },
+        {
+          "nom": "Calcul direct par les écarts à la moyenne (vérification)",
+          "quand_utiliser": "Pour vérifier un résultat de variance obtenu par la formule de König-Huygens, ou quand l'énoncé impose explicitement cette méthode.",
+          "contenu_markdown": "On calcule directement $V(x)=\\dfrac{1}{N}\\displaystyle\\sum_i n_i(x_i-\\bar x)^2$ : pour chaque valeur, on calcule l'écart à la moyenne, on l'élève au carré, on multiplie par l'effectif correspondant, puis on additionne et on divise par $N$. Ce calcul est plus long que la formule de König-Huygens mais donne exactement le même résultat - il sert surtout de vérification indépendante."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un professeur de mathématiques a relevé les notes sur $20$ obtenues par les $40$ élèves d'une classe de Terminale D au dernier devoir surveillé, regroupées dans le tableau suivant :\n\n| Note $x_i$ | 8 | 10 | 12 | 14 | 16 |\n|---|---|---|---|---|---|\n| Effectif $n_i$ | 5 | 10 | 15 | 7 | 3 |\n\nCalculer la moyenne, la variance et l'écart-type de cette série de notes.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'effectif total N",
+          "justification": "La moyenne pondérée nécessite de diviser par l'effectif total, qu'il faut donc calculer avant tout autre calcul.",
+          "resultat_markdown": "$$N=5+10+15+7+3=40$$\nCe total correspond bien aux $40$ élèves annoncés dans l'énoncé."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme des notes pondérées par leurs effectifs",
+          "justification": "La moyenne pondérée $\\bar x=\\frac{1}{N}\\sum n_i x_i$ exige de calculer d'abord $\\sum n_i x_i$, c'est-à-dire chaque note multipliée par le nombre d'élèves qui l'ont obtenue.",
+          "resultat_markdown": "$$\\sum n_i x_i=5\\times8+10\\times10+15\\times12+7\\times14+3\\times16=40+100+180+98+48=466$$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la moyenne",
+          "justification": "On divise la somme pondérée par l'effectif total.",
+          "resultat_markdown": "$$\\bar x=\\frac{466}{40}=11{,}65$$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la somme des carrés des notes pondérée par les effectifs",
+          "justification": "La formule de König-Huygens pour la variance a besoin de $\\sum n_i x_i^2$, qu'on calcule en élevant chaque note au carré avant de la multiplier par son effectif.",
+          "resultat_markdown": "$$\\sum n_i x_i^2=5\\times8^2+10\\times10^2+15\\times12^2+7\\times14^2+3\\times16^2=320+1000+2160+1372+768=5620$$"
+        },
+        {
+          "numero": 5,
+          "action": "En déduire la variance par la formule de König-Huygens",
+          "justification": "$V(x)=\\frac{1}{N}\\sum n_i x_i^2-\\bar x^2$ : on divise la somme précédente par $N$, puis on soustrait le carré de la moyenne obtenue à l'étape 3.",
+          "resultat_markdown": "$$V(x)=\\frac{5620}{40}-11{,}65^2=140{,}5-135{,}7225=4{,}7775$$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer l'écart-type",
+          "justification": "L'écart-type est la racine carrée de la variance ; c'est lui qui s'exprime dans l'unité d'origine de la série (ici, des points sur $20$).",
+          "resultat_markdown": "$$\\sigma(x)=\\sqrt{4{,}7775}\\approx2{,}19$$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier la variance par la méthode directe des écarts à la moyenne",
+          "justification": "Recalculer la variance par une méthode indépendante permet de confirmer le résultat obtenu par König-Huygens.",
+          "resultat_markdown": "$$\\sum n_i(x_i-\\bar x)^2=5\\times(-3{,}65)^2+10\\times(-1{,}65)^2+15\\times0{,}35^2+7\\times2{,}35^2+3\\times4{,}35^2$$\n$$=66{,}6125+27{,}225+1{,}8375+38{,}6575+56{,}7675=191{,}1$$\n$$V(x)=\\frac{191{,}1}{40}=4{,}7775$$\nOn retrouve exactement la même valeur qu'à l'étape 5, ce qui confirme le résultat."
+        }
+      ],
+      "conclusion_markdown": "La série de notes a pour moyenne $11{,}65$ et pour écart-type environ $2{,}19$ point : les notes de cette classe sont regroupées de façon assez resserrée autour de la moyenne, un écart-type de cet ordre étant considéré comme une dispersion modérée pour une série de notes sur $20$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la moyenne comme une simple moyenne arithmétique des valeurs $x_i$, sans tenir compte des effectifs : $\\bar x=\\dfrac{8+10+12+14+16}{5}=12$.",
+          "pourquoi_faux": "Cette formule traite chaque note comme si un seul élève l'avait obtenue, alors que $15$ élèves ont eu $12$ et seulement $3$ ont eu $16$ : ignorer les effectifs revient à donner autant de poids à une note obtenue par un seul élève qu'à une note obtenue par quinze. Le résultat, $12$, est différent de la vraie moyenne pondérée $11{,}65$ calculée avec les effectifs.",
+          "correction_markdown": "Avant de calculer une moyenne sur une série groupée, vérifie toujours qu'un tableau d'effectifs accompagne les valeurs : dans ce cas, la moyenne se calcule obligatoirement avec la formule pondérée $\\bar x=\\frac{1}{N}\\sum n_i x_i$, jamais avec une simple moyenne des valeurs distinctes."
+        },
+        {
+          "erreur_markdown": "Confondre $\\displaystyle\\sum_i n_i x_i^2$ (la somme des carrés des valeurs pondérées par les effectifs) avec $\\left(\\displaystyle\\sum_i n_i x_i\\right)^2$ (le carré de la somme), par exemple écrire $\\sum n_i x_i^2=466^2$ au lieu de $5620$.",
+          "pourquoi_faux": "Ce sont deux quantités complètement différentes : $\\sum n_i x_i^2$ élève chaque note au carré avant de pondérer et sommer, alors que $(\\sum n_i x_i)^2$ élève au carré le résultat final $466$. Utiliser $466^2=217156$ à la place de $5620$ dans la formule de König-Huygens produit une variance absurdement grande une fois $\\bar x^2$ soustrait.",
+          "correction_markdown": "Dans la formule de König-Huygens, repère bien l'ordre des opérations : élever au carré d'abord (chaque $x_i$), pondérer et sommer ensuite. Le carré porte sur chaque valeur individuelle, jamais sur la somme finale de la colonne $n_i x_i$."
+        },
+        {
+          "erreur_markdown": "Donner la variance comme réponse finale à une question qui demande l'écart-type, en oubliant de prendre la racine carrée : annoncer $\\sigma(x)=4{,}7775$.",
+          "pourquoi_faux": "La variance $V(x)$ s'exprime dans le carré de l'unité de la série (des points au carré), alors que l'écart-type $\\sigma(x)=\\sqrt{V(x)}$ revient dans l'unité d'origine (des points). Confondre les deux revient à comparer une aire à une longueur : le nombre $4{,}7775$ n'a pas de sens direct comme dispersion des notes, contrairement à $2{,}19$.",
+          "correction_markdown": "Relis systématiquement la question posée : si elle demande l'écart-type, la dernière opération de ton calcul doit être une racine carrée. Un réflexe utile : l'écart-type d'une série de notes sur $20$ dépasse rarement $5$ ou $6$ - si ta racine carrée donne un nombre à deux chiffres, une erreur s'est probablement glissée plus tôt."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une enquête a été menée auprès de $25$ familles d'un quartier pour connaître leur nombre d'enfants. Les résultats sont regroupés dans le tableau suivant :\n\n| Nombre d'enfants $x_i$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| Nombre de familles $n_i$ | 3 | 7 | 8 | 5 | 2 |\n\nCalculer la moyenne, la variance et l'écart-type du nombre d'enfants par famille.",
+          "solution_markdown": "L'effectif total est $N=3+7+8+5+2=25$ familles, ce qui correspond au nombre de familles enquêtées.\n\nOn calcule la somme des valeurs pondérées par leurs effectifs :\n$$\\sum n_i x_i=0\\times3+1\\times7+2\\times8+3\\times5+4\\times2=0+7+16+15+8=46$$\nLa moyenne est alors :\n$$\\bar x=\\frac{46}{25}=1{,}84\\text{ enfant par famille}$$\n\nPour la variance, on calcule la somme des carrés des valeurs pondérées par leurs effectifs :\n$$\\sum n_i x_i^2=0^2\\times3+1^2\\times7+2^2\\times8+3^2\\times5+4^2\\times2=0+7+32+45+32=116$$\nPar la formule de König-Huygens :\n$$V(x)=\\frac{116}{25}-1{,}84^2=4{,}64-3{,}3856=1{,}2544$$\n\nL'écart-type est :\n$$\\sigma(x)=\\sqrt{1{,}2544}=1{,}12\\text{ enfant}$$\n\nLes familles de ce quartier comptent en moyenne $1{,}84$ enfant, avec un écart-type de $1{,}12$ enfant autour de cette moyenne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une entreprise a mesuré la distance domicile-travail (en kilomètres) de ses $35$ employés, regroupée en classes dans le tableau suivant :\n\n| Distance (km) | $[0\\,;5[$ | $[5\\,;10[$ | $[10\\,;15[$ | $[15\\,;20[$ | $[20\\,;25[$ |\n|---|---|---|---|---|---|\n| Effectif $n_i$ | 4 | 9 | 12 | 8 | 2 |\n\nCalculer la moyenne, la variance et l'écart-type de cette série de distances (on arrondira les résultats au centième).",
+          "solution_markdown": "La série est groupée en classes : on remplace chaque classe par son centre $c_i=\\dfrac{a_i+b_i}{2}$.\n\n| Classe | $[0\\,;5[$ | $[5\\,;10[$ | $[10\\,;15[$ | $[15\\,;20[$ | $[20\\,;25[$ |\n|---|---|---|---|---|---|\n| Centre $c_i$ | 2,5 | 7,5 | 12,5 | 17,5 | 22,5 |\n| Effectif $n_i$ | 4 | 9 | 12 | 8 | 2 |\n\nL'effectif total est $N=4+9+12+8+2=35$ employés.\n\nOn calcule la somme des centres pondérés par leurs effectifs :\n$$\\sum n_i c_i=4\\times2{,}5+9\\times7{,}5+12\\times12{,}5+8\\times17{,}5+2\\times22{,}5=10+67{,}5+150+140+45=412{,}5$$\nLa moyenne est :\n$$\\bar x=\\frac{412{,}5}{35}\\approx11{,}79\\text{ km}$$\n\nOn calcule ensuite la somme des carrés des centres pondérés par leurs effectifs :\n$$\\sum n_i c_i^2=4\\times2{,}5^2+9\\times7{,}5^2+12\\times12{,}5^2+8\\times17{,}5^2+2\\times22{,}5^2$$\n$$=4\\times6{,}25+9\\times56{,}25+12\\times156{,}25+8\\times306{,}25+2\\times506{,}25$$\n$$=25+506{,}25+1875+2450+1012{,}5=5868{,}75$$\n\nSans arrondir la moyenne avant la fin du calcul, pour ne pas accumuler d'erreurs d'arrondi, on applique la formule de König-Huygens en gardant la valeur exacte $\\bar x=\\dfrac{412{,}5}{35}=\\dfrac{165}{14}$ :\n$$V(x)=\\frac{5868{,}75}{35}-\\left(\\frac{165}{14}\\right)^2\\approx167{,}68-138{,}90\\approx28{,}78$$\n\nL'écart-type est :\n$$\\sigma(x)=\\sqrt{28{,}78}\\approx5{,}36\\text{ km}$$\n\nLa distance moyenne domicile-travail des employés est d'environ $11{,}79$ km, avec un écart-type d'environ $5{,}36$ km : cette dispersion assez large signale des employés habitant à des distances très variées, contrairement à une série resserrée autour de la moyenne.\n\n**Remarque :** les centres de classe supposent une répartition uniforme des distances à l'intérieur de chaque classe ; la moyenne et l'écart-type obtenus sont donc des valeurs approchées, pas des valeurs exactes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série statistique donne la répartition de notes obtenues par des élèves, mais un effectif a été effacé par erreur :\n\n| Note $x_i$ | 6 | 10 | 14 | 18 |\n|---|---|---|---|\n| Effectif $n_i$ | 4 | $n$ | 10 | 6 |\n\nOn sait que la moyenne de cette série vaut exactement $12$. Déterminer l'effectif manquant $n$, puis calculer la variance et l'écart-type de la série complète.",
+          "solution_markdown": "On note $N=4+n+10+6=20+n$ l'effectif total et on exprime la somme pondérée en fonction de $n$ :\n$$\\sum n_i x_i=4\\times6+n\\times10+10\\times14+6\\times18=24+10n+140+108=272+10n$$\n$$\\bar x=\\frac{272+10n}{20+n}$$\n\nOn sait que $\\bar x=12$, ce qui donne l'équation :\n$$\\frac{272+10n}{20+n}=12$$\n\nEn multipliant les deux membres par $(20+n)$, qui est strictement positif puisque $n$ est un effectif :\n$$272+10n=12(20+n)$$\n$$272+10n=240+12n$$\n$$272-240=12n-10n$$\n$$32=2n$$\n$$n=16$$\n\n**Vérification :** avec $n=16$, l'effectif total est $N=20+16=36$ et $\\sum n_i x_i=272+10\\times16=272+160=432$, donc $\\bar x=\\dfrac{432}{36}=12$, ce qui confirme la valeur trouvée.\n\nOn calcule maintenant la variance de la série complète (avec $n=16$). La somme des carrés des valeurs pondérées par les effectifs :\n$$\\sum n_i x_i^2=4\\times6^2+16\\times10^2+10\\times14^2+6\\times18^2=4\\times36+16\\times100+10\\times196+6\\times324$$\n$$=144+1600+1960+1944=5648$$\n\nPar la formule de König-Huygens :\n$$V(x)=\\frac{5648}{36}-12^2=\\frac{5648}{36}-144=\\frac{1412}{9}-144=\\frac{1412-1296}{9}=\\frac{116}{9}\\approx12{,}89$$\n\nL'écart-type est :\n$$\\sigma(x)=\\sqrt{\\frac{116}{9}}=\\frac{\\sqrt{116}}{3}\\approx3{,}59$$\n\nL'effectif manquant est $n=16$ ; la série complète a pour variance $\\dfrac{116}{9}\\approx12{,}89$ et pour écart-type environ $3{,}59$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La moyenne pondérée $\\bar x=\\frac{1}{N}\\sum n_i x_i$ ne remplace jamais une simple moyenne des valeurs distinctes : sans les effectifs, une valeur obtenue par un seul individu pèserait autant qu'une valeur obtenue par la majorité.",
+        "Deux séries peuvent avoir exactement la même moyenne et des dispersions totalement différentes : la variance et l'écart-type sont indispensables pour décrire une série au-delà de sa seule position centrale.",
+        "La formule de König-Huygens $V(x)=\\frac{1}{N}\\sum n_i x_i^2-\\bar x^2$ évite de calculer chaque écart à la moyenne un par un ; ne confonds jamais $\\sum n_i x_i^2$ (somme des carrés) avec $(\\sum n_i x_i)^2$ (carré de la somme).",
+        "L'écart-type $\\sigma(x)=\\sqrt{V(x)}$ est la grandeur à citer pour décrire concrètement une dispersion, parce qu'il revient dans l'unité d'origine de la série - la variance seule, exprimée dans le carré de cette unité, ne se compare pas directement aux valeurs de départ.",
+        "Pour une série groupée en classes, remplace systématiquement chaque valeur par le centre de sa classe avant d'appliquer les formules : le résultat obtenu reste alors une approximation.",
+        "Au BAC série D, ce calcul apparaît presque toujours en première partie d'un exercice de probabilités : la série statistique y sert ensuite à définir une loi de probabilité ou à comparer plusieurs groupes, donc le maîtriser vite libère du temps pour la suite de l'exercice."
+      ]
+    }
+  ]
+}

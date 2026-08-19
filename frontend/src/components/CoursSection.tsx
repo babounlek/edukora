@@ -95,8 +95,14 @@ export function CoursSection({ section }: { section: CoursSectionData }) {
         </div>
       )}
 
+      {/* Pas de `not-prose` sur la carte : il désactiverait la typographie pour tout le
+          sous-arbre, y compris le `prose` juste en dessous, qu'un `prose` imbriqué ne
+          réactive jamais (voir l'explication détaillée dans CoursRegleBox) - or "Ce
+          qu'il faut retenir" est justement une liste à puces, qui perdait retrait et
+          puces. Le `not-prose` du <ul> des prérequis plus haut reste légitime, lui :
+          rien sous cet élément ne réclame la typographie de prose. */}
       {section.type === "synthese" && (
-        <div className="not-prose rounded-lg border border-border bg-muted/40 p-4">
+        <div className="rounded-lg border border-border bg-muted/40 p-4">
           <div className="prose prose-neutral max-w-none dark:prose-invert">
             <EpreuveMarkdown markdown={section.body_markdown} />
           </div>

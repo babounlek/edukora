@@ -19,6 +19,7 @@ import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 // katex + le pipeline remark/rehype, largement le plus gros morceau du bundle -
 // aucune raison de le télécharger avant qu'un élève ouvre effectivement un contenu.
 const CataloguePage = lazy(() => import("@/pages/CataloguePage").then((m) => ({ default: m.CataloguePage })))
+const EpreuvesListPage = lazy(() => import("@/pages/EpreuvesListPage").then((m) => ({ default: m.EpreuvesListPage })))
 const EpreuveDetailPage = lazy(() => import("@/pages/EpreuveDetailPage").then((m) => ({ default: m.EpreuveDetailPage })))
 const EpreuveInediteDetailPage = lazy(() => import("@/pages/EpreuveInediteDetailPage").then((m) => ({ default: m.EpreuveInediteDetailPage })))
 const EpreuveReaderPage = lazy(() => import("@/pages/EpreuveReaderPage").then((m) => ({ default: m.EpreuveReaderPage })))
@@ -62,7 +63,7 @@ function AppToaster() {
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="edukamer-theme">
+    <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
       <AuthProvider>
         <BrowserRouter>
@@ -76,6 +77,7 @@ function App() {
                     <Routes>
                       <Route path="/" element={<RootRedirect />} />
                       <Route path="/:country" element={<CataloguePage />} />
+                      <Route path="/:country/epreuves" element={<EpreuvesListPage />} />
                       <Route path="/:country/cours" element={<CoursListPage />} />
                       <Route path="/:country/epreuves/:slug" element={<EpreuveDetailPage />} />
                       <Route path="/:country/epreuves/:slug/lire" element={<EpreuveReaderPage />} />

@@ -20,6 +20,10 @@ playwright==1.61.0
 psycopg2-binary==2.9.12
 pyee==13.0.1
 PyJWT==2.13.0
+# Requis par PyJWT pour les algorithmes RSA : sans lui, jwt.decode lève
+# "RS256 requires 'cryptography' to be installed" et TOUTE connexion Google échoue
+# en 401 (voir users.google). PyJWT seul ne gère que HMAC.
+cryptography==50.0.0
 python-dateutil==2.9.0.post0
 python-decouple==3.8
 qrcode==8.2

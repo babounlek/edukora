@@ -45,6 +45,60 @@ from .models import CompetenceItem
 
 SELECTION_FLOOR = 6
 SELECTION_LIMIT = 5
+
+# Nombre minimal de Question validées portant un couple (thème, matière) pour qu'il soit
+# proposé comme compétence de quiz. Un seul exercice ne suffit pas à caractériser une
+# compétence : le skill n'a alors qu'un matériel de référence, et le nom du tag ne dit
+# pas ce qu'il recouvre réellement (constaté le 2026-08-17 - « loi de Hooke » proposé en
+# Mathématiques sur la foi d'un unique exercice de fonction affine où un ressort servait
+# de décor). C'est un arbitrage, pas une détection : il écarte aussi des compétences
+# légitimes encore peu documentées, qui reviendront dès qu'un second exercice sera tagué.
+# Abaissable à 1 via --min-questions pour retrouver l'ancien comportement.
+SELECTION_MIN_QUESTIONS = 2
+
+# Tags qui nomment la FORME d'une question, jamais une notion : sections d'épreuve du
+# format camerounais par compétences, formats de réponse, items de barème, ou supports
+# que le quiz ne peut de toute façon pas afficher (CompetenceItem n'a aucun mécanisme
+# d'image - voir concepteur-quiz-competence, exigence d'autonomie). Proposés en boucle
+# par la sélection tant qu'ils n'étaient pas écartés, et impossibles à traiter : six
+# items sur « situation-problème » n'auraient en commun que d'être des problèmes.
+#
+# Comparaison sur le nom normalisé (voir catalog.ingestion._normalize) et par égalité
+# EXACTE, jamais par préfixe : « définition de Brönsted », « définition par foyer et
+# directrice » ou « figures de style » sont de vraies notions qu'un filtrage large
+# emporterait à tort. Seules exceptions, deux familles où aucun tag légitime ne commence
+# ainsi : voir _TAGS_STRUCTURELS_MOTIFS.
+_TAGS_STRUCTURELS_EXACTS = frozenset({
+    # Sections d'épreuve et énoncés génériques
+    "situation probleme", "situation-probleme", "probleme concret",
+    "presentation d un probleme", "methodologie de l agir competent",
+    # Formats de réponse
+    "definition", "definitions", "definition de concepts", "definition sigle",
+    "definitions et contexte",
+    # Items de barème portant sur la forme de la copie
+    "presentation", "presentation formelle", "presentation de la copie",
+    "redaction guidee", "redaction argumentee",
+    # Opérations sans contenu notionnel propre
+    "calcul numerique", "application numerique",
+    # Supports que le quiz ne peut pas afficher
+    "tableau", "schema", "figure", "lecture graphique",
+})
+
+# Familles où le préfixe suffit, aucun tag de notion ne commençant ainsi : « QCM… »
+# (QCM lexical, QCM de définition, QCM d'inférence) et « vrai ou faux… » nomment
+# exclusivement le format attendu de la réponse.
+_TAGS_STRUCTURELS_MOTIFS = ("qcm", "vrai ou faux")
+
+
+def _est_tag_structurel(nom):
+    """
+    Un tag nomme-t-il la forme d'une question plutôt qu'une notion ? Voir
+    _TAGS_STRUCTURELS_EXACTS pour le raisonnement et les faux positifs évités.
+    """
+    normalise = _normalize(nom)
+    if normalise in _TAGS_STRUCTURELS_EXACTS:
+        return True
+    return any(normalise == motif or normalise.startswith(motif + " ") for motif in _TAGS_STRUCTURELS_MOTIFS)
 SELECTION_REPARTITION = {"FAIBLE": 2, "MOYENNE": 3, "ELEVEE": 1}
 SELECTION_MAX_REFERENCE_QUESTIONS = 4
 
@@ -123,12 +177,25 @@ def _resolve_cursus_from_entries(cursus_data, country):
     return cursus_list
 
 
-def _find_undercovered_competencies(country, floor):
+def _find_undercovered_competencies(country, floor, min_questions=SELECTION_MIN_QUESTIONS):
     """
     Groupe les Question validées de ce pays par (theme, matière) - une compétence est
     traitée par matière, pas seulement par nom de Tag : le même intitulé pourrait en
     théorie être réutilisé dans une autre matière, et le skill concepteur-quiz-
     competence a de toute façon besoin d'une matière unique par requête.
+
+    Deux couples sont écartés avant tout calcul de couverture, parce qu'ils ne
+    constituent pas des compétences traitables (voir SELECTION_MIN_QUESTIONS et
+    _TAGS_STRUCTURELS_EXACTS pour le détail et les cas réels qui les ont motivés) :
+    ceux dont le tag nomme la forme d'une question plutôt qu'une notion, et ceux
+    adossés à moins de `min_questions` exercices.
+
+    Aucun des deux ne prétend détecter une erreur de tagging inter-matières : rien dans
+    les données ne dit que « loi de Hooke » est une loi de physique et non une
+    compétence mathématique. Le filtre par volume l'écarte de fait, mais seulement
+    parce que l'exercice de maths concerné était unique - jamais parce que la fuite
+    aurait été comprise. Un tag de physique posé sur plusieurs exercices de maths
+    passerait toujours, et resterait à repérer à la lecture du materiel_reference.
 
     Retourne une liste de (theme, subject, gap) triée par gap décroissant (la
     compétence la plus sous-couverte d'abord), gap = floor - couverture actuelle,
@@ -147,7 +214,13 @@ def _find_undercovered_competencies(country, floor):
 
     candidates = []
     for pair in pairs:
+        if pair["n"] < min_questions:
+            continue
+
         theme = Tag.objects.get(pk=pair["themes"])
+        if _est_tag_structurel(theme.name):
+            continue
+
         subject_id = pair["exercise__lesson__subject"]
 
         covered = CompetenceItem.objects.filter(
@@ -279,15 +352,14 @@ def _build_generation_request_from_savoir(country, savoir, subject, gap):
     -même plutôt que d'un nom de Tag.
     """
     questions = list(
-        Question.objects.filter(
-            themes__savoir_officiel=savoir,
+        Question.objects.rattachees_au_savoir(savoir)
+        .filter(
             exercise__lesson__subject=subject,
             exercise__statut=StatutContenu.VALIDE,
             exercise__lesson__statut=StatutContenu.VALIDE,
             exercise__lesson__cursus__country=country,
         )
         .select_related("exercise__lesson")
-        .distinct()
         .order_by("exercise_id", "ordre")
     )
 
@@ -329,7 +401,9 @@ def _build_generation_request_from_savoir(country, savoir, subject, gap):
     }
 
 
-def select_quiz_batch(country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR):
+def select_quiz_batch(
+    country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR, min_questions=SELECTION_MIN_QUESTIONS,
+):
     """
     Sélectionne jusqu'à `limit` compétences sous-couvertes pour `country` et produit
     une liste de requêtes de génération au format attendu par le skill concepteur-
@@ -351,7 +425,8 @@ def select_quiz_batch(country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR):
     savoir_ids_in_play = {savoir.pk for savoir, _, _ in savoir_candidates}
 
     tag_candidates = [
-        (theme, subject, gap) for theme, subject, gap in _find_undercovered_competencies(country, floor)
+        (theme, subject, gap)
+        for theme, subject, gap in _find_undercovered_competencies(country, floor, min_questions)
         if theme.savoir_officiel_id not in savoir_ids_in_play
     ]
 

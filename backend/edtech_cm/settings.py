@@ -172,6 +172,35 @@ GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID", default="")
 # vers les pages consultables par un visiteur, jamais vers cette API.
 FRONTEND_URL = config("FRONTEND_URL", default="https://edukora.africa").rstrip("/")
 
+# Envoi d'e-mails - aujourd'hui uniquement les codes de connexion (users.email_service).
+#
+# Console par défaut, sur le modèle de SMS_BACKEND : un développeur qui clone le dépôt
+# voit le code dans son terminal et peut se connecter, sans compte chez un routeur ni
+# risque d'écrire réellement à quelqu'un depuis une machine de développement. Le défaut
+# de Django serait au contraire le backend SMTP pointé sur localhost, qui échoue avec
+# une erreur de connexion refusée n'ayant aucun rapport visible avec la cause.
+#
+# Notre ConsoleEmailBackend plutôt que celui de Django : ce dernier écrit le message
+# RFC-822 complet (en-têtes MIME compris), où le code se perd. Le nôtre affiche la même
+# ligne compacte que le canal SMS, pour que les deux se relisent pareil dans les logs.
+EMAIL_BACKEND = config("EMAIL_BACKEND", default="users.email_backends.ConsoleEmailBackend")
+EMAIL_HOST = config("EMAIL_HOST", default="")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+# L'adresse d'expédition doit appartenir à un domaine dont les enregistrements SPF/DKIM
+# autorisent le routeur configuré ci-dessus. Sans quoi les messages partent bien, mais
+# atterrissent en indésirables chez Gmail - c'est-à-dire un utilisateur bloqué qui n'a
+# aucun moyen de comprendre pourquoi, le pire mode de panne pour une authentification.
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=f"{SITE_NAME} <no-reply@edukora.africa>")
+
+# Plafonds d'envoi des codes e-mail. Séparés des plafonds OTP, et nettement plus larges :
+# un e-mail ne se facture pas, ces valeurs bornent l'usage abusif (relais de spam) et non
+# une dépense. Voir users.email_service.request_email_code.
+EMAIL_CODE_MAX_PER_IP_PER_HOUR = config("EMAIL_CODE_MAX_PER_IP_PER_HOUR", default=60, cast=int)
+EMAIL_CODE_DAILY_GLOBAL_CAP = config("EMAIL_CODE_DAILY_GLOBAL_CAP", default=5000, cast=int)
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",

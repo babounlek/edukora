@@ -126,19 +126,20 @@ export function SubscribePage() {
       if (requireInedit) eligiblePlans = data.filter((p) => p.inclut_inedit)
       else if (requireRepetiteur) eligiblePlans = data.filter((p) => p.product_type === "ADDON_REPETITEUR")
       setPlans(eligiblePlans)
-      // Présélectionne la formule la plus populaire (Max, 1 an - même convention que
-      // `isPopular` sur PricingPage) plutôt que la première de la liste (la moins
-      // chère, `Plan.Meta.ordering` trie par prix croissant) - repli sur la première.
+      // Présélectionne la formule la plus populaire (Jusqu'à l'Examen - même
+      // convention que la mise en avant ⭐ sur PricingPage, grille à 2 paliers du
+      // 2026-08-19) plutôt que la première de la liste (la moins chère,
+      // `Plan.Meta.ordering` trie par prix croissant) - repli sur la première.
       // Recherche restreinte aux Plan ABONNEMENT : un visiteur non filtré (ex. "Se
       // réabonner", qui ne passe aucun `require`) ne doit jamais se retrouver avec
       // l'add-on Fiches présélectionné par défaut simplement parce qu'il matche aussi
-      // 365 jours. Repli sur le premier plan tous types confondus - pour
+      // JUSQUA_EXAMEN. Repli sur le premier plan tous types confondus - pour
       // require=repetiteur, qui n'a lui aucun Plan ABONNEMENT dans ses résultats, ça
-      // sélectionne le palier le moins cher (30 jours) plutôt que l'engagement 1 an :
+      // sélectionne le palier le moins cher plutôt que l'engagement le plus long :
       // décision volontaire pour un add-on encore sans historique d'usage, cohérente
       // avec "démarrer petit" plutôt que pousser l'engagement le plus long d'emblée.
       const abonnementEligibles = eligiblePlans.filter((p) => p.product_type === "ABONNEMENT")
-      const populaire = abonnementEligibles.find((p) => p.duration_mode === "FIXE" && p.duration_days === 365)
+      const populaire = abonnementEligibles.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
       setSelectedPlanId((populaire ?? abonnementEligibles[0] ?? eligiblePlans[0])?.id ?? null)
     })
     if (cursusId) {
@@ -275,7 +276,7 @@ export function SubscribePage() {
           </span>
         </span>
         <span className="font-display text-base font-semibold text-primary">
-          {formatAmount(plan.price)} FCFA
+          {formatAmount(plan.effective_price)} FCFA
         </span>
       </label>
     )
@@ -381,7 +382,7 @@ export function SubscribePage() {
                     {error && <p className="text-sm text-destructive">{error}</p>}
 
                     <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
-                      Payer {selectedPlan ? `${formatAmount(selectedPlan.price)} FCFA` : ""}
+                      Payer {selectedPlan ? `${formatAmount(selectedPlan.effective_price)} FCFA` : ""}
                     </Button>
                   </form>
                 ) : (

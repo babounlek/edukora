@@ -75,6 +75,72 @@ class PlanEffectiveDurationDaysTests(TestCase):
         self.assertEqual(plan.effective_duration_days(), 30)
 
 
+class PlanEffectivePriceTests(TestCase):
+    """
+    Grille à 2 paliers du 2026-08-19 : Jusqu'à l'Examen n'a plus de prix figé, `price`
+    sert de plafond (voir Plan.effective_price). Miroir de
+    PlanEffectiveDurationDaysTests, même tolérance d'un jour sur les bornes calculées
+    depuis `timezone.now().date()`.
+    """
+
+    def test_fixe_mode_returns_price_as_is(self):
+        plan = Plan.objects.create(
+            name="Mensuel", cursus=_cursus(), price=2000,
+            duration_mode=DureeMode.FIXE, duration_days=30,
+        )
+        self.assertEqual(plan.effective_price(), 2000)
+
+    def test_jusqua_examen_is_capped_at_price_far_from_the_exam(self):
+        cursus = _cursus()
+        ExamSession.objects.create(
+            country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
+            date_debut=(timezone.now() + timedelta(days=200)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+        # 200j x 66,7 F/j dépasserait largement le plafond de 12 000 - le prix reste
+        # au plafond quel que soit le +/-1 jour de tolérance.
+        self.assertEqual(plan.effective_price(), 12000)
+
+    def test_jusqua_examen_mirrors_the_mensuel_rate_in_the_middle_zone(self):
+        cursus = _cursus()
+        ExamSession.objects.create(
+            country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=90)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+        taux = 2000 / 30
+        self.assertIn(plan.effective_price(), (round(89 * taux), round(90 * taux)))
+
+    def test_jusqua_examen_never_drops_below_the_floor_close_to_the_exam(self):
+        cursus = _cursus()
+        ExamSession.objects.create(
+            country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=5)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+        self.assertEqual(plan.effective_price(), 3000)
+
+    def test_jusqua_examen_without_a_session_applies_the_same_rule_to_the_fallback_duration(self):
+        cursus = _cursus()
+        self.assertFalse(ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).exists())
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+        # Repli sur duration_days=30 : 30 x 66,7 = 2000, en dessous du plancher de
+        # 3 000 (atteint dès 45 jours) - le plancher l'emporte.
+        self.assertEqual(plan.effective_price(), 3000)
+
+
 class SubscriptionExtendTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677000010", password="x")

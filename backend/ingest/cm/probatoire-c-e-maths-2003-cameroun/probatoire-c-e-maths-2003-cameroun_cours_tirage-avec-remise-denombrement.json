@@ -1,0 +1,178 @@
+{
+ "cours_id": "cours-tirage-avec-remise-denombrement-1ere-ce",
+ "meta": {
+  "titre": "Dénombrer les tirages successifs avec remise contenant un nombre imposé d'éléments d'un type",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dénombrement",
+  "duree_estimee_min": 30,
+  "tags": [
+   "dénombrement",
+   "tirage avec remise",
+   "principe multiplicatif",
+   "combinaison",
+   "liste ordonnée"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "22",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q3-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une urne, des boules, un tirage : trois mots qui recouvrent des situations totalement différentes selon deux détails de l'énoncé. Tire-t-on avec ou sans remise ? L'ordre compte-t-il ? Ces deux questions, posées avant tout calcul, décident de la formule à employer. Les répondre de travers donne un résultat plausible mais faux, et les QCM sont construits pour que chaque erreur ait son distracteur."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître le principe multiplicatif",
+    "Savoir calculer une combinaison $\\binom{n}{p}$",
+    "Distinguer une liste ordonnée d'un ensemble"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux questions à poser, quatre formules possibles",
+   "contenu_markdown": "**Les deux questions préalables.**\n\n1. L'ordre des éléments tirés intervient-il ?\n2. Un même élément peut-il apparaître plusieurs fois ?\n\n| Ordre | Répétition | Situation | Nombre |\n|---|---|---|---|\n| oui | oui | tirage successif **avec** remise | $n^{p}$ |\n| oui | non | tirage successif **sans** remise | $A_{n}^{p}=\\dfrac{n!}{(n-p)!}$ |\n| non | non | tirage **simultané** | $\\binom{n}{p}=\\dfrac{n!}{p!\\,(n-p)!}$ |\n| oui | non, tous pris | permutation | $n!$ |\n\nLes mots qui déclenchent chaque cas : « successivement et avec remise », « successivement sans remise », « simultanément », « tous ».\n\n**Compter les tirages contenant exactement $k$ éléments d'un type donné**, dans un tirage avec remise de $p$ objets parmi $n$, dont $m$ sont du type visé.\n\nOn décompose en trois choix indépendants, puis on multiplie.\n\n1. **Les places** occupées par les $k$ éléments du type visé : $\\binom{p}{k}$ façons.\n2. **L'identité** de ces $k$ éléments : chacune des $k$ places reçoit l'un des $m$ objets du type, avec remise, soit $m^{k}$ façons.\n3. **Le remplissage** des $p-k$ places restantes par des objets de l'autre type : $(n-m)^{p-k}$ façons.\n\n$$\\text{Nombre}=\\binom{p}{k}\\times m^{k}\\times(n-m)^{p-k}$$\n\n**Ce que la remise change.** Sans remise, les objets déjà sortis ne sont plus disponibles, et les facteurs $m^{k}$ et $(n-m)^{p-k}$ deviennent des arrangements. C'est le point qui distingue les deux calculs, et la source d'erreur la plus fréquente.\n\n**Contrôle systématique.** Le nombre trouvé doit être inférieur au nombre total de tirages, ici $n^{p}$. S'il le dépasse, le calcul est faux.",
+   "formule_principale": "\\binom{p}{k}\\times m^{k}\\times(n-m)^{p-k}",
+   "variantes": [
+    {
+     "nom": "Passage par les probabilités",
+     "quand_utiliser": "Quand l'énoncé demande une probabilité plutôt qu'un effectif",
+     "contenu_markdown": "On divise le nombre de tirages favorables par le nombre total $n^{p}$. On retrouve alors la loi binomiale : la probabilité d'obtenir exactement $k$ succès en $p$ tirages indépendants de probabilité $\\dfrac{m}{n}$ chacun vaut $\\binom{p}{k}\\left(\\dfrac{m}{n}\\right)^{k}\\left(1-\\dfrac{m}{n}\\right)^{p-k}$. Le tirage avec remise garantit précisément cette indépendance."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Une urne contient $7$ boules dont $3$ noires. On tire successivement et avec remise $5$ boules de cette urne. Combien de tirages contiennent une seule boule noire ? (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Répondre aux deux questions préalables",
+     "justification": "« Successivement » signifie que l'ordre compte ; « avec remise » signifie que les répétitions sont possibles",
+     "resultat_markdown": "On dénombre des listes ordonnées de $5$ éléments pris parmi $7$, avec répétition"
+    },
+    {
+     "numero": 2,
+     "action": "Inventorier les boules",
+     "justification": "L'urne contient $7$ boules dont $3$ noires",
+     "resultat_markdown": "$3$ boules noires et $7-3=4$ boules non noires"
+    },
+    {
+     "numero": 3,
+     "action": "Choisir la place de l'unique boule noire",
+     "justification": "Le tirage comporte $5$ rangs, et il faut en choisir $1$ pour la boule noire",
+     "resultat_markdown": "$\\binom{5}{1}=5$ possibilités"
+    },
+    {
+     "numero": 4,
+     "action": "Choisir l'identité de cette boule noire",
+     "justification": "N'importe laquelle des $3$ boules noires peut sortir à ce rang",
+     "resultat_markdown": "$3$ possibilités"
+    },
+    {
+     "numero": 5,
+     "action": "Remplir les quatre autres rangs",
+     "justification": "Chacun doit recevoir une boule non noire, et la remise laisse les $4$ boules disponibles à chaque fois",
+     "resultat_markdown": "$4\\times 4\\times 4\\times 4=4^{4}=256$ possibilités"
+    },
+    {
+     "numero": 6,
+     "action": "Appliquer le principe multiplicatif",
+     "justification": "Les trois choix sont indépendants, on multiplie",
+     "resultat_markdown": "$5\\times 3\\times 256$"
+    },
+    {
+     "numero": 7,
+     "action": "Calculer",
+     "justification": "$5\\times 3=15$, puis $15\\times 256$",
+     "resultat_markdown": "$15\\times 256=3\\,840$"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler",
+     "justification": "Le nombre total de tirages vaut $7^{5}=16\\,807$",
+     "resultat_markdown": "$3\\,840<16\\,807$ : le résultat est plausible"
+    }
+   ],
+   "conclusion_markdown": "Il y a $3\\,840$ tirages contenant exactement une boule noire, soit la réponse b). Les distracteurs du QCM correspondent chacun à un oubli : $2\\,401=7^{4}$ oublie la boule noire, $243=3^{5}$ suppose toutes les boules noires, et $1\\,280=5\\times 256$ oublie le choix de la boule noire parmi les trois."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Traiter le tirage comme s'il était sans remise",
+     "pourquoi_faux": "Sans remise, les quatre rangs restants donneraient $4\\times 3\\times 2\\times 1=24$ possibilités au lieu de $256$, et le total tomberait à $5\\times 3\\times 24=360$. L'écart est considérable, et il vient d'un seul mot de l'énoncé.",
+     "correction_markdown": "Souligne les mots « avec remise » ou « sans remise » dès la lecture. Ils décident du calcul avant même que tu commences."
+    },
+    {
+     "erreur_markdown": "Oublier le choix de la boule noire parmi les trois",
+     "pourquoi_faux": "On obtient alors $5\\times 256=1\\,280$, qui est précisément le distracteur d). Les trois boules noires sont **distinctes** : tirer la première ou la deuxième ne produit pas le même tirage.",
+     "correction_markdown": "Vérifie que ton produit comporte bien les trois facteurs : la place, l'identité, le remplissage. Un facteur manquant se repère à ce contrôle."
+    },
+    {
+     "erreur_markdown": "Confondre « une seule boule noire » et « au moins une boule noire »",
+     "pourquoi_faux": "« Exactement une » impose que les quatre autres soient non noires. « Au moins une » autoriserait deux, trois, quatre ou cinq boules noires, et se calculerait plutôt par complémentaire : $7^{5}-4^{5}$.",
+     "correction_markdown": "Relis la formulation : « une seule », « exactement », « au moins », « au plus » désignent quatre calculs différents. Entoure le mot-clé."
+    },
+    {
+     "erreur_markdown": "Utiliser une combinaison pour les rangs restants : écrire $\\binom{4}{4}$ au lieu de $4^{4}$",
+     "pourquoi_faux": "Les quatre rangs restants ne se **choisissent** pas, ils se **remplissent**. Chacun reçoit indépendamment l'une des $4$ boules non noires, ce qui donne $4^{4}$ et non $\\binom{4}{4}=1$.",
+     "correction_markdown": "Distingue le choix des **positions**, qui relève d'une combinaison, du choix des **contenus**, qui relève d'une puissance en cas de remise."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une urne contient $10$ boules dont $4$ rouges. On tire successivement et avec remise $3$ boules. Combien de tirages ne contiennent aucune boule rouge ?",
+     "solution_markdown": "**Analyse.** Tirage successif avec remise : l'ordre compte, les répétitions sont possibles.\n\n**Décomposition.** Aucune boule rouge signifie que les trois rangs reçoivent chacun l'une des $10-4=6$ boules non rouges. La remise laisse les $6$ disponibles à chaque fois.\n\n$$6\\times 6\\times 6=6^{3}=216$$\n\n**Conclusion.** Il y a $216$ tirages sans boule rouge.\n\n**Contrôle.** Le nombre total de tirages vaut $10^{3}=1\\,000$, et $216<1\\,000$.\n\n**Remarque.** On peut aussi lire ce résultat comme la formule générale avec $k=0$ : $\\binom{3}{0}\\times 4^{0}\\times 6^{3}=1\\times 1\\times 216=216$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une urne contient $8$ boules dont $5$ vertes. On tire successivement et avec remise $4$ boules. Combien de tirages contiennent exactement deux boules vertes ?",
+     "solution_markdown": "**Analyse.** Tirage successif avec remise, on cherche exactement $k=2$ boules vertes parmi $p=4$ tirages, avec $m=5$ vertes et $8-5=3$ non vertes.\n\n**Étape 1 — les places des deux boules vertes.** Il faut choisir $2$ rangs parmi $4$ :\n\n$$\\binom{4}{2}=\\frac{4\\times 3}{2\\times 1}=6$$\n\n**Étape 2 — l'identité des deux boules vertes.** Chacun des deux rangs reçoit l'une des $5$ boules vertes, avec remise :\n\n$$5\\times 5=5^{2}=25$$\n\n**Étape 3 — les deux rangs restants.** Chacun reçoit l'une des $3$ boules non vertes :\n\n$$3\\times 3=3^{2}=9$$\n\n**Étape 4 — principe multiplicatif.**\n\n$$6\\times 25\\times 9$$\n\nCalcul : $6\\times 25=150$, puis $150\\times 9=1\\,350$.\n\n**Conclusion.** Il y a $1\\,350$ tirages contenant exactement deux boules vertes.\n\n**Contrôle.** Nombre total de tirages : $8^{4}=4\\,096$. On a bien $1\\,350<4\\,096$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une urne contient $6$ boules dont $2$ blanches. On tire successivement et avec remise $4$ boules. Déterminer le nombre de tirages contenant au moins une boule blanche, puis vérifier le résultat en sommant les cas.",
+     "solution_markdown": "**Première méthode : par le complémentaire.**\n\n« Au moins une blanche » est le contraire de « aucune blanche ». On compte donc tous les tirages, puis on retranche ceux qui n'ont aucune boule blanche.\n\nNombre total de tirages : $6^{4}=1\\,296$.\n\nTirages sans boule blanche : les quatre rangs reçoivent l'une des $6-2=4$ boules non blanches, soit $4^{4}=256$.\n\n$$1\\,296-256=1\\,040$$\n\n**Seconde méthode : en sommant les cas.**\n\nOn additionne les tirages contenant exactement $1$, $2$, $3$ ou $4$ boules blanches, en appliquant chaque fois la formule $\\binom{4}{k}\\times 2^{k}\\times 4^{4-k}$.\n\n*Exactement une :* $\\binom{4}{1}\\times 2^{1}\\times 4^{3}=4\\times 2\\times 64=512$.\n\n*Exactement deux :* $\\binom{4}{2}\\times 2^{2}\\times 4^{2}=6\\times 4\\times 16=384$.\n\n*Exactement trois :* $\\binom{4}{3}\\times 2^{3}\\times 4^{1}=4\\times 8\\times 4=128$.\n\n*Exactement quatre :* $\\binom{4}{4}\\times 2^{4}\\times 4^{0}=1\\times 16\\times 1=16$.\n\n**Somme.**\n\n$$512+384=896\\;;\\;896+128=1\\,024\\;;\\;1\\,024+16=1\\,040$$\n\n**Conclusion.** Les deux méthodes donnent $1\\,040$ tirages contenant au moins une boule blanche.\n\n**Contrôle supplémentaire.** En ajoutant le cas $k=0$, soit $256$, on doit retrouver le total : $1\\,040+256=1\\,296=6^{4}$. C'est bien le cas.\n\n**Ce qu'il faut retenir.** Dès qu'un énoncé dit « au moins un », passe par le complémentaire : un seul calcul au lieu de quatre. La somme des cas ne sert qu'à vérifier."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Deux questions avant tout calcul : l'ordre compte-t-il ? les répétitions sont-elles possibles ?",
+    "« Successivement et avec remise » donne des listes ordonnées avec répétition : $n^{p}$ tirages au total.",
+    "Pour compter les tirages à $k$ éléments d'un type : les places, puis leur identité, puis le remplissage du reste. Trois facteurs, jamais deux.",
+    "Les places se **choisissent** par une combinaison ; les contenus se **remplissent** par une puissance quand il y a remise.",
+    "« Exactement un », « au moins un », « au plus un » sont trois calculs différents : entoure le mot-clé de l'énoncé.",
+    "Pour « au moins un », passe par le complémentaire : c'est un calcul au lieu de plusieurs.",
+    "Contrôle final : ton résultat doit être inférieur au nombre total de tirages.",
+    "En QCM, chaque distracteur correspond à un oubli précis : si ton résultat est exactement l'un d'eux, revérifie tes trois facteurs."
+   ]
+  }
+ ]
+}

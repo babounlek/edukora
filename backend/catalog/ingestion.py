@@ -5,9 +5,16 @@ Traduit la sortie JSON de la compétence correction-experte vers nos modèles :
 - Mode cours (un objet = un cours dérivé d'un rappel de méthode) -> Cours
   (ingest_cours)
 
-Tolère à la fois l'ancienne nomenclature des séries (A, B, C, D, F, G) que
+Tolère à la fois l'ancienne nomenclature des séries (A, C, D, F pour "TI") que
 la compétence a pu utiliser avant sa mise à jour, et la nomenclature réelle
-actuelle (A, SES, C, D, E, TI, COM) utilisée dans notre base.
+actuelle (A, C, D, E, TI) utilisée dans notre base. "B"/"SES" (Sciences
+Économiques et Sociales) n'est plus toléré : série supprimée du référentiel
+(décision utilisateur, 2026-08-19), plus aucune cible pour ce code. "G"
+(Techniques Commerciales, ex-COM, supprimée le même jour) non plus, mais pour
+une autre raison : le technique se raisonne désormais en spécialité (STT/STI/
+Hôtellerie-Tourisme - voir catalog.models.Filiere), et "G" seul ne dit pas
+laquelle - une épreuve technique doit être ingérée avec le code de spécialité
+exact (ex: "comptabilite_gestion") plutôt qu'une série ambiguë.
 
 Tolère aussi les épreuves communes à plusieurs séries (ex: Maths BAC C/E,
 très courant au Cameroun) : le champ `serie` peut contenir plusieurs codes
@@ -54,7 +61,7 @@ from .ingestion_repairs import (
     _repair_narrow_array_columns,
     _strip_em_dash,
 )
-from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, _join_fr
+from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, FiliereSerieA, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, VarianteSujet, _join_fr, institution_officielle
 from programme.models import Module, Savoir
 
 
@@ -69,11 +76,13 @@ def _normalize(value):
     return text.strip().lower()
 
 
-# "A-ABI" (vu sur au moins une épreuve source) : suffixe local sans rapport avec les
-# vraies séries multiples ("C-E" = deux séries distinctes sur une même épreuve) -
-# "ABI" n'est pas un code de série, juste une précision d'établissement/source sur
-# une Série A classique. Retiré avant le découpage générique pour ne pas être pris
-# pour une deuxième série inconnue.
+# "A-ABI" (vu sur au moins une épreuve source) : sans rapport avec les vraies séries
+# multiples ("C-E" = deux séries distinctes sur une même épreuve) - "ABI" n'est pas un
+# code de série (décision utilisateur, 2026-08-18 : ABI = "A4 Bilingue", une filière de
+# la Série A, pas une série à part - voir FiliereSerieA/Lesson.filiere_serie_a). Retiré
+# ici avant le découpage générique des séries pour ne pas être pris pour une deuxième
+# série inconnue ; capturé séparément par _resolve_filiere_serie_a, appelé sur la même
+# chaîne AVANT ce retrait.
 _SERIE_NOISE_SUFFIX_RE = re.compile(r"-abi\b", re.IGNORECASE)
 
 
@@ -164,7 +173,10 @@ MATIERE_MAP = {
     "physique-chimie-technologie": "PHYSIQUE_CHIMIE_TECH",
 }
 
-# Tolère l'ancienne nomenclature (A/B/C/D/F/G) ET la nomenclature actuelle.
+# Tolère l'ancienne nomenclature (A/C/D/F, "F" pour "TI") ET la nomenclature actuelle.
+# "B" et "G" ne sont plus tolérés (SES et COM supprimées, voir docstring en tête de
+# module) - une épreuve avec ces codes fait échouer l'ingestion explicitement plutôt
+# que de résoudre vers une série qui n'existe plus.
 # a1/a2 : pas un alias de "A" mais le code réel de deux séries distinctes en Côte
 # d'Ivoire (Lettres-Philosophie / Lettres-Langues, voir Series pour ce pays) - le
 # Cameroun n'a qu'une série "A" unique, donc ces deux nomenclatures coexistent sans
@@ -173,12 +185,17 @@ SERIE_MAP = {
     "a": "A",
     "a1": "A1",
     "a2": "A2",
-    "b": "SES", "ses": "SES",
+    # "b"/"ses" (Sciences Économiques et Sociales) retiré le 2026-08-19 : série
+    # supprimée du référentiel (décision utilisateur), plus aucune cible.
     "c": "C",
     "d": "D",
     "e": "E",
     "f": "TI", "ti": "TI",
-    "g": "COM", "com": "COM",
+    # "g"/"com" (Techniques Commerciales, ex-COM) retiré le 2026-08-19 : ambigu depuis
+    # l'introduction de Filiere, ne dit pas quelle spécialité STT (Comptabilité et
+    # Gestion, Secrétariat/Bureautique, Commerce, Banque) - voir le docstring en tête
+    # de module. Une épreuve "Série G" doit désormais être ingérée avec le code de
+    # spécialité exact plutôt qu'une série ambiguë.
 }
 
 EXAMEN_MAP = {
@@ -226,6 +243,26 @@ NATURE_MAP = {
     "pratique": NatureEpreuve.PRATIQUE,
 }
 
+PARTIE_FRANCAIS_MAP = {
+    "etude de texte": PartieEpreuveFrancais.ETUDE_TEXTE,
+    "expression ecrite": PartieEpreuveFrancais.EXPRESSION_ECRITE,
+    "orthographe": PartieEpreuveFrancais.ORTHOGRAPHE,
+}
+
+VARIANTE_SUJET_MAP = {
+    "sujet 1": VarianteSujet.SUJET_1,
+    "sujet1": VarianteSujet.SUJET_1,
+    "sujet 2": VarianteSujet.SUJET_2,
+    "sujet2": VarianteSujet.SUJET_2,
+}
+
+FILIERE_SERIE_A_MAP = {
+    "abi": FiliereSerieA.ABI,
+    "a4 bilingue": FiliereSerieA.ABI,
+}
+
+_FILIERE_SERIE_A_IN_SERIE_RE = re.compile(r"\babi\b", re.IGNORECASE)
+
 ORIGINE_MAP = {
     "officiel": Origine.OFFICIEL,
     "officielle": Origine.OFFICIEL,  # accord grammatical variant ("épreuve officielle") vu sur bac-d-maths-1994/1995/1996/1997-cameroun.
@@ -237,6 +274,7 @@ ORIGINE_MAP = {
     "examen blanc": Origine.BLANC,
     "examen_blanc": Origine.BLANC,  # variante underscore, vu sur bac-c-maths-blanc-2003-cameroun - même dérive que "bac_blanc" dans EXAMEN_MAP.
     "blanc": Origine.BLANC,
+    "sujet zero": Origine.SUJET_ZERO,  # _normalize() retire déjà l'accent ("zéro" -> "zero"), une seule entrée suffit.
     "etablissement": Origine.ETABLISSEMENT,
     "epreuve d'etablissement": Origine.ETABLISSEMENT,
     "autre": Origine.AUTRE,
@@ -360,6 +398,106 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
     return tuple(cursus_list)
 
 
+def build_lesson_title(
+    subject, cursus_list, year, origine, etablissement,
+    nature_epreuve="", partie_epreuve_francais="", variante_sujet="", filiere_serie_a="",
+):
+    """
+    Titre affiché d'une épreuve, construit depuis ses champs structurés.
+
+    Public (pas de préfixe `_`) et isolé ici plutôt que laissé en ligne dans
+    `ingest_exercise` : le titre n'est calculé qu'à la CRÉATION du Lesson, donc toute
+    correction ultérieure du cursus (voir _merge_series_from_folder_name, qui rattache
+    après coup une épreuve aux séries que son JSON avait oubliées) laisse un titre
+    périmé - "Chimie BAC C et D 2025" pour une épreuve désormais rattachée aussi à la
+    Série E. La commande `corriger_series_et_reperes` rejoue donc cette fonction, qui
+    doit rester l'unique source de vérité des deux côtés.
+
+    Ne touche jamais au slug, lui : il est figé à la création (voir Lesson.slug) pour
+    ne pas casser les URL déjà partagées et indexées.
+    """
+    # Regroupe par examen pour ne pas répéter le diplôme quand l'épreuve concerne
+    # plusieurs séries : "BAC C et E" plutôt que "BAC - Série C / BAC - Série E".
+    groups = {}
+    for c in cursus_list:
+        group = groups.setdefault(c.examen, {"examen_display": c.display_examen(), "series": []})
+        if c.series:
+            group["series"].append(c.series.code)
+    cursus_label = " / ".join(
+        f"{g['examen_display']} {_join_fr(g['series'])}" if g["series"] else g["examen_display"]
+        for g in groups.values()
+    )
+
+    # Jamais de suffixe "Corrigé" : ce titre est affiché tel quel sur des surfaces qui
+    # ne montrent QUE le sujet (fiche catalogue, page détail avant abonnement, en-tête
+    # du PDF de sujet public - voir sujet_pdf.py) - y annoncer "Corrigé" est trompeur
+    # pour un visiteur qui n'y voit que l'énoncé. Le statut "corrigé" se lit déjà via
+    # lesson_type ailleurs.
+    title = f"{subject.label} {cursus_label} {year or ''}".replace("  ", " ").strip()
+    if origine == Origine.ETABLISSEMENT and etablissement:
+        # Sans ça, deux épreuves d'établissements différents pour le même
+        # (matière, cursus, année) produisent des titres identiques - indiscernables
+        # dans le catalogue tant qu'on n'a pas cliqué dessus.
+        title = f"{title} - {etablissement}"
+    if origine == Origine.BLANC:
+        # Sans ça, un examen blanc et le sujet officiel du même (matière, cursus,
+        # année) produisent des titres identiques - indiscernables dans le catalogue
+        # et dans l'admin tant qu'on n'a pas cliqué dessus. Seul BLANC est annoté :
+        # OFFICIEL reste la forme "par défaut", déjà très majoritaire dans le corpus.
+        title = f"{title} - Blanc"
+    if origine == Origine.SUJET_ZERO:
+        # Même motif que BLANC ci-dessus, catégorie distincte (voir Origine) : un
+        # spécimen et le sujet officiel du même (matière, cursus, année) sont sinon
+        # indiscernables.
+        title = f"{title} - Sujet zéro"
+    if nature_epreuve == NatureEpreuve.PRATIQUE:
+        # Sans ça, l'épreuve pratique et sa jumelle théorique du même (matière, cursus,
+        # année) produisent des titres identiques - indiscernables dans le catalogue et
+        # dans l'admin tant qu'on n'a pas cliqué dessus. Seule la pratique est annotée :
+        # la théorique reste la forme "par défaut", déjà majoritaire dans le corpus.
+        title = f"{title} - Pratique"
+    if partie_epreuve_francais:
+        # Contrairement à Pratique (seule la minorité THEORIQUE/PRATIQUE annonce sa
+        # forme, l'autre reste "par défaut") : ici les 3 valeurs sont annotées, aucune
+        # n'est majoritaire dans le corpus Français au point de rester tacite.
+        title = f"{title} - {PartieEpreuveFrancais(partie_epreuve_francais).label}"
+    if variante_sujet:
+        # Même logique que partie_epreuve_francais : aucun des deux sujets n'est plus
+        # légitime que l'autre (distribués en alternance dans la même salle), donc les
+        # deux sont annotés - contrairement à Pratique/Blanc où une seule forme l'est.
+        title = f"{title} - {VarianteSujet(variante_sujet).label}"
+    if filiere_serie_a:
+        # Même motif que Pratique/Blanc : reste rattachée à la Série A (même Cursus),
+        # seule la filière ABI est annotée - la Série A classique reste la forme "par
+        # défaut", très largement majoritaire dans le corpus.
+        title = f"{title} - {FiliereSerieA(filiere_serie_a).label}"
+    return title
+
+
+def _resolve_institution(data, origine, etablissement, country, cursus_list):
+    """
+    Organisme organisateur de l'épreuve. Dérivé du couple (pays, examen) pour un sujet
+    officiel plutôt que recopié dans chacun des ~1200 JSON du corpus : pour un sujet
+    officiel la valeur ne dépend de rien d'autre, donc la demander à la génération
+    n'apporterait aucune information et multiplierait les occasions de divergence.
+
+    Une valeur explicite dans le JSON l'emporte toujours - c'est le seul recours pour
+    un examen blanc, dont l'organisateur (un lycée, une délégation régionale, le
+    ministère) n'est déductible d'aucun autre champ. À défaut, une épreuve
+    d'établissement est organisée par cet établissement lui-même. Tout le reste reste
+    vide : mieux vaut ne rien afficher qu'afficher une institution inventée.
+    """
+    explicite = str(data.get("institution") or "").strip()
+    if explicite:
+        return explicite
+    if origine == Origine.ETABLISSEMENT and etablissement:
+        return etablissement
+    if origine != Origine.OFFICIEL:
+        return ""
+    examen = cursus_list[0].examen if cursus_list else ""
+    return institution_officielle(country.code, examen)
+
+
 def _format_coefficient(coefficient_raw):
     """
     Le coefficient peut différer selon la série pour une même épreuve commune à
@@ -392,7 +530,9 @@ def _resolve_origine(origine_raw, country):
         return origine
     if country and normalized == _normalize(country.label):
         return Origine.OFFICIEL
-    raise IngestionError(f"Origine inconnue : {origine_raw!r}. Attendu officiel/examen blanc/etablissement/autre.")
+    raise IngestionError(
+        f"Origine inconnue : {origine_raw!r}. Attendu officiel/examen blanc/sujet zero/etablissement/autre.",
+    )
 
 
 def _resolve_nature_epreuve(nature_raw):
@@ -410,6 +550,58 @@ def _resolve_nature_epreuve(nature_raw):
     if not nature:
         raise IngestionError(f"Nature d'épreuve inconnue : {nature_raw!r}. Attendu théorique/pratique (ou absent).")
     return nature
+
+
+def _resolve_partie_epreuve_francais(matiere_raw, partie_raw):
+    """Champ optionnel, propre au Français (voir Lesson.partie_epreuve_francais).
+    Deux sources, `partie_raw` (champ dédié explicite) prioritaire sur `matiere_raw` :
+    une partie du corpus Français déclare déjà directement "Étude de texte"/
+    "Expression écrite"/"Orthographe" comme valeur de `matiere` plutôt que "Français"
+    (voir MATIERE_MAP) - cette info était jusqu'ici résolue vers la Subject FRANCAIS
+    puis perdue. `partie_raw` présent mais hors liste fermée -> erreur (même contrat
+    que _resolve_nature_epreuve) ; `matiere_raw` hors liste -> simplement ignoré, ce
+    n'est pas son rôle de porter cette info pour la quasi-totalité des matières."""
+    if partie_raw:
+        partie = PARTIE_FRANCAIS_MAP.get(_normalize(partie_raw))
+        if not partie:
+            raise IngestionError(
+                f"Partie d'épreuve de Français inconnue : {partie_raw!r}. "
+                "Attendu étude de texte/expression écrite/orthographe (ou absent).",
+            )
+        return partie
+    return PARTIE_FRANCAIS_MAP.get(_normalize(matiere_raw), "")
+
+
+def _resolve_variante_sujet(variante_raw):
+    """
+    Champ optionnel (voir Lesson.variante_sujet) : absent ou vide -> chaîne vide, la
+    grande majorité des épreuves n'ayant qu'une seule version. Présent mais hors liste
+    fermée -> erreur, même garde-fou que _resolve_nature_epreuve.
+    """
+    if not variante_raw:
+        return ""
+    variante = VARIANTE_SUJET_MAP.get(_normalize(variante_raw))
+    if not variante:
+        raise IngestionError(f"Variante de sujet inconnue : {variante_raw!r}. Attendu sujet 1/sujet 2 (ou absent).")
+    return variante
+
+
+def _resolve_filiere_serie_a(filiere_raw, serie_raw):
+    """Champ optionnel, propre à la Série A (voir Lesson.filiere_serie_a). Deux
+    sources, `filiere_raw` (champ dédié explicite) prioritaire sur `serie_raw` : le
+    corpus existant écrit déjà "A-ABI" directement dans `serie` plutôt que dans un
+    champ dédié (imprimé ainsi sur l'épreuve source) - ce token, comme un nom de
+    fichier qui le reprend explicitement, compte comme une indication explicite (même
+    contrat que nature_epreuve/partie_epreuve_francais). `filiere_raw` présent mais
+    hors liste fermée -> erreur (même garde-fou que _resolve_variante_sujet)."""
+    if filiere_raw:
+        filiere = FILIERE_SERIE_A_MAP.get(_normalize(filiere_raw))
+        if not filiere:
+            raise IngestionError(f"Filière de Série A inconnue : {filiere_raw!r}. Attendu ABI/A4 Bilingue (ou absent).")
+        return filiere
+    if _FILIERE_SERIE_A_IN_SERIE_RE.search(str(serie_raw or "")):
+        return FiliereSerieA.ABI
+    return ""
 
 
 def _validate_pays_matches_country(pays_raw, country):
@@ -601,6 +793,19 @@ def _get_or_create_tags(names):
     return tags
 
 
+def _format_alternatives(values, limit=25):
+    """
+    Rend une liste de valeurs valides lisible dans un message d'erreur, tronquée pour
+    ne jamais transformer une IngestionError en mur de texte (le référentiel Maths
+    compte 14 couples (classe, série) et jusqu'à une vingtaine de modules par couple).
+    """
+    values = list(values)
+    shown = ", ".join(repr(v) for v in values[:limit])
+    if len(values) > limit:
+        shown += f", ... (+{len(values) - limit})"
+    return shown or "aucune"
+
+
 def _resolve_savoir_officiel(raw, subject):
     """
     Référence optionnelle vers le référentiel programme officiel (programme.Module/
@@ -609,6 +814,19 @@ def _resolve_savoir_officiel(raw, subject):
     Absent -> None, comportement inchangé pour tout appelant qui ne fournit pas ce
     champ. Présent mais non résolvable -> IngestionError : mieux vaut échouer fort
     qu'ignorer en silence une référence fausse fournie par un skill.
+
+    Les valeurs sont exigées à l'identique du référentiel, jamais rapprochées de façon
+    approximative - et c'est délibéré. La tentation est grande de normaliser la série
+    d'une épreuve ("C, D" tel qu'écrit dans le JSON) vers le `serie_label` du module
+    ("C-D-E"), puisque c'est le décalage qui fait le plus souvent échouer une référence.
+    Mais ce rapprochement n'est pas une simple différence d'écriture : une épreuve
+    commune à plusieurs séries relève parfois de DEUX modules officiels distincts (en
+    Maths Tle, la série C vit dans le module "C-E" et la D dans le module "D"), et
+    "C, D" n'y désigne alors aucun module en particulier. Deviner reviendrait à en
+    choisir un en silence - exactement le mode d'échec que cette fonction existe pour
+    empêcher. Le décalage se règle donc en amont, en lisant le fixture (voir la section
+    savoir_officiel du skill correction-experte) ; ici on se contente de rendre l'échec
+    actionnable en listant les valeurs réellement disponibles.
     """
     if not raw:
         return None
@@ -625,14 +843,41 @@ def _resolve_savoir_officiel(raw, subject):
     try:
         module = Module.objects.get(subject=subject, classe=classe, serie_label=serie_label, numero=module_numero)
     except Module.DoesNotExist:
+        # Deux impasses très différentes derrière le même DoesNotExist, et les
+        # distinguer change ce qu'il y a à corriger : soit le couple (classe, série)
+        # n'existe pas du tout pour cette matière (erreur de `serie_label`, cas le plus
+        # fréquent - voir la docstring), soit il existe et c'est le numéro de module qui
+        # est faux. On liste les valeurs valides du niveau qui coince, jamais les deux :
+        # noyer le bon indice sous l'autre liste rendrait le message inutilisable.
+        combos = (
+            Module.objects.filter(subject=subject, classe=classe, serie_label=serie_label).exists()
+        )
+        if combos:
+            numeros = (
+                Module.objects.filter(subject=subject, classe=classe, serie_label=serie_label)
+                .order_by("ordre").values_list("numero", flat=True)
+            )
+            detail = f"Numéros de module disponibles pour ce couple : {_format_alternatives(numeros)}."
+        else:
+            disponibles = sorted(
+                {
+                    f"classe={c!r} serie_label={s!r}"
+                    for c, s in Module.objects.filter(subject=subject).values_list("classe", "serie_label")
+                }
+            )
+            detail = f"Couples (classe, serie_label) disponibles pour cette matière : {_format_alternatives(disponibles)}."
         raise IngestionError(
             f"savoir_officiel : aucun module officiel pour matière={subject.code!r} classe={classe!r} "
-            f"serie_label={serie_label!r} numero={module_numero!r}.",
+            f"serie_label={serie_label!r} numero={module_numero!r}. {detail}",
         )
     try:
         return module.savoirs.get(numero=savoir_numero)
     except Savoir.DoesNotExist:
-        raise IngestionError(f"savoir_officiel : le module {module} n'a pas de savoir numéro {savoir_numero!r}.")
+        numeros = module.savoirs.order_by("ordre").values_list("numero", flat=True)
+        raise IngestionError(
+            f"savoir_officiel : le module {module} n'a pas de savoir numéro {savoir_numero!r}. "
+            f"Numéros disponibles dans ce module : {_format_alternatives(numeros)}.",
+        )
     except Savoir.MultipleObjectsReturned:
         # Ne devrait jamais arriver (numéro cense identifier un savoir de façon unique
         # au sein d'un module) - mais un doublon de numérotation dans le fixture source
@@ -912,6 +1157,9 @@ def ingest_exercise(data, source_dir=None, force=False):
 
     subject = _resolve_subject(data["matiere"], country)
     nature_epreuve = _resolve_nature_epreuve(data.get("nature_epreuve"))
+    partie_epreuve_francais = _resolve_partie_epreuve_francais(data.get("matiere"), data.get("partie_epreuve_francais"))
+    variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
+    filiere_serie_a = _resolve_filiere_serie_a(data.get("filiere_serie_a"), data.get("serie"))
 
     year = None
     if data.get("annee"):
@@ -990,40 +1238,26 @@ def ingest_exercise(data, source_dir=None, force=False):
                 lesson.subject = Subject.objects.get(code=combined_code, country=country)
                 lesson.save(update_fields=["subject", "updated_at"])
         if lesson is None:
-            # Regroupe par examen pour ne pas répéter le diplôme quand l'épreuve concerne
-            # plusieurs séries : "BAC C et E" plutôt que "BAC - Série C / BAC - Série E".
-            groups = {}
-            for c in cursus_list:
-                group = groups.setdefault(c.examen, {"examen_display": c.display_examen(), "series": []})
-                if c.series:
-                    group["series"].append(c.series.code)
-            cursus_label = " / ".join(
-                f"{g['examen_display']} {_join_fr(g['series'])}" if g["series"] else g["examen_display"]
-                for g in groups.values()
-            )
             origine = _resolve_origine(data.get("origine"), country)
             etablissement = str(data.get("etablissement") or "")
-
-            # Jamais de suffixe "Corrigé" : ce titre est affiché tel quel sur des
-            # surfaces qui ne montrent QUE le sujet (fiche catalogue, page détail
-            # avant abonnement, en-tête du PDF de sujet public - voir sujet_pdf.py) -
-            # y annoncer "Corrigé" est trompeur pour un visiteur qui n'y voit que
-            # l'énoncé. Le statut "corrigé" se lit déjà via lesson_type ailleurs.
-            title = f"{subject.label} {cursus_label} {year or ''}".replace("  ", " ").strip()
-            if origine == Origine.ETABLISSEMENT and etablissement:
-                # Sans ça, deux épreuves d'établissements différents pour le même
-                # (matière, cursus, année) produisent des titres identiques -
-                # indiscernables dans le catalogue tant qu'on n'a pas cliqué dessus.
-                title = f"{title} - {etablissement}"
+            title = build_lesson_title(
+                subject, cursus_list, year, origine, etablissement,
+                nature_epreuve, partie_epreuve_francais, variante_sujet, filiere_serie_a,
+            )
 
             lesson = Lesson.objects.create(
                 epreuve_source=epreuve_source, subject=subject, year=year, lesson_type=LessonType.CORR,
                 title=title, statut=StatutContenu.VALIDE,
                 duree_epreuve=str(data.get("duree_epreuve") or ""),
                 coefficient=_format_coefficient(data.get("coefficient")),
+                introduction_markdown=_strip_em_dash(str(data.get("introduction_markdown") or "")),
                 origine=origine,
                 etablissement=etablissement,
+                institution=_resolve_institution(data, origine, etablissement, country, cursus_list),
                 nature_epreuve=nature_epreuve,
+                partie_epreuve_francais=partie_epreuve_francais,
+                variante_sujet=variante_sujet,
+                filiere_serie_a=filiere_serie_a,
             )
         for cursus in cursus_list:
             lesson.cursus.add(cursus)
@@ -1038,12 +1272,37 @@ def ingest_exercise(data, source_dir=None, force=False):
         if not lesson.coefficient and data.get("coefficient"):
             lesson.coefficient = _format_coefficient(data["coefficient"])
             update_fields.append("coefficient")
+        # introduction_markdown : même convention que duree_epreuve/coefficient
+        # ci-dessus - une consigne d'épreuve entière (ex. "le candidat traitera un seul
+        # sujet au choix") n'a de raison d'être fournie que par UN exercice (souvent le
+        # premier ingéré, pas forcément le premier affiché), jamais reconstruite depuis
+        # plusieurs fragments : le premier exercice qui la porte l'installe sur le Lesson,
+        # les suivants ne l'écrasent jamais (protège une correction manuelle faite depuis).
+        if not lesson.introduction_markdown and data.get("introduction_markdown"):
+            lesson.introduction_markdown = _strip_em_dash(str(data["introduction_markdown"]))
+            update_fields.append("introduction_markdown")
         if not lesson.etablissement and data.get("etablissement"):
             lesson.etablissement = str(data["etablissement"])
             update_fields.append("etablissement")
         if not lesson.nature_epreuve and nature_epreuve:
             lesson.nature_epreuve = nature_epreuve
             update_fields.append("nature_epreuve")
+        if not lesson.partie_epreuve_francais and partie_epreuve_francais:
+            lesson.partie_epreuve_francais = partie_epreuve_francais
+            update_fields.append("partie_epreuve_francais")
+        if not lesson.variante_sujet and variante_sujet:
+            lesson.variante_sujet = variante_sujet
+            update_fields.append("variante_sujet")
+        if not lesson.filiere_serie_a and filiere_serie_a:
+            lesson.filiere_serie_a = filiere_serie_a
+            update_fields.append("filiere_serie_a")
+        if not lesson.institution:
+            institution = _resolve_institution(
+                data, lesson.origine, lesson.etablissement, country, cursus_list,
+            )
+            if institution:
+                lesson.institution = institution
+                update_fields.append("institution")
         if update_fields:
             lesson.save(update_fields=[*update_fields, "updated_at"])
 
@@ -1098,6 +1357,7 @@ def ingest_exercise(data, source_dir=None, force=False):
                 choix, reponse_correcte = [], ""
 
             enonce = _dedupe_question_enonce(_strip_em_dash(q_data["enonce_markdown"]), exercise.enonce_intro_markdown)
+            savoir_officiel = _resolve_savoir_officiel(q_data.get("savoir_officiel"), subject)
             question = Question.objects.create(
                 exercise=exercise,
                 numero=str(q_data.get("numero") or ordre),
@@ -1108,10 +1368,16 @@ def ingest_exercise(data, source_dir=None, force=False):
                 type_reponse=type_reponse,
                 choix=choix,
                 reponse_correcte=reponse_correcte,
+                # Rattachement direct, sans perte : c'est la seule voie qui conserve la
+                # précision par sous-question (voir Question.savoir_officiel).
+                savoir_officiel=savoir_officiel,
             )
             themes = _get_or_create_tags(q_data.get("themes"))
             question.themes.set(themes)
-            _link_tags_to_savoir(themes, _resolve_savoir_officiel(q_data.get("savoir_officiel"), subject))
+            # Conservé en plus du rattachement direct ci-dessus : c'est ce lien-là qui fait
+            # progresser le mapping des tags historiques, et les épreuves déjà en base n'ont
+            # que lui. Les deux voies coexistent, les lecteurs interrogent l'union.
+            _link_tags_to_savoir(themes, savoir_officiel)
 
             for rappel_data in q_data.get("rappels_de_methode") or []:
                 # _strip_em_dash appliqué identiquement ici et sur corrige_markdown

@@ -5,7 +5,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 
-from .models import AuthIdentity, AuthProvider, OTPCode, User
+from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
 from .phone import to_e164
 from .sms_backends import get_sms_backend
 
@@ -68,13 +68,19 @@ def request_otp(phone_number, ip_address=None):
     phone_number = to_e164(phone_number)
     now = timezone.now()
 
-    recent = OTPCode.objects.filter(phone_number=phone_number).order_by("-created_at").first()
+    recent = (
+        OTPCode.objects.filter(canal=CodeCanal.SMS, destination=phone_number)
+        .order_by("-created_at").first()
+    )
     if recent and (now - recent.created_at).total_seconds() < OTP_MIN_INTERVAL_SECONDS:
         raise OTPThrottled("Merci de patienter avant de redemander un code.")
 
     if ip_address:
+        # canal=SMS partout dans ce fichier : voir l'invariant documenté sur le
+        # modèle OTPCode. Sans ce filtre, les codes e-mail - gratuits - feraient
+        # atteindre un plafond qui n'existe que pour borner la facture SMS.
         sent_from_ip = OTPCode.objects.filter(
-            ip_address=ip_address, created_at__gt=now - OTP_IP_WINDOW,
+            canal=CodeCanal.SMS, ip_address=ip_address, created_at__gt=now - OTP_IP_WINDOW,
         ).count()
         if sent_from_ip >= settings.OTP_MAX_PER_IP_PER_HOUR:
             logger.warning(
@@ -85,7 +91,9 @@ def request_otp(phone_number, ip_address=None):
                 "Trop de demandes de code depuis cette connexion. Merci de réessayer dans une heure.",
             )
 
-    sent_globally = OTPCode.objects.filter(created_at__gt=now - OTP_GLOBAL_WINDOW).count()
+    sent_globally = OTPCode.objects.filter(
+        canal=CodeCanal.SMS, created_at__gt=now - OTP_GLOBAL_WINDOW,
+    ).count()
     if sent_globally >= settings.OTP_DAILY_GLOBAL_CAP:
         # ERROR et pas WARNING : remonte à Sentry (voir settings.SENTRY_DSN) parce que
         # plus aucun utilisateur ne peut se connecter tant que ça dure - c'est une
@@ -101,7 +109,8 @@ def request_otp(phone_number, ip_address=None):
 
     code = f"{random.randint(0, 999999):06d}"
     OTPCode.objects.create(
-        phone_number=phone_number,
+        canal=CodeCanal.SMS,
+        destination=phone_number,
         code=code,
         expires_at=now + timedelta(minutes=OTP_VALIDITY_MINUTES),
         ip_address=ip_address,
@@ -123,7 +132,9 @@ def consume_otp(phone_number, code):
     """
     phone_number = to_e164(phone_number)
     otp = (
-        OTPCode.objects.filter(phone_number=phone_number, is_used=False)
+        OTPCode.objects.filter(
+            canal=CodeCanal.SMS, destination=phone_number, is_used=False,
+        )
         .order_by("-created_at")
         .first()
     )

@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-permutation-premier-element-fixe-premiere-c",
+  "meta": {
+    "titre": "Dénombrer les permutations avec un élément fixé en une position donnée",
+    "cours_id": "cours-permutation-premier-element-fixe-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Dénombrement - permutations avec contrainte",
+    "tags": ["permutation", "élément fixé", "factorielle réduite"],
+    "duree_estimee_minutes": 6,
+    "epreuve_source": "probatoire-c-e-maths-2014-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2014-cameroun_exercice_2_q3b"
+  },
+  "sections": {
+    "accroche": "Fixer un élément à une position précise dans une permutation ne fait que retirer un degré de liberté du dénombrement : il ne reste plus qu'à ordonner les éléments restants, dont le nombre de façons est (n-1)!.",
+    "prerequis": ["Nombre de permutations de n éléments (n!)"],
+    "regle": {
+      "titre": "(n-1)! si un élément est fixé en position",
+      "contenu_markdown": "Si un élément est fixé (imposé) à une position donnée (par exemple, la première) parmi $n$ éléments à ordonner, le nombre de façons d'ordonner l'ensemble se réduit au nombre de façons d'ordonner les $(n-1)$ éléments restants sur les positions restantes, soit $(n-1)!$.",
+      "formule_principale": "$(n-1)!$",
+      "variantes": ["Si deux éléments sont fixés à deux positions données, il reste (n-2)! façons pour les autres"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Combien de façons d'ordonner 5 personnes en file si Paul doit être en tête ?",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Position de Paul fixée", "justification": "Paul toujours en 1ère position", "resultat_markdown": "il reste 4 personnes à ordonner sur les 4 positions restantes"},
+        {"numero": 2, "action": "Application de (n-1)!", "justification": "n=5", "resultat_markdown": "4!=24"}
+      ],
+      "conclusion_markdown": "24 façons."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Continuer à appliquer n! (nombre total sans contrainte) même après avoir lu que l'énoncé impose un élément fixé à une position précise", "pourquoi_faux": "fixer un élément à une position donnée réduit le nombre de degrés de liberté du dénombrement : il ne reste plus n éléments libres à placer mais seulement (n-1), sur (n-1) positions restantes", "correction_markdown": "Dès qu'une contrainte fixe un élément à une position précise, retirer cet élément (et cette position) du dénombrement, et appliquer (n-1)! aux éléments et positions restants."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Combien de façons d'ordonner 6 livres si le premier doit toujours être en dernière position ?", "solution_markdown": "Il reste 5 livres à ordonner sur les 5 positions restantes : 5!=120."}
+    ],
+    "synthese": "Si un élément parmi n est fixé à une position donnée, le nombre de permutations restantes se réduit à (n-1)!, obtenu en ordonnant simplement les (n-1) éléments restants sur les positions restantes."
+  }
+}

@@ -1,0 +1,188 @@
+{
+ "cours_id": "cours-decomposition-fraction-rationnelle-1ere-ce",
+ "meta": {
+  "titre": "Décomposer une fraction rationnelle en partie entière et fraction résiduelle",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Fonctions rationnelles",
+  "duree_estimee_min": 30,
+  "tags": [
+   "division euclidienne",
+   "identification des coefficients",
+   "partie entière",
+   "fraction rationnelle"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qB2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Écrire $\\dfrac{x^{2}+3}{x+1}$ sous la forme $x-1+\\dfrac{4}{x+1}$ ressemble à un caprice de présentation. C'est en réalité l'opération qui débloque tout le reste : l'asymptote oblique se lit sur la partie affine, la position de la courbe sur le signe de la fraction résiduelle, et la dérivée se calcule en deux lignes. Une seule division, trois questions résolues."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Effectuer une division euclidienne de nombres entiers, dont le principe se transpose aux polynômes",
+    "Développer un produit de deux polynômes",
+    "Réduire au même dénominateur pour vérifier une égalité de fractions"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux méthodes pour une même décomposition",
+   "contenu_markdown": "**Objectif.** Écrire une fraction rationnelle $\\dfrac{P(x)}{D(x)}$, où $\\deg P>\\deg D$, sous la forme\n\n$$\\frac{P(x)}{D(x)}=Q(x)+\\frac{R(x)}{D(x)}\\qquad\\text{avec}\\qquad\\deg R<\\deg D$$\n\n$Q$ est la **partie entière**, $\\dfrac{R}{D}$ la **fraction résiduelle**. Quand $\\deg P=\\deg D+1$, la partie entière est de la forme $ax+b$ et le reste une constante $c$.\n\n**Méthode 1 : la division euclidienne.** On divise $P$ par $D$ comme on divise deux entiers.\n\nÀ chaque étape, on divise le terme de plus haut degré du reste courant par celui de $D$, ce qui donne un terme du quotient ; on multiplie ce terme par $D$ et on soustrait. On s'arrête quand le degré du reste devient strictement inférieur à celui de $D$.\n\nOn obtient l'identité $P(x)=D(x)\\,Q(x)+R(x)$, qu'il suffit de diviser par $D(x)$.\n\n**Méthode 2 : l'identification.** On écrit\n\n$$\\frac{P(x)}{D(x)}=\\frac{(ax+b)D(x)+c}{D(x)}$$\n\non développe le numérateur de droite, et l'on identifie ses coefficients à ceux de $P$, terme à terme. Cela donne un petit système en $a$, $b$, $c$.\n\n**Laquelle choisir ?** La division est plus rapide dès que les degrés montent ; l'identification est plus sûre si tu maîtrises mal la disposition de la division. Les deux donnent le même résultat, et l'énoncé accepte l'une comme l'autre.\n\n**Vérification obligatoire.** Quelle que soit la méthode, réduis la forme obtenue au même dénominateur et vérifie que tu retrouves la fraction de départ. C'est trois lignes, et cela sécurise les trois questions qui suivent.",
+   "formule_principale": "\\frac{P(x)}{D(x)}=Q(x)+\\frac{R(x)}{D(x)}\\qquad\\text{avec}\\qquad\\deg R<\\deg D",
+   "variantes": [
+    {
+     "nom": "Faire apparaître le dénominateur au numérateur",
+     "quand_utiliser": "Quand le dénominateur est de la forme $x-x_{0}$ et que le numérateur est simple",
+     "contenu_markdown": "On réécrit le numérateur en y faisant apparaître artificiellement le dénominateur. Par exemple, pour $\\dfrac{x^{2}+3}{x+1}$ : on écrit $x^{2}+3=x^{2}-1+4=(x-1)(x+1)+4$, d'où $f(x)=x-1+\\dfrac{4}{x+1}$. Cette astuce est la plus rapide des trois quand elle fonctionne, mais elle demande de repérer la bonne écriture, ce qui n'est pas toujours immédiat."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Déterminer trois réels $a$, $b$ et $c$ tels que, pour tout $x\\neq-1$, $\\dfrac{x^{2}+3}{x+1}=ax+b+\\dfrac{c}{x+1}$. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Poser la division",
+     "justification": "On divise $x^{2}+3$ par $x+1$ ; noter que le terme en $x$ est absent au numérateur, son coefficient vaut $0$",
+     "resultat_markdown": "Dividende $x^{2}+0x+3$, diviseur $x+1$"
+    },
+    {
+     "numero": 2,
+     "action": "Premier terme du quotient",
+     "justification": "On divise le terme dominant du dividende par celui du diviseur : $\\dfrac{x^{2}}{x}=x$",
+     "resultat_markdown": "Premier terme : $x$"
+    },
+    {
+     "numero": 3,
+     "action": "Première soustraction",
+     "justification": "On multiplie $x$ par le diviseur, puis on retranche",
+     "resultat_markdown": "$x(x+1)=x^{2}+x$, et $x^{2}+0x+3-\\left(x^{2}+x\\right)=-x+3$"
+    },
+    {
+     "numero": 4,
+     "action": "Deuxième terme du quotient",
+     "justification": "$\\dfrac{-x}{x}=-1$",
+     "resultat_markdown": "Deuxième terme : $-1$"
+    },
+    {
+     "numero": 5,
+     "action": "Deuxième soustraction",
+     "justification": "On multiplie $-1$ par le diviseur, puis on retranche",
+     "resultat_markdown": "$-1\\times(x+1)=-x-1$, et $-x+3-(-x-1)=-x+3+x+1=4$"
+    },
+    {
+     "numero": 6,
+     "action": "Arrêter la division",
+     "justification": "Le reste $4$ est de degré $0$, strictement inférieur au degré $1$ du diviseur",
+     "resultat_markdown": "$x^{2}+3=(x+1)(x-1)+4$"
+    },
+    {
+     "numero": 7,
+     "action": "Diviser par le diviseur",
+     "justification": "Licite car $x\\neq-1$ ; le premier quotient se simplifie",
+     "resultat_markdown": "$\\dfrac{x^{2}+3}{x+1}=\\dfrac{(x+1)(x-1)}{x+1}+\\dfrac{4}{x+1}=x-1+\\dfrac{4}{x+1}$"
+    },
+    {
+     "numero": 8,
+     "action": "Identifier les trois réels",
+     "justification": "On compare à la forme demandée $ax+b+\\dfrac{c}{x+1}$",
+     "resultat_markdown": "$a=1$, $b=-1$, $c=4$"
+    },
+    {
+     "numero": 9,
+     "action": "Vérifier par réduction au même dénominateur",
+     "justification": "On recompose la fraction à partir de la forme trouvée",
+     "resultat_markdown": "$x-1+\\dfrac{4}{x+1}=\\dfrac{(x-1)(x+1)+4}{x+1}=\\dfrac{x^{2}-1+4}{x+1}=\\dfrac{x^{2}+3}{x+1}$"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler numériquement",
+     "justification": "On teste une valeur simple, par exemple $x=0$",
+     "resultat_markdown": "$f(0)=\\dfrac{3}{1}=3$, et la décomposition donne $0-1+\\dfrac{4}{1}=3$"
+    }
+   ],
+   "conclusion_markdown": "On obtient $a=1$, $b=-1$ et $c=4$, soit $f(x)=x-1+\\dfrac{4}{x+1}$. Sous cette forme, l'asymptote oblique $y=x-1$ et la position de la courbe, donnée par le signe de $\\dfrac{4}{x+1}$, se lisent immédiatement : c'est tout l'intérêt de la décomposition."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier le terme de degré $1$ manquant lors de la division",
+     "pourquoi_faux": "Dans $x^{2}+3$, le coefficient de $x$ vaut $0$. Si l'on pose la division sans réserver cette colonne, les termes se décalent et la soustraction devient fausse dès la première étape.",
+     "correction_markdown": "Réécris toujours le dividende avec tous ses degrés : $x^{2}+0x+3$. Un zéro explicite coûte une seconde et évite l'erreur la plus fréquente."
+    },
+    {
+     "erreur_markdown": "Écrire $\\dfrac{x^{2}+3}{x+1}=\\dfrac{x^{2}}{x+1}+\\dfrac{3}{x+1}$ et s'arrêter là",
+     "pourquoi_faux": "L'égalité est vraie, mais elle ne décompose rien : le premier terme reste une fraction dont le numérateur est de degré supérieur au dénominateur. La forme demandée exige une partie **entière** $ax+b$, sans fraction.",
+     "correction_markdown": "Le critère d'arrêt est le degré du reste : il doit être strictement inférieur à celui du dénominateur. Ici le reste doit être une constante."
+    },
+    {
+     "erreur_markdown": "Simplifier $\\dfrac{x^{2}+3}{x+1}$ en « barrant » des termes",
+     "pourquoi_faux": "On ne simplifie une fraction que par un **facteur** commun, jamais par un terme d'une somme. $\\dfrac{x^{2}+3}{x+1}$ ne se simplifie pas, puisque $x+1$ ne divise pas $x^{2}+3$ (le reste vaut $4$).",
+     "correction_markdown": "Vérifie avant de simplifier : $x+1$ divise $P$ si et seulement si $P(-1)=0$. Ici $P(-1)=4\\neq 0$, donc aucune simplification n'est possible."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe en soustrayant $-x-1$",
+     "pourquoi_faux": "Retrancher $-x-1$ revient à ajouter $x+1$. Traiter cette soustraction comme une addition de $-x-1$ donne $-2x+2$ au lieu de $4$, et toute la décomposition est fausse.",
+     "correction_markdown": "Écris la soustraction sous forme parenthésée avant de calculer : $-x+3-(-x-1)$, puis distribue le signe moins. Ne fais jamais cette étape de tête."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer trois réels $a$, $b$, $c$ tels que $\\dfrac{2x^{2}+x-1}{x-1}=ax+b+\\dfrac{c}{x-1}$ pour $x\\neq 1$.",
+     "solution_markdown": "**Division de $2x^{2}+x-1$ par $x-1$.**\n\nPremier terme du quotient : $\\dfrac{2x^{2}}{x}=2x$. On soustrait $2x(x-1)=2x^{2}-2x$ :\n\n$$2x^{2}+x-1-\\left(2x^{2}-2x\\right)=3x-1$$\n\nDeuxième terme : $\\dfrac{3x}{x}=3$. On soustrait $3(x-1)=3x-3$ :\n\n$$3x-1-(3x-3)=-1+3=2$$\n\nLe reste vaut $2$, de degré $0$ : la division s'arrête.\n\n$$2x^{2}+x-1=(x-1)(2x+3)+2$$\n\n**Décomposition.**\n\n$$\\frac{2x^{2}+x-1}{x-1}=2x+3+\\frac{2}{x-1}$$\n\nDonc $a=2$, $b=3$, $c=2$.\n\n**Vérification.**\n\n$$2x+3+\\frac{2}{x-1}=\\frac{(2x+3)(x-1)+2}{x-1}=\\frac{2x^{2}-2x+3x-3+2}{x-1}=\\frac{2x^{2}+x-1}{x-1}$$"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Déterminer trois réels $a$, $b$, $c$ tels que $\\dfrac{-x^{2}+4x}{x-3}=ax+b+\\dfrac{c}{x-3}$, par la méthode d'identification.",
+     "solution_markdown": "**Étape 1 — poser l'identité.** Pour $x\\neq 3$ :\n\n$$\\frac{-x^{2}+4x}{x-3}=\\frac{(ax+b)(x-3)+c}{x-3}$$\n\nDeux fractions de même dénominateur sont égales si et seulement si leurs numérateurs le sont, donc\n\n$$-x^{2}+4x=(ax+b)(x-3)+c$$\n\n**Étape 2 — développer le membre de droite.**\n\n$$(ax+b)(x-3)=ax^{2}-3ax+bx-3b=ax^{2}+(b-3a)x-3b$$\n\n$$(ax+b)(x-3)+c=ax^{2}+(b-3a)x+(c-3b)$$\n\n**Étape 3 — identifier terme à terme** avec $-x^{2}+4x+0$ :\n\n$$\\begin{cases} a=-1 \\\\ b-3a=4 \\\\ c-3b=0 \\end{cases}$$\n\n**Étape 4 — résoudre.**\n\nDe la première équation : $a=-1$.\n\nEn reportant dans la deuxième : $b-3\\times(-1)=b+3=4$, donc $b=1$.\n\nEn reportant dans la troisième : $c-3\\times 1=0$, donc $c=3$.\n\n**Conclusion.**\n\n$$\\frac{-x^{2}+4x}{x-3}=-x+1+\\frac{3}{x-3}$$\n\n**Vérification numérique.** Pour $x=0$ : la fraction vaut $\\dfrac{0}{-3}=0$, et la décomposition donne $0+1+\\dfrac{3}{-3}=1-1=0$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}+2x+m}{x+2}$, définie pour $x\\neq-2$, où $m$ est un réel. Décomposer $f$ sous la forme $ax+b+\\dfrac{c}{x+2}$, puis déterminer $m$ pour que la courbe de $f$ soit une droite privée d'un point.",
+     "solution_markdown": "**Étape 1 — division euclidienne de $x^{2}+2x+m$ par $x+2$.**\n\nPremier terme du quotient : $\\dfrac{x^{2}}{x}=x$. On soustrait $x(x+2)=x^{2}+2x$ :\n\n$$x^{2}+2x+m-\\left(x^{2}+2x\\right)=m$$\n\nLe reste vaut $m$, de degré $0$ : la division s'arrête dès la première étape, le quotient est réduit à $x$.\n\n$$x^{2}+2x+m=(x+2)\\times x+m$$\n\n**Étape 2 — décomposition.**\n\n$$f(x)=x+\\frac{m}{x+2}$$\n\ndonc $a=1$, $b=0$, $c=m$.\n\n**Étape 3 — condition pour que la courbe soit une droite.**\n\nLa courbe de $f$ coïncide avec une droite si et seulement si la fraction résiduelle disparaît, c'est-à-dire si\n\n$$m=0$$\n\n**Étape 4 — vérifier ce cas.** Pour $m=0$ :\n\n$$f(x)=\\frac{x^{2}+2x}{x+2}=\\frac{x(x+2)}{x+2}=x$$\n\npour tout $x\\neq-2$. La courbe est donc la droite d'équation $y=x$ **privée** du point d'abscisse $-2$, c'est-à-dire privée du point $(-2\\,;\\,-2)$.\n\n**Étape 5 — interprétation pour $m\\neq 0$.** La fraction $\\dfrac{m}{x+2}$ subsiste : la droite $y=x$ n'est plus la courbe, mais son **asymptote oblique**, et la position de la courbe par rapport à elle dépend du signe de $m$ et de celui de $x+2$.\n\n**Conclusion.** La courbe de $f$ est une droite privée d'un point si et seulement si $m=0$ ; pour toute autre valeur de $m$, la droite $y=x$ n'en est que l'asymptote oblique."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Décomposer, c'est écrire $\\dfrac{P}{D}=Q+\\dfrac{R}{D}$ avec $\\deg R<\\deg D$ : c'est ce critère de degré qui dit quand s'arrêter.",
+    "Deux méthodes au choix, division euclidienne ou identification : elles donnent le même résultat, prends celle que tu maîtrises.",
+    "Réécris le dividende avec tous ses degrés, zéros compris : $x^{2}+0x+3$, jamais $x^{2}+3$ dans la potence.",
+    "Écris chaque soustraction sous forme parenthésée : c'est là que se logent les erreurs de signe.",
+    "Vérifie toujours en réduisant au même dénominateur : trois lignes qui sécurisent les trois questions suivantes.",
+    "On ne simplifie une fraction que par un facteur commun ; $x+1$ divise $P$ si et seulement si $P(-1)=0$.",
+    "Au Probatoire, cette décomposition n'est jamais une fin en soi : elle sert à trouver l'asymptote oblique, la position de la courbe, et parfois la dérivée. Soigne-la, tout le reste en dépend."
+   ]
+  }
+ ]
+}

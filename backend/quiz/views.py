@@ -52,23 +52,74 @@ def _clean_quiz_markdown(text):
     return text.strip()
 
 
+# Longueur minimale du libellé de compétence avant d'autoriser le rapprochement
+# approximatif du niveau 3 : « Fonctions » ou « Suites » matcheraient des dizaines de
+# cours sans rapport, alors que « Arithmétique » ou « Équations différentielles »
+# désignent bien un chapitre. En dessous, on préfère aucun lien à un lien douteux.
+_LIBELLE_MIN = 8
+
+
+def _cours_pour_competence(item):
+    """
+    Le Cours publié qui correspond le mieux à la compétence d'un CompetenceItem, cherché
+    en trois passes de précision décroissante. La première qui rend un résultat gagne.
+
+    Pourquoi une cascade plutôt qu'un seul appariement par tag : deux vocabulaires de
+    tags coexistent dans le catalogue, à deux granularités différentes. correction-experte
+    pose des tags de TECHNIQUE sur les cours et les exercices (« algorithme d'Euclide »,
+    « pavage »), tandis que le quiz porte des tags de CHAPITRE alignés sur les savoirs
+    officiels et suffixés par série pour éviter les collisions entre programmes
+    (« Arithmétique (Tle C) »). Les deux ne se recouvrent que par accident : l'égalité
+    stricte de tag ne reliait que 108 items sur 336, alors que les cours existaient.
+
+    1. Tag identique - le signal le plus fort, un cours explicitement rattaché à cette
+       compétence.
+    2. Savoir officiel partagé - le cours et la compétence pointent le même savoir du
+       programme, par des tags différents. Sémantiquement aussi sûr que le niveau 1.
+    3. Libellé du chapitre retrouvé dans le sous-thème ou le titre du cours, une fois
+       retiré le suffixe de série. Approximatif, donc encadré par _LIBELLE_MIN.
+
+    Tri explicite par identifiant à chaque niveau : sans lui, `.first()` rend un cours
+    arbitraire que le SGBD peut changer d'une requête à l'autre, et l'élève verrait le
+    lien pointer ailleurs d'une session à la suivante.
+    """
+    publies = (
+        Cours.objects.visibles()
+        .filter(subject=item.subject)
+        .filter(Q(cursus__in=item.cursus.all()) | Q(cursus__isnull=True))
+        .distinct()
+        .order_by("id")
+    )
+
+    exact = publies.filter(tags=item.theme).first()
+    if exact:
+        return exact
+
+    savoir_id = item.theme.savoir_officiel_id
+    if savoir_id:
+        par_savoir = publies.filter(tags__savoir_officiel_id=savoir_id).first()
+        if par_savoir:
+            return par_savoir
+
+    libelle = item.theme.name.split("(")[0].strip()
+    if len(libelle) >= _LIBELLE_MIN:
+        return publies.filter(
+            Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle),
+        ).first()
+    return None
+
+
 def _competence_item_corrige(item):
     """
     corrige_markdown d'un CompetenceItem, avec un lien "Voir le cours complet" injecté
-    quand un Cours publié couvre déjà sa compétence (item.theme) - jamais généré ou
-    deviné par le skill de génération (concepteur-quiz-competence n'a aucun moyen fiable
-    de connaître un slug de Cours au moment de la génération), toujours recalculé à la
+    quand un Cours publié couvre déjà sa compétence (voir _cours_pour_competence) - jamais
+    généré ou deviné par le skill de génération (concepteur-quiz-competence n'a aucun moyen
+    fiable de connaître un slug de Cours au moment de la génération), toujours recalculé à la
     lecture pour rester exact même si le Cours correspondant est publié après coup.
     Même principe que catalog.rendering._clean_exercise_corrige pour Exercise, jamais
     persisté sur item.corrige_markdown lui-même.
     """
-    cours = (
-        Cours.objects.visibles()
-        .filter(subject=item.subject, tags=item.theme)
-        .filter(Q(cursus__in=item.cursus.all()) | Q(cursus__isnull=True))
-        .distinct()
-        .first()
-    )
+    cours = _cours_pour_competence(item)
     if not cours:
         return item.corrige_markdown
     return annotate_single_cours_link(item.corrige_markdown, cours.slug)

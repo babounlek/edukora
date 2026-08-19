@@ -23,6 +23,7 @@ from subscriptions.models import InscriptionRepetiteur
 from users.models import User
 
 from .models import FicheGeneree, FicheItem, StatutGeneration
+from .pdf import _combined_markdown
 from .services import generer_fiche, themes_eligibles
 
 
@@ -30,9 +31,10 @@ def _make_competence_item(subject, cursus, theme, difficulte=Difficulte.MOYENNE,
     """Même fixture que quiz.tests._make_competence_item - dupliquée plutôt qu'importée
     pour ne pas coupler ce module de tests à l'organisation interne de quiz.tests."""
     kwargs.setdefault("statut", StatutContenu.VALIDE)
+    kwargs.setdefault("enonce_markdown", f"Énoncé {numero}.")
+    kwargs.setdefault("corrige_markdown", f"Corrigé {numero}.")
     item = CompetenceItem.objects.create(
         theme=theme, subject=subject,
-        enonce_markdown=f"Énoncé {numero}.", corrige_markdown=f"Corrigé {numero}.",
         difficulte_estimee=difficulte, type_reponse=TypeReponse.OUVERTE, **kwargs,
     )
     item.cursus.add(cursus)
@@ -113,6 +115,62 @@ class GenererFicheTests(TestCase):
         self.assertEqual(fiche.nombre_questions, 1)
         item = FicheItem.objects.get(fiche=fiche).competence_item
         self.assertEqual(item.difficulte_estimee, Difficulte.ELEVEE)
+
+
+class CombinedMarkdownTests(TestCase):
+    """
+    Contenu des deux PDF avant rendu (fiches.pdf._combined_markdown) - le rendu
+    Playwright lui-même reste hors tests, voir la docstring de module.
+    """
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="dérivation")
+        self.user = User.objects.create_user(phone_number="677300010", password="x")
+        self.fiche = FicheGeneree.objects.create(
+            owner=self.user, cursus=self.cursus, subject=self.subject, titre="Ma fiche", nombre_questions=1,
+        )
+
+    def _ajouter_item(self, *, ordre=1, **kwargs):
+        item = _make_competence_item(self.subject, self.cursus, self.theme, numero=str(ordre), **kwargs)
+        return FicheItem.objects.create(fiche=self.fiche, competence_item=item, ordre=ordre)
+
+    def test_sujet_ne_contient_que_les_enonces(self):
+        self._ajouter_item()
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=False)
+
+        self.assertIn("## Question 1", markdown_text)
+        self.assertIn("Énoncé 1.", markdown_text)
+        self.assertNotIn("Corrigé 1.", markdown_text)
+
+    def test_corrige_rappelle_lenonce_avant_la_solution(self):
+        self._ajouter_item(
+            corrige_markdown="### Rappel de méthode\n\nOn dérive.\n\n### Corrigé\n\nRésultat.",
+        )
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
+
+        self.assertLess(markdown_text.index("## Question 1"), markdown_text.index("Énoncé 1."))
+        self.assertLess(markdown_text.index("Énoncé 1."), markdown_text.index("### Rappel de méthode"))
+        self.assertLess(markdown_text.index("### Rappel de méthode"), markdown_text.index("### Corrigé"))
+
+    def test_corrige_sans_titre_recoit_un_titre_de_section(self):
+        self._ajouter_item()
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
+
+        self.assertLess(markdown_text.index("Énoncé 1."), markdown_text.index("### Corrigé"))
+        self.assertLess(markdown_text.index("### Corrigé"), markdown_text.index("Corrigé 1."))
+
+    def test_les_questions_suivent_lordre_de_la_fiche(self):
+        self._ajouter_item(ordre=2)
+        self._ajouter_item(ordre=1)
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
+
+        self.assertLess(markdown_text.index("## Question 1"), markdown_text.index("## Question 2"))
 
 
 class FichesApiTests(TestCase):

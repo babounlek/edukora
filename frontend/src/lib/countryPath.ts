@@ -17,6 +17,14 @@ export function catalogueHomePath(country: string): string {
   return `/${country}`
 }
 
+// Page de recherche/filtrage du catalogue complet - distincte de l'accueil depuis la
+// scission accueil/catalogue (l'accueil ne montre plus qu'un aperçu). Même segment
+// que epreuveDetailPath/epreuveReaderPath ci-dessous, sans slug : la liste est la
+// racine naturelle de ce sous-chemin.
+export function epreuvesListPath(country: string): string {
+  return `/${country}/epreuves`
+}
+
 export function coursListPath(country: string): string {
   return `/${country}/cours`
 }

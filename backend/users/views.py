@@ -16,16 +16,32 @@ from .google import (
     verify_google_id_token,
 )
 from .account import (
+    confirm_email_link,
+    request_email_link,
     IdentityNotFound,
     LastIdentityError,
     PhoneAlreadyTaken,
     PhoneUnchanged,
+    confirm_email_link,
     confirm_phone_change,
+    request_email_link,
     request_phone_change,
     unlink_identity,
 )
+from .email_service import (
+    EmailAlreadyTaken,
+    EmailCapReached,
+    EmailInvalid,
+    EmailSendFailed,
+    EmailThrottled,
+    request_email_code,
+    verify_email_code,
+)
 from .otp_service import OTPCapReached, OTPInvalid, OTPThrottled, request_otp, verify_otp
 from .serializers import (
+    EmailCodeRequestSerializer,
+    EmailCodeVerifySerializer,
+    EmailLinkConfirmSerializer,
     OTPRequestSerializer,
     OTPVerifySerializer,
     PhoneChangeConfirmSerializer,
@@ -204,6 +220,109 @@ def google_link_view(request):
         return Response({"error": str(exc)}, status=401)
 
     return Response(UserSerializer(request.user).data)
+
+
+def _reponse_envoi_email(exc):
+    """
+    Traduction commune des trois pannes d'envoi, partagée par la connexion et le
+    rattachement : les deux appellent le même service et doivent répondre pareil, faute
+    de quoi le frontend afficherait deux messages différents pour une seule cause.
+    """
+    if isinstance(exc, EmailThrottled):
+        return Response({"error": str(exc)}, status=429)
+    # 503 pour les deux autres : notre plafond volontaire comme la panne SMTP subie sont
+    # des indisponibilités de service, rien que le demandeur puisse corriger.
+    return Response({"error": str(exc)}, status=503)
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def email_code_request_view(request):
+    """
+    Envoie un code à une adresse quelconque, sans jamais dire si un compte y est associé.
+    C'est volontaire : répondre différemment selon que l'adresse est connue transformerait
+    cet endpoint en outil d'énumération des comptes de la plateforme.
+    """
+    serializer = EmailCodeRequestSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        request_email_code(serializer.validated_data["email"], ip_address=_client_ip(request))
+    except (EmailThrottled, EmailCapReached, EmailSendFailed) as exc:
+        return _reponse_envoi_email(exc)
+
+    return Response({"message": "Code envoyé par e-mail."})
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def email_code_verify_view(request):
+    """Renvoie exactement la même charge utile qu'otp_verify_view et google_signin_view."""
+    serializer = EmailCodeVerifySerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        user, cree = verify_email_code(
+            email=serializer.validated_data["email"],
+            code=serializer.validated_data["code"],
+            referral_code=serializer.validated_data.get("referral_code", ""),
+        )
+    except EmailAlreadyTaken as exc:
+        # 409 comme pour Google : la requête est valide, c'est l'état du compte qui
+        # empêche d'aboutir, et le frontend doit orienter vers le rattachement.
+        return Response({"error": str(exc)}, status=409)
+    except EmailInvalid as exc:
+        return Response({"error": str(exc)}, status=400)
+
+    refresh = RefreshToken.for_user(user)
+    response = Response({
+        "access": str(refresh.access_token),
+        "user": UserSerializer(user).data,
+        "created": cree,
+    })
+    _set_refresh_cookie(response, refresh)
+    return response
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def email_link_request_view(request):
+    """Envoie un code a l'adresse à rattacher. La session prouve déjà la possession du compte."""
+    serializer = EmailCodeRequestSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        request_email_link(
+            request.user,
+            serializer.validated_data["email"],
+            ip_address=_client_ip(request),
+        )
+    except EmailAlreadyTaken as exc:
+        return Response({"error": str(exc)}, status=409)
+    except (EmailThrottled, EmailCapReached, EmailSendFailed) as exc:
+        return _reponse_envoi_email(exc)
+
+    return Response({"message": "Code envoyé à cette adresse."})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def email_link_confirm_view(request):
+    serializer = EmailLinkConfirmSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        user = confirm_email_link(
+            request.user,
+            serializer.validated_data["email"],
+            serializer.validated_data["code"],
+        )
+    except EmailAlreadyTaken as exc:
+        return Response({"error": str(exc)}, status=409)
+    except EmailInvalid as exc:
+        return Response({"error": str(exc)}, status=400)
+
+    return Response(UserSerializer(user).data)
 
 
 @api_view(["POST"])

@@ -69,13 +69,9 @@
   {% endif %}
 
   <div class="module" style="padding: 12px 16px; margin-bottom: 20px;">
-    <h2>Fichiers présents dans le dossier ({{ files|length }})</h2>
+    <h2>Fichiers présents dans le dossier</h2>
     {% if files %}
-      <ul>
-        {% for name in files %}
-          <li>{{ name }}</li>
-        {% endfor %}
-      </ul>
+      <p>{{ files|length }} fichier{{ files|length|pluralize }} .json prêt{{ files|length|pluralize }} à être traité{{ files|length|pluralize }}.</p>
     {% else %}
       <p>Aucun fichier .json dans le dossier.</p>
     {% endif %}

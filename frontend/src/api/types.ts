@@ -347,6 +347,7 @@ export interface Plan {
   duration_mode: DureeMode
   duration_days: number
   effective_duration_days: number
+  effective_price: number
   inclut_inedit: boolean
 }
 

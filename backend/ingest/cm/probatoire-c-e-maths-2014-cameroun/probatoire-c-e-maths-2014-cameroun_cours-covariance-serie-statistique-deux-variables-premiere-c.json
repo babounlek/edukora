@@ -1,0 +1,43 @@
+{
+  "cours_id": "cours-covariance-serie-statistique-deux-variables-premiere-c",
+  "meta": {
+    "titre": "Calculer la covariance d'une série statistique à deux variables",
+    "cours_id": "cours-covariance-serie-statistique-deux-variables-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Statistiques à deux variables",
+    "tags": ["covariance", "moyenne des produits"],
+    "duree_estimee_minutes": 10,
+    "epreuve_source": "probatoire-c-e-maths-2014-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2014-cameroun_exercice_2_q2a"
+  },
+  "sections": {
+    "accroche": "La covariance mesure si deux variables évoluent ensemble dans le même sens ou en sens opposé ; elle se calcule en une formule courte mais qui exige d'être décomposée en étapes intermédiaires pour éviter les erreurs (moyenne des produits, puis produit des moyennes).",
+    "prerequis": ["Calcul d'une moyenne arithmétique", "Somme des produits terme à terme"],
+    "regle": {
+      "titre": "Moyenne des produits moins produit des moyennes",
+      "contenu_markdown": "La covariance d'une série statistique à deux variables $(X,Y)$ de taille $n$ est $\\text{Cov}(X,Y)=\\dfrac{1}{n}\\sum_{i=1}^n x_iy_i-\\bar x\\times\\bar y$. On calcule séparément la moyenne des produits $x_iy_i$, puis on soustrait le produit des deux moyennes $\\bar x$ et $\\bar y$.",
+      "formule_principale": "$\\text{Cov}(X,Y)=\\dfrac1n\\sum x_iy_i-\\bar x\\bar y$",
+      "variantes": ["Une covariance positive indique une tendance commune (X et Y croissent ensemble) ; négative, une tendance opposée"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Calculer Cov(X,Y) pour {(1,2),(2,4),(3,6)}.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Moyennes", "justification": "x̄, ȳ", "resultat_markdown": "x̄=2, ȳ=4"},
+        {"numero": 2, "action": "Somme des produits", "justification": "Σxᵢyᵢ", "resultat_markdown": "1×2+2×4+3×6=2+8+18=28, moyenne=28/3"},
+        {"numero": 3, "action": "Covariance", "justification": "moyenne produits - produit moyennes", "resultat_markdown": "28/3-2×4=28/3-8=4/3"}
+      ],
+      "conclusion_markdown": "Cov(X,Y)=4/3, positive : tendance commune."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Calculer le produit des moyennes x̄×ȳ et le confondre avec la moyenne des produits (1/n)Σxᵢyᵢ, en pensant que ces deux quantités sont égales", "pourquoi_faux": "ce sont deux quantités généralement différentes ; leur écart est précisément ce que mesure la covariance, qui serait toujours nulle si elles étaient toujours égales", "correction_markdown": "Toujours calculer séparément, dans cet ordre, la moyenne des produits puis le produit des moyennes, avant de les soustraire — ne jamais supposer qu'elles coïncident."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer Cov(X,Y) pour {(1,5),(2,3),(3,1)}.", "solution_markdown": "x̄=2,ȳ=3, Σxᵢyᵢ=5+6+3=14, moyenne=14/3, Cov=14/3-6=-4/3 (négative : tendance opposée)."}
+    ],
+    "synthese": "La covariance se calcule comme la moyenne des produits xᵢyᵢ moins le produit des moyennes x̄×ȳ ; son signe indique le sens de la relation entre les deux variables."
+  }
+}

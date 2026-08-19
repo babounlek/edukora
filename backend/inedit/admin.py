@@ -151,7 +151,11 @@ class ExerciceInediteAdmin(admin.ModelAdmin):
     list_display = ["epreuve", "numero_exercice", "points"]
     list_filter = ["epreuve__cursus"]
     search_fields = ["epreuve__titre", "numero_exercice"]
-    readonly_fields = ["epreuve", "numero_exercice", "points"]
+    # enonce_intro_markdown inclus : sans lui, ce champ apparaîtrait en textarea
+    # éditable (Django expose par défaut tout champ non listé ici), en contradiction
+    # avec la règle "sous-objets dérivés d'une génération, jamais authored à la main"
+    # rappelée en tête de module.
+    readonly_fields = ["epreuve", "numero_exercice", "points", "enonce_intro_markdown"]
     inlines = [QuestionInediteInline, RappelDeMethodeInediteInline]
 
     def has_add_permission(self, request):

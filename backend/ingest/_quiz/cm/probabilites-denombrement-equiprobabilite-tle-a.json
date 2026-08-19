@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-probabilites-denombrement-equiprobabilite-tle-a",
+  "meta": {
+    "titre": "Probabilités : dénombrement et calcul en situation d'équiprobabilité (Terminale A)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Probabilités - dénombrement (combinaisons, arrangements) et calcul en situation d'équiprobabilité",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Probabilités (Tle A)",
+      "probabilités",
+      "dénombrement",
+      "combinaisons",
+      "arrangements",
+      "équiprobabilité",
+      "événement contraire"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "A",
+      "module_numero": "22",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-A-2004-MATHS",
+    "epreuve_titre": "Mathématiques BAC A 2004",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-maths-2004-cameroun-ex2-q3a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une urne, une boîte de jetons, un tirage de cartes : ces situations reviennent sans cesse dans les exercices de probabilités, et pourtant beaucoup d'élèves bloquent dès la première question, avant même de calculer quoi que ce soit - parce que la vraie difficulté n'est pas le calcul, c'est de reconnaître la bonne façon de compter. Dès qu'un tirage est simultané, l'ordre des objets tirés n'a aucune importance ; dès qu'il est successif, sans remise, avec un rôle distinct pour chaque position, l'ordre compte totalement, et la méthode de dénombrement change du tout au tout. Ce cours te donne la grille de lecture qui distingue ces deux situations, puis la méthode complète pour calculer une probabilité en t'appuyant dessus - une compétence qui revient très régulièrement au BAC série A, seule ou combinée à un tableau de répartition."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une fraction et la réduire à sa forme irréductible (PGCD du numérateur et du dénominateur).",
+        "Connaître le vocabulaire ensembliste de base : réunion, intersection, complémentaire d'un ensemble.",
+        "Savoir calculer un nombre de combinaisons $\\binom{n}{p}$ et un nombre d'arrangements $A_n^p$.",
+        "Connaître le vocabulaire probabiliste : univers $\\Omega$, issue, événement, événements incompatibles."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer une probabilité en situation d'équiprobabilité : dénombrer avant de diviser",
+      "contenu_markdown": "Dans une expérience aléatoire où chaque issue a la même chance de se réaliser (on parle d'*équiprobabilité*, ce qui correspond en pratique à des objets indiscernables au toucher tirés au hasard), la probabilité d'un événement $A$ se calcule en comptant :\n\n$$P(A)=\\dfrac{\\text{card}(A)}{\\text{card}(\\Omega)}$$\n\noù $\\text{card}(\\Omega)$ est le nombre total d'issues possibles de l'expérience, et $\\text{card}(A)$ le nombre d'issues qui réalisent $A$. Le calcul de probabilité devient alors un problème de dénombrement : compter $\\Omega$ et compter $A$ correctement.\n\nLe mode de comptage dépend de la façon dont le tirage est décrit dans l'énoncé, jamais d'une habitude ou d'une formule apprise par cœur :\n\n- **Tirage simultané** (on prend plusieurs objets « en une seule fois », ou l'énoncé attribue le même rôle à tous les objets tirés) : l'ordre des objets n'a pas d'importance, on compte en **combinaisons**. Le nombre de façons de choisir $p$ objets parmi $n$ est $\\binom{n}{p}=\\dfrac{n!}{p!(n-p)!}$.\n- **Tirage successif sans remise, avec rôles ou positions distincts** (les objets sont tirés les uns après les autres, ou affectés à des fonctions différentes - 1er tiré/2e tiré, ou président/secrétaire/trésorier) : l'ordre compte, on compte en **arrangements**. Le nombre de façons de ranger $p$ objets choisis parmi $n$ est $A_n^p=n\\times(n-1)\\times\\cdots\\times(n-p+1)$.\n\nUne fois $\\text{card}(\\Omega)$ fixé par ce choix, $A$ se dénombre avec le même mode de comptage - jamais un mélange des deux dans un même calcul.\n\nUn second réflexe complète la méthode : l'événement contraire de $A$, noté $\\overline{A}$, vérifie toujours $P(\\overline{A})=1-P(A)$. Dès qu'un événement se formule avec « au moins un(e) » ou s'exprime plus simplement par ce qu'il exclut que par ce qu'il inclut, calculer $P(\\overline{A})$ puis soustraire à $1$ est presque toujours la voie la plus courte.",
+      "formule_principale": "P(A)=\\dfrac{\\text{card}(A)}{\\text{card}(\\Omega)}",
+      "variantes": [
+        {
+          "nom": "Réunion de deux événements incompatibles",
+          "quand_utiliser": "Quand l'événement demandé s'exprime comme « $A$ ou $B$ », avec $A$ et $B$ qui ne peuvent jamais se réaliser en même temps (catégories disjointes, par exemple deux couleurs différentes).",
+          "contenu_markdown": "Si $A\\cap B=\\varnothing$ (événements incompatibles), alors $P(A\\cup B)=P(A)+P(B)$ : on additionne simplement les cas favorables des deux catégories. Cette formule devient fausse dès que $A$ et $B$ peuvent se produire ensemble - il faut alors soustraire $P(A\\cap B)$, une erreur fréquente détaillée plus bas dans ce cours."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un panier contient dix fruits indiscernables au toucher : six mangues et quatre oranges. On prend au hasard et simultanément trois fruits du panier.\n\n**a.** Calculer la probabilité de l'événement $A$ : « les trois fruits tirés sont tous des mangues ».\n\n**b.** En déduire la probabilité de l'événement $B$ : « au moins un des fruits tirés est une orange ».",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le mode de tirage et modéliser l'univers",
+          "justification": "Les trois fruits sont pris « simultanément » : l'ordre dans lequel ils sortent du panier n'a pas d'importance. C'est une situation de tirage simultané, qui se dénombre en combinaisons.",
+          "resultat_markdown": "L'univers $\\Omega$ est l'ensemble des choix de 3 fruits parmi les 10 du panier, sans tenir compte de l'ordre."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre total de tirages possibles",
+          "justification": "Choisir 3 fruits parmi 10, sans ordre, se compte avec $\\binom{10}{3}$.",
+          "resultat_markdown": "$$\\text{card}(\\Omega)=\\binom{10}{3}=\\dfrac{10\\times9\\times8}{3\\times2\\times1}=120$$"
+        },
+        {
+          "numero": 3,
+          "action": "Dénombrer les tirages favorables à A",
+          "justification": "« Les trois fruits sont tous des mangues » signifie que les 3 fruits sont choisis uniquement parmi les 6 mangues disponibles, toujours sans ordre.",
+          "resultat_markdown": "$$\\text{card}(A)=\\binom{6}{3}=\\dfrac{6\\times5\\times4}{3\\times2\\times1}=20$$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer P(A)",
+          "justification": "Le tirage est équiprobable (fruits indiscernables au toucher), donc $P(A)=\\text{card}(A)/\\text{card}(\\Omega)$.",
+          "resultat_markdown": "$$P(A)=\\dfrac{20}{120}=\\dfrac16$$"
+        },
+        {
+          "numero": 5,
+          "action": "Utiliser l'événement contraire pour calculer P(B)",
+          "justification": "« Au moins une orange » est exactement le contraire de « aucune orange », c'est-à-dire de l'événement $A$ (les trois fruits tirés sont tous des mangues), puisque le panier ne contient que deux sortes de fruits. Donc $B=\\overline{A}$.",
+          "resultat_markdown": "$$P(B)=1-P(A)=1-\\dfrac16=\\dfrac56$$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité de tirer trois mangues est $\\dfrac16$, et la probabilité qu'au moins une orange figure parmi les trois fruits tirés est $\\dfrac56$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Face à un tirage « simultané » de plusieurs objets, calculer $\\text{card}(\\Omega)$ avec un arrangement $A_n^p$ au lieu d'une combinaison $\\binom{n}{p}$ (ou l'inverse pour un tirage successif avec rôles distincts).",
+          "pourquoi_faux": "Un arrangement compte chaque groupe d'objets plusieurs fois, une fois par ordre possible de sortie ; une combinaison ne le compte qu'une seule fois. Utiliser $A_n^p$ pour un tirage simultané revient à considérer que tirer d'abord la mangue $M_1$ puis la mangue $M_2$ est différent de tirer $M_2$ puis $M_1$, alors que dans un tirage simultané, ce sont exactement le même résultat.",
+          "correction_markdown": "Avant tout calcul, pose-toi une seule question : deux tirages qui contiennent les mêmes objets mais dans un ordre différent sont-ils le même résultat, ou deux résultats distincts ? Même résultat, tu comptes en combinaisons. Résultats distincts (rôles différents, positions numérotées), tu comptes en arrangements."
+        },
+        {
+          "erreur_markdown": "Appliquer $P(A)=\\text{card}(A)/\\text{card}(\\Omega)$ sans vérifier que les issues sont réellement équiprobables, par exemple quand l'énoncé décrit des objets discernables ou de tailles différentes qui rendent certaines issues plus probables que d'autres.",
+          "pourquoi_faux": "La formule $P(A)=\\text{card}(A)/\\text{card}(\\Omega)$ ne vaut que dans une situation d'équiprobabilité. Sans cette hypothèse, chaque issue n'a pas la même chance de se produire, et compter les cas favorables puis diviser par le total ne donne aucun résultat correct.",
+          "correction_markdown": "Cherche dans l'énoncé une phrase qui garantit l'équiprobabilité (« indiscernables au toucher », « tirage au hasard », « chaque bille a la même probabilité d'être tirée ») avant d'appliquer la formule. Sans cette garantie explicite, la question ne relève pas de ce modèle."
+        },
+        {
+          "erreur_markdown": "Pour calculer $P(A\\cup B)$, additionner systématiquement $P(A)+P(B)$, même quand $A$ et $B$ peuvent se réaliser en même temps.",
+          "pourquoi_faux": "$P(A)+P(B)$ compte deux fois les issues communes à $A$ et $B$ dès que $A\\cap B\\neq\\varnothing$. La formule correcte dans le cas général est $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$ ; l'addition simple n'est valable que si $A$ et $B$ sont incompatibles.",
+          "correction_markdown": "Avant d'additionner deux probabilités, vérifie explicitement que les deux événements ne peuvent pas se produire ensemble. Dans le doute, décris $A\\cap B$ en mots : si cette intersection contient des issues réelles, elle doit être soustraite."
+        },
+        {
+          "erreur_markdown": "Pour calculer $P(\\text{« au moins un »})$, énumérer et sommer séparément les probabilités de « exactement un », « exactement deux », etc., au lieu de passer par l'événement contraire.",
+          "pourquoi_faux": "Cette méthode n'est pas fausse en théorie, mais elle multiplie les calculs intermédiaires et les occasions d'erreur ou d'oubli d'un cas, en particulier quand le nombre d'objets tirés augmente. L'événement contraire de « au moins un » est toujours « aucun », qui se dénombre en une seule étape.",
+          "correction_markdown": "Dès qu'un énoncé contient « au moins », écris d'abord l'événement contraire en mots (« aucun », « zéro fois ») avant de chercher à calculer quoi que ce soit : c'est presque toujours la voie la plus courte et la plus sûre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une urne contient huit billes indiscernables au toucher : cinq billes noires et trois billes blanches. On tire au hasard une bille de l'urne. Calculer la probabilité de l'événement $A$ : « la bille tirée est blanche ».",
+          "solution_markdown": "Chaque bille a la même probabilité d'être tirée (billes indiscernables au toucher) : la situation est bien celle d'une équiprobabilité, et $P(A)=\\dfrac{\\text{cas favorables}}{\\text{cas possibles}}$.\n\nIl y a $8$ billes en tout dans l'urne, dont $3$ blanches :\n\n$$P(A)=\\dfrac{3}{8}$$\n\nLa probabilité de tirer une bille blanche est $\\dfrac38$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une boîte contient neuf jetons indiscernables au toucher, numérotés de 1 à 9. On tire simultanément et au hasard deux jetons de la boîte.\n\n**a.** Calculer le nombre de tirages possibles.\n\n**b.** Calculer la probabilité de l'événement $B$ : « les deux jetons tirés portent des numéros pairs ».\n\n**c.** En déduire la probabilité de l'événement contraire de $B$.",
+          "solution_markdown": "**a.** Le tirage est simultané : l'ordre des deux jetons n'a pas d'importance, on compte en combinaisons. Le nombre de tirages possibles de 2 jetons parmi 9 est :\n\n$$\\binom{9}{2}=\\dfrac{9\\times8}{2}=36$$\n\n**b.** Parmi les numéros $1$ à $9$, quatre sont pairs ($2,4,6,8$). « Les deux jetons portent des numéros pairs » revient à choisir 2 numéros parmi ces 4 :\n\n$$\\binom{4}{2}=\\dfrac{4\\times3}{2}=6$$\n\nD'où :\n\n$$P(B)=\\dfrac{6}{36}=\\dfrac16$$\n\n**c.** L'événement contraire de $B$ est « au moins un des deux jetons porte un numéro impair » :\n\n$$P(\\overline{B})=1-P(B)=1-\\dfrac16=\\dfrac56$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un club dispose de huit membres indiscernables au moment du tirage au sort : quatre hommes et quatre femmes. On tire au sort, successivement et sans remise, trois membres du club pour occuper, dans l'ordre du tirage, les postes de président, secrétaire et trésorier (un poste distinct par personne tirée).\n\n**a.** Déterminer le nombre de répartitions possibles des trois postes.\n\n**b.** Calculer la probabilité de l'événement $C$ : « les trois postes sont occupés uniquement par des femmes ».\n\n**c.** En déduire la probabilité de l'événement $D$ : « au moins un poste est occupé par un homme ».",
+          "solution_markdown": "**a.** Chaque tirage attribue un poste différent (président, secrétaire, trésorier) selon l'ordre de sortie : deux tirages qui contiennent les mêmes personnes mais dans un ordre différent correspondent à des répartitions différentes des postes. L'ordre compte, on compte donc en arrangements. Le nombre de façons de tirer 3 personnes parmi 8 en tenant compte de l'ordre est :\n\n$$A_8^3=8\\times7\\times6=336$$\n\n**b.** « Les trois postes occupés uniquement par des femmes » signifie que les 3 personnes tirées, dans l'ordre, sont choisies uniquement parmi les 4 femmes du club :\n\n$$A_4^3=4\\times3\\times2=24$$\n\nD'où :\n\n$$P(C)=\\dfrac{24}{336}=\\dfrac1{14}$$\n\n**c.** L'événement $D$ : « au moins un poste occupé par un homme » est exactement l'événement contraire de $C$, puisque le club ne compte que des hommes et des femmes :\n\n$$P(D)=1-P(C)=1-\\dfrac1{14}=\\dfrac{13}{14}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant tout calcul de probabilité, vérifie que la situation est bien équiprobable (objets indiscernables au toucher, tirage au hasard) : sans cette hypothèse, $P(A)=\\text{card}(A)/\\text{card}(\\Omega)$ ne s'applique pas.",
+        "Pose-toi systématiquement la question : tirage simultané, ou tirage successif avec rôles distincts ? La réponse fixe le mode de comptage - combinaisons pour un tirage simultané, arrangements dès que l'ordre ou l'affectation à des postes distincts compte.",
+        "Dénombre l'univers $\\Omega$ et l'événement $A$ avec le même mode de comptage : jamais un mélange de combinaisons et d'arrangements dans un même calcul.",
+        "N'additionne les probabilités de deux événements que s'ils sont incompatibles (ils ne peuvent pas se réaliser ensemble) ; sinon, soustrais la probabilité de leur intersection.",
+        "Dès qu'un énoncé contient « au moins un(e) », passe par l'événement contraire : $P(\\text{au moins un})=1-P(\\text{aucun})$ est presque toujours le calcul le plus court.",
+        "Au BAC série A, ce type de calcul apparaît régulièrement en fin d'exercice de dénombrement, parfois combiné à une variable aléatoire ou à un tableau de répartition : maîtriser ce socle conditionne la suite de l'exercice."
+      ]
+    }
+  ]
+}

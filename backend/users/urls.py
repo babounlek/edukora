@@ -9,6 +9,10 @@ urlpatterns = [
     path("otp/verify/", views.otp_verify_view, name="otp-verify"),
     path("google/", views.google_signin_view, name="google-signin"),
     path("google/link/", views.google_link_view, name="google-link"),
+    path("email/request/", views.email_code_request_view, name="email-request"),
+    path("email/verify/", views.email_code_verify_view, name="email-verify"),
+    path("email/link/request/", views.email_link_request_view, name="email-link-request"),
+    path("email/link/confirm/", views.email_link_confirm_view, name="email-link-confirm"),
     # views.token_refresh_view (pas le TokenRefreshView stock de simplejwt) : lit le
     # refresh token depuis le cookie httpOnly posé par otp_verify_view, jamais depuis
     # le corps de la requête - voir sa docstring.

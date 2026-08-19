@@ -1,0 +1,183 @@
+{
+ "cours_id": "cours-equation-asinx-bcosx-1ere-ce",
+ "meta": {
+  "titre": "Résoudre une équation du type a sin x + b cos x = c",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Trigonométrie",
+  "duree_estimee_min": 35,
+  "tags": [
+   "équation trigonométrique",
+   "formule d'addition",
+   "regroupement",
+   "angle auxiliaire"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "III"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qA4-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une équation où $\\sin x$ et $\\cos x$ apparaissent tous les deux résiste à toutes les méthodes vues jusque-là : impossible d'isoler l'un ou l'autre, impossible de poser un changement d'inconnue simple. L'idée qui débloque tout est de faire disparaître l'une des deux fonctions en regroupant les deux termes en un seul cosinus. Elle repose sur une observation : les coefficients de l'équation sont, à un facteur près, le cosinus et le sinus d'un même angle."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître les formules d'addition $\\cos(a-b)=\\cos a\\cos b+\\sin a\\sin b$ et $\\cos(a+b)=\\cos a\\cos b-\\sin a\\sin b$",
+    "Résoudre une équation $\\cos X=k$ et sélectionner les solutions d'un intervalle",
+    "Connaître les valeurs remarquables du cosinus et du sinus",
+    "Utiliser la relation $\\cos^{2}\\varphi+\\sin^{2}\\varphi=1$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Regrouper deux termes trigonométriques en un seul",
+   "contenu_markdown": "On cherche à résoudre\n\n$$\\alpha\\cos x+\\beta\\sin x=\\gamma$$\n\noù $\\alpha$ et $\\beta$ ne sont pas tous deux nuls.\n\n**Étape clé.** On pose\n\n$$\\rho=\\sqrt{\\alpha^{2}+\\beta^{2}}$$\n\nAlors $\\left(\\dfrac{\\alpha}{\\rho}\\right)^{2}+\\left(\\dfrac{\\beta}{\\rho}\\right)^{2}=\\dfrac{\\alpha^{2}+\\beta^{2}}{\\rho^{2}}=1$ : il existe donc un angle $\\varphi$, unique modulo $2\\pi$, tel que\n\n$$\\cos\\varphi=\\frac{\\alpha}{\\rho}\\qquad\\text{et}\\qquad\\sin\\varphi=\\frac{\\beta}{\\rho}$$\n\nL'équation devient alors\n\n$$\\rho\\left(\\cos\\varphi\\cos x+\\sin\\varphi\\sin x\\right)=\\gamma\\qquad\\text{soit}\\qquad\\rho\\cos(x-\\varphi)=\\gamma$$\n\n**Forme finale.**\n\n$$\\cos(x-\\varphi)=\\frac{\\gamma}{\\rho}$$\n\nOn résout cette équation élémentaire, puis on revient à $x$ en ajoutant $\\varphi$, et l'on ne garde que les solutions de l'intervalle imposé.\n\n**Existence de solutions.** Comme un cosinus appartient à $[-1\\,;\\,1]$, l'équation n'a de solution que si $\\left|\\gamma\\right|\\leqslant\\rho$, c'est-à-dire $\\gamma^{2}\\leqslant\\alpha^{2}+\\beta^{2}$. C'est le premier test à faire.\n\n**Cas fréquent au Probatoire.** L'énoncé a souvent fait calculer $\\varphi$ dans les questions précédentes, sous la forme du cosinus et du sinus d'un angle remarquable. Il suffit alors de reconnaître les coefficients au lieu de chercher $\\varphi$ soi-même.",
+   "formule_principale": "\\alpha\\cos x+\\beta\\sin x=\\rho\\cos(x-\\varphi)\\quad\\text{avec}\\quad\\rho=\\sqrt{\\alpha^{2}+\\beta^{2}}",
+   "variantes": [
+    {
+     "nom": "Regroupement en un sinus",
+     "quand_utiliser": "Quand les coefficients se lisent plus naturellement comme $\\sin\\varphi$ et $\\cos\\varphi$ dans cet ordre",
+     "contenu_markdown": "On peut tout aussi bien écrire $\\alpha\\cos x+\\beta\\sin x=\\rho\\sin(x+\\psi)$, en posant cette fois $\\sin\\psi=\\dfrac{\\alpha}{\\rho}$ et $\\cos\\psi=\\dfrac{\\beta}{\\rho}$, grâce à $\\sin(a+b)=\\sin a\\cos b+\\cos a\\sin b$. Les deux écritures sont équivalentes et donnent le même ensemble de solutions ; choisis celle dont l'angle auxiliaire est le plus simple à identifier avec les valeurs remarquables."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Sachant que $\\cos\\dfrac{11\\pi}{12}=-\\dfrac{\\sqrt{2+\\sqrt{3}}}{2}$ et $\\sin\\dfrac{11\\pi}{12}=\\dfrac{\\sqrt{2-\\sqrt{3}}}{2}$, résoudre dans $[0\\,;\\,2\\pi]$ l'équation\n\n$$\\sqrt{2-\\sqrt{3}}\\,\\sin x-\\sqrt{2+\\sqrt{3}}\\,\\cos x=-\\sqrt{2}$$\n\n(Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer le facteur $\\rho$",
+     "justification": "$\\rho=\\sqrt{\\alpha^{2}+\\beta^{2}}$ avec $\\alpha=-\\sqrt{2+\\sqrt{3}}$ et $\\beta=\\sqrt{2-\\sqrt{3}}$ ; les radicaux se simplifient en s'additionnant",
+     "resultat_markdown": "$\\rho=\\sqrt{\\left(2+\\sqrt{3}\\right)+\\left(2-\\sqrt{3}\\right)}=\\sqrt{4}=2$"
+    },
+    {
+     "numero": 2,
+     "action": "Vérifier l'existence de solutions",
+     "justification": "Il faut $\\left|\\gamma\\right|\\leqslant\\rho$",
+     "resultat_markdown": "$\\left|-\\sqrt{2}\\right|=\\sqrt{2}\\approx 1{,}41\\leqslant 2$ : l'équation admet des solutions"
+    },
+    {
+     "numero": 3,
+     "action": "Identifier l'angle auxiliaire à partir des données",
+     "justification": "Les relations fournies se réécrivent en isolant les radicaux",
+     "resultat_markdown": "$\\sqrt{2-\\sqrt{3}}=2\\sin\\dfrac{11\\pi}{12}$ et $\\sqrt{2+\\sqrt{3}}=-2\\cos\\dfrac{11\\pi}{12}$"
+    },
+    {
+     "numero": 4,
+     "action": "Réécrire le premier membre",
+     "justification": "On substitue, en prenant garde au double signe moins qui donne un $+$",
+     "resultat_markdown": "$2\\sin\\varphi\\sin x-\\left(-2\\cos\\varphi\\right)\\cos x=2\\left(\\cos x\\cos\\varphi+\\sin x\\sin\\varphi\\right)$, avec $\\varphi=\\dfrac{11\\pi}{12}$"
+    },
+    {
+     "numero": 5,
+     "action": "Appliquer la formule d'addition",
+     "justification": "$\\cos x\\cos\\varphi+\\sin x\\sin\\varphi=\\cos(x-\\varphi)$",
+     "resultat_markdown": "L'équation devient $2\\cos\\left(x-\\dfrac{11\\pi}{12}\\right)=-\\sqrt{2}$"
+    },
+    {
+     "numero": 6,
+     "action": "Isoler le cosinus",
+     "justification": "On divise les deux membres par $2$",
+     "resultat_markdown": "$\\cos\\left(x-\\dfrac{11\\pi}{12}\\right)=-\\dfrac{\\sqrt{2}}{2}$"
+    },
+    {
+     "numero": 7,
+     "action": "Résoudre l'équation élémentaire",
+     "justification": "$\\cos\\dfrac{3\\pi}{4}=-\\dfrac{\\sqrt{2}}{2}$, et $\\cos X=\\cos\\theta$ équivaut à $X=\\pm\\theta+2k\\pi$",
+     "resultat_markdown": "$x-\\dfrac{11\\pi}{12}=\\dfrac{3\\pi}{4}+2k\\pi$ ou $x-\\dfrac{11\\pi}{12}=-\\dfrac{3\\pi}{4}+2k\\pi$"
+    },
+    {
+     "numero": 8,
+     "action": "Expliciter $x$",
+     "justification": "On ajoute $\\dfrac{11\\pi}{12}$, en écrivant $\\dfrac{3\\pi}{4}=\\dfrac{9\\pi}{12}$ pour additionner les fractions",
+     "resultat_markdown": "$x=\\dfrac{20\\pi}{12}=\\dfrac{5\\pi}{3}$ ou $x=\\dfrac{2\\pi}{12}=\\dfrac{\\pi}{6}$, à $2k\\pi$ près"
+    },
+    {
+     "numero": 9,
+     "action": "Sélectionner les solutions de l'intervalle",
+     "justification": "Pour $k=0$ les deux valeurs sont dans $[0\\,;\\,2\\pi]$ ; pour $k=1$ elles dépassent $2\\pi$, pour $k=-1$ elles sont négatives",
+     "resultat_markdown": "$S=\\left\\{\\dfrac{\\pi}{6}\\;;\\;\\dfrac{5\\pi}{3}\\right\\}$"
+    }
+   ],
+   "conclusion_markdown": "L'ensemble des solutions est $S=\\left\\{\\dfrac{\\pi}{6}\\;;\\;\\dfrac{5\\pi}{3}\\right\\}$. On vient de voir qu'une équation d'apparence redoutable, chargée de radicaux emboîtés, se ramène en cinq lignes à $\\cos X=-\\dfrac{\\sqrt{2}}{2}$ : toute la difficulté était de reconnaître dans les coefficients le cosinus et le sinus d'un même angle."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Élever l'équation au carré pour éliminer l'une des deux fonctions",
+     "pourquoi_faux": "Élever au carré n'est pas une équivalence : on introduit des solutions parasites, celles de $\\alpha\\cos x+\\beta\\sin x=-\\gamma$. Il faudrait ensuite les éliminer une par une, ce qui est plus long que la méthode du regroupement et bien plus risqué.",
+     "correction_markdown": "Utilise le regroupement, qui est une suite d'équivalences. Si tu élèves malgré tout au carré, vérifie impérativement chaque solution obtenue dans l'équation de départ."
+    },
+    {
+     "erreur_markdown": "Confondre $\\cos(x-\\varphi)$ et $\\cos(x+\\varphi)$",
+     "pourquoi_faux": "La formule $\\cos(x-\\varphi)=\\cos x\\cos\\varphi+\\sin x\\sin\\varphi$ porte un **plus** entre les deux produits, tandis que $\\cos(x+\\varphi)$ porte un moins. Se tromper de formule décale toutes les solutions de $2\\varphi$.",
+     "correction_markdown": "Retiens le moyen mnémotechnique : le cosinus « change de signe » (somme donne moins, différence donne plus), le sinus « garde le signe ». Puis vérifie ton regroupement en développant à l'envers avant de continuer."
+    },
+    {
+     "erreur_markdown": "Oublier de vérifier que $\\left|\\gamma\\right|\\leqslant\\rho$",
+     "pourquoi_faux": "Si $\\left|\\gamma\\right|>\\rho$, l'équation $\\cos(x-\\varphi)=\\dfrac{\\gamma}{\\rho}$ demande à un cosinus de sortir de $[-1\\,;\\,1]$ : elle n'a aucune solution. Poursuivre le calcul produit alors une réponse fantaisiste.",
+     "correction_markdown": "Calcule $\\rho$ en premier et compare-le à $\\left|\\gamma\\right|$. Ce test de dix secondes décide de l'existence même des solutions, et le signaler rapporte des points."
+    },
+    {
+     "erreur_markdown": "Donner les familles $x=\\ldots+2k\\pi$ sans sélectionner celles de l'intervalle demandé",
+     "pourquoi_faux": "L'énoncé impose $[0\\,;\\,2\\pi]$ : la réponse attendue est un ensemble fini de valeurs, pas deux familles infinies. Laisser le $2k\\pi$ revient à ne pas répondre à la question posée.",
+     "correction_markdown": "Après avoir explicité $x$, teste $k=-1$, $k=0$ et $k=1$ et garde ce qui tombe dans l'intervalle. Écris ensuite l'ensemble solution en extension."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Résoudre dans $[0\\,;\\,2\\pi[$ l'équation $\\cos x+\\sqrt{3}\\,\\sin x=1$.",
+     "solution_markdown": "**Étape 1 — calculer $\\rho$.**\n\n$$\\rho=\\sqrt{1^{2}+\\left(\\sqrt{3}\\right)^{2}}=\\sqrt{1+3}=\\sqrt{4}=2$$\n\nComme $\\left|1\\right|\\leqslant 2$, l'équation admet des solutions.\n\n**Étape 2 — identifier l'angle auxiliaire.** On cherche $\\varphi$ tel que\n\n$$\\cos\\varphi=\\frac{1}{2}\\qquad\\text{et}\\qquad\\sin\\varphi=\\frac{\\sqrt{3}}{2}$$\n\nCes deux valeurs sont celles de $\\varphi=\\dfrac{\\pi}{3}$.\n\n**Étape 3 — regrouper.**\n\n$$\\cos x+\\sqrt{3}\\sin x=2\\left(\\frac{1}{2}\\cos x+\\frac{\\sqrt{3}}{2}\\sin x\\right)=2\\left(\\cos\\frac{\\pi}{3}\\cos x+\\sin\\frac{\\pi}{3}\\sin x\\right)=2\\cos\\left(x-\\frac{\\pi}{3}\\right)$$\n\n**Étape 4 — résoudre.**\n\n$$2\\cos\\left(x-\\frac{\\pi}{3}\\right)=1\\iff\\cos\\left(x-\\frac{\\pi}{3}\\right)=\\frac{1}{2}$$\n\nOr $\\cos\\dfrac{\\pi}{3}=\\dfrac{1}{2}$, donc\n\n$$x-\\frac{\\pi}{3}=\\frac{\\pi}{3}+2k\\pi\\qquad\\text{ou}\\qquad x-\\frac{\\pi}{3}=-\\frac{\\pi}{3}+2k\\pi$$\n\n$$x=\\frac{2\\pi}{3}+2k\\pi\\qquad\\text{ou}\\qquad x=0+2k\\pi$$\n\n**Étape 5 — sélectionner dans $[0\\,;\\,2\\pi[$.** Pour $k=0$ : $x=\\dfrac{2\\pi}{3}$ et $x=0$, tous deux retenus. Les autres valeurs de $k$ sortent de l'intervalle.\n\n**Étape 6 — vérifier.** Pour $x=0$ : $\\cos 0+\\sqrt{3}\\sin 0=1+0=1$. Pour $x=\\dfrac{2\\pi}{3}$ : $-\\dfrac{1}{2}+\\sqrt{3}\\times\\dfrac{\\sqrt{3}}{2}=-\\dfrac{1}{2}+\\dfrac{3}{2}=1$.\n\n$$S=\\left\\{0\\;;\\;\\frac{2\\pi}{3}\\right\\}$$"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Résoudre dans $\\left]-\\pi\\,;\\,\\pi\\right]$ l'équation $\\sqrt{3}\\cos x-\\sin x=\\sqrt{2}$.",
+     "solution_markdown": "**Étape 1 — calculer $\\rho$.**\n\n$$\\rho=\\sqrt{\\left(\\sqrt{3}\\right)^{2}+(-1)^{2}}=\\sqrt{3+1}=2$$\n\nComme $\\sqrt{2}\\approx 1{,}41\\leqslant 2$, il existe des solutions.\n\n**Étape 2 — identifier $\\varphi$.** On cherche $\\varphi$ tel que\n\n$$\\cos\\varphi=\\frac{\\sqrt{3}}{2}\\qquad\\text{et}\\qquad\\sin\\varphi=-\\frac{1}{2}$$\n\nLe cosinus est positif et le sinus négatif : $\\varphi$ est dans le quatrième quadrant, et ces valeurs sont celles de $\\varphi=-\\dfrac{\\pi}{6}$.\n\n**Étape 3 — regrouper.**\n\n$$\\sqrt{3}\\cos x-\\sin x=2\\cos\\left(x-\\left(-\\frac{\\pi}{6}\\right)\\right)=2\\cos\\left(x+\\frac{\\pi}{6}\\right)$$\n\n**Étape 4 — résoudre.**\n\n$$2\\cos\\left(x+\\frac{\\pi}{6}\\right)=\\sqrt{2}\\iff\\cos\\left(x+\\frac{\\pi}{6}\\right)=\\frac{\\sqrt{2}}{2}$$\n\nOr $\\cos\\dfrac{\\pi}{4}=\\dfrac{\\sqrt{2}}{2}$, donc\n\n$$x+\\frac{\\pi}{6}=\\frac{\\pi}{4}+2k\\pi\\qquad\\text{ou}\\qquad x+\\frac{\\pi}{6}=-\\frac{\\pi}{4}+2k\\pi$$\n\n**Étape 5 — expliciter $x$.** Au dénominateur commun $12$ : $\\dfrac{\\pi}{4}=\\dfrac{3\\pi}{12}$ et $\\dfrac{\\pi}{6}=\\dfrac{2\\pi}{12}$.\n\n$$x=\\frac{3\\pi}{12}-\\frac{2\\pi}{12}+2k\\pi=\\frac{\\pi}{12}+2k\\pi$$\n\n$$x=-\\frac{3\\pi}{12}-\\frac{2\\pi}{12}+2k\\pi=-\\frac{5\\pi}{12}+2k\\pi$$\n\n**Étape 6 — sélectionner dans $\\left]-\\pi\\,;\\,\\pi\\right]$.** Pour $k=0$ : $x=\\dfrac{\\pi}{12}$ et $x=-\\dfrac{5\\pi}{12}$, tous deux dans l'intervalle.\n\n$$S=\\left\\{-\\frac{5\\pi}{12}\\;;\\;\\frac{\\pi}{12}\\right\\}$$"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel. Discuter, selon les valeurs de $m$, le nombre de solutions dans $[0\\,;\\,2\\pi[$ de l'équation $3\\cos x+4\\sin x=m$.",
+     "solution_markdown": "**Étape 1 — regrouper le premier membre.**\n\n$$\\rho=\\sqrt{3^{2}+4^{2}}=\\sqrt{9+16}=\\sqrt{25}=5$$\n\nIl existe un angle $\\varphi$ tel que $\\cos\\varphi=\\dfrac{3}{5}$ et $\\sin\\varphi=\\dfrac{4}{5}$ ; ce n'est pas un angle remarquable, mais il est parfaitement défini, et $\\varphi\\in\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ puisque son cosinus et son sinus sont positifs.\n\n$$3\\cos x+4\\sin x=5\\cos(x-\\varphi)$$\n\n**Étape 2 — transformer l'équation.**\n\n$$5\\cos(x-\\varphi)=m\\iff\\cos(x-\\varphi)=\\frac{m}{5}$$\n\n**Étape 3 — discuter selon $\\dfrac{m}{5}$.**\n\nPosons $X=x-\\varphi$. Quand $x$ décrit $[0\\,;\\,2\\pi[$, $X$ décrit un intervalle de longueur $2\\pi$, donc le raisonnement usuel sur $\\cos X=k$ s'applique.\n\n- Si $\\left|\\dfrac{m}{5}\\right|>1$, soit $m<-5$ ou $m>5$ : aucune solution, car un cosinus reste dans $[-1\\,;\\,1]$.\n- Si $\\dfrac{m}{5}=1$, soit $m=5$ : $\\cos X=1$ donne $X=0$ modulo $2\\pi$, donc **une seule** solution, $x=\\varphi$.\n- Si $\\dfrac{m}{5}=-1$, soit $m=-5$ : $\\cos X=-1$ donne $X=\\pi$ modulo $2\\pi$, donc **une seule** solution, $x=\\varphi+\\pi$.\n- Si $-1<\\dfrac{m}{5}<1$, soit $-5<m<5$ : $\\cos X=k$ admet exactement **deux** solutions sur un intervalle de longueur $2\\pi$, à savoir $X=\\pm\\theta$ où $\\theta$ est l'unique réel de $\\left]0\\,;\\,\\pi\\right[$ tel que $\\cos\\theta=\\dfrac{m}{5}$. Il y a donc deux solutions, $x=\\varphi+\\theta$ et $x=\\varphi-\\theta$.\n\n**Étape 4 — conclusion.**\n\n| Valeurs de $m$ | Nombre de solutions |\n|---|---|\n| $m<-5$ ou $m>5$ | $0$ |\n| $m=-5$ ou $m=5$ | $1$ |\n| $-5<m<5$ | $2$ |\n\n**Interprétation.** Le nombre $\\rho=5$ est la valeur maximale que peut atteindre $3\\cos x+4\\sin x$, et $-5$ sa valeur minimale : l'expression décrit exactement l'intervalle $[-5\\,;\\,5]$ quand $x$ parcourt $\\mathbb{R}$. C'est une conséquence directe de l'écriture $5\\cos(x-\\varphi)$, et c'est le principal intérêt du regroupement au-delà de la résolution d'équations."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Devant $\\alpha\\cos x+\\beta\\sin x=\\gamma$, calcule d'abord $\\rho=\\sqrt{\\alpha^{2}+\\beta^{2}}$ : c'est le facteur qui va tout débloquer.",
+    "Compare $\\left|\\gamma\\right|$ à $\\rho$ avant tout : si $\\left|\\gamma\\right|>\\rho$, il n'y a aucune solution, et le dire vaut des points.",
+    "Cherche l'angle $\\varphi$ tel que $\\cos\\varphi=\\dfrac{\\alpha}{\\rho}$ et $\\sin\\varphi=\\dfrac{\\beta}{\\rho}$ : les **deux** conditions sont nécessaires pour fixer $\\varphi$, le cosinus seul ne suffit pas.",
+    "L'équation se ramène à $\\cos(x-\\varphi)=\\dfrac{\\gamma}{\\rho}$, que tu sais résoudre depuis toujours.",
+    "N'élève jamais au carré pour te débarrasser d'une des deux fonctions : tu fabriquerais des solutions parasites.",
+    "Termine par la sélection dans l'intervalle imposé : la réponse attendue est un ensemble fini, pas des familles en $2k\\pi$.",
+    "Au Probatoire, les questions qui précèdent te donnent presque toujours $\\varphi$ sous forme d'un cosinus et d'un sinus déjà calculés : lis-les comme un indice, pas comme un hors-d'œuvre."
+   ]
+  }
+ ]
+}

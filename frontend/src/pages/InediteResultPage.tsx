@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatDuration } from "@/lib/duration"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 
 export function InediteResultPage() {
   useSeo({ title: "Résultat de l'épreuve inédite" })
@@ -35,7 +35,7 @@ export function InediteResultPage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link
-          to={result ? `${catalogueHomePath(result.country.toLowerCase())}?origine=INEDITE#catalogue` : "/"}
+          to={result ? `${epreuvesListPath(result.country.toLowerCase())}?origine=INEDITE` : "/"}
           className="mt-3 inline-block text-sm text-primary hover:underline"
         >
           Retour au catalogue
@@ -92,7 +92,7 @@ export function InediteResultPage() {
 
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button asChild className="flex-1" size="lg">
-          <Link to={`${catalogueHomePath(result.country.toLowerCase())}?origine=INEDITE#catalogue`}>
+          <Link to={`${epreuvesListPath(result.country.toLowerCase())}?origine=INEDITE`}>
             Voir les épreuves inédites
           </Link>
         </Button>

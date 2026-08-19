@@ -4,10 +4,16 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { listCursus } from "@/api/endpoints"
 import type { Cursus } from "@/api/types"
 import { useCountry } from "@/context/CountryContext"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 import { examCodesFor } from "@/lib/cursus"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+// Mis en veilleuse à la demande (2026-08-18) : plus aucun visiteur ne voit cet écran
+// pour l'instant. Un seul flag à repasser à `true` pour le rétablir - rien d'autre
+// dans ce fichier n'a changé, y compris hasCompletedOnboarding/markOnboardingDone qui
+// continuent d'exister mais ne sont plus jamais appelés tant qu'il reste à `false`.
+const ONBOARDING_ENABLED = false
 
 const ONBOARDING_DONE_KEY = "edukamer_onboarding_done"
 
@@ -35,11 +41,16 @@ function markOnboardingDone() {
 }
 
 /**
- * Écran en 3 étapes (pays -> examen -> série) affiché une seule fois, à la première
- * arrivée sur le catalogue d'un pays - avant, un nouveau visiteur devait lui-même
- * trouver les sélecteurs Matière/Cursus pour retrouver son propre programme (voir
- * l'audit UX, reco 1.1). Le résultat final n'est qu'un raccourci vers un filtre
- * `cursus` déjà supporté par CataloguePage, jamais un nouveau mécanisme de filtrage.
+ * Écran affiché une seule fois, à la première arrivée sur le catalogue d'un pays -
+ * avant, un nouveau visiteur devait lui-même trouver les sélecteurs Matière/Cursus pour
+ * retrouver son propre programme (voir l'audit UX, reco 1.1). Le résultat final n'est
+ * qu'un raccourci vers un filtre `cursus` déjà supporté par EpreuvesListPage, jamais un
+ * nouveau mécanisme de filtrage.
+ *
+ * Examen -> série, précédés du pays uniquement si plusieurs pays sont réellement
+ * ouverts (voir `etapes` plus bas). La série elle-même est sautée pour un diplôme qui
+ * n'en a pas, comme le BEPC : le nombre d'étapes s'adapte au référentiel, il n'est
+ * jamais fixé d'avance.
  */
 export function OnboardingModal() {
   const { pathname } = useLocation()
@@ -55,7 +66,8 @@ export function OnboardingModal() {
   // Comme le sélecteur de pays de l'en-tête (voir Header.tsx) : un Country peut
   // exister en base avant tout contenu réel ingéré, jamais proposé ici.
   const browsableCountries = countries.filter((c) => c.has_lessons)
-  const shouldShow = !dismissed && CATALOGUE_HOME_RE.test(pathname) && browsableCountries.length > 0
+  const shouldShow =
+    ONBOARDING_ENABLED && !dismissed && CATALOGUE_HOME_RE.test(pathname) && browsableCountries.length > 0
 
   useEffect(() => {
     if (!shouldShow) return
@@ -82,7 +94,7 @@ export function OnboardingModal() {
     markOnboardingDone()
     setDismissed(true)
     setCountry(selectedCountry)
-    navigate(`${catalogueHomePath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
+    navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
   }
 
   function handlePickCountry(code: string) {
@@ -115,7 +127,21 @@ export function OnboardingModal() {
 
   const examOptions = examCodesFor(cursusList)
   const serieOptions = selectedExamen ? cursusList.filter((c) => c.examen === selectedExamen && c.series) : []
-  const stepIndex = step === "pays" ? 0 : step === "examen" ? 1 : 2
+
+  /**
+   * L'étape pays n'a de sens qu'avec au moins deux pays ouverts. Tant qu'un seul l'est
+   * (le Cameroun au lancement), la demander revient à faire cliquer sur la seule réponse
+   * possible - et ce, en plein écran, devant un hero qui annonce déjà "Cameroun" et une
+   * URL qui le porte (/cm).
+   *
+   * Déduite du référentiel plutôt que retirée du code : le jour où un deuxième pays
+   * s'ouvre (Country.actif + du contenu publié, voir browsableCountries), l'étape
+   * revient d'elle-même, sans que personne n'ait à s'en souvenir. Calculée au rendu et
+   * non dans l'état initial : `countries` arrive de l'API après le montage.
+   */
+  const etapes: Step[] = browsableCountries.length > 1 ? ["pays", "examen", "serie"] : ["examen", "serie"]
+  const stepEffectif: Step = step === "pays" && browsableCountries.length <= 1 ? "examen" : step
+  const stepIndex = etapes.indexOf(stepEffectif)
 
   return (
     <div
@@ -127,22 +153,22 @@ export function OnboardingModal() {
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/10">
         <CardHeader>
           <div className="mb-2 flex gap-1.5">
-            {[0, 1, 2].map((i) => (
+            {etapes.map((etape, i) => (
               <span
-                key={i}
+                key={etape}
                 className={`h-1 flex-1 rounded-full ${i <= stepIndex ? "bg-primary" : "bg-secondary"}`}
               />
             ))}
           </div>
           <CardTitle className="font-display text-xl font-semibold">
-            {step === "pays" && "Dans quel pays prépares-tu ton examen ?"}
-            {step === "examen" && "Quel examen prépares-tu ?"}
-            {step === "serie" && "Quelle est ta série ?"}
+            {stepEffectif === "pays" && "Dans quel pays prépares-tu ton examen ?"}
+            {stepEffectif === "examen" && "Quel examen prépares-tu ?"}
+            {stepEffectif === "serie" && "Quelle est ta série ?"}
           </CardTitle>
           <CardDescription>Pour n'afficher que ce qui te concerne, dès maintenant.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          {step === "pays" &&
+          {stepEffectif === "pays" &&
             browsableCountries.map((c) => (
               <button
                 key={c.id}
@@ -156,7 +182,7 @@ export function OnboardingModal() {
               </button>
             ))}
 
-          {step === "examen" &&
+          {stepEffectif === "examen" &&
             (examOptions.length === 0 ? (
               <p className="py-4 text-center text-sm text-muted-foreground">Chargement...</p>
             ) : (
@@ -173,7 +199,7 @@ export function OnboardingModal() {
               ))
             ))}
 
-          {step === "serie" &&
+          {stepEffectif === "serie" &&
             serieOptions.map((c, i) => (
               <button
                 key={c.id}

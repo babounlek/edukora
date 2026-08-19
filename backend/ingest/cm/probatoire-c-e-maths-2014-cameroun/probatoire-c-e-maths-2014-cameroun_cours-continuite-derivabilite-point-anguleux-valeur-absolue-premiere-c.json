@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-continuite-derivabilite-point-anguleux-valeur-absolue-premiere-c",
+  "meta": {
+    "titre": "Étudier la continuité et la dérivabilité en 0 d'une fonction f(|x|)",
+    "cours_id": "cours-continuite-derivabilite-point-anguleux-valeur-absolue-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Fonctions - continuité et dérivabilité",
+    "tags": ["point anguleux", "dérivée à gauche et à droite", "valeur absolue"],
+    "duree_estimee_minutes": 12,
+    "epreuve_source": "probatoire-c-e-maths-2014-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2014-cameroun_exercice_4_q4a"
+  },
+  "sections": {
+    "accroche": "Une fonction construite à partir d'une valeur absolue, comme g(x)=f(|x|), est presque toujours continue en 0, mais rarement dérivable : le point où les deux morceaux se recollent forme généralement un point anguleux, à démontrer via les deux dérivées latérales.",
+    "prerequis": ["Définition de la continuité et de la dérivabilité en un point", "Dérivée d'une fonction composée u(x)=f(-x)"],
+    "regle": {
+      "titre": "Continuité automatique, dérivabilité à vérifier séparément à gauche et à droite",
+      "contenu_markdown": "Pour $g(x)=f(|x|)$, on a $g(x)=f(x)$ pour $x\\geq0$ et $g(x)=f(-x)$ pour $x\\leq0$. La **continuité** en $0$ découle directement de la continuité de $f$ (les deux limites latérales valent $f(0)$). La **dérivabilité** doit être vérifiée séparément : $g'_d(0)=f'(0)$ (dérivée à droite, calcul direct), et $g'_g(0)=-f'(0)$ (dérivée à gauche, via la dérivée de la fonction composée $x\\mapsto f(-x)$, qui vaut $-f'(-x)$, évaluée en $0$). Si $f'(0)\\neq0$, ces deux nombres dérivés sont opposés et différents : $g$ n'est pas dérivable en $0$, elle présente un point anguleux.",
+      "formule_principale": "$g'_d(0)=f'(0)$, $g'_g(0)=-f'(0)$ ; point anguleux si $f'(0)\\neq0$",
+      "variantes": ["Si f'(0)=0, les deux dérivées latérales coïncident (toutes deux nulles) et g EST dérivable en 0"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "g(x)=h(|x|) avec h(x)=x²+2x+1, h'(x)=2x+2. Étudier la dérivabilité de g en 0.",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Dérivée à droite", "justification": "g'd(0)=h'(0)", "resultat_markdown": "h'(0)=2, donc g'd(0)=2"},
+        {"numero": 2, "action": "Dérivée à gauche", "justification": "g'g(0)=-h'(0)", "resultat_markdown": "g'g(0)=-2"}
+      ],
+      "conclusion_markdown": "2≠-2 : g non dérivable en 0, point anguleux."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Conclure que g est dérivable en 0 uniquement parce qu'elle y est continue, sans vérifier séparément les deux dérivées latérales", "pourquoi_faux": "continuité et dérivabilité sont deux propriétés indépendantes ; une fonction construite à partir d'une valeur absolue est quasi systématiquement continue en 0 (recollement des deux limites) mais rarement dérivable (sauf cas particulier où f'(0)=0), précisément à cause du changement de pente au recollement", "correction_markdown": "Ne jamais déduire la dérivabilité de la seule continuité ; toujours calculer explicitement les deux dérivées latérales (à gauche via f(-x), à droite via f(x)) et les comparer."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "difficile", "enonce_markdown": "k(x)=m(|x|) avec m(x)=3x+5, m'(x)=3. Étudier la dérivabilité de k en 0.", "solution_markdown": "k'd(0)=m'(0)=3, k'g(0)=-m'(0)=-3 : 3≠-3, k non dérivable en 0, point anguleux."}
+    ],
+    "synthese": "Pour g(x)=f(|x|), la continuité en 0 est automatique (héritée de f), mais la dérivabilité exige de comparer g'd(0)=f'(0) et g'g(0)=-f'(0) : dès que f'(0)≠0, ces deux valeurs diffèrent et g présente un point anguleux en 0."
+  }
+}

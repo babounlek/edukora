@@ -16,7 +16,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { formatCursusGroups } from "@/lib/cursus"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath, coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath } from "@/lib/countryPath"
+import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
   const { country, slug } = useParams<{ country?: string; slug: string }>()
@@ -92,7 +92,7 @@ export function EpreuveDetailPage() {
   return (
     <div className={`mx-auto px-4 py-8 sm:px-6 ${hasSommaire ? "max-w-5xl" : "max-w-3xl"}`}>
       <Link
-        to={catalogueHomePath(epreuve.subject.country.code.toLowerCase())}
+        to={epreuvesListPath(epreuve.subject.country.code.toLowerCase())}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
@@ -124,6 +124,11 @@ export function EpreuveDetailPage() {
                 {epreuve.origine_display}
                 {epreuve.etablissement ? ` - ${epreuve.etablissement}` : ""}
               </Badge>
+            )}
+            {/* Jamais en doublon de l'établissement, déjà affiché juste au-dessus quand
+                c'est lui l'organisateur (épreuve d'établissement). */}
+            {epreuve.institution && epreuve.institution !== epreuve.etablissement && (
+              <Badge variant="outline">{epreuve.institution}</Badge>
             )}
             {epreuve.exercises_count > 0 && (
               <Badge variant="outline">
@@ -166,6 +171,13 @@ export function EpreuveDetailPage() {
         {preview && (
           <div className="mt-2 border-t border-border pt-5">
             <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Sujet</h2>
+            {preview.introduction_markdown && (
+              // Consigne d'épreuve entière - voir EpreuveReaderPage, même contenu que
+              // côté lecture abonnée, ici avant même le sommaire.
+              <div className="prose prose-neutral mb-6 max-w-none text-justify dark:prose-invert">
+                <EpreuveMarkdown markdown={preview.introduction_markdown} />
+              </div>
+            )}
             {preview.exercises.length > 0 ? (
               <div
                 className={
@@ -259,7 +271,7 @@ export function EpreuveDetailPage() {
 
         <div className="mt-2 border-t border-border pt-5">
           <Link
-            to={`${catalogueHomePath(epreuve.subject.country.code.toLowerCase())}?origine=INEDITE#catalogue`}
+            to={`${epreuvesListPath(epreuve.subject.country.code.toLowerCase())}?origine=INEDITE`}
             className="group flex items-center justify-between gap-3 rounded-lg border border-dashed border-gold/40 bg-gold/5 px-4 py-3 text-sm transition-colors hover:border-gold/60 hover:bg-gold/10"
           >
             <span className="flex items-center gap-2">
@@ -281,7 +293,7 @@ export function EpreuveDetailPage() {
           excludeId={epreuve.id}
         />
 
-        <BackToTopBar links={[{ to: catalogueHomePath(epreuve.subject.country.code.toLowerCase()), label: "Retour au catalogue" }]} />
+        <BackToTopBar links={[{ to: epreuvesListPath(epreuve.subject.country.code.toLowerCase()), label: "Retour au catalogue" }]} />
       </div>
     </div>
   )

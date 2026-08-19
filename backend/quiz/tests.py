@@ -404,9 +404,24 @@ class SelectQuizBatchTests(TestCase):
         call_command("select_quiz_batch", pays="cm", stdout=out, **kwargs)
         return json.loads(out.getvalue())
 
+    def _questions_taguees(self, theme, combien=2, prefixe="q"):
+        """Crée `combien` Question portant `theme`, chacune dans son propre Exercise.
+
+        Le minimum par défaut est deux : un couple (thème, matière) adossé à un unique
+        exercice n'est plus proposé par la sélection (voir
+        quiz.ingestion.SELECTION_MIN_QUESTIONS). Ces tests portent sur autre chose - la
+        forme de la requête, la limite, le fichier de sortie - donc ils se contentent de
+        franchir ce seuil.
+        """
+        questions = []
+        for i in range(combien):
+            question = _make_question(self.lesson, f"{prefixe}{i}")
+            question.themes.add(theme)
+            questions.append(question)
+        return questions
+
     def test_selects_undercovered_competency_with_reference_material(self):
-        q1 = _make_question(self.lesson, "1")
-        q1.themes.add(self.theme)
+        questions = self._questions_taguees(self.theme)
 
         requests = self._run()
 
@@ -417,8 +432,8 @@ class SelectQuizBatchTests(TestCase):
         self.assertEqual(req["matiere"], self.subject.label)
         self.assertEqual(req["cursus"], [{"examen": "bac", "serie": "C"}])
         self.assertEqual(req["cible"]["nombre_items"], 6)
-        self.assertEqual(len(req["materiel_reference"]), 1)
-        self.assertEqual(req["materiel_reference"][0]["exercise_id"], q1.exercise_id)
+        exercise_ids = {m["exercise_id"] for m in req["materiel_reference"]}
+        self.assertEqual(exercise_ids, {q.exercise_id for q in questions})
 
     def test_excludes_competency_at_or_above_floor(self):
         q1 = _make_question(self.lesson, "1")
@@ -433,8 +448,7 @@ class SelectQuizBatchTests(TestCase):
     def test_respects_limit(self):
         for i in range(3):
             theme = Tag.objects.create(name=f"theme-{i}")
-            q = _make_question(self.lesson, f"q{i}")
-            q.themes.add(theme)
+            self._questions_taguees(theme, prefixe=f"t{i}q")
 
         requests = self._run(limit=2)
 
@@ -470,13 +484,57 @@ class SelectQuizBatchTests(TestCase):
     def test_cursus_entries_include_all_series_for_the_competency(self):
         cursus_e = Cursus.objects.get(country=self.cm, examen=Examen.BAC, series__code="E")
         self.lesson.cursus.add(cursus_e)
-        q1 = _make_question(self.lesson, "1")
-        q1.themes.add(self.theme)
+        self._questions_taguees(self.theme)
 
         requests = self._run()
 
         series_codes = sorted(c["serie"] for c in requests[0]["cursus"])
         self.assertEqual(series_codes, ["C", "E"])
+
+    # --- Gardes de qualité de la sélection (2026-08-17) ---
+    #
+    # Deux familles de requêtes revenaient à chaque sélection sans pouvoir être
+    # traitées : les tags qui nomment la forme d'une question plutôt qu'une notion, et
+    # les couples adossés à un unique exercice, dont le nom du tag ne suffit pas à
+    # savoir ce qu'ils recouvrent.
+
+    def test_structural_tags_are_never_proposed(self):
+        # « situation-problème » est le nom d'une section d'épreuve du format
+        # camerounais par compétences ; « QCM » et « vrai ou faux » nomment un format
+        # de réponse ; « schéma » un support que le quiz ne peut pas afficher.
+        noms = ("situation-problème", "QCM", "QCM d'inférence", "vrai ou faux", "schéma", "définitions")
+        for rang, nom in enumerate(noms):
+            self._questions_taguees(Tag.objects.create(name=nom), prefixe=f"s{rang}-")
+
+        self.assertEqual(self._run(), [])
+
+    def test_a_notion_whose_name_starts_like_a_structural_tag_is_kept(self):
+        # Le filtrage est une égalité exacte, jamais un préfixe : ces trois intitulés
+        # sont de vraies notions qu'un motif large emporterait à tort.
+        noms = ("définition de Brönsted", "figures de style", "définition par foyer et directrice")
+        for rang, nom in enumerate(noms):
+            self._questions_taguees(Tag.objects.create(name=nom), prefixe=f"n{rang}-")
+
+        competences = {r["competence"] for r in self._run()}
+
+        self.assertEqual(
+            competences,
+            {"définition de Brönsted", "figures de style", "définition par foyer et directrice"},
+        )
+
+    def test_competency_backed_by_a_single_exercise_is_not_proposed(self):
+        question = _make_question(self.lesson, "unique")
+        question.themes.add(self.theme)
+
+        self.assertEqual(self._run(), [])
+
+    def test_min_questions_can_be_lowered_to_restore_the_old_behaviour(self):
+        question = _make_question(self.lesson, "unique")
+        question.themes.add(self.theme)
+
+        requests = self._run(min_questions=1)
+
+        self.assertEqual([r["competence"] for r in requests], ["dérivation"])
 
     def test_unknown_pays_raises_command_error(self):
         out = StringIO()
@@ -484,8 +542,7 @@ class SelectQuizBatchTests(TestCase):
             call_command("select_quiz_batch", pays="zz", stdout=out)
 
     def test_output_file_option_writes_json_to_disk(self):
-        q1 = _make_question(self.lesson, "1")
-        q1.themes.add(self.theme)
+        self._questions_taguees(self.theme)
 
         with tempfile.TemporaryDirectory() as tmp:
             output_path = Path(tmp) / "batch.json"
@@ -522,8 +579,11 @@ class CompetenceItemAdminViewsTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_select_batch_view_post_writes_file_and_shows_requests(self):
-        q = _make_question(self.lesson, "1")
-        q.themes.add(self.theme)
+        # Deux exercices, pas un : le bouton admin partage la sélection de
+        # select_quiz_batch, donc son seuil minimal (voir SELECTION_MIN_QUESTIONS).
+        for i in range(2):
+            question = _make_question(self.lesson, f"q{i}")
+            question.themes.add(self.theme)
 
         with tempfile.TemporaryDirectory() as tmp:
             quiz_dir = Path(tmp) / "_quiz"
@@ -1050,6 +1110,75 @@ class QuizApiTests(TestCase):
 
         self.assertEqual(response.data["corrige_markdown"], self.item.corrige_markdown)
         self.assertNotIn("COURS_LINK", response.data["corrige_markdown"])
+
+    # --- Cascade de rapprochement quiz -> cours (voir quiz.views._cours_pour_competence) ---
+    #
+    # Deux vocabulaires de tags coexistent à deux granularités : correction-experte pose
+    # des tags de technique sur les cours, le quiz porte des tags de chapitre alignés sur
+    # les savoirs officiels et suffixés par série. L'égalité stricte ne reliait que 108
+    # items sur 336 alors que les cours existaient - d'où les deux passes de repli.
+
+    def _corrige_via_api(self):
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        response = self.client.get(
+            f"/quiz/sessions/{start.data['id']}/questions/{start.data['questions'][0]['id']}/corrige/",
+        )
+        return response.data["corrige_markdown"]
+
+    def _savoir(self, intitule="Dérivation"):
+        module = Module.objects.create(
+            subject=self.subject, classe="Tle", serie_label="C", numero="90", titre="Module test",
+        )
+        return Savoir.objects.create(module=module, numero="I", intitule=intitule)
+
+    def test_cours_found_through_a_shared_savoir_when_tags_differ(self):
+        # Le cas réel : le cours est tagué « algorithme d'Euclide », l'item « Arithmétique
+        # (Tle C) ». Aucun tag commun, mais les deux pointent le même savoir officiel.
+        savoir = self._savoir()
+        self.theme.savoir_officiel = savoir
+        self.theme.save(update_fields=["savoir_officiel"])
+        autre_tag = Tag.objects.create(name="algorithme d'Euclide", savoir_officiel=savoir)
+        cours = _make_cours(
+            self.subject, cursus=self.cursus, tags=[autre_tag], external_id="cours-par-savoir",
+        )
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", self._corrige_via_api())
+
+    def test_cours_found_through_the_chapter_label_when_nothing_else_matches(self):
+        # Ni tag commun ni savoir : reste le libellé du chapitre, suffixe de série retiré.
+        cours = _make_cours(
+            self.subject, cursus=self.cursus, external_id="cours-par-libelle",
+            titre="Dériver une fonction polynôme", sous_theme="Dérivation et variations",
+        )
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", self._corrige_via_api())
+
+    def test_short_labels_never_trigger_the_approximate_match(self):
+        # « Suites » matcherait des dizaines de cours sans rapport : en dessous du seuil,
+        # aucun lien vaut mieux qu'un lien douteux.
+        self.item.theme = Tag.objects.create(name="Suites (Tle C)")
+        self.item.save(update_fields=["theme"])
+        _make_cours(
+            self.subject, cursus=self.cursus, external_id="cours-trop-vague",
+            titre="Suites numériques", sous_theme="Suites",
+        )
+
+        self.assertNotIn("COURS_LINK", self._corrige_via_api())
+
+    def test_exact_tag_wins_over_the_fallbacks(self):
+        # L'ordre des passes compte : le cours explicitement rattaché à la compétence
+        # prime sur celui que le libellé rapprocherait.
+        _make_cours(
+            self.subject, cursus=self.cursus, external_id="cours-approximatif",
+            titre="Dérivation approchée", sous_theme="Dérivation",
+        )
+        exact = _make_cours(
+            self.subject, cursus=self.cursus, tags=[self.theme], external_id="cours-exact",
+        )
+
+        self.assertIn(f"[COURS_LINK:{exact.slug}]", self._corrige_via_api())
 
     def test_reveal_corrige_denied_for_another_users_session(self):
         self._subscribe()

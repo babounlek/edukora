@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from "react"
-import { KeyRound, Smartphone, Trash2 } from "lucide-react"
+import { KeyRound, Mail, Smartphone, Trash2 } from "lucide-react"
 
 import { ApiError } from "@/api/client"
 import {
+  confirmEmailLink,
   confirmPhoneChange,
   linkGoogle,
+  requestEmailLink,
   requestPhoneChange,
   unlinkIdentity,
 } from "@/api/endpoints"
@@ -40,6 +42,11 @@ export function ConnexionMethodsCard() {
   const [etape, setEtape] = useState<Etape>("repos")
   const [nouveauNumero, setNouveauNumero] = useState("")
   const [code, setCode] = useState("")
+  // État séparé de celui du changement de numéro : les deux formulaires coexistent sur
+  // la carte, et un état partagé ferait basculer l'un en saisissant dans l'autre.
+  const [etapeEmail, setEtapeEmail] = useState<Etape>("repos")
+  const [emailARattacher, setEmailARattacher] = useState("")
+  const [codeEmail, setCodeEmail] = useState("")
   const [erreur, setErreur] = useState<string | null>(null)
   const [succes, setSucces] = useState<string | null>(null)
   const [enCours, setEnCours] = useState(false)
@@ -105,6 +112,38 @@ export function ConnexionMethodsCard() {
     }
   }
 
+  async function handleDemandeEmail(event: FormEvent) {
+    event.preventDefault()
+    setErreur(null)
+    setSucces(null)
+    setEnCours(true)
+    try {
+      await requestEmailLink(emailARattacher)
+      setEtapeEmail("code")
+    } catch (err) {
+      echoue(err)
+    } finally {
+      setEnCours(false)
+    }
+  }
+
+  async function handleConfirmationEmail(event: FormEvent) {
+    event.preventDefault()
+    setErreur(null)
+    setEnCours(true)
+    try {
+      updateUser(await confirmEmailLink(emailARattacher, codeEmail))
+      setEtapeEmail("repos")
+      setEmailARattacher("")
+      setCodeEmail("")
+      setSucces("Ton adresse e-mail est maintenant rattachée à ton compte.")
+    } catch (err) {
+      echoue(err)
+    } finally {
+      setEnCours(false)
+    }
+  }
+
   async function handleDetacher(provider: string) {
     setErreur(null)
     setSucces(null)
@@ -134,10 +173,17 @@ export function ConnexionMethodsCard() {
               className="flex items-center justify-between rounded-lg border px-3 py-2"
             >
               <span className="flex items-center gap-2 text-sm">
-                <Smartphone className="size-4 text-muted-foreground" />
+                {methode === "email" ? (
+                  <Mail className="size-4 text-muted-foreground" />
+                ) : (
+                  <Smartphone className="size-4 text-muted-foreground" />
+                )}
                 {LIBELLES[methode] ?? methode}
                 {methode === "phone" && user.phone_number && (
                   <span className="font-mono text-muted-foreground">{user.phone_number}</span>
+                )}
+                {methode === "email" && user.email && (
+                  <span className="truncate text-muted-foreground">{user.email}</span>
                 )}
               </span>
               {!seuleMethode && (
@@ -158,13 +204,63 @@ export function ConnexionMethodsCard() {
         {seuleMethode && (
           <p className="rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">
             Tu n'as qu'une seule méthode de connexion. Si tu perds ce moyen d'accès, ton
-            compte et ton abonnement seront perdus avec lui. Rattache Google maintenant,
-            pendant que tu as encore accès à ton compte.
+            compte et ton abonnement seront perdus avec lui. Rattaches-en une deuxième
+            maintenant, pendant que tu as encore accès à ton compte.
           </p>
         )}
 
         {!methodes.includes("google") && (
           <GoogleSignInButton onCredential={handleLierGoogle} disabled={enCours} />
+        )}
+
+        {/* Rien n'est proposé si l'adresse est déjà rattachée : la carte doit lister ce
+            qui reste à faire, pas répéter ce qui est fait. Pour CHANGER d'adresse, il
+            faut détacher la méthode puis la rattacher à nouveau - même geste que pour
+            les autres fournisseurs, et une adresse laissée en place sans identité qui
+            la prouve serait réservée pour rien (voir users.account.unlink_identity). */}
+        {!methodes.includes("email") && (
+          etapeEmail === "repos" ? (
+            <form onSubmit={handleDemandeEmail} className="flex flex-col gap-2">
+              <Label htmlFor="email-a-rattacher">Rattacher une adresse e-mail</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="email-a-rattacher"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="prenom@exemple.com"
+                  value={emailARattacher}
+                  onChange={(event) => setEmailARattacher(event.target.value.trim())}
+                />
+                <Button type="submit" variant="outline" disabled={enCours}>
+                  {enCours ? "..." : "Envoyer le code"}
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Utile si tu changes de numéro : c'est ce qui te permettra de rentrer.
+              </p>
+            </form>
+          ) : (
+            <form onSubmit={handleConfirmationEmail} className="flex flex-col gap-2">
+              <Label htmlFor="code-email">Code envoyé à {emailARattacher}</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="code-email"
+                  inputMode="numeric"
+                  maxLength={6}
+                  placeholder="123456"
+                  value={codeEmail}
+                  onChange={(event) => setCodeEmail(event.target.value)}
+                />
+                <Button type="submit" disabled={enCours}>
+                  {enCours ? "..." : "Confirmer"}
+                </Button>
+                <Button type="button" variant="ghost" onClick={() => setEtapeEmail("repos")}>
+                  Annuler
+                </Button>
+              </div>
+            </form>
+          )
         )}
 
         {etape === "repos" ? (

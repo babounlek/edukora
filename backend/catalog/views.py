@@ -1,4 +1,5 @@
-from django.db.models import Count, Exists, OuterRef, Q
+from django.db.models import Count, Exists, IntegerField, OuterRef, Q, Subquery
+from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -11,7 +12,7 @@ from .serializers import (
     CountrySerializer,
     CursusSerializer,
     LessonSerializer,
-    SubjectSerializer,
+    SubjectListSerializer,
     TemoignageSerializer,
 )
 
@@ -84,6 +85,8 @@ class LessonListView(generics.ListAPIView):
             qs = qs.filter(origine=origine)
         if nature := params.get("nature"):
             qs = qs.filter(nature_epreuve=nature.upper())
+        if partie_francais := params.get("partie_francais"):
+            qs = qs.filter(partie_epreuve_francais=partie_francais.upper())
         if params.get("est_vitrine") == "true":
             # Sert le CTA "Essayer un corrigé gratuit" du hero (CataloguePage) : trouver
             # un corrigé en accès libre pour ce pays sans avoir à connaître son slug à
@@ -256,20 +259,46 @@ class CoursDetailView(generics.RetrieveAPIView):
 
 
 class SubjectListView(generics.ListAPIView):
-    serializer_class = SubjectSerializer
+    serializer_class = SubjectListSerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
 
     def get_queryset(self):
+        cours_publies = Cours.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
+        lessons_publiees = Lesson.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
+
         # Ne propose que les matières ayant déjà du contenu publié (Épreuve ou Cours) -
         # même principe que CountrySerializer.get_has_lessons, sinon le select liste
         # surtout des matières vides (référentiel Subject bien plus large que le
         # contenu réellement ingéré à date).
+        #
+        # Exists() plutôt que .filter(Q(lessons) | Q(cours)).distinct() : ce dernier
+        # joignait réellement les deux tables, produisant une ligne par couple
+        # (épreuve, cours) de la matière avant dédoublonnage - des millions de lignes
+        # pour les Mathématiques. Tant que le SELECT restait trivial, PostgreSQL
+        # encaissait ; en y ajoutant `cours_count` (sous-requête corrélée, donc
+        # évaluée AVANT le DISTINCT, une fois par ligne de la jointure), l'endpoint est
+        # passé de quelques centaines de millisecondes à un WORKER TIMEOUT gunicorn -
+        # bug réel, constaté en local le 2026-08-17. Sans jointure il n'y a plus de
+        # doublons à écarter, donc plus de DISTINCT, et la sous-requête ne tourne
+        # qu'une fois par matière.
         qs = (
             Subject.objects.select_related("country")
             .filter(country__actif=True)
-            .filter(Q(lessons__statut=StatutContenu.VALIDE) | Q(cours__statut=StatutContenu.VALIDE))
-            .distinct()
+            .filter(Exists(lessons_publiees) | Exists(cours_publies))
+            # Coalesce : une matière qui n'a que des épreuves et aucun cours ne remonte
+            # aucune ligne de la sous-requête, donc NULL - jamais servi tel quel, le
+            # client attend un entier (un tri sur null casserait l'ordre des pastilles
+            # de matière côté /cours).
+            .annotate(
+                cours_count=Coalesce(
+                    Subquery(
+                        cours_publies.values("subject").annotate(n=Count("pk")).values("n"),
+                        output_field=IntegerField(),
+                    ),
+                    0,
+                ),
+            )
         )
         if country := self.request.query_params.get("country"):
             qs = qs.filter(country__code__iexact=country)

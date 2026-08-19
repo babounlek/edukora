@@ -36,6 +36,12 @@ def _strip_em_dash(value):
     return value
 
 
+# Séparateur admis entre un numéro de partie (romain ou lettre) et son libellé : point
+# ("I.", "A.") ou tiret sous ses trois variantes rencontrées dans le corpus - simple
+# ("I - Évaluation des savoirs", "C- Exercices au choix"), demi-cadratin ou cadratin.
+# Espace autour du tiret optionnel des deux côtés (vu aussi bien "I - " que "III-").
+_PART_LABEL_SEPARATOR = r"\s*[.\-–—]"
+
 # Titre "# Exercice"/"## Problème" (Markdown) OU "**Exercice**"/"**Problème**" (gras) -
 # cette 2e forme est celle que produit _repair_missing_exercise_heading (voir plus
 # bas) : sans elle ici, un intro auto-complété par ce filet de sécurité ne serait plus
@@ -84,7 +90,35 @@ def _dedupe_question_enonce(enonce_markdown, exercise_intro):
 # (voir catalog.rendering._render_question_enonce/_ENONCE_ALREADY_LABELED_RE, qui ne
 # préfixe le numero que si le texte de la Question elle-même ne porte déjà aucun
 # repère).
-_INTRO_PART_HEADER_RE = re.compile(r"\*\*\s*(Partie\s+\S|[IVX]{1,4}\s*\.)", re.IGNORECASE)
+#
+# Le numéro romain acceptait seulement "I." à l'origine ; le corpus SVT/Espagnol
+# utilise aussi "I - Évaluation des savoirs"/"III- Exploitation des documents" (tiret,
+# avec ou sans espace) - voir _PART_LABEL_SEPARATOR ci-dessus. Sans cette extension,
+# _repair_missing_exercise_heading (plus bas) ne reconnaît pas ce repère comme "déjà
+# présent" et injecte un second "**Exercice N (points)**" en double au-dessus (scan
+# corpus du 2026-08-18 : sciences-de-la-vie-et-de-la-terre-bepc-2018 et 8 autres
+# épreuves, voir mémoire projet project_intro_bare_lettered_partie_header_bug).
+_INTRO_PART_HEADER_RE = re.compile(rf"\*\*\s*(Partie\s+\S|[IVX]{{1,4}}{_PART_LABEL_SEPARATOR})", re.IGNORECASE)
+
+# Repère de PARTIE lettré sous forme courte ("**A. Évaluation des ressources (10
+# points)**"), sans le mot "Partie" - forme observée sur le format d'évaluation par
+# compétences (APC) camerounais, distincte de "**PARTIE A : ...**" (déjà couverte par
+# _INTRO_PART_HEADER_RE ci-dessus) et jamais reconnue comme repère par
+# _exercise_label_key (qui ne cherche que "Exercice"/"Problème"). Volontairement un
+# regex séparé plutôt qu'ajouté à _INTRO_PART_HEADER_RE : ce dernier sert aussi à
+# _flag_part_headers_in_intro, qui suppose qu'un repère de partie DANS l'intro est mal
+# placé (il devrait porter sur une seule Question, pas tout l'exercice) - hypothèse
+# fausse ici, puisque "A."/"B." regroupe PLUSIEURS exercices entiers (l'Exercice 1 et
+# l'Exercice 2 relèvent tous les deux de "A."), donc sa présence dans l'intro PARTAGÉ de
+# chacun de ces exercices est légitime. Seule sert ce garde-fou-ci
+# (_repair_missing_exercise_heading) : sans lui, un exercice dont l'intro commence par
+# "A."/"B." plutôt que par "Exercice N" est cru sans repère et se voit injecter un
+# second "**Exercice N (points)**" en double au-dessus (constaté sur
+# bepc-pct-2018-cameroun, lesson 1095 - voir mémoire projet
+# feedback_correction_experte_consistency). Même extension tiret que
+# _INTRO_PART_HEADER_RE ci-dessus (espagnol-bepc-2018 : "**B - Gramática**",
+# sciences-de-la-vie-et-de-la-terre-bac-d-2015 : "**C- Exercices au choix**").
+_BARE_LETTERED_PART_HEADER_RE = re.compile(rf"^\*\*\s*[A-Z]{_PART_LABEL_SEPARATOR}\s")
 
 
 def _flag_part_headers_in_intro(exercise):
@@ -692,16 +726,34 @@ def _repair_missing_exercise_heading(data):
     questions = data.get("questions") or []
     first_question_enonce = (questions[0].get("enonce_markdown") or "") if questions else ""
     text_to_check = intro if intro.strip() else first_question_enonce
-
     stripped = text_to_check.strip()
-    # Le repère vit toujours sur la première ligne : la chercher là plutôt que sur le
-    # texte entier évite qu'un repère non balisé passe inaperçu (voir _EXERCISE_LABEL_RE).
-    premiere_ligne, _ = _first_non_empty_line(stripped)
-    if _exercise_label_key(premiere_ligne) or _INTRO_PART_HEADER_RE.match(stripped):
-        return data, False
 
     heading = _build_exercise_heading(data.get("numero_exercice"), data.get("points"))
     if heading is None:
+        return data, False
+
+    # Le repère vit le plus souvent sur la première ligne : la chercher là plutôt que
+    # sur le texte entier évite qu'un repère non balisé passe inaperçu (voir
+    # _EXERCISE_LABEL_RE) et qu'un repère de partie SANS RAPPORT avec CET exercice
+    # (ex. un "I." isolé servant à numéroter un item de QCM, pas une partie - voir
+    # mémoire projet project_partie_header_dash_and_stacked_labels) fasse croire à tort
+    # qu'un repère existe déjà. Un chapeau partagé par TOUTE l'épreuve précède parfois
+    # le repère du tout premier exercice ("*L'épreuve comporte deux exercices et un
+    # problème...*\n\n### Exercice 1 - 6 points\n\n...") : cette 4e condition cherche
+    # spécifiquement LE REPÈRE DE CET EXERCICE (même mot, même numéro que
+    # numero_exercice) sur une ligne plus loin dans le texte, sans élargir la
+    # détection à un repère générique quelconque - constaté sur
+    # mathematiques-probatoire-c-et-e-2000/2001/2002 (chapeau + titre Markdown "###")
+    # et 6 exercices de physique BAC D (repère texte nu collé juste après, sans
+    # chapeau) - scan corpus du 2026-08-19.
+    premiere_ligne, _ = _first_non_empty_line(stripped)
+    repere_propre = _exercise_label_key(heading.strip("*"))
+    if (
+        _exercise_label_key(premiere_ligne)
+        or _INTRO_PART_HEADER_RE.match(stripped)
+        or _BARE_LETTERED_PART_HEADER_RE.match(stripped)
+        or any(_exercise_label_key(ligne.strip()) == repere_propre for ligne in stripped.splitlines())
+    ):
         return data, False
 
     data = dict(data)

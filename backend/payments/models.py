@@ -239,16 +239,19 @@ class ManualPaymentManager(models.Manager):
                 transaction_reference, paid_at=None, proof=None, ip=None):
         """
         Point d'entrée unique de la déclaration utilisateur. `amount_expected` est
-        TOUJOURS recalculé depuis `plan.price` ici - jamais accepté depuis le client,
-        qui pourrait sinon déclarer n'importe quel montant pour un cursus à 5000 FCFA
-        (voir mission, section 8). La référence est normalisée (espace/casse) pour
-        empêcher un contournement trivial de la contrainte d'unicité.
+        TOUJOURS recalculé depuis `plan.effective_price()` ici - jamais accepté depuis
+        le client, qui pourrait sinon déclarer n'importe quel montant pour un cursus à
+        5000 FCFA (voir mission, section 8). `effective_price()` plutôt que `price` brut :
+        pour un Plan JUSQUA_EXAMEN, le prix réel dépend de la date d'achat (voir
+        subscriptions.models.Plan.effective_price), le prix attendu doit refléter la
+        même règle que celle appliquée au paiement Campay. La référence est normalisée
+        (espace/casse) pour empêcher un contournement trivial de la contrainte d'unicité.
         """
         reference = (transaction_reference or "").strip().upper()
 
         payment = self.create(
             user=user, plan=plan, operator=operator,
-            amount_expected=plan.price, amount_declared=amount_declared,
+            amount_expected=plan.effective_price(), amount_declared=amount_declared,
             payer_phone_number=payer_phone_number, transaction_reference=reference,
             paid_at=paid_at, proof=proof, declared_ip=ip,
         )

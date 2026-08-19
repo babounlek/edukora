@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-methode-suite-auxiliaire-tle-d",
+  "meta": {
+    "titre": "Suites numériques : la méthode de la suite auxiliaire (Terminale D)",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Suites récurrentes homographiques et arithmético-géométriques - méthode de la suite auxiliaire",
+    "duree_estimee_min": 40,
+    "tags": ["Suites numériques (Tle D)", "suites numériques", "suite auxiliaire", "suite homographique", "suite arithmético-géométrique", "point fixe", "limite de suite", "Terminale D"],
+    "savoir_officiel": {"classe": "Tle", "serie_label": "D", "module_numero": "25", "savoir_numero": "III"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-2008-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 2008",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-d-maths-2008-cameroun-ex1-q3a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par récurrence, $u_{n+1}=f(u_n)$, résiste presque toujours au calcul direct : la relation donne un terme à partir du précédent, jamais $u_n$ en fonction de $n$. Un exercice de BAC série D demande pourtant presque systématiquement cette formule explicite, puis la limite de la suite quand $n$ tend vers $+\\infty$. La méthode de la suite auxiliaire répond précisément à ce blocage : construire, à partir de $(u_n)$, une seconde suite $(v_n)$ dont on maîtrise déjà tout le comportement parce qu'elle est arithmétique ou géométrique, calculer son terme général, puis remonter à $(u_n)$ par un changement de variable inversé. Cette technique transforme un problème nouveau en un problème déjà résolu, et elle revient à chaque session du BAC dès qu'une suite est définie par une relation $u_{n+1}=f(u_n)$ qui n'est ni arithmétique ni géométrique en elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tu dois savoir démontrer qu'une suite $(v_n)$ est géométrique : calculer le quotient $\\dfrac{v_{n+1}}{v_n}$ et vérifier qu'il est constant, indépendant de $n$.",
+        "Tu dois savoir démontrer qu'une suite $(w_n)$ est arithmétique : calculer la différence $w_{n+1}-w_n$ et vérifier qu'elle est constante.",
+        "Tu dois connaître le terme général d'une suite géométrique, $v_n=v_0\\times q^n$, et celui d'une suite arithmétique, $w_n=w_0+n\\,r$.",
+        "Tu dois savoir manipuler des fractions rationnelles : réduire au même dénominateur, factoriser un numérateur, simplifier un facteur commun entre numérateur et dénominateur.",
+        "Tu dois connaître les limites usuelles d'une suite géométrique : $\\lim_{n\\to+\\infty}q^n=0$ si $|q|<1$, et $\\lim_{n\\to+\\infty}q^n=+\\infty$ si $q>1$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de la suite auxiliaire",
+      "contenu_markdown": "Face à une suite $(u_n)$ définie par $u_0$ donné et $u_{n+1}=f(u_n)$, où $f$ est une fonction homographique ou affine, la démarche se déroule toujours dans le même ordre.\n\nPremière étape : chercher les points fixes de $f$, c'est-à-dire résoudre l'équation $f(x)=x$. Cette équation se ramène à une équation du second degré (ou du premier degré si $f$ est affine) : son nombre de solutions distinctes détermine quelle suite auxiliaire construire.\n\nDeuxième étape : construire la suite auxiliaire à partir de ce ou ces points fixes. Si $f$ admet deux points fixes distincts $a$ et $b$, poser $v_n=\\dfrac{u_n-a}{u_n-b}$ : cette suite est presque toujours géométrique. Si $f$ admet un seul point fixe $l$ (racine double), poser $w_n=\\dfrac{1}{u_n-l}$ : cette suite est presque toujours arithmétique. Si $f$ est affine, $f(x)=ax+b$ avec $a\\neq1$, le point fixe $l=\\dfrac{b}{1-a}$ est unique et $v_n=u_n-l$ est directement géométrique de raison $a$, sans même passer par un quotient.\n\nTroisième étape : démontrer que la suite auxiliaire est bien géométrique (ou arithmétique) en calculant $v_{n+1}$ à partir de $u_{n+1}=f(u_n)$, puis en simplifiant jusqu'à faire apparaître $v_{n+1}=q\\,v_n$ (ou $w_{n+1}=w_n+r$).\n\nQuatrième étape : écrire le terme général de la suite auxiliaire, puis inverser la relation qui la définit pour exprimer $u_n$ en fonction de $n$.\n\nCinquième étape : calculer la limite de $u_n$ à partir de cette formule explicite, jamais à partir de la seule relation de récurrence - l'équation $f(l)=l$ peut avoir plusieurs solutions, elle ne suffit pas à elle seule à identifier la limite.",
+      "formule_principale": "f(x)=x \\text{ a 2 solutions } a,b \\;\\Rightarrow\\; v_n=\\dfrac{u_n-a}{u_n-b} \\text{ géométrique} \\qquad\\text{ou}\\qquad f(x)=x \\text{ a 1 solution double } l \\;\\Rightarrow\\; w_n=\\dfrac{1}{u_n-l} \\text{ arithmétique}",
+      "variantes": [
+        {
+          "nom": "Cas affine : $u_{n+1}=au_n+b$",
+          "quand_utiliser": "Quand $f$ est affine (pas de quotient dans la relation de récurrence) et $a\\neq1$ : c'est le cas le plus simple, à reconnaître en premier.",
+          "contenu_markdown": "Le point fixe $l$ de $f(x)=ax+b$ vérifie $l=al+b$, donc $l=\\dfrac{b}{1-a}$ (bien défini puisque $a\\neq1$). En posant $v_n=u_n-l$ :\n\n$$v_{n+1}=u_{n+1}-l=(au_n+b)-(al+b)=a(u_n-l)=a\\,v_n$$\n\n$(v_n)$ est géométrique de raison $a$ dès la première ligne de calcul, sans qu'il soit nécessaire de passer par un quotient : c'est la version la plus rapide de la méthode."
+        },
+        {
+          "nom": "Cas homographique à deux points fixes distincts",
+          "quand_utiliser": "Quand $f(x)=\\dfrac{px+q}{rx+s}$ et que l'équation $f(x)=x$ a deux solutions réelles distinctes $a$ et $b$.",
+          "contenu_markdown": "Une fois $a$ et $b$ trouvés, poser $v_n=\\dfrac{u_n-a}{u_n-b}$. Le calcul de $v_{n+1}=\\dfrac{u_{n+1}-a}{u_{n+1}-b}$ fait toujours apparaître, au numérateur comme au dénominateur, un facteur commun issu du dénominateur de $f$ : ce facteur se simplifie et laisse apparaître une relation $v_{n+1}=q\\,v_n$ avec $q$ constant. Le choix de mettre $a$ au numérateur et $b$ au dénominateur (plutôt que l'inverse) n'est pas neutre : il fixe la valeur de $q$ trouvée - inverser $a$ et $b$ donne $1/q$ à la place de $q$, ce qui ne change pas la nature géométrique de la suite mais inverse le rôle des deux points fixes dans la limite finale."
+        },
+        {
+          "nom": "Cas homographique à point fixe double",
+          "quand_utiliser": "Quand $f(x)=\\dfrac{px+q}{rx+s}$ et que l'équation $f(x)=x$ n'a qu'une seule solution $l$ (discriminant nul).",
+          "contenu_markdown": "Un point fixe double empêche de construire un quotient $\\dfrac{u_n-a}{u_n-b}$ avec deux points distincts. On pose alors $w_n=\\dfrac{1}{u_n-l}$. Le calcul de $w_{n+1}$ fait apparaître une différence constante plutôt qu'un rapport constant : $w_{n+1}=w_n+r$, où $r$ dépend des coefficients de $f$. La suite $(w_n)$ est alors arithmétique, et $u_n=l+\\dfrac{1}{w_n}$ une fois $w_n$ connu."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_0=0$ et, pour tout entier naturel $n$,\n\n$$u_{n+1}=\\dfrac{3u_n+1}{u_n+3}$$\n\nMontrer que $(u_n)$ est bien définie et strictement positive, construire une suite auxiliaire géométrique, en déduire l'expression de $u_n$ en fonction de $n$ ainsi que sa limite quand $n$ tend vers $+\\infty$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que la suite est bien définie et rester strictement positive",
+          "justification": "Le dénominateur u_n+3 ne doit jamais s'annuler, et la positivité de u_n servira à écarter les valeurs interdites de l'auxiliaire construite plus loin.",
+          "resultat_markdown": "Notons $P(n)$ la propriété « $u_n\\geq0$ ». Initialisation : $u_0=0\\geq0$, donc $P(0)$ est vraie. Hérédité : supposons $u_n\\geq0$. Alors $u_n+3\\geq3>0$, ce qui montre que $u_{n+1}$ est bien défini, et $3u_n+1\\geq1>0$, donc $u_{n+1}=\\dfrac{3u_n+1}{u_n+3}>0$ par quotient de deux réels strictement positifs. $P(n+1)$ est vraie. Par récurrence, $u_n\\geq0$ pour tout $n$, donc $u_n\\neq-1$ et $u_n\\neq-3$ pour tout $n$."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher les points fixes de f",
+          "justification": "Ces points fixes fournissent les deux valeurs a et b utilisées pour construire l'auxiliaire (variante à deux points fixes distincts).",
+          "resultat_markdown": "On résout $f(x)=x$ avec $f(x)=\\dfrac{3x+1}{x+3}$, pour $x\\neq-3$ : $\\dfrac{3x+1}{x+3}=x \\Leftrightarrow 3x+1=x(x+3) \\Leftrightarrow 3x+1=x^2+3x \\Leftrightarrow x^2=1$. Donc $x=1$ ou $x=-1$ : deux points fixes distincts. On utilise la variante à deux points fixes, avec $a=1$ et $b=-1$."
+        },
+        {
+          "numero": 3,
+          "action": "Poser l'auxiliaire et calculer v_{n+1} en fonction de u_n",
+          "justification": "On pose $v_n=\\dfrac{u_n-1}{u_n+1}$ (bien défini d'après l'étape 1, puisque $u_n\\neq-1$), puis on calcule $u_{n+1}-1$ et $u_{n+1}+1$ séparément avant de former le quotient $v_{n+1}$.",
+          "resultat_markdown": "$$u_{n+1}-1=\\dfrac{3u_n+1}{u_n+3}-1=\\dfrac{(3u_n+1)-(u_n+3)}{u_n+3}=\\dfrac{2u_n-2}{u_n+3}=\\dfrac{2(u_n-1)}{u_n+3}$$\n\n$$u_{n+1}+1=\\dfrac{3u_n+1}{u_n+3}+1=\\dfrac{(3u_n+1)+(u_n+3)}{u_n+3}=\\dfrac{4u_n+4}{u_n+3}=\\dfrac{4(u_n+1)}{u_n+3}$$\n\n$$v_{n+1}=\\dfrac{u_{n+1}-1}{u_{n+1}+1}=\\dfrac{\\dfrac{2(u_n-1)}{u_n+3}}{\\dfrac{4(u_n+1)}{u_n+3}}=\\dfrac{2(u_n-1)}{4(u_n+1)}=\\dfrac12\\times\\dfrac{u_n-1}{u_n+1}=\\dfrac12\\,v_n$$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la nature de (v_n) et calculer v_0",
+          "justification": "Pour tout n, v_{n+1}=(1/2) v_n avec un rapport constant : (v_n) est géométrique.",
+          "resultat_markdown": "Pour tout entier naturel $n$, $v_{n+1}=\\dfrac12\\,v_n$ : $(v_n)$ est géométrique de raison $q=\\dfrac12$. Son premier terme est $v_0=\\dfrac{u_0-1}{u_0+1}=\\dfrac{0-1}{0+1}=-1$."
+        },
+        {
+          "numero": 5,
+          "action": "Exprimer v_n puis u_n en fonction de n",
+          "justification": "Le terme général d'une suite géométrique donne v_n, puis on inverse la relation v_n=(u_n-1)/(u_n+1) pour isoler u_n.",
+          "resultat_markdown": "$$v_n=v_0\\times q^n=-\\left(\\dfrac12\\right)^n=-\\dfrac1{2^n}$$\n\nOn part de $v_n=\\dfrac{u_n-1}{u_n+1}$ et on résout en $u_n$ :\n\n$$v_n(u_n+1)=u_n-1$$\n\n$$v_n\\,u_n+v_n=u_n-1$$\n\n$$v_n\\,u_n-u_n=-1-v_n$$\n\n$$u_n(v_n-1)=-(1+v_n)$$\n\n$$u_n=\\dfrac{1+v_n}{1-v_n}$$\n\nEn remplaçant $v_n=-\\dfrac1{2^n}$ puis en multipliant numérateur et dénominateur par $2^n$ :\n\n$$u_n=\\dfrac{1-\\frac1{2^n}}{1+\\frac1{2^n}}=\\dfrac{2^n-1}{2^n+1}$$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer la limite de u_n et vérifier la formule",
+          "justification": "On factorise par le terme dominant 2^n pour lever la forme indéterminée, et on vérifie la formule sur n=0 et n=1.",
+          "resultat_markdown": "$$u_n=\\dfrac{2^n-1}{2^n+1}=\\dfrac{2^n\\left(1-\\frac1{2^n}\\right)}{2^n\\left(1+\\frac1{2^n}\\right)}=\\dfrac{1-\\frac1{2^n}}{1+\\frac1{2^n}}$$\n\nComme $2>1$, $\\lim_{n\\to+\\infty}\\dfrac1{2^n}=0$, donc $\\lim_{n\\to+\\infty}u_n=\\dfrac{1-0}{1+0}=1$.\n\nVérification sur les premiers termes : $u_0=\\dfrac{1-1}{1+1}=0$, conforme à la donnée. $u_1$ calculé directement vaut $\\dfrac{3\\times0+1}{0+3}=\\dfrac13$ ; la formule donne $\\dfrac{2-1}{2+1}=\\dfrac13$, ce qui concorde."
+        }
+      ],
+      "conclusion_markdown": "La suite $(u_n)$ admet pour terme général $u_n=\\dfrac{2^n-1}{2^n+1}$ et converge vers $1$, qui est justement l'un des deux points fixes trouvés à l'étape 2 - le second point fixe, $-1$, n'était pas la limite, ce que seule la formule explicite permet d'affirmer avec certitude."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Pour montrer que $(v_n)$ est géométrique, calculer la différence $v_{n+1}-v_n$ et essayer de montrer qu'elle est constante, comme on le ferait pour une suite arithmétique.",
+          "pourquoi_faux": "Une suite est géométrique quand le quotient $v_{n+1}/v_n$ est constant, pas quand la différence $v_{n+1}-v_n$ l'est - ce sont deux tests différents, pour deux natures de suite différentes. Calculer la différence sur une suite réellement géométrique donne en général une expression qui dépend encore de $n$, ce qui peut faire conclure à tort que la suite n'est ni arithmétique ni géométrique.",
+          "correction_markdown": "Avant de calculer quoi que ce soit, décide quel test appliquer à partir de la forme de l'auxiliaire choisie : un quotient $\\dfrac{u_n-a}{u_n-b}$ se teste par $v_{n+1}/v_n$, un inverse $\\dfrac1{u_n-l}$ se teste par $w_{n+1}-w_n$."
+        },
+        {
+          "erreur_markdown": "Construire l'auxiliaire en inversant les deux points fixes, par exemple poser $v_n=\\dfrac{u_n-b}{u_n-a}$ au lieu de $\\dfrac{u_n-a}{u_n-b}$, sans remarquer que cela change le résultat.",
+          "pourquoi_faux": "Les deux choix donnent bien une suite géométrique, mais avec des raisons inverses l'une de l'autre ($q$ contre $1/q$) et des valeurs de $v_0$ différentes. La suite $(u_n)$ obtenue à la fin est la même dans les deux cas si le calcul est mené jusqu'au bout correctement, mais mélanger les deux conventions en cours de route - prendre $a$ au numérateur à une étape et $b$ à une autre - produit une formule finale fausse.",
+          "correction_markdown": "Fixe la convention dès le départ (par exemple toujours le premier point fixe trouvé au numérateur) et garde-la jusqu'au bout du calcul. Vérifie ensuite la formule obtenue sur $u_0$ et $u_1$ calculés directement : un désaccord signale presque toujours cette inversion."
+        },
+        {
+          "erreur_markdown": "Une fois les points fixes $a$ et $b$ trouvés, affirmer directement que $(u_n)$ converge vers l'un des deux, en résolvant seulement $f(l)=l$.",
+          "pourquoi_faux": "L'équation $f(l)=l$ a exactement les mêmes solutions que l'équation utilisée pour trouver les points fixes : elle ne permet donc pas de choisir entre $a$ et $b$, ni même de garantir que la suite converge. Rien dans cette équation ne dit si la limite est $a$, si elle est $b$, ou si la suite diverge.",
+          "correction_markdown": "La limite ne se lit que dans la formule explicite de $u_n$, obtenue via la suite auxiliaire, ou dans une étude de monotonie et de bornes menée indépendamment (théorème de la limite monotone). Ne présente jamais $f(l)=l$ seule comme une preuve de convergence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_0=4$ et, pour tout entier naturel $n$, $u_{n+1}=\\dfrac13u_n+2$.\n\n1. Déterminer le point fixe $l$ de $f(x)=\\dfrac13x+2$.\n2. Montrer que $v_n=u_n-l$ est géométrique et préciser sa raison.\n3. Exprimer $u_n$ en fonction de $n$ et déterminer sa limite.",
+          "solution_markdown": "**1.** Le point fixe vérifie $l=\\dfrac13l+2$, donc $\\dfrac23l=2$, donc $l=3$.\n\n**2.** Posons $v_n=u_n-3$. Alors :\n\n$$v_{n+1}=u_{n+1}-3=\\left(\\dfrac13u_n+2\\right)-3=\\dfrac13u_n-1=\\dfrac13(u_n-3)=\\dfrac13v_n$$\n\nPour tout entier naturel $n$, $v_{n+1}=\\dfrac13v_n$ : $(v_n)$ est géométrique de raison $q=\\dfrac13$. Son premier terme est $v_0=u_0-3=4-3=1$.\n\n**3.** $v_n=v_0\\times q^n=\\left(\\dfrac13\\right)^n$, donc $u_n=v_n+3=\\left(\\dfrac13\\right)^n+3$.\n\nVérification : $u_1=\\dfrac13\\times4+2=\\dfrac{10}3$ calculé directement ; la formule donne $\\dfrac13+3=\\dfrac{10}3$, ce qui concorde.\n\nComme $\\left|\\dfrac13\\right|<1$, $\\lim_{n\\to+\\infty}\\left(\\dfrac13\\right)^n=0$, donc $\\lim_{n\\to+\\infty}u_n=0+3=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_0=0$ et, pour tout entier naturel $n$, $u_{n+1}=\\dfrac{2u_n+3}{u_n+4}$.\n\n1. Vérifier que $f(x)=\\dfrac{2x+3}{x+4}$ admet deux points fixes distincts, $1$ et $-3$.\n2. Montrer que $v_n=\\dfrac{u_n-1}{u_n+3}$ est géométrique et préciser sa raison.\n3. En déduire $u_n$ en fonction de $n$, puis sa limite.",
+          "solution_markdown": "**1.** On résout $f(x)=x$, pour $x\\neq-4$ : $\\dfrac{2x+3}{x+4}=x \\Leftrightarrow 2x+3=x(x+4) \\Leftrightarrow 2x+3=x^2+4x \\Leftrightarrow x^2+2x-3=0$. Ce trinôme se factorise : $x^2+2x-3=(x-1)(x+3)$, donc $x=1$ ou $x=-3$ : deux points fixes distincts.\n\n**2.** Posons $v_n=\\dfrac{u_n-1}{u_n+3}$. On calcule séparément :\n\n$$u_{n+1}-1=\\dfrac{2u_n+3}{u_n+4}-1=\\dfrac{(2u_n+3)-(u_n+4)}{u_n+4}=\\dfrac{u_n-1}{u_n+4}$$\n\n$$u_{n+1}+3=\\dfrac{2u_n+3}{u_n+4}+3=\\dfrac{(2u_n+3)+3(u_n+4)}{u_n+4}=\\dfrac{5u_n+15}{u_n+4}=\\dfrac{5(u_n+3)}{u_n+4}$$\n\n$$v_{n+1}=\\dfrac{u_{n+1}-1}{u_{n+1}+3}=\\dfrac{\\dfrac{u_n-1}{u_n+4}}{\\dfrac{5(u_n+3)}{u_n+4}}=\\dfrac{u_n-1}{5(u_n+3)}=\\dfrac15\\,v_n$$\n\nPour tout $n$, $v_{n+1}=\\dfrac15v_n$ : $(v_n)$ est géométrique de raison $q=\\dfrac15$. Son premier terme est $v_0=\\dfrac{u_0-1}{u_0+3}=\\dfrac{-1}3$.\n\n**3.** $v_n=v_0\\times q^n=-\\dfrac13\\times\\left(\\dfrac15\\right)^n=-\\dfrac1{3\\times5^n}$.\n\nOn inverse $v_n=\\dfrac{u_n-1}{u_n+3}$ comme dans le cours : $v_n(u_n+3)=u_n-1 \\Rightarrow u_n(v_n-1)=-(1+3v_n) \\Rightarrow u_n=\\dfrac{1+3v_n}{1-v_n}$.\n\nEn remplaçant $v_n=-\\dfrac1{3\\times5^n}$ et en multipliant numérateur et dénominateur par $3\\times5^n$ :\n\n$$u_n=\\dfrac{3\\times5^n-3}{3\\times5^n+1}$$\n\nVérification : $u_1$ calculé directement vaut $\\dfrac{2\\times0+3}{0+4}=\\dfrac34$ ; la formule donne $\\dfrac{15-3}{15+1}=\\dfrac{12}{16}=\\dfrac34$, ce qui concorde.\n\nComme $5>1$, $\\dfrac1{5^n}\\to0$, donc en divisant numérateur et dénominateur par $5^n$ : $u_n=\\dfrac{3-\\frac3{5^n}}{3+\\frac1{5^n}}\\to\\dfrac33=1$. La suite $(u_n)$ converge vers $1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_0=3$ et, pour tout entier naturel $n$, $u_{n+1}=\\dfrac{3u_n-1}{u_n+1}$.\n\n1. Vérifier que $f(x)=\\dfrac{3x-1}{x+1}$ n'admet qu'un seul point fixe, $l=1$ (point fixe double).\n2. Montrer que $w_n=\\dfrac1{u_n-1}$ est arithmétique et préciser sa raison.\n3. En déduire $u_n$ en fonction de $n$, sa monotonie et sa limite.",
+          "solution_markdown": "**1.** On résout $f(x)=x$, pour $x\\neq-1$ : $\\dfrac{3x-1}{x+1}=x \\Leftrightarrow 3x-1=x(x+1) \\Leftrightarrow 3x-1=x^2+x \\Leftrightarrow x^2-2x+1=0 \\Leftrightarrow (x-1)^2=0$. Le discriminant de ce trinôme est nul : l'équation admet une unique solution, $l=1$, racine double. Il n'y a donc qu'un seul point fixe : on utilise la variante à point fixe double.\n\n**2.** Posons $w_n=\\dfrac1{u_n-1}$. Ce terme est bien défini pour tout $n$ à condition que $u_n\\neq1$ pour tout $n$, ce qui se vérifie par récurrence : $u_0=3\\neq1$, et si $u_n\\neq1$ alors $u_{n+1}\\neq1$, car résoudre $u_{n+1}=1$ donne $\\dfrac{3u_n-1}{u_n+1}=1 \\Leftrightarrow 3u_n-1=u_n+1 \\Leftrightarrow u_n=1$, exclu par hypothèse.\n\nOn calcule d'abord $u_{n+1}-1$ :\n\n$$u_{n+1}-1=\\dfrac{3u_n-1}{u_n+1}-1=\\dfrac{(3u_n-1)-(u_n+1)}{u_n+1}=\\dfrac{2u_n-2}{u_n+1}=\\dfrac{2(u_n-1)}{u_n+1}$$\n\nPuis :\n\n$$w_{n+1}=\\dfrac1{u_{n+1}-1}=\\dfrac{u_n+1}{2(u_n-1)}=\\dfrac{(u_n-1)+2}{2(u_n-1)}=\\dfrac12+\\dfrac1{u_n-1}=\\dfrac12+w_n$$\n\nPour tout $n$, $w_{n+1}=w_n+\\dfrac12$ : $(w_n)$ est arithmétique de raison $r=\\dfrac12$. Son premier terme est $w_0=\\dfrac1{u_0-1}=\\dfrac1{3-1}=\\dfrac12$.\n\n**3.** $w_n=w_0+n\\,r=\\dfrac12+\\dfrac n2=\\dfrac{n+1}2$.\n\nOn revient à $u_n$ : $w_n=\\dfrac1{u_n-1} \\Rightarrow u_n-1=\\dfrac1{w_n} \\Rightarrow u_n=1+\\dfrac1{w_n}=1+\\dfrac2{n+1}$.\n\nVérification : $u_1$ calculé directement vaut $\\dfrac{3\\times3-1}{3+1}=\\dfrac84=2$ ; la formule donne $1+\\dfrac22=2$, ce qui concorde.\n\nMonotonie : pour tout $n$, $u_{n+1}-u_n=\\left(1+\\dfrac2{n+2}\\right)-\\left(1+\\dfrac2{n+1}\\right)=2\\left(\\dfrac1{n+2}-\\dfrac1{n+1}\\right)$. Comme $n+2>n+1>0$, $\\dfrac1{n+2}<\\dfrac1{n+1}$, donc $u_{n+1}-u_n<0$ : $(u_n)$ est strictement décroissante.\n\nLimite : $\\dfrac2{n+1}\\to0$ quand $n\\to+\\infty$, donc $u_n\\to1$. La suite décroît strictement vers son unique point fixe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à $u_{n+1}=f(u_n)$, cherche toujours d'abord les points fixes de $f$ en résolvant $f(x)=x$ : leur nombre (un ou deux) dicte quelle suite auxiliaire construire.",
+        "Deux points fixes distincts $a$ et $b$ : pose $v_n=\\dfrac{u_n-a}{u_n-b}$, presque toujours géométrique. Un seul point fixe double $l$ : pose $w_n=\\dfrac1{u_n-l}$, presque toujours arithmétique.",
+        "Le test qui prouve la nature de l'auxiliaire dépend de sa forme : quotient constant $v_{n+1}/v_n$ pour du géométrique, différence constante $w_{n+1}-w_n$ pour de l'arithmétique - ne confonds jamais les deux.",
+        "Une fois le terme général de l'auxiliaire connu, inverse la relation qui la définit pour retrouver $u_n$ en fonction de $n$ : c'est cette formule explicite, jamais l'équation $f(l)=l$ seule, qui donne la limite avec certitude.",
+        "Vérifie systématiquement ta formule finale sur $u_0$ et $u_1$ calculés directement : un désaccord signale presque toujours une inversion entre les deux points fixes.",
+        "Au BAC série D, ce savoir apparaît régulièrement comme la dernière partie d'un exercice de suites, après une étude de monotonie et de convergence : la méthode de la suite auxiliaire est ce qui permet de conclure par un calcul exact, là où le théorème de la limite monotone garantit seulement l'existence de la limite."
+      ]
+    }
+  ]
+}

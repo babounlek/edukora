@@ -50,13 +50,29 @@
         border-radius: 3px;
         padding: 3px 10px;
     }
+    /* Deux niveaux réellement distincts : h2 ouvre une question, h3 ses sections
+       internes ("Rappel de méthode", "Corrigé"). Un répétiteur qui feuillette doit
+       repérer le début d'une question sans avoir à lire les titres - ce qui n'était pas
+       possible tant que le corrigé n'affichait qu'un seul niveau de titre. */
     h2, h3 {
         font-family: "Helvetica Neue", Arial, sans-serif;
         color: #9a3412;
-        border-bottom: 1px solid #d8d8d8;
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+    h2 {
+        font-size: 18px;
+        border-bottom: 2px solid #9a3412;
         padding-bottom: 6px;
-        margin-top: 32px;
-        font-size: 17px;
+        margin: 34px 0 14px 0;
+    }
+    .brand-header + h2 {
+        margin-top: 0;
+    }
+    h3 {
+        font-size: 14px;
+        letter-spacing: 0.03em;
+        margin: 22px 0 6px 0;
     }
     img {
         max-width: 100%;

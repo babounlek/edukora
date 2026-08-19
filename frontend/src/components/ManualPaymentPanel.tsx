@@ -33,9 +33,11 @@ const OPERATOR_STYLES: Record<MobileMoneyOperator, { initials: string; badgeClas
 
 /**
  * Instructions + formulaire de déclaration pour le paiement Mobile Money manuel.
- * `plan.price` alimente l'affichage "montant à payer" mais ne sert qu'à préremplir
- * amount_declared côté formulaire - le serveur recalcule toujours amount_expected
- * lui-même depuis plan.price au moment de la déclaration (voir payments.serializers).
+ * `plan.effective_price` alimente l'affichage "montant à payer" mais ne sert qu'à
+ * préremplir amount_declared côté formulaire - le serveur recalcule toujours
+ * amount_expected lui-même depuis plan.effective_price() au moment de la
+ * déclaration (voir payments.serializers) - jamais depuis `plan.price` brut, qui
+ * n'est qu'un plafond pour un Plan JUSQUA_EXAMEN (voir subscriptions.models.Plan).
  */
 export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPaymentPanelProps) {
   const [accounts, setAccounts] = useState<MobileMoneyAccount[] | null>(null)
@@ -43,7 +45,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
   const [copied, setCopied] = useState(false)
   const [payerPhoneNumber, setPayerPhoneNumber] = useState("")
   const [transactionReference, setTransactionReference] = useState("")
-  const [amountDeclared, setAmountDeclared] = useState(String(plan.price))
+  const [amountDeclared, setAmountDeclared] = useState(String(plan.effective_price))
   const [paidAt, setPaidAt] = useState("")
   const [proof, setProof] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -58,8 +60,8 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
   useEffect(() => {
     setShowForm(false)
     setError(null)
-    setAmountDeclared(String(plan.price))
-  }, [operator, plan.id, plan.price])
+    setAmountDeclared(String(plan.effective_price))
+  }, [operator, plan.id, plan.effective_price])
 
   const account = accounts?.find((a) => a.operator === operator) ?? null
   const style = OPERATOR_STYLES[operator]
@@ -88,8 +90,8 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
       setError("Indique le montant réellement payé.")
       return
     }
-    if (amount < plan.price) {
-      setError(`Le montant payé ne peut pas être inférieur au prix de l'offre (${formatAmount(plan.price)} FCFA).`)
+    if (amount < plan.effective_price) {
+      setError(`Le montant payé ne peut pas être inférieur au prix de l'offre (${formatAmount(plan.effective_price)} FCFA).`)
       return
     }
 
@@ -141,7 +143,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
 
         <p className="mt-4 text-xs uppercase tracking-wide text-muted-foreground">Montant à payer</p>
         <p className="font-display text-3xl font-semibold text-primary">
-          {formatAmount(plan.price)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
+          {formatAmount(plan.effective_price)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
         </p>
 
         <div className="mt-3.5 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/70 px-3.5 py-2.5">

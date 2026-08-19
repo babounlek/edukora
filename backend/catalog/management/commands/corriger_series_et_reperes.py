@@ -23,16 +23,19 @@ Idempotente : relancer ne change plus rien une fois la reprise faite.
     python manage.py corriger_series_et_reperes --apply
 """
 
+import re
+
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from catalog.ingestion import SERIE_MAP
+from catalog.ingestion import SERIE_MAP, build_lesson_title
 from catalog.ingestion_repairs import (
     _dedupe_exercise_heading,
     _dedupe_question_enonce,
     _series_tokens_from_folder_name,
 )
 from catalog.models import Cursus, Lesson, LessonType
+from catalog.rendering import _render_question_enonce
 
 # Le nom du dossier et le contenu du JSON se contredisent franchement (pas un simple
 # oubli) : l'arbitrage se fait sur le PDF source, jamais ici - voir la docstring de
@@ -59,11 +62,152 @@ class Command(BaseCommand):
             "APPLICATION" if appliquer else "SIMULATION (relancer avec --apply pour écrire)",
         ))
         series = self._corriger_series(appliquer)
+        titres = self._corriger_titres(appliquer)
         reperes = self._corriger_reperes(appliquer)
+        corps = self._corriger_corps_recopie(appliquer)
+        romains = self._recompiler_marqueurs_romains(appliquer)
         self.stdout.write("")
         self.stdout.write(self.style.SUCCESS(
-            f"Séries : {series} leçon(s) complétée(s) | Repères : {reperes} exercice(s) dédupliqué(s)",
+            f"Séries : {series} leçon(s) complétée(s) | Titres : {titres} rafraîchi(s) | "
+            f"Repères : {reperes} exercice(s) dédupliqué(s) | Corps recopié : {corps} question(s) | "
+            f"Marqueurs romains : {romains} exercice(s) recompilé(s)",
         ))
+
+    def _recompiler_marqueurs_romains(self, appliquer):
+        """
+        `Exercise.enonce_markdown` est un champ COMPILÉ depuis les Question : le
+        correctif de rendering._strip_redundant_local_marker (marqueur "ii." redoublé
+        par le préfixe compilé) ne se voit donc qu'après recompilation.
+
+        Ne recompile que les exercices réellement concernés - une sous-question dont le
+        dernier segment de `numero` est alphabétique ET dont le texte commence par ce
+        même marqueur - plutôt que tout le corpus : recompiler 1200 exercices pour en
+        corriger une poignée ferait remonter autant de dates de modification sans raison.
+        """
+        self.stdout.write("\n== Marqueurs romains redoublés (recompilation) ==")
+        touches = 0
+        lessons = Lesson.objects.filter(lesson_type=LessonType.CORR).prefetch_related(
+            "exercises__questions",
+        )
+        for lesson in lessons:
+            for exercise in lesson.exercises.all():
+                questions = list(exercise.questions.order_by("ordre"))
+                concerne = False
+                for question in questions:
+                    segment = str(question.numero or "").rsplit(".", 1)[-1]
+                    if not segment.isalpha():
+                        continue
+                    if re.match(rf"^\s*{re.escape(segment)}\s*[.):]", question.enonce_markdown, re.IGNORECASE):
+                        concerne = True
+                        break
+                if not concerne:
+                    continue
+                # Recompilation à blanc, à l'identique de compile_exercise_from_questions,
+                # pour que la simulation annonce ce qui CHANGERAIT et non ce qui a
+                # simplement l'allure d'un cas concerné : la majorité de ces exercices
+                # n'écopent d'aucun préfixe compilé (sous-question unique, ou repère déjà
+                # reconnu par _ENONCE_ALREADY_LABELED_RE) et leur rendu est donc déjà bon.
+                intro = f"{exercise.enonce_intro_markdown}\n\n" if exercise.enonce_intro_markdown else ""
+                attendu = intro + "\n\n".join(
+                    _render_question_enonce(question, len(questions) > 1) for question in questions
+                )
+                if attendu == exercise.enonce_markdown:
+                    continue
+                self.stdout.write(f"  {lesson.epreuve_source} ex.{exercise.numero_exercice}")
+                touches += 1
+                if appliquer:
+                    exercise.compile_from_questions()
+                    lesson.compile_from_exercises()
+        return touches
+
+    def _corriger_corps_recopie(self, appliquer):
+        """
+        Préambule de l'exercice recopié tel quel en tête de sa première sous-question :
+        le lecteur le voit deux fois d'affilée, puisque la plateforme affiche l'intro
+        puis chaque sous-question.
+
+        `_dedupe_question_enonce` corrige déjà ce défaut, mais seulement à l'ingestion :
+        le contenu importé avant son introduction ne l'a jamais vu passer. On rejoue
+        donc la rustine sur l'existant. Idempotent par construction - elle ne retire que
+        ce qui est un doublon exact du préambule, donc une seconde exécution ne trouve
+        plus rien.
+        """
+        self.stdout.write("\n== Préambule recopié en tête de sous-question ==")
+        touchees = 0
+        lessons = Lesson.objects.filter(lesson_type=LessonType.CORR).prefetch_related(
+            "exercises__questions",
+        )
+        for lesson in lessons:
+            for exercise in lesson.exercises.all():
+                modifiees = []
+                for question in exercise.questions.order_by("ordre"):
+                    nouveau = _dedupe_question_enonce(
+                        question.enonce_markdown, exercise.enonce_intro_markdown,
+                    )
+                    if nouveau != question.enonce_markdown:
+                        modifiees.append((question, nouveau))
+                if not modifiees:
+                    continue
+                self.stdout.write(
+                    f"  {lesson.epreuve_source} ex.{exercise.numero_exercice} "
+                    f"({len(modifiees)} sous-question(s))",
+                )
+                touchees += len(modifiees)
+                if not appliquer:
+                    continue
+                with transaction.atomic():
+                    for question, nouveau in modifiees:
+                        question.enonce_markdown = nouveau
+                        question.save(update_fields=["enonce_markdown"])
+                    exercise.compile_from_questions()
+                lesson.compile_from_exercises()
+        return touchees
+
+    def _corriger_titres(self, appliquer):
+        """
+        Le titre n'est calculé qu'à la création du Lesson : une série rattachée après
+        coup (voir _corriger_series juste au-dessus) laisse un titre périmé, du genre
+        "Chimie BAC C et D 2025" pour une épreuve désormais ouverte à la Série E.
+
+        Ne réécrit QUE les titres manifestement auto-générés (ils commencent par le
+        libellé de la matière et se terminent par l'année) : un titre retouché à la
+        main depuis l'admin ne correspond plus à cette forme et reste intact. Le slug
+        n'est jamais touché - il est figé à la création pour ne pas casser les URL déjà
+        partagées et indexées.
+        """
+        self.stdout.write("\n== Titres périmés après complément de cursus ==")
+        touches = 0
+        lessons = (
+            Lesson.objects.filter(lesson_type=LessonType.CORR)
+            .prefetch_related("cursus__series", "cursus__country")
+            .select_related("subject")
+        )
+        for lesson in lessons:
+            cursus_list = list(lesson.cursus.all())
+            if not cursus_list:
+                continue
+            attendu = build_lesson_title(
+                lesson.subject, cursus_list, lesson.year, lesson.origine, lesson.etablissement,
+                lesson.nature_epreuve, lesson.partie_epreuve_francais, lesson.variante_sujet,
+                lesson.filiere_serie_a,
+            )
+            if attendu == lesson.title:
+                continue
+            auto_genere = lesson.title.startswith(lesson.subject.label) and (
+                not lesson.year or lesson.title.rstrip().endswith(str(lesson.year))
+            )
+            if not auto_genere:
+                self.stdout.write(self.style.WARNING(
+                    f"  {lesson.title!r} : titre retouché à la main, laissé tel quel "
+                    f"(attendu : {attendu!r}).",
+                ))
+                continue
+            self.stdout.write(f"  {lesson.title!r} -> {attendu!r}")
+            touches += 1
+            if appliquer:
+                lesson.title = attendu
+                lesson.save(update_fields=["title", "updated_at"])
+        return touches
 
     def _corriger_series(self, appliquer):
         self.stdout.write("\n== Séries manquantes sur le cursus des leçons ==")

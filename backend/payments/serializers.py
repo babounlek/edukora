@@ -82,11 +82,12 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
                 "operator": "Ce moyen de paiement n'est pas disponible actuellement.",
             })
         plan = attrs["plan"]
-        if attrs["amount_declared"] < plan.price:
+        prix_attendu = plan.effective_price()
+        if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({
                 "amount_declared": (
                     f"Le montant déclaré ({attrs['amount_declared']} FCFA) est inférieur au prix de "
-                    f"l'offre sélectionnée ({plan.price} FCFA)."
+                    f"l'offre sélectionnée ({prix_attendu} FCFA)."
                 ),
             })
         return attrs

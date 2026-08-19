@@ -1,0 +1,182 @@
+{
+ "cours_id": "cours-derivee-quotient-1ere-ce",
+ "meta": {
+  "titre": "Dériver un quotient de deux fonctions polynômes",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dérivation",
+  "duree_estimee_min": 25,
+  "tags": [
+   "dérivée d'un quotient",
+   "fonction rationnelle",
+   "factorisation",
+   "signe de la dérivée"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qB1b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Dériver un quotient tient en une formule, mais cette formule contient deux pièges à elle seule : un ordre à ne pas inverser au numérateur, et un dénominateur qu'il ne faut surtout pas développer. Le premier fait changer la dérivée de signe, le second rend l'étude du signe deux fois plus longue. Bien poser ces deux points, c'est gagner l'étude de variation qui suit."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître les dérivées usuelles $\\left(x^{n}\\right)'=nx^{n-1}$",
+    "Développer et réduire une expression polynomiale",
+    "Factoriser un trinôme du second degré par le discriminant"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "La formule, et les deux réflexes qui l'accompagnent",
+   "contenu_markdown": "Soient $u$ et $v$ deux fonctions dérivables, avec $v$ ne s'annulant pas sur l'intervalle considéré. Alors $\\dfrac{u}{v}$ est dérivable et\n\n$$\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^{2}}$$\n\n**Premier réflexe : l'ordre au numérateur.** C'est $u'v$ **moins** $uv'$, jamais l'inverse. L'expression n'est pas symétrique, et intervertir les deux termes donne l'opposé de la dérivée, donc des variations inversées.\n\nUn moyen de contrôle : dérive $\\dfrac{1}{x}$ avec $u=1$ et $v=x$. La formule donne $\\dfrac{0\\times x-1\\times 1}{x^{2}}=-\\dfrac{1}{x^{2}}$, qui est bien négatif, conformément à la décroissance de $\\dfrac{1}{x}$ sur $\\left]0\\,;\\,+\\infty\\right[$. Avec l'ordre inversé, on trouverait $+\\dfrac{1}{x^{2}}$, absurde.\n\n**Second réflexe : ne pas développer $v^{2}$.** Laissé sous forme de carré, le dénominateur est visiblement strictement positif partout où $v$ ne s'annule pas. Le signe de la dérivée se réduit donc à celui du **numérateur** seul, et l'étude de variation devient immédiate. Développé, ce carré n'apporte rien et brouille la lecture.\n\n**Marche à suivre.**\n\n1. Poser $u$ et $v$, calculer $u'$ et $v'$ séparément.\n2. Appliquer la formule sans développer le dénominateur.\n3. Développer et réduire le numérateur.\n4. Factoriser ce numérateur, en vue de l'étude de signe.",
+   "formule_principale": "\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^{2}}",
+   "variantes": [
+    {
+     "nom": "Dériver la forme décomposée",
+     "quand_utiliser": "Quand la décomposition $f(x)=ax+b+\\dfrac{c}{x-x_{0}}$ est déjà connue",
+     "contenu_markdown": "Sur cette forme, la dérivation est immédiate : $f'(x)=a-\\dfrac{c}{\\left(x-x_{0}\\right)^{2}}$, car $\\left(\\dfrac{1}{x-x_{0}}\\right)'=-\\dfrac{1}{\\left(x-x_{0}\\right)^{2}}$. C'est plus rapide que la formule du quotient, et le résultat se met facilement au même dénominateur pour retrouver la forme habituelle. Utilise cette voie si la décomposition précède la dérivation dans l'énoncé, ce qui n'est pas toujours le cas."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Calculer la dérivée de la fonction $f$ définie pour $x\\neq-1$ par $f(x)=\\dfrac{x^{2}+3}{x+1}$, puis factoriser le numérateur obtenu. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Poser $u$ et $v$",
+     "justification": "Le numérateur et le dénominateur de $f$",
+     "resultat_markdown": "$u(x)=x^{2}+3$ et $v(x)=x+1$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer les dérivées",
+     "justification": "$\\left(x^{2}\\right)'=2x$, la dérivée d'une constante est nulle, et $(x+1)'=1$",
+     "resultat_markdown": "$u'(x)=2x$ et $v'(x)=1$"
+    },
+    {
+     "numero": 3,
+     "action": "Appliquer la formule",
+     "justification": "$\\dfrac{u'v-uv'}{v^{2}}$, en respectant l'ordre et sans développer le dénominateur",
+     "resultat_markdown": "$f'(x)=\\dfrac{2x(x+1)-\\left(x^{2}+3\\right)\\times 1}{(x+1)^{2}}$"
+    },
+    {
+     "numero": 4,
+     "action": "Développer le premier produit",
+     "justification": "Distributivité",
+     "resultat_markdown": "$2x(x+1)=2x^{2}+2x$"
+    },
+    {
+     "numero": 5,
+     "action": "Réduire le numérateur",
+     "justification": "On retranche $x^{2}+3$ en changeant les signes dans la parenthèse",
+     "resultat_markdown": "$2x^{2}+2x-x^{2}-3=x^{2}+2x-3$"
+    },
+    {
+     "numero": 6,
+     "action": "Écrire la dérivée",
+     "justification": "Le dénominateur reste sous forme de carré",
+     "resultat_markdown": "$f'(x)=\\dfrac{x^{2}+2x-3}{(x+1)^{2}}$ pour tout $x\\neq-1$"
+    },
+    {
+     "numero": 7,
+     "action": "Calculer le discriminant du numérateur",
+     "justification": "Pour $x^{2}+2x-3$ : $\\Delta=b^{2}-4ac=2^{2}-4\\times 1\\times(-3)$",
+     "resultat_markdown": "$\\Delta=4+12=16$, donc $\\sqrt{\\Delta}=4$"
+    },
+    {
+     "numero": 8,
+     "action": "Déterminer les racines",
+     "justification": "$x=\\dfrac{-b\\pm\\sqrt{\\Delta}}{2a}$",
+     "resultat_markdown": "$x_{1}=\\dfrac{-2-4}{2}=-3$ et $x_{2}=\\dfrac{-2+4}{2}=1$"
+    },
+    {
+     "numero": 9,
+     "action": "Factoriser",
+     "justification": "Un trinôme de coefficient dominant $1$ et de racines $x_{1}$, $x_{2}$ s'écrit $\\left(x-x_{1}\\right)\\left(x-x_{2}\\right)$",
+     "resultat_markdown": "$f'(x)=\\dfrac{(x+3)(x-1)}{(x+1)^{2}}$"
+    }
+   ],
+   "conclusion_markdown": "La dérivée vaut $f'(x)=\\dfrac{(x+3)(x-1)}{(x+1)^{2}}$. Sous cette forme factorisée, avec un dénominateur laissé au carré donc positif, le signe de $f'$ se lit sur le seul produit $(x+3)(x-1)$ : le tableau de variation s'en déduit sans autre calcul."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{uv'-u'v}{v^{2}}$",
+     "pourquoi_faux": "C'est l'opposé de la vraie dérivée. Toutes les variations s'en trouvent inversées : une fonction croissante est déclarée décroissante, les maximums deviennent des minimums, et l'étude entière est fausse alors que le calcul est correct.",
+     "correction_markdown": "Contrôle sur $\\dfrac{1}{x}$ : la formule doit donner $-\\dfrac{1}{x^{2}}$, négatif. Ce test d'une seconde fixe l'ordre définitivement."
+    },
+    {
+     "erreur_markdown": "Écrire $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'}{v'}$",
+     "pourquoi_faux": "La dérivation n'est pas compatible avec le quotient, pas plus qu'avec le produit. Contre-exemple immédiat : la dérivée de $\\dfrac{x^{2}}{x}=x$ vaut $1$, alors que $\\dfrac{2x}{1}=2x$.",
+     "correction_markdown": "Aucune des quatre opérations ne « traverse » la dérivation, sauf l'addition et la soustraction. Pour le produit et le quotient, il faut la formule."
+    },
+    {
+     "erreur_markdown": "Développer $(x+1)^{2}$ au dénominateur",
+     "pourquoi_faux": "Le carré rend le signe du dénominateur évident : strictement positif pour $x\\neq-1$. Développé en $x^{2}+2x+1$, il faudrait à nouveau en étudier le signe, ce qui rallonge inutilement et fait parfois croire à tort que le dénominateur peut changer de signe.",
+     "correction_markdown": "Laisse systématiquement $v^{2}$ sous forme de carré. C'est le point qui rend la question suivante, l'étude de signe, immédiate."
+    },
+    {
+     "erreur_markdown": "Oublier de factoriser le numérateur",
+     "pourquoi_faux": "La forme développée $x^{2}+2x-3$ ne permet pas de lire le signe. La question suivante demandera de toute façon le tableau de variation, donc le signe de $f'$ : autant factoriser tout de suite.",
+     "correction_markdown": "Enchaîne discriminant, racines, factorisation dans la foulée du calcul de la dérivée. C'est trois lignes, et cela prépare la question suivante."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer la dérivée de $f(x)=\\dfrac{2x-1}{x+3}$ pour $x\\neq-3$, puis en déduire le sens de variation de $f$.",
+     "solution_markdown": "**Poser $u$ et $v$.** $u(x)=2x-1$ donc $u'(x)=2$ ; $v(x)=x+3$ donc $v'(x)=1$.\n\n**Appliquer la formule.**\n\n$$f'(x)=\\frac{2(x+3)-(2x-1)\\times 1}{(x+3)^{2}}$$\n\n**Développer le numérateur.**\n\n$$2(x+3)=2x+6\\qquad;\\qquad 2x+6-2x+1=7$$\n\n$$f'(x)=\\frac{7}{(x+3)^{2}}$$\n\n**Sens de variation.** Le numérateur $7$ est strictement positif et le dénominateur $(x+3)^{2}$ l'est aussi pour $x\\neq-3$. Donc $f'(x)>0$ sur $\\left]-\\infty\\,;\\,-3\\right[$ et sur $\\left]-3\\,;\\,+\\infty\\right[$.\n\n$f$ est strictement croissante sur chacun de ces deux intervalles.\n\n**Attention.** On ne peut pas dire que $f$ est croissante sur $\\mathbb{R}\\setminus\\{-3\\}$ : la fonction n'est pas définie en $-3$, et ses valeurs à droite de $-3$ ne se comparent pas à celles de gauche."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}-4}{x}$ pour $x\\neq 0$. Calculer $f'(x)$, factoriser le résultat, puis dresser le tableau de signes de $f'$.",
+     "solution_markdown": "**Dérivation.** $u(x)=x^{2}-4$ donc $u'(x)=2x$ ; $v(x)=x$ donc $v'(x)=1$.\n\n$$f'(x)=\\frac{2x\\times x-\\left(x^{2}-4\\right)\\times 1}{x^{2}}=\\frac{2x^{2}-x^{2}+4}{x^{2}}=\\frac{x^{2}+4}{x^{2}}$$\n\n**Étude du signe.** Le numérateur $x^{2}+4$ est une somme d'un carré et d'un nombre strictement positif : il est donc **toujours** strictement positif, et ne se factorise pas dans $\\mathbb{R}$ (son discriminant vaudrait $0-16<0$). Le dénominateur $x^{2}$ est strictement positif pour $x\\neq 0$.\n\n$$\n\\begin{array}{|c|ccccc|}\n\\hline x & -\\infty & & 0 & & +\\infty \\\\\n\\hline x^{2}+4 & & + & + & + & \\\\\n\\hline x^{2} & & + & 0 & + & \\\\\n\\hline f'(x) & & + & \\| & + & \\\\\n\\hline\n\\end{array}\n$$\n\n**Conclusion.** $f'(x)>0$ sur $\\left]-\\infty\\,;\\,0\\right[$ et sur $\\left]0\\,;\\,+\\infty\\right[$ : $f$ est strictement croissante sur chacun de ces deux intervalles.\n\n**Remarque.** Ici le numérateur ne se factorise pas, et c'est normal : un trinôme de discriminant négatif garde un signe constant. Ne cherche pas à tout prix des racines qui n'existent pas."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}+mx+1}{x-1}$ pour $x\\neq 1$, où $m$ est un réel. Déterminer $f'(x)$, puis les valeurs de $m$ pour lesquelles $f$ est strictement croissante sur chacun des intervalles de son ensemble de définition.",
+     "solution_markdown": "**Étape 1 — dérivation.** $u(x)=x^{2}+mx+1$ donc $u'(x)=2x+m$ ; $v(x)=x-1$ donc $v'(x)=1$.\n\n$$f'(x)=\\frac{(2x+m)(x-1)-\\left(x^{2}+mx+1\\right)}{(x-1)^{2}}$$\n\n**Étape 2 — développer le premier produit.**\n\n$$(2x+m)(x-1)=2x^{2}-2x+mx-m$$\n\n**Étape 3 — réduire le numérateur.**\n\n$$2x^{2}-2x+mx-m-x^{2}-mx-1=x^{2}-2x-m-1$$\n\nLes termes en $mx$ s'éliminent.\n\n$$f'(x)=\\frac{x^{2}-2x-m-1}{(x-1)^{2}}$$\n\n**Étape 4 — condition de croissance.** Le dénominateur étant strictement positif pour $x\\neq 1$, il faut que le numérateur\n\n$$N(x)=x^{2}-2x-(m+1)$$\n\nsoit positif pour tout $x\\neq 1$.\n\n**Étape 5 — étudier le trinôme.** Son discriminant vaut\n\n$$\\Delta=(-2)^{2}-4\\times 1\\times\\left(-(m+1)\\right)=4+4(m+1)=4m+8$$\n\nUn trinôme de coefficient dominant $1>0$ est positif sur $\\mathbb{R}$ si et seulement si $\\Delta\\leqslant 0$ :\n\n$$4m+8\\leqslant 0\\;\\Longrightarrow\\;m\\leqslant-2$$\n\n**Étape 6 — examiner le cas limite $m=-2$.** Alors $\\Delta=0$ et $N(x)=x^{2}-2x+1=(x-1)^{2}$, qui s'annule en $x=1$. Or $1$ est exclu de l'ensemble de définition : $N$ est donc strictement positif sur tout l'ensemble de définition, et $f$ y est bien strictement croissante.\n\nD'ailleurs, pour $m=-2$ :\n\n$$f'(x)=\\frac{(x-1)^{2}}{(x-1)^{2}}=1$$\n\net l'on vérifie que $f(x)=\\dfrac{x^{2}-2x+1}{x-1}=\\dfrac{(x-1)^{2}}{x-1}=x-1$, fonction affine de coefficient directeur $1$.\n\n**Conclusion.** $f$ est strictement croissante sur chacun des deux intervalles de son ensemble de définition si et seulement si $m\\leqslant-2$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^{2}}$ : c'est $u'v$ **moins** $uv'$, et l'ordre n'est pas négociable.",
+    "En cas de doute sur l'ordre, dérive $\\dfrac{1}{x}$ : tu dois retrouver $-\\dfrac{1}{x^{2}}$.",
+    "Ne développe jamais $v^{2}$ : laissé au carré, il est visiblement positif et le signe de la dérivée se lit sur le seul numérateur.",
+    "Développe et réduis le numérateur, puis **factorise-le** : c'est cette factorisation qui donne le tableau de variation.",
+    "Un numérateur de discriminant négatif garde un signe constant : ne cherche pas des racines qui n'existent pas.",
+    "La dérivation ne « traverse » ni le produit ni le quotient : $\\dfrac{u'}{v'}$ n'est jamais la dérivée de $\\dfrac{u}{v}$.",
+    "Quand la fonction a une valeur interdite, énonce la croissance **sur chaque intervalle** séparément, jamais sur leur réunion."
+   ]
+  }
+ ]
+}

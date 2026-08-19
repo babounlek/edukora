@@ -114,6 +114,9 @@ def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None,
         "origine": "INEDITE",
         "origine_display": "Épreuve inédite",
         "etablissement": "",
+        # Une Épreuve Inédite n'est organisée par aucun office d'examen : elle est
+        # conçue et publiée par la plateforme elle-même.
+        "institution": "Edukora",
         "nature_epreuve": "",
         "nature_epreuve_display": "",
         "themes": TagSerializer(epreuve.blueprint.competences.all(), many=True).data,

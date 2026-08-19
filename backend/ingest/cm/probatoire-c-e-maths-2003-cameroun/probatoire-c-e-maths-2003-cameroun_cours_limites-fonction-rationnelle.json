@@ -1,0 +1,184 @@
+{
+ "cours_id": "cours-limites-fonction-rationnelle-1ere-ce",
+ "meta": {
+  "titre": "Calculer les limites d'une fonction rationnelle à l'infini et en une valeur interdite",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Étude de fonctions rationnelles",
+  "duree_estimee_min": 30,
+  "tags": [
+   "limites",
+   "fonction rationnelle",
+   "valeur interdite",
+   "asymptote verticale",
+   "forme indéterminée"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "V"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex3-qB1a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Avant de dessiner une courbe, il faut savoir ce qu'elle fait aux extrémités : part-elle vers le haut, vers le bas, se stabilise-t-elle ? Et près d'une valeur interdite, s'échappe-t-elle vers $+\\infty$ ou vers $-\\infty$ ? Ces quatre limites déterminent entièrement l'allure des branches infinies. Les calculer n'a rien d'un exercice formel : c'est le squelette du tracé."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître les limites de référence $\\dfrac{1}{x}\\to 0$ en $\\pm\\infty$",
+    "Factoriser par le terme de plus haut degré",
+    "Étudier le signe d'une expression affine",
+    "Savoir qu'une fonction polynôme est continue sur $\\mathbb{R}$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux situations, deux techniques",
+   "contenu_markdown": "Soit $f=\\dfrac{P}{Q}$ une fonction rationnelle, où $P$ et $Q$ sont des polynômes.\n\n**Situation 1 : limite en $\\pm\\infty$.** Le quotient présente la forme indéterminée $\\dfrac{\\infty}{\\infty}$. On la lève en factorisant numérateur et dénominateur par leur terme de plus haut degré :\n\n$$f(x)=\\frac{a_{n}x^{n}\\left(1+\\dfrac{\\ldots}{x}+\\ldots\\right)}{b_{m}x^{m}\\left(1+\\dfrac{\\ldots}{x}+\\ldots\\right)}$$\n\nToutes les parenthèses tendent vers $1$, et la limite est celle de $\\dfrac{a_{n}x^{n}}{b_{m}x^{m}}$, c'est-à-dire du **quotient des termes de plus haut degré**.\n\n| Comparaison des degrés | Limite en $\\pm\\infty$ |\n|---|---|\n| $n<m$ | $0$ |\n| $n=m$ | $\\dfrac{a_{n}}{b_{m}}$ |\n| $n>m$ | $\\pm\\infty$, selon les signes |\n\n**Situation 2 : limite en une valeur interdite $x_{0}$**, c'est-à-dire une racine de $Q$. Deux cas s'opposent.\n\n- Si $P\\left(x_{0}\\right)\\neq 0$ : il n'y a **aucune** indétermination. Le numérateur tend vers un nombre non nul, le dénominateur vers $0$, donc le quotient tend vers $\\pm\\infty$. Le signe se détermine par une étude du signe du dénominateur au voisinage de $x_{0}$, à gauche puis à droite. La droite $x=x_{0}$ est asymptote verticale.\n- Si $P\\left(x_{0}\\right)=0$ : on a la forme indéterminée $\\dfrac{0}{0}$. Il faut alors factoriser $P$ et $Q$ par $\\left(x-x_{0}\\right)$ et simplifier avant de conclure.\n\n**Le réflexe qui structure tout.** Commence toujours par calculer $P\\left(x_{0}\\right)$ : c'est lui qui décide s'il y a une indétermination à lever ou une simple étude de signe à mener.",
+   "formule_principale": "\\lim_{x\\to\\pm\\infty}\\frac{a_{n}x^{n}+\\ldots}{b_{m}x^{m}+\\ldots}=\\lim_{x\\to\\pm\\infty}\\frac{a_{n}x^{n}}{b_{m}x^{m}}",
+   "variantes": [
+    {
+     "nom": "Utiliser la décomposition en éléments simples",
+     "quand_utiliser": "Quand la décomposition $f(x)=ax+b+\\dfrac{c}{x-x_{0}}$ est déjà disponible",
+     "contenu_markdown": "Sur cette forme, les limites se lisent presque sans calcul : en $\\pm\\infty$, la fraction résiduelle tend vers $0$ et $f$ se comporte comme $ax+b$ ; en $x_{0}$, la partie affine tend vers une constante finie tandis que $\\dfrac{c}{x-x_{0}}$ explose, et seul le signe de $x-x_{0}$ compte. Si l'énoncé fait établir cette décomposition à une question ultérieure, garde-la en tête : elle confirme instantanément les limites déjà calculées."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ définie pour tout $x\\neq-1$ par $f(x)=\\dfrac{x^{2}+3}{x+1}$. Déterminer les limites de $f$ en $+\\infty$, en $-\\infty$, puis à gauche et à droite de $-1$. (Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Comparer les degrés",
+     "justification": "Le numérateur est de degré $2$, le dénominateur de degré $1$ : l'écart vaut $1$, la limite sera infinie",
+     "resultat_markdown": "On s'attend à $\\pm\\infty$ aux deux bornes infinies"
+    },
+    {
+     "numero": 2,
+     "action": "Factoriser par les termes dominants",
+     "justification": "On met $x^{2}$ en facteur au numérateur et $x$ au dénominateur",
+     "resultat_markdown": "$f(x)=\\dfrac{x^{2}\\left(1+\\dfrac{3}{x^{2}}\\right)}{x\\left(1+\\dfrac{1}{x}\\right)}=x\\times\\dfrac{1+\\dfrac{3}{x^{2}}}{1+\\dfrac{1}{x}}$"
+    },
+    {
+     "numero": 3,
+     "action": "Passer à la limite en $+\\infty$",
+     "justification": "$\\dfrac{3}{x^{2}}\\to 0$ et $\\dfrac{1}{x}\\to 0$, donc le quotient tend vers $\\dfrac{1}{1}=1$, tandis que $x\\to+\\infty$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to+\\infty}f(x)=+\\infty$"
+    },
+    {
+     "numero": 4,
+     "action": "Passer à la limite en $-\\infty$",
+     "justification": "Le quotient tend encore vers $1$, mais cette fois $x\\to-\\infty$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to-\\infty}f(x)=-\\infty$"
+    },
+    {
+     "numero": 5,
+     "action": "Tester le numérateur en $-1$",
+     "justification": "C'est l'étape qui décide s'il y a une indétermination",
+     "resultat_markdown": "$(-1)^{2}+3=4\\neq 0$ : pas d'indétermination"
+    },
+    {
+     "numero": 6,
+     "action": "Étudier le signe du dénominateur",
+     "justification": "$x+1$ s'annule en $-1$ en changeant de signe",
+     "resultat_markdown": "$x+1<0$ pour $x<-1$ et $x+1>0$ pour $x>-1$"
+    },
+    {
+     "numero": 7,
+     "action": "Limite à gauche",
+     "justification": "Numérateur $\\to 4>0$, dénominateur $\\to 0^{-}$ : le quotient d'un positif par un négatif tendant vers zéro",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to-1^{-}}f(x)=-\\infty$"
+    },
+    {
+     "numero": 8,
+     "action": "Limite à droite",
+     "justification": "Numérateur $\\to 4>0$, dénominateur $\\to 0^{+}$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x\\to-1^{+}}f(x)=+\\infty$"
+    },
+    {
+     "numero": 9,
+     "action": "Interpréter graphiquement",
+     "justification": "Deux limites infinies en une même valeur finie",
+     "resultat_markdown": "La droite d'équation $x=-1$ est **asymptote verticale** à la courbe de $f$"
+    }
+   ],
+   "conclusion_markdown": "On obtient $\\displaystyle\\lim_{x\\to+\\infty}f=+\\infty$, $\\displaystyle\\lim_{x\\to-\\infty}f=-\\infty$, $\\displaystyle\\lim_{x\\to-1^{-}}f=-\\infty$ et $\\displaystyle\\lim_{x\\to-1^{+}}f=+\\infty$. L'écart de degrés valant $1$, la courbe admettra de plus une asymptote oblique, que la suite du problème fera déterminer."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $\\lim_{x\\to-1}f(x)=+\\infty$ sans distinguer la gauche et la droite",
+     "pourquoi_faux": "Les deux limites latérales sont ici **opposées** : $-\\infty$ à gauche, $+\\infty$ à droite. Une réponse globale est donc fausse, et elle rend le tracé impossible puisqu'on ne sait plus de quel côté la courbe s'échappe.",
+     "correction_markdown": "Dresse un mini-tableau de signes du dénominateur avant de conclure. Deux limites latérales, deux lignes de rédaction."
+    },
+    {
+     "erreur_markdown": "Annoncer une forme indéterminée $\\dfrac{0}{0}$ en $-1$ sans tester le numérateur",
+     "pourquoi_faux": "Ici le numérateur vaut $4$ en $-1$ : il n'y a aucune indétermination, seulement un dénominateur qui s'annule. Chercher à factoriser par $(x+1)$ est une perte de temps, et c'est de toute façon impossible.",
+     "correction_markdown": "Calcule $P\\left(x_{0}\\right)$ en premier. Non nul, il n'y a qu'un signe à étudier ; nul, il faut factoriser."
+    },
+    {
+     "erreur_markdown": "Conclure que la limite en $+\\infty$ vaut $1$ parce que les parenthèses tendent vers $1$",
+     "pourquoi_faux": "La factorisation laisse un facteur $x$ devant le quotient : c'est lui qui impose la limite infinie. Oublier ce facteur revient à traiter le cas de degrés égaux, qui n'est pas celui-ci.",
+     "correction_markdown": "Écris explicitement la forme factorisée $f(x)=x\\times\\dfrac{\\ldots}{\\ldots}$ avant de passer à la limite, et applique la règle du produit."
+    },
+    {
+     "erreur_markdown": "Chercher une asymptote horizontale",
+     "pourquoi_faux": "Une asymptote horizontale suppose une limite **finie** à l'infini, donc des degrés égaux. Avec un écart de degrés de $1$, la fonction tend vers l'infini : il n'y a pas d'asymptote horizontale, mais une asymptote oblique.",
+     "correction_markdown": "Compare les degrés dès la première ligne : écart $0$ pour une horizontale, écart $1$ pour une oblique, écart $\\geqslant 2$ pour une branche parabolique."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer les limites de $f(x)=\\dfrac{3x+1}{x-2}$ en $+\\infty$, en $-\\infty$, et de part et d'autre de $2$.",
+     "solution_markdown": "**Limites à l'infini.** Les degrés du numérateur et du dénominateur sont égaux à $1$ : la limite est le quotient des coefficients dominants.\n\n$$f(x)=\\frac{x\\left(3+\\dfrac{1}{x}\\right)}{x\\left(1-\\dfrac{2}{x}\\right)}=\\frac{3+\\dfrac{1}{x}}{1-\\dfrac{2}{x}}$$\n\nQuand $x\\to\\pm\\infty$, le numérateur tend vers $3$ et le dénominateur vers $1$ :\n\n$$\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to-\\infty}f(x)=3$$\n\nLa droite $y=3$ est asymptote horizontale.\n\n**Limites en $2$.** Numérateur en $2$ : $3\\times 2+1=7\\neq 0$, donc pas d'indétermination.\n\nSigne du dénominateur : $x-2<0$ pour $x<2$, $x-2>0$ pour $x>2$.\n\n$$\\lim_{x\\to 2^{-}}f(x)=-\\infty\\qquad;\\qquad\\lim_{x\\to 2^{+}}f(x)=+\\infty$$\n\nLa droite $x=2$ est asymptote verticale."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Déterminer $\\displaystyle\\lim_{x\\to 3}\\frac{x^{2}-9}{x^{2}-5x+6}$.",
+     "solution_markdown": "**Étape 1 — tester les deux termes en $3$.**\n\nNumérateur : $3^{2}-9=0$. Dénominateur : $9-15+6=0$.\n\nOn est en présence de la forme indéterminée $\\dfrac{0}{0}$ : il faut factoriser.\n\n**Étape 2 — factoriser le numérateur.** Identité remarquable :\n\n$$x^{2}-9=(x-3)(x+3)$$\n\n**Étape 3 — factoriser le dénominateur.** Le trinôme $x^{2}-5x+6$ a pour discriminant $\\Delta=25-24=1$, donc $\\sqrt{\\Delta}=1$ et ses racines sont\n\n$$x_{1}=\\frac{5-1}{2}=2\\qquad;\\qquad x_{2}=\\frac{5+1}{2}=3$$\n\n$$x^{2}-5x+6=(x-2)(x-3)$$\n\n**Étape 4 — simplifier.** Pour $x\\neq 3$ :\n\n$$\\frac{x^{2}-9}{x^{2}-5x+6}=\\frac{(x-3)(x+3)}{(x-2)(x-3)}=\\frac{x+3}{x-2}$$\n\n**Étape 5 — passer à la limite.** L'expression simplifiée n'est plus indéterminée en $3$ :\n\n$$\\lim_{x\\to 3}\\frac{x+3}{x-2}=\\frac{3+3}{3-2}=\\frac{6}{1}=6$$\n\n**Conclusion.** La limite vaut $6$. La valeur $3$ n'est donc pas une asymptote verticale : c'est un « trou » dans la courbe, que la simplification comble."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x)=\\dfrac{x^{2}-ax+2}{x-1}$, où $a$ est un réel. Déterminer $a$ pour que $f$ admette une limite finie en $1$, puis calculer cette limite.",
+     "solution_markdown": "**Étape 1 — analyser la situation en $1$.**\n\nLe dénominateur $x-1$ s'annule en $1$. Pour que la limite soit finie, il faut impérativement que le numérateur s'annule lui aussi en $1$ : sinon le quotient tend vers $\\pm\\infty$.\n\n**Étape 2 — écrire la condition.**\n\n$$1^{2}-a\\times 1+2=0\\;\\Longrightarrow\\;1-a+2=0\\;\\Longrightarrow\\;a=3$$\n\n**Étape 3 — factoriser avec cette valeur.** Pour $a=3$, le numérateur devient $x^{2}-3x+2$, de discriminant $\\Delta=9-8=1$, donc de racines\n\n$$x_{1}=\\frac{3-1}{2}=1\\qquad;\\qquad x_{2}=\\frac{3+1}{2}=2$$\n\n$$x^{2}-3x+2=(x-1)(x-2)$$\n\n**Étape 4 — simplifier et conclure.** Pour $x\\neq 1$ :\n\n$$f(x)=\\frac{(x-1)(x-2)}{x-1}=x-2$$\n\n$$\\lim_{x\\to 1}f(x)=1-2=-1$$\n\n**Étape 5 — vérifier la nécessité de la condition.** Si $a\\neq 3$, le numérateur en $1$ vaut $3-a\\neq 0$, et le quotient tend vers $\\pm\\infty$ selon le côté : la limite n'est pas finie. La condition $a=3$ est donc bien nécessaire et suffisante.\n\n**Conclusion.** Pour $a=3$, et pour cette valeur seulement, $f$ admet en $1$ la limite finie $-1$. Sa courbe est alors la droite $y=x-2$ privée du point d'abscisse $1$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "En $\\pm\\infty$, une fonction rationnelle se comporte comme le quotient de ses termes de plus haut degré.",
+    "Compare les degrés : écart nul donne une limite finie, écart positif une limite infinie, numérateur de degré plus petit donne $0$.",
+    "En une valeur interdite, calcule d'abord le numérateur : non nul, il n'y a qu'un signe à étudier ; nul, il faut factoriser.",
+    "Quand le numérateur ne s'annule pas, les deux limites latérales sont **opposées** : traite la gauche et la droite séparément.",
+    "Deux limites infinies en une même valeur finie signalent une asymptote verticale : dis-le, c'est attendu.",
+    "Une forme $\\dfrac{0}{0}$ se lève par factorisation des deux termes par $\\left(x-x_{0}\\right)$, puis simplification.",
+    "Au Probatoire, ces limites ouvrent l'étude de fonction : elles fixent les bornes du tableau de variation et annoncent les asymptotes que les questions suivantes feront déterminer."
+   ]
+  }
+ ]
+}

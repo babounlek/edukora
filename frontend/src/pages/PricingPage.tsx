@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Check, Crown, Flame, Users } from "lucide-react"
+import { Check, Crown, Sparkles, Users } from "lucide-react"
 
 import { listCursus, listPlans } from "@/api/endpoints"
 import type { Cursus, Plan } from "@/api/types"
@@ -18,27 +18,12 @@ import {
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-// Au-delà de cette fenêtre, "jusqu'à l'examen" ne crée plus d'urgence réelle (ex.
-// 300 jours restants) - le pack ne vaut la peine d'être mis en avant que proche de
-// la session, sinon un tarif fixe classique est plus adapté.
-const URGENCE_MAX_JOURS = 60
-
 function formatDateDansNJours(jours: number): string {
   const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
   return cible.toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
 }
 
-// Noms commerciaux des 3 formules - "Essentiel" (7 jours), "Performance" (1 mois, le
-// palier mis en avant ci-dessous), "Max" (1 an). La durée réelle reste affichée en
-// sous-titre (voir CardDescription) : le nom seul ne la communique plus.
-function formulaName(days: number): string {
-  if (days <= 7) return "Essentiel"
-  if (days <= 31) return "Performance"
-  return "Max"
-}
-
 function tierDuration(days: number): string {
-  if (days <= 7) return "7 jours"
   if (days <= 31) return "1 mois"
   return "1 an"
 }
@@ -46,45 +31,39 @@ function tierDuration(days: number): string {
 export function PricingPage() {
   useSeo({
     title: "Tarifs",
-    description: `Abonnement ${SITE_NAME} par Mobile Money : 7 jours, 1 mois ou 1 an pour accéder à tous les corrigés et cours de ton cursus.`,
+    description: `Abonnement ${SITE_NAME} par Mobile Money : au mois, ou jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.`,
   })
 
   const navigate = useNavigate()
-  const [tiers, setTiers] = useState<Plan[]>([])
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   const [cursusList, setCursusList] = useState<Cursus[]>([])
   const [selectedCursus, setSelectedCursus] = useState("")
   const [selectedCursusRepetiteur, setSelectedCursusRepetiteur] = useState("")
 
   useEffect(() => {
-    listPlans().then((plans) => {
-      setAllPlans(plans)
-      // Le prix est le même pour tous les cursus sur les paliers fixes : on ne garde
-      // qu'un exemplaire par durée pour la grille, pas les ~24 offres telles quelles.
-      // Le pack "jusqu'à l'examen" est exclu de cette grille - son prix/sa durée
-      // dépend du cursus choisi, il est affiché séparément une fois le cursus choisi.
-      const fixes = plans.filter((p) => p.duration_mode === "FIXE")
-      const seen = new Map<number, Plan>()
-      fixes.forEach((plan) => {
-        if (!seen.has(plan.duration_days)) seen.set(plan.duration_days, plan)
-      })
-      setTiers(Array.from(seen.values()).sort((a, b) => a.duration_days - b.duration_days))
-    })
+    listPlans().then(setAllPlans)
     listCursus().then(setCursusList)
   }, [])
 
-  const packExamen = allPlans.find(
+  // Mensuel : prix uniforme par cursus (voir migration 0009_grille_deux_paliers) -
+  // n'importe quel exemplaire suffit à l'afficher, même avant qu'un cursus soit
+  // choisi. Jusqu'à l'Examen, à l'inverse, dépend du cursus choisi (prix et durée
+  // calculés depuis la session d'examen réelle - voir
+  // subscriptions.models.Plan.effective_price/effective_duration_days) : rien de
+  // concret à afficher tant qu'aucun cursus n'est sélectionné.
+  const mensuel = allPlans.find((p) => p.product_type === "ABONNEMENT" && p.duration_mode === "FIXE")
+  const jusquaExamen = allPlans.find(
     (p) =>
+      p.product_type === "ABONNEMENT" &&
       p.duration_mode === "JUSQUA_EXAMEN" &&
-      String(p.cursus.id) === selectedCursus &&
-      p.effective_duration_days <= URGENCE_MAX_JOURS,
+      String(p.cursus.id) === selectedCursus,
   )
 
-  // Même dédoublonnage par durée que `tiers` ci-dessus (voir son commentaire) - le prix
-  // de l'add-on Fiches est lui aussi pensé comme uniforme par durée, indépendant du
-  // cursus. Tant qu'un seul cursus pilote a des Plan ADDON_REPETITEUR (voir le chantier
-  // "Outil Fiches"), cette liste ne reflète que son tarif - correct dès qu'un autre
-  // cursus recevra les siens, au même prix par convention.
+  // Même dédoublonnage par durée que par le passé - le prix de l'add-on Fiches est
+  // pensé comme uniforme par durée, indépendant du cursus. Tant qu'un seul cursus
+  // pilote a des Plan ADDON_REPETITEUR (voir le chantier "Outil Fiches"), cette
+  // liste ne reflète que son tarif - correct dès qu'un autre cursus recevra les
+  // siens, au même prix par convention.
   const repetiteurAddon = allPlans.filter((p) => p.product_type === "ADDON_REPETITEUR" && p.duration_mode === "FIXE")
   const repetiteurTiers = Array.from(
     repetiteurAddon
@@ -125,41 +104,95 @@ export function PricingPage() {
         <TabsContent value="eleve" className="w-full animate-fade-up">
           <div className="mx-auto max-w-xl text-center">
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Un seul prix, <span className="text-primary">le même pour tous les cursus</span>.
+              Deux façons de t'abonner.
             </h2>
             <p className="mt-3 text-muted-foreground">
               Corrigés d'annales, sujets et cours complets - pour la matière et la série de ton choix.
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {tiers.map((tier) => {
-              const isPopular = tier.duration_days === 365
-              return (
-                <Card
-                  key={tier.duration_days}
-                  className={cn(
-                    "relative flex flex-col",
-                    isPopular && "border-primary shadow-lg shadow-primary/10 sm:-my-2 sm:scale-[1.03]",
-                  )}
-                >
-                  {isPopular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 font-display text-xs font-semibold tracking-wide text-primary-foreground shadow-sm">
-                      Le plus populaire
-                    </span>
-                  )}
-                  <CardHeader>
-                    <CardTitle className="font-display text-lg">{formulaName(tier.duration_days)}</CardTitle>
-                    <CardDescription>{tierDuration(tier.duration_days)}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-1 flex-col gap-4">
+          <div className="mx-auto mt-8 max-w-xs">
+            <Select value={selectedCursus} onValueChange={setSelectedCursus}>
+              <SelectTrigger>
+                <SelectValue placeholder="Choisis ton cursus" />
+              </SelectTrigger>
+              <SelectContent>
+                {cursusList.map((c) => (
+                  <SelectItem key={c.id} value={String(c.id)}>
+                    {c.examen_display}
+                    {c.series ? ` - Série ${c.series.code}` : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-2">
+            {mensuel && (
+              <Card className="relative flex flex-col">
+                <CardHeader>
+                  <CardTitle className="font-display text-lg">Mensuel</CardTitle>
+                  <CardDescription>{tierDuration(mensuel.duration_days)} - pour tester ou réviser une notion précise</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col gap-4">
+                  <div>
+                    <p className="font-display text-3xl font-semibold text-primary">
+                      {formatAmount(mensuel.effective_price)}
+                      <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      ≈ {formatAmount(Math.round(mensuel.effective_price / mensuel.duration_days))} FCFA/jour
+                    </p>
+                  </div>
+                  <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
+                    <li className="flex items-center gap-2">
+                      <Check className="size-4 shrink-0 text-success" />
+                      Corrigés complets en illimité
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="size-4 shrink-0 text-success" />
+                      Cours et exercices d'application
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="size-4 shrink-0 text-success" />
+                      Quiz qui identifie tes lacunes et cible tes révisions
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            <Card
+              className={cn(
+                "relative flex flex-col",
+                jusquaExamen && "border-primary shadow-lg shadow-primary/10 sm:-my-2 sm:scale-[1.03]",
+              )}
+            >
+              {jusquaExamen && (
+                <span className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-primary px-3 py-1 font-display text-xs font-semibold tracking-wide text-primary-foreground shadow-sm">
+                  <Sparkles className="size-3" />
+                  Offre principale
+                </span>
+              )}
+              <CardHeader>
+                <CardTitle className="font-display text-lg">Jusqu'à l'Examen</CardTitle>
+                <CardDescription>
+                  {jusquaExamen
+                    ? "Toute l'année scolaire, jusqu'au jour de l'examen"
+                    : "Choisis ton cursus pour voir le prix exact"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-1 flex-col gap-4">
+                {jusquaExamen ? (
+                  <>
                     <div>
                       <p className="font-display text-3xl font-semibold text-primary">
-                        {formatAmount(tier.price)}
+                        {formatAmount(jusquaExamen.effective_price)}
                         <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
-                        ≈ {formatAmount(Math.round(tier.price / tier.duration_days))} FCFA/jour
+                        ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
+                        {" - "}jamais plus cher au jour qu'un abonnement Mensuel
                       </p>
                     </div>
                     <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
@@ -175,54 +208,34 @@ export function PricingPage() {
                         <Check className="size-4 shrink-0 text-success" />
                         Quiz qui identifie tes lacunes et cible tes révisions
                       </li>
-                      {tier.inclut_inedit && (
-                        <li className="flex items-center gap-2 font-medium text-foreground">
-                          <Check className="size-4 shrink-0 text-success" />
-                          <Crown className="size-3.5 shrink-0 text-gold" />
-                          Accès aux épreuves inédites inclus
-                        </li>
-                      )}
+                      <li className="flex items-center gap-2 font-medium text-foreground">
+                        <Check className="size-4 shrink-0 text-success" />
+                        <Crown className="size-3.5 shrink-0 text-gold" />
+                        Accès aux épreuves inédites inclus
+                      </li>
+                      <li className="text-xs text-muted-foreground">
+                        Accès jusqu'au {formatDateDansNJours(jusquaExamen.effective_duration_days)} (
+                        {jusquaExamen.effective_duration_days} jour{jusquaExamen.effective_duration_days > 1 ? "s" : ""})
+                      </li>
                     </ul>
-                  </CardContent>
-                </Card>
-              )
-            })}
+                  </>
+                ) : (
+                  <p className="flex flex-1 items-center text-sm text-muted-foreground">
+                    Le prix s'ajuste à ton examen : plus tu t'abonnes tôt dans l'année, plus le tarif au jour est bas.
+                  </p>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
           <div className="mx-auto mt-12 max-w-md rounded-xl border border-border bg-card p-6 shadow-sm">
             <h3 className="mb-1 font-display text-lg font-semibold">Prêt à t'abonner ?</h3>
-            <p className="mb-4 text-sm text-muted-foreground">Choisis ton cursus pour continuer.</p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Select value={selectedCursus} onValueChange={setSelectedCursus}>
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Choisis ton cursus" />
-                </SelectTrigger>
-                <SelectContent>
-                  {cursusList.map((c) => (
-                    <SelectItem key={c.id} value={String(c.id)}>
-                      {c.examen_display}
-                      {c.series ? ` - Série ${c.series.code}` : ""}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button onClick={handleSubscribe} disabled={!selectedCursus} size="lg">
-                Continuer
-              </Button>
-            </div>
-
-            {packExamen && (
-              <div className="mt-4 flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/5 p-3.5">
-                <Flame className="mt-0.5 size-4 shrink-0 text-primary" />
-                <p className="text-sm text-foreground">
-                  Ton {packExamen.cursus.examen_display} commence dans{" "}
-                  <strong>{packExamen.effective_duration_days} jour{packExamen.effective_duration_days > 1 ? "s" : ""}</strong>{" "}
-                  (le {formatDateDansNJours(packExamen.effective_duration_days)}). Le pack{" "}
-                  <strong>{packExamen.name}</strong> à {formatAmount(packExamen.price)} FCFA te donne accès jusqu'à ce
-                  jour-là.
-                </p>
-              </div>
-            )}
+            <p className="mb-4 text-sm text-muted-foreground">
+              {selectedCursus ? "Continue vers le paiement." : "Choisis ton cursus ci-dessus pour continuer."}
+            </p>
+            <Button onClick={handleSubscribe} disabled={!selectedCursus} size="lg" className="w-full">
+              Continuer
+            </Button>
           </div>
         </TabsContent>
 
@@ -244,7 +257,7 @@ export function PricingPage() {
                 <div key={tier.duration_days} className="rounded-lg border border-border bg-card px-4 py-3 text-center">
                   <p className="text-xs text-muted-foreground">{tierDuration(tier.duration_days)}</p>
                   <p className="font-display text-lg font-semibold text-primary">
-                    {formatAmount(tier.price)}
+                    {formatAmount(tier.effective_price)}
                     <span className="ml-1 text-xs font-normal text-muted-foreground">FCFA</span>
                   </p>
                 </div>

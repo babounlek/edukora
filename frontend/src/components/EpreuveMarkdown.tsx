@@ -1,4 +1,4 @@
-import { Children, type ReactNode } from "react"
+import { Children, type CSSProperties, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
@@ -120,6 +120,48 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
   }
 
   /**
+   * Tableau Markdown (remark-gfm). Entièrement auto-suffisant - grille complète,
+   * padding et fond d'en-tête posés ici, jamais délégués à `prose` : ce composant est
+   * rendu sous des contextes typographiques très différents (article `prose` d'un
+   * corrigé, encadrés de Cours, cartes compactes en `prose-sm`), et son propre
+   * `not-prose` neutralise `.prose table/th/td` dans tous ces cas - le tableau a donc
+   * exactement la même grille partout. Bordures sur chaque cellule (border-collapse) :
+   * même grille que les PDF (voir sujet_pdf_template.html).
+   *
+   * Ce `not-prose`-ci est légitime parce que rien sous cet élément n'attend la
+   * typographie de prose. Un `not-prose` posé sur un conteneur qui, lui, contient un
+   * `prose` est en revanche un piège : les sélecteurs du plugin se terminent tous par
+   * `:not(:where([class~="not-prose"], [class~="not-prose"] *))`, donc un `prose`
+   * imbriqué ne réactive jamais rien (voir CoursRegleBox).
+   */
+  function MarkdownTable({ children }: { children?: ReactNode }) {
+    return (
+      <div className="not-prose my-4 overflow-x-auto">
+        <table className="w-full border-collapse text-sm">{children}</table>
+      </div>
+    )
+  }
+
+  // `style` porte l'alignement de colonne du Markdown GFM (:---:) : on le laisse
+  // primer sur le text-left par défaut, plus lisible que le centrage pour des
+  // cellules rédigées.
+  function MarkdownTableHeaderCell({ children, style }: { children?: ReactNode; style?: CSSProperties }) {
+    return (
+      <th style={style} className="border border-border bg-muted/60 px-3 py-2 text-left font-semibold">
+        {children}
+      </th>
+    )
+  }
+
+  function MarkdownTableCell({ children, style }: { children?: ReactNode; style?: CSSProperties }) {
+    return (
+      <td style={style} className="border border-border px-3 py-2 text-left align-top">
+        {children}
+      </td>
+    )
+  }
+
+  /**
    * Figure d'exercice (voir catalog.models.Figure côté backend) : l'ingestion stocke
    * une URL relative ("/media/figures/...") dans le Markdown, portable entre les
    * environnements - on la résout ici contre l'API plutôt qu'à l'ingestion, pour ne
@@ -134,7 +176,15 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
     <ReactMarkdown
       remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
       rehypePlugins={[rehypeKatex]}
-      components={{ blockquote: MarkdownBlockquote, p: MarkdownParagraph, a: MarkdownAnchor, img: MarkdownImage }}
+      components={{
+        blockquote: MarkdownBlockquote,
+        p: MarkdownParagraph,
+        a: MarkdownAnchor,
+        img: MarkdownImage,
+        table: MarkdownTable,
+        th: MarkdownTableHeaderCell,
+        td: MarkdownTableCell,
+      }}
     >
       {italicizeQuotes(normalizeMathBlocks(extractSolutionToggles(extractCallouts(markdown))))}
     </ReactMarkdown>

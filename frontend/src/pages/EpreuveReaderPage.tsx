@@ -19,7 +19,7 @@ import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath, epreuveDetailPath, epreuveReaderPath } from "@/lib/countryPath"
+import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 export function EpreuveReaderPage() {
   const { country: countryParam, slug } = useParams<{ country?: string; slug: string }>()
@@ -113,7 +113,7 @@ export function EpreuveReaderPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
         <p className="text-destructive">{error}</p>
-        <Link to={catalogueHomePath(displayCountry)} className="mt-3 inline-block text-sm text-primary hover:underline">
+        <Link to={epreuvesListPath(displayCountry)} className="mt-3 inline-block text-sm text-primary hover:underline">
           Retour au catalogue
         </Link>
       </div>
@@ -149,7 +149,7 @@ export function EpreuveReaderPage() {
     <div className={`mx-auto px-4 py-8 sm:px-6 ${hasSommaire ? "max-w-5xl" : "max-w-3xl"}`}>
       <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
         <Link
-          to={catalogueHomePath(displayCountry)}
+          to={epreuvesListPath(displayCountry)}
           className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-4" />
@@ -184,6 +184,9 @@ export function EpreuveReaderPage() {
               {content.header.annee && <Badge variant="outline">Session {content.header.annee}</Badge>}
               {content.header.duree && <Badge variant="outline">Durée : {content.header.duree}</Badge>}
               {content.header.coefficient && <Badge variant="outline">Coefficient : {content.header.coefficient}</Badge>}
+              {content.header.institution && content.header.institution !== content.header.etablissement && (
+                <Badge variant="outline">{content.header.institution}</Badge>
+              )}
             </div>
           )}
           {content?.sujet_pdf_url && (
@@ -194,6 +197,14 @@ export function EpreuveReaderPage() {
                   Télécharger l'épreuve
                 </a>
               </Button>
+            </div>
+          )}
+          {content?.introduction_markdown && (
+            // Consigne d'épreuve entière (ex. "le candidat traitera un seul sujet au
+            // choix") - avant le sommaire/premier exercice, jamais répétée par exercice
+            // (contrairement à exercise.enonce_intro_markdown, propre à CHAQUE exercice).
+            <div className="prose prose-neutral mb-6 max-w-none text-justify dark:prose-invert">
+              <EpreuveMarkdown markdown={content.introduction_markdown} />
             </div>
           )}
           {hasSommaire ? (
@@ -219,7 +230,7 @@ export function EpreuveReaderPage() {
 
       <BackToTopBar
         links={[
-          { to: catalogueHomePath(displayCountry), label: "Retour au catalogue" },
+          { to: epreuvesListPath(displayCountry), label: "Retour au catalogue" },
           { to: epreuveDetailPath(displayCountry, slug ?? ""), label: "Retour à la fiche de l'épreuve" },
         ]}
       />

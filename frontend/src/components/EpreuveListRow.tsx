@@ -36,7 +36,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
       style={style}
     >
       <div className="flex min-w-0 flex-1 items-baseline gap-2">
-        <h2 className="truncate font-display text-sm font-medium">{epreuve.title}</h2>
+        <h3 className="truncate font-display text-sm font-medium">{epreuve.title}</h3>
         {epreuve.year && <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>}
       </div>
       <div className="flex shrink-0 items-center gap-1.5">

@@ -1,0 +1,42 @@
+{
+  "cours_id": "cours-verification-matrice-inverse-produit-identite-premiere-c",
+  "meta": {
+    "titre": "Vérifier qu'une matrice est l'inverse d'une autre via le produit matriciel",
+    "cours_id": "cours-verification-matrice-inverse-produit-identite-premiere-c",
+    "matiere": "Mathématiques",
+    "niveau": "Première C (Probatoire)",
+    "sous_theme": "Matrices - inverse",
+    "tags": ["matrice inverse", "produit matriciel", "matrice identité"],
+    "duree_estimee_minutes": 9,
+    "epreuve_source": "probatoire-c-e-maths-2014-cameroun.pdf"
+  },
+  "source": {
+    "rappel_id": "probatoire-c-e-maths-2014-cameroun_exercice_1_qIIb"
+  },
+  "sections": {
+    "accroche": "Vérifier qu'une matrice candidate est bien l'inverse d'une matrice donnée ne demande aucune formule d'inversion : il suffit de calculer le produit des deux matrices et de constater qu'il redonne la matrice identité.",
+    "prerequis": ["Calcul du produit de deux matrices 2×2", "Définition de la matrice identité et de la matrice inverse"],
+    "regle": {
+      "titre": "M×M'=I suffit à prouver que M' est l'inverse de M",
+      "contenu_markdown": "Par définition, $M'$ est l'inverse de $M$ si et seulement si $M\\times M'=M'\\times M=I$ (matrice identité). Pour des matrices 2×2, il suffit en pratique de vérifier un seul des deux produits (l'autre est automatiquement égal à $I$ dès que le premier l'est, pour des matrices carrées). Cette méthode directe évite tout calcul par la formule générale de l'inverse (comatrice/déterminant).",
+      "formule_principale": "$M\\times M'=I \\Rightarrow M'=M^{-1}$",
+      "variantes": ["Méthode alternative : utiliser le théorème de Cayley-Hamilton si M vérifie une relation polynomiale simple, pour retrouver M' sans calcul de produit direct"]
+    },
+    "exemple_resolu": {
+      "enonce_markdown": "Vérifier que M'=[[1,-1],[0,1]] est l'inverse de M=[[1,1],[0,1]].",
+      "epreuve_source": false,
+      "etapes": [
+        {"numero": 1, "action": "Calcul du produit M×M'", "justification": "produit ligne par colonne", "resultat_markdown": "[[1×1+1×0, 1×(-1)+1×1],[0×1+1×0, 0×(-1)+1×1]] = [[1,0],[0,1]]"},
+        {"numero": 2, "action": "Comparaison à I", "justification": "matrice identité 2×2", "resultat_markdown": "[[1,0],[0,1]] = I"}
+      ],
+      "conclusion_markdown": "M×M'=I, donc M' est bien l'inverse de M."
+    },
+    "erreurs_classiques": [
+      {"erreur_markdown": "Confondre l'ordre du produit et calculer M'×M au lieu de M×M×, ou mélanger les lignes et les colonnes lors du produit ligne par colonne", "pourquoi_faux": "même si pour des matrices carrées inversibles M×M'=M'×M=I, une erreur de calcul dans l'ordre ligne/colonne du produit matriciel change le résultat obtenu et peut fausser la conclusion", "correction_markdown": "Toujours appliquer scrupuleusement la règle 'ligne de la première matrice × colonne de la seconde', élément par élément, en vérifiant chaque case du résultat séparément."}
+    ],
+    "exercices_application": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Vérifier que N'=[[0,1],[1,0]] est sa propre inverse (N=N').", "solution_markdown": "N×N=[[0×0+1×1,0×1+1×0],[1×0+0×1,1×1+0×0]]=[[1,0],[0,1]]=I : N est bien son propre inverse."}
+    ],
+    "synthese": "Pour vérifier qu'une matrice M' est l'inverse d'une matrice M, il suffit de calculer le produit M×M' et de constater qu'il est égal à la matrice identité I, sans passer par la formule générale d'inversion."
+  }
+}

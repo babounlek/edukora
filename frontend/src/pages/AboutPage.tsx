@@ -4,16 +4,18 @@ import {
   BookOpen,
   Check,
   ClipboardCheck,
+  Heart,
   Landmark,
   Mail,
   MessageCircle,
   ShieldCheck,
+  Smartphone,
 } from "lucide-react"
 
 import { useSeo } from "@/lib/seo"
 import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
 import { useCountry } from "@/context/CountryContext"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 
 const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
@@ -97,7 +99,7 @@ const AUDIENCES = [
     points: [
       <><strong className="text-foreground">Éditeur identifié et localisé</strong>, responsable de son contenu (voir « Qui sommes-nous » ci-dessous).</>,
       "Les sujets utilisés sont les épreuves officielles déjà publiques ; les corrigés sont un travail original propre à la plateforme.",
-      "Données personnelles réduites au strict nécessaire (numéro de téléphone), jamais revendues.",
+      "Données personnelles réduites au strict nécessaire (téléphone, e-mail ou compte Google selon la méthode de connexion), jamais revendues.",
       "Ouverts à échanger avec les établissements et les autorités éducatives sur le contenu et son usage.",
     ],
   },
@@ -123,14 +125,28 @@ const COMMITMENTS = [
 ]
 
 const STATS = [
-  { value: "16", label: "matières couvertes, des maths à la philosophie" },
-  { value: "7", label: "séries : A, C, D, E, TI, COM, SES" },
+  { value: "15", label: "matières couvertes, des maths à la philosophie" },
+  { value: "6", label: "séries : A, C, D, E, SES, TI" },
   { value: "3", label: "examens : BEPC, Probatoire, BAC" },
   { value: "1", label: "pays actif aujourd'hui : le Cameroun. D'autres pays francophones sont en préparation." },
 ]
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="mb-2 font-display text-sm italic text-primary">{children}</p>
+  return (
+    <p className="mb-3 flex items-center gap-2.5 font-display text-sm italic text-primary">
+      <span className="h-px w-8 bg-gold" />
+      {children}
+    </p>
+  )
+}
+
+function ChipReassurance({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+      {icon}
+      <span className="text-muted-foreground">{children}</span>
+    </span>
+  )
 }
 
 export function AboutPage() {
@@ -142,29 +158,75 @@ export function AboutPage() {
 
   return (
     <div className="animate-fade-up">
-      {/* Hero */}
-      <section className="border-b border-border/80 bg-secondary/30">
-        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-          <div className="max-w-2xl">
-            <Eyebrow>À propos</Eyebrow>
-            <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl">
-              Un bon corrigé ne devrait pas dépendre du portefeuille de tes parents.
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              {SITE_NAME} réunit les sujets officiels du BEPC, du Probatoire et du BAC, et les corrige à un niveau
-              que peu de répétiteurs atteignent, accessible depuis un simple téléphone, payable en Mobile Money,
-              sans carte bancaire ni engagement caché.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link to={catalogueHomePath(country)}>
-                  Découvrir le catalogue
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link to="/tarifs">Voir les tarifs</Link>
-              </Button>
+      {/* Hero - même gabarit de carte (bordure arrondie, fond pointillé, icône) que Tarifs,
+          Fiches, CGU et Confidentialité : seule la mise en page à deux colonnes et la carte
+          "18/20" restent propres à cette page. */}
+      <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div className="relative grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
+            <div>
+              <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Heart className="size-5" />
+              </div>
+              <Eyebrow>À propos</Eyebrow>
+              <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-[3.1rem]">
+                Un bon corrigé ne devrait pas dépendre du portefeuille de tes parents.
+              </h1>
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                {SITE_NAME} réunit les sujets officiels du BEPC, du Probatoire et du BAC, et les corrige à un niveau
+                que peu de répétiteurs atteignent, accessible depuis un simple téléphone, payable en Mobile Money,
+                sans carte bancaire ni engagement caché.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                <ChipReassurance icon={<BookOpen className="size-3.5 text-primary" />}>
+                  15 matières couvertes
+                </ChipReassurance>
+                <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
+                  Sujets toujours gratuits
+                </ChipReassurance>
+                <ChipReassurance icon={<Smartphone className="size-3.5 text-gold" />}>
+                  Mobile Money, sans carte
+                </ChipReassurance>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg">
+                  <Link to={epreuvesListPath(country)}>
+                    Découvrir le catalogue
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link to="/tarifs">Voir les tarifs</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[19rem] lg:mx-0 lg:justify-self-end">
+              <span className="absolute -top-3 right-7 z-10 rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
+                Corrigé {SITE_NAME}
+              </span>
+              <div className="-rotate-2 rounded-lg border border-border bg-card p-7 shadow-xl transition-transform duration-300 hover:rotate-0">
+                <div className="relative inline-flex items-center">
+                  <span className="absolute -inset-x-3 -inset-y-2 -rotate-3 rounded-[50%] border-[2.5px] border-destructive/60" />
+                  <span className="relative flex items-center gap-2 font-display text-4xl italic text-destructive">
+                    18/20
+                    <Check className="size-6 shrink-0" strokeWidth={3} />
+                  </span>
+                </div>
+                <div className="my-4 h-px bg-gradient-to-r from-gold/0 via-gold/70 to-gold/0" />
+                <p className="font-display text-base italic leading-relaxed text-muted-foreground">
+                  « Raisonnement complet, méthode bien justifiée, aucun raccourci. »
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -217,7 +279,10 @@ export function AboutPage() {
         </h2>
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {AUDIENCES.map((audience) => (
-            <div key={audience.title} className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <div
+              key={audience.title}
+              className="rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
+            >
               <div className="flex items-center gap-3">
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
                   <audience.icon className="size-5" />
@@ -281,12 +346,12 @@ export function AboutPage() {
           Un éditeur identifié, pas un site anonyme
         </h2>
         <div className="mt-10 flex flex-col gap-6 rounded-xl border border-border bg-card p-7 shadow-sm sm:flex-row sm:items-start">
-          <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xl font-semibold text-primary-foreground">
+          <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xl font-semibold text-primary-foreground ring-2 ring-gold/50 ring-offset-2 ring-offset-card">
             BSG
           </span>
           <div>
             <h3 className="font-display text-lg font-semibold">BABOUNLEK Serge Guyguy</h3>
-            <p className="mt-0.5 text-sm text-muted-foreground">Entrepreneur individuel, Yaoundé, Cameroun</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">Yaoundé, Cameroun</p>
             <div className="mt-4 flex flex-wrap gap-5">
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
@@ -326,7 +391,7 @@ export function AboutPage() {
             Prêt·e à voir ce qu'un vrai corrigé peut faire ?
           </h2>
           <Button asChild size="lg" className="shrink-0 bg-gold text-gold-foreground hover:bg-gold/90">
-            <Link to={catalogueHomePath(country)}>
+            <Link to={epreuvesListPath(country)}>
               Découvrir le catalogue
               <ArrowRight className="size-4" />
             </Link>

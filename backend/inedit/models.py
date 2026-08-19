@@ -219,6 +219,13 @@ class EpreuveInedite(models.Model):
                 entete += f" ({exercice.points} pts)"
             enonce_parts.append(entete)
             corrige_parts.append(entete)
+            # Le support partagé précède les questions dans les DEUX documents compilés :
+            # sans lui, le corrigé autonome (et le PDF du sujet, rendu depuis
+            # enonce_markdown - voir inedit.sujet_pdf._render_html) poserait des questions
+            # portant sur un document absent.
+            if exercice.enonce_intro_markdown:
+                enonce_parts.append(exercice.enonce_intro_markdown)
+                corrige_parts.append(exercice.enonce_intro_markdown)
             for question in exercice.questions.order_by("ordre"):
                 enonce_parts.append(f"**{question.numero}.** {question.enonce_markdown}")
                 corrige_parts.append(f"**{question.numero}.** {question.enonce_markdown}\n\n{question.corrige_markdown}")
@@ -237,6 +244,25 @@ class ExerciceInedite(models.Model):
     epreuve = models.ForeignKey(EpreuveInedite, on_delete=models.CASCADE, related_name="exercices")
     numero_exercice = models.CharField(max_length=30)
     points = models.CharField(max_length=20, blank=True)
+
+    enonce_intro_markdown = models.TextField(
+        blank=True,
+        help_text=(
+            "Support commun à toutes les questions de l'exercice (document à exploiter, "
+            "tableau de résultats expérimentaux, données chiffrées, consigne partagée), "
+            "affiché avant la première question. Même rôle que "
+            "catalog.Exercise.enonce_intro_markdown, mais ici c'est le SEUL endroit où un "
+            "support partagé peut vivre : le lecteur d'une tentative aplatit les exercices "
+            "en une liste de questions rendues chacune depuis son propre enonce_markdown "
+            "(voir InediteTentativePage.tsx) - sans ce champ, un document exploité par "
+            "quatre questions devrait être recopié dans les quatre. Vide pour la plupart "
+            "des exercices ; indispensable en SVT, bâtie sur l'exploitation de documents "
+            "(voir le SKILL.md de concepteur-epreuve-inedite). Aucune image possible ici : "
+            "la verticale inédite n'a pas d'équivalent de catalog.Figure (rien à extraire, "
+            "le contenu est généré et non transcrit d'un PDF réel), donc un support doit "
+            "être entièrement textuel ou tabulaire."
+        ),
+    )
 
     class Meta:
         ordering = ["epreuve", "numero_exercice"]

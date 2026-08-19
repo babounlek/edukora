@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-fonctions-logarithme-neperien-tle-a",
+  "meta": {
+    "titre": "Fonction logarithme népérien : propriétés et équations",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Fonction logarithme népérien - définition, propriétés et résolution d'équations",
+    "duree_estimee_min": 30,
+    "tags": [
+      "Fonction logarithme népérien (Tle A)",
+      "logarithme népérien",
+      "fonction ln",
+      "équations logarithmiques",
+      "changement de variable"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "A",
+      "module_numero": "21",
+      "savoir_numero": "VI"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-A-2016-MATHS",
+    "epreuve_titre": "Mathématiques BAC A 2016",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-maths-2016-cameroun-ex1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu sais déjà calculer une primitive : trouver une fonction dont la dérivée est donnée. Il existe une fonction très particulière, dont la dérivée est $\\dfrac{1}{x}$ sur $]0,+\\infty[$ et qui s'annule en $x=1$ : c'est le logarithme népérien, noté $\\ln$. Cette fonction va te permettre de résoudre des équations qui semblaient bloquées jusqu'ici, notamment celles où l'inconnue est cachée à l'intérieur d'une expression $\\ln x$, en la ramenant à une équation polynomiale que tu sais déjà résoudre. Elle apparaît très régulièrement au BAC série A, souvent combinée à une factorisation ou à une équation du second degré déjà étudiée dans une question précédente."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du second degré $at^{2}+bt+c=0$ à l'aide du discriminant $\\Delta=b^{2}-4ac$.",
+        "Savoir ce qu'est une primitive : une fonction $F$ telle que $F'=f$ sur un intervalle donné.",
+        "Relier le signe de la dérivée d'une fonction à son sens de variation (croissante si $f'>0$, décroissante si $f'<0$).",
+        "Factoriser et développer une expression polynomiale (mise en facteur, identités remarquables)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction logarithme népérien : définition, propriétés, équivalence fondamentale",
+      "contenu_markdown": "Le logarithme népérien, noté $\\ln$, est la primitive sur $]0,+\\infty[$ de la fonction $x\\mapsto\\dfrac{1}{x}$ qui s'annule en $x=1$ : $\\ln(1)=0$ et $\\ln'(x)=\\dfrac{1}{x}$ pour tout $x>0$.\n\nComme $\\ln'(x)=\\dfrac{1}{x}>0$ pour tout $x>0$, la fonction $\\ln$ est strictement croissante sur $]0,+\\infty[$. On admet de plus que $\\displaystyle\\lim_{x\\to 0^{+}}\\ln x=-\\infty$ et $\\displaystyle\\lim_{x\\to +\\infty}\\ln x=+\\infty$. Une fonction continue et strictement croissante, dont les limites aux bornes de son intervalle de définition sont $-\\infty$ et $+\\infty$, réalise une bijection de $]0,+\\infty[$ vers $\\mathbb{R}$ tout entier.\n\nCette bijectivité est la propriété la plus utile pour résoudre une équation : pour tout réel $t$, il existe un unique réel $x>0$ tel que $\\ln x=t$. Ce réel $x$ se note $e^{t}$ (le nombre $e$ est défini comme l'unique réel tel que $\\ln(e)=1$). On retient l'équivalence fondamentale, valable pour tout $x>0$ et tout $t\\in\\mathbb{R}$ :\n$$\\ln x=t \\iff x=e^{t}$$\n\nDeux propriétés algébriques complètent cette règle et se démontrent à partir de la définition de $\\ln$ comme primitive de $1/x$ : pour tous réels $a>0$ et $b>0$, et tout entier $n$,\n$$\\ln(ab)=\\ln a+\\ln b \\qquad \\ln\\!\\left(\\dfrac{a}{b}\\right)=\\ln a-\\ln b \\qquad \\ln(a^{n})=n\\ln a$$",
+      "formule_principale": "\\ln x = t \\iff x = e^{t}",
+      "variantes": [
+        {
+          "nom": "Propriétés algébriques du logarithme (produit, quotient, puissance)",
+          "quand_utiliser": "Quand l'équation ou le système fait apparaître un produit, un quotient ou une puissance à l'intérieur d'un logarithme, plutôt qu'un polynôme en $\\ln x$ à résoudre par changement de variable.",
+          "contenu_markdown": "On transforme d'abord l'expression à l'aide de $\\ln(ab)=\\ln a+\\ln b$, $\\ln(a/b)=\\ln a-\\ln b$ ou $\\ln(a^{n})=n\\ln a$, pour obtenir une équation plus simple portant sur $\\ln x$ (ou sur plusieurs logarithmes), puis on applique l'équivalence $\\ln x=t \\iff x=e^{t}$ pour revenir à $x$. Il faut toujours vérifier que chaque quantité placée dans un logarithme reste strictement positive."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $(\\ln x)^{3}-2(\\ln x)^{2}-5\\ln x+6=0$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le domaine de définition et le changement de variable",
+          "justification": "L'expression $\\ln x$ n'a de sens que pour $x>0$ : c'est le domaine dans lequel on cherche les solutions. On pose $t=\\ln x$, ce qui transforme l'équation en une équation polynomiale de degré 3 en $t$.",
+          "resultat_markdown": "Domaine : $x>0$. En posant $t=\\ln x$, l'équation devient $t^{3}-2t^{2}-5t+6=0$."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher une racine évidente du polynôme en $t$",
+          "justification": "On teste les valeurs simples $-2,-1,0,1,2$ dans le polynôme $P(t)=t^{3}-2t^{2}-5t+6$.",
+          "resultat_markdown": "$P(1)=1^{3}-2\\times1^{2}-5\\times1+6=1-2-5+6=0$. Donc $t=1$ est racine de $P$."
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser $P(t)$ par $(t-1)$",
+          "justification": "Puisque $t=1$ est racine, $P(t)$ se factorise par $(t-1)$ ; on identifie le facteur du second degré restant.",
+          "resultat_markdown": "$P(t)=(t-1)(t^{2}-t-6)$.\n\nVérification par développement : $(t-1)(t^{2}-t-6)=t^{3}-t^{2}-6t-t^{2}+t+6=t^{3}-2t^{2}-5t+6$, ce qui correspond bien à $P(t)$."
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le facteur du second degré $t^{2}-t-6=0$",
+          "justification": "On applique la méthode du discriminant, $\\Delta=b^{2}-4ac$ avec $a=1$, $b=-1$, $c=-6$.",
+          "resultat_markdown": "$\\Delta=(-1)^{2}-4\\times1\\times(-6)=1+24=25=5^{2}$.\n\nComme $\\Delta>0$ : $t=\\dfrac{1-5}{2}=-2$ ou $t=\\dfrac{1+5}{2}=3$."
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à l'inconnue $x$",
+          "justification": "Le polynôme $P(t)=0$ admet exactement trois racines, $t\\in\\{-2\\,;\\,1\\,;\\,3\\}$. Pour chacune, on utilise l'équivalence $\\ln x=t \\iff x=e^{t}$ pour retrouver $x$. Les trois valeurs obtenues sont automatiquement strictement positives, donc toutes valables.",
+          "resultat_markdown": "$\\ln x=-2 \\iff x=e^{-2}\\qquad \\ln x=1 \\iff x=e\\qquad \\ln x=3 \\iff x=e^{3}$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions de l'équation est $S=\\left\\{e^{-2}\\,;\\,e\\,;\\,e^{3}\\right\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Résoudre le polynôme en $t$ jusqu'au bout, trouver $t\\in\\{-2\\,;\\,1\\,;\\,3\\}$, puis écrire directement $S=\\{-2\\,;\\,1\\,;\\,3\\}$.",
+          "pourquoi_faux": "Ces trois nombres sont les valeurs de $t=\\ln x$, pas les valeurs de $x$ elles-mêmes. Le changement de variable a servi à résoudre un polynôme plus simple, mais la question posée porte sur $x$ : la dernière étape, celle qui utilise $\\ln x=t \\iff x=e^{t}$, ne peut pas être sautée.",
+          "correction_markdown": "Toujours terminer par le retour à $x$ : chaque racine $t_i$ du polynôme donne une solution $x_i=e^{t_i}$ de l'équation initiale."
+        },
+        {
+          "erreur_markdown": "Écrire $\\ln x=-2 \\iff x=-2e$, en construisant la solution comme un produit plutôt qu'une puissance.",
+          "pourquoi_faux": "L'équivalence fondamentale n'est pas une multiplication par $e$ : c'est $x=e^{t}$, c'est-à-dire $e$ élevé à la puissance $t$. Confondre les deux change complètement la valeur numérique ($e^{-2}\\approx0,135$ contre $-2e\\approx-5,44$, qui n'appartient même pas au domaine $x>0$).",
+          "correction_markdown": "Relis systématiquement l'équivalence $\\ln x=t \\iff x=e^{t}$ comme « $x$ est $e$ exposant $t$ », jamais comme un produit."
+        },
+        {
+          "erreur_markdown": "Oublier de préciser le domaine $x>0$ avant de poser $t=\\ln x$, ou chercher à le vérifier après coup sur les solutions trouvées.",
+          "pourquoi_faux": "Le domaine $x>0$ doit être posé dès le départ, car c'est lui qui rend licite l'écriture $t=\\ln x$. Une fois revenu à $x$ par $x=e^{t}$, la valeur obtenue est automatiquement strictement positive quel que soit $t$ réel : il n'y a donc rien à vérifier a posteriori, mais le domaine doit apparaître avant le changement de variable, pas après.",
+          "correction_markdown": "Écris « domaine : $x>0$ » avant de poser le changement de variable ; une fois revenu à $x=e^{t}$, aucune vérification supplémentaire n'est nécessaire puisque $e^{t}>0$ pour tout réel $t$."
+        },
+        {
+          "erreur_markdown": "Se tromper dans la division du polynôme cubique par $(t-1)$, par exemple écrire $P(t)=(t-1)(t^{2}+t-6)$ au lieu de $(t-1)(t^{2}-t-6)$.",
+          "pourquoi_faux": "Une erreur de signe dans le facteur du second degré change ses racines et fait perdre ou inventer des solutions dans tout le reste de l'exercice.",
+          "correction_markdown": "Vérifie systématiquement la factorisation en redéveloppant le produit obtenu : si le développement ne redonne pas exactement le polynôme de départ, la factorisation est fausse et doit être reprise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $]0,+\\infty[$ l'équation $2\\ln x+1=0$.",
+          "solution_markdown": "On isole $\\ln x$ :\n$$2\\ln x+1=0 \\iff \\ln x=-\\dfrac{1}{2}$$\n\nOn applique l'équivalence $\\ln x=t \\iff x=e^{t}$ avec $t=-\\dfrac{1}{2}$ :\n$$x=e^{-1/2}=\\dfrac{1}{\\sqrt{e}}$$\n\nCette valeur est bien strictement positive, donc dans le domaine. L'ensemble des solutions est $S=\\left\\{e^{-1/2}\\right\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $(\\ln x)^{2}-5\\ln x+6=0$.",
+          "solution_markdown": "Domaine : $x>0$. On pose $t=\\ln x$, ce qui transforme l'équation en $t^{2}-5t+6=0$.\n\nDiscriminant : $\\Delta=(-5)^{2}-4\\times1\\times6=25-24=1$.\n\nComme $\\Delta>0$ : $t=\\dfrac{5-1}{2}=2$ ou $t=\\dfrac{5+1}{2}=3$.\n\nOn revient à $x$ à l'aide de $\\ln x=t \\iff x=e^{t}$ :\n$$\\ln x=2 \\iff x=e^{2}\\qquad \\ln x=3 \\iff x=e^{3}$$\n\nL'ensemble des solutions est $S=\\left\\{e^{2}\\,;\\,e^{3}\\right\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $]0,+\\infty[^{2}$ le système $\\begin{cases}\\ln x+\\ln y=1\\\\ \\ln x-\\ln y=3\\end{cases}$.",
+          "solution_markdown": "Domaine : $x>0$ et $y>0$. On additionne membre à membre les deux équations, ce qui élimine $\\ln y$ :\n$$(\\ln x+\\ln y)+(\\ln x-\\ln y)=1+3 \\iff 2\\ln x=4 \\iff \\ln x=2$$\n\nOn soustrait ensuite la seconde équation de la première, ce qui élimine $\\ln x$ :\n$$(\\ln x+\\ln y)-(\\ln x-\\ln y)=1-3 \\iff 2\\ln y=-2 \\iff \\ln y=-1$$\n\nOn revient à $x$ et $y$ à l'aide de $\\ln x=t \\iff x=e^{t}$ :\n$$x=e^{2}\\qquad y=e^{-1}=\\dfrac{1}{e}$$\n\nVérification : $\\ln(e^{2})+\\ln(1/e)=2+(-1)=1$ (première équation vérifiée) et $\\ln(e^{2})-\\ln(1/e)=2-(-1)=3$ (seconde équation vérifiée). Les deux valeurs sont strictement positives, donc bien dans le domaine.\n\nLe couple solution est $(x\\,;\\,y)=\\left(e^{2}\\,;\\,\\dfrac{1}{e}\\right)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le logarithme népérien $\\ln$ est strictement croissant sur $]0,+\\infty[$ et réalise une bijection vers $\\mathbb{R}$ : c'est ce qui garantit que $\\ln x=t$ admet toujours une unique solution $x=e^{t}$.",
+        "Face à une équation polynomiale en $\\ln x$ (degré 2, 3, ou plus), pose systématiquement $t=\\ln x$, résous en $t$ comme un polynôme ordinaire, puis reviens à $x$ avec $x=e^{t}$ pour chaque racine trouvée : ne t'arrête jamais à l'étape en $t$.",
+        "Les propriétés $\\ln(ab)=\\ln a+\\ln b$, $\\ln(a/b)=\\ln a-\\ln b$ et $\\ln(a^{n})=n\\ln a$ transforment un produit, un quotient ou une puissance en une somme, une différence ou un produit plus simple à manipuler.",
+        "Le domaine $x>0$ se pose avant de commencer le changement de variable, pas après avoir trouvé les solutions : une fois revenu à $x=e^{t}$, la positivité est automatique.",
+        "Au BAC série A, ce type d'exercice apparaît le plus souvent en première partie, sous forme d'équations ou de systèmes à résoudre, parfois précédé d'une factorisation polynomiale à réutiliser directement pour l'équation en $\\ln x$."
+      ]
+    }
+  ]
+}

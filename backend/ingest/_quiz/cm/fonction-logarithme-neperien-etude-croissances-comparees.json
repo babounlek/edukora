@@ -1,0 +1,148 @@
+{
+  "cours_id": "cours-fonction-logarithme-neperien-croissances-comparees-tle-d",
+  "meta": {
+    "titre": "Fonction logarithme népérien : étude et croissances comparées",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Fonction logarithme népérien - dérivée, limites et croissances comparées",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Fonction logarithme népérien (Tle D)",
+      "logarithme népérien",
+      "croissances comparées",
+      "limites de fonctions",
+      "étude de fonction",
+      "primitive de 1/x"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "D",
+      "module_numero": "25",
+      "savoir_numero": "V"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-2007-MATHS",
+    "epreuve_titre": "Mathématiques BAC D 2007",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-2007d-pb-B3b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un exercice classique de Terminale D te demande de calculer la limite en $+\\infty$ d'une fonction qui mélange un terme polynomial et un terme en $\\ln x$, par exemple $f(x)=\\frac13x^3-2x\\ln x+1$. Le réflexe naturel, calculer séparément la limite de chaque terme, te bloque immédiatement : tu obtiens une forme $+\\infty-\\infty$, indéterminée. Ce cours reprend d'abord la construction et les propriétés de base du logarithme népérien, puis te donne l'outil qui débloque ce genre de situation, le théorème des croissances comparées. Il revient dans presque tous les problèmes de Terminale D qui associent une fonction $\\ln$ à un polynôme, que ce soit pour une limite, une branche infinie ou un calcul d'aire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Étudier le sens de variation d'une fonction à partir du signe de sa dérivée.",
+        "Reconnaître une forme indéterminée du type $+\\infty-\\infty$ ou $0\\times\\infty$, et savoir qu'il faut la transformer avant de conclure.",
+        "Savoir ce qu'est une primitive : une fonction $F$ telle que $F'=f$ sur un intervalle donné.",
+        "Factoriser une expression par sa puissance de $x$ la plus élevée pour déterminer une limite en $+\\infty$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction logarithme népérien : dérivée, limites et croissances comparées",
+      "contenu_markdown": "Le logarithme népérien, noté $\\ln$, est l'unique primitive sur $]0,+\\infty[$ de la fonction $x\\mapsto\\frac1x$ qui s'annule en $x=1$ : $\\ln(1)=0$ et $\\ln'(x)=\\frac1x$ pour tout $x>0$.\n\nComme $\\ln'(x)=\\frac1x>0$ pour tout $x>0$, $\\ln$ est strictement croissante sur $]0,+\\infty[$. On admet les limites aux bornes du domaine :\n$$\\lim_{x\\to0^+}\\ln x=-\\infty \\qquad \\lim_{x\\to+\\infty}\\ln x=+\\infty$$\n\nPour une fonction $u$ dérivable et strictement positive sur un intervalle $I$, la fonction $\\ln(u)$ est dérivable sur $I$ et :\n$$\\left[\\ln(u)\\right]'=\\frac{u'}{u}$$\nCette formule donne aussi une primitive utile : sur tout intervalle où $u>0$, une primitive de $\\frac{u'}{u}$ est $\\ln(u)$.\n\n**Croissances comparées.** $\\ln x$ tend bien vers $+\\infty$ quand $x\\to+\\infty$, mais beaucoup plus lentement que n'importe quelle puissance strictement positive de $x$. C'est le théorème des croissances comparées, admis en Terminale :\n$$\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^n}=0 \\qquad \\text{et} \\qquad \\lim_{x\\to0^+}x^n\\ln x=0 \\qquad \\text{pour tout entier } n\\geqslant1$$\nDans une somme ou une différence qui mélange un terme en $x^n$ ($n\\geqslant1$) et un terme en $\\ln x$ (ou $x\\ln x$, $x^2\\ln x$...), c'est toujours le terme polynomial qui impose la limite en $+\\infty$, à condition de factoriser par ce terme dominant avant de conclure : jamais en comparant les deux termes à vue.",
+      "formule_principale": "\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^n}=0",
+      "variantes": [
+        {
+          "nom": "Croissances comparées au voisinage de 0",
+          "quand_utiliser": "Quand la forme indéterminée $0\\times\\infty$ apparaît en $x\\to0^+$, typiquement pour un produit $x^n\\ln x$.",
+          "contenu_markdown": "Le résultat $\\lim_{x\\to0^+}x^n\\ln x=0$ (pour $n\\geqslant1$) se retient comme : une puissance positive de $x$ écrase $\\ln x$ même quand $x$ tend vers $0$. La méthode est plus directe qu'en $+\\infty$ : le produit $x^n\\ln x$ est déjà sous une forme exploitable, sans factorisation supplémentaire à effectuer, il suffit d'appliquer le théorème."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la limite en $+\\infty$ de la fonction $f$ définie sur $]0,+\\infty[$ par $f(x)=\\frac13x^3-2x\\ln x+1$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la forme indéterminée",
+          "justification": "On étudie séparément la limite de chaque terme de $f(x)$ quand $x\\to+\\infty$.",
+          "resultat_markdown": "$\\frac13x^3\\to+\\infty$ et $x\\ln x\\to+\\infty$, donc $-2x\\ln x\\to-\\infty$ : $f(x)$ se présente sous la forme $+\\infty-\\infty$, indéterminée."
+        },
+        {
+          "numero": 2,
+          "action": "Factoriser par le terme de plus haut degré, $x^3$",
+          "justification": "Pour lever l'indétermination, on met en évidence le terme dominant pressenti et on vérifie que chaque autre terme s'exprime bien comme ce facteur multiplié par une expression dont la limite est connue.",
+          "resultat_markdown": "$$f(x)=x^3\\left(\\frac13-\\frac{2\\ln x}{x^2}+\\frac{1}{x^3}\\right)$$\nVérification du deuxième terme : $x^3\\times\\frac{2\\ln x}{x^2}=2x\\ln x$, ce qui redonne bien le terme initial."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer la limite du facteur entre parenthèses",
+          "justification": "On applique le théorème des croissances comparées à $\\frac{\\ln x}{x^2}$ (cas $n=2$) et la limite usuelle d'une puissance négative de $x$.",
+          "resultat_markdown": "$$\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^2}=0 \\quad\\text{donc}\\quad \\lim_{x\\to+\\infty}\\frac{2\\ln x}{x^2}=0 \\qquad\\text{et}\\qquad \\lim_{x\\to+\\infty}\\frac{1}{x^3}=0$$\nPar somme : $\\displaystyle\\lim_{x\\to+\\infty}\\left(\\frac13-\\frac{2\\ln x}{x^2}+\\frac{1}{x^3}\\right)=\\frac13$."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par produit des limites",
+          "justification": "$x^3\\to+\\infty$ et le facteur entre parenthèses tend vers $\\frac13$, une limite finie strictement positive : leur produit tend vers $+\\infty$.",
+          "resultat_markdown": "$$\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to+\\infty}x^3\\times\\frac13=+\\infty$$"
+        }
+      ],
+      "conclusion_markdown": "La limite de $f$ en $+\\infty$ vaut $+\\infty$ : c'est le terme polynomial $\\frac13x^3$ qui impose ce comportement, malgré le terme $-2x\\ln x$ qui tend lui-même vers $-\\infty$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que $\\ln x$ tend vers $0$ quand $x\\to+\\infty$, en confondant « $\\ln x$ grandit très lentement » et « $\\ln x$ tend vers $0$ ».",
+          "pourquoi_faux": "$\\ln x$ tend bien vers $+\\infty$ quand $x\\to+\\infty$, il n'est pas majoré, simplement il grandit beaucoup plus lentement que $x$. Ce qui tend vers $0$, ce n'est pas $\\ln x$ lui-même, mais le quotient $\\frac{\\ln x}{x^n}$.",
+          "correction_markdown": "Distingue toujours les deux résultats : $\\ln x\\to+\\infty$ est vrai, $\\frac{\\ln x}{x^n}\\to0$ est vrai aussi, mais ce ne sont pas les mêmes limites."
+        },
+        {
+          "erreur_markdown": "Conclure directement « $x^3$ l'emporte sur $x\\ln x$, donc $f(x)\\to+\\infty$ » sans écrire l'étape de factorisation.",
+          "pourquoi_faux": "Le résultat est correct ici, mais rien dans la rédaction ne prouve qu'il l'est : un correcteur ne peut pas distinguer une intuition juste d'un résultat obtenu par chance, et la même intuition non justifiée mène droit à l'erreur dès que le signe du terme dominant change.",
+          "correction_markdown": "Écris systématiquement la factorisation par le terme de plus haut degré avant d'invoquer les croissances comparées, même quand le résultat te paraît évident."
+        },
+        {
+          "erreur_markdown": "Manipuler $\\ln(u(x))$, dans une équation, une dérivée ou une étude de limite, sans vérifier que $u(x)>0$ sur l'intervalle considéré.",
+          "pourquoi_faux": "$\\ln$ n'est défini que sur $]0,+\\infty[$ : une expression comme $\\ln(x^2-4)$ n'a de sens que là où $x^2-4>0$, c'est-à-dire sur $]-\\infty;-2[\\cup]2;+\\infty[$. Ignorer cette condition peut faire apparaître des solutions ou des valeurs qui n'existent pas.",
+          "correction_markdown": "Avant toute manipulation d'un $\\ln(u(x))$, détermine l'ensemble des $x$ pour lesquels $u(x)>0$ : c'est le point de départ de tout le raisonnement qui suit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer les limites de la fonction $f$ définie sur $]0,+\\infty[$ par $f(x)=x-\\ln x$ en $0$ et en $+\\infty$.",
+          "solution_markdown": "**Limite en $0^+$.** Quand $x\\to0^+$ : $x\\to0$ et $-\\ln x\\to+\\infty$ (car $\\ln x\\to-\\infty$). Par somme :\n$$\\lim_{x\\to0^+}f(x)=+\\infty$$\n\n**Limite en $+\\infty$.** On factorise par $x$ :\n$$f(x)=x\\left(1-\\frac{\\ln x}{x}\\right)$$\nD'après le théorème des croissances comparées (cas $n=1$), $\\displaystyle\\lim_{x\\to+\\infty}\\frac{\\ln x}{x}=0$, donc le facteur entre parenthèses tend vers $1$. Comme $x\\to+\\infty$ :\n$$\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to+\\infty}x\\times1=+\\infty$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère la fonction $g$ définie sur $]0,+\\infty[$ par $g(x)=\\ln x-x+1$.\n\n1. Étudier les variations de $g$ (dérivée, limites aux bornes, tableau de variation).\n2. En déduire le signe de $g(x)$ pour tout $x>0$, puis établir l'inégalité $\\ln x\\leqslant x-1$ pour tout $x>0$.",
+          "solution_markdown": "**1. Variations de $g$.**\n\n$g$ est dérivable sur $]0,+\\infty[$ comme somme de fonctions dérivables, et :\n$$g'(x)=\\frac1x-1=\\frac{1-x}{x}$$\nLe dénominateur $x$ est strictement positif sur $]0,+\\infty[$, donc le signe de $g'(x)$ est celui de $1-x$ : $g'(x)>0$ pour $x<1$, $g'(x)=0$ pour $x=1$, $g'(x)<0$ pour $x>1$.\n\nLimites aux bornes. En $0^+$ : $\\ln x\\to-\\infty$ et $-x+1\\to1$, donc par somme :\n$$\\lim_{x\\to0^+}g(x)=-\\infty$$\nEn $+\\infty$, on factorise par $-x$ pour faire apparaître des rapports connus :\n$$g(x)=-x\\left(1-\\frac{\\ln x}{x}-\\frac1x\\right)$$\nD'après les croissances comparées, $\\frac{\\ln x}{x}\\to0$ et $\\frac1x\\to0$, donc le facteur entre parenthèses tend vers $1$ ; comme $-x\\to-\\infty$ :\n$$\\lim_{x\\to+\\infty}g(x)=-\\infty$$\n\nTableau de variation :\n\n$$\n\\begin{array}{c|ccccc}\nx & 0 & & 1 & & +\\infty \\\\\n\\hline\ng'(x) & & + & 0 & - & \\\\\n\\hline\ng(x) & -\\infty & \\nearrow & g(1) & \\searrow & -\\infty\n\\end{array}\n$$\n\navec $g(1)=\\ln1-1+1=0$.\n\n**2. Signe de $g$ et inégalité.**\n\nD'après le tableau, $g$ atteint son maximum en $x=1$, et ce maximum vaut $g(1)=0$. Donc, pour tout $x>0$ :\n$$g(x)\\leqslant g(1)=0$$\nc'est-à-dire $\\ln x-x+1\\leqslant0$, soit :\n$$\\ln x\\leqslant x-1 \\qquad \\text{pour tout } x>0$$\navec égalité si et seulement si $x=1$, seul point où $g$ atteint son maximum."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k$ la fonction définie sur $]0,+\\infty[$ par $k(x)=x^2\\ln x-x^2$.\n\n1. Déterminer $\\displaystyle\\lim_{x\\to0^+}k(x)$ et $\\displaystyle\\lim_{x\\to+\\infty}k(x)$.\n2. La fonction $k$ est-elle prolongeable par continuité en $0$ ? Si oui, préciser la valeur de ce prolongement.",
+          "solution_markdown": "**1. Limites de $k$.**\n\nOn factorise : $k(x)=x^2(\\ln x-1)$.\n\nEn $0^+$ : d'après le théorème des croissances comparées (cas $n=2$), $x^2\\ln x\\to0$ quand $x\\to0^+$, et $-x^2\\to0$. Par somme :\n$$\\lim_{x\\to0^+}k(x)=\\lim_{x\\to0^+}\\big(x^2\\ln x-x^2\\big)=0$$\n\nEn $+\\infty$ : $x^2\\to+\\infty$ et $\\ln x-1\\to+\\infty$ (car $\\ln x\\to+\\infty$). Le produit de deux facteurs tendant chacun vers $+\\infty$ tend vers $+\\infty$ :\n$$\\lim_{x\\to+\\infty}k(x)=\\lim_{x\\to+\\infty}x^2(\\ln x-1)=+\\infty$$\n\n**2. Prolongement par continuité en $0$.**\n\n$k$ n'est pas définie en $0$ (son domaine est $]0,+\\infty[$), mais elle admet en $0^+$ une limite finie, $\\displaystyle\\lim_{x\\to0^+}k(x)=0$. Une fonction non définie en un point mais qui y admet une limite finie est prolongeable par continuité en ce point, en posant la valeur du prolongement égale à cette limite. La fonction $\\tilde k$ définie sur $[0,+\\infty[$ par $\\tilde k(x)=k(x)$ pour $x>0$ et $\\tilde k(0)=0$ est donc continue en $0$ : c'est le prolongement par continuité de $k$ en $0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\ln$ est l'unique primitive de $x\\mapsto\\frac1x$ sur $]0,+\\infty[$ qui s'annule en $1$ : retiens $\\ln(1)=0$ et $\\ln'(x)=\\frac1x$, tout le reste (sens de variation, limites) s'en déduit.",
+        "Le théorème des croissances comparées, $\\lim_{x\\to+\\infty}\\frac{\\ln x}{x^n}=0$ et $\\lim_{x\\to0^+}x^n\\ln x=0$, se résume en une phrase : une puissance de $x$ écrase toujours $\\ln x$, aussi bien en $+\\infty$ qu'en $0^+$.",
+        "Face à une forme $+\\infty-\\infty$ mêlant un polynôme et un terme en $\\ln x$, factorise systématiquement par le terme de plus haut degré avant de conclure : ne compare jamais les deux termes à vue.",
+        "Pour dériver ou intégrer une expression du type $\\ln(u(x))$, retiens $[\\ln(u)]'=\\frac{u'}{u}$, et donc qu'une primitive de $\\frac{u'}{u}$ est $\\ln(u)$ quand $u>0$.",
+        "Vérifie toujours le domaine ($u(x)>0$) avant de manipuler un $\\ln(u(x))$, que ce soit dans une équation, une dérivée ou une étude de limite.",
+        "Au BAC série D, ce savoir apparaît rarement seul : il s'invite dans presque tout problème d'étude de fonction (limite, branche infinie, calcul d'aire) dès qu'un $\\ln$ est mêlé à un polynôme, exactement comme dans le Problème du BAC D 2007 qui a inspiré ce cours."
+      ]
+    }
+  ]
+}

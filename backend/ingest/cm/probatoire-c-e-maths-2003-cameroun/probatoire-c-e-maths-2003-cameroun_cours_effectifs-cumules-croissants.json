@@ -1,0 +1,173 @@
+{
+ "cours_id": "cours-effectifs-cumules-croissants-1ere-ce",
+ "meta": {
+  "titre": "Compléter une ligne d'effectifs cumulés croissants",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à une variable",
+  "duree_estimee_min": 20,
+  "tags": [
+   "statistique",
+   "effectifs cumulés croissants",
+   "effectif total",
+   "tableau statistique",
+   "contrôle de cohérence"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2003-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2003 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2003-cameroun-ex2-q6-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Combien de familles ont au plus trois enfants ? » Cette question, on ne la lit pas sur la ligne des effectifs, qui donne le nombre de familles ayant exactement $0$, $1$, $2$ ou $3$ enfants. Elle se lit sur une ligne construite pour cela : les effectifs cumulés croissants. Les remplir est mécanique, mais deux contrôles de cohérence permettent souvent de répondre sans même calculer."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Lire un tableau statistique à deux lignes",
+    "Additionner une série de nombres entiers",
+    "Comprendre la notion d'effectif total"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Cumuler, et contrôler",
+   "contenu_markdown": "**Définition.** L'effectif cumulé croissant associé à une valeur $x_{i}$ est le nombre d'individus dont le caractère est **inférieur ou égal** à $x_{i}$. C'est donc la somme des effectifs de toutes les valeurs jusqu'à $x_{i}$ incluse.\n\n**Construction, de proche en proche.** Chaque case s'obtient en ajoutant à la précédente l'effectif de la colonne courante :\n\n$$\\text{ECC}_{i}=\\text{ECC}_{i-1}+n_{i}$$\n\navec $\\text{ECC}_{1}=n_{1}$. On ne recalcule jamais toute la somme depuis le début : une seule addition par colonne suffit.\n\n**Les deux contrôles qui font gagner du temps.**\n\n1. Le **dernier** effectif cumulé croissant est toujours égal à l'effectif total $N$. C'est la définition même : tous les individus ont un caractère inférieur ou égal à la plus grande valeur.\n2. La ligne des effectifs cumulés croissants est nécessairement **croissante**, puisqu'on ajoute à chaque étape un effectif positif ou nul.\n\nCes deux contrôles éliminent souvent la moitié des propositions d'un QCM avant tout calcul : une proposition dont la dernière valeur dépasse $N$, ou dont la suite décroît, est absurde.\n\n**À quoi cela sert.** Les effectifs cumulés croissants permettent de lire directement les effectifs « au plus », de déterminer la médiane et les quartiles, et de tracer le polygone des effectifs cumulés.\n\n**Les effectifs cumulés décroissants** répondent symétriquement aux questions « au moins » : on cumule alors depuis la fin, et le premier terme vaut $N$.",
+   "formule_principale": "\\text{ECC}_{i}=\\text{ECC}_{i-1}+n_{i}\\qquad;\\qquad\\text{ECC}_{\\text{dernier}}=N",
+   "variantes": [
+    {
+     "nom": "Calcul par différence",
+     "quand_utiliser": "Quand on connaît des effectifs cumulés et qu'on cherche un effectif simple",
+     "contenu_markdown": "L'opération inverse du cumul est la différence : $n_{i}=\\text{ECC}_{i}-\\text{ECC}_{i-1}$. Elle sert quand un tableau ne fournit que les cumuls et qu'on doit reconstituer les effectifs. Elle sert aussi de contrôle : si une différence sort négative, la ligne des cumuls contient une erreur, puisqu'un effectif ne peut pas l'être."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "À partir d'une enquête portant sur le nombre d'enfants de $200$ familles, on a établi le tableau suivant. Déterminer $a$ et $b$.\n\n| Nombre d'enfants | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |\n|---|---|---|---|---|---|---|---|\n| Effectifs | $18$ | $32$ | $66$ | $41$ | $32$ | $9$ | $2$ |\n| Effectifs cumulés croissants | $18$ | $50$ | $a$ | $157$ | $189$ | $b$ | $200$ |\n\n(Probatoire C et E, Cameroun, 2003.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Repérer la position de $a$",
+     "justification": "$a$ est le cumul associé à la valeur $2$, donc le nombre de familles ayant au plus $2$ enfants",
+     "resultat_markdown": "$a=\\text{ECC}$ de la colonne « $2$ »"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer $a$",
+     "justification": "On ajoute au cumul précédent, $50$, l'effectif de la colonne courante, $66$",
+     "resultat_markdown": "$a=50+66=116$"
+    },
+    {
+     "numero": 3,
+     "action": "Repérer la position de $b$",
+     "justification": "$b$ est le cumul associé à la valeur $5$",
+     "resultat_markdown": "$b=\\text{ECC}$ de la colonne « $5$ »"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer $b$",
+     "justification": "On ajoute au cumul précédent, $189$, l'effectif de la colonne courante, $9$",
+     "resultat_markdown": "$b=189+9=198$"
+    },
+    {
+     "numero": 5,
+     "action": "Reconstituer toute la ligne pour contrôler",
+     "justification": "On enchaîne les additions depuis le début",
+     "resultat_markdown": "$18$ ; $18+32=50$ ; $50+66=116$ ; $116+41=157$ ; $157+32=189$ ; $189+9=198$ ; $198+2=200$"
+    },
+    {
+     "numero": 6,
+     "action": "Vérifier les valeurs déjà imprimées",
+     "justification": "Les cumuls $50$, $157$, $189$ et $200$ figurent dans l'énoncé",
+     "resultat_markdown": "Tous sont retrouvés : la ligne est cohérente"
+    },
+    {
+     "numero": 7,
+     "action": "Vérifier l'effectif total",
+     "justification": "Le dernier cumul doit valoir l'effectif total",
+     "resultat_markdown": "$200$, conforme aux $200$ familles annoncées"
+    },
+    {
+     "numero": 8,
+     "action": "Écarter les propositions absurdes",
+     "justification": "Deux contrôles suffisent",
+     "resultat_markdown": "$b=208>200$ est impossible ; $b=158$ après $189$ contredirait la croissance"
+    }
+   ],
+   "conclusion_markdown": "On obtient $a=116$ et $b=198$, soit la réponse a). Les deux contrôles de l'étape 8 auraient permis d'éliminer deux propositions sans le moindre calcul, en quelques secondes."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Recopier l'effectif au lieu du cumul : écrire $a=66$",
+     "pourquoi_faux": "La ligne des effectifs cumulés ne répète pas les effectifs, elle les additionne. $66$ est le nombre de familles ayant **exactement** deux enfants, alors que $a$ compte celles qui en ont **au plus** deux.",
+     "correction_markdown": "Reformule mentalement chaque case : « au plus $2$ enfants », donc $0$ enfant, plus $1$ enfant, plus $2$ enfants. La somme apparaît naturellement."
+    },
+    {
+     "erreur_markdown": "Recalculer toute la somme depuis le début à chaque colonne",
+     "pourquoi_faux": "Ce n'est pas faux, mais c'est quatre fois plus long et multiplie les occasions d'erreur. Le principe du cumul est justement de n'ajouter qu'un terme à la fois.",
+     "correction_markdown": "Utilise la relation de proche en proche $\\text{ECC}_{i}=\\text{ECC}_{i-1}+n_{i}$. Une seule addition par colonne."
+    },
+    {
+     "erreur_markdown": "Accepter une valeur finale différente de l'effectif total",
+     "pourquoi_faux": "Le dernier effectif cumulé croissant compte tous les individus : il vaut nécessairement $N$. Une proposition donnant $208$ pour $200$ familles est absurde, sans qu'il soit besoin de vérifier quoi que ce soit d'autre.",
+     "correction_markdown": "Commence par ce contrôle en QCM : il élimine souvent une ou deux propositions en trois secondes."
+    },
+    {
+     "erreur_markdown": "Ne pas remarquer qu'une ligne de cumuls doit être croissante",
+     "pourquoi_faux": "On ajoute à chaque étape un effectif positif : la suite des cumuls ne peut jamais diminuer. Une proposition donnant $158$ après $189$ viole cette propriété.",
+     "correction_markdown": "Parcours la ligne des yeux avant de calculer : toute décroissance signale une proposition à éliminer."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Compléter la ligne des effectifs cumulés croissants du tableau suivant, portant sur $50$ élèves.\n\n| Note | $8$ | $10$ | $12$ | $14$ | $16$ |\n|---|---|---|---|---|---|\n| Effectifs | $6$ | $14$ | $18$ | $9$ | $3$ |",
+     "solution_markdown": "**Calcul de proche en proche.**\n\nNote $8$ : $\\text{ECC}=6$.\n\nNote $10$ : $6+14=20$.\n\nNote $12$ : $20+18=38$.\n\nNote $14$ : $38+9=47$.\n\nNote $16$ : $47+3=50$.\n\n**Tableau complété.**\n\n| Note | $8$ | $10$ | $12$ | $14$ | $16$ |\n|---|---|---|---|---|---|\n| Effectifs | $6$ | $14$ | $18$ | $9$ | $3$ |\n| ECC | $6$ | $20$ | $38$ | $47$ | $50$ |\n\n**Contrôles.** Le dernier cumul vaut $50$, l'effectif total annoncé. Et la ligne est bien croissante.\n\n**Lecture.** $38$ élèves ont une note inférieure ou égale à $12$, soit $76\\,\\%$ de l'effectif."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Le tableau suivant donne les effectifs cumulés croissants d'une série. Reconstituer la ligne des effectifs, puis déterminer l'effectif total.\n\n| Valeur | $1$ | $2$ | $3$ | $4$ | $5$ |\n|---|---|---|---|---|---|\n| ECC | $12$ | $29$ | $45$ | $58$ | $60$ |",
+     "solution_markdown": "**Principe.** L'opération inverse du cumul est la différence : $n_{i}=\\text{ECC}_{i}-\\text{ECC}_{i-1}$.\n\n**Calculs.**\n\nValeur $1$ : le premier effectif est égal au premier cumul, soit $n_{1}=12$.\n\nValeur $2$ : $29-12=17$.\n\nValeur $3$ : $45-29=16$.\n\nValeur $4$ : $58-45=13$.\n\nValeur $5$ : $60-58=2$.\n\n**Tableau reconstitué.**\n\n| Valeur | $1$ | $2$ | $3$ | $4$ | $5$ |\n|---|---|---|---|---|---|\n| Effectifs | $12$ | $17$ | $16$ | $13$ | $2$ |\n| ECC | $12$ | $29$ | $45$ | $58$ | $60$ |\n\n**Effectif total.** Il est donné par le dernier cumul : $N=60$.\n\n**Contrôle.** La somme des effectifs reconstitués doit valoir $60$ :\n\n$$12+17=29\\;;\\;29+16=45\\;;\\;45+13=58\\;;\\;58+2=60$$\n\nCohérent. Et tous les effectifs sont positifs, ce qui confirme que la ligne des cumuls était bien croissante."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une enquête porte sur $120$ personnes. Le tableau ci-dessous est incomplet.\n\n| Valeur | $0$ | $1$ | $2$ | $3$ | $4$ |\n|---|---|---|---|---|---|\n| Effectifs | $15$ | $c$ | $38$ | $d$ | $9$ |\n| ECC | $15$ | $43$ | $e$ | $111$ | $f$ |\n\nDéterminer $c$, $d$, $e$ et $f$, puis calculer le pourcentage de personnes ayant au plus $2$.",
+     "solution_markdown": "**Étape 1 — déterminer $f$.** Le dernier effectif cumulé croissant est égal à l'effectif total :\n\n$$f=120$$\n\n**Étape 2 — déterminer $c$.** On utilise la différence entre deux cumuls consécutifs :\n\n$$c=43-15=28$$\n\n**Étape 3 — déterminer $e$.** On cumule à partir de la colonne précédente :\n\n$$e=43+38=81$$\n\n**Étape 4 — déterminer $d$.** Là encore par différence des cumuls :\n\n$$d=111-81=30$$\n\n**Étape 5 — contrôler avec la dernière colonne.** Le passage de $111$ à $f=120$ doit correspondre à l'effectif $9$ :\n\n$$111+9=120$$\n\nCohérent.\n\n**Étape 6 — contrôler la somme des effectifs.**\n\n$$15+28+38+30+9$$\n\nCalcul : $15+28=43$ ; $43+38=81$ ; $81+30=111$ ; $111+9=120$. La somme vaut bien $120$.\n\n**Tableau complété.**\n\n| Valeur | $0$ | $1$ | $2$ | $3$ | $4$ |\n|---|---|---|---|---|---|\n| Effectifs | $15$ | $28$ | $38$ | $30$ | $9$ |\n| ECC | $15$ | $43$ | $81$ | $111$ | $120$ |\n\n**Étape 7 — pourcentage demandé.** « Au plus $2$ » se lit directement sur l'effectif cumulé croissant de la valeur $2$, soit $81$ personnes.\n\n$$\\frac{81}{120}\\times 100=\\frac{8\\,100}{120}=67{,}5$$\n\n**Conclusion.** $67{,}5\\,\\%$ des personnes interrogées ont une valeur inférieure ou égale à $2$.\n\n**Ce que montre cet exercice.** Les effectifs cumulés croissants ne servent pas seulement à remplir un tableau : ils donnent immédiatement toute proportion du type « au plus », sans avoir à réadditionner les effectifs."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "L'effectif cumulé croissant répond à la question « combien **au plus** ? », l'effectif simple à « combien **exactement** ? ».",
+    "Construis la ligne de proche en proche : chaque case est la précédente plus l'effectif courant.",
+    "Le dernier cumul vaut toujours l'effectif total : c'est ton premier contrôle, et il élimine souvent des propositions en QCM.",
+    "La ligne des cumuls est nécessairement croissante : toute décroissance signale une erreur ou une proposition absurde.",
+    "L'opération inverse est la différence : $n_{i}=\\text{ECC}_{i}-\\text{ECC}_{i-1}$. Une différence négative révèle une incohérence.",
+    "Une proportion « au plus $x$ » se lit directement sur le cumul, divisé par l'effectif total.",
+    "Les effectifs cumulés **décroissants** répondent symétriquement aux questions « au moins », et leur premier terme vaut $N$.",
+    "Au Probatoire, ces cumuls servent surtout à déterminer la médiane et les quartiles : les remplir correctement conditionne toute la suite de l'exercice."
+   ]
+  }
+ ]
+}

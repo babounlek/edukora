@@ -48,11 +48,14 @@ class OTPCodeAdmin(admin.ModelAdmin):
     # ip_address affichée et cherchable : c'est par là qu'on constate une rafale
     # d'envois depuis une même source, et qu'on vérifie la distribution réelle des IP
     # avant d'ajuster OTP_MAX_PER_IP_PER_HOUR (voir settings.py, mise en garde CGNAT).
-    list_display = ["phone_number", "code", "is_used", "attempts", "ip_address", "expires_at", "created_at"]
-    list_filter = ["is_used"]
-    search_fields = ["phone_number", "ip_address"]
+    list_display = ["destination", "canal", "code", "is_used", "attempts", "ip_address", "expires_at", "created_at"]
+    # Filtrer par canal est le premier geste pour répondre à « combien de SMS
+    # ai-je envoyés ? », la seule des deux questions qui engage de l'argent.
+    list_filter = ["canal", "is_used"]
+    search_fields = ["destination", "ip_address"]
     readonly_fields = [
-        "phone_number", "code", "expires_at", "is_used", "attempts", "created_at", "ip_address",
+        "canal", "destination", "code", "expires_at", "is_used", "attempts", "created_at",
+        "ip_address",
     ]
 
     def has_add_permission(self, request):

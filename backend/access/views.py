@@ -31,6 +31,11 @@ def read_lesson(request, lesson_slug):
         "id": lesson.id,
         "title": lesson.title,
         "content_markdown": lesson.content_markdown,
+        # Consigne(s) valables pour l'épreuve entière (voir Lesson.introduction_markdown) -
+        # exposée à part, jamais dans `exercises` : elle ne concerne aucun exercice en
+        # particulier, un lecteur qui saute directement à l'exercice 3 ne doit pas la
+        # revoir. Le frontend l'affiche une seule fois, avant le sommaire/premier exercice.
+        "introduction_markdown": lesson.introduction_markdown,
         # Énoncé/corrigé par exercice, séparément - voir Lesson.exercises_breakdown.
         # Liste vide pour une Lesson sans Exercise (FICHE...) : le frontend retombe
         # alors sur content_markdown tel quel plutôt que de replier un énoncé qu'on
@@ -53,6 +58,9 @@ def preview_lesson(request, lesson_slug):
         "id": lesson.id,
         "title": lesson.title,
         "preview_markdown": lesson.preview_markdown(),
+        # Voir la même clé sur read_lesson ci-dessus - le sujet public montre les
+        # consignes d'épreuve au même titre que les énoncés, jamais le corrigé.
+        "introduction_markdown": lesson.introduction_markdown,
         # Le même sujet, découpé par exercice, pour que la fiche puisse renvoyer
         # directement vers le corrigé de l'exercice lu (/lire#exercice-3) - voir
         # Lesson.preview_exercises, qui n'expose aucun champ de corrigé. Liste vide
@@ -63,15 +71,22 @@ def preview_lesson(request, lesson_slug):
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def read_cours(request, cours_id):
-    """Contenu pour lecture en ligne (Markdown), réservé aux abonnés."""
+    """
+    Contenu pour lecture en ligne (Markdown) - réservé aux abonnés, sauf un Cours
+    "vitrine" (voir Cours.est_vitrine, dérivé de sa/ses épreuve(s) source(s)), lisible
+    par un visiteur anonyme : AllowAny ici, has_access() ci-dessous fait le vrai tri
+    au cas par cas - même patron que read_lesson.
+    """
     qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
     cours = get_object_or_404(qs)
 
     if not has_access(request.user, cours):
         return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
 
-    LectureProgress.objects.update_or_create(user=request.user, cours=cours)
+    if request.user.is_authenticated:
+        LectureProgress.objects.update_or_create(user=request.user, cours=cours)
 
     return Response({
         "id": cours.id,

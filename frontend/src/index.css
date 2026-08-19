@@ -178,6 +178,33 @@
   animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Barre de progression indéterminée (génération PDF d'une fiche répétiteur, voir
+   FichesPage) : la durée réelle n'est pas connue du client, qui ne fait que sonder le
+   statut - une barre qui balaie dit "ça travaille" sans mentir sur un pourcentage
+   d'avancement qu'on n'a pas. Contrairement à fade-up (une passe, au montage), celle-ci
+   tourne en boucle tant que la génération dure : désactivée pour qui a demandé moins de
+   mouvement, le texte d'attente à côté porte déjà l'information. */
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.animate-progress-indeterminate {
+  animation: progress-indeterminate 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-progress-indeterminate {
+    animation: none;
+    width: 100%;
+    opacity: 0.6;
+  }
+}
+
 /* Étend la zone tactile d'un bouton icône (size-7, 28px - bascule cartes/liste du
    catalogue) jusqu'au minimum recommandé (WCAG 2.5.5 / Apple HIG, 44px) sans agrandir
    son apparence visuelle : le ::before invisible comble l'écart, seul le

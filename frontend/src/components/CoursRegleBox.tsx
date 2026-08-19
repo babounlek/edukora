@@ -5,10 +5,23 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 
 type CoursRegleBoxProps = Omit<CoursSectionRegle, "type">
 
-/** Encadré fort pour la section "La règle" d'un Cours - le cœur du cours, distinct de Callout (bandeau plein plutôt que bordure gauche fine, pour ne pas se confondre avec un simple "Conseil"). */
+/**
+ * Encadré fort pour la section "La règle" d'un Cours - le cœur du cours, distinct de
+ * Callout (bandeau plein plutôt que bordure gauche fine, pour ne pas se confondre avec
+ * un simple "Conseil").
+ *
+ * Pas de `not-prose` sur le conteneur, et ce n'est pas un oubli : les sélecteurs de
+ * @tailwindcss/typography se terminent tous par
+ * `:not(:where([class~="not-prose"], [class~="not-prose"] *))`, donc un `prose`
+ * imbriqué sous un `not-prose` NE réactive PAS la typographie - tout le sous-arbre
+ * reste sans marges ni puces (constaté : `<p>` à `margin: 0px` dans cet encadré). Cet
+ * habillage n'est jamais rendu sous un ancêtre `.prose` (CoursReaderPage et
+ * CoursDetailPage rendent CoursSection sous un `<article>`/`<div>` nu), le `not-prose`
+ * n'était donc que défensif : il ne protégeait rien et cassait tout.
+ */
 export function CoursRegleBox({ titre, body_markdown, formule_markdown, variantes }: CoursRegleBoxProps) {
   return (
-    <div className="not-prose overflow-hidden rounded-xl border border-primary/30">
+    <div className="overflow-hidden rounded-xl border border-primary/30">
       <div className="flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground">
         <BookMarked className="size-4 shrink-0" aria-hidden="true" />
         <h2 className="font-display text-base font-semibold">{titre}</h2>
@@ -32,7 +45,10 @@ export function CoursRegleBox({ titre, body_markdown, formule_markdown, variante
                 {variante.quand_utiliser && (
                   <p className="text-sm italic text-muted-foreground">Quand l'utiliser : {variante.quand_utiliser}</p>
                 )}
-                <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
+                {/* prose-sm : une variante est un aparté, son corps doit rester à la même taille
+                    que le nom et le "Quand l'utiliser" ci-dessus (text-sm), pas repasser au corps
+                    de texte plein de la règle. */}
+                <div className="prose prose-sm prose-neutral max-w-none text-justify dark:prose-invert">
                   <EpreuveMarkdown markdown={variante.body_markdown} />
                 </div>
               </div>

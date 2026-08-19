@@ -73,6 +73,38 @@ export function linkGoogle(credential: string) {
   return apiRequest<User>("/auth/google/link/", { method: "POST", body: { credential } })
 }
 
+export function requestEmailCode(email: string) {
+  return apiRequest<{ message: string }>("/auth/email/request/", {
+    method: "POST",
+    body: { email },
+    auth: false,
+  })
+}
+
+export function verifyEmailCode(email: string, code: string, referralCode?: string) {
+  // Même charge utile que verifyOtp et googleSignIn : les trois méthodes de connexion
+  // se traitent par le même chemin côté AuthContext.
+  return apiRequest<{ access: string; user: User; created: boolean }>("/auth/email/verify/", {
+    method: "POST",
+    body: { email, code, referral_code: referralCode || undefined },
+    auth: false,
+  })
+}
+
+export function requestEmailLink(email: string) {
+  return apiRequest<{ message: string }>("/auth/email/link/request/", {
+    method: "POST",
+    body: { email },
+  })
+}
+
+export function confirmEmailLink(email: string, code: string) {
+  return apiRequest<User>("/auth/email/link/confirm/", {
+    method: "POST",
+    body: { email, code },
+  })
+}
+
 export function requestPhoneChange(phoneNumber: string) {
   return apiRequest<{ message: string }>("/auth/phone/change/request/", {
     method: "POST",
@@ -169,7 +201,7 @@ export interface CoursFilters {
   exclude_read?: boolean
 }
 
-export function listCours(filters: CoursFilters = {}) {
+export function listCours(filters: CoursFilters = {}, signal?: AbortSignal) {
   const params = new URLSearchParams()
   Object.entries(filters).forEach(([key, value]) => {
     if (value !== undefined && value !== "") params.set(key, String(value))
@@ -177,6 +209,7 @@ export function listCours(filters: CoursFilters = {}) {
   const query = params.toString()
   return apiRequest<Paginated<Cours>>(`/catalog/cours/${query ? `?${query}` : ""}`, {
     auth: "optional",
+    signal,
   })
 }
 
@@ -185,7 +218,12 @@ export function getCours(slug: string) {
 }
 
 export function readCours(slug: string) {
-  return apiRequest<CoursContent>(`/access/cours/read/${slug}/`)
+  // "optional" (pas le défaut strict) : un Cours vitrine (voir Cours.est_vitrine,
+  // dérivé de sa/ses épreuve(s) source(s)) se lit sans connexion - un visiteur anonyme
+  // doit obtenir son contenu normalement plutôt qu'un événement "session expirée"
+  // déclenché à tort par l'échec du refresh silencieux d'un token qui n'a jamais
+  // existé. Même motif que readEpreuve.
+  return apiRequest<CoursContent>(`/access/cours/read/${slug}/`, { auth: "optional" })
 }
 
 export function previewCours(slug: string) {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
+
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
@@ -13,6 +14,16 @@ interface EpreuveRailProps {
    * de `sm`) au lieu de la largeur fixe w-72. Sous `sm`, retombe sur w-72 : 3
    * cartes pleines n'y tiendraient pas lisiblement. */
   threePerView?: boolean
+  /** Phrase sous le titre, pour un rail dont le contenu demande à être situé (ex. les
+   * épreuves inédites, qui sont payantes et dont il faut dire d'emblée à quoi elles
+   * servent). Absente sur un rail qui se comprend par son seul titre. */
+  description?: ReactNode
+  /** Lien d'appel à l'action, rendu à droite du titre - évite d'avoir à poser un
+   * second bloc commercial séparé sous le rail, qui répéterait son intitulé. */
+  action?: ReactNode
+  /** Transmis aux cartes : masque leur badge de type quand le titre du rail le dit déjà
+   * (voir EpreuveCard.masquerTypeBadge). */
+  masquerTypeBadge?: boolean
 }
 
 // Largeur d'une carte (w-72 = 18rem) + l'écart (gap-4 = 1rem) entre deux cartes -
@@ -26,7 +37,15 @@ const SCROLL_STEP_PX = 304
  * Scroll-snap + flèches dédiées plutôt que la barre de défilement native, cachée
  * (voir .no-scrollbar) : le tactile/la molette restent la scroller normalement,
  * les flèches ne sont qu'un raccourci pour la souris/le clavier. */
-export function EpreuveRail({ title, icon, epreuves, threePerView }: EpreuveRailProps) {
+export function EpreuveRail({
+  title,
+  icon,
+  epreuves,
+  threePerView,
+  description,
+  action,
+  masquerTypeBadge,
+}: EpreuveRailProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -53,11 +72,15 @@ export function EpreuveRail({ title, icon, epreuves, threePerView }: EpreuveRail
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-          {icon}
-          {title}
-        </h2>
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
+            {icon}
+            {title}
+          </h2>
+          {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
         {/* Souris/clavier uniquement : sur tactile (pas de hover), le swipe natif du
             rail suffit déjà - deux flèches en plus n'y ajouteraient rien. */}
         <div className="hidden shrink-0 items-center gap-1 sm:flex">
@@ -92,6 +115,7 @@ export function EpreuveRail({ title, icon, epreuves, threePerView }: EpreuveRail
           <EpreuveCard
             key={`${epreuve.kind}-${epreuve.id}`}
             epreuve={epreuve}
+            masquerTypeBadge={masquerTypeBadge}
             className={
               threePerView
                 ? "w-72 shrink-0 snap-start sm:w-[calc((100%-2rem)/3)]"

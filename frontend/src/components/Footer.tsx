@@ -3,7 +3,7 @@ import { Mail, MessageCircle, ShieldCheck } from "lucide-react"
 
 import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
 import { useCountry } from "@/context/CountryContext"
-import { catalogueHomePath, coursListPath } from "@/lib/countryPath"
+import { catalogueHomePath, coursListPath, epreuvesListPath } from "@/lib/countryPath"
 
 const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 const CONTACT_WHATSAPP = "+237 670 40 13 93"
@@ -13,7 +13,7 @@ export function Footer() {
   const { country } = useCountry()
 
   const platformLinks = [
-    { to: catalogueHomePath(country), label: "Épreuves" },
+    { to: epreuvesListPath(country), label: "Épreuves" },
     { to: coursListPath(country), label: "Cours" },
     { to: "/quiz", label: "Quiz" },
     { to: "/fiches", label: "Fiches (répétiteurs)" },

@@ -6,6 +6,7 @@ d'une fois pour une même transaction. CamPay lui-même n'est jamais appelé en 
 """
 
 import threading
+from datetime import timedelta
 from unittest import skipUnless
 from unittest.mock import patch
 
@@ -15,8 +16,8 @@ from django.test import TestCase, TransactionTestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 
-from catalog.models import Cursus, Examen
-from subscriptions.models import InscriptionInedite, ParrainageRecompense, Plan, ProductType, Subscription
+from catalog.models import Cursus, Examen, ExamSession
+from subscriptions.models import DureeMode, InscriptionInedite, ParrainageRecompense, Plan, ProductType, Subscription
 from users.models import User
 
 from .campay_client import CampayError
@@ -345,6 +346,30 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(transaction.campay_reference, "campay-ref-123")
         self.assertEqual(transaction.user, self.user)
 
+    @patch("payments.models.campay_client.init_collect")
+    def test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan(self, mock_init):
+        # Le montant encaissé doit suivre Plan.effective_price(), jamais le plafond
+        # `price` brut - sinon un candidat proche de son examen se voit facturer le
+        # tarif plein plutôt que le prix réellement affiché (voir mission tarification
+        # 2026-08-19).
+        mock_init.return_value = {"reference": "campay-ref-jusqua", "status": "PENDING"}
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=5)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=self.cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": plan.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction = Transaction.objects.get(pk=response.data["transaction_id"])
+        self.assertEqual(transaction.amount, 3000)
+
     def test_initiate_payment_requires_plan_id_and_phone(self):
         response = self.client.post("/payments/initiate/", {})
         self.assertEqual(response.status_code, 400)
@@ -552,6 +577,29 @@ class ManualPaymentDeclareAPITests(TestCase):
         payment = ManualPayment.objects.get(pk=response.data["id"])
         self.assertEqual(payment.amount_expected, 2000)
         self.assertEqual(payment.amount_declared, 2500)
+
+    def test_amount_expected_uses_effective_price_for_a_jusqua_examen_plan(self):
+        # Même règle que côté Campay (voir PaymentFlowAPITests.
+        # test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan) :
+        # amount_expected et la validation de amount_declared doivent suivre
+        # Plan.effective_price(), jamais le plafond `price` brut, sinon une déclaration
+        # légitime au prix réellement affiché serait rejetée à tort.
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=5)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=self.cursus, price=12000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+
+        response = self.client.post(
+            "/payments/manual/declare/", self._payload(plan=plan.id, amount_declared=3000),
+        )
+
+        self.assertEqual(response.status_code, 201)
+        payment = ManualPayment.objects.get(pk=response.data["id"])
+        self.assertEqual(payment.amount_expected, 3000)
 
     def test_rejects_amount_declared_below_plan_price(self):
         # Constaté en production : un montant déclaré inférieur au prix de l'offre ne
