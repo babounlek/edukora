@@ -39,6 +39,10 @@ export interface Subject {
   code: string
   label: string
   country: Country
+  /** Nombre de cours publiés dans cette matière. Servi par /catalog/subjects/ seul
+   * (voir SubjectListSerializer côté backend) - absent des Subject imbriqués dans un
+   * Cours ou une Épreuve, d'où l'optionnalité. */
+  cours_count?: number
 }
 
 export interface Pays {
@@ -113,6 +117,10 @@ export interface Epreuve {
   origine: Origine
   origine_display: string
   etablissement: string
+  // Organisme qui ORGANISE l'examen ("Office du Baccalauréat du Cameroun", "MINESEC",
+  // "Edukora" pour une épreuve inédite), à distinguer de `etablissement` qui dit où
+  // l'épreuve a été composée. Vide quand l'information n'est pas disponible.
+  institution: string
   nature_epreuve: NatureEpreuve | ""
   nature_epreuve_display: string
   themes: Tag[]
@@ -144,6 +152,9 @@ export interface EpreuveHeader {
   coefficient: string | null
   origine: string | null
   etablissement: string | null
+  // Organisme organisateur - null quand il n'est pas connu (examen blanc sans
+  // organisateur identifié, pays dont le référentiel n'est pas encore renseigné).
+  institution: string | null
   // Théorique/Pratique - null quand cette distinction n'existe pas pour la matière ou
   // n'a pas pu être déterminée (jamais deviné à l'ingestion, voir NatureEpreuve).
   nature: string | null
@@ -172,6 +183,11 @@ export interface EpreuveContent {
   id: number
   title: string
   content_markdown: string
+  // Consigne(s) valables pour l'épreuve ENTIÈRE ("le candidat traitera un seul sujet
+  // au choix", "l'épreuve comporte deux parties indépendantes") - chaîne vide la
+  // plupart du temps (rare dans le corpus). Affichée une seule fois, avant le
+  // sommaire/premier exercice - jamais dans `exercises`, voir EpreuveExercise.
+  introduction_markdown: string
   // Vide pour un contenu non sectionné (ex. FICHE) - la page de lecture retombe
   // alors sur content_markdown tel quel plutôt que d'afficher un article vide.
   exercises: EpreuveExercise[]
@@ -196,6 +212,9 @@ export interface EpreuvePreview {
   id: number
   title: string
   preview_markdown: string
+  // Voir EpreuveContent.introduction_markdown - même consigne d'épreuve, exposée
+  // aussi côté sujet public (jamais de corrigé dedans, uniquement la consigne).
+  introduction_markdown: string
   // Le même sujet découpé par exercice - vide pour une Lesson sans Exercise (FICHE...),
   // la fiche retombe alors sur preview_markdown tel quel.
   exercises: EpreuvePreviewExercise[]
@@ -218,6 +237,11 @@ export interface Cours {
   tags: Tag[]
   has_access: boolean
   is_read: boolean
+  // Gratuit dès qu'au moins une épreuve source de ce cours est elle-même vitrine
+  // (voir catalog.Cours.est_vitrine côté backend) - distinct de has_access, qui vaut
+  // aussi true pour un abonné payant. Sert uniquement à afficher "Gratuit" plutôt
+  // qu'à décider l'accès : has_access reste la seule source de vérité pour ça.
+  est_vitrine: boolean
   apercu_contenu: CoursApercuContenu
   created_at: string
 }
@@ -560,6 +584,10 @@ export interface TentativeInediteExercice {
   id: number
   numero_exercice: string
   points: string
+  // Support partagé par les questions de l'exercice (document à exploiter, tableau
+  // de résultats...) - affiché une seule fois en tête d'exercice, jamais répété
+  // question par question. Chaîne vide pour la plupart des exercices.
+  enonce_intro_markdown: string
   questions: TentativeInediteQuestion[]
 }
 

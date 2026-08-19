@@ -11,7 +11,7 @@ import { trackEvent } from "@/lib/analytics"
 import { Sentry } from "@/lib/sentry"
 import { cn, formatAmount } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -89,6 +89,12 @@ export function SubscribePage() {
   // booléen sur un Plan ABONNEMENT comme inclut_inedit), donc le filtre porte
   // directement sur product_type plutôt que sur un champ dédié.
   const requireRepetiteur = searchParams.get("require") === "repetiteur"
+  // Formule déjà choisie sur la page Tarifs (nombre de jours, ou "examen" pour le
+  // Pack Examen dont la durée n'est pas fixe) : la sélection arrive ici présélectionnée
+  // sur CETTE formule. Sans ce relais, cliquer "Choisir Essentiel" atterrissait sur un
+  // formulaire présélectionné sur une autre formule - le choix venait d'être fait, la
+  // page suivante le perdait.
+  const dureeParam = searchParams.get("duree")
   const navigate = useNavigate()
   const { isAuthenticated, isLoading, user } = useAuth()
   const { country } = useCountry()
@@ -126,7 +132,8 @@ export function SubscribePage() {
       if (requireInedit) eligiblePlans = data.filter((p) => p.inclut_inedit)
       else if (requireRepetiteur) eligiblePlans = data.filter((p) => p.product_type === "ADDON_REPETITEUR")
       setPlans(eligiblePlans)
-      // Présélectionne la formule la plus populaire (Jusqu'à l'Examen - même
+      // À défaut de formule explicitement demandée (`duree`, voir plus haut),
+      // présélectionne la formule la plus populaire (Jusqu'à l'Examen - même
       // convention que la mise en avant ⭐ sur PricingPage, grille à 2 paliers du
       // 2026-08-19) plutôt que la première de la liste (la moins chère,
       // `Plan.Meta.ordering` trie par prix croissant) - repli sur la première.
@@ -139,15 +146,22 @@ export function SubscribePage() {
       // décision volontaire pour un add-on encore sans historique d'usage, cohérente
       // avec "démarrer petit" plutôt que pousser l'engagement le plus long d'emblée.
       const abonnementEligibles = eligiblePlans.filter((p) => p.product_type === "ABONNEMENT")
+      const demande = dureeParam
+        ? abonnementEligibles.find((p) =>
+            dureeParam === "examen"
+              ? p.duration_mode === "JUSQUA_EXAMEN"
+              : p.duration_mode === "FIXE" && p.duration_days === Number(dureeParam),
+          )
+        : undefined
       const populaire = abonnementEligibles.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
-      setSelectedPlanId((populaire ?? abonnementEligibles[0] ?? eligiblePlans[0])?.id ?? null)
+      setSelectedPlanId((demande ?? populaire ?? abonnementEligibles[0] ?? eligiblePlans[0])?.id ?? null)
     })
     if (cursusId) {
       listCursus().then((all) => {
         setCursus(all.find((c) => c.id === Number(cursusId)) ?? null)
       })
     }
-  }, [cursusId, requireInedit, requireRepetiteur])
+  }, [cursusId, requireInedit, requireRepetiteur, dureeParam])
 
   useEffect(() => {
     return () => {
@@ -464,7 +478,7 @@ export function SubscribePage() {
                 {requireRepetiteur ? (
                   <Link to="/fiches">Générer une fiche</Link>
                 ) : (
-                  <Link to={catalogueHomePath(country)}>Retour au catalogue</Link>
+                  <Link to={epreuvesListPath(country)}>Retour au catalogue</Link>
                 )}
               </Button>
             </div>

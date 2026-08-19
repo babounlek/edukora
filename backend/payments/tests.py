@@ -374,6 +374,27 @@ class PaymentFlowAPITests(TestCase):
         response = self.client.post("/payments/initiate/", {})
         self.assertEqual(response.status_code, 400)
 
+    def test_initiate_payment_rejects_pack_examen_hors_fenetre(self):
+        # Le catalogue ne propose déjà plus cette offre hors fenêtre d'urgence (voir
+        # subscriptions.PlanListView) - ce test ferme le POST direct avec un plan_id
+        # récupéré pendant la fenêtre et rejoué après, qui donnerait sinon presque un
+        # an d'accès pour 3 000 FCFA.
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
+            date_debut=(timezone.now() + timedelta(days=280)).date(),
+        )
+        pack = Plan.objects.create(
+            name="Pack Examen", cursus=self.cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": pack.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(Transaction.objects.filter(plan=pack).exists())
+
     def test_initiate_payment_rejects_inactive_plan(self):
         self.plan.is_active = False
         self.plan.save()
@@ -600,6 +621,25 @@ class ManualPaymentDeclareAPITests(TestCase):
         self.assertEqual(response.status_code, 201)
         payment = ManualPayment.objects.get(pk=response.data["id"])
         self.assertEqual(payment.amount_expected, 3000)
+
+    def test_rejects_pack_examen_hors_fenetre(self):
+        # Même règle que pour le paiement Campay : une offre au catalogue n'est pas
+        # forcément vendable aujourd'hui (voir Plan.est_achetable).
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
+            date_debut=(timezone.now() + timedelta(days=280)).date(),
+        )
+        pack = Plan.objects.create(
+            name="Pack Examen", cursus=self.cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        response = self.client.post(
+            "/payments/manual/declare/", self._payload(plan=pack.id, amount_declared=3000),
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(ManualPayment.objects.filter(plan=pack).exists())
 
     def test_rejects_amount_declared_below_plan_price(self):
         # Constaté en production : un montant déclaré inférieur au prix de l'offre ne

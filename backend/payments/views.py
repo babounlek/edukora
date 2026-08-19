@@ -35,6 +35,12 @@ def initiate_payment(request):
         return Response({"error": "Fournis plan_id et phone_number."}, status=400)
 
     plan = get_object_or_404(Plan, pk=plan_id, is_active=True)
+    # Le Pack Examen n'est vendable que dans la fenêtre d'urgence qui précède la
+    # session (voir Plan.est_achetable) - la liste des offres ne le propose déjà plus
+    # hors fenêtre, ce contrôle ferme le POST direct avec un plan_id récupéré avant.
+    if not plan.est_achetable():
+        return Response({"error": "Cette offre n'est pas disponible actuellement."}, status=400)
+
     transaction = Transaction.objects.create(
         user=request.user, plan=plan, amount=plan.effective_price(), phone_number=phone_number,
     )

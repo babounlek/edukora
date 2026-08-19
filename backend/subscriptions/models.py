@@ -38,6 +38,12 @@ class ProductType(models.TextChoices):
     ADDON_REPETITEUR = "ADDON_REPETITEUR", "Add-on Fiches Répétiteur"
 
 
+# Fenêtre pendant laquelle un Plan "jusqu'à l'examen" est proposé à la vente (voir
+# Plan.est_achetable). Au-delà, "jusqu'à ton examen" ne crée plus aucune urgence
+# réelle et le pack revient moins cher au jour que l'abonnement annuel.
+FENETRE_URGENCE_JOURS = 60
+
+
 class Plan(models.Model):
     """Offre commerciale : ce qu'un utilisateur achète (prix, durée, périmètre d'accès)."""
 
@@ -65,6 +71,10 @@ class Plan(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Attribut de classe (pas un champ) servant de valeur par défaut au mémo
+    # d'instance de effective_duration_days - voir sa docstring.
+    _effective_days_cache = None
+
     class Meta:
         ordering = ["cursus", "price"]
 
@@ -77,9 +87,19 @@ class Plan(models.Model):
         JUSQUA_EXAMEN, calculée dynamiquement depuis la prochaine ExamSession de
         l'examen du cursus - jamais figée dans duration_days, pour rester correcte
         d'une session d'examen sur l'autre sans avoir à rééditer le Plan chaque année.
+
+        Mémoïsé par instance : la sérialisation d'une liste de plans appelle cette
+        méthode plusieurs fois par plan (durée affichée puis est_achetable), chaque
+        appel coûtant sinon une requête ExamSession. Sans effet sur la fraîcheur -
+        une instance ne vit que le temps d'une requête HTTP.
         """
         if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
             return self.duration_days
+        if self._effective_days_cache is None:
+            self._effective_days_cache = self._calculer_duree_jusqua_examen()
+        return self._effective_days_cache
+
+    def _calculer_duree_jusqua_examen(self):
         session = ExamSession.prochaine_pour(self.cursus.country, self.cursus.examen)
         if session is None:
             # Aucune date d'examen configurée pour ce (pays, examen) : filet de
@@ -103,6 +123,22 @@ class Plan(models.Model):
         jours = self.effective_duration_days()
         taux_journalier = PRIX_MENSUEL_REFERENCE / DUREE_MENSUEL_REFERENCE_JOURS
         return min(self.price, max(PLANCHER_JUSQUA_EXAMEN, round(jours * taux_journalier)))
+
+    def est_achetable(self):
+        """
+        `is_active` dit qu'une offre existe au catalogue ; ceci dit qu'elle est
+        vendable MAINTENANT. Seul le Pack Examen (JUSQUA_EXAMEN) fait la différence :
+        à 3 000 FCFA il n'a de sens que dans la fenêtre d'urgence qui précède la
+        session. Hors fenêtre il donnerait, ex. à 281 jours de la session, presque un
+        an d'accès pour un cinquième du prix de la formule Max (15 000 FCFA / 365 j) -
+        la règle est donc portée par le modèle et appliquée à TOUS les points
+        d'entrée (liste des offres, paiement Campay, déclaration de paiement manuel),
+        jamais seulement par un filtre d'affichage côté frontend qu'un simple POST
+        avec le bon plan_id contournerait.
+        """
+        if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
+            return True
+        return self.effective_duration_days() <= FENETRE_URGENCE_JOURS
 
 
 class SubscriptionManager(models.Manager):

@@ -141,6 +141,48 @@ class PlanEffectivePriceTests(TestCase):
         self.assertEqual(plan.effective_price(), 3000)
 
 
+class PlanEstAchetableTests(TestCase):
+    """
+    Le Pack Examen (JUSQUA_EXAMEN, 3 000 FCFA) ne doit être vendable que dans la
+    fenêtre d'urgence : hors fenêtre il donnerait presque un an d'accès pour un
+    cinquième du prix de la formule Max. Règle portée par le modèle parce qu'elle est
+    appliquée sur trois points d'entrée distincts (voir Plan.est_achetable).
+    """
+
+    def test_plan_a_duree_fixe_est_toujours_achetable(self):
+        plan = Plan.objects.create(
+            name="Max (1 an)", cursus=_cursus(), price=15000,
+            duration_mode=DureeMode.FIXE, duration_days=365,
+        )
+        self.assertTrue(plan.est_achetable())
+
+    def test_pack_examen_est_achetable_dans_la_fenetre(self):
+        cursus = _cursus()
+        ExamSession.objects.create(
+            country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=45)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Pack Examen", cursus=cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        self.assertTrue(plan.est_achetable())
+
+    def test_pack_examen_n_est_pas_achetable_hors_fenetre(self):
+        cursus = _cursus()
+        ExamSession.objects.create(
+            country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
+            date_debut=(timezone.now() + timedelta(days=280)).date(),
+        )
+        plan = Plan.objects.create(
+            name="Pack Examen", cursus=cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        self.assertFalse(plan.est_achetable())
+
+
 class SubscriptionExtendTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677000010", password="x")
@@ -332,6 +374,35 @@ class PlanListViewTests(TestCase):
         names = [p["name"] for p in response.data]
         self.assertIn("Actif", names)
         self.assertNotIn("Retiré", names)
+
+    def test_pack_examen_hors_fenetre_n_est_pas_liste(self):
+        """Le catalogue public ne propose pas une offre que le paiement refuserait."""
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
+            date_debut=(timezone.now() + timedelta(days=280)).date(),
+        )
+        Plan.objects.create(
+            name="Pack Examen (hors fenêtre)", cursus=self.cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        response = self.client.get("/subscriptions/plans/", {"cursus": self.cursus.pk})
+
+        self.assertNotIn("Pack Examen (hors fenêtre)", [p["name"] for p in response.data])
+
+    def test_pack_examen_dans_la_fenetre_est_liste(self):
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=30)).date(),
+        )
+        Plan.objects.create(
+            name="Pack Examen (dans la fenêtre)", cursus=self.cursus, price=3000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
+        )
+
+        response = self.client.get("/subscriptions/plans/", {"cursus": self.cursus.pk})
+
+        self.assertIn("Pack Examen (dans la fenêtre)", [p["name"] for p in response.data])
 
     def test_filters_by_cursus_query_param(self):
         Plan.objects.create(name="Pour ce cursus", cursus=self.cursus, price=1000)

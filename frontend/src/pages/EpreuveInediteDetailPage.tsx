@@ -16,7 +16,7 @@ import { formatCursusGroups } from "@/lib/cursus"
 import { trackEvent } from "@/lib/analytics"
 import { formatAmount } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
-import { catalogueHomePath, coursDetailPath, coursReaderPath, epreuveInediteDetailPath } from "@/lib/countryPath"
+import { coursDetailPath, coursReaderPath, epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 
 /** Fiche détail d'une épreuve inédite - miroir simplifié d'EpreuveDetailPage.tsx : pas
  * de sujet complet en aperçu public (contrairement à previewEpreuve côté classique,
@@ -146,7 +146,7 @@ export function EpreuveInediteDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <Link
-        to={catalogueHomePath(country)}
+        to={epreuvesListPath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
@@ -220,17 +220,20 @@ export function EpreuveInediteDetailPage() {
             <div className="flex w-full flex-col gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
               <p className="flex items-center gap-1.5 text-sm font-medium">
                 <Lock className="size-4 shrink-0" />
-                Réservée aux abonnés de la formule Max sur ce cursus.
+                Réservée aux formules qui incluent les épreuves inédites (Max, Pack Examen) sur ce cursus.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="w-fit">
                   {/* require=inedit : SubscribePage ne propose alors que les formules qui
                       débloquent réellement l'add-on Épreuves Inédites (voir sa docstring) -
                       sans ça, rien n'empêchait de repartir avec Essentiel/Performance. */}
-                  <Link to={`/abonnement?cursus=${epreuve.cursus[0]?.id}&require=inedit`}>Débloquer avec Max</Link>
+                  <Link to={`/abonnement?cursus=${epreuve.cursus[0]?.id}&require=inedit`}>Débloquer l'accès</Link>
                 </Button>
+                {/* Pas de durée dans ce libellé : depuis l'ajout du Pack Examen, la
+                    formule la moins chère qui débloque les inédites n'est plus
+                    forcément l'abonnement annuel. */}
                 {minPrice !== null && (
-                  <span className="text-sm text-muted-foreground">à partir de {formatAmount(minPrice)} FCFA par an</span>
+                  <span className="text-sm text-muted-foreground">à partir de {formatAmount(minPrice)} FCFA</span>
                 )}
               </div>
               <ParrainageHint />
@@ -265,7 +268,7 @@ export function EpreuveInediteDetailPage() {
 
         {error && <p className="text-sm text-destructive">{error}</p>}
 
-        <BackToTopBar links={[{ to: catalogueHomePath(country), label: "Retour au catalogue" }]} />
+        <BackToTopBar links={[{ to: epreuvesListPath(country), label: "Retour au catalogue" }]} />
       </div>
     </div>
   )

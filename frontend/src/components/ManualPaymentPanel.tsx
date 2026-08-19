@@ -38,6 +38,13 @@ const OPERATOR_STYLES: Record<MobileMoneyOperator, { initials: string; badgeClas
  * amount_expected lui-même depuis plan.effective_price() au moment de la
  * déclaration (voir payments.serializers) - jamais depuis `plan.price` brut, qui
  * n'est qu'un plafond pour un Plan JUSQUA_EXAMEN (voir subscriptions.models.Plan).
+ *
+ * Ne demande que les trois informations qui identifient le versement (numéro payeur,
+ * référence de transaction, montant) : `paid_at` et `proof` restent acceptés par
+ * l'API et affichés dans l'admin pour les déclarations passées, mais ne sont
+ * volontairement plus saisis ici - un formulaire long est un formulaire abandonné,
+ * et l'horodatage comme la capture ne faisaient que redire ce que la référence de
+ * transaction permet déjà de vérifier auprès de l'opérateur.
  */
 export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPaymentPanelProps) {
   const [accounts, setAccounts] = useState<MobileMoneyAccount[] | null>(null)
@@ -46,8 +53,6 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
   const [payerPhoneNumber, setPayerPhoneNumber] = useState("")
   const [transactionReference, setTransactionReference] = useState("")
   const [amountDeclared, setAmountDeclared] = useState(String(plan.effective_price))
-  const [paidAt, setPaidAt] = useState("")
-  const [proof, setProof] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -103,8 +108,6 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
         amountDeclared: amount,
         payerPhoneNumber,
         transactionReference,
-        paidAt: paidAt ? new Date(paidAt).toISOString() : undefined,
-        proof: proof ?? undefined,
       })
       onDeclared(payment)
     } catch (err) {
@@ -193,7 +196,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
                 onChange={(e) => setTransactionReference(e.target.value)}
               />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 sm:col-span-2">
               <Label htmlFor="amount-declared">Montant payé (FCFA)</Label>
               <Input
                 id="amount-declared"
@@ -202,21 +205,6 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
                 onChange={(e) => setAmountDeclared(e.target.value.replace(/\D/g, ""))}
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="paid-at">Date/heure (optionnel)</Label>
-              <Input id="paid-at" type="datetime-local" value={paidAt} onChange={(e) => setPaidAt(e.target.value)} />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="proof">Capture d'écran du SMS (optionnel)</Label>
-            <Input
-              id="proof"
-              type="file"
-              accept="image/*,.pdf"
-              onChange={(e) => setProof(e.target.files?.[0] ?? null)}
-              className="cursor-pointer text-muted-foreground file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-secondary-foreground"
-            />
           </div>
 
           {error && <p className="text-sm text-destructive">{error}</p>}

@@ -13,6 +13,7 @@ existant (ingestion.py, admin.py, les vues) n'a besoin de changer.
 """
 
 import re
+import unicodedata
 
 from .models import Cours, StatutContenu, TypeReponse
 
@@ -30,8 +31,25 @@ _EXERCICE_HEADING_RE = re.compile(r"^##\s*Exercice\s+\S+[^\n]*\n+", re.IGNORECAS
 
 # Isole chaque bloc "### Rappel de méthode" (un exercice peut en contenir plusieurs,
 # un par sous-question) pour y injecter un marqueur [COURS_LINK:id] quand ce rappel a
-# donné naissance à un Cours - voir _annotate_cours_links.
-_RAPPEL_BLOCK_RE = re.compile(r"###\s*Rappel de méthode\s*\n+.*?(?=\n#{1,6}[ \t]|\n---|\Z)", re.IGNORECASE | re.DOTALL)
+# donné naissance à un Cours - voir annotate_cours_links plus bas.
+#
+# Le lookahead s'arrête à la première ligne blanche (\n{2,}), pas seulement au
+# prochain "###"/"---" : un "Rappel de méthode" n'est en pratique jamais qu'un seul
+# paragraphe (même hypothèse que le frontend, voir extractCallouts dans
+# frontend/src/lib/markdown.ts). Sans cet arrêt précoce, le bloc capturé s'étendait
+# jusqu'au PROCHAIN "### Rappel de méthode" (la sous-question 2 n'étant elle-même
+# jamais un titre "###") - le marqueur [COURS_LINK:...] atterrissait alors après le
+# corrigé ENTIER de la sous-question 1 (et même après l'énoncé de la 2), au lieu de
+# juste après le paragraphe du rappel auquel il appartient. Le lien "Voir le cours
+# complet" restait techniquement présent dans le Markdown mais totalement décroché de
+# son encadré "Rappel de méthode" - un élève scrollant l'encadré n'y voyait jamais de
+# lien juste en dessous (signalé en prod : /cm/epreuves/mathematiques-bepc-2026/lire).
+# "m[eé]thode" (pas "méthode" littéral) : même tolérance que le frontend
+# (extractCallouts) - correction-experte omet régulièrement l'accent en pratique.
+_RAPPEL_BLOCK_RE = re.compile(
+    r"###\s*Rappel de m[eé]thode\s*\n+.*?(?=\n{2,}|\n#{1,6}[ \t]|\n---|\Z)",
+    re.IGNORECASE | re.DOTALL,
+)
 
 # Marqueur de secours que correction-experte ajoute quand un rappel_de_methode ne peut
 # pas être fait à correspondre verbatim au corrigé (voir SKILL.md) - la publication étant
@@ -79,9 +97,26 @@ def _strip_redundant_local_marker(text, numero):
     lettre/le chiffre local hérité de l'énoncé source, jamais le chemin complet de la
     partie, donc sans ceci le lecteur voit le même repère deux fois : une fois dans le
     préfixe compilé ("**A.3.b.**"), une fois dans le texte d'origine ("(b)").
+
+    Le marqueur se présente aussi SANS parenthèses ("ii. ", "b. ") - forme constatée
+    sur les épreuves de chimie, où une sous-question numérotée en romain donnait
+    "**1.ii.** ii. $CH_3-CO-...$" en lecture. Ce cas échappe à
+    _ENONCE_ALREADY_LABELED_RE, qui ne reconnaît qu'une lettre SEULE suivie de sa
+    ponctuation ("a.") : "ii." en compte deux, donc le préfixe compilé était bien
+    ajouté, par-dessus un marqueur déjà là.
+
+    Cette 2e forme est réservée aux segments alphabétiques (romains, lettres) et exige
+    toujours une ponctuation derrière : un segment numérique n'en a pas besoin (il est
+    déjà couvert par _ENONCE_ALREADY_LABELED_RE, donc jamais préfixé ni traité ici) et
+    l'accepter ici découperait un texte qui commence par un nombre sans rapport
+    ("5.2 g de soude..." pour un numero "1.5"). Sans ponctuation obligatoire, un
+    numero "1.i" mangerait de la même façon le "i" initial de "ionisation".
     """
     last_segment = numero.rsplit(".", 1)[-1]
-    marker_re = re.compile(rf"^\(\s*{re.escape(last_segment)}\s*\)[.:]?\s*", re.IGNORECASE)
+    formes = [rf"\(\s*{re.escape(last_segment)}\s*\)[.:]?"]
+    if last_segment.isalpha():
+        formes.append(rf"{re.escape(last_segment)}\s*[.):]")
+    marker_re = re.compile(rf"^\s*(?:{'|'.join(formes)})\s*", re.IGNORECASE)
     return marker_re.sub("", text, count=1)
 
 
@@ -334,15 +369,22 @@ def _clean_exercise_corrige(exercise):
     return annotate_cours_links(corrige, exercise.rappels_de_methode.select_related("cours").all())
 
 
-def _render_exercise_block(exercise):
+def _render_exercise_block(exercise, nb_labels_a_retirer=None):
     """
     Rend un Exercise validé en bloc Markdown autonome (énoncé + corrigé nettoyé),
-    partagé par compile_lesson_from_exercises() et lesson_preview_markdown(). Pas de
-    "## Exercice N" injecté ici : enonce_markdown porte déjà cette numérotation
-    lui-même (ex. "**Exercice 1 (5 points).**"), telle que transcrite depuis
-    l'épreuve source - l'ajouter en plus produirait un doublon visible.
+    utilisé par compile_lesson_from_exercises(). Pas de "## Exercice N" injecté ici :
+    enonce_markdown porte déjà cette numérotation lui-même (ex. "**Exercice 1 (5
+    points).**"), telle que transcrite depuis l'épreuve source - l'ajouter en plus
+    produirait un doublon visible.
+
+    `nb_labels_a_retirer`, quand fourni par l'appelant (voir _partie_labels_to_strip),
+    est le nombre de repères de partie à effacer de la tête de cet énoncé - déjà
+    affichés par l'exercice précédent de cette même partie.
     """
-    return f"{exercise.enonce_markdown}\n\n{_clean_exercise_corrige(exercise)}"
+    enonce = exercise.enonce_markdown
+    if nb_labels_a_retirer:
+        enonce = _strip_leading_label(enonce, nb_labels_a_retirer)
+    return f"{enonce}\n\n{_clean_exercise_corrige(exercise)}"
 
 
 # `numero_exercice` est un CharField - il doit accepter tout repère utilisé par l'épreuve
@@ -462,6 +504,105 @@ def _exercise_titre_et_points(exercise):
     return titre, points
 
 
+# correction-experte recopie parfois le repère de partie ("**A. Évaluation des
+# ressources (10 points)**", "**PARTIE II : ...**") à l'identique en tête de CHAQUE
+# exercice d'une même partie plutôt que du seul premier (repéré sur 8 épreuves du
+# corpus au scan du 2026-08-18, ex. mathematiques-bepc-2024 : les exercices 1 à 3
+# ouvrent tous les trois sur "PARTIE A : ÉVALUATION DES RESSOURCES - ACTIVITÉS
+# NUMÉRIQUES."). Légitime dans enonce_intro_markdown de CHAQUE exercice concerné - ce
+# repère porte sur l'exercice ENTIER, pas sur une seule sous-question (contrairement à
+# l'hypothèse de ingestion_repairs._flag_part_headers_in_intro, qui ne s'applique pas
+# ici) - mais redondant une fois plusieurs exercices affichés à la suite : seule sa
+# première occurrence doit rester visible. Même détection qu'à l'ingestion (voir
+# ingestion_repairs._INTRO_PART_HEADER_RE / _BARE_LETTERED_PART_HEADER_RE), dupliquée
+# ici plutôt qu'importée : rendering.py ne dépend pas d'ingestion_repairs (préoccupations
+# distinctes, voir docstring de tête de ce fichier). Séparateur point OU tiret (simple/
+# demi-cadratin/cadratin, espace autour optionnel) : le corpus SVT/Espagnol écrit aussi
+# bien "I. Évaluation..." que "I - Évaluation..."/"III- Exploitation...".
+_PARTIE_LABEL_RE = re.compile(r"\A\s*(?:Partie\s+\S|[IVX]{1,4}\s*[.\-–—]|[A-Z]\s*[.\-–—]\s)", re.IGNORECASE)
+
+# Titre Markdown ou premier segment en gras en tête d'un texte, quoi qu'il porte
+# ensuite sur la même ligne (correction-experte enchaîne parfois directement le
+# contenu après le repère, sans saut de ligne - ex. "**PARTIE A : ... NUMÉRIQUES.** On
+# considère le nombre..."). Même principe que _REFERENCE_EXERCICE_RE ci-dessus,
+# factorisé ici pour être réutilisable exercice par exercice plutôt qu'à l'échelle
+# d'une seule ligne déjà isolée.
+_LEADING_LABEL_RE = re.compile(r"\A\s*(?:(#{1,4}[^\n]*)|\*\*([^\n*]+?)\*\*)")
+
+
+def _leading_label(text):
+    """(repère, position juste après lui dans `text`) - (None, 0) si `text` ne
+    commence pas par un titre Markdown ou un segment en gras."""
+    match = _LEADING_LABEL_RE.match(text or "")
+    if not match:
+        return None, 0
+    contenu = match.group(1) or match.group(2)
+    if match.group(1):
+        contenu = contenu.lstrip("#").strip()
+    return contenu.strip(), match.end()
+
+
+def _leading_label_stack(text):
+    """
+    (pile de repères de partie, position juste après le dernier) en tête de `text` -
+    ([], 0) si `text` ne commence par aucun. Un exercice imbrique parfois PLUSIEURS
+    repères d'affilée ("**Partie A : Évaluation des ressources (10 points)**" puis,
+    juste en dessous, "**I - Évaluation des savoirs (4 points)**" avant le contenu
+    propre à l'exercice) - voir _partie_labels_to_strip, qui compare deux piles plutôt
+    que deux repères isolés. S'arrête au premier segment en tête qui n'est PAS un
+    repère de partie (_PARTIE_LABEL_RE) : la propre référence de l'exercice
+    ("**Exercice 2 : ...**") ne rejoint donc jamais la pile.
+    """
+    pile = []
+    reste = text or ""
+    while True:
+        contenu, fin = _leading_label(reste)
+        if not contenu or not _PARTIE_LABEL_RE.match(contenu):
+            break
+        pile.append(contenu)
+        reste = reste[fin:].lstrip()
+    return pile, len(text or "") - len(reste)
+
+
+def _partie_labels_to_strip(exercises):
+    """
+    {exercise.pk: nombre de repères de tête à retirer} pour chaque Exercise de
+    `exercises` (déjà triés par exercise_sort_key) dont enonce_intro_markdown répète
+    EXACTEMENT, position par position, le début de la pile de repères déjà portée par
+    l'exercice précédent - dict vide si aucun exercice ne répète son prédécesseur. Deux
+    piles ne partagent que leur PRÉFIXE commun : dès qu'un niveau diffère (ex. bascule
+    de "PARTIE A"/"I -" à "PARTIE A"/"II -", ou de "PARTIE A" à "PARTIE B"), ce niveau
+    et tous les suivants restent affichés et deviennent la nouvelle pile active - voir
+    _leading_label_stack/_PARTIE_LABEL_RE.
+    """
+    a_retirer = {}
+    pile_active = []
+    for exercise in exercises:
+        pile, _ = _leading_label_stack(exercise.enonce_intro_markdown)
+        commun = 0
+        while commun < len(pile) and commun < len(pile_active) and pile[commun] == pile_active[commun]:
+            commun += 1
+        if commun:
+            a_retirer[exercise.pk] = commun
+        pile_active = pile_active[:commun] + pile[commun:]
+    return a_retirer
+
+
+def _strip_leading_label(text, nb_labels):
+    """`text` sans ses `nb_labels` premiers repères de partie de tête (voir
+    _leading_label_stack) ni les lignes vides qui les séparent du reste - `text`
+    inchangé si un repère attendu ne s'y retrouve pas (garde-fou, ne devrait pas
+    arriver vu les appelants : `nb_labels` vient toujours de _partie_labels_to_strip,
+    calculé sur ce même `text`)."""
+    reste = text or ""
+    for _ in range(nb_labels or 0):
+        contenu, fin = _leading_label(reste)
+        if not contenu or not _PARTIE_LABEL_RE.match(contenu):
+            return text
+        reste = reste[fin:].lstrip()
+    return reste
+
+
 def lesson_exercises_breakdown(lesson):
     """
     Liste ordonnée {numero_exercice, titre, points, enonce_intro_markdown,
@@ -498,13 +639,16 @@ def lesson_exercises_breakdown(lesson):
     Liste vide pour une Lesson sans Exercise (FICHE, ou tout contenu non sectionné) -
     le frontend retombe alors sur content_markdown tel quel.
     """
-    exercises = lesson.exercises.filter(statut=StatutContenu.VALIDE)
+    exercises = sorted(lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key)
+    a_retirer = _partie_labels_to_strip(exercises)
     result = []
-    for exercise in sorted(exercises, key=exercise_sort_key):
+    for exercise in exercises:
         intro = exercise.enonce_intro_markdown
         enonce = exercise.enonce_markdown
         if intro and enonce.startswith(f"{intro}\n\n"):
             enonce = enonce[len(intro) + 2 :]
+        if exercise.pk in a_retirer:
+            intro = _strip_leading_label(intro, a_retirer[exercise.pk])
         titre, points = _exercise_titre_et_points(exercise)
         result.append({
             "numero_exercice": exercise.numero_exercice,
@@ -538,14 +682,18 @@ def lesson_preview_exercises(lesson):
     exercises = sorted(
         lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key,
     )
+    a_retirer = _partie_labels_to_strip(exercises)
     result = []
     for exercise in exercises:
         titre, points = _exercise_titre_et_points(exercise)
+        enonce_markdown = exercise.enonce_markdown
+        if exercise.pk in a_retirer:
+            enonce_markdown = _strip_leading_label(enonce_markdown, a_retirer[exercise.pk])
         result.append({
             "numero_exercice": exercise.numero_exercice,
             "titre": titre,
             "points": points,
-            "enonce_markdown": exercise.enonce_markdown,
+            "enonce_markdown": enonce_markdown,
         })
     return result
 
@@ -567,7 +715,14 @@ def lesson_preview_markdown(lesson):
     if not exercises:
         return lesson.content_markdown
 
-    blocs = [exercise.enonce_markdown for exercise in exercises]
+    a_retirer = _partie_labels_to_strip(exercises)
+    blocs = [
+        _strip_leading_label(exercise.enonce_markdown, a_retirer[exercise.pk])
+        if exercise.pk in a_retirer else exercise.enonce_markdown
+        for exercise in exercises
+    ]
+    if lesson.introduction_markdown:
+        blocs.insert(0, lesson.introduction_markdown)
     return "\n\n---\n\n".join(blocs)
 
 
@@ -583,13 +738,16 @@ def compile_lesson_from_exercises(lesson):
         ),
         key=exercise_sort_key,
     )
+    a_retirer = _partie_labels_to_strip(exercises)
 
     blocs = []
+    if lesson.introduction_markdown:
+        blocs.append(lesson.introduction_markdown)
     themes = set(lesson.themes.all())
     mots_cles = set(lesson.mots_cles_recherche.all())
 
     for exercise in exercises:
-        blocs.append(_render_exercise_block(exercise))
+        blocs.append(_render_exercise_block(exercise, a_retirer.get(exercise.pk)))
         themes.update(exercise.themes.all())
         mots_cles.update(exercise.mots_cles_recherche.all())
 
@@ -597,6 +755,63 @@ def compile_lesson_from_exercises(lesson):
     lesson.save(update_fields=["content_markdown", "updated_at"])
     lesson.themes.set(themes)
     lesson.mots_cles_recherche.set(mots_cles)
+
+
+# Connecteurs français qui ne trompent jamais : un vrai fragment de LaTeX brut sans
+# backslash ("U = mV²/(2|q|)", "AE/AB = AF/AC") n'en contient aucun. Volontairement
+# sans accent (comparé à un texte lui-même désaccentué par _strip_accents ci-dessous)
+# pour n'avoir à écrire chaque mot qu'une fois.
+_PROSE_CONNECTOR_WORDS = frozenset({
+    "puis", "avec", "dans", "pour", "avant", "apres", "jamais", "toujours",
+    "soit", "donc", "comme", "alors", "quand", "meme", "deja", "plutot",
+    "sans", "entre", "chaque", "tout", "tous", "toute", "toutes", "ainsi",
+    "lorsque", "celui", "celle", "ceux", "depuis",
+})
+# Un "mot" au sens de ce détecteur : 3 lettres consécutives ou plus - exclut les
+# variables isolées ("x", "AB") et les nombres, sans exclure les mots réels courts.
+_WORDY_TOKEN_RE = re.compile(r"[A-Za-zÀ-ÿ]{3,}")
+
+
+def _strip_accents(text):
+    return "".join(c for c in unicodedata.normalize("NFKD", text) if not unicodedata.combining(c))
+
+
+def _looks_like_prose(text):
+    """
+    Distingue une phrase en français/anglais glissée par erreur dans un champ
+    "formule" (jamais du LaTeX - ex. "Multiplication/division d'abord, puis
+    addition/soustraction au même dénominateur", constaté en prod sur le Cours
+    "calculer-une-expression-fractionnaire...") d'un fragment de LaTeX brut
+    légitime sans backslash (ex. "U = mV²/(2|q|)", "AE/AB = AF/AC = EF/BC").
+    Seulement appelée par _wrap_bare_formula sur un texte déjà sans "$" - un texte
+    qui contient un backslash est toujours réputé volontaire, jamais reclassé ici
+    même s'il combine par ailleurs beaucoup de mots (ex. un "\\text{...}" protège
+    déjà la prose qu'il contient du mode math, c'est la façon correcte de mélanger
+    les deux : \"n_0 \\quad\\text{soit : je pose } 0\").
+
+    Mesuré sur tout le corpus de Cours (876 sections "La règle" affectées avant ce
+    correctif, sur 2786 avec formule_principale/variantes) : ce critère distingue
+    correctement les deux cas sur un large échantillon manuel, sans prétendre à la
+    perfection - un fragment de LaTeX brut à la fois long et très verbal (rare)
+    pourrait encore être classé prose à tort, et l'inverse pour un fragment très
+    court. Aucun moyen plus fiable : KaTeX ne lève ni erreur ni couleur rouge sur
+    ce genre de contenu (il "parse" avec succès, juste avec un résultat visuel
+    faux), donc l'audit-qualite-rendu ne peut pas trancher ça à la place de ce
+    détecteur - voir la mémoire projet, "RappelDeMethode contenu_markdown vide" et
+    apparentés pour d'autres bugs de rendu de la même famille.
+    """
+    if "\\" in text:
+        return False
+    wordy = _WORDY_TOKEN_RE.findall(text)
+    if len(wordy) >= 6:
+        return True
+    if len(wordy) < 4:
+        return False
+    normalized = _strip_accents(text.lower())
+    return any(
+        re.search(rf"(?<![a-z]){re.escape(word)}(?![a-z])", normalized)
+        for word in _PROSE_CONNECTOR_WORDS
+    )
 
 
 def _wrap_bare_formula(text):
@@ -607,7 +822,16 @@ def _wrap_bare_formula(text):
     # sur le Cours "fonction inverse et logarithme"). Envelopper ce second cas en
     # `$$...$$` casse KaTeX ($$$ triple, ou du texte français lu comme du LaTeX
     # display) : on ne l'enveloppe que si aucun `$` n'est déjà présent.
-    return text if "$" in text else f"$${text}$$"
+    #
+    # Troisième cas, découvert après coup (voir _looks_like_prose) : ni "$" ni
+    # backslash, mais aucun LaTeX non plus - une phrase entière glissée dans ce
+    # champ par erreur. L'envelopper en $$...$$ collerait tous les mots ensemble
+    # (le mode math de KaTeX ignore les espaces hors commande) sans jamais lever
+    # d'erreur - on la laisse alors telle quelle, affichée comme texte normal dans
+    # le même encadré "formule" plutôt que comme une fausse formule illisible.
+    if "$" in text or _looks_like_prose(text):
+        return text
+    return f"$${text}$$"
 
 
 def _match_cours_by_title(item, exclude_pk):
