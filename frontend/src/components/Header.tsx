@@ -1,7 +1,9 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
 import { Globe, Menu, Search, UserCircle } from "lucide-react"
 
+import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
@@ -108,18 +110,30 @@ export function Header() {
     !isQuizSection &&
     (pathname === epreuvesListPath(country) || pathname.startsWith("/epreuves"))
 
+  // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
+  // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête
+  // dans la fenêtre de staleTime (60 s, voir main.tsx). Sert uniquement à savoir s'il
+  // existe au moins une inédite pour ce pays - jamais le contenu de la réponse.
+  const { data: inediteRecenteData } = useQuery({
+    queryKey: ["epreuves-inedites-recente", country],
+    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent" }, signal),
+    enabled: Boolean(country),
+  })
+  const hasInedites = Boolean(inediteRecenteData && inediteRecenteData.count > 0)
+
   // Même triplet actif/libellé/lien que les boutons desktop juste en dessous - une
   // seule liste pour ne jamais les faire diverger (ex. un lien ajouté ici sans son
   // équivalent desktop, ou l'inverse). "Épreuves" couvre aussi les épreuves inédites
   // (mêmes filtres sur /epreuves, voir EpreuvesListPage.tsx) - pas d'entrée de nav
-  // dédiée. Pointe vers /epreuves (le moteur de recherche) et non plus vers l'accueil
-  // depuis la scission accueil/catalogue - le logo, lui, reste le retour à l'accueil.
+  // dédiée, juste le point or de `hasInedites` ci-dessous. Pointe vers /epreuves (le
+  // moteur de recherche) et non plus vers l'accueil depuis la scission
+  // accueil/catalogue - le logo, lui, reste le retour à l'accueil.
   const navLinks = [
-    { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection },
-    { to: coursListPath(country), label: "Cours", active: isCoursSection },
-    { to: "/quiz", label: "Quiz", active: isQuizSection },
-    { to: "/fiches", label: "Fiches", active: isFichesSection },
-    { to: "/tarifs", label: "Tarifs", active: isTarifsSection },
+    { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
+    { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
+    { to: "/quiz", label: "Quiz", active: isQuizSection, badge: false },
+    { to: "/fiches", label: "Fiches", active: isFichesSection, badge: false },
+    { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
   ]
 
   return (
@@ -162,11 +176,16 @@ export function Header() {
                     onClick={() => setMobileNavOpen(false)}
                     className={
                       link.active
-                        ? "rounded-md bg-secondary px-3 py-2.5 text-base font-medium text-secondary-foreground"
-                        : "rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-accent"
+                        ? "flex items-center gap-2 rounded-md bg-secondary px-3 py-2.5 text-base font-medium text-secondary-foreground"
+                        : "flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-accent"
                     }
                   >
                     {link.label}
+                    {/* Même point discret que la barre desktop (voir plus bas) - pas de
+                        deuxième traitement visuel à maintenir en parallèle. */}
+                    {link.badge && (
+                      <span className="size-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+                    )}
                   </Link>
                 ))}
               </nav>
@@ -179,9 +198,24 @@ export function Header() {
               </div>
             </SheetContent>
           </Sheet>
-          <Button asChild variant={isEpreuvesSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to={epreuvesListPath(country)}>Épreuves</Link>
-          </Button>
+          <span className="relative hidden lg:inline-flex">
+            <Button asChild variant={isEpreuvesSection ? "secondary" : "ghost"} size="sm">
+              <Link to={epreuvesListPath(country)}>
+                Épreuves
+                {hasInedites && <span className="sr-only"> - épreuves inédites disponibles</span>}
+              </Link>
+            </Button>
+            {/* Pas de 6e lien pour signaler les inédites - la barre desktop est déjà
+                pleine et le menu mobile perd tout à fait ce jeu de largeur (voir
+                CountrySwitcher plus haut). Un point or discret sur "Épreuves" suffit :
+                il ne consomme aucune largeur supplémentaire. */}
+            {hasInedites && (
+              <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex size-2.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-gold opacity-75" />
+                <span className="relative inline-flex size-2.5 rounded-full bg-gold ring-2 ring-background" />
+              </span>
+            )}
+          </span>
           <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to={coursListPath(country)}>Cours</Link>
           </Button>

@@ -1,14 +1,22 @@
 import { useEffect, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, GraduationCap, Layers, Target } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, Target } from "lucide-react"
 
 import heroStudent from "@/assets/hero-student.jpg"
-import { getMyProgression, listCours, listCursus, listEpreuves, listSubjects, readEpreuve } from "@/api/endpoints"
+import {
+  getEpreuveInedite,
+  getMyProgression,
+  listCours,
+  listCursus,
+  listEpreuves,
+  listSubjects,
+  readEpreuve,
+} from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
 import { examCodesFor, examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
-import { coursListPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
+import { coursListPath, epreuveInediteDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 import { cn, formatAmount } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { useAuth } from "@/context/AuthContext"
@@ -45,24 +53,45 @@ interface UniversProps {
   chiffre: string | null
   description: string
   to: string
+  /** Seule "Épreuves Inédites" l'utilise : le produit le plus cher de la maison
+   * mérite de se distinguer visuellement des trois portes d'entrée gratuites,
+   * plutôt que de se fondre dans la même grille. */
+  dore?: boolean
 }
 
-/** Une des trois portes d'entrée du produit. La page d'accueil n'expliquait nulle part
- * qu'il existe trois univers distincts : elle listait des épreuves et laissait deviner
- * le reste depuis le menu du header. */
-function CarteUnivers({ icon, titre, chiffre, description, to }: UniversProps) {
+/** Une des portes d'entrée du produit. La page d'accueil n'expliquait nulle part
+ * qu'elles existent : elle listait des épreuves et laissait deviner le reste depuis
+ * le menu du header. */
+function CarteUnivers({ icon, titre, chiffre, description, to, dore = false }: UniversProps) {
   return (
     <Link
       to={to}
-      className="group flex flex-col gap-2 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+      className={cn(
+        "group relative flex flex-col gap-2 rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
+        dore
+          ? "border-gold/40 bg-gradient-to-b from-gold/5 to-card hover:border-gold/60 hover:shadow-gold/10"
+          : "border-border bg-card hover:border-primary/50 hover:shadow-primary/5",
+      )}
     >
-      <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">{icon}</span>
+      {dore && (
+        <span className="absolute top-5 right-5 rounded-full bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-gold uppercase">
+          Exclusif
+        </span>
+      )}
+      <span
+        className={cn(
+          "flex size-10 items-center justify-center rounded-xl",
+          dore ? "bg-gold/15 text-gold" : "bg-primary/10 text-primary",
+        )}
+      >
+        {icon}
+      </span>
       <h3 className="font-display text-lg font-semibold">
         {titre}
         {chiffre && <span className="ml-2 text-sm font-normal tabular-nums text-muted-foreground">{chiffre}</span>}
       </h3>
       <p className="flex-1 text-sm text-muted-foreground">{description}</p>
-      <span className="flex items-center gap-1.5 text-sm font-medium text-primary">
+      <span className={cn("flex items-center gap-1.5 text-sm font-medium", dore ? "text-gold" : "text-primary")}>
         Explorer
         <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
       </span>
@@ -163,6 +192,30 @@ export function CataloguePage() {
     enabled: Boolean(country) && !hasLegacyFilters,
   })
   const epreuvesTotal = epreuvesTotalData?.count
+
+  // Épreuve inédite mise en avant, pour la section "preuve" dédiée plus bas - jamais un
+  // slug codé en dur (contrairement à EXEMPLE_CORRIGE_SLUG) : la plus récente pour ce
+  // pays, redécouverte à chaque chargement, donc jamais périmée si le contenu change.
+  const { data: inediteRecenteData } = useQuery({
+    queryKey: ["epreuves-inedites-recente", country],
+    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent" }, signal),
+    enabled: Boolean(country) && !hasLegacyFilters,
+  })
+  const inediteVedetteId = inediteRecenteData?.results[0]?.slug ?? inediteRecenteData?.results[0]?.id
+
+  // Fiche complète de cette même épreuve : apercu_enonce_markdown (l'unique question
+  // publique) n'est jamais renseigné sur le catalogue fusionné ci-dessus, seulement sur
+  // la fiche détail (voir Epreuve.apercu_enonce_markdown côté types.ts). `retry: false` :
+  // une inédite sans aperçu public ne doit pas se substituer silencieusement par une
+  // autre. `isLoading` sert uniquement à retarder le repli compact (voir plus bas) le
+  // temps de savoir si un aperçu existe - sans lui, ce repli clignoterait une fraction
+  // de seconde avant que l'encart complet ne le remplace.
+  const { data: inediteVedette, isLoading: inediteVedetteLoading } = useQuery({
+    queryKey: ["epreuve-inedite-vedette", inediteVedetteId],
+    queryFn: () => getEpreuveInedite(String(inediteVedetteId)),
+    enabled: Boolean(inediteVedetteId) && !hasLegacyFilters,
+    retry: false,
+  })
 
   // Niveaux d'examen réellement présents pour ce pays (voir examLevelsFor) - jamais un
   // texte fixe : la plupart des pays n'ont pas de Probatoire. Repli générique tant que
@@ -386,11 +439,16 @@ export function CataloguePage() {
         </section>
       )}
 
-      {/* Les trois univers du produit. Rien sur cette page ne disait qu'ils existent :
-          il fallait les déduire du menu du header. */}
+      {/* Les portes d'entrée du produit. Rien sur cette page ne disait qu'elles
+          existent : il fallait les déduire du menu du header. "Épreuves Inédites"
+          rejoint la grille (voir dore=true sur CarteUnivers) - jusqu'ici son unique
+          présence sur cette page était l'encart vedette plus bas, entièrement masqué
+          quand aucune inédite récente n'a d'aperçu public (voir inediteVedette). Cette
+          carte-ci ne dépend que de inediteRecenteData.count : elle reste visible même
+          quand l'encart vedette ne l'est pas. */}
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        <h2 className="font-display text-xl font-semibold">Trois façons de travailler</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+        <h2 className="font-display text-xl font-semibold">Comment travailler sur Edukora</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <CarteUnivers
             icon={<BookOpen className="size-5" />}
             titre="Épreuves"
@@ -412,17 +470,116 @@ export function CataloguePage() {
             description="Il repère les thèmes où tu échoues et te les repropose au bon moment, jusqu'à ce qu'ils soient acquis."
             to="/quiz"
           />
+          {inediteRecenteData && inediteRecenteData.count > 0 && (
+            <CarteUnivers
+              dore
+              icon={<Crown className="size-5" />}
+              titre="Épreuves Inédites"
+              chiffre={null}
+              description="Un sujet d'examen jamais vu, jamais publié ailleurs - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J."
+              to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}
+            />
+          )}
         </div>
       </section>
+
+      {/* Pendant du "Un exemple, plutôt qu'une promesse" plus haut, mais pour Inédites -
+          jamais un rail de cartes (qui la ferait ressembler à une liste de plus parmi
+          tant d'autres sur cette page) : une vraie question de l'épreuve la plus
+          récente, gratuite et publique (apercu_enonce_markdown), sous le même principe
+          que le hero n'a jamais appliqué à ce produit. Positionnée après les portes
+          d'entrée plutôt que dans le hero : le CTA du hero reste dédié au contenu
+          gratuit (voir plus haut) pour un visiteur qui n'a encore rien lu - celui qui
+          arrive jusqu'ici a déjà vu de quoi il retourne. Si aucune inédite récente n'a
+          d'aperçu public, repli compact juste en dessous plutôt que silence complet -
+          la carte "Épreuves Inédites" de la grille au-dessus reste de toute façon
+          visible dans les deux cas. */}
+      {inediteVedette?.apercu_enonce_markdown && (
+        <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
+          <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-8">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold">
+                <Crown className="size-3.5" />
+                Épreuve inédite
+              </span>
+              {inediteVedette.duree_minutes && (
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Clock className="size-3.5" />
+                  Chronométrée - {inediteVedette.duree_minutes} min
+                </span>
+              )}
+            </div>
+            <h2 className="mt-3 font-display text-xl font-semibold">{inediteVedette.title}</h2>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              Une épreuve d'examen jamais vue, jamais publiée ailleurs - même niveau, même barème que l'examen réel.
+              Voici la première question, en accès libre.
+            </p>
+            <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold">Aperçu</p>
+              <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
+                <EpreuveMarkdown markdown={inediteVedette.apercu_enonce_markdown} />
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
+              <Button asChild>
+                <Link to={epreuveInediteDetailPath(country ?? "", inediteVedette.slug ?? inediteVedette.id)}>
+                  Découvrir cette épreuve
+                  <ArrowRight />
+                </Link>
+              </Button>
+              {/* La vedette n'est qu'une parmi d'autres (voir inediteRecenteData.count) -
+                  sans ce second lien, un visiteur convaincu par l'aperçu n'avait aucun
+                  moyen de savoir que d'autres inédites existent pour d'autres matières. */}
+              <Button asChild variant="outline">
+                <Link to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}>
+                  {inediteRecenteData && inediteRecenteData.count > 1
+                    ? `Voir les ${inediteRecenteData.count} épreuves inédites`
+                    : "Voir toutes les épreuves inédites"}
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Repli du bloc ci-dessus : il existe des inédites pour ce pays, mais aucune
+          n'a d'aperçu public à montrer. `inediteVedetteLoading` évite un flash de ce
+          bandeau avant que l'encart complet ne le remplace le cas échéant. Pas de
+          question ni de matière précise ici (rien de fiable à afficher) - juste un
+          rappel de l'offre et un lien vers la liste, plutôt que de faire disparaître
+          la section entière comme aujourd'hui. */}
+      {!inediteVedette?.apercu_enonce_markdown &&
+        !inediteVedetteLoading &&
+        inediteRecenteData &&
+        inediteRecenteData.count > 0 && (
+          <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
+            <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-6">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+                <Crown className="size-5" />
+              </span>
+              <div className="flex-1">
+                <h2 className="font-display text-base font-semibold">Des épreuves inédites t'attendent</h2>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Des sujets jamais publiés ailleurs, dans les conditions du jour J.
+                </p>
+              </div>
+              <Button asChild>
+                <Link to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}>
+                  Voir les épreuves inédites
+                  <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </section>
+        )}
 
       {/* Dernière section de la page : la preuve sociale construit la confiance du
           visiteur qui vient de voir ce qu'il y a à lire (la section "Un exemple,
           plutôt qu'une promesse" plus haut), avant qu'il ne reparte chercher lui-même
           dans le catalogue ou les tarifs. L'accueil ne porte plus aucun rail de
-          cartes : "Épreuves Inédites" vit sur /tarifs (où un visiteur compare les
-          formules), "À lire gratuitement" a été retiré - la section exemple plus haut
-          en tient déjà lieu, et le CTA du hero mène à du contenu gratuit réel en un
-          clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
+          cartes générique : "À lire gratuitement" a été retiré - la section exemple
+          plus haut en tient déjà lieu, et le CTA du hero mène à du contenu gratuit réel
+          en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
       <SocialProofSection />
     </div>
