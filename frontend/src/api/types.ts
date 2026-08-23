@@ -620,6 +620,12 @@ export interface TentativeInediteExercice {
   id: number
   numero_exercice: string
   points: string
+  // Pile de repères de groupe (Partie/section/matière) - [] pour la grande majorité
+  // des épreuves. Voir InediteTentativePage.tsx : affiché en en-tête au-dessus du
+  // badge "Exercice N" quand il change, jamais comme sommaire cliquable (contrairement
+  // à EpreuveSommaire.tsx côté épreuves classiques - pas de saut en avant pendant un
+  // examen chronométré).
+  groupes: string[]
   // Support partagé par les questions de l'exercice (document à exploiter, tableau
   // de résultats...) - affiché une seule fois en tête d'exercice, jamais répété
   // question par question. Chaîne vide pour la plupart des exercices.

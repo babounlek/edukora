@@ -41,6 +41,10 @@ function ChoixText({ texte }: { texte: string }) {
 interface FlatQuestion extends TentativeInediteQuestion {
   numero_exercice: string
   points: string
+  // Pile de repères de groupe de l'exercice parent (voir TentativeInediteExercice.
+  // groupes) - comparée entre deux questions consécutives pour savoir si un en-tête de
+  // groupe doit s'afficher (voir isNewGroupe plus bas), jamais utilisée pour naviguer.
+  groupes: string[]
   // Renommé (et non `enonce_intro_markdown`) une fois aplati sur la question : à ce
   // niveau, plus rien ne rappelle qu'il appartient à l'exercice, et le confondre avec
   // l'énoncé de la question elle-même le ferait afficher autant de fois qu'il y a de
@@ -54,6 +58,7 @@ function flattenQuestions(tentative: TentativeInedite): FlatQuestion[] {
       ...question,
       numero_exercice: exercice.numero_exercice,
       points: exercice.points,
+      groupes: exercice.groupes,
       exercice_intro_markdown: exercice.enonce_intro_markdown,
     })),
   )
@@ -315,7 +320,18 @@ export function InediteTentativePage() {
           <div key={question.id}>
             {isNewExercice && (
               <>
-                <div className={cn("mb-3 flex items-center gap-1.5", index > 0 && "mt-8 border-t border-border pt-6")}>
+                {/* En-tête de groupe (Partie/section/matière) - affiché uniquement quand
+                    l'épreuve est structurée en groupes (voir ExerciceInedite.groupes,
+                    [] pour la grande majorité des épreuves). Purement informatif : pas de
+                    lien ni d'ancre, contrairement à EpreuveSommaire côté épreuves
+                    classiques - on ne laisse pas l'élève sauter en avant pendant un examen
+                    chronométré, seulement situer où il en est dans l'énoncé qu'il lit. */}
+                {question.groupes.length > 0 && (
+                  <p className={cn("text-xs font-semibold uppercase tracking-wide text-muted-foreground", index > 0 && "mt-8")}>
+                    {question.groupes.join(" · ")}
+                  </p>
+                )}
+                <div className={cn("mb-3 flex items-center gap-1.5", index > 0 && "mt-8 border-t border-border pt-6", index > 0 && question.groupes.length > 0 && "mt-3 border-t-0 pt-0")}>
                   <Badge variant="outline">Exercice {question.numero_exercice}</Badge>
                   {question.points && <Badge variant="outline">{question.points} pts</Badge>}
                 </div>
