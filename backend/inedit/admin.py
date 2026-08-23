@@ -25,8 +25,8 @@ from .sujet_pdf import queue_sujet_pdf_generation
 class ExerciceInediteInline(admin.TabularInline):
     model = ExerciceInedite
     extra = 0
-    fields = ["numero_exercice", "points"]
-    readonly_fields = ["numero_exercice", "points"]
+    fields = ["numero_exercice", "points", "groupes"]
+    readonly_fields = ["numero_exercice", "points", "groupes"]
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -155,7 +155,7 @@ class ExerciceInediteAdmin(admin.ModelAdmin):
     # éditable (Django expose par défaut tout champ non listé ici), en contradiction
     # avec la règle "sous-objets dérivés d'une génération, jamais authored à la main"
     # rappelée en tête de module.
-    readonly_fields = ["epreuve", "numero_exercice", "points", "enonce_intro_markdown"]
+    readonly_fields = ["epreuve", "numero_exercice", "points", "groupes", "enonce_intro_markdown"]
     inlines = [QuestionInediteInline, RappelDeMethodeInediteInline]
 
     def has_add_permission(self, request):

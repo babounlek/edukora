@@ -155,6 +155,13 @@ def _tentative_payload(tentative):
                 "id": exercice.id,
                 "numero_exercice": exercice.numero_exercice,
                 "points": exercice.points,
+                # Pile de repères de groupe (Partie/section/matière) - [] pour la grande
+                # majorité des épreuves. Consommé côté frontend pour afficher un en-tête
+                # de groupe au-dessus du badge "Exercice N" quand il change (voir
+                # InediteTentativePage.tsx) - pas de navigation libre, contrairement au
+                # sommaire des épreuves classiques (voir EpreuveSommaire.tsx), pour ne
+                # pas laisser l'élève prévisualiser toute l'épreuve pendant l'examen.
+                "groupes": exercice.groupes,
                 # Support partagé, affiché une fois en tête d'exercice côté frontend (voir
                 # ExerciceInedite.enonce_intro_markdown) - jamais recopié dans chaque
                 # _question_payload, qui resterait sinon illisible en mode correction.

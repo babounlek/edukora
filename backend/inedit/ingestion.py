@@ -34,6 +34,7 @@ cursus) pour un tri fiable par simple présence de clé.
 """
 
 import json
+import re
 from pathlib import Path
 
 from django.db import transaction
@@ -308,6 +309,27 @@ def ingest_blueprint(data, country):
     return blueprint, True
 
 
+# Repère de groupe/exercice ("**PARTIE I : ...**", "**EXERCICE 2 : Titre (8 points)**",
+# ou la forme combinée "**Partie A (24 pts) - Exercice 1 : Titre (8 pts)**") parfois
+# rédigé par concepteur-epreuve-inedite en tête de la première question d'un exercice -
+# alors que numero_exercice/points sont déjà des champs structurés sur ExerciceInedite,
+# affichés indépendamment par le Badge de InediteTentativePage.tsx ET par l'en-tête
+# généré par EpreuveInedite.compile_from_exercices. Non retiré, ce repère s'affiche donc
+# deux fois. `\b` après PARTIE exclut "Partiel" ; les repères de sous-partie légitimes
+# ("**A. Décroissance radioactive (2 points).**") ne commencent ni par "Partie" ni par
+# "Exercice" et ne sont donc jamais touchés.
+_REDUNDANT_EXERCICE_HEADING_RE = re.compile(r"^\*\*(PARTIE\b[^*\n]*|EXERCICE\s*\d+[^*\n]*)\*\*\s*", re.IGNORECASE)
+
+
+def _strip_redundant_exercice_heading(enonce_markdown):
+    text = enonce_markdown
+    while True:
+        match = _REDUNDANT_EXERCICE_HEADING_RE.match(text)
+        if not match:
+            return text
+        text = text[match.end():]
+
+
 def _ingest_question_inedite(exercice, data, subject):
     numero = str(data.get("numero") or "").strip()
     if not numero or not data.get("enonce_markdown") or not data.get("corrige_markdown"):
@@ -329,7 +351,7 @@ def _ingest_question_inedite(exercice, data, subject):
         exercice=exercice,
         numero=numero,
         ordre=data.get("ordre") or 1,
-        enonce_markdown=_strip_em_dash(data["enonce_markdown"]),
+        enonce_markdown=_strip_redundant_exercice_heading(_strip_em_dash(data["enonce_markdown"])),
         corrige_markdown=_strip_em_dash(data["corrige_markdown"]),
         difficulte_estimee=difficulte,
         type_reponse=type_reponse,
@@ -367,8 +389,11 @@ def _ingest_exercice_inedite(epreuve, data, subject):
     if not numero_exercice:
         raise IngestionError(f"numero_exercice manquant pour un exercice de {epreuve.external_id!r}.")
 
+    groupes = [str(g).strip() for g in data.get("groupes") or [] if str(g).strip()]
+
     exercice = ExerciceInedite.objects.create(
         epreuve=epreuve, numero_exercice=numero_exercice, points=str(data.get("points") or ""),
+        groupes=groupes,
         # Support partagé par les questions de l'exercice (voir
         # ExerciceInedite.enonce_intro_markdown) - optionnel, vide pour la plupart des
         # matières, attendu en SVT où l'exploitation de documents est la forme normale.

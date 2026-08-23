@@ -524,6 +524,36 @@ class IngestEpreuveInediteTests(TestCase):
 
         self.assertEqual(epreuve.exercices.get().enonce_intro_markdown, "")
 
+    def test_exercice_groupes_is_ingested(self):
+        """Pile de repères de groupe (voir ExerciceInedite.groupes) - même rôle que
+        catalog.Exercise.groupes pour une épreuve organisée en Parties/sections."""
+        blueprint = self._valid_blueprint()
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+
+        payload = _epreuve_payload(exercices=[{
+            "numero_exercice": "1", "points": "4", "groupes": ["Partie A", "I. Activités numériques"],
+            "questions": [{
+                "numero": "1", "ordre": 1,
+                "enonce_markdown": "Calcule.", "corrige_markdown": "Corrigé.",
+            }],
+        }])
+
+        epreuve, _ = ingest_epreuve_inedite(payload, self.country)
+
+        self.assertEqual(epreuve.exercices.get().groupes, ["Partie A", "I. Activités numériques"])
+
+    def test_exercice_groupes_defaults_to_empty_list_when_absent(self):
+        """Champ optionnel : la grande majorité des épreuves reste plate (aucun groupe),
+        et son absence ne doit jamais échouer ni valoir None en base."""
+        blueprint = self._valid_blueprint()
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+
+        epreuve, _ = ingest_epreuve_inedite(_epreuve_payload(), self.country)
+
+        self.assertEqual(epreuve.exercices.get().groupes, [])
+
 
 class IngestQuestionRappelsDeMethodeTests(TestCase):
     """Voir inedit.ingestion._ingest_question_inedite - rattachement à l'ExerciceInedite,
@@ -569,6 +599,65 @@ class IngestQuestionRappelsDeMethodeTests(TestCase):
         from .ingestion import _ingest_question_inedite
         _ingest_question_inedite(self.exercice, self._question_data(rappels_de_methode=[]), self.epreuve.subject)
         self.assertFalse(RappelDeMethodeInedite.objects.exists())
+
+
+class StripRedundantExerciceHeadingTests(TestCase):
+    """_strip_redundant_exercice_heading - le repère "Exercice N (points)" est déjà
+    affiché indépendamment (Badge de InediteTentativePage.tsx, en-tête généré par
+    EpreuveInedite.compile_from_exercices) : le rédiger aussi en tête de la première
+    question l'affiche deux fois. Cas réels trouvés en base le 2026-08-23 sur 4 épreuves
+    (physique/chimie/SVT bac-C/D)."""
+
+    def setUp(self):
+        self.epreuve = _make_epreuve()
+
+    def _strip(self, text):
+        from .ingestion import _strip_redundant_exercice_heading
+        return _strip_redundant_exercice_heading(text)
+
+    def test_strips_exercice_heading_followed_by_blank_line(self):
+        text = "**EXERCICE 2 : Application des savoirs (8 points)**\n\nLe $pK_a$ du couple..."
+        self.assertEqual(self._strip(text), "Le $pK_a$ du couple...")
+
+    def test_strips_partie_then_exercice_two_line_heading(self):
+        text = (
+            "**PARTIE I : ÉVALUATION DES RESSOURCES (24 points)**\n\n"
+            "**EXERCICE 1 : Vérification des savoirs (8 points)**\n\n"
+            "Définir : isotope, défaut de masse d'un noyau."
+        )
+        self.assertEqual(self._strip(text), "Définir : isotope, défaut de masse d'un noyau.")
+
+    def test_strips_combined_partie_exercice_single_line_heading(self):
+        text = "**Partie A (24 pts) - Exercice 1 : Vérification des savoirs (8 pts)**\n\n1) Qu'appelle-t-on..."
+        self.assertEqual(self._strip(text), "1) Qu'appelle-t-on...")
+
+    def test_strips_inline_heading_glued_to_first_sentence(self):
+        text = "**Exercice 1 : QCM de restitution des savoirs (4 points).** Une seule proposition est exacte..."
+        self.assertEqual(self._strip(text), "Une seule proposition est exacte...")
+
+    def test_leaves_legitimate_sub_part_label_untouched(self):
+        """"**A. Décroissance radioactive (2 points).**" n'est ni "Partie" ni "Exercice
+        N" - repère de sous-partie légitime (jamais affiché ailleurs), à conserver."""
+        text = "**A. Décroissance radioactive (2 points).** Un service de médecine nucléaire..."
+        self.assertEqual(self._strip(text), text)
+
+    def test_leaves_text_without_any_heading_untouched(self):
+        text = "Un solide de masse m=250 g, accroché à un ressort..."
+        self.assertEqual(self._strip(text), text)
+
+    def test_does_not_strip_partiel_false_positive(self):
+        text = "**Partiel de mi-parcours.** Ce contrôle porte sur..."
+        self.assertEqual(self._strip(text), text)
+
+    def test_wired_into_question_ingestion(self):
+        from .ingestion import _ingest_question_inedite
+        exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1", points="8")
+        _ingest_question_inedite(exercice, {
+            "numero": "1", "ordre": 1,
+            "enonce_markdown": "**EXERCICE 1 : Vérification des savoirs (8 points)**\n\nDéfinir : isotope.",
+            "corrige_markdown": "Corrigé.",
+        }, exercice.epreuve.subject)
+        self.assertEqual(exercice.questions.get().enonce_markdown, "Définir : isotope.")
 
 
 class IngestCoursInediteTests(TestCase):
@@ -1308,6 +1397,18 @@ class TentativeFlowAPITests(TestCase):
         exercice_payload = response.data["exercices"][0]
         self.assertEqual(exercice_payload["enonce_intro_markdown"], "**Document 1** : protocole expérimental.")
         self.assertNotIn("enonce_intro_markdown", exercice_payload["questions"][0])
+
+    def test_tentative_payload_exposes_exercice_groupes(self):
+        """Consommé côté frontend pour afficher un en-tête de groupe au-dessus du badge
+        "Exercice N" (voir InediteTentativePage.tsx) - [] pour la grande majorité des
+        épreuves, comme ici (fixture _make_published_epreuve sans groupes)."""
+        exercice = self.epreuve.exercices.get()
+        self.assertEqual(exercice.groupes, [])
+
+        response = self.client.get(f"/inedit/tentatives/{self.tentative.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["exercices"][0]["groupes"], [])
 
     def test_reveal_corrige_does_not_record_an_answer(self):
         response = self.client.get(

@@ -244,6 +244,16 @@ class ExerciceInedite(models.Model):
     epreuve = models.ForeignKey(EpreuveInedite, on_delete=models.CASCADE, related_name="exercices")
     numero_exercice = models.CharField(max_length=30)
     points = models.CharField(max_length=20, blank=True)
+    groupes = models.JSONField(
+        default=list, blank=True,
+        help_text=(
+            "Pile ordonnée des repères de groupe (Partie/section/matière) portés par cet "
+            "exercice, renseignée directement par la skill de conception - même rôle que "
+            "catalog.Exercise.groupes, mais ici pas de repli par analyse de texte : une "
+            "épreuve inédite est générée, pas transcrite, donc rien à deviner depuis un "
+            "en-tête d'énoncé. Vide pour la grande majorité des épreuves (structure plate)."
+        ),
+    )
 
     enonce_intro_markdown = models.TextField(
         blank=True,
