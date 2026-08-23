@@ -11,6 +11,46 @@ export interface SommaireEntry {
   long: string
   /** Infobulle de la sidebar, quand `long` est déjà une version raccourcie. */
   title?: string
+  /**
+   * Repères de groupe englobant cette entrée, du plus large au plus précis
+   * ("Partie A", "I. Activités Numériques") - absent ou vide pour une entrée hors
+   * de tout groupe (comportement plat inchangé, voir EpreuveSommaire). Ignoré par le
+   * scrollspy et la barre mobile (voir buildSidebarRows) : seule la sidebar desktop
+   * matérialise ce chemin en en-têtes non cliquables.
+   */
+  groupPath?: string[]
+}
+
+interface SidebarRow {
+  key: string
+  depth: number
+  label: string
+  entry?: SommaireEntry
+}
+
+/**
+ * Aplati `entries` en lignes de sidebar (en-tête de groupe non cliquable + entrée),
+ * en n'insérant un en-tête que lorsque le chemin de groupe change par rapport à
+ * l'entrée précédente - deux entrées consécutives du même groupe ne le répètent
+ * donc pas (voir EpreuveSommaire, "Partie A" > "I." > Exercice 1/2 : le groupe
+ * n'apparaît qu'une fois, pas devant chaque exercice qu'il contient).
+ */
+function buildSidebarRows(entries: SommaireEntry[]): SidebarRow[] {
+  const rows: SidebarRow[] = []
+  let precedent: string[] = []
+  entries.forEach((entry, index) => {
+    const chemin = entry.groupPath ?? []
+    let commun = 0
+    while (commun < chemin.length && commun < precedent.length && chemin[commun] === precedent[commun]) {
+      commun += 1
+    }
+    for (let profondeur = commun; profondeur < chemin.length; profondeur += 1) {
+      rows.push({ key: `${entry.id}-groupe-${index}-${profondeur}`, depth: profondeur, label: chemin[profondeur] })
+    }
+    rows.push({ key: entry.id, depth: chemin.length, label: entry.long, entry })
+    precedent = chemin
+  })
+  return rows
 }
 
 interface SommaireNavProps {
@@ -56,6 +96,8 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
 
   if (entries.length === 0) return null
 
+  const rows = buildSidebarRows(entries)
+
   return (
     <>
       {/* Mobile/tablette : pastilles sticky, défilement horizontal. */}
@@ -83,26 +125,38 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
         </ul>
       </nav>
 
-      {/* Desktop : sidebar persistante avec surbrillance de la section en cours. */}
+      {/* Desktop : sidebar persistante avec surbrillance de la section en cours. Les
+          en-têtes de groupe (voir buildSidebarRows) ne sont jamais des ancres : pas de
+          lien, juste un séparateur visuel indenté selon sa profondeur. */}
       <nav aria-label={ariaLabel} className="not-prose sticky top-20 hidden self-start lg:block">
         <ul className="flex flex-col gap-1 border-l border-border pl-3">
-          {entries.map((entry) => (
-            <li key={entry.id}>
-              <a
-                href={`#${entry.id}`}
-                aria-current={activeId === entry.id ? "true" : undefined}
-                title={entry.title ?? entry.long}
-                className={cn(
-                  "block truncate py-1 text-sm transition-colors",
-                  activeId === entry.id
-                    ? "font-medium text-primary"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
+          {rows.map((row) =>
+            !row.entry ? (
+              <li
+                key={row.key}
+                style={{ paddingLeft: row.depth * 12 }}
+                className="truncate pt-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground/80 first:pt-0"
               >
-                {entry.long}
-              </a>
-            </li>
-          ))}
+                {row.label}
+              </li>
+            ) : (
+              <li key={row.key} style={{ paddingLeft: row.depth * 12 }}>
+                <a
+                  href={`#${row.entry.id}`}
+                  aria-current={activeId === row.entry.id ? "true" : undefined}
+                  title={row.entry.title ?? row.entry.long}
+                  className={cn(
+                    "block truncate py-1 text-sm transition-colors",
+                    activeId === row.entry.id
+                      ? "font-medium text-primary"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {row.entry.long}
+                </a>
+              </li>
+            ),
+          )}
         </ul>
       </nav>
     </>

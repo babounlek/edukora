@@ -142,6 +142,11 @@ export function EpreuveInediteDetailPage() {
   }
 
   const country = epreuve.subject.country.code.toLowerCase()
+  // Certains énoncés (voir correction-experte) commencent déjà par leur propre en-tête
+  // "Exercice N" en gras (ex. "**Exercice 1 (5 points)**") - l'ajouter une seconde fois
+  // au-dessus ferait doublon. On ne l'affiche donc que si l'énoncé ne le contient pas
+  // déjà en tête.
+  const apercuDejaTitre = /^[\s#*]*exercice\s+\S/i.test(epreuve.apercu_enonce_markdown ?? "")
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -191,6 +196,9 @@ export function EpreuveInediteDetailPage() {
         {epreuve.apercu_enonce_markdown && (
           <div className="border-t border-border pt-5">
             <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Aperçu</h2>
+            {epreuve.apercu_numero_exercice && !apercuDejaTitre && (
+              <p className="mb-2 text-sm font-medium">Exercice {epreuve.apercu_numero_exercice}</p>
+            )}
             <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display">
               <EpreuveMarkdown markdown={epreuve.apercu_enonce_markdown} />
             </article>

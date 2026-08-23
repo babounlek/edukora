@@ -718,6 +718,40 @@ def _repair_dict_shaped_cours_sections(data):
     return data, True
 
 
+def _has_own_reference_further_down(stripped, repere_propre):
+    """
+    True si une ligne de `stripped` (au-delà de la première, déjà vérifiée par
+    l'appelant) porte déjà le repère de CET exercice - voir le commentaire de
+    _repair_missing_exercise_heading juste au-dessus de son appel. `repere_propre`
+    est le ("exercice"|"probleme", numéro normalisé) attendu pour CET exercice
+    (dérivé de numero_exercice).
+
+    Un numéro purement décimal ("Exercice 2") doit égaler celui de `repere_propre` à
+    l'identique - garde-fou d'origine, qui évite qu'une référence à un AUTRE exercice
+    ("comme vu à l'Exercice 3") fasse à tort passer celui-ci pour déjà titré. Un
+    numéro romain ou lettré ("Exercice II", "Exercice a"), lui, est accepté quel que
+    soit le numéro qu'il porte : ces écritures numérotent LOCALEMENT à leur propre
+    Partie/groupe (I, II, III y redémarrent à chaque groupe - voir
+    catalog.rendering._exercise_group_paths), donc ne peuvent par construction
+    jamais coïncider avec numero_exercice (l'index global, à plat, de toute
+    l'épreuve) - le exiger reviendrait à ne JAMAIS reconnaître le repère d'un
+    exercice appartenant à une 2e Partie ou suivante.
+    """
+    for ligne in stripped.splitlines():
+        match = _EXERCISE_LABEL_RE.match(ligne.strip())
+        if not match:
+            continue
+        mot = "probleme" if match.group(1).lower().startswith("probl") else "exercice"
+        if mot != repere_propre[0]:
+            continue
+        numero_brut = match.group(2)
+        if numero_brut and not _PURE_NUMERIC_EXERCICE_RE.match(numero_brut):
+            return True
+        if _normalize_heading_number(numero_brut) == repere_propre[1]:
+            return True
+    return False
+
+
 def _repair_missing_exercise_heading(data):
     if not isinstance(data, dict):
         return data, False
@@ -740,24 +774,162 @@ def _repair_missing_exercise_heading(data):
     # qu'un repère existe déjà. Un chapeau partagé par TOUTE l'épreuve précède parfois
     # le repère du tout premier exercice ("*L'épreuve comporte deux exercices et un
     # problème...*\n\n### Exercice 1 - 6 points\n\n...") : cette 4e condition cherche
-    # spécifiquement LE REPÈRE DE CET EXERCICE (même mot, même numéro que
-    # numero_exercice) sur une ligne plus loin dans le texte, sans élargir la
-    # détection à un repère générique quelconque - constaté sur
+    # spécifiquement LE REPÈRE DE CET EXERCICE sur une ligne plus loin dans le texte,
+    # sans élargir la détection à un repère générique quelconque - constaté sur
     # mathematiques-probatoire-c-et-e-2000/2001/2002 (chapeau + titre Markdown "###")
     # et 6 exercices de physique BAC D (repère texte nu collé juste après, sans
-    # chapeau) - scan corpus du 2026-08-19.
+    # chapeau) - scan corpus du 2026-08-19. Le numéro trouvé doit alors égaler
+    # numero_exercice - SAUF s'il est romain/lettré (voir _has_own_reference_further_down) :
+    # une Partie qui redémarre sa propre numérotation "I/II/III" à chaque groupe
+    # (mathematiques-bepc-2000/2001/2002-cameroun, Partie B : "Exercice II"/"III" alors
+    # que numero_exercice - l'index global de l'épreuve entière - vaut 5/6) ne peut par
+    # construction JAMAIS coïncider avec numero_exercice ; exiger l'égalité dans ce cas
+    # revient à ne jamais reconnaître le repère et à en injecter un second, faux, en
+    # tête ("**Exercice 5 (1 points)**" devant "Exercice II (1 pt)" déjà présent plus
+    # bas) - scan corpus du 2026-08-22.
     premiere_ligne, _ = _first_non_empty_line(stripped)
     repere_propre = _exercise_label_key(heading.strip("*"))
     if (
         _exercise_label_key(premiere_ligne)
         or _INTRO_PART_HEADER_RE.match(stripped)
         or _BARE_LETTERED_PART_HEADER_RE.match(stripped)
-        or any(_exercise_label_key(ligne.strip()) == repere_propre for ligne in stripped.splitlines())
+        or _has_own_reference_further_down(stripped, repere_propre)
     ):
         return data, False
 
     data = dict(data)
     data["enonce_intro_markdown"] = f"{heading}\n\n{intro}" if intro.strip() else heading
+    return data, True
+
+
+# Paragraphe entièrement enveloppé d'italique ("*Cette partie comporte trois exercices
+# indépendants I, II et III.*") - sous-titre de Partie au même titre qu'un repère "A -"/
+# "Partie A" en gras (_INTRO_PART_HEADER_RE/_BARE_LETTERED_PART_HEADER_RE), mais jamais
+# reconnu par ces deux regex (qui exigent "**", pas "*" seul) : sert de cadre au même
+# titre pour _reposition_trailing_exercise_reference ci-dessous, sans quoi le repère
+# "Exercice N" repositionné se retrouverait CALÉ ENTRE le titre de Partie et son propre
+# sous-titre au lieu d'après les deux.
+_ITALIC_ONLY_PARAGRAPH_RE = re.compile(r"\A\*(?!\*)[^*]+\*\Z")
+
+# Repère de groupe "matière" à l'état brut, sans "Partie" ni numérotation - une épreuve
+# combinant plusieurs matières (ex. Physique-Chimie) ouvre chaque bloc sur le seul nom de
+# la matière ("**CHIMIE / 10 points**", puis plus loin "**PHYSIQUE / 10 points**" -
+# chimie-probatoire-a-2019-a4-bilingue). Même détection que
+# catalog.rendering._BARE_MATIERE_LABEL_RE/_is_bare_matiere_label, dupliquée ici plutôt
+# qu'importée (voir la docstring de tête de ce fichier) : sans elle,
+# _reposition_trailing_exercise_reference ne reconnaissait pas ce repère comme un CADRE et
+# permutait à tort son propre repère de matière avec celui de l'exercice qui le suit
+# ("**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**" se retrouvait AVANT "**CHIMIE / 10
+# points**" au lieu d'après) - scan corpus du 2026-08-23,
+# bac-a-abi-physique-chimie-2019-officiel-cameroun. EXCLUDE exclut explicitement
+# "Exercice"/"Problème"/"Partie"/"Section" : sans lui, "EXERCICE 1 : ..." rejoindrait à
+# tort le cadre au lieu de rester LE repère à repositionner.
+_BARE_MATIERE_EXCLUDE_RE = re.compile(r"\A(?:Exercice|Probl[eè]me|Partie|Section)\b", re.IGNORECASE)
+_BARE_MATIERE_LABEL_RE = re.compile(
+    r"\A[A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜÇŒ][A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜÇŒ' \-]{1,40}?(?:\s*[/:]\s*[\d.,]+\s*(?:points?|pts?|marks?))?\Z",
+)
+
+
+def _is_bare_matiere_paragraph(paragraphe):
+    contenu = _standalone_heading_content(paragraphe)
+    if contenu is None:
+        return False
+    return bool(_BARE_MATIERE_LABEL_RE.match(contenu)) and not _BARE_MATIERE_EXCLUDE_RE.match(contenu)
+
+
+def _split_paragraphs(text):
+    """Paragraphes de `text` - blocs de lignes non vides séparés par une ou plusieurs
+    lignes vides, chacun rejoint par un simple '\\n' (un bloc multi-lignes SANS ligne
+    vide interne, comme un tableau Markdown, reste un seul paragraphe)."""
+    paragraphes = []
+    courant = []
+    for ligne in text.split("\n"):
+        if ligne.strip():
+            courant.append(ligne)
+        elif courant:
+            paragraphes.append("\n".join(courant))
+            courant = []
+    if courant:
+        paragraphes.append("\n".join(courant))
+    return paragraphes
+
+
+def _is_frame_paragraph(paragraphe):
+    """True si `paragraphe` est un repère de CADRE (titre de Partie, repère de matière
+    nue, sous-titre en italique) - jamais la propre référence de l'exercice, qui n'est
+    pas un cadre mais LE repère à repositionner (voir _is_reference_paragraph)."""
+    return bool(
+        _INTRO_PART_HEADER_RE.match(paragraphe)
+        or _BARE_LETTERED_PART_HEADER_RE.match(paragraphe)
+        or _ITALIC_ONLY_PARAGRAPH_RE.match(paragraphe)
+        or _is_bare_matiere_paragraph(paragraphe),
+    )
+
+
+def _is_reference_paragraph(paragraphe):
+    """True si `paragraphe` n'est RIEN d'autre que la référence de l'exercice
+    ("**Exercice N (points)**", "### Problème") - voir _standalone_heading_content/
+    _exercise_label_key, déjà utilisés par _repair_missing_exercise_heading."""
+    contenu = _standalone_heading_content(paragraphe)
+    return contenu is not None and _exercise_label_key(contenu) is not None
+
+
+def _reposition_trailing_exercise_reference(data):
+    """
+    Repère "Exercice N"/"Problème" présent dans enonce_intro_markdown mais placé APRÈS
+    le préambule qu'il est censé annoncer, au lieu d'avant - constaté sur
+    mathematiques-bepc-2000/2001/2002/2003-cameroun : correction-experte écrit le
+    préambule partagé d'une Partie (chapeau + sous-titre + données/figure) puis SEULEMENT
+    ENSUITE la référence propre de l'exercice ("Un magasin a fait une réduction de 25 %
+    sur le prix de ses marchandises.\\n\\n**Exercice I (2 pts)**" au lieu de "**Exercice I
+    (2 pts)**\\n\\nUn magasin a fait..."). _repair_missing_exercise_heading (ci-dessus) et
+    _exercise_titre_et_points côté rendering.py savent déjà RETROUVER ce repère où qu'il
+    soit dans le texte (voir _has_own_reference_further_down), donc le sommaire et le
+    titre affiché étaient déjà corrects - mais le CORPS de l'énoncé, lui, montre le
+    préambule avant son propre titre, ce qui se lit à l'envers (scan corpus du 2026-08-23).
+
+    Le repère est déplacé juste après tout CADRE de tête déjà présent (titre de Partie et/
+    ou son sous-titre en italique - voir _is_frame_paragraph) : un exercice qui ouvre sa
+    Partie garde donc "Titre de Partie" > "Sous-titre" > "Exercice N" > préambule propre,
+    jamais "Exercice N" intercalé entre le titre de Partie et son sous-titre. Un exercice
+    SANS cadre de tête (le cas le plus courant, ex. l'Exercice II/III qui suit dans la même
+    Partie) voit son repère déplacé tout en tête.
+
+    Ne touche RIEN si le repère est déjà bien placé (immédiatement après le cadre, y
+    compris quand il n'y a aucun cadre) : un paragraphe qui suit un repère déjà en bonne
+    position n'est jamais confondu avec un second repère à déplacer, puisque la recherche
+    d'un repère à repositionner ne se déclenche que si le paragraphe attendu à cette
+    position n'EST PAS déjà ce repère.
+    """
+    if not isinstance(data, dict):
+        return data, False
+    intro = data.get("enonce_intro_markdown") or ""
+    if not intro.strip():
+        return data, False
+
+    paragraphes = _split_paragraphs(intro.strip())
+    if len(paragraphes) < 2:
+        return data, False
+
+    index_cadre = 0
+    while index_cadre < len(paragraphes) and _is_frame_paragraph(paragraphes[index_cadre]):
+        index_cadre += 1
+
+    if index_cadre >= len(paragraphes) or _is_reference_paragraph(paragraphes[index_cadre]):
+        return data, False
+
+    index_reference = next(
+        (i for i in range(index_cadre, len(paragraphes)) if _is_reference_paragraph(paragraphes[i])),
+        None,
+    )
+    if index_reference is None:
+        return data, False
+
+    reste = paragraphes[:index_reference] + paragraphes[index_reference + 1:]
+    nouveaux = reste[:index_cadre] + [paragraphes[index_reference]] + reste[index_cadre:]
+
+    data = dict(data)
+    data["enonce_intro_markdown"] = "\n\n".join(nouveaux)
     return data, True
 
 
@@ -875,4 +1047,98 @@ def _dedupe_exercise_heading(data):
     data = dict(data)
     data["questions"] = questions
     data["enonce_intro_markdown"] = f"{ligne_gardee}\n{reste_intro}" if reste_intro else ligne_gardee
+    return data, True
+
+
+# `_dedupe_exercise_heading` ci-dessus ne dédoublonne le repère que s'il est porté par
+# la PREMIÈRE LIGNE de l'intro (voir `_first_non_empty_line(intro)` en tête de cette
+# fonction) - hypothèse qui échoue dès que l'intro s'ouvre sur un chapeau partagé par
+# l'épreuve entière AVANT le repère de CET exercice (fiche d'identité en italique,
+# "*Ministère des Enseignements Secondaires...*", "*L'épreuve comporte deux exercices
+# et un problème...*") : le repère vit alors plus loin dans l'intro, sur sa DERNIÈRE
+# ligne, juste avant le contenu propre à l'exercice - jamais reconnu par
+# `_first_non_empty_line`, donc jamais dédupliqué par _dedupe_exercise_heading, qui
+# rend la main sans rien faire dès que `cle_intro` est None.
+#
+# Constaté sur mathematiques-probatoire-c-1999-cameroun et -c-e-maths-2015/2016/2017/
+# 2018-cameroun (repère répété À L'IDENTIQUE en tête de la première question, ex.
+# "**EXERCICE 1 : 4 points**" à la fois en fin d'intro et en tête de Q1) et -c-e-maths-
+# 2013-cameroun (répété SANS le barème : "**Exercice 1**" en tête de Q1 contre
+# "**Exercice 1 (5 points)**" en fin d'intro) - scan corpus du 2026-08-22, 6 exercices
+# au total, tous des probatoire C/E de mathématiques : cause commune, la fiche
+# d'identité en italique que ces épreuves ouvrent désormais systématiquement n'existait
+# pas encore quand _dedupe_exercise_heading a été écrite (elle ne connaît que le cas
+# "repère nu en tête d'intro"). La comparaison entre les deux repères se fait par CLÉ
+# (mot + numéro, voir _exercise_label_key), jamais par égalité de texte brut, pour
+# absorber la variante 2013 sans se limiter à un doublon parfaitement identique.
+def _last_bold_reference_line(intro):
+    """Dernière ligne non vide de `intro` si elle se réduit à un repère d'exercice/
+    problème en gras (voir _standalone_heading_content/_exercise_label_key) - None
+    sinon. Ne cherche JAMAIS plus haut qu'elle : sur les 6 occurrences trouvées au scan
+    corpus qui motive cette fonction, le repère vit toujours en dernière ligne d'intro,
+    jamais ailleurs - remonter plus haut risquerait de confondre le repère avec une
+    simple mention du mot "Exercice" dans le chapeau partagé de l'épreuve."""
+    lignes = [ligne.strip() for ligne in (intro or "").split("\n") if ligne.strip()]
+    if not lignes:
+        return None
+    contenu = _standalone_heading_content(lignes[-1])
+    if contenu is None or _exercise_label_key(contenu) is None:
+        return None
+    return lignes[-1]
+
+
+def _strip_duplicated_trailing_reference(intro, question_enonce):
+    """`question_enonce` sans son repère de tête quand celui-ci répète (même clé
+    mot+numéro, voir _exercise_label_key - jamais une égalité de texte brut, voir
+    _last_bold_reference_line) la dernière ligne de `intro` - None si rien à retirer.
+
+    Fonction pure (aucune dépendance à Question/Exercise) pour être réutilisable aussi
+    bien à l'ingestion, sur le `data` JSON encore brut (voir
+    _dedupe_trailing_exercise_reference ci-dessous), qu'en backfill rétroactif sur des
+    Question déjà en base (voir la commande de management
+    dedupe_trailing_exercise_reference)."""
+    ligne_intro, _ = _first_non_empty_line(intro or "")
+    if _exercise_label_key(ligne_intro) is not None:
+        # Repère déjà en tête d'intro : c'est le cas que _dedupe_exercise_heading sait
+        # déjà traiter - ne pas s'en mêler, pour ne jamais faire tourner les deux
+        # réparations à la fois sur la même paire intro/question.
+        return None
+
+    ligne_reference = _last_bold_reference_line(intro)
+    if ligne_reference is None:
+        return None
+
+    premiere_ligne, reste = _first_non_empty_line(question_enonce or "")
+    contenu = _standalone_heading_content(premiere_ligne)
+    if contenu is None or _exercise_label_key(contenu) != _exercise_label_key(ligne_reference):
+        return None
+
+    return reste.lstrip("\n")
+
+
+def _dedupe_trailing_exercise_reference(data):
+    """
+    Variante JSON (ingestion) de _strip_duplicated_trailing_reference : applique la
+    même réparation à la PREMIÈRE `questions[]` de `data`, seule position où ce
+    doublon peut apparaître - Exercise.enonce_markdown compile intro puis questions
+    dans l'ordre (voir catalog.rendering.compile_exercise_from_questions), donc seule
+    la première question suit immédiatement l'intro dans le texte affiché.
+    """
+    if not isinstance(data, dict):
+        return data, False
+
+    questions = data.get("questions") or []
+    if not questions or not isinstance(questions[0], dict):
+        return data, False
+
+    nouveau = _strip_duplicated_trailing_reference(
+        data.get("enonce_intro_markdown") or "", questions[0].get("enonce_markdown") or "",
+    )
+    if nouveau is None:
+        return data, False
+
+    data = dict(data)
+    questions = list(questions)
+    questions[0] = {**questions[0], "enonce_markdown": nouveau}
+    data["questions"] = questions
     return data, True

@@ -166,7 +166,7 @@ export function AccountPage() {
 
   const totalRead = (progression?.lessons.length ?? 0) + (progression?.cours.length ?? 0)
   const referralLink = `${window.location.origin}/?ref=${user.referral_code}`
-  const whatsappMessage = `Salut ! Je révise sur ${SITE_NAME} (corrigés BEPC/Probatoire/BAC) - inscris-toi avec mon lien, ça nous donne 7 jours gratuits à tous les deux : ${referralLink}`
+  const whatsappMessage = `Salut ! Je révise sur ${SITE_NAME} (corrigés BEPC/Probatoire/BAC) - inscris-toi avec mon lien : ça me donne 500 FCFA de crédit sur mon prochain abonnement : ${referralLink}`
 
   function handleCopyLink() {
     navigator.clipboard.writeText(referralLink)
@@ -272,7 +272,7 @@ export function AccountPage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <p className="text-sm text-muted-foreground">
-                Ton ami s'inscrit avec ton lien et souscrit un abonnement : vous recevez chacun 7 jours d'accès gratuit.
+                Ton ami s'inscrit avec ton lien et souscrit un abonnement : tu reçois 500 FCFA de crédit, valable sur n'importe lequel de tes achats futurs.
                 {user.filleuls_count > 0 && (
                   <> Tu as déjà parrainé {user.filleuls_count} personne{user.filleuls_count > 1 ? "s" : ""}.</>
                 )}

@@ -36,7 +36,7 @@ import type { Cursus, Difficulte, Fiche, FicheThemeEligible, InscriptionRepetite
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { ApercuFichesPdf } from "@/components/ApercuFichesPdf"
-import { Etape, EtapesPresentation, LigneRecap, RecapVide } from "@/components/Configurateur"
+import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide, StatChip } from "@/components/Configurateur"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -369,47 +369,89 @@ export function FichesPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
-      <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
+        {/* Filets horizontaux façon copie double plutôt que la trame à points : le
+            décor du hero rappelle le papier imprimé, cohérent avec ce que produit
+            réellement cette page (deux PDF), sans copier le pointillé de Quiz. */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-            backgroundSize: "24px 24px",
+            backgroundImage:
+              "repeating-linear-gradient(to bottom, var(--foreground) 0, var(--foreground) 1px, transparent 1px, transparent 28px)",
           }}
         />
-        <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <GraduationCap className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Pour les répétiteurs et les enseignants</p>
-          <h1 className="font-display text-3xl font-semibold sm:text-4xl">Fiches</h1>
-          <p className="mt-2 text-muted-foreground">
-            Compose une fiche d'exercices à partir de compétences déjà validées, et obtiens en quelques secondes un PDF
-            énoncé (à distribuer à tes élèves) et un PDF corrigé (pour toi) - à ton nom.
-          </p>
+        <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
+          <div>
+            <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <GraduationCap className="size-5" />
+            </div>
+            <Eyebrow>Pour les répétiteurs et les enseignants</Eyebrow>
+            <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Fiches</h1>
+            <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
+              Une fiche d'exercices prête à imprimer, en quelques secondes.
+            </p>
+            <p className="mt-2 max-w-md text-muted-foreground">
+              Compose-la à partir de compétences déjà validées : un PDF énoncé à distribuer à tes élèves, un PDF
+              corrigé à ton nom.
+            </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-              <Printer className="size-3.5 text-primary" />
-              <span className="font-medium">2 PDF</span>
-              <span className="text-muted-foreground">énoncé + corrigé</span>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <StatChip icon={<Printer className="size-3.5 text-primary" />}>
+                <span className="font-medium">2 PDF</span>
+                <span className="text-muted-foreground">énoncé + corrigé</span>
+              </StatChip>
+              {mesFiches.length > 0 && (
+                <StatChip icon={<FileText className="size-3.5 text-gold" />}>
+                  <span className="font-medium">{mesFiches.length}</span>
+                  <span className="text-muted-foreground">
+                    fiche{mesFiches.length > 1 ? "s" : ""} générée{mesFiches.length > 1 ? "s" : ""}
+                  </span>
+                </StatChip>
+              )}
+              {inscriptionCourante && (
+                <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
+                  <span className="text-muted-foreground">Add-on actif jusqu'au</span>
+                  <span className="font-medium">{formatDateCourte(inscriptionCourante.expires_at)}</span>
+                </StatChip>
+              )}
+            </div>
+          </div>
+
+          {/* Accessoire décoratif façon "fiche imprimée", même procédé que la copie
+              annotée "18/20" de la page À propos (étiquette or + carte inclinée) -
+              un aperçu concret plutôt qu'une simple icône. */}
+          <div aria-hidden className="relative mx-auto w-full max-w-[18rem] select-none lg:mx-0 lg:justify-self-end">
+            <span className="absolute -top-3 right-6 z-10 rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
+              Prêt à imprimer
             </span>
-            {mesFiches.length > 0 && (
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-                <FileText className="size-3.5 text-gold" />
-                <span className="font-medium">{mesFiches.length}</span>
-                <span className="text-muted-foreground">
-                  fiche{mesFiches.length > 1 ? "s" : ""} générée{mesFiches.length > 1 ? "s" : ""}
+            <div className="-rotate-2 rounded-lg border border-border bg-card p-6 shadow-xl transition-transform duration-300 hover:rotate-0">
+              <div className="flex items-center gap-2.5">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <FileText className="size-4" />
                 </span>
-              </span>
-            )}
-            {inscriptionCourante && (
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-                <CheckCircle2 className="size-3.5 text-success" />
-                <span className="text-muted-foreground">Add-on actif jusqu'au</span>
-                <span className="font-medium">{formatDateCourte(inscriptionCourante.expires_at)}</span>
-              </span>
-            )}
+                <div className="min-w-0">
+                  <p className="truncate font-display text-sm font-semibold">Fiche - Dérivées</p>
+                  <p className="text-xs text-muted-foreground">Terminale C · 10 questions</p>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-col gap-2">
+                <div className="h-2 w-full rounded-full bg-muted" />
+                <div className="h-2 w-4/5 rounded-full bg-muted" />
+                <div className="h-2 w-full rounded-full bg-muted" />
+                <div className="h-2 w-3/5 rounded-full bg-muted" />
+              </div>
+              <div className="my-4 h-px bg-gradient-to-r from-gold/0 via-gold/70 to-gold/0" />
+              <div className="flex items-center justify-between text-xs">
+                <span className="flex items-center gap-1.5 font-medium text-success">
+                  <CheckCircle2 className="size-3.5" />
+                  Corrigé inclus
+                </span>
+                <span className="flex items-center gap-1.5 text-muted-foreground">
+                  <Printer className="size-3.5" />
+                  A4
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -520,7 +562,7 @@ export function FichesPage() {
                     il nomme un accès à débloquer. Au visiteur déconnecté, il annonçait une
                     interdiction avant même d'avoir dit ce que sont les Fiches - mauvaise
                     première impression pour la seule page qui doit l'expliquer. */}
-                <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
                   {isAuthenticated ? <Lock className="size-5" /> : <GraduationCap className="size-5" />}
                 </span>
                 <div>
@@ -992,7 +1034,9 @@ export function FichesPage() {
                     </p>
                   )}
 
-                  <Button onClick={handleSubmit} disabled={creating || !pretAGenerer} size="lg" className="mt-1 w-full">
+                  <div className="h-px bg-gradient-to-r from-gold/0 via-gold/60 to-gold/0" />
+
+                  <Button onClick={handleSubmit} disabled={creating || !pretAGenerer} size="lg" className="w-full">
                     {creating ? (
                       "Préparation..."
                     ) : (

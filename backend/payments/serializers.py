@@ -82,12 +82,6 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
                 "operator": "Ce moyen de paiement n'est pas disponible actuellement.",
             })
         plan = attrs["plan"]
-        # Même règle que initiate_payment : une offre au catalogue n'est pas
-        # forcément vendable aujourd'hui (voir Plan.est_achetable).
-        if not plan.est_achetable():
-            raise serializers.ValidationError({
-                "plan": "Cette offre n'est pas disponible actuellement.",
-            })
         prix_attendu = plan.effective_price()
         if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({

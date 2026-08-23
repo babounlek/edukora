@@ -88,6 +88,29 @@ _ENONCE_ALREADY_LABELED_RE = re.compile(
     r")",
 )
 
+# Annotation de points par sous-question ("*[2 pts]*", "*[0,5 pt]*") livrée par
+# correction-experte comme un PARAGRAPHE À PART, séparé de la question par une ligne
+# vide - demande de mise en forme de l'utilisateur (pas un bug de contenu : la donnée
+# est correcte, seule sa présentation change) : l'annotation doit apparaître sur la
+# MÊME ligne que la question qu'elle chiffre, jamais isolée en dessous. Motif vérifié
+# régulier à 100% sur les 139 occurrences du corpus au scan du 2026-08-22 (toujours
+# "*[<nombre> pt(s)]*", toujours précédée d'un contenu non vide, jamais en tête absolue
+# de texte, jamais sur une Question de type QCM) : fusion purement présentationnelle,
+# appliquée au RENDU (voir _render_question_enonce) plutôt qu'au texte source stocké -
+# Question.enonce_markdown garde ainsi sa forme d'origine, et toute réingestion future
+# du même contenu source produit le même rendu fusionné sans nouveau backfill.
+#
+# Non ancrée en fin de texte : un seul cas du corpus porte encore un paragraphe après
+# l'annotation ("*[0,5 pt]*\n\n*NB : ...*" - mathematiques-bac-c-2018-cameroun), que la
+# fusion doit laisser intact APRÈS l'annotation désormais accolée à la question.
+_POINTS_ANNOTATION_RE = re.compile(
+    r"\n{2,}\s*(\*\[\s*[\d.,]+\s*(?:points?|pts?|pt)\s*\]\*)", re.IGNORECASE,
+)
+
+
+def _merge_inline_points_annotation(text):
+    return _POINTS_ANNOTATION_RE.sub(lambda m: f" {m.group(1)}", text)
+
 
 def _strip_redundant_local_marker(text, numero):
     """
@@ -204,12 +227,19 @@ def _render_question_enonce(question, numbered):
     _strip_embedded_qcm_options) : source unique de vérité, qui évite à la fois la
     duplication et une incohérence de mise en forme entre les deux copies (ex. point
     final sur l'une, pas sur l'autre).
+
+    Une annotation de points isolée sur son propre paragraphe ("*[2 pts]*") est
+    d'abord fusionnée sur la ligne de la question qu'elle chiffre - voir
+    _merge_inline_points_annotation - avant tout le reste : ni le garde-fou
+    `already_labeled` (qui ne regarde que le DÉBUT du texte) ni le retrait du
+    marqueur local redondant (qui ne touche pas la fin du texte) n'en sont affectés.
     """
-    already_labeled = bool(_ENONCE_ALREADY_LABELED_RE.match(question.enonce_markdown))
+    enonce = _merge_inline_points_annotation(question.enonce_markdown)
+    already_labeled = bool(_ENONCE_ALREADY_LABELED_RE.match(enonce))
     texte = (
-        f"**{question.numero}.** {_strip_redundant_local_marker(question.enonce_markdown, question.numero)}"
+        f"**{question.numero}.** {_strip_redundant_local_marker(enonce, question.numero)}"
         if numbered and not already_labeled
-        else question.enonce_markdown
+        else enonce
     )
     if question.type_reponse == TypeReponse.QCM and question.choix:
         texte = _strip_embedded_qcm_options(texte, question.choix).rstrip()
@@ -418,11 +448,32 @@ def exercise_sort_key(exercise):
 # comme champ à part. Trois formes vues dans le corpus : parenthésée ("(5 points)",
 # "(10 marks)", "(2,5 pts)"), séparée par un tiret ("### Exercice 2 - 3 points", tiret
 # -/–/—) ou par deux-points ("**Exercice 2 : 3 points**", **Problème : 11 points**" -
-# probatoire-c-e-maths 2003/2005). Un seul groupe capturant : les deux formes non
-# parenthésées se rejoignent car la parenthèse fermante n'est pas optionnelle côté forme
-# parenthésée (sans ça "Exercice 2 - 3 points)" resterait accepté par erreur).
+# probatoire-c-e-maths 2003/2005). Un seul groupe capturant par branche : les deux
+# formes non parenthésées se rejoignent car la parenthèse fermante n'est pas optionnelle
+# côté forme parenthésée (sans ça "Exercice 2 - 3 points)" resterait accepté par erreur).
+#
+# Le nombre lui-même tolère un "/" optionnel, avec ou sans espace autour ("12/20
+# points", "12 / 20 points") : notation "note obtenue/barème". Un "/" peut aussi
+# précéder le nombre SEUL, avec ou sans espace après lui ("- /20 points", "- / 02,5
+# points" - probatoire-c-1999/-c-e-2013, barème écrit "sur N" sans note chiffrée) :
+# sans l'espace optionnel après ce "/" ouvrant, l'ancienne version de ce regex ne
+# matchait QUE la forme collée ("/20"), jamais celle avec un espace après le slash -
+# le suffixe entier restait alors visible tel quel dans le sommaire (scan corpus du
+# 2026-08-22, mathematiques-probatoire-c-1999-cameroun exercices 2/3/4).
+#
+# La forme parenthésée tolère en plus une note explicative entre le nombre et l'unité
+# ("(5,25 (estimation d'après les annotations manuscrites du barème) points)" -
+# mathematiques-bac-c-2021-cameroun, barème manuscrit illisible) : un unique niveau de
+# parenthèses imbriquées, sans texte parasite avant le nombre ni après l'unité - une
+# parenthèse portant aussi une précision NON répétée avant "points" (ex. "(série C
+# uniquement, 2,5 points)") continue de ne PAS matcher ici (elle est traitée par
+# _POINTS_TRAILING_IN_PAREN_RE plus bas, qui préserve la précision au lieu de la jeter).
+_POINTS_NUMBER = r"[\d.,]+(?:\s*/\s*[\d.,]+)?"
 _POINTS_SUFFIX_RE = re.compile(
-    r"\s*(?:\(\s*([\d.,/]+)\s*(?:points?|pts?|marks?)\s*\)|[:\-–—]\s*([\d.,/]+)\s*(?:points?|pts?|marks?))\s*$",
+    rf"\s*(?:"
+    rf"\(\s*/?\s*({_POINTS_NUMBER})\s*(?:\([^()]*\)\s*)?(?:points?|pts?|marks?)\s*\)"
+    rf"|[:\-–—]\s*/?\s*({_POINTS_NUMBER})\s*(?:points?|pts?|marks?)"
+    rf")\s*$",
     re.IGNORECASE,
 )
 
@@ -461,35 +512,61 @@ def _exercise_titre_et_points(exercise):
     """
     (titre, points) d'affichage d'un Exercise, pour le sommaire de navigation du
     lecteur (voir SommaireNav côté frontend). Le titre n'a pas de champ dédié en base :
-    il vit dans la première ligne de l'énoncé, soit comme titre Markdown ("### Exercice
+    il vit dans une ligne de l'énoncé, soit comme titre Markdown ("### Exercice
     1 (5 points)"), soit comme premier segment en gras ("**Section D: Essay (10
     marks).** Write an essay..." - le reste de la ligne étant déjà du préambule).
 
-    Cette première ligne est cherchée dans `enonce_intro_markdown`, et à défaut dans
+    Cette ligne est cherchée dans `enonce_intro_markdown`, et à défaut dans
     `enonce_markdown` : le préambule partagé est souvent absent (aucun des 4 exercices
     de chimie-bac-c-1999 n'en a), la référence vivant alors en tête de la première
     sous-question. Même repli que _repair_missing_exercise_heading côté ingestion.
 
-    Toute autre forme EST du préambule ou de l'énoncé, pas un repère : on rend alors un
-    titre vide plutôt qu'une première phrase tronquée en guise d'étiquette, et le
+    Ce n'est pas forcément la première ligne : un exercice qui ouvre une Partie répète
+    parfois un sous-titre et/ou un préambule commun (données, formule, figure) ENTRE le
+    repère de groupe et sa propre référence ("**A - Activités numériques : 6,5
+    points**\n\n*Trois exercices indépendants I, II et III.*\n\nSoient les nombres...\n
+    \n**Exercice I (3 pts)**" - mathematiques-bepc-2000/2001/2002-cameroun). On parcourt
+    donc toutes les lignes après le repère de groupe et on garde la première qui
+    ressemble à une vraie référence, en ignorant sans s'arrêter tout ce qui n'en est pas
+    (sous-titre en italique, prose, formule, tableau, image). Une ligne qui n'est ni un
+    titre Markdown ni un segment en gras reconnu par _REFERENCE_EXERCICE_RE EST du
+    préambule ou de l'énoncé, jamais un repère : si aucune ligne ne correspond, on rend
+    un titre vide plutôt qu'une première phrase tronquée en guise d'étiquette, et le
     frontend retombe sur "Exercice {numero}".
 
     `points` reste prioritairement le champ structuré Exercise.points ; le barème lu
     dans le titre ne sert que de repli, pour le contenu ingéré avant que ce champ ne
     soit systématiquement renseigné.
+
+    Un exercice appartenant à un groupe (voir _exercise_group_paths) porte ce(s)
+    repère(s) de groupe EN TÊTE de son intro, avant sa propre référence
+    ("**Partie A**\n\n**I. Activités Numériques**\n\n**Exercice 1**") - sans ce
+    passage par _leading_label_stack, la première ligne trouvée était le repère de
+    GROUPE, pas celui de l'exercice (mathematiques-bepc-2017-blanc : l'exercice 1 se
+    voyait étiqueté "Partie A" dans le sommaire au lieu de "Exercice 1").
     """
     source = exercise.enonce_intro_markdown
     if not source.strip():
         source = exercise.enonce_markdown
-    line = next((raw for raw in source.splitlines() if raw.strip()), "").strip()
+    _, apres_groupes = _leading_label_stack(source)
 
     titre = ""
-    if line.startswith("#"):
-        titre = line.lstrip("#").strip()
-    elif line.startswith("**"):
-        fin = line.find("**", 2)
-        candidat = line[2:fin].strip() if fin != -1 else ""
-        titre = candidat if _REFERENCE_EXERCICE_RE.match(candidat) else ""
+    for raw in source[apres_groupes:].splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("#"):
+            titre = line.lstrip("#").strip()
+            break
+        if line.startswith("**"):
+            fin = line.find("**", 2)
+            candidat = line[2:fin].strip() if fin != -1 else ""
+            if _REFERENCE_EXERCICE_RE.match(candidat):
+                titre = candidat
+                break
+        # ni titre ni repère de groupe (déjà retirés plus haut) : sous-titre de
+        # partie, préambule partagé, formule, figure... - on continue de chercher
+        # la référence plus bas plutôt que de conclure à un exercice sans titre.
 
     titre = titre.rstrip(" .:")
     points = exercise.points.strip()
@@ -520,6 +597,35 @@ def _exercise_titre_et_points(exercise):
 # demi-cadratin/cadratin, espace autour optionnel) : le corpus SVT/Espagnol écrit aussi
 # bien "I. Évaluation..." que "I - Évaluation..."/"III- Exploitation...".
 _PARTIE_LABEL_RE = re.compile(r"\A\s*(?:Partie\s+\S|[IVX]{1,4}\s*[.\-–—]|[A-Z]\s*[.\-–—]\s)", re.IGNORECASE)
+
+# Repère de groupe "matière" à l'état brut, sans le mot "Partie" ni numérotation :
+# une épreuve combinant plusieurs matières (ex. Physique-Chimie, probatoire-A) ouvre
+# chaque bloc sur le seul nom de la matière ("**CHIMIE / 10 points**", puis plus loin
+# "**PHYSIQUE / 10 points**" - chimie-probatoire-a-2019-a4-bilingue). Distinct de
+# _PARTIE_LABEL_RE (qui exige "Partie"/un chiffre romain/une lettre seule) : ici le
+# repère est un ou plusieurs mots ENTIÈREMENT en majuscules, sans autre repère
+# reconnaissable ("Exercice"/"Problème"/"Partie"/"Section" - exclus explicitement,
+# sans quoi "EXERCICE 1 : ..." rejoindrait à tort la pile de groupe au lieu de rester
+# la référence propre de l'exercice). Scan corpus du 2026-08-22 : un seul cas dans
+# toute la base, mais la forme est simple et le risque de faux positif faible (le
+# filtre MAJUSCULES SEULES exclut déjà toute phrase ordinaire).
+_BARE_MATIERE_EXCLUDE_RE = re.compile(r"\A(?:Exercice|Probl[eè]me|Partie|Section)\b", re.IGNORECASE)
+_BARE_MATIERE_LABEL_RE = re.compile(
+    r"\A[A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜÇŒ][A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜÇŒ' \-]{1,40}?(?:\s*[/:]\s*[\d.,]+\s*(?:points?|pts?|marks?))?\Z"
+)
+
+
+def _is_bare_matiere_label(contenu):
+    return bool(_BARE_MATIERE_LABEL_RE.match(contenu)) and not _BARE_MATIERE_EXCLUDE_RE.match(contenu)
+
+
+def _is_group_label(contenu):
+    """Repère de groupe (Partie/romain/lettré OU nom de matière nu) - voir
+    _PARTIE_LABEL_RE et _BARE_MATIERE_LABEL_RE ci-dessus. Sert de condition d'arrêt à
+    _leading_label_stack : seuls ces repères rejoignent la pile, jamais la propre
+    référence de l'exercice."""
+    return bool(_PARTIE_LABEL_RE.match(contenu)) or _is_bare_matiere_label(contenu)
+
 
 # Titre Markdown ou premier segment en gras en tête d'un texte, quoi qu'il porte
 # ensuite sur la même ligne (correction-experte enchaîne parfois directement le
@@ -557,7 +663,7 @@ def _leading_label_stack(text):
     reste = text or ""
     while True:
         contenu, fin = _leading_label(reste)
-        if not contenu or not _PARTIE_LABEL_RE.match(contenu):
+        if not contenu or not _is_group_label(contenu):
             break
         pile.append(contenu)
         reste = reste[fin:].lstrip()
@@ -586,6 +692,115 @@ def _partie_labels_to_strip(exercises):
             a_retirer[exercise.pk] = commun
         pile_active = pile_active[:commun] + pile[commun:]
     return a_retirer
+
+
+# Sous-familles de repère de groupe, pour ordonner leur PROFONDEUR relative (voir
+# _exercise_group_paths) - "Partie X" et la forme lettrée courte ("A. Évaluation...")
+# désignent le même niveau (voir commentaire de _BARE_LETTERED_PART_HEADER_RE côté
+# ingestion_repairs : simple alternative d'écriture, jamais deux niveaux concurrents
+# dans une même épreuve), d'où un seul "kind" pour les deux. Un chiffre romain forme
+# la seule autre famille observée dans le corpus.
+_KIND_ROMAN_RE = re.compile(r"\A\s*[IVX]{1,4}\s*[.\-–—]", re.IGNORECASE)
+_KIND_PARTIE_RE = re.compile(r"\A\s*(?:Partie\s+\S|[A-Z]\s*[.\-–—]\s)", re.IGNORECASE)
+
+
+def _label_kind(contenu):
+    """Famille d'un repère de groupe ("roman", "partie", "matiere") - sert à établir
+    sa profondeur relative dans _exercise_group_paths, jamais son texte affiché."""
+    if _KIND_ROMAN_RE.match(contenu):
+        return "roman"
+    if _KIND_PARTIE_RE.match(contenu):
+        return "partie"
+    return "matiere"
+
+
+def _exercise_group_paths(exercises):
+    """
+    {exercise.pk: [repère_niveau_0, repère_niveau_1, ...]} - la pile de groupes
+    (Partie/section romaine/matière) à laquelle appartient chaque Exercise de
+    `exercises` (déjà triés par exercise_sort_key), pour construire un sommaire
+    hiérarchique côté frontend (voir EpreuveSommaire). [] pour un exercice qui
+    n'appartient à aucun groupe détecté.
+
+    Contrairement à _partie_labels_to_strip (qui ne sert qu'à dédupliquer un repère
+    répété À L'IDENTIQUE), cette fonction doit reconstituer la pile ENTIÈRE d'un
+    exercice qui ne restate qu'un SEUL niveau ("**II - Évaluation des savoir-faire**"
+    ne redit pas "Partie A" au-dessus, pourtant l'exercice en fait toujours partie -
+    voir sciences-de-la-vie-et-de-la-terre-bepc-2018/2025/2026). La comparaison
+    PAR POSITION de _partie_labels_to_strip ne suffit donc pas ici : un exercice qui
+    ne déclare qu'un repère de niveau "roman" doit remplacer UNIQUEMENT le niveau
+    "roman" de la pile active, sans toucher au niveau "partie" au-dessus - même quand
+    ce niveau "roman" occupait la position 1 pour un exercice précédent, mais la
+    position 0 pour un autre (l'ORDRE Partie/romain varie d'une épreuve à l'autre :
+    "Partie A > I." pour mathematiques-bepc-2017-blanc, mais "I. > Partie A" pour le
+    format APC des épreuves SVT/BEPC ci-dessus - voir _label_kind, jamais une
+    profondeur fixée globalement par famille).
+
+    La profondeur de chaque famille ("roman"/"partie"/"matiere") est donc déterminée
+    UNE FOIS par épreuve, à partir du premier repère empilé plusieurs niveaux à la
+    fois (seule pile qui révèle sans ambiguïté quel niveau est le plus extérieur) -
+    un exercice qui ne déclare qu'un seul repère à la fois ne fait ensuite que
+    remplacer le niveau correspondant à sa famille, quelle que soit sa position dans
+    SA PROPRE pile.
+    """
+    profondeur_par_famille = {}
+    piles = []
+    for exercise in exercises:
+        pile, _ = _leading_label_stack(exercise.enonce_intro_markdown)
+        piles.append(pile)
+        for repere in pile:
+            famille = _label_kind(repere)
+            if famille not in profondeur_par_famille:
+                profondeur_par_famille[famille] = len(profondeur_par_famille)
+
+    result = {}
+    pile_active = {}
+    for exercise, pile in zip(exercises, piles):
+        for repere in pile:
+            profondeur = profondeur_par_famille[_label_kind(repere)]
+            for niveau in [n for n in pile_active if n >= profondeur]:
+                del pile_active[niveau]
+            pile_active[profondeur] = repere
+        result[exercise.pk] = [pile_active[niveau] for niveau in sorted(pile_active)]
+    return result
+
+
+def _fallback_group_paths_if_needed(exercises):
+    """{exercise.pk: [...]} via _exercise_group_paths (analyse de texte), calculé
+    seulement si au moins un exercice de `exercises` n'a pas encore de Exercise.groupes
+    renseigné en base - {} sans jamais analyser le texte quand toute l'épreuve vient
+    d'une ingestion postérieure à l'introduction de ce champ. Un exercice avec
+    Exercise.groupes non vide n'indexe jamais le résultat (voir les appelants), donc {}
+    est un résultat sûr même si aucun exercice n'a de repère détectable par regex."""
+    if all(exercise.groupes for exercise in exercises):
+        return {}
+    return _exercise_group_paths(exercises)
+
+
+# Un repère de groupe porte souvent un sous-titre et/ou un barème qui n'apportent rien
+# à un en-tête de navigation ("Partie A : Évaluation Ressources : 10 points" - le
+# barème total de la partie, sans intérêt une fois affiché comme simple séparateur de
+# section ; "CHIMIE / 10 points" de même). Réutilise le même nettoyage de barème que
+# _exercise_titre_et_points, puis tronque au premier ":"/"/" qui introduit ce
+# sous-titre - UNIQUEMENT quand il y en a un (un repère romain sans sous-titre distinct
+# comme "I. Activités Numériques" n'a ni ':' ni '/' et reste donc intact).
+_GROUP_LABEL_SUBTITLE_RE = re.compile(r"\s*[:/]")
+
+
+def _simplify_group_label(contenu):
+    """Libellé compact d'un repère de groupe pour le sommaire de navigation - voir
+    _exercise_group_paths. Le texte complet reste visible dans le corps de l'épreuve
+    (jamais modifié par cette fonction, purement cosmétique côté sommaire)."""
+    label = contenu.strip()
+    match = _POINTS_SUFFIX_RE.search(label)
+    if match:
+        label = label[: match.start()].rstrip(" .:")
+    label = _POINTS_PAREN_ANYWHERE_RE.sub("", label).strip()
+    label = _POINTS_TRAILING_IN_PAREN_RE.sub("", label).strip()
+    sous_titre = _GROUP_LABEL_SUBTITLE_RE.search(label)
+    if sous_titre:
+        label = label[: sous_titre.start()].strip()
+    return label or contenu.strip()
 
 
 def _strip_leading_label(text, nb_labels):
@@ -636,11 +851,21 @@ def lesson_exercises_breakdown(lesson):
     (24 tags sur le seul exercice 1 de chimie-bac-c-1999), trop fin pour servir
     d'étiquette - en prendre un au hasard désignerait mal l'exercice.
 
+    `groupes` alimente le même sommaire d'un niveau supplémentaire : la pile de
+    repères (Partie/section romaine/matière) à laquelle appartient l'exercice, déjà
+    simplifiée pour l'affichage. Vient de Exercise.groupes (renseigné dès l'ingestion
+    depuis le JSON source de correction-experte) quand ce champ est non vide, sinon
+    reconstruit par analyse de texte en repli - voir _fallback_group_paths_if_needed/
+    _exercise_group_paths/_simplify_group_label. [] pour la grande majorité des
+    épreuves (aucun groupe déclaré ni détecté), auquel cas le frontend retombe sur un
+    sommaire plat, inchangé.
+
     Liste vide pour une Lesson sans Exercise (FICHE, ou tout contenu non sectionné) -
     le frontend retombe alors sur content_markdown tel quel.
     """
     exercises = sorted(lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key)
     a_retirer = _partie_labels_to_strip(exercises)
+    groupes_par_exercice = _fallback_group_paths_if_needed(exercises)
     result = []
     for exercise in exercises:
         intro = exercise.enonce_intro_markdown
@@ -650,10 +875,12 @@ def lesson_exercises_breakdown(lesson):
         if exercise.pk in a_retirer:
             intro = _strip_leading_label(intro, a_retirer[exercise.pk])
         titre, points = _exercise_titre_et_points(exercise)
+        groupes = exercise.groupes or groupes_par_exercice.get(exercise.pk, [])
         result.append({
             "numero_exercice": exercise.numero_exercice,
             "titre": titre,
             "points": points,
+            "groupes": [_simplify_group_label(g) for g in groupes],
             "enonce_intro_markdown": intro,
             "enonce_markdown": enonce,
             "corrige_markdown": _clean_exercise_corrige(exercise),
@@ -678,21 +905,28 @@ def lesson_preview_exercises(lesson):
 
     Liste vide pour une Lesson sans Exercise - le frontend retombe alors sur
     preview_markdown tel quel, exactement comme pour le corrigé.
+
+    `groupes` : voir lesson_exercises_breakdown, même mécanique, exposée aussi côté
+    sujet public pour que la fiche (non-abonné) affiche le même sommaire hiérarchique
+    que le lecteur (voir EpreuveDetailPage.tsx).
     """
     exercises = sorted(
         lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key,
     )
     a_retirer = _partie_labels_to_strip(exercises)
+    groupes_par_exercice = _fallback_group_paths_if_needed(exercises)
     result = []
     for exercise in exercises:
         titre, points = _exercise_titre_et_points(exercise)
         enonce_markdown = exercise.enonce_markdown
         if exercise.pk in a_retirer:
             enonce_markdown = _strip_leading_label(enonce_markdown, a_retirer[exercise.pk])
+        groupes = exercise.groupes or groupes_par_exercice.get(exercise.pk, [])
         result.append({
             "numero_exercice": exercise.numero_exercice,
             "titre": titre,
             "points": points,
+            "groupes": [_simplify_group_label(g) for g in groupes],
             "enonce_markdown": enonce_markdown,
         })
     return result

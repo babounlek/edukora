@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from subscriptions.models import InscriptionInedite, InscriptionRepetiteur, Subscription
+from subscriptions.models import DureeMode, InscriptionInedite, InscriptionRepetiteur, Subscription
 
 
 def has_access(user, obj):
@@ -41,6 +41,22 @@ def has_access_inedite(user, obj):
         return False
     return InscriptionInedite.objects.filter(
         user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(),
+    ).exists()
+
+
+def has_access_jusqua_examen(user, cursus):
+    """
+    Vrai si l'utilisateur a un abonnement actif de palier Jusqu'à l'Examen sur ce
+    cursus - distinct de has_access, qui accepte n'importe quel palier (y compris
+    Mensuel) pour le contenu de base. Réservé aux fonctionnalités pensées comme
+    argument de vente propre à ce palier (ex. classement des thèmes les plus fréquents
+    aux examens, voir catalog.views.ThemesFrequentsView) - ne jamais l'utiliser pour
+    gater l'accès au contenu de base, qui reste has_access.
+    """
+    if not user.is_authenticated:
+        return False
+    return Subscription.objects.filter(
+        user=user, cursus=cursus, expires_at__gt=timezone.now(), duration_mode=DureeMode.JUSQUA_EXAMEN,
     ).exists()
 
 

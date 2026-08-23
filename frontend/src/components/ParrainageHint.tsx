@@ -19,7 +19,7 @@ export function ParrainageHint() {
       className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground hover:text-primary hover:underline"
     >
       <Gift className="size-3.5 shrink-0" />
-      Ou invite un ami pour débloquer 7 jours gratuits
+      Ou invite un ami pour gagner 500 FCFA de crédit
     </Link>
   )
 }

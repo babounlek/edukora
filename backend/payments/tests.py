@@ -17,7 +17,16 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from catalog.models import Cursus, Examen, ExamSession
-from subscriptions.models import DureeMode, InscriptionInedite, ParrainageRecompense, Plan, ProductType, Subscription
+from subscriptions.models import (
+    PARRAINAGE_CREDIT_MONTANT,
+    DureeMode,
+    InscriptionInedite,
+    ParrainageRecompense,
+    Plan,
+    ProductType,
+    Subscription,
+    solde_credit_parrainage,
+)
 from users.models import User
 
 from .campay_client import CampayError
@@ -39,6 +48,27 @@ def _make_cursus():
     # de test après migration, donc on le récupère plutôt que d'en recréer un en
     # double (Country.code est unique, une deuxième "CM" ferait échouer le test).
     return Cursus.objects.get(examen=Examen.BAC, series__code="C")
+
+
+def _octroyer_credit(parrain, montant, cursus):
+    """
+    Crée directement un crédit parrainage disponible pour `parrain`, sans passer par
+    le parcours complet filleul -> première conversion (déjà couvert par
+    ParrainageIdempotenceTests) - utile pour tester sa consommation côté paiement de
+    manière isolée. `transaction`/`filleul` bidons uniquement pour satisfaire les FK
+    obligatoires de ParrainageRecompense.
+    """
+    filleul_bidon = User.objects.create_user(phone_number=f"679{User.objects.count():06d}", password="x")
+    plan_bidon = Plan.objects.create(name="Bidon", cursus=cursus, price=1, duration_days=1)
+    transaction_bidon = Transaction.objects.create(
+        user=filleul_bidon, plan=plan_bidon, amount=1,
+        phone_number=filleul_bidon.phone_number, status=StatutTransaction.SUCCESSFUL,
+    )
+    return ParrainageRecompense.objects.create(
+        parrain=parrain, filleul=filleul_bidon, transaction=transaction_bidon, cursus=cursus,
+        montant_offert=montant, montant_restant=montant,
+        expires_at=timezone.now() + timezone.timedelta(days=365),
+    )
 
 
 class TransactionSyncStatusTests(TestCase):
@@ -271,7 +301,11 @@ class ParrainageIdempotenceTests(TestCase):
         transaction.sync_status()
 
         self.assertTrue(ParrainageRecompense.objects.filter(transaction=transaction).exists())
-        self.assertTrue(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
+        # Crédit FCFA dépensable sur n'importe quel achat futur - plus une extension
+        # d'abonnement sur le cursus du filleul (voir subscriptions.models, décision
+        # du 2026-08-22).
+        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
+        self.assertFalse(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
 
     @patch("payments.models.campay_client.get_transaction_status")
     def test_renewal_does_not_reward_parrain_again(self, mock_status):
@@ -282,8 +316,6 @@ class ParrainageIdempotenceTests(TestCase):
             phone_number=self.filleul.phone_number, campay_reference="ref-1",
         )
         first.sync_status()
-        parrain_subscription = Subscription.objects.get(user=self.parrain, cursus=self.cursus)
-        expires_after_first_reward = parrain_subscription.expires_at
 
         second = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
@@ -292,8 +324,7 @@ class ParrainageIdempotenceTests(TestCase):
         second.sync_status()
 
         self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
-        parrain_subscription.refresh_from_db()
-        self.assertEqual(parrain_subscription.expires_at, expires_after_first_reward)
+        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
 
     @patch("payments.models.campay_client.get_transaction_status")
     def test_replaying_sync_status_does_not_reward_parrain_twice(self, mock_status):
@@ -370,30 +401,61 @@ class PaymentFlowAPITests(TestCase):
         transaction = Transaction.objects.get(pk=response.data["transaction_id"])
         self.assertEqual(transaction.amount, 3000)
 
+    @patch("payments.models.campay_client.init_collect")
+    def test_initiate_payment_applies_available_credit_as_a_discount(self, mock_init):
+        mock_init.return_value = {"reference": "campay-ref-credit", "status": "PENDING"}
+        _octroyer_credit(self.user, 500, self.cursus)
+
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction = Transaction.objects.get(pk=response.data["transaction_id"])
+        self.assertEqual(transaction.credit_applique, 500)
+        self.assertEqual(transaction.amount, self.plan.price - 500)
+        # CamPay ne doit jamais voir le prix plein : c'est bien le montant net qui
+        # part en collecte, pas seulement celui stocké côté Transaction.
+        self.assertEqual(mock_init.call_args.kwargs["amount"], self.plan.price - 500)
+
+    @patch("payments.models.campay_client.get_transaction_status")
+    def test_credit_is_consumed_only_on_confirmation_not_on_initiation(self, mock_status):
+        # Le solde affiché à l'initiation n'est qu'une cotation - voir
+        # consommer_credit_parrainage. Le solde réel ne doit bouger qu'à la
+        # confirmation (sync_status), jamais avant, sinon un paiement qui échoue
+        # aurait quand même consommé le crédit du parrain.
+        _octroyer_credit(self.user, 500, self.cursus)
+        transaction = Transaction.objects.create(
+            user=self.user, plan=self.plan, amount=self.plan.price - 500,
+            credit_applique=500, phone_number=self.user.phone_number, campay_reference="ref-credit-confirm",
+        )
+        self.assertEqual(solde_credit_parrainage(self.user), 500)
+
+        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-credit-confirm"}
+        transaction.sync_status()
+
+        self.assertEqual(solde_credit_parrainage(self.user), 0)
+
+    @patch("payments.models.campay_client.init_collect")
+    def test_initiate_payment_skips_campay_when_credit_fully_covers_the_price(self, mock_init):
+        _octroyer_credit(self.user, self.plan.price, self.cursus)
+
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        mock_init.assert_not_called()
+        transaction = Transaction.objects.get(pk=response.data["transaction_id"])
+        self.assertEqual(transaction.status, StatutTransaction.SUCCESSFUL)
+        self.assertEqual(transaction.amount, 0)
+        self.assertEqual(transaction.credit_applique, self.plan.price)
+        self.assertTrue(Subscription.objects.get(user=self.user, cursus=self.cursus).is_active)
+        self.assertEqual(solde_credit_parrainage(self.user), 0)
+
     def test_initiate_payment_requires_plan_id_and_phone(self):
         response = self.client.post("/payments/initiate/", {})
         self.assertEqual(response.status_code, 400)
-
-    def test_initiate_payment_rejects_pack_examen_hors_fenetre(self):
-        # Le catalogue ne propose déjà plus cette offre hors fenêtre d'urgence (voir
-        # subscriptions.PlanListView) - ce test ferme le POST direct avec un plan_id
-        # récupéré pendant la fenêtre et rejoué après, qui donnerait sinon presque un
-        # an d'accès pour 3 000 FCFA.
-        ExamSession.objects.create(
-            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=280)).date(),
-        )
-        pack = Plan.objects.create(
-            name="Pack Examen", cursus=self.cursus, price=3000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
-        )
-
-        response = self.client.post(
-            "/payments/initiate/", {"plan_id": pack.id, "phone_number": self.user.phone_number},
-        )
-
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(Transaction.objects.filter(plan=pack).exists())
 
     def test_initiate_payment_rejects_inactive_plan(self):
         self.plan.is_active = False
@@ -541,16 +603,16 @@ class TransactionConcurrencyTests(TransactionTestCase):
         self.assertEqual(errors, [])
 
         filleul_sub = Subscription.objects.get(user=self.filleul, cursus=self.cursus)
-        parrain_sub = Subscription.objects.get(user=self.parrain, cursus=self.cursus)
 
-        # 25-30j (pas ~60) et 5-7j (pas ~14) : marge pour le temps d'exécution du
-        # test, mais large marge de sécurité avant de pouvoir confondre avec un
-        # double crédit (qui doublerait carrément ces valeurs).
+        # 25-30j (pas ~60) : marge pour le temps d'exécution du test, mais large
+        # marge de sécurité avant de pouvoir confondre avec un double crédit (qui
+        # doublerait carrément cette valeur).
         filleul_days_left = (filleul_sub.expires_at - timezone.now()).days
-        parrain_days_left = (parrain_sub.expires_at - timezone.now()).days
         self.assertTrue(25 <= filleul_days_left <= 30, f"abonnement filleul prolongé en double : {filleul_days_left}j")
-        self.assertTrue(5 <= parrain_days_left <= 7, f"abonnement parrain prolongé en double : {parrain_days_left}j")
         self.assertEqual(ParrainageRecompense.objects.filter(transaction=self.transaction).count(), 1)
+        # Même garde-fou côté crédit parrainage : un double appel concurrent ne doit
+        # jamais créditer le parrain deux fois (500 FCFA, pas 1000).
+        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
 
 
 class ManualPaymentDeclareAPITests(TestCase):
@@ -621,25 +683,6 @@ class ManualPaymentDeclareAPITests(TestCase):
         self.assertEqual(response.status_code, 201)
         payment = ManualPayment.objects.get(pk=response.data["id"])
         self.assertEqual(payment.amount_expected, 3000)
-
-    def test_rejects_pack_examen_hors_fenetre(self):
-        # Même règle que pour le paiement Campay : une offre au catalogue n'est pas
-        # forcément vendable aujourd'hui (voir Plan.est_achetable).
-        ExamSession.objects.create(
-            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=280)).date(),
-        )
-        pack = Plan.objects.create(
-            name="Pack Examen", cursus=self.cursus, price=3000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
-        )
-
-        response = self.client.post(
-            "/payments/manual/declare/", self._payload(plan=pack.id, amount_declared=3000),
-        )
-
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(ManualPayment.objects.filter(plan=pack).exists())
 
     def test_rejects_amount_declared_below_plan_price(self):
         # Constaté en production : un montant déclaré inférieur au prix de l'offre ne

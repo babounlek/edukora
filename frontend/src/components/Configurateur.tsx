@@ -3,6 +3,30 @@ import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/** Amorce éditoriale (filet or + libellé en italique serif) réutilisée devant chaque
+ * titre de section - même motif que la page "À propos", pour que Fiches et Quiz
+ * partagent son vocabulaire visuel au lieu de rester des pages utilitaires isolées. */
+export function Eyebrow({ children }: { children: ReactNode }) {
+  return (
+    <p className="mb-3 flex items-center gap-2.5 font-display text-sm italic text-primary">
+      <span className="h-px w-8 bg-gold" />
+      {children}
+    </p>
+  )
+}
+
+/** Pastille statistique en pilule (badges du hero) - factorisée hors de
+ * FichesPage/QuizStartPage où le même balisage était dupliqué à l'identique pour
+ * chaque puce (PDF générés, add-on actif, maîtrise moyenne...). */
+export function StatChip({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+  return (
+    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
+      {icon}
+      {children}
+    </span>
+  )
+}
+
 /**
  * Aperçu "comment ça marche" en trois puces numérotées, affiché avant le
  * configurateur lui-même (voir FichesPage/QuizStartPage) - la même structure
@@ -55,7 +79,7 @@ export function Etape({ numero, titre, aide, fait, inactif, dernier, children }:
       )}
       <span
         className={cn(
-          "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
+          "flex size-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold tabular-nums transition-colors",
           fait
             ? "bg-primary text-primary-foreground"
             : inactif

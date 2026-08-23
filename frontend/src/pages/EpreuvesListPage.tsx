@@ -29,6 +29,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
+import { ThemesFrequents } from "@/components/ThemesFrequents"
 import {
   Select,
   SelectContent,
@@ -179,7 +180,11 @@ export function EpreuvesListPage() {
     [subjects],
   )
 
-  const [matieresDepliees, setMatieresDepliees] = useState(() => Boolean(subjectFilter))
+  // Déplié par défaut : toutes les matières visibles d'un coup plutôt que tronquées
+  // derrière "Toutes les matières (N)" - décision utilisateur du 2026-08-19, le
+  // repliement restait un frein à la découverte pour un catalogue qui n'a de toute
+  // façon jamais plus d'une dizaine de matières par pays.
+  const [matieresDepliees, setMatieresDepliees] = useState(true)
 
   const { data: cursusList = [] } = useQuery({
     queryKey: ["cursus", country],
@@ -451,7 +456,7 @@ export function EpreuvesListPage() {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
               origineFilter === "INEDITE"
-                ? "border-gold/50 bg-gold/15 text-gold-foreground"
+                ? "border-gold/50 bg-gold/15 text-gold"
                 : "border-border text-muted-foreground hover:border-gold/40 hover:text-gold",
             )}
           >
@@ -596,6 +601,10 @@ export function EpreuvesListPage() {
           </div>
         )}
       </div>
+
+      {country && subjectFilter && cursusFilter && (
+        <ThemesFrequents country={country} cursusId={Number(cursusFilter)} subjectCode={subjectFilter} />
+      )}
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

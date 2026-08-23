@@ -1140,11 +1140,12 @@ class EpreuveInediteDetailAPITests(TestCase):
         self.assertEqual(response.data["related_cours"], [])
 
     def test_apercu_enonce_markdown_is_the_first_questions_enonce(self):
-        # _make_published_epreuve crée un seul exercice, questions "1" (ordre=1, QCM,
-        # énoncé "QCM ?") et "2" (ordre=2) - le premier par ordre, jamais le corrigé ni
-        # les questions suivantes (voir catalog.inedit_bridge._apercu_enonce_markdown).
+        # _make_published_epreuve crée un seul exercice ("1"), questions "1" (ordre=1,
+        # QCM, énoncé "QCM ?") et "2" (ordre=2) - le premier par ordre, jamais le
+        # corrigé ni les questions suivantes (voir catalog.inedit_bridge._apercu_enonce).
         response = self.client.get(f"/inedit/epreuves/{self.epreuve.id}/")
         self.assertEqual(response.data["apercu_enonce_markdown"], "QCM ?")
+        self.assertEqual(response.data["apercu_numero_exercice"], "1")
 
     def test_apercu_enonce_markdown_is_none_without_any_exercice(self):
         blueprint, _ = ingest_blueprint(_blueprint_payload(external_id="bp-vide-detail"), self.country)
@@ -1159,6 +1160,7 @@ class EpreuveInediteDetailAPITests(TestCase):
         response = self.client.get(f"/inedit/epreuves/{epreuve_vide.id}/")
 
         self.assertIsNone(response.data["apercu_enonce_markdown"])
+        self.assertIsNone(response.data["apercu_numero_exercice"])
 
 
 class ListMyTentativesInediteAPITests(TestCase):

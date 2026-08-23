@@ -75,12 +75,14 @@ class UserSerializer(serializers.ModelSerializer):
     filleuls_count = serializers.SerializerMethodField()
     phone_number = serializers.SerializerMethodField()
     auth_methods = serializers.SerializerMethodField()
+    credit_parrainage_disponible = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
+            "credit_parrainage_disponible",
         ]
 
     def get_phone_number(self, obj):
@@ -100,6 +102,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_filleuls_count(self, obj):
         return obj.filleuls.count()
+
+    def get_credit_parrainage_disponible(self, obj):
+        """Solde de crédit parrainage encore dépensable (voir
+        subscriptions.models.solde_credit_parrainage) - affiché au checkout pour que
+        la remise appliquée par payments.initiate_payment ne surprenne jamais."""
+        from subscriptions.models import solde_credit_parrainage
+
+        return solde_credit_parrainage(obj)
 
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):

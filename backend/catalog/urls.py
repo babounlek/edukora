@@ -11,6 +11,7 @@ urlpatterns = [
     path("cours/<slug:slug>/", views.CoursDetailView.as_view(), name="cours-detail"),
     path("subjects/", views.SubjectListView.as_view(), name="subject-list"),
     path("cursus/", views.CursusListView.as_view(), name="cursus-list"),
+    path("cursus/<int:cursus_id>/themes-frequents/", views.ThemesFrequentsView.as_view(), name="themes-frequents"),
     path("countries/", views.CountryListView.as_view(), name="country-list"),
     path("temoignages/", views.TemoignageListView.as_view(), name="temoignage-list"),
     path("stats/", views.PlatformStatsView.as_view(), name="platform-stats"),

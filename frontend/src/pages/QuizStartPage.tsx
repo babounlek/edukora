@@ -18,7 +18,7 @@ import { getMaitrise, listMySubscriptions, listQuizSubjects, listRevisionsDues, 
 import { ApiError } from "@/api/client"
 import type { MaitriseTheme, ModeQuiz, RevisionDue, Subject, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { Etape, EtapesPresentation, LigneRecap, RecapVide } from "@/components/Configurateur"
+import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide, StatChip } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -48,6 +48,54 @@ const N_PRESETS = [5, 10, 15, 20]
 // Points faibles affichés avant "Tout afficher" - la colonne latérale est collante,
 // une liste sans limite la ferait dépasser la hauteur de l'écran.
 const POINTS_FAIBLES_VISIBLES = 4
+
+const RING_SIZE = 112
+const RING_STROKE = 10
+const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2
+const RING_CIRCONFERENCE = 2 * Math.PI * RING_RADIUS
+
+/**
+ * Anneau de maîtrise, accessoire décoratif du hero (voir plus bas) - même procédé que
+ * la copie annotée "18/20" de la page À propos, mais adossé à une vraie donnée
+ * (maitriseStats.moyenne) plutôt qu'une maquette figée : sans historique, l'anneau
+ * reste vide et affiche une invite plutôt qu'un 0 % qui se lirait comme un échec.
+ */
+function AnneauMaitrise({ percent }: { percent: number | null }) {
+  const offset = RING_CIRCONFERENCE * (1 - (percent ?? 0) / 100)
+  return (
+    <div className="relative flex size-[112px] items-center justify-center">
+      <svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="-rotate-90">
+        <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RING_RADIUS} fill="none" strokeWidth={RING_STROKE} className="stroke-border" />
+        {percent !== null && (
+          <circle
+            cx={RING_SIZE / 2}
+            cy={RING_SIZE / 2}
+            r={RING_RADIUS}
+            fill="none"
+            strokeWidth={RING_STROKE}
+            strokeLinecap="round"
+            strokeDasharray={RING_CIRCONFERENCE}
+            strokeDashoffset={offset}
+            className="stroke-primary transition-[stroke-dashoffset] duration-700 ease-out"
+          />
+        )}
+      </svg>
+      <div className="absolute flex flex-col items-center">
+        {percent !== null ? (
+          <>
+            <span className="font-display text-2xl font-semibold tabular-nums">{percent}%</span>
+            <span className="text-[0.65rem] text-muted-foreground">de maîtrise</span>
+          </>
+        ) : (
+          <>
+            <Sparkles className="size-5 text-primary" />
+            <span className="mt-1 text-[0.65rem] text-muted-foreground">1re séance</span>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export function QuizStartPage() {
   useSeo({
@@ -202,7 +250,7 @@ export function QuizStartPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
-      <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -210,47 +258,69 @@ export function QuizStartPage() {
             backgroundSize: "24px 24px",
           }}
         />
-        <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Target className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Entraînement personnalisé</p>
-          <h1 className="font-display text-3xl font-semibold sm:text-4xl">Quiz</h1>
-          <p className="mt-2 text-muted-foreground">
-            Entraîne-toi librement ou fais un test de niveau à partir des corrigés de ton cursus - le quiz repère ce
-            que tu dois retravailler et te le repropose au bon moment.
-          </p>
-
-          {(maitriseStats || revisionsDuCursus.length > 0) && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {maitriseStats && (
-                <>
-                  <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-                    <Target className="size-3.5 text-primary" />
-                    <span className="font-medium tabular-nums">{maitriseStats.moyenne}%</span>
-                    <span className="text-muted-foreground">de maîtrise moyenne</span>
-                  </span>
-                  <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-                    <Trophy className="size-3.5 text-gold" />
-                    <span className="font-medium tabular-nums">
-                      {maitriseStats.maitrises}/{maitriseStats.total}
-                    </span>
-                    <span className="text-muted-foreground">thèmes maîtrisés</span>
-                  </span>
-                </>
-              )}
-              {revisionsDuCursus.length > 0 && (
-                <Link
-                  to="/revision"
-                  className="flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/10 px-3 py-1.5 text-sm transition-colors hover:bg-warning/20"
-                >
-                  <RotateCcw className="size-3.5 text-warning" />
-                  <span className="font-medium tabular-nums">{revisionsDuCursus.length}</span>
-                  <span className="text-muted-foreground">à réviser</span>
-                </Link>
-              )}
+        <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
+          <div>
+            <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Target className="size-5" />
             </div>
-          )}
+            <Eyebrow>Entraînement personnalisé</Eyebrow>
+            <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Quiz</h1>
+            <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
+              Entraîne-toi librement, ou fais le point avec un test de niveau.
+            </p>
+            <p className="mt-2 max-w-md text-muted-foreground">
+              Chaque réponse est rattachée à un thème précis de ton programme - le quiz repère ce que tu dois
+              retravailler et te le repropose au bon moment.
+            </p>
+
+            {(maitriseStats || revisionsDuCursus.length > 0) && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {maitriseStats && (
+                  <>
+                    <StatChip icon={<Target className="size-3.5 text-primary" />}>
+                      <span className="font-medium tabular-nums">{maitriseStats.moyenne}%</span>
+                      <span className="text-muted-foreground">de maîtrise moyenne</span>
+                    </StatChip>
+                    <StatChip icon={<Trophy className="size-3.5 text-gold" />}>
+                      <span className="font-medium tabular-nums">
+                        {maitriseStats.maitrises}/{maitriseStats.total}
+                      </span>
+                      <span className="text-muted-foreground">thèmes maîtrisés</span>
+                    </StatChip>
+                  </>
+                )}
+                {revisionsDuCursus.length > 0 && (
+                  <Link
+                    to="/revision"
+                    className="flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/10 px-3 py-1.5 text-sm shadow-xs transition-colors hover:bg-warning/20"
+                  >
+                    <RotateCcw className="size-3.5 text-warning" />
+                    <span className="font-medium tabular-nums">{revisionsDuCursus.length}</span>
+                    <span className="text-muted-foreground">à réviser</span>
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Accessoire décoratif adossé à une vraie donnée (maitriseStats) plutôt
+              qu'une maquette figée - même procédé que la copie annotée "18/20" de la
+              page À propos, mais qui reflète la progression réelle quand elle existe. */}
+          <div aria-hidden className="relative mx-auto w-full max-w-[18rem] select-none lg:mx-0 lg:justify-self-end">
+            <span className="absolute -top-3 right-6 z-10 -rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
+              Ta progression
+            </span>
+            <div className="rotate-2 rounded-lg border border-border bg-card p-6 shadow-xl transition-transform duration-300 hover:rotate-0">
+              <div className="flex flex-col items-center gap-3">
+                <AnneauMaitrise percent={maitriseStats?.moyenne ?? null} />
+                <div className="w-full border-t border-border pt-3 text-center text-xs text-muted-foreground">
+                  {maitriseStats
+                    ? `${maitriseStats.maitrises}/${maitriseStats.total} thèmes maîtrisés`
+                    : "Repère ce qu'il te reste à travailler"}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -307,7 +377,7 @@ export function QuizStartPage() {
                     actif, il nomme un accès à débloquer. Au visiteur déconnecté, il
                     annonçait une interdiction avant même d'avoir dit ce qu'est le Quiz -
                     mauvaise première impression pour la seule page qui doit l'expliquer. */}
-                <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
                   {isAuthenticated ? <Lock className="size-5" /> : <Target className="size-5" />}
                 </span>
                 <div>
@@ -619,11 +689,13 @@ export function QuizStartPage() {
 
                   {error && <p className="text-sm text-destructive">{error}</p>}
 
+                  <div className="h-px bg-gradient-to-r from-gold/0 via-gold/60 to-gold/0" />
+
                   <Button
                     onClick={() => lancer()}
                     disabled={!selectedCursus || !selectedSubject || enCours}
                     size="lg"
-                    className="mt-1 w-full"
+                    className="w-full"
                   >
                     {starting ? (
                       "Préparation..."

@@ -13,12 +13,7 @@ class PlanListView(generics.ListAPIView):
         qs = Plan.objects.filter(is_active=True).select_related("cursus", "cursus__series", "cursus__country")
         if cursus_id := self.request.query_params.get("cursus"):
             qs = qs.filter(cursus_id=cursus_id)
-        # Filtre en Python et non en base : est_achetable() dépend de la prochaine
-        # ExamSession, donc d'un calcul par plan (voir Plan.est_achetable) qu'aucun
-        # filtre SQL simple n'exprime. Volume négligeable (quelques offres par
-        # cursus, une soixantaine tous cursus confondus) et déjà chargé de toute
-        # façon par le sérialiseur, qui expose effective_duration_days.
-        return [plan for plan in qs if plan.est_achetable()]
+        return qs
 
 
 class MySubscriptionsView(generics.ListAPIView):

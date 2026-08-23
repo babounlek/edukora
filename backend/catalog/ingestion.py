@@ -51,6 +51,7 @@ from django.utils import timezone
 from .ingestion_repairs import (
     _dedupe_exercise_heading,
     _dedupe_question_enonce,
+    _dedupe_trailing_exercise_reference,
     _flag_part_headers_in_intro,
     _merge_series_from_folder_name,
     _repair_dict_shaped_cours_sections,
@@ -59,6 +60,7 @@ from .ingestion_repairs import (
     _repair_missing_exercise_heading,
     _repair_missing_matrix_row_separators,
     _repair_narrow_array_columns,
+    _reposition_trailing_exercise_reference,
     _strip_em_dash,
 )
 from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, FiliereSerieA, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, VarianteSujet, _join_fr, institution_officielle
@@ -1135,15 +1137,26 @@ def ingest_exercise(data, source_dir=None, force=False):
         raise IngestionError("'questions' est requis et doit contenir au moins une entrée.")
 
     data, had_missing_heading = _repair_missing_exercise_heading(data)
-    # Après le filet ci-dessus, jamais avant : c'est aussi le repère qu'il vient
-    # éventuellement d'injecter dans l'intro qu'il faut dédupliquer d'avec celui
-    # déjà porté par la tête d'une question.
+    # Après le filet ci-dessus, jamais avant : un repère tout juste injecté est déjà en
+    # tête d'intro (voir _repair_missing_exercise_heading), rien à repositionner pour
+    # lui - seul un repère PRÉEXISTANT mais mal placé (après un préambule propre à
+    # l'exercice, pas seulement un chapeau d'épreuve) doit encore être déplacé.
+    data, had_misplaced_heading = _reposition_trailing_exercise_reference(data)
+    # Avant les deux dédoublonnages suivants, jamais après : un repère que l'on vient de
+    # ramener en tête d'intro peut désormais faire doublon avec celui de la première
+    # question (cas que seul _dedupe_exercise_heading sait traiter, voir sa docstring).
     data, had_duplicate_heading = _dedupe_exercise_heading(data)
+    # Cas frère de _dedupe_exercise_heading, jamais traité par elle (voir sa
+    # docstring) : le repère répété n'est pas en tête d'intro mais en DERNIÈRE ligne
+    # (une fiche d'identité/un chapeau partagé précède), et n'est répété qu'en tête de
+    # la PREMIÈRE question - voir _dedupe_trailing_exercise_reference.
+    data, had_trailing_duplicate_heading = _dedupe_trailing_exercise_reference(data)
 
-    # Relu APRÈS les rustines, jamais avant : _dedupe_exercise_heading réécrit des
-    # entrées de `questions` (les précédentes ne touchaient que l'intro), et une
-    # référence capturée plus haut pointerait encore sur la liste d'origine - les
-    # corrections seraient alors silencieusement perdues à la création des Question.
+    # Relu APRÈS les rustines, jamais avant : _dedupe_exercise_heading/
+    # _dedupe_trailing_exercise_reference réécrivent des entrées de `questions` (les
+    # précédentes ne touchaient que l'intro), et une référence capturée plus haut
+    # pointerait encore sur la liste d'origine - les corrections seraient alors
+    # silencieusement perdues à la création des Question.
     questions_data = data["questions"]
 
     if source_dir is None:
@@ -1333,10 +1346,13 @@ def ingest_exercise(data, source_dir=None, force=False):
 
         points = str(data.get("points") or "").split("(")[0].strip()
 
+        groupes = [str(g).strip() for g in data.get("groupes") or [] if str(g).strip()]
+
         exercise = Exercise.objects.create(
             lesson=lesson,
             numero_exercice=numero_exercice,
             points=points,
+            groupes=groupes,
             enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
             incertitudes=data.get("incertitudes") or [],
             statut=StatutContenu.VALIDE,
@@ -1453,6 +1469,11 @@ def ingest_exercise(data, source_dir=None, force=False):
             if note not in exercise.incertitudes:
                 exercise.incertitudes = [note, *exercise.incertitudes]
                 exercise.save(update_fields=["incertitudes"])
+        if had_misplaced_heading:
+            note = "Titre \"Exercice N\"/\"Problème\" placé après son propre préambule dans l'énoncé source, repositionné automatiquement en tête à l'ingestion (voir _reposition_trailing_exercise_reference)."
+            if note not in exercise.incertitudes:
+                exercise.incertitudes = [note, *exercise.incertitudes]
+                exercise.save(update_fields=["incertitudes"])
         if had_series_from_folder:
             note = "Série(s) annoncée(s) par le nom du dossier mais absente(s) du champ 'serie' du JSON, ajoutée(s) automatiquement à l'ingestion (voir _merge_series_from_folder_name) - vérifier sur le sujet source si le nom du dossier dit vrai."
             if note not in exercise.incertitudes:
@@ -1460,6 +1481,11 @@ def ingest_exercise(data, source_dir=None, force=False):
                 exercise.save(update_fields=["incertitudes"])
         if had_duplicate_heading:
             note = "Repère \"Exercice N\"/\"Problème\" présent à la fois dans l'intro et en tête d'une question, dédupliqué automatiquement à l'ingestion (voir _dedupe_exercise_heading)."
+            if note not in exercise.incertitudes:
+                exercise.incertitudes = [note, *exercise.incertitudes]
+                exercise.save(update_fields=["incertitudes"])
+        if had_trailing_duplicate_heading:
+            note = "Repère \"Exercice N\"/\"Problème\" répété en tête de la première question après un chapeau/une fiche d'identité en fin d'intro, dédupliqué automatiquement à l'ingestion (voir _dedupe_trailing_exercise_reference)."
             if note not in exercise.incertitudes:
                 exercise.incertitudes = [note, *exercise.incertitudes]
                 exercise.save(update_fields=["incertitudes"])

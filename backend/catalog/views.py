@@ -5,8 +5,23 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from access.services import has_access_jusqua_examen
+
 from .inedit_bridge import bulk_exercises_counts, build_inedit_queryset, epreuve_inedite_catalogue_payload
-from .models import Cours, Country, Cursus, Lesson, LessonType, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, Temoignage
+from .models import (
+    Cours,
+    Country,
+    Cursus,
+    Lesson,
+    LessonType,
+    Origine,
+    Question,
+    StatutContenu,
+    Subject,
+    SUBJECT_FAMILIES,
+    Tag,
+    Temoignage,
+)
 from .serializers import (
     CoursSerializer,
     CountrySerializer,
@@ -142,6 +157,14 @@ class LessonListView(generics.ListAPIView):
                 | Exists(theme_match)
                 | Exists(keyword_match),
             )
+        if theme := params.get("theme"):
+            # Lien "s'entraîner sur ce thème" depuis le classement des thèmes fréquents
+            # (voir ThemesFrequentsView) - correspondance exacte sur Question.themes
+            # (pas Lesson.themes/mots_cles_recherche, moins précis) : même patron EXISTS()
+            # corrélé que ?search= ci-dessus, pour la même raison (éviter le JOIN M2M qui
+            # multiplie chaque Lesson par son nombre de Question taguées).
+            theme_question_match = Question.objects.filter(exercise__lesson=OuterRef("pk"), themes__name=theme)
+            qs = qs.filter(Exists(theme_question_match))
 
         return qs.distinct()
 
@@ -355,3 +378,88 @@ class CursusListView(generics.ListAPIView):
         if country := self.request.query_params.get("country"):
             qs = qs.filter(country__code__iexact=country)
         return qs
+
+
+# En dessous, le signal n'est pas fiable - mesuré en pratique sur SVT BAC D Cameroun
+# (seulement 5 épreuves officielles en base, occurrence maximale de 2) : "tombé 2 fois
+# sur 5" sonnerait comme une fausse promesse plutôt que comme une vraie récurrence.
+SEUIL_MINIMUM_THEMES_FREQUENTS = 8
+TEASER_THEMES_FREQUENTS = 2
+MAX_THEMES_FREQUENTS = 20
+
+
+class ThemesFrequentsView(APIView):
+    """
+    Classement des thèmes (Tag) les plus fréquents aux épreuves officielles d'un
+    (cursus, matière) donné - argument de vente propre au palier Jusqu'à l'Examen (voir
+    access.services.has_access_jusqua_examen). Toujours AllowAny : un visiteur ou un
+    abonné Mensuel voit un teaser de TEASER_THEMES_FREQUENTS thèmes, la liste complète
+    n'est renvoyée qu'à un abonné Jusqu'à l'Examen actif sur ce cursus précis - jamais
+    deux payloads différents pour la même requête selon un champ caché, le classement
+    complet est toujours calculé côté serveur puis tronqué ou non (même principe que
+    access.views.read_lesson/preview_lesson : un seul point de calcul, une troncature
+    déterministe selon l'accès, jamais un second calcul "allégé" qui pourrait diverger).
+
+    Agrégation par ÉPREUVE (Lesson), jamais par Question : un thème traité 3 fois dans
+    le même sujet ne doit compter qu'une fois, sinon un exercice bavard fausse la
+    fréquence. Restreint à origine=OFFICIEL - un examen blanc ou une épreuve
+    d'établissement ne dit rien de ce qui tombe réellement à l'examen. Les deux règles
+    ont été validées à la main sur le corpus réel (Maths BAC C, Anglais BAC C-D) avant
+    d'écrire cet endpoint.
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, cursus_id):
+        cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=cursus_id)
+        if not cursus.country.actif:
+            return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
+
+        # Code (ex. "MATHS"), pas le pk : même identifiant que ?subject= sur
+        # /catalog/lessons/ (voir LessonListView) - le frontend le tient déjà de
+        # listSubjects(), pas besoin d'une résolution séparée. Scopé au pays du
+        # cursus : Subject.code n'est unique que par (country, code).
+        subject_code = request.query_params.get("subject")
+        if not subject_code:
+            return Response({"error": "subject est requis."}, status=400)
+        subject = get_object_or_404(Subject, code=subject_code, country=cursus.country)
+
+        lessons = Lesson.objects.filter(
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, subject=subject, cursus=cursus,
+        ).distinct()
+        nb_sessions_disponibles = lessons.count()
+
+        if nb_sessions_disponibles < SEUIL_MINIMUM_THEMES_FREQUENTS:
+            return Response({
+                "nb_sessions_disponibles": nb_sessions_disponibles,
+                "seuil_minimum": SEUIL_MINIMUM_THEMES_FREQUENTS,
+                "disponible": False,
+                "has_access": False,
+                "nb_themes_verrouilles": 0,
+                "themes": [],
+            })
+
+        classement = list(
+            Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
+            .annotate(nb_epreuves=Count("questions_as_theme__exercise__lesson", distinct=True))
+            .order_by("-nb_epreuves", "name")[:MAX_THEMES_FREQUENTS],
+        )
+
+        has_access = has_access_jusqua_examen(request.user, cursus)
+        themes_visibles = classement if has_access else classement[:TEASER_THEMES_FREQUENTS]
+
+        return Response({
+            "nb_sessions_disponibles": nb_sessions_disponibles,
+            "seuil_minimum": SEUIL_MINIMUM_THEMES_FREQUENTS,
+            "disponible": True,
+            "has_access": has_access,
+            "nb_themes_verrouilles": 0 if has_access else max(0, len(classement) - TEASER_THEMES_FREQUENTS),
+            "themes": [
+                {
+                    "tag": t.name,
+                    "nb_epreuves": t.nb_epreuves,
+                    "frequence_pct": round(100 * t.nb_epreuves / nb_sessions_disponibles),
+                }
+                for t in themes_visibles
+            ],
+        })

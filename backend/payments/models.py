@@ -10,7 +10,9 @@ from subscriptions.models import (
     Plan,
     ProductType,
     Subscription,
+    consommer_credit_parrainage,
     recompenser_parrainage,
+    solde_credit_parrainage,
 )
 from users.models import phone_validator
 
@@ -50,7 +52,7 @@ def _activer_acces(plan, user):
         )
         return None, None, inscription_repetiteur
     subscription = Subscription.objects.activate_or_extend(
-        user=user, cursus=plan.cursus, duration_days=duration_days,
+        user=user, cursus=plan.cursus, duration_days=duration_days, duration_mode=plan.duration_mode,
     )
     inscription_inedite = None
     if plan.inclut_inedit:
@@ -58,6 +60,21 @@ def _activer_acces(plan, user):
             user=user, cursus=plan.cursus, duration_days=duration_days,
         )
     return subscription, inscription_inedite, None
+
+
+class TransactionManager(models.Manager):
+    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique):
+        """
+        Achat intégralement couvert par le crédit parrainage disponible de `user`
+        (credit_applique == plan.effective_price()) - jamais envoyé à CamPay, activé
+        immédiatement. Seul appelant : payments.views.initiate_payment, quand le
+        montant restant à payer après remise tombe à 0.
+        """
+        transaction = self.create(
+            user=user, plan=plan, amount=0, phone_number=phone_number,
+            credit_applique=credit_applique, status=StatutTransaction.SUCCESSFUL,
+        )
+        return transaction._confirmer_succes()
 
 
 class Transaction(models.Model):
@@ -78,7 +95,17 @@ class Transaction(models.Model):
         help_text="Renseigné une fois le paiement d'un Plan ADDON_REPETITEUR confirmé - exclusif avec `subscription` (voir _activer_acces).",
     )
 
-    amount = models.PositiveIntegerField(help_text="Montant en FCFA, capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
+    amount = models.PositiveIntegerField(help_text="Montant en FCFA réellement envoyé à CamPay (déjà net du crédit parrainage - voir credit_applique), capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
+    credit_applique = models.PositiveIntegerField(
+        default=0,
+        help_text=(
+            "Crédit parrainage appliqué en remise sur le prix du plan (voir "
+            "subscriptions.models.solde_credit_parrainage), figé à l'initiation. "
+            "Consommé pour de vrai (montant_restant décrémenté) seulement à la "
+            "confirmation du paiement - voir _confirmer_succes - jamais à "
+            "l'initiation, qui peut encore échouer."
+        ),
+    )
     phone_number = models.CharField(max_length=9)
 
     external_reference = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -88,6 +115,8 @@ class Transaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = TransactionManager()
 
     class Meta:
         ordering = ["-created_at"]
@@ -131,6 +160,15 @@ class Transaction(models.Model):
         if self.status != StatutTransaction.SUCCESSFUL:
             return self
 
+        return self._confirmer_succes()
+
+    def _confirmer_succes(self):
+        """
+        Point d'activation partagé entre une confirmation CamPay (sync_status, ci-
+        dessus) et un achat intégralement couvert par du crédit parrainage, jamais
+        envoyé à CamPay (voir TransactionManager.creer_couverte_par_credit) - toujours
+        appelé avec self.status déjà SUCCESSFUL.
+        """
         with db_transaction.atomic():
             # select_for_update() : sérialise les appels concurrents sur CETTE ligne -
             # le deuxième appel bloque jusqu'à ce que le premier ait validé sa
@@ -154,6 +192,8 @@ class Transaction(models.Model):
                 return self
 
             subscription, inscription_inedite, inscription_repetiteur = _activer_acces(self.plan, self.user)
+            if self.credit_applique:
+                consommer_credit_parrainage(self.user, self.credit_applique)
             locked.subscription = subscription
             locked.inscription_inedite = inscription_inedite
             locked.inscription_repetiteur = inscription_repetiteur

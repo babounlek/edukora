@@ -18,7 +18,17 @@ from rest_framework.test import APIClient
 from catalog.models import Cursus, Examen, ExamSession
 from users.models import User
 
-from .models import DureeMode, InscriptionInedite, ParrainageRecompense, Plan, ProductType, Subscription, recompenser_parrainage
+from .models import (
+    PARRAINAGE_CREDIT_MONTANT,
+    DureeMode,
+    InscriptionInedite,
+    ParrainageRecompense,
+    Plan,
+    ProductType,
+    Subscription,
+    recompenser_parrainage,
+    solde_credit_parrainage,
+)
 
 
 def _cursus():
@@ -77,10 +87,13 @@ class PlanEffectiveDurationDaysTests(TestCase):
 
 class PlanEffectivePriceTests(TestCase):
     """
-    Grille à 2 paliers du 2026-08-19 : Jusqu'à l'Examen n'a plus de prix figé, `price`
-    sert de plafond (voir Plan.effective_price). Miroir de
-    PlanEffectiveDurationDaysTests, même tolérance d'un jour sur les bornes calculées
-    depuis `timezone.now().date()`.
+    Grille par tranches du 2026-08-19 (remplace la règle continue "miroir du taux
+    Mensuel" du même jour) : Jusqu'à l'Examen n'a pas de prix figé, `price` sert de
+    plafond (voir Plan.effective_price) atteint à la 9e tranche de 30 jours entamée.
+    Miroir de PlanEffectiveDurationDaysTests, même tolérance d'un jour sur les bornes
+    calculées depuis `timezone.now().date()` - jours choisis loin des limites de
+    tranche (multiples de 30) pour que cette tolérance ne fasse jamais changer de
+    palier.
     """
 
     def test_fixe_mode_returns_price_as_is(self):
@@ -90,32 +103,33 @@ class PlanEffectivePriceTests(TestCase):
         )
         self.assertEqual(plan.effective_price(), 2000)
 
-    def test_jusqua_examen_is_capped_at_price_far_from_the_exam(self):
+    def test_jusqua_examen_is_capped_at_price_from_the_9th_tranche(self):
         cursus = _cursus()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=200)).date(),
+            date_debut=(timezone.now() + timedelta(days=300)).date(),
         )
         plan = Plan.objects.create(
             name="Jusqu'à l'Examen", cursus=cursus, price=12000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        # 200j x 66,7 F/j dépasserait largement le plafond de 12 000 - le prix reste
-        # au plafond quel que soit le +/-1 jour de tolérance.
+        # 300j (10e tranche) dépasse largement le plafond de 12 000 (atteint dès la
+        # 9e, 270j) - le prix reste au plafond quel que soit le +/-1 jour de tolérance.
         self.assertEqual(plan.effective_price(), 12000)
 
-    def test_jusqua_examen_mirrors_the_mensuel_rate_in_the_middle_zone(self):
+    def test_jusqua_examen_applies_the_staircase_in_the_middle_zone(self):
         cursus = _cursus()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
-            date_debut=(timezone.now() + timedelta(days=90)).date(),
+            date_debut=(timezone.now() + timedelta(days=100)).date(),
         )
         plan = Plan.objects.create(
             name="Jusqu'à l'Examen", cursus=cursus, price=12000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        taux = 2000 / 30
-        self.assertIn(plan.effective_price(), (round(89 * taux), round(90 * taux)))
+        # 100j tombe dans la 4e tranche (90-119j) que ce soit 99, 100 ou 101 avec la
+        # tolérance d'un jour : 3 000 + 3 x 1 000.
+        self.assertEqual(plan.effective_price(), 6000)
 
     def test_jusqua_examen_never_drops_below_the_floor_close_to_the_exam(self):
         cursus = _cursus()
@@ -136,51 +150,8 @@ class PlanEffectivePriceTests(TestCase):
             name="Jusqu'à l'Examen", cursus=cursus, price=12000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        # Repli sur duration_days=30 : 30 x 66,7 = 2000, en dessous du plancher de
-        # 3 000 (atteint dès 45 jours) - le plancher l'emporte.
-        self.assertEqual(plan.effective_price(), 3000)
-
-
-class PlanEstAchetableTests(TestCase):
-    """
-    Le Pack Examen (JUSQUA_EXAMEN, 3 000 FCFA) ne doit être vendable que dans la
-    fenêtre d'urgence : hors fenêtre il donnerait presque un an d'accès pour un
-    cinquième du prix de la formule Max. Règle portée par le modèle parce qu'elle est
-    appliquée sur trois points d'entrée distincts (voir Plan.est_achetable).
-    """
-
-    def test_plan_a_duree_fixe_est_toujours_achetable(self):
-        plan = Plan.objects.create(
-            name="Max (1 an)", cursus=_cursus(), price=15000,
-            duration_mode=DureeMode.FIXE, duration_days=365,
-        )
-        self.assertTrue(plan.est_achetable())
-
-    def test_pack_examen_est_achetable_dans_la_fenetre(self):
-        cursus = _cursus()
-        ExamSession.objects.create(
-            country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
-            date_debut=(timezone.now() + timedelta(days=45)).date(),
-        )
-        plan = Plan.objects.create(
-            name="Pack Examen", cursus=cursus, price=3000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
-        )
-
-        self.assertTrue(plan.est_achetable())
-
-    def test_pack_examen_n_est_pas_achetable_hors_fenetre(self):
-        cursus = _cursus()
-        ExamSession.objects.create(
-            country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=280)).date(),
-        )
-        plan = Plan.objects.create(
-            name="Pack Examen", cursus=cursus, price=3000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
-        )
-
-        self.assertFalse(plan.est_achetable())
+        # Repli sur duration_days=30 : pile la 2e tranche (30-59j), 3 000 + 1 000.
+        self.assertEqual(plan.effective_price(), 4000)
 
 
 class SubscriptionExtendTests(TestCase):
@@ -242,6 +213,33 @@ class SubscriptionManagerActivateOrExtendTests(TestCase):
         self.assertAlmostEqual(
             subscription.expires_at, timezone.now() + timedelta(days=45), delta=timedelta(seconds=5),
         )
+
+    def test_new_subscription_defaults_to_fixe(self):
+        subscription = Subscription.objects.activate_or_extend(self.user, self.cursus, 30)
+        self.assertEqual(subscription.duration_mode, DureeMode.FIXE)
+
+    def test_new_subscription_records_jusqua_examen_when_purchased_directly(self):
+        subscription = Subscription.objects.activate_or_extend(
+            self.user, self.cursus, 30, duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.assertEqual(subscription.duration_mode, DureeMode.JUSQUA_EXAMEN)
+
+    def test_jusqua_examen_purchase_upgrades_an_existing_fixe_subscription(self):
+        Subscription.objects.activate_or_extend(self.user, self.cursus, 30, duration_mode=DureeMode.FIXE)
+        subscription = Subscription.objects.activate_or_extend(
+            self.user, self.cursus, 30, duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.assertEqual(subscription.duration_mode, DureeMode.JUSQUA_EXAMEN)
+
+    def test_fixe_topup_never_downgrades_an_existing_jusqua_examen_subscription(self):
+        """Un réabonnement Mensuel moins cher, après un achat Jusqu'à l'Examen, ne doit
+        pas faire perdre l'accès aux fonctionnalités exclusives à ce palier pour le
+        reste de la période déjà payée - voir Subscription.extend."""
+        Subscription.objects.activate_or_extend(self.user, self.cursus, 30, duration_mode=DureeMode.JUSQUA_EXAMEN)
+        subscription = Subscription.objects.activate_or_extend(
+            self.user, self.cursus, 30, duration_mode=DureeMode.FIXE,
+        )
+        self.assertEqual(subscription.duration_mode, DureeMode.JUSQUA_EXAMEN)
 
 
 class InscriptionInediteExtendTests(TestCase):
@@ -375,34 +373,22 @@ class PlanListViewTests(TestCase):
         self.assertIn("Actif", names)
         self.assertNotIn("Retiré", names)
 
-    def test_pack_examen_hors_fenetre_n_est_pas_liste(self):
-        """Le catalogue public ne propose pas une offre que le paiement refuserait."""
+    def test_pack_examen_est_liste_meme_loin_de_l_examen(self):
+        """Plus de fenêtre d'urgence (Plan.est_achetable retiré le 2026-08-19) : le
+        pack reste au catalogue toute l'année scolaire, seul son prix (voir
+        PlanEffectivePriceTests) reflète la proximité de l'examen."""
         ExamSession.objects.create(
             country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year + 1,
             date_debut=(timezone.now() + timedelta(days=280)).date(),
         )
         Plan.objects.create(
-            name="Pack Examen (hors fenêtre)", cursus=self.cursus, price=3000,
+            name="Pack Examen", cursus=self.cursus, price=12000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
         )
 
         response = self.client.get("/subscriptions/plans/", {"cursus": self.cursus.pk})
 
-        self.assertNotIn("Pack Examen (hors fenêtre)", [p["name"] for p in response.data])
-
-    def test_pack_examen_dans_la_fenetre_est_liste(self):
-        ExamSession.objects.create(
-            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
-            date_debut=(timezone.now() + timedelta(days=30)).date(),
-        )
-        Plan.objects.create(
-            name="Pack Examen (dans la fenêtre)", cursus=self.cursus, price=3000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=60,
-        )
-
-        response = self.client.get("/subscriptions/plans/", {"cursus": self.cursus.pk})
-
-        self.assertIn("Pack Examen (dans la fenêtre)", [p["name"] for p in response.data])
+        self.assertIn("Pack Examen", [p["name"] for p in response.data])
 
     def test_filters_by_cursus_query_param(self):
         Plan.objects.create(name="Pour ce cursus", cursus=self.cursus, price=1000)
@@ -527,20 +513,18 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         payment.approve(admin_user=self.admin)
 
         self.assertTrue(ParrainageRecompense.objects.filter(manual_payment=payment).exists())
-        self.assertTrue(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
+        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
+        self.assertFalse(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
 
     def test_second_manual_payment_does_not_reward_parrain_again(self):
         first = self._manual_payment("ref-manual-1")
         first.approve(admin_user=self.admin)
-        parrain_sub = Subscription.objects.get(user=self.parrain, cursus=self.cursus)
-        expires_after_first = parrain_sub.expires_at
 
         second = self._manual_payment("ref-manual-2")
         second.approve(admin_user=self.admin)
 
         self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
-        parrain_sub.refresh_from_db()
-        self.assertEqual(parrain_sub.expires_at, expires_after_first)
+        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
 
     def test_campay_then_manual_only_rewards_once_on_true_first_conversion(self):
         from payments.models import StatutTransaction, Transaction

@@ -71,20 +71,26 @@ def bulk_exercises_counts(epreuves):
     return {row["epreuve_id"]: row["n"] for row in counts}
 
 
-def _apercu_enonce_markdown(epreuve):
-    """Aperçu public minimal : l'énoncé de la toute première question de la toute
-    première épreuve, rien d'autre - jamais l'équivalent de catalog.rendering.
+def _apercu_enonce(epreuve):
+    """Aperçu public minimal : l'énoncé de la toute première question du premier
+    exercice, rien d'autre - jamais l'équivalent de catalog.rendering.
     lesson_preview_markdown (sujet ENTIER, légitime là-bas car ce sont d'anciens
     sujets déjà publics ailleurs). Ici, l'argument de vente d'une Épreuve Inédite est
     justement de n'avoir jamais été vue nulle part (voir EpreuveInediteDetailPage.tsx) :
     en dévoiler l'intégralité gratuitement grillerait à la fois l'exclusivité (contenu
     copiable/partageable avant tout paiement) et l'effet "conditions réelles" pour
-    quiconque l'aurait déjà lu. Une seule question suffit à donner le niveau."""
+    quiconque l'aurait déjà lu. Une seule question suffit à donner le niveau.
+
+    Renvoie aussi le numéro de cet exercice (ExerciceInedite.numero_exercice) - affiché
+    en référence sous l'aperçu côté fiche détail, pour que le lecteur sache de quel
+    exercice provient l'extrait montré."""
     premier_exercice = epreuve.exercices.order_by("numero_exercice").first()
     if premier_exercice is None:
-        return None
+        return None, None
     premiere_question = premier_exercice.questions.order_by("ordre").first()
-    return premiere_question.enonce_markdown if premiere_question else None
+    if premiere_question is None:
+        return None, None
+    return premiere_question.enonce_markdown, premier_exercice.numero_exercice
 
 
 def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None, include_apercu=False):
@@ -92,9 +98,10 @@ def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None,
     Réutilisé par le catalogue fusionné (liste) ET inedit.views.epreuve_inedite_detail
     (fiche seule). `exercises_count` pré-calculé pour la liste (voir bulk_exercises_counts) ;
     recalculé à la volée si absent (fiche détail seule - un item, coût négligeable).
-    `include_apercu` : coûte 2 requêtes de plus (voir _apercu_enonce_markdown) - jamais
-    activé pour la liste (un item par carte, inutile à afficher et multiplierait le
-    coût par le nombre de cartes), seulement pour la fiche détail (un seul item)."""
+    `include_apercu` : coûte 2 requêtes de plus (voir _apercu_enonce) - jamais activé
+    pour la liste (un item par carte, inutile à afficher et multiplierait le coût par
+    le nombre de cartes), seulement pour la fiche détail (un seul item)."""
+    apercu_markdown, apercu_numero_exercice = _apercu_enonce(epreuve) if include_apercu else (None, None)
     payload = {
         "id": epreuve.id,
         "kind": "inedite",
@@ -140,7 +147,8 @@ def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None,
         "sujet_pdf_disponible": bool(epreuve.sujet_pdf),
         # Clé toujours présente (jamais absente du payload liste) pour que le type
         # frontend reste honnête - seule sa VALEUR dépend d'include_apercu, la branche
-        # non prise n'appelle jamais _apercu_enonce_markdown (voir sa docstring).
-        "apercu_enonce_markdown": _apercu_enonce_markdown(epreuve) if include_apercu else None,
+        # non prise n'appelle jamais _apercu_enonce (voir sa docstring).
+        "apercu_enonce_markdown": apercu_markdown,
+        "apercu_numero_exercice": apercu_numero_exercice,
     }
     return payload

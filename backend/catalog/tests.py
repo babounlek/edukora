@@ -1,5 +1,6 @@
 import json
 import tempfile
+from datetime import timedelta
 from io import BytesIO, StringIO
 from pathlib import Path
 
@@ -21,6 +22,7 @@ from rest_framework.test import APIClient, APIRequestFactory
 
 from access.models import LectureProgress
 from inedit.models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite, TentativeInedite
+from subscriptions.models import DureeMode, Subscription
 from users.models import User
 
 from .admin import ExerciseAdmin
@@ -32,7 +34,10 @@ from .ingestion_repairs import _dedupe_question_enonce
 from .management.commands.seed_country import FILIERES as SEED_FILIERES, SERIES as SEED_SERIES, SPECIALITES as SEED_SPECIALITES, SUBJECTS as SEED_SUBJECTS
 from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Figure, Filiere, FiliereSerieA, Groupe, Lesson, LessonType, NatureEpreuve, Origine, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag, Temoignage, TypeReponse, VarianteSujet, figure_upload_to, resolve_examen_label
 from programme.models import Module, Savoir
-from .rendering import _exercise_titre_et_points, _render_question_enonce, cours_sections_breakdown
+from .rendering import (
+    _exercise_group_paths, _exercise_titre_et_points, _render_question_enonce, _simplify_group_label,
+    cours_sections_breakdown,
+)
 from .sujet_pdf import _render_html, save_sujet_pdf, sujet_pdf_filename
 
 
@@ -734,6 +739,7 @@ class InediteCatalogueMergeApiTests(TestCase):
 
         item = response.json()["results"][0]
         self.assertIsNone(item["apercu_enonce_markdown"])
+        self.assertIsNone(item["apercu_numero_exercice"])
 
 
 class CountryActiveFilteringTests(TestCase):
@@ -2604,6 +2610,62 @@ class QuestionModelTests(TestCase):
         self.assertEqual(rendered, "2x est la derivee de :\n\na) x\nb) x^2")
 
 
+class InlinePointsAnnotationMergeTests(TestCase):
+    """Annotation de points par sous-question ("*[2 pts]*") livrée par
+    correction-experte comme un paragraphe séparé, fusionnée à la volée sur la ligne
+    de la question qu'elle chiffre - demande de mise en forme (pas un bug de contenu),
+    voir catalog.rendering._merge_inline_points_annotation. Reproduit 139 questions du
+    corpus au scan du 2026-08-22 (ex. mathematiques-probatoire-c-1999-cameroun)."""
+
+    def _question(self, enonce, numero="1"):
+        return Question(numero=numero, enonce_markdown=enonce, type_reponse=TypeReponse.OUVERTE, choix=[])
+
+    def test_merges_a_trailing_points_annotation_onto_the_previous_line(self):
+        question = self._question("**1.** Calculer $a$, $b$ et $c$.\n\n*[2 pts]*")
+
+        rendered = _render_question_enonce(question, numbered=False)
+
+        self.assertEqual(rendered, "**1.** Calculer $a$, $b$ et $c$. *[2 pts]*")
+
+    def test_merges_a_singular_pt_annotation_with_a_comma_decimal(self):
+        question = self._question("**2.** En déduire la nature du triangle $ABC$.\n\n*[0,5 pt]*")
+
+        rendered = _render_question_enonce(question, numbered=False)
+
+        self.assertEqual(rendered, "**2.** En déduire la nature du triangle $ABC$. *[0,5 pt]*")
+
+    def test_leaves_a_paragraph_that_follows_the_annotation_untouched(self):
+        # Seul cas du corpus où autre chose suit l'annotation (mathematiques-bac-c-
+        # 2018-cameroun) : ce paragraphe doit rester un paragraphe séparé, APRÈS
+        # l'annotation désormais accolée à la question.
+        question = self._question(
+            "**1-** Calculer la moyenne.\n\n*[0,5 pt]*\n\n*NB : On donnera les troncatures d'ordre 2.*",
+        )
+
+        rendered = _render_question_enonce(question, numbered=False)
+
+        self.assertEqual(
+            rendered,
+            "**1-** Calculer la moyenne. *[0,5 pt]*\n\n*NB : On donnera les troncatures d'ordre 2.*",
+        )
+
+    def test_never_merges_when_there_is_no_points_annotation(self):
+        question = self._question("**1.** Calculer $a$, $b$ et $c$.")
+
+        rendered = _render_question_enonce(question, numbered=False)
+
+        self.assertEqual(rendered, "**1.** Calculer $a$, $b$ et $c$.")
+
+    def test_does_not_add_a_numbered_prefix_a_second_time(self):
+        # La fusion se fait avant le calcul de `already_labeled`/le préfixe "**N.**" -
+        # un texte déjà étiqueté ne doit toujours pas recevoir de second préfixe.
+        question = self._question("**1.** Calculer $a$, $b$ et $c$.\n\n*[2 pts]*", numero="1")
+
+        rendered = _render_question_enonce(question, numbered=True)
+
+        self.assertEqual(rendered, "**1.** Calculer $a$, $b$ et $c$. *[2 pts]*")
+
+
 class LessonExercisesBreakdownTests(TestCase):
     """`Lesson.exercises_breakdown()` - énoncé/corrigé exposés séparément par exercice
     (voir catalog.rendering.lesson_exercises_breakdown), utilisé par
@@ -2617,15 +2679,47 @@ class LessonExercisesBreakdownTests(TestCase):
         )
         self.lesson.cursus.add(cursus)
 
-    def _exercise(self, numero, statut=StatutContenu.VALIDE, enonce="Énoncé.", corrige="Corrigé.", intro="", points=""):
+    def _exercise(self, numero, statut=StatutContenu.VALIDE, enonce="Énoncé.", corrige="Corrigé.", intro="", points="", groupes=None):
         exercise = Exercise.objects.create(
             lesson=self.lesson, numero_exercice=numero, statut=statut, enonce_intro_markdown=intro, points=points,
+            groupes=groupes or [],
         )
         Question.objects.create(
             exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown=corrige,
         )
         exercise.compile_from_questions()
         return exercise
+
+    def test_stored_groupes_take_priority_over_regex_fallback(self):
+        # L'intro elle-même ne porte aucun repère détectable par regex : seul le champ
+        # Exercise.groupes, renseigné à l'ingestion, permet de retrouver le groupe.
+        self._exercise("1", intro="Énoncé sans repère de groupe.", groupes=["Partie A", "I."])
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["groupes"], ["Partie A", "I."])
+
+    def test_regex_fallback_still_applies_when_groupes_field_is_empty(self):
+        # Corpus ingéré avant l'introduction du champ Exercise.groupes : la
+        # reconstruction par analyse de texte (_exercise_group_paths) doit continuer à
+        # fonctionner sans régression.
+        self._exercise("1", intro="**Partie A**\n\n**I. Activités Numériques**\n\n**Exercice 1**")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["groupes"], ["Partie A", "I. Activités Numériques"])
+
+    def test_stored_groupes_and_regex_fallback_coexist_in_the_same_lesson(self):
+        # Un exercice ré-ingéré avec le nouveau champ à côté d'exercices non retouchés
+        # du corpus historique : chacun garde sa propre source de vérité, sans que l'un
+        # ne fausse le calcul de repli de l'autre.
+        self._exercise("1", intro="**Partie A**\n\n**I. Activités Numériques**\n\n**Exercice 1**")
+        self._exercise("2", intro="Deuxième exercice, sans repère.", groupes=["Partie A", "II. Autre section"])
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["groupes"], ["Partie A", "I. Activités Numériques"])
+        self.assertEqual(breakdown[1]["groupes"], ["Partie A", "II. Autre section"])
 
     def test_returns_one_entry_per_validated_exercise_in_order(self):
         self._exercise("2", enonce="Deuxieme.", corrige="Corrige 2.")
@@ -2758,15 +2852,25 @@ class LessonPreviewExercisesTests(TestCase):
         )
         self.lesson.cursus.add(Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C"))
 
-    def _exercise(self, numero, statut=StatutContenu.VALIDE, intro="", enonce="Énoncé.", corrige="Corrigé secret."):
+    def _exercise(self, numero, statut=StatutContenu.VALIDE, intro="", enonce="Énoncé.", corrige="Corrigé secret.", groupes=None):
         exercise = Exercise.objects.create(
             lesson=self.lesson, numero_exercice=numero, statut=statut, enonce_intro_markdown=intro,
+            groupes=groupes or [],
         )
         Question.objects.create(
             exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown=corrige,
         )
         exercise.compile_from_questions()
         return exercise
+
+    def test_stored_groupes_are_exposed_in_the_public_preview(self):
+        # Même mécanique que LessonExercisesBreakdownTests - vérifiée ici séparément
+        # car preview_exercises() est un chemin de code distinct (vue publique).
+        self._exercise("1", intro="Énoncé sans repère.", groupes=["Partie A", "I."])
+
+        preview = self.lesson.preview_exercises()
+
+        self.assertEqual(preview[0]["groupes"], ["Partie A", "I."])
 
     def test_never_exposes_any_corrige(self):
         # Le vrai risque de cette sortie : elle est publique. Un champ de corrigé qui s'y
@@ -2931,6 +3035,183 @@ class ExerciseTitreEtPointsTests(TestCase):
         self.assertEqual(
             self._titre_et_points("", enonce="**1.** Écris le nombre $A$ sous forme irréductible."),
             ("", ""),
+        )
+
+    def test_strips_a_slash_space_points_suffix(self):
+        # "Exercice 1 - / 02,5 points" (mathematiques-probatoire-c-1999-cameroun) :
+        # l'espace entre le "/" et le nombre faisait échouer l'ancien regex, laissant
+        # tout le suffixe visible dans le sommaire.
+        self.assertEqual(
+            self._titre_et_points("**Exercice 1 - / 02,5 points**"), ("Exercice 1", "02,5"),
+        )
+
+    def test_strips_a_colon_slash_space_points_suffix(self):
+        self.assertEqual(
+            self._titre_et_points("**Problème : / 10 points**"), ("Problème", "10"),
+        )
+
+    def test_still_strips_a_glued_slash_points_suffix(self):
+        # Forme déjà couverte par l'ancien regex ("- /20 points") : ne doit pas
+        # régresser avec l'extension à la forme espacée.
+        self.assertEqual(
+            self._titre_et_points("**Exercice 2 - /20 points**"), ("Exercice 2", "20"),
+        )
+
+    def test_still_strips_a_score_over_total_points_suffix(self):
+        # "12/20 points" (note obtenue / barème, sans espace) : forme déjà couverte,
+        # ne doit pas régresser.
+        self.assertEqual(
+            self._titre_et_points("### Exercice 3 (12/20 points)"), ("Exercice 3", "12/20"),
+        )
+
+    def test_strips_a_score_over_total_with_spaces_around_the_slash(self):
+        self.assertEqual(
+            self._titre_et_points("**Exercice 5 - 12 / 20 points**"), ("Exercice 5", "12 / 20"),
+        )
+
+    def test_strips_a_parenthesized_estimation_note_between_the_number_and_the_unit(self):
+        # mathematiques-bac-c-2021-cameroun : barème manuscrit illisible, la compétence
+        # explicite son estimation entre le nombre et l'unité.
+        self.assertEqual(
+            self._titre_et_points(
+                "**Exercice 1 (5,25 (estimation d'après les annotations manuscrites du barème) points)**",
+            ),
+            ("Exercice 1", "5,25"),
+        )
+
+    def test_never_strips_a_parenthetical_note_that_is_not_purely_the_points_value(self):
+        # "(série C uniquement, 2,5 points)" porte une précision utile en plus du
+        # barème - _POINTS_SUFFIX_RE doit laisser la parenthèse intacte (retirée plus
+        # loin, mais sans perdre la précision - voir _POINTS_TRAILING_IN_PAREN_RE).
+        self.assertEqual(
+            self._titre_et_points("**Exercice 8 (série C uniquement, 2,5 points)**"),
+            ("Exercice 8 (série C uniquement)", ""),
+        )
+
+    def test_skips_a_leading_group_label_before_reading_the_title(self):
+        # mathematiques-bepc-2017-blanc : sans le passage par _leading_label_stack,
+        # le premier exercice d'une Partie se voyait étiqueté "Partie A" au lieu de
+        # "Exercice 1" (voir ExerciseGroupPathsTests pour le groupement lui-même).
+        self.assertEqual(
+            self._titre_et_points("**Partie A**\n\n**I. Activités Numériques**\n\n**Exercice 1 (2 points)**"),
+            ("Exercice 1", "2"),
+        )
+
+    def test_empty_title_when_a_group_has_no_own_exercise_reference(self):
+        # "Partie B" telle quelle (mathematiques-bepc-2017-blanc) : aucune référence
+        # d'exercice propre après le repère de groupe, l'exercice EST la partie -
+        # titre vide, comme pour tout préambule sans repère (voir plus haut).
+        self.assertEqual(
+            self._titre_et_points("**Partie B : Évaluation Compétences : 10 points**\n\nPour lutter..."),
+            ("", ""),
+        )
+
+
+class ExerciseGroupPathsTests(TestCase):
+    """`_exercise_group_paths` - la pile de groupes (Partie/section romaine/matière) à
+    laquelle appartient chaque exercice, pour le sommaire hiérarchique du frontend (voir
+    EpreuveSommaire.entreesGroupees). Aucun de ces exercices n'est sauvegardé en base :
+    seuls `.pk` (assigné à la main) et `.enonce_intro_markdown` sont lus."""
+
+    def _paths(self, intros):
+        exercises = [Exercise(id=index + 1, enonce_intro_markdown=intro) for index, intro in enumerate(intros)]
+        paths = _exercise_group_paths(exercises)
+        return [paths[exercise.pk] for exercise in exercises]
+
+    def test_no_group_label_anywhere_gives_empty_paths(self):
+        self.assertEqual(
+            self._paths(["**Exercice 1 (5 points)**", "**Exercice 2 (5 points)**"]),
+            [[], []],
+        )
+
+    def test_partie_outer_roman_inner_is_inherited_across_unlabeled_exercises(self):
+        # mathematiques-bepc-2017-blanc : "Partie A" > "I." > deux exercices (dont le
+        # second ne restate rien), puis "Partie A" > "II." > deux exercices, puis
+        # "Partie B" seule (aucune section romaine dans le corps de l'épreuve). Le
+        # niveau "Partie" est un ordre RELATIF (voir docstring de la fonction) : il
+        # n'y a rien à réapprendre ici, mais confirme que "Partie B" REMPLACE
+        # entièrement la pile plutôt que de s'empiler sous "II.".
+        self.assertEqual(
+            self._paths([
+                "**Partie A**\n\n**I. Activités Numériques**\n\n**Exercice 1**",
+                "**Exercice 2**",
+                "**II. Activités Géométriques**\n\n**Exercice 1**",
+                "**Exercice 2**",
+                "**Partie B**\n\nPour lutter contre la sécheresse...",
+            ]),
+            [
+                ["Partie A", "I. Activités Numériques"],
+                ["Partie A", "I. Activités Numériques"],
+                ["Partie A", "II. Activités Géométriques"],
+                ["Partie A", "II. Activités Géométriques"],
+                ["Partie B"],
+            ],
+        )
+
+    def test_roman_outer_partie_inner_when_that_is_the_order_first_declared(self):
+        # Format APC des épreuves SVT/BEPC (sciences-de-la-vie-et-de-la-terre-bepc-
+        # 2018/2025/2026) : l'ORDRE INVERSE de celui ci-dessus - "I -" englobe "Partie
+        # A"/"Partie B", jamais l'inverse. La profondeur de chaque famille est déduite
+        # de la PREMIÈRE pile à plusieurs niveaux (voir _exercise_group_paths), pas
+        # d'un mapping fixe - sans quoi ce test échouerait avec la même famille
+        # "partie" toujours forcée au niveau 0.
+        self.assertEqual(
+            self._paths([
+                "**I - Évaluation des ressources**\n\n**Partie A : Évaluation des savoirs**",
+                "**Partie B : Évaluation des savoir-faire**",
+                "**II - Évaluation des compétences**",
+            ]),
+            [
+                ["I - Évaluation des ressources", "Partie A : Évaluation des savoirs"],
+                ["I - Évaluation des ressources", "Partie B : Évaluation des savoir-faire"],
+                ["II - Évaluation des compétences"],
+            ],
+        )
+
+    def test_bare_matiere_labels_form_their_own_group_level(self):
+        # chimie-probatoire-a-2019-a4-bilingue : un repère de matière nu ("CHIMIE",
+        # "PHYSIQUE"), sans le mot "Partie" ni numérotation - voir
+        # _BARE_MATIERE_LABEL_RE. Un seul niveau ici (pas de Partie/romain imbriqué
+        # dessous dans cette épreuve).
+        self.assertEqual(
+            self._paths([
+                "**CHIMIE / 10 points**\n\n**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**",
+                "**EXERCICE 2 : CHIMIE DES CHAMPS / 5 points**",
+                "**PHYSIQUE / 10 points**\n\n**EXERCICE 1 : MÉCANIQUE NEWTONIENNE (4 points)**",
+            ]),
+            [["CHIMIE / 10 points"], ["CHIMIE / 10 points"], ["PHYSIQUE / 10 points"]],
+        )
+
+    def test_the_exercise_reference_itself_never_joins_the_group_stack(self):
+        # "EXERCICE 1 : ..." est tout en majuscules, comme un repère de matière nu -
+        # sans l'exclusion de _BARE_MATIERE_EXCLUDE_RE, il rejoindrait à tort la pile
+        # de groupe au lieu de rester la référence propre de l'exercice.
+        self.assertEqual(
+            self._paths(["**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**"]),
+            [[]],
+        )
+
+
+class SimplifyGroupLabelTests(TestCase):
+    """`_simplify_group_label` - libellé compact d'un repère de groupe pour le sommaire
+    de navigation (voir EpreuveSommaire côté frontend), jamais le texte affiché dans le
+    corps de l'épreuve."""
+
+    def test_drops_the_subtitle_and_points_after_a_colon(self):
+        self.assertEqual(_simplify_group_label("Partie A : Évaluation Ressources : 10 points"), "Partie A")
+
+    def test_drops_the_subtitle_and_points_after_a_slash(self):
+        self.assertEqual(_simplify_group_label("CHIMIE / 10 points"), "CHIMIE")
+
+    def test_keeps_a_descriptive_label_without_colon_or_slash_untouched(self):
+        self.assertEqual(_simplify_group_label("I. Activités Numériques"), "I. Activités Numériques")
+
+    def test_strips_a_trailing_parenthesized_points_suffix_without_truncating(self):
+        # "I - Évaluation des ressources (10 points)" (format APC SVT) : ni ':' ni '/'
+        # ici, seul le barème parenthésé disparaît - le libellé descriptif reste entier.
+        self.assertEqual(
+            _simplify_group_label("I - Évaluation des ressources (10 points)"),
+            "I - Évaluation des ressources",
         )
 
 
@@ -3645,6 +3926,42 @@ class VarianteSujetIngestionTests(TestCase):
         self.assertEqual(ex1.lesson.variante_sujet, VarianteSujet.SUJET_1)
 
 
+class ExerciseGroupesIngestionTests(TestCase):
+    """Champ optionnel Exercise.groupes (voir modèle) : la pile de repères de groupe
+    (Partie/section romaine/matière) déclarée directement par le JSON source de
+    correction-experte, préférée au repli par analyse de texte de
+    rendering._exercise_group_paths quand elle est renseignée - voir
+    rendering._fallback_group_paths_if_needed."""
+
+    def _payload(self, **overrides):
+        payload = {
+            "epreuve_source": "bac-maths-2024", "numero_exercice": "1",
+            "matiere": "Mathematiques", "serie": "C", "examen": "BAC",
+            "questions": [
+                {"numero": "1", "enonce_markdown": "Question.", "corrige_markdown": "### Corrige\n\nOK."},
+            ],
+        }
+        payload.update(overrides)
+        return payload
+
+    def test_explicit_groupes_are_stored_on_the_exercise(self):
+        exercise, _ = ingest_exercise(
+            self._payload(groupes=["Partie A", "I. Activités Numériques"]),
+            source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        self.assertEqual(exercise.groupes, ["Partie A", "I. Activités Numériques"])
+
+    def test_absent_defaults_to_empty_list(self):
+        exercise, _ = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(exercise.groupes, [])
+
+    def test_blank_entries_are_dropped(self):
+        exercise, _ = ingest_exercise(
+            self._payload(groupes=["Partie A", "  ", ""]), source_dir=Path("ingest/cm/bac-maths-2024"),
+        )
+        self.assertEqual(exercise.groupes, ["Partie A"])
+
+
 class OrigineSujetZeroIngestionTests(TestCase):
     """Origine.SUJET_ZERO - décision utilisateur du 2026-08-18 : catégorie distincte
     de BLANC (spécimen publié pour familiariser avec un nouveau format d'épreuve, pas
@@ -3918,6 +4235,171 @@ class CoursSearchApiTests(TestCase):
     def test_no_duplicate_when_title_and_tag_both_match(self):
         titles = self._search("discriminant")
         self.assertEqual(titles.count(self.cours.titre), 1)
+
+
+class LessonThemeFilterApiTests(TestCase):
+    """`?theme=` sur /catalog/lessons/ - lien "s'entraîner sur ce thème" depuis
+    ThemesFrequentsView (voir ThemesFrequentsApiTests ci-dessous). Filtre sur
+    Question.themes via Exercise, jamais Lesson.themes/mots_cles_recherche - même
+    patron EXISTS() corrélé que ?search= (voir LessonSearchApiTests), pour la même
+    raison (éviter le fan-out M2M)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson = Lesson.objects.create(
+            title="Mathématiques BAC C 2022", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+        exercise = Exercise.objects.create(lesson=self.lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        question = Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown="a", corrige_markdown="b",
+        )
+        question.themes.set([Tag.objects.create(name="tableau de variation")])
+
+    def _filter(self, theme):
+        response = self.client.get(reverse("catalog:lesson-list"), {"theme": theme})
+        return [item["title"] for item in response.json()["results"]]
+
+    def test_matches_lesson_via_question_theme(self):
+        self.assertIn(self.lesson.title, self._filter("tableau de variation"))
+
+    def test_no_match_for_a_different_theme(self):
+        self.assertNotIn(self.lesson.title, self._filter("autre thème"))
+
+    def test_exact_match_only_not_icontains(self):
+        # Contrairement à ?search=, correspondance exacte sur le nom du Tag - le lien
+        # vient toujours d'un nom de Tag déjà connu (voir ThemesFrequentsView), jamais
+        # d'une saisie libre où une correspondance partielle aurait du sens.
+        self.assertEqual(self._filter("tableau"), [])
+
+
+class ThemesFrequentsApiTests(TestCase):
+    """GET /catalog/cursus/<id>/themes-frequents/?subject=<id> - classement des thèmes
+    les plus fréquents aux épreuves officielles, gaté au palier Jusqu'à l'Examen (voir
+    access.services.has_access_jusqua_examen). Seuil minimum, teaser, restriction
+    origine=OFFICIEL et agrégation par ÉPREUVE (pas par Question) sont les comportements
+    qui comptent le plus ici - voir ThemesFrequentsView pour le détail de chaque
+    décision, validées à la main sur le corpus réel avant d'écrire cet endpoint."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.user = User.objects.create_user(phone_number="677100050", password="x")
+        self.client = APIClient()
+
+    def _url(self, cursus_id=None):
+        return reverse("catalog:themes-frequents", args=[cursus_id or self.cursus.pk])
+
+    def _make_lesson(self, year, theme_names, origine=Origine.OFFICIEL, statut=StatutContenu.VALIDE):
+        lesson = Lesson.objects.create(
+            title=f"Maths BAC C {year}", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=statut, origine=origine, year=year,
+        )
+        lesson.cursus.add(self.cursus)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        for i, name in enumerate(theme_names):
+            question = Question.objects.create(
+                exercise=exercise, numero=str(i + 1), ordre=i + 1, enonce_markdown="a", corrige_markdown="b",
+            )
+            question.themes.add(Tag.objects.get_or_create(name=name)[0])
+        return lesson
+
+    def _seed_above_threshold(self):
+        # 10 épreuves, au-dessus du seuil minimum (8) - 3 thèmes à fréquence
+        # décroissante nette (10/5/2) pour un classement et un teaser sans ambiguïté.
+        for year in range(2015, 2025):
+            themes = ["tableau de variation"]
+            if year % 2 == 0:
+                themes.append("nombres complexes")
+            if year in (2015, 2016):
+                themes.append("primitives")
+            self._make_lesson(year, themes)
+
+    def test_missing_subject_is_a_400(self):
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 400)
+
+    def test_unknown_cursus_is_a_404(self):
+        response = self.client.get(self._url(cursus_id=999999), {"subject": self.subject.code})
+        self.assertEqual(response.status_code, 404)
+
+    def test_below_threshold_returns_disponible_false(self):
+        for year in range(2015, 2018):  # 3 épreuves, sous le seuil de 8
+            self._make_lesson(year, ["tableau de variation"])
+
+        response = self.client.get(self._url(), {"subject": self.subject.code})
+        data = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(data["disponible"])
+        self.assertEqual(data["themes"], [])
+
+    def test_above_threshold_ranks_by_number_of_distinct_lessons(self):
+        self._seed_above_threshold()
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertTrue(data["disponible"])
+        self.assertEqual(data["themes"][0]["tag"], "tableau de variation")
+        self.assertEqual(data["themes"][0]["nb_epreuves"], 10)
+
+    def test_repeated_theme_within_the_same_lesson_counts_once(self):
+        # Un exercice bavard qui traite le même thème 3 fois dans la même épreuve ne
+        # doit compter que pour 1 session - agrégation par Lesson, pas par Question.
+        for year in range(2015, 2023):
+            self._make_lesson(year, ["tableau de variation"] * 3)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(data["themes"][0]["nb_epreuves"], 8)
+
+    def test_examen_blanc_is_excluded_from_the_ranking(self):
+        for year in range(2015, 2023):
+            self._make_lesson(year, ["tableau de variation"])
+        self._make_lesson(2024, ["tableau de variation"], origine=Origine.BLANC)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(data["nb_sessions_disponibles"], 8)
+        self.assertEqual(data["themes"][0]["nb_epreuves"], 8)
+
+    def test_anonymous_sees_only_the_teaser(self):
+        self._seed_above_threshold()
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertFalse(data["has_access"])
+        self.assertEqual(len(data["themes"]), 2)
+        self.assertGreater(data["nb_themes_verrouilles"], 0)
+
+    def test_fixe_subscriber_sees_only_the_teaser(self):
+        """Un abonné Mensuel n'a PAS accès au classement complet - c'est l'objet même
+        de la fonctionnalité (argument de vente propre à Jusqu'à l'Examen)."""
+        self._seed_above_threshold()
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30),
+            duration_mode=DureeMode.FIXE,
+        )
+        self.client.force_authenticate(user=self.user)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertFalse(data["has_access"])
+        self.assertEqual(len(data["themes"]), 2)
+
+    def test_jusqua_examen_subscriber_sees_the_full_ranking(self):
+        self._seed_above_threshold()
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30),
+            duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.client.force_authenticate(user=self.user)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertTrue(data["has_access"])
+        self.assertEqual(data["nb_themes_verrouilles"], 0)
+        self.assertEqual(len(data["themes"]), 3)
 
 
 class DoubleJsonEscapingRepairTests(TestCase):
@@ -4487,6 +4969,170 @@ class MissingExerciseHeadingRepairTests(TestCase):
         self.assertEqual(exercise.enonce_intro_markdown, "Exercice 1 (5 points) - hydrocarbures et isomérie")
         self.assertEqual(exercise.incertitudes, [])
 
+    def test_recognizes_a_locally_numbered_roman_reference_further_down(self):
+        # mathematiques-bepc-2000/2001/2002-cameroun : la Partie B redémarre sa propre
+        # numérotation "Exercice I/II/III", sans rapport avec numero_exercice (l'index
+        # global, à plat, de toute l'épreuve - "5" ici). Avant l'assouplissement de ce
+        # garde-fou pour les numéros romains/lettrés (voir _has_own_reference_further_down),
+        # le filet ne reconnaissait jamais "Exercice II" faute d'égalité numérique avec
+        # "5", et injectait à tort un second repère, faux : "**Exercice 5 (1 points)**"
+        # devant la référence déjà présente - scan corpus du 2026-08-22.
+        #
+        # Le repère "Exercice II" se retrouve ensuite ramené en tête d'intro par
+        # _reposition_trailing_exercise_reference (scan corpus du 2026-08-23, voir
+        # RepositionTrailingExerciseReferenceTests) : seule l'ABSENCE d'injection
+        # dupliquée est propre à CE test, la position finale relève de l'autre filet.
+        payload = _exercise_payload("bepc-maths-2002", numero="5")
+        payload["points"] = 1
+        payload["enonce_intro_markdown"] = (
+            "Sur la figure ci-contre, $ABC$ est un triangle rectangle en $C$.\n\n"
+            "**Exercice II (1 pt)**"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bepc-maths-2002"))
+
+        self.assertEqual(exercise.enonce_markdown.count("Exercice II"), 1)
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice II (1 pt)**\n\nSur la figure ci-contre, $ABC$ est un triangle rectangle en $C$.",
+        )
+
+    def test_still_requires_an_exact_match_for_a_purely_numeric_reference(self):
+        # Garde-fou d'origine préservé pour les numéros purement décimaux (scan du
+        # 2026-08-19) : un repère plus loin dans le texte mais numéroté pour un AUTRE
+        # exercice ("**Exercice 3**" alors que numero_exercice vaut "1") ne doit pas
+        # faire croire à tort que CET exercice a déjà son propre repère - seuls les
+        # numéros romains/lettrés bénéficient de l'assouplissement ci-dessus.
+        payload = _exercise_payload("bac-maths-2024", numero="1")
+        payload["enonce_intro_markdown"] = (
+            "Une urne contient 12 billes.\n\n**Exercice 3**\n\nSuite du raisonnement."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 1**\n\nUne urne contient 12 billes.\n\n**Exercice 3**\n\nSuite du raisonnement.",
+        )
+
+
+class RepositionTrailingExerciseReferenceTests(TestCase):
+    """`_reposition_trailing_exercise_reference` - le repère "Exercice N"/"Problème" doit
+    ouvrir le préambule qu'il annonce, pas le conclure. Reproduit mathematiques-bepc-2000/
+    2001/2002/2003-cameroun (scan corpus du 2026-08-23) : correction-experte écrit parfois
+    le préambule propre à l'exercice AVANT sa référence plutôt qu'après."""
+
+    def test_moves_the_reference_to_the_front_when_there_is_no_frame(self):
+        payload = _exercise_payload("bepc-maths-2003", numero="2")
+        payload["points"] = 3
+        payload["enonce_intro_markdown"] = (
+            "Une enquête menée dans une classe de troisième...\n\n"
+            "| Modalité | 2 | 5 |\n|---|---|---|\n\n"
+            "**Exercice II (3 pts)**"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bepc-maths-2003"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice II (3 pts)**\n\nUne enquête menée dans une classe de troisième...\n\n"
+            "| Modalité | 2 | 5 |\n|---|---|---|",
+        )
+        self.assertTrue(any("repositionné" in note for note in exercise.incertitudes))
+
+    def test_moves_the_reference_after_a_part_title_and_its_italic_subtitle(self):
+        # mathematiques-bepc-2003-cameroun, exercice 1 : le repère doit se glisser après
+        # le CADRE de tête (titre de Partie + son sous-titre en italique), jamais avant -
+        # sans quoi il se retrouverait intercalé entre les deux.
+        payload = _exercise_payload("bepc-maths-2003", numero="1")
+        payload["points"] = 2
+        payload["enonce_intro_markdown"] = (
+            "**A - ACTIVITÉS NUMÉRIQUES : 6,5 points**\n\n"
+            "*Cette partie comporte trois exercices indépendants I, II et III.*\n\n"
+            "Un magasin a fait une réduction de 25 % sur le prix de ses marchandises.\n\n"
+            "**Exercice I (2 pts)**"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bepc-maths-2003"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**A - ACTIVITÉS NUMÉRIQUES : 6,5 points**\n\n"
+            "*Cette partie comporte trois exercices indépendants I, II et III.*\n\n"
+            "**Exercice I (2 pts)**\n\n"
+            "Un magasin a fait une réduction de 25 % sur le prix de ses marchandises.",
+        )
+
+    def test_never_touches_a_reference_already_in_the_right_place(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1 (4 points)**\n\nUne urne contient 12 billes."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.enonce_intro_markdown, "**Exercice 1 (4 points)**\n\nUne urne contient 12 billes.")
+        self.assertEqual(exercise.incertitudes, [])
+
+    def test_never_swaps_a_bare_matiere_label_with_the_exercise_reference(self):
+        # bac-a-abi-physique-chimie-2019-officiel-cameroun : "CHIMIE / 10 points" est un
+        # repère de matière nue (cadre), pas un préambule - le repère de l'exercice doit
+        # rester APRÈS lui, jamais avant (voir _is_bare_matiere_paragraph). Sans cette
+        # détection, le repère de matière n'étant reconnu ni comme cadre ni comme
+        # référence, l'algorithme le permutait à tort avec la vraie référence de
+        # l'exercice qui le suit - régression trouvée lors du balayage corpus du
+        # 2026-08-23, avant toute réingestion en masse.
+        payload = _exercise_payload("bac-a-abi-physique-chimie-2019")
+        payload["points"] = 5
+        payload["enonce_intro_markdown"] = (
+            "**CHIMIE / 10 points**\n\n**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-a-abi-physique-chimie-2019"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**CHIMIE / 10 points**\n\n**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**",
+        )
+
+    def test_never_touches_a_single_paragraph_intro(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1 (4 points)**"
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.enonce_intro_markdown, "**Exercice 1 (4 points)**")
+
+    def test_never_confuses_a_sentence_mentioning_exercice_with_a_real_reference(self):
+        # "Exercice 2 étudie..." n'est qu'une phrase d'énoncé (pas un paragraphe qui SE
+        # RÉDUIT à un repère, voir _standalone_heading_content) : rien à déplacer.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "Un premier rappel.\n\nExercice 2 étudie la réaction d'estérification."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 1**\n\nUn premier rappel.\n\nExercice 2 étudie la réaction d'estérification.",
+        )
+
+    def test_deduplicates_against_the_first_question_once_repositioned_to_the_front(self):
+        # Une fois ramené en tête d'intro, le repère peut désormais faire doublon avec
+        # celui de la première question - _dedupe_exercise_heading doit encore s'en
+        # charger après ce repositionnement (voir l'ordre des réparations dans
+        # ingest_exercise).
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "Un magasin fait une réduction.\n\n**Exercice 1 (4 points)**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (4 points)**\n\nCalculer le prix réduit."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Exercice 1 (4 points)**\n\nUn magasin fait une réduction.",
+        )
+        self.assertEqual(exercise.questions.get().enonce_markdown, "Calculer le prix réduit.")
+
 
 class DuplicateExerciseHeadingDedupeTests(TestCase):
     """Même repère porté à la fois par l'intro et par la tête d'une question - doublon
@@ -4614,6 +5260,89 @@ class DuplicateExerciseHeadingDedupeTests(TestCase):
             "**Exercice 1 (4 points)**\n\nCalculer $f'(x)$.",
         )
         self.assertEqual(exercise.incertitudes, [])
+
+
+class TrailingExerciseReferenceDedupeTests(TestCase):
+    """Cas frère de DuplicateExerciseHeadingDedupeTests, jamais couvert par
+    _dedupe_exercise_heading (voir sa docstring) : le repère répété n'est pas en tête
+    d'intro mais sur sa DERNIÈRE ligne, une fiche d'identité/un chapeau partagé par
+    l'épreuve entière la précédant - voir
+    catalog.ingestion_repairs._dedupe_trailing_exercise_reference. Reproduit
+    mathematiques-probatoire-c-1999/-c-e-2013/2015/2016/2017/2018-cameroun (scan
+    corpus du 2026-08-22)."""
+
+    def test_removes_the_reference_repeated_after_a_shared_preamble(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "*MINEDUC - OBC. Épreuve de mathématiques. Examen : PROBATOIRE C, session 1999.*"
+            "\n\n**Exercice 1 - / 02,5 points**"
+        )
+        payload["questions"][0]["enonce_markdown"] = (
+            "**Exercice 1 - / 02,5 points**\n\nL'unité de longueur est le centimètre."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.questions.get().enonce_markdown, "L'unité de longueur est le centimètre.")
+        self.assertEqual(exercise.enonce_markdown.count("Exercice 1"), 1)
+        self.assertTrue(any("dédupliqué" in note for note in exercise.incertitudes))
+
+    def test_matches_by_key_even_when_the_points_suffix_is_missing_from_the_repeat(self):
+        # probatoire-c-e-maths-2013 : la question ne répète que "**Exercice 1**", sans
+        # le barème que porte l'intro ("**Exercice 1 (5 points)**") - la comparaison se
+        # fait par clé (mot+numéro), jamais par égalité de texte brut.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "*L'épreuve comporte deux exercices et un problème.*\n\n**Exercice 1 (5 points)**"
+        )
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1**\n\nQCM de 4 questions."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.questions.get().enonce_markdown, "QCM de 4 questions.")
+
+    def test_never_touches_when_the_reference_is_already_on_the_first_line_of_the_intro(self):
+        # Repère déjà en tête d'intro : c'est le cas de _dedupe_exercise_heading, pas le
+        # sien - il doit rester silencieux pour ne jamais appliquer les deux réparations
+        # à la fois sur la même paire intro/question.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "**Exercice 1 (5 points)**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1 (5 points)**\n\nUne urne contient 12 billes."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        # C'est bien _dedupe_exercise_heading qui traite ce cas (déjà testé par
+        # ailleurs) - vérifie seulement qu'il n'y a plus de doublon, peu importe lequel
+        # des deux filets l'a retiré.
+        self.assertEqual(exercise.enonce_markdown.count("Exercice 1"), 1)
+
+    def test_never_touches_when_the_last_line_of_the_intro_is_not_a_standalone_reference(self):
+        # La dernière ligne mentionne bien "Exercice 1" (ce qui évite à
+        # _repair_missing_exercise_heading d'injecter un second repère, puisqu'il en
+        # trouve déjà un), mais PAS sous forme de repère isolé (pas de "**"/"#", du
+        # texte continue sur la même ligne) - _last_bold_reference_line doit rester
+        # silencieux, ce cas n'est pas le sien.
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = (
+            "*Chapeau partagé par l'épreuve.*\n\nExercice 1 continue directement ici, sans repère isolé."
+        )
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 1**\n\nUne urne contient 12 billes."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.questions.get().enonce_markdown, "**Exercice 1**\n\nUne urne contient 12 billes.",
+        )
+        self.assertEqual(exercise.incertitudes, [])
+
+    def test_never_touches_a_different_exercise_number(self):
+        payload = _exercise_payload("bac-maths-2024")
+        payload["enonce_intro_markdown"] = "*Chapeau partagé.*\n\n**Exercice 1 (5 points)**"
+        payload["questions"][0]["enonce_markdown"] = "**Exercice 2**\n\nÉnoncé sans rapport."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(exercise.questions.get().enonce_markdown, "**Exercice 2**\n\nÉnoncé sans rapport.")
 
 
 class RedundantRomanMarkerTests(TestCase):

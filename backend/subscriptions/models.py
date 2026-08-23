@@ -10,14 +10,18 @@ class DureeMode(models.TextChoices):
     JUSQUA_EXAMEN = "JUSQUA_EXAMEN", "Jusqu'à l'examen"
 
 
-# Référence de prix pour Plan.effective_price : le palier Jusqu'à l'Examen ne coûte
-# jamais plus cher au jour que Mensuel (PRIX_MENSUEL_REFERENCE / DUREE_MENSUEL_REFERENCE_JOURS),
-# jusqu'à un plancher minimum. Décision utilisateur du 2026-08-19 - remplace un filet de
-# sécurité à seuils choisis à la main par une règle continue ancrée sur des nombres déjà
-# déterminés ailleurs dans la grille (le prix de Mensuel, le plancher historique de
-# l'ancien Pack Examen) plutôt que des seuils arbitraires.
-PRIX_MENSUEL_REFERENCE = 2000
-DUREE_MENSUEL_REFERENCE_JOURS = 30
+# Grille de Plan.effective_price pour Jusqu'à l'Examen : un palier de
+# INCREMENT_PAR_TRANCHE FCFA par tranche entamée de JOURS_PAR_TRANCHE jours restants,
+# du plancher PLANCHER_JUSQUA_EXAMEN jusqu'au plafond `price` du Plan. Décision
+# utilisateur du 2026-08-19 - reprend telle quelle la grille "Septembre 12 000 F ...
+# Juin 3 000 F" (paliers mensuels explicites), recalculée en tranches de jours
+# glissantes plutôt qu'en mois calendaires pour rester exacte quel que soit le mois
+# réel de la session (BEPC/Probatoire/BAC n'ont pas tous la même date, ni d'un pays à
+# l'autre - voir _calculer_duree_jusqua_examen). Remplace l'ancienne règle continue
+# ("jamais plus cher au jour que Mensuel"), elle-même un remplacement d'un filet de
+# seuils choisis à la main.
+JOURS_PAR_TRANCHE = 30
+INCREMENT_PAR_TRANCHE = 1000
 PLANCHER_JUSQUA_EXAMEN = 3000
 
 
@@ -36,12 +40,6 @@ class ProductType(models.TextChoices):
     ABONNEMENT = "ABONNEMENT", "Abonnement cursus"
     ADDON_INEDIT = "ADDON_INEDIT", "Add-on Épreuves Inédites"
     ADDON_REPETITEUR = "ADDON_REPETITEUR", "Add-on Fiches Répétiteur"
-
-
-# Fenêtre pendant laquelle un Plan "jusqu'à l'examen" est proposé à la vente (voir
-# Plan.est_achetable). Au-delà, "jusqu'à ton examen" ne crée plus aucune urgence
-# réelle et le pack revient moins cher au jour que l'abonnement annuel.
-FENETRE_URGENCE_JOURS = 60
 
 
 class Plan(models.Model):
@@ -89,9 +87,9 @@ class Plan(models.Model):
         d'une session d'examen sur l'autre sans avoir à rééditer le Plan chaque année.
 
         Mémoïsé par instance : la sérialisation d'une liste de plans appelle cette
-        méthode plusieurs fois par plan (durée affichée puis est_achetable), chaque
-        appel coûtant sinon une requête ExamSession. Sans effet sur la fraîcheur -
-        une instance ne vit que le temps d'une requête HTTP.
+        méthode plusieurs fois par plan (durée affichée, puis effective_price qui
+        l'utilise aussi), chaque appel coûtant sinon une requête ExamSession. Sans
+        effet sur la fraîcheur - une instance ne vit que le temps d'une requête HTTP.
         """
         if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
             return self.duration_days
@@ -112,37 +110,24 @@ class Plan(models.Model):
     def effective_price(self):
         """
         Prix réel à facturer/afficher. Pour JUSQUA_EXAMEN, `price` sert de plafond
-        (payé par qui achète loin de l'examen) : en dessous, le prix suit
-        exactement le taux journalier de Mensuel (jamais plus cher au jour qu'un
-        abonnement mensuel), jusqu'à PLANCHER_JUSQUA_EXAMEN qui protège un ticket
-        minimum même acheté la veille de l'examen. Voir effective_duration_days
-        pour le même principe appliqué à la durée.
+        (payé par qui achète loin de l'examen, à partir de 9 tranches entamées) : le
+        prix descend par palier de INCREMENT_PAR_TRANCHE FCFA à chaque tranche de
+        JOURS_PAR_TRANCHE jours entamée, jusqu'à PLANCHER_JUSQUA_EXAMEN qui protège
+        un ticket minimum même acheté la veille de l'examen. Toujours achetable, à
+        n'importe quel moment de l'année scolaire (l'ancien Plan.est_achetable/
+        FENETRE_URGENCE_JOURS a été retiré) : le plafond fait déjà le travail
+        qu'assurait cette fenêtre d'urgence. Voir effective_duration_days pour le
+        même principe appliqué à la durée.
         """
         if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
             return self.price
         jours = self.effective_duration_days()
-        taux_journalier = PRIX_MENSUEL_REFERENCE / DUREE_MENSUEL_REFERENCE_JOURS
-        return min(self.price, max(PLANCHER_JUSQUA_EXAMEN, round(jours * taux_journalier)))
-
-    def est_achetable(self):
-        """
-        `is_active` dit qu'une offre existe au catalogue ; ceci dit qu'elle est
-        vendable MAINTENANT. Seul le Pack Examen (JUSQUA_EXAMEN) fait la différence :
-        à 3 000 FCFA il n'a de sens que dans la fenêtre d'urgence qui précède la
-        session. Hors fenêtre il donnerait, ex. à 281 jours de la session, presque un
-        an d'accès pour un cinquième du prix de la formule Max (15 000 FCFA / 365 j) -
-        la règle est donc portée par le modèle et appliquée à TOUS les points
-        d'entrée (liste des offres, paiement Campay, déclaration de paiement manuel),
-        jamais seulement par un filtre d'affichage côté frontend qu'un simple POST
-        avec le bon plan_id contournerait.
-        """
-        if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
-            return True
-        return self.effective_duration_days() <= FENETRE_URGENCE_JOURS
+        tranche = jours // JOURS_PAR_TRANCHE
+        return min(self.price, PLANCHER_JUSQUA_EXAMEN + tranche * INCREMENT_PAR_TRANCHE)
 
 
 class SubscriptionManager(models.Manager):
-    def activate_or_extend(self, user, cursus, duration_days):
+    def activate_or_extend(self, user, cursus, duration_days, duration_mode=DureeMode.FIXE):
         """
         Point de passage unique pour toute prolongation d'abonnement (paiement direct
         du filleul comme récompense de parrainage au parrain) - deux appels concurrents
@@ -151,11 +136,20 @@ class SubscriptionManager(models.Manager):
         même temps) ne doivent jamais s'écraser l'un l'autre : chacun doit s'appliquer
         sur la valeur déjà prolongée par l'autre, pas sur une valeur périmée lue avant
         que l'autre n'ait sauvegardé.
+
+        `duration_mode` : palier du Plan qui finance cette prolongation (voir
+        Subscription.duration_mode) - jamais rétrogradé sur une ligne existante (voir
+        Subscription.extend) : un top-up Mensuel après un achat Jusqu'à l'Examen ne doit
+        pas faire perdre l'accès aux fonctionnalités exclusives à ce palier pour le
+        reste de la période déjà payée.
         """
         with db_transaction.atomic():
             subscription, created = self.get_or_create(
                 user=user, cursus=cursus,
-                defaults={"expires_at": timezone.now() + timezone.timedelta(days=duration_days)},
+                defaults={
+                    "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
+                    "duration_mode": duration_mode,
+                },
             )
             if not created:
                 # select_for_update() : verrouille la ligne avant de (re)lire
@@ -164,7 +158,7 @@ class SubscriptionManager(models.Manager):
                 # même remarque dans payments.models.Transaction.sync_status.
                 locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
                 subscription = locked_qs.get(pk=subscription.pk)
-                subscription.extend(duration_days)
+                subscription.extend(duration_days, duration_mode=duration_mode)
         return subscription
 
 
@@ -177,6 +171,17 @@ class Subscription(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="subscriptions")
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="subscriptions")
     expires_at = models.DateTimeField()
+    duration_mode = models.CharField(
+        max_length=20, choices=DureeMode.choices, default=DureeMode.FIXE,
+        help_text=(
+            "Palier du Plan qui a (au moins une fois) financé cette ligne - copié depuis "
+            "Plan.duration_mode à l'activation (voir SubscriptionManager.activate_or_extend), "
+            "jamais déduit après coup. Distinct de has_access (qui ignore ce champ, "
+            "n'importe quel palier donne accès au contenu de base) : sert uniquement à "
+            "gater les fonctionnalités pensées comme argument de vente propre à Jusqu'à "
+            "l'Examen (voir access.services.has_access_jusqua_examen)."
+        ),
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -195,11 +200,23 @@ class Subscription(models.Model):
     def is_active(self):
         return self.expires_at > timezone.now()
 
-    def extend(self, duration_days):
-        """Prolonge à partir de la date d'expiration existante si encore active, sinon à partir de maintenant."""
+    @property
+    def is_jusqua_examen(self):
+        return self.duration_mode == DureeMode.JUSQUA_EXAMEN
+
+    def extend(self, duration_days, duration_mode=None):
+        """
+        Prolonge à partir de la date d'expiration existante si encore active, sinon à
+        partir de maintenant. `duration_mode` ne peut que faire monter le palier
+        (FIXE -> JUSQUA_EXAMEN), jamais l'inverse - voir SubscriptionManager.activate_or_extend.
+        """
         base = self.expires_at if self.is_active else timezone.now()
         self.expires_at = base + timezone.timedelta(days=duration_days)
-        self.save(update_fields=["expires_at", "updated_at"])
+        update_fields = ["expires_at", "updated_at"]
+        if duration_mode == DureeMode.JUSQUA_EXAMEN and self.duration_mode != DureeMode.JUSQUA_EXAMEN:
+            self.duration_mode = DureeMode.JUSQUA_EXAMEN
+            update_fields.append("duration_mode")
+        self.save(update_fields=update_fields)
 
 
 class InscriptionInediteManager(models.Manager):
@@ -318,7 +335,14 @@ class InscriptionRepetiteur(models.Model):
         self.save(update_fields=["expires_at", "updated_at"])
 
 
-PARRAINAGE_JOURS_OFFERTS = 7
+# Décision du 2026-08-22 : la récompense de parrainage n'étend plus l'abonnement du
+# parrain (voir l'ancien PARRAINAGE_JOURS_OFFERTS) - sur un Plan JUSQUA_EXAMEN, dont
+# l'échéance est calée sur la date d'examen, les jours offerts atterrissaient après
+# l'examen (valeur perçue nulle, voir project_parrainage_eleve_recalibrage). Un
+# crédit FCFA dépensable sur n'importe quel achat futur, sur n'importe quel cursus,
+# ne dépend d'aucune date d'examen et garde donc toujours sa valeur.
+PARRAINAGE_CREDIT_MONTANT = 500
+PARRAINAGE_CREDIT_VALIDITE_JOURS = 365
 
 
 class ParrainageRecompense(models.Model):
@@ -327,8 +351,9 @@ class ParrainageRecompense(models.Model):
     déclenché la récompense - Campay (`transaction`) ou paiement manuel approuvé
     (`manual_payment`), exactement l'un des deux étant renseigné (voir la contrainte
     ci-dessous). Sert à la fois de garde-fou anti double-crédit (chaque
-    OneToOneField empêche toute création en double pour un même paiement) et
-    d'historique consultable (combien de jours offerts, à qui, pour quel filleul).
+    OneToOneField empêche toute création en double pour un même paiement), de
+    ligne de crédit dépensable par le parrain (`montant_restant`, voir
+    consommer_credit_parrainage) et d'historique consultable.
     """
 
     parrain = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="parrainages_recompenses")
@@ -339,8 +364,13 @@ class ParrainageRecompense(models.Model):
     manual_payment = models.OneToOneField(
         "payments.ManualPayment", null=True, blank=True, on_delete=models.CASCADE, related_name="parrainage_recompense",
     )
-    cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT)
-    jours_offerts = models.PositiveSmallIntegerField(default=PARRAINAGE_JOURS_OFFERTS)
+    cursus = models.ForeignKey(
+        Cursus, on_delete=models.PROTECT,
+        help_text="Cursus dont l'achat du filleul a déclenché la récompense - purement informatif, le crédit lui-même est dépensable sur n'importe quel cursus.",
+    )
+    montant_offert = models.PositiveIntegerField(default=PARRAINAGE_CREDIT_MONTANT, help_text="Montant FCFA accordé au parrain, figé à l'octroi.")
+    montant_restant = models.PositiveIntegerField(default=PARRAINAGE_CREDIT_MONTANT, help_text="Solde encore dépensable de ce crédit - voir consommer_credit_parrainage.")
+    expires_at = models.DateTimeField(help_text="Au-delà, ce crédit n'est plus comptabilisé dans le solde même si montant_restant > 0.")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -352,18 +382,61 @@ class ParrainageRecompense(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.parrain} récompensé pour le parrainage de {self.filleul} (+{self.jours_offerts}j)"
+        return f"{self.parrain} récompensé pour le parrainage de {self.filleul} (+{self.montant_offert} FCFA, {self.montant_restant} restants)"
+
+
+def solde_credit_parrainage(user):
+    """Somme des crédits de parrainage encore valides (non expirés) et non
+    entièrement dépensés d'un utilisateur - voir consommer_credit_parrainage pour
+    la dépense."""
+    total = ParrainageRecompense.objects.filter(
+        parrain=user, expires_at__gt=timezone.now(),
+    ).aggregate(total=models.Sum("montant_restant"))["total"]
+    return total or 0
+
+
+def consommer_credit_parrainage(user, montant):
+    """
+    Déduit jusqu'à `montant` FCFA du solde de crédit parrainage de `user`, en
+    consommant d'abord les crédits qui expirent le plus tôt (jamais les plus gros
+    en premier) pour ne pas laisser expirer inutilement un crédit encore valable.
+    Retourne le montant réellement déduit - peut être inférieur à `montant` si le
+    solde s'est réduit entre la cotation (affichée à l'utilisateur avant paiement)
+    et cet appel (ex. un autre paiement concurrent l'a déjà consommé) ; l'appelant
+    doit toujours appeler ceci sous verrou (select_for_update via l'appelant, voir
+    Transaction._confirmer_succes/ManualPayment.approve) plutôt que de faire
+    confiance à la cotation seule.
+    """
+    if montant <= 0:
+        return 0
+    qs = ParrainageRecompense.objects.select_for_update() if connection.features.has_select_for_update else ParrainageRecompense.objects
+    credits = qs.filter(
+        parrain=user, expires_at__gt=timezone.now(), montant_restant__gt=0,
+    ).order_by("expires_at")
+
+    restant_a_deduire = montant
+    deduit_total = 0
+    for credit in credits:
+        if restant_a_deduire <= 0:
+            break
+        deduction = min(credit.montant_restant, restant_a_deduire)
+        credit.montant_restant -= deduction
+        credit.save(update_fields=["montant_restant"])
+        restant_a_deduire -= deduction
+        deduit_total += deduction
+    return deduit_total
 
 
 def recompenser_parrainage(paiement):
     """
     Si l'utilisateur de `paiement` a été parrainé ET que ce paiement est sa toute
     première conversion réussie - tous moyens de paiement confondus (Campay
-    SUCCESSFUL ou paiement manuel APPROVED) - prolonge l'abonnement du parrain (sur
-    le même cursus que l'achat du filleul) de PARRAINAGE_JOURS_OFFERTS jours. Ne
-    récompense jamais un réabonnement du filleul - seulement sa toute première
-    conversion, peu importe le canal - pour éviter qu'un parrain accumule des jours
-    à chaque renouvellement de son filleul.
+    SUCCESSFUL ou paiement manuel APPROVED) - crédite le parrain de
+    PARRAINAGE_CREDIT_MONTANT FCFA (voir ParrainageRecompense/solde_credit_parrainage),
+    dépensable sur n'importe lequel de ses futurs achats. Ne récompense jamais un
+    réabonnement du filleul - seulement sa toute première conversion, peu importe le
+    canal - pour éviter qu'un parrain accumule du crédit à chaque renouvellement de
+    son filleul.
 
     `paiement` : une instance payments.Transaction (déjà SUCCESSFUL) ou
     payments.ManualPayment (déjà APPROVED). Appelée depuis Transaction.sync_status()
@@ -400,14 +473,12 @@ def recompenser_parrainage(paiement):
     if not premiere_conversion:
         return
 
-    Subscription.objects.activate_or_extend(
-        user=parrain, cursus=paiement.plan.cursus, duration_days=PARRAINAGE_JOURS_OFFERTS,
-    )
     source_field = "transaction" if isinstance(paiement, Transaction) else "manual_payment"
     ParrainageRecompense.objects.get_or_create(
         **{source_field: paiement},
         defaults={
-            "parrain": parrain, "filleul": filleul,
-            "cursus": paiement.plan.cursus, "jours_offerts": PARRAINAGE_JOURS_OFFERTS,
+            "parrain": parrain, "filleul": filleul, "cursus": paiement.plan.cursus,
+            "montant_offert": PARRAINAGE_CREDIT_MONTANT, "montant_restant": PARRAINAGE_CREDIT_MONTANT,
+            "expires_at": timezone.now() + timezone.timedelta(days=PARRAINAGE_CREDIT_VALIDITE_JOURS),
         },
     )

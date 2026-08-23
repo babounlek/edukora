@@ -32,6 +32,7 @@ import type {
   Subject,
   Subscription,
   Temoignage,
+  ThemesFrequentsResponse,
   TentativeInedite,
   TentativeInediteCorrige,
   TentativeInediteListItem,
@@ -155,6 +156,9 @@ export interface EpreuveFilters {
   exclude_read?: boolean
   ordering?: "year" | "recent" | "popular"
   est_vitrine?: boolean
+  // Lien "s'entraîner sur ce thème" depuis ThemesFrequents - correspondance exacte sur
+  // un nom de Tag déjà connu (voir catalog.views.LessonListView), pas une saisie libre.
+  theme?: string
 }
 
 export function listEpreuves(filters: EpreuveFilters = {}, signal?: AbortSignal) {
@@ -238,6 +242,16 @@ export function listSubjects(country?: string, signal?: AbortSignal) {
 export function listCursus(country?: string, signal?: AbortSignal) {
   const query = country ? `?country=${country}` : ""
   return apiRequest<Cursus[]>(`/catalog/cursus/${query}`, { auth: false, signal })
+}
+
+export function getThemesFrequents(cursusId: number, subjectId: string, signal?: AbortSignal) {
+  // "optional" : le teaser (voir ThemesFrequentsResponse.has_access) doit s'afficher
+  // normalement pour un visiteur anonyme, jamais déclencher un événement "session
+  // expirée" - même motif que readEpreuve/readCours.
+  return apiRequest<ThemesFrequentsResponse>(
+    `/catalog/cursus/${cursusId}/themes-frequents/?subject=${subjectId}`,
+    { auth: "optional", signal },
+  )
 }
 
 export function listCountries() {

@@ -4,7 +4,7 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 
-from subscriptions.models import Plan
+from subscriptions.models import Plan, solde_credit_parrainage
 
 from .campay_client import CampayError
 from .models import ManualPayment, MobileMoneyAccount, StatutTransaction, Transaction
@@ -35,14 +35,26 @@ def initiate_payment(request):
         return Response({"error": "Fournis plan_id et phone_number."}, status=400)
 
     plan = get_object_or_404(Plan, pk=plan_id, is_active=True)
-    # Le Pack Examen n'est vendable que dans la fenêtre d'urgence qui précède la
-    # session (voir Plan.est_achetable) - la liste des offres ne le propose déjà plus
-    # hors fenêtre, ce contrôle ferme le POST direct avec un plan_id récupéré avant.
-    if not plan.est_achetable():
-        return Response({"error": "Cette offre n'est pas disponible actuellement."}, status=400)
+
+    prix = plan.effective_price()
+    # Remise automatique par crédit parrainage disponible (voir
+    # subscriptions.models.solde_credit_parrainage) - jamais sur le paiement manuel
+    # pour l'instant, qui suppose un vrai transfert Mobile Money à déclarer/prouver.
+    credit_applique = min(prix, solde_credit_parrainage(request.user))
+    montant_a_payer = prix - credit_applique
+
+    if montant_a_payer == 0:
+        transaction = Transaction.objects.creer_couverte_par_credit(
+            user=request.user, plan=plan, phone_number=phone_number, credit_applique=credit_applique,
+        )
+        return Response({
+            "transaction_id": transaction.id, "status": transaction.status,
+            "amount": transaction.amount, "credit_applique": transaction.credit_applique,
+        })
 
     transaction = Transaction.objects.create(
-        user=request.user, plan=plan, amount=plan.effective_price(), phone_number=phone_number,
+        user=request.user, plan=plan, amount=montant_a_payer,
+        phone_number=phone_number, credit_applique=credit_applique,
     )
 
     try:
@@ -53,7 +65,10 @@ def initiate_payment(request):
         _report_campay_error(exc, transaction)
         return Response({"error": str(exc)}, status=502)
 
-    return Response({"transaction_id": transaction.id, "status": transaction.status})
+    return Response({
+        "transaction_id": transaction.id, "status": transaction.status,
+        "amount": transaction.amount, "credit_applique": transaction.credit_applique,
+    })
 
 
 @api_view(["GET"])

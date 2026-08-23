@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   CalendarPlus,
@@ -16,7 +15,7 @@ import {
   Zap,
 } from "lucide-react"
 
-import { listEpreuves, listPlans } from "@/api/endpoints"
+import { listPlans } from "@/api/endpoints"
 import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
@@ -25,14 +24,6 @@ import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { EpreuveRail } from "@/components/EpreuveRail"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 // Palier de référence pour l'économie affichée sur les autres formules ("-16 %") : le
@@ -69,6 +60,103 @@ function trierCursus(a: Cursus, b: Cursus): number {
   const rang = ORDRE_EXAMENS.indexOf(a.examen) - ORDRE_EXAMENS.indexOf(b.examen)
   if (rang !== 0) return rang
   return (a.series?.code ?? "").localeCompare(b.series?.code ?? "")
+}
+
+type GroupeCursus = { examen: string; examenLabel: string; cursus: Cursus[] }
+
+/** Un groupe par examen (BEPC/Probatoire/BAC), dans le même ordre que trierCursus -
+ * regrouper permet à la puce elle-même de ne porter que la série ("C", "TI") plutôt
+ * que de répéter "BAC -" sur chacune des cinq séries d'un même examen. */
+function grouperParExamen(liste: Cursus[]): GroupeCursus[] {
+  const groupes = new Map<string, GroupeCursus>()
+  liste.forEach((c) => {
+    if (!groupes.has(c.examen)) groupes.set(c.examen, { examen: c.examen, examenLabel: c.examen_display, cursus: [] })
+    groupes.get(c.examen)!.cursus.push(c)
+  })
+  return Array.from(groupes.values()).sort(
+    (a, b) => ORDRE_EXAMENS.indexOf(a.examen) - ORDRE_EXAMENS.indexOf(b.examen),
+  )
+}
+
+function ChipCursus({ texte, selected, onClick }: { texte: string; selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onClick}
+      className={cn(
+        "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+        selected
+          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+          : "border-border bg-background text-foreground hover:border-primary/40 hover:bg-primary/5",
+      )}
+    >
+      {texte}
+    </button>
+  )
+}
+
+/**
+ * Sélecteur de cursus en puces cliquables plutôt qu'en menu déroulant : les options
+ * sont peu nombreuses (jusqu'à 11 pour le Cameroun, souvent 1 à 3 ailleurs - voir
+ * cursusVendables) et tiennent sur une ou deux lignes - les voir toutes d'un coup et
+ * choisir en un clic vaut mieux que les cacher derrière un menu à ouvrir puis
+ * refermer, pour un choix qui conditionne tout le reste de la page (prix et durée de
+ * Jusqu'à l'Examen, destination du bouton de chaque carte).
+ */
+function CursusChips({
+  liste,
+  selected,
+  onSelect,
+  label,
+  centre = false,
+  describedBy,
+}: {
+  liste: Cursus[]
+  selected: string
+  onSelect: (id: string) => void
+  label: string
+  centre?: boolean
+  describedBy?: string
+}) {
+  const groupes = useMemo(() => grouperParExamen(liste), [liste])
+  return (
+    <div
+      role="group"
+      aria-label={label}
+      aria-describedby={describedBy}
+      className={cn("flex flex-col gap-2.5", centre && "items-center")}
+    >
+      {groupes.map((groupe) => {
+        // Un seul cursus dans le groupe et pas de série (ex. BEPC) : la puce porte
+        // directement le nom de l'examen, un en-tête de groupe ne ferait que le répéter.
+        if (groupe.cursus.length === 1 && !groupe.cursus[0].series) {
+          const c = groupe.cursus[0]
+          return (
+            <ChipCursus
+              key={c.id}
+              texte={cursusLabel(c)}
+              selected={selected === String(c.id)}
+              onClick={() => onSelect(String(c.id))}
+            />
+          )
+        }
+        return (
+          <div key={groupe.examen} className={cn("flex flex-wrap items-center gap-2", centre && "justify-center")}>
+            <span className="w-[4.5rem] shrink-0 text-xs font-medium text-muted-foreground">{groupe.examenLabel}</span>
+            {groupe.cursus.map((c) => (
+              <ChipCursus
+                key={c.id}
+                texte={c.series?.code ?? cursusLabel(c)}
+                selected={selected === String(c.id)}
+                onClick={() => onSelect(String(c.id))}
+              />
+            ))}
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 /** Les cursus réellement vendables pour ce type de produit, déduits des offres
@@ -144,6 +232,129 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
   )
 }
 
+// Miroir volontaire de subscriptions.models.{PLANCHER_JUSQUA_EXAMEN,
+// INCREMENT_PAR_TRANCHE, JOURS_PAR_TRANCHE} - recalculés ici pour dessiner
+// l'échéancier visuel ci-dessous, jamais pour fixer un prix (toujours
+// jusquaExamen.effective_price/.price, qui viennent du serveur - voir Echeancier).
+// Grille "Septembre 12 000 F ... Juin 3 000 F", décision utilisateur du 2026-08-19 :
+// si elle change côté backend, ces trois constantes doivent suivre.
+const PLANCHER_AFFICHE = 3000
+const PALIER_AFFICHE = 1000
+const JOURS_PAR_TRANCHE_AFFICHE = 30
+
+type EtapeEcheancier = { tranche: number; prix: number }
+
+/** Une marche par tranche de prix, de la plus loin de l'examen (plafond, tranche la
+ * plus haute) à la plus proche (plancher, tranche 0) - voir Echeancier. */
+function construireEcheancier(plafond: number): EtapeEcheancier[] {
+  const nbTranches = Math.round((plafond - PLANCHER_AFFICHE) / PALIER_AFFICHE)
+  return Array.from({ length: nbTranches + 1 }, (_, i) => {
+    const tranche = nbTranches - i
+    return { tranche, prix: Math.min(plafond, PLANCHER_AFFICHE + tranche * PALIER_AFFICHE) }
+  })
+}
+
+/**
+ * Échéancier visuel de Jusqu'à l'Examen : une marche par mois entamé, du plafond
+ * (loin de l'examen, à gauche) au plancher (dernier mois, à droite) - rend concret
+ * "plus tu t'abonnes tôt, moins tu payes" au lieu de le laisser en simple phrase.
+ * La marche de l'utilisateur (déduite de son cursus, donc de la vraie date
+ * d'examen - jamais un mois calendaire supposé) est repérée par un badge doré
+ * plutôt que noyée dans la liste.
+ */
+function Echeancier({ plan }: { plan: Plan }) {
+  const etapes = useMemo(() => construireEcheancier(plan.price), [plan.price])
+  const trancheActuelle = Math.min(
+    etapes[0]?.tranche ?? 0,
+    Math.floor(plan.effective_duration_days / JOURS_PAR_TRANCHE_AFFICHE),
+  )
+
+  return (
+    <div className="rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
+      <p className="text-xs font-medium text-muted-foreground">
+        Le tarif baisse à chaque mois qui passe, jusqu'à ton examen
+      </p>
+      <div className="mt-6 flex items-end gap-1 sm:gap-1.5" role="img" aria-label={`Grille de prix par mois, de ${formatAmount(etapes[0]?.prix ?? 0)} à ${formatAmount(PLANCHER_AFFICHE)} FCFA`}>
+        {etapes.map((etape) => {
+          const actif = etape.tranche === trancheActuelle
+          const extremite = etape.tranche === etapes[0].tranche || etape.tranche === 0
+          const hauteurPx = Math.round(18 + (etape.prix / plan.price) * 74)
+          return (
+            <div key={etape.tranche} className="relative flex flex-1 flex-col items-center">
+              {actif && (
+                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-2 py-0.5 font-display text-[10px] font-semibold tracking-wide text-gold-foreground shadow-sm">
+                  Toi
+                </span>
+              )}
+              <div
+                className={cn("w-full rounded-t-[3px] transition-colors", actif ? "bg-gold" : "bg-primary/20")}
+                style={{ height: `${hauteurPx}px` }}
+              />
+              <span className={cn("mt-1.5 text-[10px] tabular-nums text-muted-foreground", !extremite && "opacity-0")}>
+                {formatAmount(etape.prix)}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+      <div className="mt-0.5 flex justify-between text-[10px] text-muted-foreground">
+        <span>Rentrée</span>
+        <span>Jour de l'examen</span>
+      </div>
+      <p className="mt-2 text-center text-[11px] text-muted-foreground">
+        <span className="font-medium text-gold">Dernière ligne droite</span> : {formatAmount(PLANCHER_AFFICHE)} FCFA
+        garantis, même à la veille de l'examen.
+      </p>
+    </div>
+  )
+}
+
+/** Les trois bénéfices communs à Mensuel - identiques avant et après le choix du
+ * cursus (voir la carte Jusqu'à l'Examen), donc factorisés plutôt que dupliqués
+ * entre les deux branches. Les inédites, seul avantage propre à cette formule, sont
+ * sorties en callout à part (voir CalloutEpreuvesInedites) plutôt que noyées ici en
+ * simple puce : retour utilisateur du 2026-08-22, c'est l'argument qui justifie le
+ * prix face aux annales gratuites, il doit se voir avant même la liste. */
+function BulletsJusquaExamen() {
+  return (
+    <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
+      <li className="flex items-center gap-2">
+        <Check className="size-4 shrink-0 text-success" />
+        Corrigés complets en illimité
+      </li>
+      <li className="flex items-center gap-2">
+        <Check className="size-4 shrink-0 text-success" />
+        Cours et exercices d'application
+      </li>
+      <li className="flex items-center gap-2">
+        <Check className="size-4 shrink-0 text-success" />
+        Quiz qui identifie tes lacunes et cible tes révisions
+      </li>
+    </ul>
+  )
+}
+
+/** Callout distinct plutôt qu'une puce parmi d'autres (voir BulletsJusquaExamen) :
+ * les annales seules sont gratuites ailleurs, ce qui justifie le prix d'Edukora
+ * c'est un entraînement au format et au programme réels de l'examen, introuvable
+ * ailleurs. */
+function CalloutEpreuvesInedites() {
+  return (
+    <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3 py-2.5">
+      <Crown className="mt-0.5 size-4 shrink-0 text-gold" />
+      <div>
+        <p className="flex items-center gap-1 font-display text-[11px] font-semibold uppercase tracking-wide text-gold">
+          <Sparkles className="size-3" />
+          Exclusif Edukora
+        </p>
+        <p className="mt-0.5 text-sm text-foreground">
+          Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function CarteSquelette() {
   return (
     <Card className="flex flex-col" aria-hidden>
@@ -178,7 +389,14 @@ export function PricingPage() {
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
   const [cursusManquant, setCursusManquant] = useState(false)
+  // Passe brièvement à true au tout premier choix de cursus, pour un léger encadré
+  // sur "Ta formule" pendant le scroll - jamais retriggée sur un changement de cursus
+  // suivant (voir l'effet plus bas), pour ne pas ressauter sous les yeux de qui compare
+  // déjà les formules après un premier choix.
+  const [formuleMiseEnAvant, setFormuleMiseEnAvant] = useState(false)
+  const aDejaScrolleVersFormule = useRef(false)
   const cursusRef = useRef<HTMLDivElement>(null)
+  const formuleRef = useRef<HTMLDivElement>(null)
   const cursusRepetiteurRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -186,19 +404,6 @@ export function PricingPage() {
       .then(setAllPlans)
       .finally(() => setChargement(false))
   }, [])
-
-  // Aperçu réel des épreuves inédites, montré ici plutôt que sur l'accueil (voir la
-  // scission accueil/catalogue et le retrait du second rail qui y vivait) : un
-  // visiteur qui compare les formules d'abonnement, avec "Épreuves inédites incluses"
-  // sous les yeux, est le bon moment pour voir concrètement ce qu'il achète - pas un
-  // visiteur qui vient d'arriver et n'a encore rien lu. Même clé de cache que
-  // CataloguePage (avant son retrait) : si le visiteur vient d'y passer, aucune
-  // requête de plus n'est payée ici.
-  const { data: ineditesData } = useQuery({
-    queryKey: ["epreuves-inedites", country],
-    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE" }, signal),
-  })
-  const inedites = ineditesData?.results ?? []
 
   const abonnements = useMemo(
     () => allPlans.filter((p) => p.product_type === "ABONNEMENT"),
@@ -254,6 +459,18 @@ export function PricingPage() {
     if (selectedCursus) setCursusManquant(false)
   }, [selectedCursus])
 
+  // Premier choix de cursus : la grille de formules (déjà visible, mais parfois hors
+  // écran sur mobile juste sous le sélecteur) se signale et défile jusqu'à l'écran -
+  // sans ça, rien n'indique que choisir un cursus vient de débloquer l'étape suivante.
+  useEffect(() => {
+    if (!selectedCursus || aDejaScrolleVersFormule.current) return
+    aDejaScrolleVersFormule.current = true
+    formuleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    setFormuleMiseEnAvant(true)
+    const timer = setTimeout(() => setFormuleMiseEnAvant(false), 1600)
+    return () => clearTimeout(timer)
+  }, [selectedCursus])
+
   function choisirFormule(dureeParam: string) {
     if (!selectedCursus) {
       setCursusManquant(true)
@@ -278,7 +495,7 @@ export function PricingPage() {
           d'avoir rien dit du prix ni de la façon de payer. Les trois puces répondent
           d'entrée aux objections qui bloquent un achat Mobile Money : combien, avec
           quoi, et est-ce que ça va me prélever tous les mois. */}
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-6 sm:p-10">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -286,17 +503,24 @@ export function PricingPage() {
             backgroundSize: "24px 24px",
           }}
         />
+        {/* Halo doré, décentré - profondeur discrète derrière le titre plutôt qu'un
+            fond plat, sans concurrencer la grille de prix qui doit rester l'élément
+            le plus lu de la page. */}
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-gold/10 blur-3xl"
+          aria-hidden
+        />
         <div className="relative max-w-2xl">
           <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Sparkles className="size-5" />
           </div>
           <p className="mb-1 font-display text-sm italic text-primary">Tarifs</p>
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Un seul prix, <span className="text-primary">le même pour tous les cursus</span>.
+            Plus tôt tu t'abonnes, <span className="text-primary">moins tu payes</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Corrigés d'annales, sujets et cours complets, plus le quiz qui repère tes lacunes - pour la matière et la
-            série de ton choix.
+            Un mois simple pour tester, ou un forfait qui suit ton année scolaire et devient moins cher chaque mois
+            qui passe - jusqu'à ton examen.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -342,22 +566,15 @@ export function PricingPage() {
               <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
                 1
               </span>
-              <label htmlFor="cursus-eleve" className="text-sm font-medium">
-                Ton cursus
-              </label>
+              <span className="text-sm font-medium">Ton cursus</span>
             </div>
-            <Select value={selectedCursus} onValueChange={setSelectedCursus}>
-              <SelectTrigger id="cursus-eleve" className="w-full" aria-describedby="cursus-eleve-aide">
-                <SelectValue placeholder="Choisis ton examen et ta série" />
-              </SelectTrigger>
-              <SelectContent>
-                {cursusEleve.map((c) => (
-                  <SelectItem key={c.id} value={String(c.id)}>
-                    {cursusLabel(c)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <CursusChips
+              liste={cursusEleve}
+              selected={selectedCursus}
+              onSelect={setSelectedCursus}
+              label="Ton cursus"
+              describedBy="cursus-eleve-aide"
+            />
             <p
               id="cursus-eleve-aide"
               role={cursusManquant ? "alert" : undefined}
@@ -369,14 +586,32 @@ export function PricingPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-9 mb-4 flex max-w-md items-center gap-2">
-            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
-              2
-            </span>
-            <p className="text-sm font-medium">Ta formule</p>
-          </div>
+          {/* ref + surbrillance temporaire : voir l'effet qui défile ici au premier
+              choix de cursus. rounded-2xl + ring-offset donnent un encadré visible même
+              sans fond propre (la Card ci-dessous garde le sien) - transition-shadow
+              plutôt que "hidden ring" pour que l'apparition/disparition soit un
+              fondu, pas un saut. */}
+          <div
+            ref={formuleRef}
+            className={cn(
+              "scroll-mt-24 rounded-2xl transition-shadow duration-500",
+              formuleMiseEnAvant && "ring-2 ring-primary/40 ring-offset-4 ring-offset-background",
+            )}
+          >
+            <div className="mx-auto mb-4 flex max-w-md items-center gap-2 pt-9">
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                2
+              </span>
+              <p className="text-sm font-medium">Ta formule</p>
+            </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {/* items-start (pas le stretch par défaut de la grille) : Jusqu'à l'Examen
+                (échéancier + liste plus longue) et Mensuel n'ont pas la même hauteur de
+                contenu, encore moins avant qu'un cursus soit choisi (Jusqu'à l'Examen se
+                réduit à une phrase). Étirer les deux cartes à la même hauteur créait un
+                vide interne dans la plus courte plutôt que deux cartes de hauteurs
+                naturelles différentes - un vide est pire qu'une asymétrie. */}
+            <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2">
             {chargement && tiers.length === 0 ? (
               <>
                 <CarteSquelette />
@@ -444,10 +679,19 @@ export function PricingPage() {
                   )}
                 >
                   {jusquaExamen && (
-                    <span className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-primary px-3 py-1 font-display text-xs font-semibold tracking-wide text-primary-foreground shadow-sm">
-                      <Sparkles className="size-3" />
-                      Offre principale
-                    </span>
+                    <>
+                      {/* Liseré doré en tête de carte - seul détail "premium" propre à
+                          l'offre phare, pour que la mise en avant tienne à la finition
+                          plutôt qu'au seul badge flottant. rounded-t-lg (pas
+                          overflow-hidden sur la Card) pour ne pas rogner le badge
+                          "Offre principale" juste en dessous, qui déborde volontairement
+                          au-dessus du cadre. */}
+                      <div className="absolute inset-x-0 top-0 h-1 rounded-t-lg bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
+                      <span className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-primary px-3 py-1 font-display text-xs font-semibold tracking-wide text-primary-foreground shadow-sm">
+                        <Sparkles className="size-3" />
+                        Offre principale
+                      </span>
+                    </>
                   )}
                   <CardHeader>
                     <CardTitle className="font-display text-lg">Jusqu'à l'Examen</CardTitle>
@@ -457,7 +701,16 @@ export function PricingPage() {
                         : "Choisis ton cursus pour voir le prix exact"}
                     </CardDescription>
                   </CardHeader>
+                  {/* Les bénéfices sont affichés d'emblée, cursus ou non - seuls le prix,
+                      l'échéancier et le bouton dépendent du cursus choisi (voir
+                      jusquaExamen). Avant ce choix, la carte n'avait qu'une phrase perdue
+                      dans un grand vide alors que Mensuel, à côté, affichait déjà tout son
+                      contenu - de quoi donner l'impression à tort que l'offre était moins
+                      complète, en plus de laisser les deux cartes à des hauteurs très
+                      différentes. */}
                   <CardContent className="flex flex-1 flex-col gap-4">
+                    <CalloutEpreuvesInedites />
+                    <BulletsJusquaExamen />
                     {jusquaExamen ? (
                       <>
                         <div>
@@ -467,70 +720,39 @@ export function PricingPage() {
                           </p>
                           <p className="mt-0.5 text-xs text-muted-foreground">
                             ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
-                            {" - "}jamais plus cher au jour qu'un abonnement Mensuel
                           </p>
                         </div>
-                        <div className="mt-auto flex flex-col gap-4">
-                          <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Corrigés complets en illimité
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Cours et exercices d'application
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Quiz qui identifie tes lacunes et cible tes révisions
-                            </li>
-                            <li className="flex items-center gap-2 font-medium text-foreground">
-                              <Check className="size-4 shrink-0 text-success" />
-                              <Crown className="size-3.5 shrink-0 text-gold" />
-                              Accès aux épreuves inédites inclus
-                            </li>
-                            <li className="flex items-start gap-2 text-xs text-muted-foreground">
-                              <Flame className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                              Ton {jusquaExamen.cursus.examen_display} commence dans{" "}
-                              <strong className="text-foreground">
-                                {jusquaExamen.effective_duration_days} jour{jusquaExamen.effective_duration_days > 1 ? "s" : ""}
-                              </strong>{" "}
-                              (le {formatDateDansNJours(jusquaExamen.effective_duration_days)}).
-                            </li>
-                          </ul>
-                          <Button onClick={() => choisirFormule("examen")} size="lg" className="w-full">
-                            Prendre le Pack Examen
-                          </Button>
-                        </div>
+                        <Echeancier plan={jusquaExamen} />
+                        <p className="flex items-start gap-2 text-xs text-muted-foreground">
+                          <Flame className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                          <span>
+                            Ton {jusquaExamen.cursus.examen_display} commence dans{" "}
+                            <strong className="text-foreground">
+                              {jusquaExamen.effective_duration_days} jour{jusquaExamen.effective_duration_days > 1 ? "s" : ""}
+                            </strong>{" "}
+                            (le {formatDateDansNJours(jusquaExamen.effective_duration_days)}).
+                          </span>
+                        </p>
+                        <Button onClick={() => choisirFormule("examen")} size="lg" className="w-full">
+                          Prendre le Pack Examen
+                        </Button>
                       </>
                     ) : (
-                      <p className="flex flex-1 items-center text-sm text-muted-foreground">
-                        Le prix s'ajuste à ton examen : plus tu t'abonnes tôt dans l'année, plus le tarif au jour est bas.
-                      </p>
+                      <>
+                        <p className="text-sm text-muted-foreground">
+                          Le prix s'ajuste à ton examen : plus tu t'abonnes tôt dans l'année, plus le tarif au jour est
+                          bas.
+                        </p>
+                        <Button disabled variant="outline" size="lg" className="w-full">
+                          Choisis ton cursus ci-dessus
+                        </Button>
+                      </>
                     )}
                   </CardContent>
                 </Card>
               </>
             )}
-          </div>
-
-          {/* Aperçu réel du produit derrière "Accès aux épreuves inédites inclus"
-              ci-dessus - jamais montré nulle part avant que le visiteur ne paie.
-              Disparaît de lui-même si aucune n'existe pour ce pays (voir EpreuveRail,
-              qui rend null sur une liste vide). -mx-4 sm:-mx-6 annule le padding
-              horizontal du conteneur de page (EpreuveRail porte le sien propre, prévu
-              pour vivre directement sous un root sans padding comme sur l'accueil) -
-              sans ça, ses cartes seraient en retrait par rapport à la grille de tarifs
-              juste au-dessus. */}
-          <div className="-mx-4 sm:-mx-6">
-            <EpreuveRail
-              title="Épreuves Inédites"
-              icon={<Crown className="size-5 text-gold" />}
-              description="Des épreuves d'examen jamais vues, jamais publiées ailleurs - le seul moyen de te tester en conditions réelles."
-              epreuves={inedites}
-              threePerView
-              masquerTypeBadge
-            />
+            </div>
           </div>
 
           {/* Le socle commun aux deux formules, énoncé une fois et en grand plutôt que
@@ -569,14 +791,10 @@ export function PricingPage() {
             </ul>
           </div>
 
-          <div className="mx-auto mt-9 max-w-md rounded-xl border border-border bg-card p-6 text-center shadow-sm">
-            <h3 className="mb-1 font-display text-lg font-semibold">Prêt à t'abonner ?</h3>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {selectedCursus ? "Choisis une formule ci-dessus pour continuer." : "Choisis d'abord ton cursus ci-dessus."}
-            </p>
-          </div>
-
-          {/* La mention Mobile Money vivait ici, en 12 px sous la grille. Elle est
+          {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (chaque carte porte
+              déjà le sien - "Choisir Mensuel"/"Prendre le Pack Examen") : une invite à
+              agir qui ne menait nulle part elle-même, retirée plutôt que complétée.
+              La mention Mobile Money vivait ici aussi, en 12 px sous la grille. Elle est
               remontée dans les puces du hero et détaillée dans les questions en bas de
               page : la répéter une troisième fois ne rassurait personne. */}
         </TabsContent>
@@ -654,23 +872,27 @@ export function PricingPage() {
                 ? "Choisis ton cursus pour continuer."
                 : "L'outil Fiches est disponible sur le cursus ci-dessous."}
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Select value={selectedCursusRepetiteur} onValueChange={setSelectedCursusRepetiteur}>
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Choisis ton cursus" />
-                </SelectTrigger>
-                <SelectContent>
-                  {cursusRepetiteur.map((c) => (
-                    <SelectItem key={c.id} value={String(c.id)}>
-                      {cursusLabel(c)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button onClick={handleSubscribeRepetiteur} disabled={!selectedCursusRepetiteur} size="lg">
-                S'abonner
-              </Button>
-            </div>
+            {/* Un seul cursus vendable : aucune puce à afficher, le message ci-dessus
+                suffit à dire lequel (voir la présélection automatique plus haut). */}
+            {cursusRepetiteur.length > 1 && (
+              <div className="mb-4">
+                <CursusChips
+                  liste={cursusRepetiteur}
+                  selected={selectedCursusRepetiteur}
+                  onSelect={setSelectedCursusRepetiteur}
+                  label="Ton cursus"
+                  centre
+                />
+              </div>
+            )}
+            <Button
+              onClick={handleSubscribeRepetiteur}
+              disabled={!selectedCursusRepetiteur}
+              size="lg"
+              className="w-full sm:w-auto"
+            >
+              S'abonner
+            </Button>
             <button
               type="button"
               onClick={() => navigate("/fiches")}

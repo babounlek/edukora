@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import { AlertCircle, CheckCircle2, Loader2, ShieldCheck, XCircle, Zap } from "lucide-react"
+import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, XCircle, Zap } from "lucide-react"
 
 import { checkPaymentStatus, initiatePayment, listCursus, listPlans } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -222,6 +222,14 @@ export function SubscribePage() {
         trackEvent("payment_failed", properties)
         return
       }
+      if (response.status === "SUCCESSFUL") {
+        // Crédit parrainage suffisant pour couvrir tout le prix - jamais envoyé à
+        // CamPay côté backend (voir TransactionManager.creer_couverte_par_credit),
+        // donc rien à sonder ici non plus.
+        setPhase("success")
+        trackEvent("payment_succeeded", properties)
+        return
+      }
       pollTransaction(response.transaction_id)
     } catch (err) {
       setPhase("failed")
@@ -236,6 +244,15 @@ export function SubscribePage() {
   }
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId) ?? null
+
+  // Remise appliquée automatiquement côté serveur (voir payments.views.initiate_payment)
+  // pour un paiement Campay uniquement - recalculée ici à l'identique (min(prix, solde))
+  // seulement pour l'affichage, jamais pour fixer un montant. Le paiement manuel
+  // (ManualPaymentPanel) ne consomme pas ce crédit - voir sa portée volontairement
+  // limitée côté backend - donc jamais montré comme réduisant son montant à déclarer.
+  const creditDisponible = user?.credit_parrainage_disponible ?? 0
+  const creditAppliqueSelection = selectedPlan ? Math.min(selectedPlan.effective_price, creditDisponible) : 0
+  const netAPayerSelection = (selectedPlan?.effective_price ?? 0) - creditAppliqueSelection
 
   // Groupé par product_type plutôt qu'affiché en une liste plate - même hors des cas
   // filtrés (requireInedit/requireRepetiteur), un cursus peut avoir à la fois des Plan
@@ -318,6 +335,16 @@ export function SubscribePage() {
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
             <div className="flex flex-col gap-6">
+              {creditDisponible > 0 && (
+                <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
+                  <Gift className="size-4 shrink-0 text-gold" />
+                  <span>
+                    Tu as <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
+                    crédit parrainage - appliqué automatiquement pour un paiement Campay.
+                  </span>
+                </div>
+              )}
+
               <div className="flex flex-col gap-2.5">
                 <StepLabel n={1}>Ton offre</StepLabel>
                 <div className="flex flex-col gap-4">
@@ -395,8 +422,14 @@ export function SubscribePage() {
 
                     {error && <p className="text-sm text-destructive">{error}</p>}
 
+                    {selectedPlan && creditAppliqueSelection > 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        {formatAmount(selectedPlan.effective_price)} FCFA − {formatAmount(creditAppliqueSelection)} FCFA
+                        de crédit parrainage
+                      </p>
+                    )}
                     <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
-                      Payer {selectedPlan ? `${formatAmount(selectedPlan.effective_price)} FCFA` : ""}
+                      Payer {selectedPlan ? `${formatAmount(netAPayerSelection)} FCFA` : ""}
                     </Button>
                   </form>
                 ) : (

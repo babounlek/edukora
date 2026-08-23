@@ -725,6 +725,16 @@ class Exercise(models.Model):
         help_text="Ex : 1, 2, 3a - mais aussi tout autre repère utilisé par l'épreuve source (ex. 'Section III' sur certaines épreuves d'anglais), pas seulement une numérotation simple.",
     )
     points = models.CharField(max_length=20, blank=True)
+    groupes = models.JSONField(
+        default=list, blank=True,
+        help_text=(
+            "Pile ordonnée des repères de groupe (Partie/section romaine/matière) portés par "
+            "cet exercice, renseignée depuis le JSON source à l'ingestion - voir catalog."
+            "rendering._exercise_group_paths pour le fallback par analyse de texte utilisé "
+            "quand ce champ est vide (tout exercice ingéré avant l'introduction de ce champ, "
+            "ou toute épreuve sans structure imbriquée - cas très majoritaire)."
+        ),
+    )
 
     enonce_intro_markdown = models.TextField(
         blank=True,

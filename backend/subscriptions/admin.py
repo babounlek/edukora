@@ -45,7 +45,8 @@ class InscriptionRepetiteurAdmin(admin.ModelAdmin):
 
 @admin.register(ParrainageRecompense)
 class ParrainageRecompenseAdmin(admin.ModelAdmin):
-    list_display = ["parrain", "filleul", "cursus", "jours_offerts", "created_at"]
+    list_display = ["parrain", "filleul", "cursus", "montant_offert", "montant_restant", "expires_at", "created_at"]
+    list_filter = ["cursus"]
     search_fields = ["parrain__phone_number", "filleul__phone_number"]
 
     def has_add_permission(self, request):

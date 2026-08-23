@@ -13,6 +13,10 @@ export interface User {
   date_joined: string
   referral_code: string
   filleuls_count: number
+  // Voir subscriptions.models.solde_credit_parrainage - dépensable sur n'importe
+  // quel achat futur (voir SubscribePage), pas seulement sur le cursus qui l'a
+  // rapporté.
+  credit_parrainage_disponible: number
   // Fournisseurs déjà rattachés, triés. Un compte en a toujours au moins un ; c'est
   // l'unicité de cette liste qui rend un compte irrécupérable en cas de perte du
   // moyen d'accès (voir ConnexionMethodsCard).
@@ -137,10 +141,14 @@ export interface Epreuve {
   sujet_pdf_disponible: boolean
   // Énoncé de la toute première question, en aperçu public - jamais le sujet entier
   // (contrairement à EpreuvePreview.preview_markdown côté classique, voir
-  // catalog.inedit_bridge._apercu_enonce_markdown). Toujours null côté classique et
-  // dans le catalogue fusionné (liste) - seulement renseigné sur la fiche détail d'une
+  // catalog.inedit_bridge._apercu_enonce). Toujours null côté classique et dans le
+  // catalogue fusionné (liste) - seulement renseigné sur la fiche détail d'une
   // épreuve inédite (voir getEpreuveInedite).
   apercu_enonce_markdown: string | null
+  // Numéro de l'exercice dont provient apercu_enonce_markdown (ExerciceInedite.
+  // numero_exercice, ex. "1") - même règle de présence que ce dernier (null si pas
+  // d'aperçu). Affiché en référence sous l'aperçu, voir EpreuveInediteDetailPage.tsx.
+  apercu_numero_exercice: string | null
 }
 
 export interface EpreuveHeader {
@@ -170,6 +178,12 @@ export interface EpreuveExercise {
   // catalog.rendering._exercise_titre_et_points.
   titre: string
   points: string
+  // Pile de repères de groupe (Partie/section romaine/matière) à laquelle appartient
+  // l'exercice, du plus englobant au plus précis ("Partie A", "I. Activités
+  // Numériques") - [] pour la grande majorité des épreuves (aucun groupe détecté),
+  // auquel cas EpreuveSommaire affiche un sommaire plat, inchangé. Voir
+  // catalog.rendering._exercise_group_paths/_simplify_group_label.
+  groupes: string[]
   // Référence de l'exercice ("**Exercice 1 (6 points)**") + préambule partagé par
   // ses sous-questions - toujours affiché, même en lecture directe du corrigé (voir
   // EpreuveReaderPage). Distinct de enonce_markdown, qui ne porte plus que les
@@ -205,6 +219,8 @@ export interface EpreuvePreviewExercise {
   numero_exercice: string
   titre: string
   points: string
+  // Voir EpreuveExercise.groupes - même mécanique, exposée aussi côté sujet public.
+  groupes: string[]
   enonce_markdown: string
 }
 
@@ -383,6 +399,24 @@ export interface Subscription {
   plan_name: string | null
 }
 
+export interface ThemeFrequent {
+  tag: string
+  nb_epreuves: number
+  frequence_pct: number
+}
+
+export interface ThemesFrequentsResponse {
+  nb_sessions_disponibles: number
+  seuil_minimum: number
+  // false = corpus encore trop petit pour un classement fiable (voir
+  // catalog.views.SEUIL_MINIMUM_THEMES_FREQUENTS) - `themes` est alors toujours vide,
+  // distinct de `has_access=false` (classement disponible mais verrouillé).
+  disponible: boolean
+  has_access: boolean
+  nb_themes_verrouilles: number
+  themes: ThemeFrequent[]
+}
+
 export interface Paginated<T> {
   count: number
   next: string | null
@@ -395,6 +429,8 @@ export type TransactionStatus = "PENDING" | "SUCCESSFUL" | "FAILED"
 export interface PaymentInitiateResponse {
   transaction_id: number
   status: TransactionStatus
+  amount: number
+  credit_applique: number
 }
 
 export interface PaymentStatusResponse {

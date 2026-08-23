@@ -14,11 +14,11 @@ from rest_framework.test import APIClient
 
 from catalog.models import Cours, Cursus, Examen, Exercise, Lesson, LessonType, RappelDeMethode, StatutContenu, Subject
 from inedit.models import Blueprint, EpreuveInedite
-from subscriptions.models import InscriptionInedite, Subscription
+from subscriptions.models import DureeMode, InscriptionInedite, Subscription
 from users.models import User
 
 from .models import LectureProgress
-from .services import has_access, has_access_inedite
+from .services import has_access, has_access_inedite, has_access_jusqua_examen
 
 
 class HasAccessTests(TestCase):
@@ -183,6 +183,57 @@ class HasAccessInediteTests(TestCase):
             user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access_inedite(self.user, self.epreuve))
+
+
+class HasAccessJusquaExamenTests(TestCase):
+    """
+    has_access_jusqua_examen - distinct de has_access, qui accepte n'importe quel palier
+    (Mensuel comme Jusqu'à l'Examen) pour le contenu de base. Prend directement un Cursus
+    (comme has_access_fiches), pas un objet exposant `.cursus` : pensé pour gater des
+    fonctionnalités transverses au cursus (ex. ThemesFrequentsView), pas un contenu
+    précis.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677100020", password="x")
+        self.cursus_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.cursus_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+
+    def test_anonymous_is_denied(self):
+        self.assertFalse(has_access_jusqua_examen(AnonymousUser(), self.cursus_c))
+
+    def test_no_subscription_denies_access(self):
+        self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
+
+    def test_fixe_subscription_denies_access(self):
+        """Un abonnement Mensuel actif ne donne PAS accès - c'est tout l'objet de ce
+        garde, par opposition à has_access qui l'aurait accordé."""
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            duration_mode=DureeMode.FIXE,
+        )
+        self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
+
+    def test_jusqua_examen_subscription_grants_access(self):
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.assertTrue(has_access_jusqua_examen(self.user, self.cursus_c))
+
+    def test_expired_jusqua_examen_subscription_denies_access(self):
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
+            duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
+
+    def test_jusqua_examen_subscription_on_a_different_cursus_denies_access(self):
+        Subscription.objects.create(
+            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
 
 
 class ReadLessonAPITests(TestCase):
