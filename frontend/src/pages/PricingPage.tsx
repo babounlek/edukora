@@ -412,6 +412,22 @@ export function PricingPage() {
       String(p.cursus.id) === selectedCursus,
   )
 
+  // Plafond réel de la grille Jusqu'à l'Examen, lu sur les plans chargés plutôt que
+  // recopié en dur (comme PLANCHER_AFFICHE) : contrairement au plancher, qui est une
+  // constante Python partagée par tous les cursus (voir PLANCHER_JUSQUA_EXAMEN côté
+  // backend), le plafond est le champ `price` de chaque Plan, seedé à 12 000 FCFA pour
+  // tous les cursus par la migration 0009 mais modifiable cursus par cursus depuis
+  // l'admin - un futur écart entre cursus resterait donc correct ici. Sert à afficher
+  // une fourchette avant le choix du cursus plutôt qu'un plancher nu (voir son usage
+  // plus bas) : montrer "dès 3 000 FCFA" seul, puis révéler 11 000 FCFA après le choix
+  // du cursus, ressemble à un prix d'appel - la fourchette annonce l'écart d'emblée.
+  const plafondJusquaExamen = useMemo(() => {
+    const prix = allPlans
+      .filter((p) => p.product_type === "ABONNEMENT" && p.duration_mode === "JUSQUA_EXAMEN")
+      .map((p) => p.price)
+    return prix.length > 0 ? Math.max(...prix) : null
+  }, [allPlans])
+
   const cursusEleve = useMemo(() => cursusVendables(allPlans, "ABONNEMENT"), [allPlans])
   const cursusRepetiteur = useMemo(() => cursusVendables(allPlans, "ADDON_REPETITEUR"), [allPlans])
 
@@ -662,10 +678,12 @@ export function PricingPage() {
                   {/* Le prix reste visible cursus ou non (voir jusquaExamen) - avant, la
                       carte cachait tout chiffre tant que le cursus n'était pas choisi
                       ("Choisis ton cursus pour voir le prix exact"), alors que c'est
-                      justement ce qu'on vient chercher sur une page Tarifs. Le plancher
-                      garanti (voir PLANCHER_AFFICHE, aussi utilisé par Echeancier) sert de
-                      teaser honnête : c'est un vrai prix atteignable, pas un chiffre
-                      inventé pour la démo. Seuls l'échéancier et le prix exact dépendent du
+                      justement ce qu'on vient chercher sur une page Tarifs. Une fourchette
+                      complète (plancher-plafond, voir plafondJusquaExamen) plutôt qu'un
+                      "Dès 3 000 FCFA" isolé, essayé puis abandonné : un plancher nu se lit
+                      comme LE prix, et le révéler à 11 000 FCFA une fois le cursus choisi
+                      ressemble à un prix d'appel - la fourchette annonce l'écart avant
+                      même le clic. Seuls l'échéancier et le prix exact dépendent du
                       cursus. Un seul argument texte (le callout) plutôt que callout + puces
                       + note de délai empilés : la répétition des trois bénéfices déjà
                       listés dans "Compris dans les deux formules" plus bas n'apprenait
@@ -695,11 +713,14 @@ export function PricingPage() {
                       <>
                         <div>
                           <p className="font-display text-3xl font-semibold text-primary">
-                            Dès {formatAmount(PLANCHER_AFFICHE)}
+                            {formatAmount(PLANCHER_AFFICHE)}
+                            <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
+                            {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
                             <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
                           </p>
                           <p className="mt-0.5 text-xs text-muted-foreground">
-                            Prix exact selon ton cursus - le tarif au jour baisse quand tu t'abonnes tôt dans l'année.
+                            Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
+                            dernier mois.
                           </p>
                         </div>
                         <Button disabled variant="outline" size="lg" className="mt-auto w-full">
