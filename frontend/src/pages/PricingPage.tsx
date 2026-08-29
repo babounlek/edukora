@@ -548,7 +548,14 @@ export function PricingPage() {
               destination du bouton de chaque carte. Le parcours devient "je choisis
               mon cursus, je clique ma formule, je paie" au lieu de "je lis les
               formules, je redescends choisir un cursus, je clique Continuer sans
-              savoir quelle formule je viens de prendre". */}
+              savoir quelle formule je viens de prendre".
+              Pas de badge "1"/"2" numéroté ici (essayé puis retiré) : les deux cartes de
+              formule affichent déjà un prix réel sans cursus choisi (voir jusquaExamen et
+              plafondJusquaExamen plus bas) - un numéro de pastille suggérait une page à
+              débloquer étape par étape, comme un formulaire de commande, alors qu'on peut
+              déjà tout lire sans rien choisir. Même style de titre que "Compris dans les
+              deux formules" plus bas, pour que ce soit un intitulé de section, pas une
+              étape de wizard. */}
           <div
             ref={cursusRef}
             className={cn(
@@ -556,12 +563,7 @@ export function PricingPage() {
               cursusManquant ? "border-primary ring-2 ring-primary/30" : "border-border",
             )}
           >
-            <div className="mb-2.5 flex items-center gap-2">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
-                1
-              </span>
-              <span className="text-sm font-medium">Ton cursus</span>
-            </div>
+            <p className="mb-2.5 font-display font-semibold">Ton cursus</p>
             <CursusChips
               liste={cursusEleve}
               selected={selectedCursus}
@@ -592,17 +594,11 @@ export function PricingPage() {
               formuleMiseEnAvant && "ring-2 ring-primary/40 ring-offset-4 ring-offset-background",
             )}
           >
-            <div className="mx-auto mb-4 flex max-w-md items-center gap-2 pt-9">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
-                2
-              </span>
-              <p className="text-sm font-medium">Ta formule</p>
-            </div>
+            <p className="mx-auto mb-4 max-w-md pt-9 font-display font-semibold">Ta formule</p>
 
             {/* items-start (pas le stretch par défaut de la grille) : Jusqu'à l'Examen
-                (échéancier + liste plus longue) et Mensuel n'ont pas la même hauteur de
-                contenu, encore moins avant qu'un cursus soit choisi (Jusqu'à l'Examen se
-                réduit à une phrase). Étirer les deux cartes à la même hauteur créait un
+                (callout + échéancier une fois le cursus choisi) et Mensuel n'ont pas la
+                même hauteur de contenu. Étirer les deux cartes à la même hauteur créait un
                 vide interne dans la plus courte plutôt que deux cartes de hauteurs
                 naturelles différentes - un vide est pire qu'une asymétrie. */}
             <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2">
