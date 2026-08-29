@@ -24,6 +24,7 @@ import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SocialProofSection } from "@/components/SocialProofSection"
 
 // Palier de référence pour l'économie affichée sur les autres formules ("-16 %") : le
 // mois est le point d'entrée de la grille, c'est à lui que l'élève compare
@@ -895,6 +896,20 @@ export function PricingPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant
+          la FAQ qui traite les dernières objections - de vrais témoignages publiés
+          depuis l'admin (jamais générés), déjà utilisés sur /epreuves. Disparaît
+          silencieusement tant qu'aucun n'est publié (voir SocialProofSection), donc
+          jamais un bloc vide sur cette page.
+          -mx-4 sm:-mx-6 annule le padding horizontal du conteneur racine de cette
+          page : SocialProofSection porte déjà son propre mx-auto max-w-5xl px-4, pensé
+          pour un parent sans contrainte de largeur (voir son usage sur CataloguePage) -
+          sans ça le padding se cumule et le bloc paraît plus étroit que le reste de la
+          page. */}
+      <div className="-mx-4 sm:-mx-6">
+        <SocialProofSection />
+      </div>
 
       {/* Hors des onglets : ces quatre points valent pour les deux offres. Une page de
           tarifs sans réponse aux objections laisse l'acheteur seul avec ses doutes au
