@@ -6,7 +6,6 @@ import {
   Check,
   Crown,
   FileText,
-  Flame,
   ShieldCheck,
   Smartphone,
   Sparkles,
@@ -309,36 +308,12 @@ function Echeancier({ plan }: { plan: Plan }) {
   )
 }
 
-/** Les trois bénéfices communs à Mensuel - identiques avant et après le choix du
- * cursus (voir la carte Jusqu'à l'Examen), donc factorisés plutôt que dupliqués
- * entre les deux branches. Les inédites, seul avantage propre à cette formule, sont
- * sorties en callout à part (voir CalloutEpreuvesInedites) plutôt que noyées ici en
- * simple puce : retour utilisateur du 2026-08-22, c'est l'argument qui justifie le
- * prix face aux annales gratuites, il doit se voir avant même la liste. */
-function BulletsJusquaExamen() {
-  return (
-    <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
-      <li className="flex items-center gap-2">
-        <Check className="size-4 shrink-0 text-success" />
-        Corrigés complets en illimité
-      </li>
-      <li className="flex items-center gap-2">
-        <Check className="size-4 shrink-0 text-success" />
-        Cours et exercices d'application
-      </li>
-      <li className="flex items-center gap-2">
-        <Check className="size-4 shrink-0 text-success" />
-        Quiz qui identifie tes lacunes et cible tes révisions
-      </li>
-    </ul>
-  )
-}
-
-/** Callout distinct plutôt qu'une puce parmi d'autres (voir BulletsJusquaExamen) :
- * les annales seules sont gratuites ailleurs, ce qui justifie le prix d'Edukora
- * c'est un entraînement au format et au programme réels de l'examen, introuvable
- * ailleurs. */
-function CalloutEpreuvesInedites() {
+/** Callout unique, seul argument mis en avant sur la carte (voir son usage plus bas) :
+ * les annales seules sont gratuites ailleurs, ce qui justifie le prix d'Edukora ce
+ * sont les à-côtés introuvables ailleurs - un entraînement au format et au programme
+ * réels de l'examen (inédites), et la connaissance de ce qui tombe vraiment
+ * (classement des thèmes fréquents, voir ThemesFrequents.tsx côté catalogue). */
+function CalloutExclusifsJusquaExamen() {
   return (
     <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3 py-2.5">
       <Crown className="mt-0.5 size-4 shrink-0 text-gold" />
@@ -349,6 +324,9 @@ function CalloutEpreuvesInedites() {
         </p>
         <p className="mt-0.5 text-sm text-foreground">
           Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
+        </p>
+        <p className="mt-1 text-sm text-foreground">
+          « Les thèmes qui reviennent le plus » - le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
         </p>
       </div>
     </div>
@@ -638,30 +616,14 @@ export function PricingPage() {
                             {pourcent !== null && <BadgeEconomie pourcent={pourcent} />}
                           </div>
                         </div>
-                        <div className="mt-auto flex flex-col gap-4">
-                          <ul className="flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Corrigés complets en illimité
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Cours et exercices d'application
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Check className="size-4 shrink-0 text-success" />
-                              Quiz qui identifie tes lacunes et cible tes révisions
-                            </li>
-                          </ul>
-                          <Button
-                            onClick={() => choisirFormule(String(tier.duration_days))}
-                            variant="outline"
-                            size="lg"
-                            className="w-full"
-                          >
-                            Choisir Mensuel
-                          </Button>
-                        </div>
+                        <Button
+                          onClick={() => choisirFormule(String(tier.duration_days))}
+                          variant="outline"
+                          size="lg"
+                          className="mt-auto w-full"
+                        >
+                          Choisir Mensuel
+                        </Button>
                       </CardContent>
                     </Card>
                   )
@@ -695,22 +657,21 @@ export function PricingPage() {
                   )}
                   <CardHeader>
                     <CardTitle className="font-display text-lg">Jusqu'à l'Examen</CardTitle>
-                    <CardDescription>
-                      {jusquaExamen
-                        ? "Toute l'année scolaire, jusqu'au jour de l'examen"
-                        : "Choisis ton cursus pour voir le prix exact"}
-                    </CardDescription>
+                    <CardDescription>Toute l'année scolaire, jusqu'au jour de l'examen</CardDescription>
                   </CardHeader>
-                  {/* Les bénéfices sont affichés d'emblée, cursus ou non - seuls le prix,
-                      l'échéancier et le bouton dépendent du cursus choisi (voir
-                      jusquaExamen). Avant ce choix, la carte n'avait qu'une phrase perdue
-                      dans un grand vide alors que Mensuel, à côté, affichait déjà tout son
-                      contenu - de quoi donner l'impression à tort que l'offre était moins
-                      complète, en plus de laisser les deux cartes à des hauteurs très
-                      différentes. */}
+                  {/* Le prix reste visible cursus ou non (voir jusquaExamen) - avant, la
+                      carte cachait tout chiffre tant que le cursus n'était pas choisi
+                      ("Choisis ton cursus pour voir le prix exact"), alors que c'est
+                      justement ce qu'on vient chercher sur une page Tarifs. Le plancher
+                      garanti (voir PLANCHER_AFFICHE, aussi utilisé par Echeancier) sert de
+                      teaser honnête : c'est un vrai prix atteignable, pas un chiffre
+                      inventé pour la démo. Seuls l'échéancier et le prix exact dépendent du
+                      cursus. Un seul argument texte (le callout) plutôt que callout + puces
+                      + note de délai empilés : la répétition des trois bénéfices déjà
+                      listés dans "Compris dans les deux formules" plus bas n'apprenait
+                      rien de plus ici. */}
                   <CardContent className="flex flex-1 flex-col gap-4">
-                    <CalloutEpreuvesInedites />
-                    <BulletsJusquaExamen />
+                    <CalloutExclusifsJusquaExamen />
                     {jusquaExamen ? (
                       <>
                         <div>
@@ -720,30 +681,28 @@ export function PricingPage() {
                           </p>
                           <p className="mt-0.5 text-xs text-muted-foreground">
                             ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
+                            {" - "}
+                            ton {jusquaExamen.cursus.examen_display} commence le{" "}
+                            {formatDateDansNJours(jusquaExamen.effective_duration_days)}
                           </p>
                         </div>
                         <Echeancier plan={jusquaExamen} />
-                        <p className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <Flame className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                          <span>
-                            Ton {jusquaExamen.cursus.examen_display} commence dans{" "}
-                            <strong className="text-foreground">
-                              {jusquaExamen.effective_duration_days} jour{jusquaExamen.effective_duration_days > 1 ? "s" : ""}
-                            </strong>{" "}
-                            (le {formatDateDansNJours(jusquaExamen.effective_duration_days)}).
-                          </span>
-                        </p>
-                        <Button onClick={() => choisirFormule("examen")} size="lg" className="w-full">
+                        <Button onClick={() => choisirFormule("examen")} size="lg" className="mt-auto w-full">
                           Prendre le Pack Examen
                         </Button>
                       </>
                     ) : (
                       <>
-                        <p className="text-sm text-muted-foreground">
-                          Le prix s'ajuste à ton examen : plus tu t'abonnes tôt dans l'année, plus le tarif au jour est
-                          bas.
-                        </p>
-                        <Button disabled variant="outline" size="lg" className="w-full">
+                        <div>
+                          <p className="font-display text-3xl font-semibold text-primary">
+                            Dès {formatAmount(PLANCHER_AFFICHE)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </p>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            Prix exact selon ton cursus - le tarif au jour baisse quand tu t'abonnes tôt dans l'année.
+                          </p>
+                        </div>
+                        <Button disabled variant="outline" size="lg" className="mt-auto w-full">
                           Choisis ton cursus ci-dessus
                         </Button>
                       </>
