@@ -609,43 +609,16 @@ export function PricingPage() {
               </>
             ) : (
               <>
-                {tiers.map((tier) => {
-                  const pourcent = economie(tier, refParJour)
-                  return (
-                    <Card key={tier.duration_days} className="relative flex flex-col">
-                      <CardHeader>
-                        <CardTitle className="font-display text-lg">Mensuel</CardTitle>
-                        <CardDescription>{tierDuration(tier.duration_days)} - pour tester ou réviser une notion précise</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex flex-1 flex-col gap-4">
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(tier.price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                            <p className="text-xs text-muted-foreground">{prixUnitaire(tier.price, tier.duration_days)}</p>
-                            {pourcent !== null && <BadgeEconomie pourcent={pourcent} />}
-                          </div>
-                        </div>
-                        <Button
-                          onClick={() => choisirFormule(String(tier.duration_days))}
-                          variant="outline"
-                          size="lg"
-                          className="mt-auto w-full"
-                        >
-                          Choisir Mensuel
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-
                 {/* Offre principale de la grille (voir la refonte du 2026-08-19) : mise
                     en avant au même titre que Mensuel plutôt que reléguée en simple
                     encart sous la grille, pour qu'un élève dont l'examen approche la
                     voie tout de suite comme une vraie option, pas comme une note de bas
-                    de page. */}
+                    de page. Rendue AVANT Mensuel (pas juste mise en avant visuellement) :
+                    en une colonne sur mobile, l'ordre du DOM est aussi l'ordre de lecture -
+                    l'"Offre principale" passait après Mensuel tant qu'aucun cursus n'était
+                    choisi, aucun style ne la distinguant encore à ce moment-là. Un vrai
+                    changement d'ordre plutôt qu'un simple `order` CSS : ça évite un
+                    décalage entre ordre visuel et ordre de tabulation clavier. */}
                 <Card
                   className={cn(
                     "relative flex flex-col",
@@ -737,6 +710,38 @@ export function PricingPage() {
                     )}
                   </CardContent>
                 </Card>
+
+                {tiers.map((tier) => {
+                  const pourcent = economie(tier, refParJour)
+                  return (
+                    <Card key={tier.duration_days} className="relative flex flex-col">
+                      <CardHeader>
+                        <CardTitle className="font-display text-lg">Mensuel</CardTitle>
+                        <CardDescription>{tierDuration(tier.duration_days)} - pour tester ou réviser une notion précise</CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex flex-1 flex-col gap-4">
+                        <div>
+                          <p className="font-display text-3xl font-semibold text-primary">
+                            {formatAmount(tier.price)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </p>
+                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <p className="text-xs text-muted-foreground">{prixUnitaire(tier.price, tier.duration_days)}</p>
+                            {pourcent !== null && <BadgeEconomie pourcent={pourcent} />}
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => choisirFormule(String(tier.duration_days))}
+                          variant="outline"
+                          size="lg"
+                          className="mt-auto w-full"
+                        >
+                          Choisir Mensuel
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
               </>
             )}
             </div>
