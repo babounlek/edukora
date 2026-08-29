@@ -723,8 +723,19 @@ export function PricingPage() {
                             dernier mois.
                           </p>
                         </div>
-                        <Button disabled variant="outline" size="lg" className="mt-auto w-full">
-                          Choisis ton cursus ci-dessus
+                        {/* Cliquable, jamais disabled - un bouton mort ne donne aucun
+                            feedback au clic et peut passer pour une page cassée.
+                            choisirFormule gère déjà l'absence de cursus (voir sa
+                            définition) en signalant le sélecteur et en y défilant, exactement
+                            le même comportement que "Choisir Mensuel" juste à côté : les
+                            deux cartes réagissent maintenant pareil à un clic prématuré. */}
+                        <Button
+                          onClick={() => choisirFormule("examen")}
+                          variant="outline"
+                          size="lg"
+                          className="mt-auto w-full"
+                        >
+                          Choisir Jusqu'à l'Examen
                         </Button>
                       </>
                     )}
