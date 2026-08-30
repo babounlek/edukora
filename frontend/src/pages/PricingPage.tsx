@@ -236,9 +236,10 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
 // INCREMENT_PAR_TRANCHE, JOURS_PAR_TRANCHE} - recalculés ici pour dessiner
 // l'échéancier visuel ci-dessous, jamais pour fixer un prix (toujours
 // jusquaExamen.effective_price/.price, qui viennent du serveur - voir Echeancier).
-// Grille "Septembre 12 000 F ... Juin 3 000 F", décision utilisateur du 2026-08-19 :
-// si elle change côté backend, ces trois constantes doivent suivre.
-const PLANCHER_AFFICHE = 3000
+// Grille "Septembre 12 000 F ... Juin 2 000 F" (plancher redescendu de 3 000 à 2 000
+// le 2026-08-30, avec la fusion en une seule offre - voir PricingPage) : si elle
+// change côté backend, ces trois constantes doivent suivre.
+const PLANCHER_AFFICHE = 2000
 const PALIER_AFFICHE = 1000
 const JOURS_PAR_TRANCHE_AFFICHE = 30
 
@@ -334,29 +335,10 @@ function CalloutExclusifsJusquaExamen() {
   )
 }
 
-function CarteSquelette() {
-  return (
-    <Card className="flex flex-col" aria-hidden>
-      <CardHeader className="gap-2">
-        <div className="h-5 w-24 animate-pulse rounded bg-muted" />
-        <div className="h-4 w-16 animate-pulse rounded bg-muted" />
-      </CardHeader>
-      <CardContent className="flex flex-1 flex-col gap-4">
-        <div className="h-9 w-32 animate-pulse rounded bg-muted" />
-        <div className="flex flex-col gap-2">
-          <div className="h-4 w-full animate-pulse rounded bg-muted" />
-          <div className="h-4 w-4/5 animate-pulse rounded bg-muted" />
-          <div className="h-4 w-3/5 animate-pulse rounded bg-muted" />
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 export function PricingPage() {
   useSeo({
     title: "Tarifs",
-    description: `Abonnement ${SITE_NAME} par Mobile Money : au mois, ou jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.`,
+    description: `Abonnement ${SITE_NAME} par Mobile Money, jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.`,
   })
 
   const navigate = useNavigate()
@@ -368,14 +350,7 @@ export function PricingPage() {
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
   const [cursusManquant, setCursusManquant] = useState(false)
-  // Passe brièvement à true au tout premier choix de cursus, pour un léger encadré
-  // sur "Ta formule" pendant le scroll - jamais retriggée sur un changement de cursus
-  // suivant (voir l'effet plus bas), pour ne pas ressauter sous les yeux de qui compare
-  // déjà les formules après un premier choix.
-  const [formuleMiseEnAvant, setFormuleMiseEnAvant] = useState(false)
-  const aDejaScrolleVersFormule = useRef(false)
   const cursusRef = useRef<HTMLDivElement>(null)
-  const formuleRef = useRef<HTMLDivElement>(null)
   const cursusRepetiteurRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -384,28 +359,12 @@ export function PricingPage() {
       .finally(() => setChargement(false))
   }, [])
 
-  const abonnements = useMemo(
-    () => allPlans.filter((p) => p.product_type === "ABONNEMENT"),
-    [allPlans],
-  )
-  // Grille à 2 paliers du 2026-08-19 (voir migration subscriptions/0009_grille_deux_
-  // paliers) : Mensuel (durée fixe, prix uniforme par cursus) et Jusqu'à l'Examen
-  // (dépend du cursus choisi, prix/durée calculés depuis la session d'examen réelle -
-  // voir Plan.effective_price/effective_duration_days). `tiers` ne porte donc plus
-  // que Mensuel en pratique (les autres paliers fixes historiques sont désactivés),
-  // mais reste générique par durée plutôt que single-valeur : un futur palier fixe
-  // réapparaîtrait dans la grille sans changement de code ici.
-  const tiers = useMemo(
-    () => paliersUniquesParDuree(abonnements.filter((p) => p.duration_mode === "FIXE")),
-    [abonnements],
-  )
-  const refParJour = useMemo(() => refParJourDe(tiers), [tiers])
-
-  // Le Pack "Jusqu'à l'Examen" dépend du cursus (son prix et sa durée courent jusqu'à
-  // la session) : il n'entre pas dans `tiers` et n'apparaît qu'une fois le cursus
-  // choisi. Aucun filtre de fenêtre d'urgence ici - l'API ne renvoie plus ce plan hors
-  // fenêtre (voir Plan.est_achetable côté backend), qui est le seul endroit où cette
-  // règle vit.
+  // Offre unique depuis le 2026-08-30 (voir migration subscriptions/0013_retire_
+  // mensuel) : Mensuel est désactivé, Jusqu'à l'Examen est la seule formule vendue aux
+  // élèves. Son prix et sa durée dépendent du cursus choisi, calculés depuis la
+  // session d'examen réelle - voir Plan.effective_price/effective_duration_days.
+  // Aucun filtre de fenêtre d'urgence ici - l'API ne renvoie plus ce plan hors fenêtre
+  // (voir Plan.est_achetable côté backend), qui est le seul endroit où cette règle vit.
   const jusquaExamen = allPlans.find(
     (p) =>
       p.product_type === "ABONNEMENT" &&
@@ -454,25 +413,15 @@ export function PricingPage() {
     if (selectedCursus) setCursusManquant(false)
   }, [selectedCursus])
 
-  // Premier choix de cursus : la grille de formules (déjà visible, mais parfois hors
-  // écran sur mobile juste sous le sélecteur) se signale et défile jusqu'à l'écran -
-  // sans ça, rien n'indique que choisir un cursus vient de débloquer l'étape suivante.
-  useEffect(() => {
-    if (!selectedCursus || aDejaScrolleVersFormule.current) return
-    aDejaScrolleVersFormule.current = true
-    formuleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
-    setFormuleMiseEnAvant(true)
-    const timer = setTimeout(() => setFormuleMiseEnAvant(false), 1600)
-    return () => clearTimeout(timer)
-  }, [selectedCursus])
-
-  function choisirFormule(dureeParam: string) {
+  // Un seul paramètre `duree=examen` possible depuis le retrait de Mensuel (voir
+  // 0013_retire_mensuel) - plus besoin de le paramétrer par appelant.
+  function choisirFormule() {
     if (!selectedCursus) {
       setCursusManquant(true)
       cursusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
       return
     }
-    navigate(`/abonnement?cursus=${selectedCursus}&duree=${dureeParam}`)
+    navigate(`/abonnement?cursus=${selectedCursus}&duree=examen`)
   }
 
   function handleSubscribeRepetiteur() {
@@ -514,8 +463,8 @@ export function PricingPage() {
             Plus tôt tu t'abonnes, <span className="text-primary">moins tu payes</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Un mois simple pour tester, ou un forfait qui suit ton année scolaire et devient moins cher chaque mois
-            qui passe - jusqu'à ton examen.
+            Un seul abonnement qui suit ton année scolaire et devient moins cher chaque mois qui passe - jusqu'à ton
+            examen.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -544,215 +493,125 @@ export function PricingPage() {
         </TabsList>
 
         <TabsContent value="eleve" className="w-full animate-fade-up">
-          {/* Le cursus est demandé AVANT les formules, pas après : c'est lui qui
-              conditionne le prix de Jusqu'à l'Examen affiché plus bas et la
-              destination du bouton de chaque carte. Le parcours devient "je choisis
-              mon cursus, je clique ma formule, je paie" au lieu de "je lis les
-              formules, je redescends choisir un cursus, je clique Continuer sans
-              savoir quelle formule je viens de prendre".
-              Pas de badge "1"/"2" numéroté ici (essayé puis retiré) : les deux cartes de
-              formule affichent déjà un prix réel sans cursus choisi (voir jusquaExamen et
-              plafondJusquaExamen plus bas) - un numéro de pastille suggérait une page à
-              débloquer étape par étape, comme un formulaire de commande, alors qu'on peut
-              déjà tout lire sans rien choisir. Même style de titre que "Compris dans les
-              deux formules" plus bas, pour que ce soit un intitulé de section, pas une
-              étape de wizard. */}
-          <div
-            ref={cursusRef}
-            className={cn(
-              "mx-auto mt-2 max-w-md scroll-mt-24 rounded-xl border bg-card p-5 shadow-sm transition-colors",
-              cursusManquant ? "border-primary ring-2 ring-primary/30" : "border-border",
-            )}
-          >
-            <p className="mb-2.5 font-display font-semibold">Ton cursus</p>
-            <CursusChips
-              liste={cursusEleve}
-              selected={selectedCursus}
-              onSelect={setSelectedCursus}
-              label="Ton cursus"
-              describedBy="cursus-eleve-aide"
-            />
-            <p
-              id="cursus-eleve-aide"
-              role={cursusManquant ? "alert" : undefined}
-              className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
-            >
-              {cursusManquant
-                ? "Choisis d'abord ton cursus, puis reprends la formule que tu veux."
-                : "Tu pourras en changer plus tard depuis ton compte."}
-            </p>
-          </div>
-
-          {/* ref + surbrillance temporaire : voir l'effet qui défile ici au premier
-              choix de cursus. rounded-2xl + ring-offset donnent un encadré visible même
-              sans fond propre (la Card ci-dessous garde le sien) - transition-shadow
-              plutôt que "hidden ring" pour que l'apparition/disparition soit un
-              fondu, pas un saut. */}
-          <div
-            ref={formuleRef}
-            className={cn(
-              "scroll-mt-24 rounded-2xl transition-shadow duration-500",
-              formuleMiseEnAvant && "ring-2 ring-primary/40 ring-offset-4 ring-offset-background",
-            )}
-          >
-            <p className="mx-auto mb-4 max-w-md pt-9 font-display font-semibold">Ta formule</p>
-
-            {/* items-start (pas le stretch par défaut de la grille) : Jusqu'à l'Examen
-                (callout + échéancier une fois le cursus choisi) et Mensuel n'ont pas la
-                même hauteur de contenu. Étirer les deux cartes à la même hauteur créait un
-                vide interne dans la plus courte plutôt que deux cartes de hauteurs
-                naturelles différentes - un vide est pire qu'une asymétrie. */}
-            <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2">
-            {chargement && tiers.length === 0 ? (
-              <>
-                <CarteSquelette />
-                <CarteSquelette />
-              </>
-            ) : (
-              <>
-                {/* Offre principale de la grille (voir la refonte du 2026-08-19) : mise
-                    en avant au même titre que Mensuel plutôt que reléguée en simple
-                    encart sous la grille, pour qu'un élève dont l'examen approche la
-                    voie tout de suite comme une vraie option, pas comme une note de bas
-                    de page. Rendue AVANT Mensuel (pas juste mise en avant visuellement) :
-                    en une colonne sur mobile, l'ordre du DOM est aussi l'ordre de lecture -
-                    l'"Offre principale" passait après Mensuel tant qu'aucun cursus n'était
-                    choisi, aucun style ne la distinguant encore à ce moment-là. Un vrai
-                    changement d'ordre plutôt qu'un simple `order` CSS : ça évite un
-                    décalage entre ordre visuel et ordre de tabulation clavier. */}
-                <Card
-                  className={cn(
-                    "relative flex flex-col",
-                    jusquaExamen && "border-primary shadow-lg shadow-primary/10 sm:-my-2 sm:scale-[1.03]",
-                  )}
+          {/* Cursus et prix fusionnés dans un seul panneau large (retouche du 2026-08-30) :
+              deux colonnes séparées par une bordure à partir de sm, plutôt que deux
+              boîtes à max-w-md empilées avec plein de vide de chaque côté sur desktop -
+              défaut resté depuis la grille à deux formules (Mensuel + Jusqu'à l'Examen),
+              qui n'a plus lieu d'être avec une offre unique. Choisir un cursus met à jour
+              le prix juste à côté, sans scroll ni "étape 2" à débloquer : plus besoin de
+              l'effet qui défilait vers un second bloc pour le révéler (formuleRef/
+              formuleMiseEnAvant, retirés) - les deux tiennent déjà dans le même regard. */}
+          <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
+            <div className="grid grid-cols-1 sm:grid-cols-2">
+              <div
+                ref={cursusRef}
+                className={cn(
+                  "scroll-mt-24 p-6 transition-colors",
+                  cursusManquant && "ring-2 ring-inset ring-primary/40",
+                )}
+              >
+                <p className="mb-2.5 font-display font-semibold">Ton cursus</p>
+                <CursusChips
+                  liste={cursusEleve}
+                  selected={selectedCursus}
+                  onSelect={setSelectedCursus}
+                  label="Ton cursus"
+                  describedBy="cursus-eleve-aide"
+                />
+                <p
+                  id="cursus-eleve-aide"
+                  role={cursusManquant ? "alert" : undefined}
+                  className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
                 >
-                  {jusquaExamen && (
-                    <>
-                      {/* Liseré doré en tête de carte - seul détail "premium" propre à
-                          l'offre phare, pour que la mise en avant tienne à la finition
-                          plutôt qu'au seul badge flottant. rounded-t-lg (pas
-                          overflow-hidden sur la Card) pour ne pas rogner le badge
-                          "Offre principale" juste en dessous, qui déborde volontairement
-                          au-dessus du cadre. */}
-                      <div className="absolute inset-x-0 top-0 h-1 rounded-t-lg bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
-                      <span className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-primary px-3 py-1 font-display text-xs font-semibold tracking-wide text-primary-foreground shadow-sm">
-                        <Sparkles className="size-3" />
-                        Offre principale
-                      </span>
-                    </>
-                  )}
-                  <CardHeader>
-                    <CardTitle className="font-display text-lg">Jusqu'à l'Examen</CardTitle>
-                    <CardDescription>Toute l'année scolaire, jusqu'au jour de l'examen</CardDescription>
-                  </CardHeader>
-                  {/* Le prix reste visible cursus ou non (voir jusquaExamen) - avant, la
-                      carte cachait tout chiffre tant que le cursus n'était pas choisi
-                      ("Choisis ton cursus pour voir le prix exact"), alors que c'est
-                      justement ce qu'on vient chercher sur une page Tarifs. Une fourchette
-                      complète (plancher-plafond, voir plafondJusquaExamen) plutôt qu'un
-                      "Dès 3 000 FCFA" isolé, essayé puis abandonné : un plancher nu se lit
-                      comme LE prix, et le révéler à 11 000 FCFA une fois le cursus choisi
-                      ressemble à un prix d'appel - la fourchette annonce l'écart avant
-                      même le clic. Seuls l'échéancier et le prix exact dépendent du
-                      cursus. Un seul argument texte (le callout) plutôt que callout + puces
-                      + note de délai empilés : la répétition des trois bénéfices déjà
-                      listés dans "Compris dans les deux formules" plus bas n'apprenait
-                      rien de plus ici. */}
-                  <CardContent className="flex flex-1 flex-col gap-4">
-                    <CalloutExclusifsJusquaExamen />
-                    {jusquaExamen ? (
-                      <>
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(jusquaExamen.effective_price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
-                            {" - "}
-                            ton {jusquaExamen.cursus.examen_display} commence le{" "}
-                            {formatDateDansNJours(jusquaExamen.effective_duration_days)}
-                          </p>
-                        </div>
-                        <Echeancier plan={jusquaExamen} />
-                        <Button onClick={() => choisirFormule("examen")} size="lg" className="mt-auto w-full">
-                          Prendre le Pack Examen
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(PLANCHER_AFFICHE)}
-                            <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
-                            {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
-                            dernier mois.
-                          </p>
-                        </div>
-                        {/* Cliquable, jamais disabled - un bouton mort ne donne aucun
-                            feedback au clic et peut passer pour une page cassée.
-                            choisirFormule gère déjà l'absence de cursus (voir sa
-                            définition) en signalant le sélecteur et en y défilant, exactement
-                            le même comportement que "Choisir Mensuel" juste à côté : les
-                            deux cartes réagissent maintenant pareil à un clic prématuré. */}
-                        <Button
-                          onClick={() => choisirFormule("examen")}
-                          variant="outline"
-                          size="lg"
-                          className="mt-auto w-full"
-                        >
-                          Choisir Jusqu'à l'Examen
-                        </Button>
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
+                  {cursusManquant
+                    ? "Choisis d'abord ton cursus, puis reprends ton abonnement."
+                    : "Rien n'est engagé avant le paiement - change de cursus ici autant que tu veux."}
+                </p>
+              </div>
 
-                {tiers.map((tier) => {
-                  const pourcent = economie(tier, refParJour)
-                  return (
-                    <Card key={tier.duration_days} className="relative flex flex-col">
-                      <CardHeader>
-                        <CardTitle className="font-display text-lg">Mensuel</CardTitle>
-                        <CardDescription>{tierDuration(tier.duration_days)} - pour tester ou réviser une notion précise</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex flex-1 flex-col gap-4">
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(tier.price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                            <p className="text-xs text-muted-foreground">{prixUnitaire(tier.price, tier.duration_days)}</p>
-                            {pourcent !== null && <BadgeEconomie pourcent={pourcent} />}
+              <div className="border-t border-border p-6 sm:border-l sm:border-t-0">
+                {chargement && allPlans.length === 0 ? (
+                  <div className="flex flex-col gap-4" aria-hidden>
+                    <div className="h-4 w-28 animate-pulse rounded bg-muted" />
+                    <div className="h-16 w-full animate-pulse rounded-lg bg-muted" />
+                    <div className="h-9 w-32 animate-pulse rounded bg-muted" />
+                    <div className="h-28 w-full animate-pulse rounded bg-muted" />
+                  </div>
+                ) : (
+                  <>
+                    <p className="font-display font-semibold">Jusqu'à l'Examen</p>
+                    <p className="text-sm text-muted-foreground">Toute l'année scolaire, jusqu'au jour de l'examen</p>
+                    {/* Le prix reste visible cursus ou non (voir jusquaExamen) - avant, la
+                        colonne cachait tout chiffre tant que le cursus n'était pas choisi
+                        ("Choisis ton cursus pour voir le prix exact"), alors que c'est
+                        justement ce qu'on vient chercher sur une page Tarifs. Une fourchette
+                        complète (plancher-plafond, voir plafondJusquaExamen) plutôt qu'un
+                        "Dès 2 000 FCFA" isolé, essayé puis abandonné : un plancher nu se lit
+                        comme LE prix, et le révéler beaucoup plus haut une fois le cursus
+                        choisi ressemble à un prix d'appel - la fourchette annonce l'écart
+                        avant même le clic. Seuls l'échéancier et le prix exact dépendent du
+                        cursus. Un seul argument texte (le callout) plutôt que callout + puces
+                        + note de délai empilés : la répétition des trois bénéfices déjà
+                        listés dans "Ce qui est inclus" plus bas n'apprenait rien de plus ici. */}
+                    <div className="mt-4 flex flex-col gap-4">
+                      <CalloutExclusifsJusquaExamen />
+                      {jusquaExamen ? (
+                        <>
+                          <div>
+                            <p className="font-display text-3xl font-semibold text-primary">
+                              {formatAmount(jusquaExamen.effective_price)}
+                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                            </p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
+                              {" - "}
+                              ton {jusquaExamen.cursus.examen_display} commence le{" "}
+                              {formatDateDansNJours(jusquaExamen.effective_duration_days)}
+                            </p>
                           </div>
-                        </div>
-                        <Button
-                          onClick={() => choisirFormule(String(tier.duration_days))}
-                          variant="outline"
-                          size="lg"
-                          className="mt-auto w-full"
-                        >
-                          Choisir Mensuel
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-              </>
-            )}
+                          <Echeancier plan={jusquaExamen} />
+                          <Button onClick={choisirFormule} size="lg" className="w-full">
+                            S'abonner
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <div>
+                            <p className="font-display text-3xl font-semibold text-primary">
+                              {formatAmount(PLANCHER_AFFICHE)}
+                              <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
+                              {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
+                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                            </p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
+                              dernier mois.
+                            </p>
+                          </div>
+                          {/* "Choisir ton cursus", pas "S'abonner" : dans cet état,
+                              selectedCursus est par définition vide (voir jusquaExamen plus
+                              haut), le clic ne fait jamais que signaler la colonne de gauche -
+                              le libellé doit décrire CETTE action, pas l'achat qui suivra.
+                              Cliquable, jamais disabled - un bouton mort ne donne aucun
+                              feedback au clic et peut passer pour une page cassée. */}
+                          <Button onClick={choisirFormule} variant="outline" size="lg" className="w-full">
+                            Choisir ton cursus
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Le socle commun aux deux formules, énoncé une fois et en grand plutôt que
-              recopié en petit sur chaque carte : ce qu'on achète ne dépend pas de la
-              durée choisie, seul le temps d'accès change. */}
+          {/* Le socle de ce qu'on achète, énoncé une fois et en grand plutôt que
+              recopié en petit dans la carte : ce qu'on achète ne dépend pas de la
+              date d'inscription, seul le prix change. */}
           <div className="mt-6 rounded-xl border border-border bg-card p-5 sm:p-6">
-            <p className="font-display font-semibold">Compris dans les deux formules</p>
+            <p className="font-display font-semibold">Ce qui est inclus</p>
             <ul className="mt-3 grid gap-2.5 text-sm sm:grid-cols-3">
               <li className="flex items-start gap-2">
                 <Check className="mt-0.5 size-4 shrink-0 text-success" />
@@ -784,12 +643,12 @@ export function PricingPage() {
             </ul>
           </div>
 
-          {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (chaque carte porte
-              déjà le sien - "Choisir Mensuel"/"Prendre le Pack Examen") : une invite à
-              agir qui ne menait nulle part elle-même, retirée plutôt que complétée.
-              La mention Mobile Money vivait ici aussi, en 12 px sous la grille. Elle est
-              remontée dans les puces du hero et détaillée dans les questions en bas de
-              page : la répéter une troisième fois ne rassurait personne. */}
+          {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (la carte porte déjà
+              le sien) : une invite à agir qui ne menait nulle part elle-même, retirée
+              plutôt que complétée. La mention Mobile Money vivait ici aussi, en 12 px
+              sous la grille. Elle est remontée dans les puces du hero et détaillée dans
+              les questions en bas de page : la répéter une troisième fois ne rassurait
+              personne. */}
         </TabsContent>
 
         <TabsContent value="repetiteur" className="w-full animate-fade-up">
