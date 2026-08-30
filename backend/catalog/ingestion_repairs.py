@@ -118,7 +118,56 @@ _INTRO_PART_HEADER_RE = re.compile(rf"\*\*\s*(Partie\s+\S|[IVX]{{1,4}}{_PART_LAB
 # feedback_correction_experte_consistency). Même extension tiret que
 # _INTRO_PART_HEADER_RE ci-dessus (espagnol-bepc-2018 : "**B - Gramática**",
 # sciences-de-la-vie-et-de-la-terre-bac-d-2015 : "**C- Exercices au choix**").
-_BARE_LETTERED_PART_HEADER_RE = re.compile(rf"^\*\*\s*[A-Z]{_PART_LABEL_SEPARATOR}\s")
+#
+# Variante numérotée ("**A1. La vérification des savoirs (5 pts)**", "**A2. ...**") :
+# le format APC numérote parfois directement chaque exercice au sein de sa Partie
+# ("A1"/"A2" pour la Partie A) plutôt que de le laisser sous "A."/"B." seul - le
+# chiffre optionnel entre la lettre et le séparateur couvre ce cas sans retirer la
+# forme bare déjà tolérée. Sans lui, "A2." n'est reconnu comme repère ni ici ni par
+# _exercise_label_key, et _repair_missing_exercise_heading injecte à tort un second
+# "**Exercice N (points)**" au-dessus (bepc-blanc-littoral-2026-cameroun, exercice 2 -
+# scan du 2026-08-30).
+_BARE_LETTERED_PART_HEADER_RE = re.compile(rf"^\*\*\s*[A-Z]\d*{_PART_LABEL_SEPARATOR}\s")
+
+# Repère de tête sous forme "**ÉVALUATION DES RESSOURCES : 10 points**"/"**ÉVALUATION
+# DES COMPÉTENCES : 10 points**", sans lettre ni mot "Partie"/"Exercice" - la 3e forme du
+# même format d'évaluation par compétences (APC) camerounais que
+# _BARE_LETTERED_PART_HEADER_RE ci-dessus (voir son commentaire pour les 2 précédentes).
+# Repère à PART entière plutôt qu'un simple synonyme de "Partie" : contrairement aux deux
+# regex ci-dessus, il n'introduit pas forcément un groupe de plusieurs exercices - une
+# "ÉVALUATION DES COMPÉTENCES" à situation-problème unique (bepc-blanc-pct-2017-
+# adventiste-cameroun, Exercice 3) ne porte jamais de repère "Exercice N" nulle part dans
+# le texte, le sujet source ne le numérotant tout simplement pas. Sans cette
+# reconnaissance, _repair_missing_exercise_heading (plus bas) croit le repère absent et
+# injecte "**Exercice 3 (10 points)**" juste au-dessus d'un "**ÉVALUATION DES
+# COMPÉTENCES : 10 points**" qui identifiait déjà, à lui seul, cette section - doublon
+# visible en lecture (scan du 2026-08-30, 1 occurrence en base à cette date).
+_BARE_EVALUATION_HEADER_RE = re.compile(r"^\*\*\s*[EÉ]valuation\s+des\s+(?:ressources|comp[eé]tences)\b", re.IGNORECASE)
+
+# Repère "**Situation-problème N**"/"**Situation problème N (points)**"/"**SITUATION
+# PROBLÈME N - barème...**" - une 4e forme du même format d'évaluation par compétences
+# (APC) camerounais que les trois regex ci-dessus. Comme _BARE_EVALUATION_HEADER_RE, un
+# repère à PART entière : la Partie qui regroupe la situation-problème ("**Partie B :
+# Évaluation des compétences**"...) n'est établie qu'une seule fois, sur le premier
+# exercice du groupe - les exercices suivants reprennent directement "Situation-problème
+# N" en tête sans la répéter (numérotation locale à la situation-problème elle-même -
+# 1, 2... - distincte de numero_exercice, l'index global de l'épreuve). Sans cette
+# reconnaissance, _repair_missing_exercise_heading (plus bas) croit le repère absent et
+# injecte un second "**Exercice N (points)**" au-dessus d'un "**Situation-problème N**"
+# qui identifiait déjà, à lui seul, cet exercice - doublon visible en lecture
+# (physique-bac-c-2025, exercice 5, scan du 2026-08-30 : 11 autres exercices touchés,
+# essentiellement en physique BAC C/D et histoire-géo/éducation civique BEPC).
+_BARE_SITUATION_PROBLEME_HEADER_RE = re.compile(r"^\*\*\s*Situation[\s-]+probl[eè]me\b", re.IGNORECASE)
+
+# Repère "**Compétence ciblée**"/"**Compétence visée**"/"**Compétence évaluée**" -
+# précède parfois directement _BARE_SITUATION_PROBLEME_HEADER_RE ci-dessus au lieu
+# d'être suivi par lui immédiatement (sciences-de-la-vie-et-de-la-terre-bac-c-et-ti-2024,
+# exercice 5) : même défaut de fond, la Partie qui regroupe les deux n'a jamais été
+# répétée pour cet exercice. Sans cette reconnaissance, c'est "Compétence ciblée" - pas
+# "Situation-problème", qui n'apparaît alors qu'en 2e paragraphe - qui occupe la
+# première ligne et passe inaperçu, et _repair_missing_exercise_heading injecte quand
+# même un "**Exercice N (points)**" en double au-dessus des deux (scan du 2026-08-30).
+_BARE_COMPETENCE_LABEL_RE = re.compile(r"^\*\*\s*Comp[eé]tence\s+(?:cibl[eé]e|vis[eé]e|[eé]valu[eé]e)\b", re.IGNORECASE)
 
 
 def _flag_part_headers_in_intro(exercise):
@@ -520,9 +569,14 @@ def _repair_narrow_array_columns(value):
 # repère absent et en injectait un SECOND juste au-dessus, ce qui donnait au lecteur
 # jusqu'à trois occurrences d'affilée du même repère (voir _dedupe_exercise_heading).
 # Le numéro est facultatif ("**Problème**" seul est un repère valide) et accepté en
-# chiffres arabes comme en romains, avec ou sans "N°".
+# chiffres arabes comme en romains, avec ou sans "N°". "Exercise" (sans le "c") est le
+# repère porté par les épreuves d'Anglais, rédigées dans la langue de l'épreuve elle-
+# même ("**Exercise 1 (10 points)**", jamais "Exercice") - sans cette variante, ce
+# repère pourtant bien présent passait inaperçu et _repair_missing_exercise_heading lui
+# injectait un second repère "**Exercice N (points)**", français celui-là, juste
+# au-dessus (bepc-anglais-2025-officiel + bac-c-d-anglais-2014, scan du 2026-08-30).
 _EXERCISE_LABEL_RE = re.compile(
-    r"^\s*(?:#{1,4}\s*)?(?:\*\*\s*)?(Exercice|Probl[eè]me)\b\s*(?:n\s*[°ºo]\s*)?([IVXLC]+|\d+)?",
+    r"^\s*(?:#{1,4}\s*)?(?:\*\*\s*)?(Exercice|Exercise|Probl[eè]me)\b\s*(?:n\s*[°ºo]\s*)?([IVXLC]+|\d+)?",
     re.IGNORECASE,
 )
 
@@ -789,10 +843,24 @@ def _repair_missing_exercise_heading(data):
     # bas) - scan corpus du 2026-08-22.
     premiere_ligne, _ = _first_non_empty_line(stripped)
     repere_propre = _exercise_label_key(heading.strip("*"))
+    # _INTRO_PART_HEADER_RE/_BARE_LETTERED_PART_HEADER_RE sont ancrés en tout DÉBUT de
+    # texte : un chapeau d'épreuve entièrement en italique ("*MINESEC-DECC - BEPC - ... -
+    # Session 2020*"), sans ligne vide qui l'annoncerait comme un cadre séparé, se
+    # retrouve alors seul à occuper cette position, et les deux vérifications ne voient
+    # plus le repère de groupe qui le suit directement ("**Partie A - ...**") - faux
+    # "**Exercice 1**" injecté devant les deux (chapeau + repère de groupe réel) sur un
+    # exercice qui EST la Partie, sans référence propre (comme "Partie B" pour l'exercice
+    # suivant, jamais subordonné à celui-ci) - bepc-ecm-2020-officiel-cameroun, scan
+    # corpus du 2026-08-30. `stripped` reste la base de _has_own_reference_further_down
+    # ci-dessous : elle parcourt déjà tout le texte, chapeau compris.
+    stripped_sans_chapeau = _skip_leading_italic_chapeau(stripped)
     if (
         _exercise_label_key(premiere_ligne)
-        or _INTRO_PART_HEADER_RE.match(stripped)
-        or _BARE_LETTERED_PART_HEADER_RE.match(stripped)
+        or _INTRO_PART_HEADER_RE.match(stripped_sans_chapeau)
+        or _BARE_LETTERED_PART_HEADER_RE.match(stripped_sans_chapeau)
+        or _BARE_EVALUATION_HEADER_RE.match(stripped_sans_chapeau)
+        or _BARE_SITUATION_PROBLEME_HEADER_RE.match(stripped_sans_chapeau)
+        or _BARE_COMPETENCE_LABEL_RE.match(stripped_sans_chapeau)
         or _has_own_reference_further_down(stripped, repere_propre)
     ):
         return data, False
@@ -800,6 +868,21 @@ def _repair_missing_exercise_heading(data):
     data = dict(data)
     data["enonce_intro_markdown"] = f"{heading}\n\n{intro}" if intro.strip() else heading
     return data, True
+
+
+# Un seul "*...*" (pas "**...**") suivi d'un saut de ligne : un chapeau d'épreuve
+# entièrement en italique, jamais la propre référence de l'exercice (voir
+# _repair_missing_exercise_heading ci-dessus). Le lookahead négatif exclut "**" (un
+# repère en gras ne doit jamais être confondu avec ce chapeau).
+_LEADING_ITALIC_CHAPEAU_RE = re.compile(r"\A\*(?!\*)[^*\n]+\*\s*\n+")
+
+
+def _skip_leading_italic_chapeau(stripped):
+    """`stripped` sans son premier paragraphe s'il est entièrement en italique - inchangé
+    sinon (y compris si `stripped` ne commence par aucun repère). Voir
+    _LEADING_ITALIC_CHAPEAU_RE et son unique appelant ci-dessus."""
+    match = _LEADING_ITALIC_CHAPEAU_RE.match(stripped)
+    return stripped[match.end():] if match else stripped
 
 
 # Paragraphe entièrement enveloppé d'italique ("*Cette partie comporte trois exercices

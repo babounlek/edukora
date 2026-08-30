@@ -83,11 +83,23 @@ function jetonCourtGroupe(label: string) {
  * qui n'est jamais subdivisée en sous-exercices numérotés dans la source) EST
  * lui-même le groupe le plus profond : il apparaît comme une entrée simple portant
  * ce nom, jamais comme un en-tête de groupe vide au-dessus d'un unique "Exercice 1".
+ *
+ * Plusieurs exercices CONSÉCUTIFS peuvent partager ce même cas (aucun des deux n'a de
+ * référence propre reconnue, même groupe) - ex. bepc-blanc-littoral-2026-cameroun,
+ * dont la Partie A est scindée en deux Exercise ("A1"/"A2", jamais littéralement
+ * "Exercice 1"/"Exercice 2") sans qu'aucun sujet ne les distingue par un repère
+ * reconnu. Ils désignent la MÊME section, jamais deux sous-parties distinctes : les
+ * compter comme une seule entrée de sommaire (ancrée sur le premier) évite qu'un même
+ * libellé de groupe ("Partie A") apparaisse deux fois de suite, une fois comme entrée
+ * cliquable et une fois comme en-tête au-dessus d'un "Exercice 1" qui n'a pas lieu
+ * d'être.
  */
 function entreesGroupees(exercises: ExerciceLabelSource[]): SommaireEntry[] {
   const compteurs = new Map<string, number>()
+  const entries: SommaireEntry[] = []
+  let dernierGroupeFeuille: string | null = null
 
-  return exercises.map((exercise) => {
+  for (const exercise of exercises) {
     const groupes = exercise.groupes
     const aUneReferencePropre = exercise.titre.trim().length > 0
 
@@ -95,35 +107,44 @@ function entreesGroupees(exercises: ExerciceLabelSource[]): SommaireEntry[] {
     // ailleurs groupée (ex. un exercice isolé avant la première "Partie") : sommaire
     // plat pour lui seul, comme si l'épreuve entière ne comportait aucun groupe.
     if (groupes.length === 0) {
-      return {
+      entries.push({
         id: exerciceAnchorId(exercise.numero_exercice),
         short: libelleCourtExercice(exercise),
         long: libelleLong(exercise),
         title: exercise.titre.trim() || undefined,
-      }
+      })
+      dernierGroupeFeuille = null
+      continue
     }
 
     if (!aUneReferencePropre) {
+      const cle = groupes.join(" > ")
+      if (cle === dernierGroupeFeuille) continue
+      dernierGroupeFeuille = cle
       const label = groupes[groupes.length - 1]
-      return {
+      entries.push({
         id: exerciceAnchorId(exercise.numero_exercice),
         short: jetonCourtGroupe(label),
         long: label,
         groupPath: groupes.slice(0, -1),
-      }
+      })
+      continue
     }
 
+    dernierGroupeFeuille = null
     const cle = groupes.join(" > ")
     const n = (compteurs.get(cle) ?? 0) + 1
     compteurs.set(cle, n)
-    return {
+    entries.push({
       id: exerciceAnchorId(exercise.numero_exercice),
       short: `${jetonCourtGroupe(groupes[groupes.length - 1])} ${n}`,
       long: `Exercice ${n}`,
       title: exercise.titre.trim(),
       groupPath: groupes,
-    }
-  })
+    })
+  }
+
+  return entries
 }
 
 /**
