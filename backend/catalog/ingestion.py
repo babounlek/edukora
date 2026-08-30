@@ -90,15 +90,16 @@ _SERIE_NOISE_SUFFIX_RE = re.compile(r"-abi\b", re.IGNORECASE)
 
 def _split_series(serie_raw):
     """'C-E' -> ['C', 'E'] ; 'C, E' -> ['C', 'E'] ; 'C' -> ['C'] ; 'A-ABI' -> ['A'] ;
-    'D et TI' -> ['D', 'TI'] (vu sur bac-blanc-d-ti-physique-2025-cameroun)."""
+    'D et TI' -> ['D', 'TI'] (vu sur bac-blanc-d-ti-physique-2025-cameroun) ;
+    'D & TI' -> ['D', 'TI'] (vu sur bac-d-maths-2018/2019/2020-cameroun)."""
     cleaned = _SERIE_NOISE_SUFFIX_RE.sub("", str(serie_raw or ""))
     parts = re.split(r"[,/\-–—\s]+", cleaned.strip())
-    # "et" (conjonction française, jamais un code de série) n'a de sens comme séparateur
-    # QUE lorsqu'il tombe entre deux vrais tokens (espaces des deux côtés dans la chaîne
-    # d'origine) - un split générique sur tout espace le fait ressortir comme un token à
-    # part entière au même titre que "D"/"TI", d'où le filtrage après coup plutôt qu'une
-    # simple exclusion de motif dans le pattern de split lui-même.
-    return [p for p in parts if p and p.lower() != "et"]
+    # "et"/"&" (conjonctions, jamais un code de série) n'ont de sens comme séparateur
+    # QUE lorsqu'ils tombent entre deux vrais tokens (espaces des deux côtés dans la
+    # chaîne d'origine) - un split générique sur tout espace les fait ressortir comme
+    # un token à part entière au même titre que "D"/"TI", d'où le filtrage après coup
+    # plutôt qu'une simple exclusion de motif dans le pattern de split lui-même.
+    return [p for p in parts if p and p.lower() != "et" and p != "&"]
 
 
 MATIERE_MAP = {
@@ -157,6 +158,8 @@ MATIERE_MAP = {
     "droit": "DROIT",
     "education civique": "EDUCATION_CIVIQUE",
     "education a la citoyennete": "EDUCATION_CIVIQUE",  # synonyme vu sur bepc-ecm-2026-cameroun ("ECM" = Éducation à la Citoyenneté et à la Morale).
+    "education morale et civique": "EDUCATION_CIVIQUE",  # intitulé "EMC" des années 1990 (bepc-emc-1995/1996/1997-officiel-cameroun), même matière que ECM sous son ancienne dénomination.
+    "ecm": "EDUCATION_CIVIQUE",  # sigle brut plutôt que l'intitulé développé, vu sur bepc-blanc-littoral-2026-cameroun.
     "litterature": "LITTERATURE",
     "litterature ou culture generale": "LITTERATURE",
     "litterature / culture generale": "LITTERATURE",  # variante slash-espacé, vue sur bac-c-e-lit-cg-2017-cameroun.
@@ -173,6 +176,11 @@ MATIERE_MAP = {
     # dédiée plutôt qu'un alias vers PHYSIQUE_CHIMIE, pour ne pas perdre le volet
     # technologie dans l'intitulé affiché à l'élève.
     "physique-chimie-technologie": "PHYSIQUE_CHIMIE_TECH",
+    # Matière examinée au BEPC camerounais (voir bepc-dessin-2026-cameroun) - décision
+    # utilisateur du 2026-08-26 : Subject à part entière, même traitement que
+    # Espagnol/Éducation Civique par le passé. Contenu resté bloqué à l'ingestion
+    # jusqu'ici, faute d'exister au référentiel.
+    "dessin": "DESSIN",
 }
 
 # Tolère l'ancienne nomenclature (A/C/D/F, "F" pour "TI") ET la nomenclature actuelle.
