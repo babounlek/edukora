@@ -2,15 +2,15 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   ArrowRight,
-  CalendarPlus,
+  ArrowRightLeft,
   Check,
   Crown,
   FileText,
+  Lock,
   ShieldCheck,
   Smartphone,
   Sparkles,
   Users,
-  WifiOff,
   Zap,
 } from "lucide-react"
 
@@ -781,12 +781,17 @@ export function PricingPage() {
       {/* Hors des onglets : ces quatre points valent pour les deux offres. Une page de
           tarifs sans réponse aux objections laisse l'acheteur seul avec ses doutes au
           moment précis où il doit sortir son téléphone - c'était le trou le plus large
-          de cette page.
+          de cette page. Revue le 2026-08-30 pour l'offre unique Jusqu'à l'Examen : les
+          deux anciennes entrées ("prélevé chaque mois", "je reprends avant la fin")
+          présupposaient encore un rythme mensuel hérité du palier Mensuel retiré (voir
+          0013_retire_mensuel) - remplacées par des objections qui tiennent pour un
+          paiement unique valable jusqu'à l'examen.
           Chaque affirmation est vérifiable dans le code, aucune n'est du copywriting :
-          absence de prélèvement (aucun mécanisme de reconduction côté subscriptions),
-          cumul des jours (Subscription.extend repart de expires_at quand l'abonnement
-          court encore), lecture hors connexion (Workbox met /access/read/ et
-          /access/cours/read/ en StaleWhileRevalidate, voir vite.config.ts). */}
+          les deux modes de paiement (Campay automatique vs paiement manuel + déclaration
+          admin, voir payments/models.py Transaction/ManualPayment et campay_client.py),
+          l'absence de tout prélèvement récurrent (aucun cron/webhook de reconduction),
+          et le prix figé au jour de l'achat (Plan.effective_price/effective_duration_days
+          n'est lu qu'une fois, à l'activation - voir subscriptions/models.py). */}
       <section className="mt-12 border-t border-border pt-10">
         <h2 className="font-display text-xl font-semibold">Avant de payer</h2>
         <dl className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -797,8 +802,9 @@ export function PricingPage() {
             <div>
               <dt className="font-medium">Comment je paie ?</dt>
               <dd className="mt-0.5 text-sm text-muted-foreground">
-                Par Mobile Money, MTN ou Orange. Aucune carte bancaire n'est nécessaire, et ton accès s'ouvre dès la
-                confirmation du paiement.
+                Par Mobile Money, MTN ou Orange. Avec Campay, la demande de paiement arrive directement sur ton
+                téléphone pour une activation instantanée ; tu peux aussi transférer toi-même et déclarer ta
+                transaction.
               </dd>
             </div>
           </div>
@@ -807,34 +813,34 @@ export function PricingPage() {
               <ShieldCheck className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Est-ce que je serai prélevé chaque mois ?</dt>
+              <dt className="font-medium">Est-ce que je serai prélevé une deuxième fois ?</dt>
               <dd className="mt-0.5 text-sm text-muted-foreground">
-                Non. Tu paies une fois, pour la durée choisie. À la fin, l'accès s'arrête simplement - rien n'est
-                reconduit sans que tu le demandes.
-              </dd>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <CalendarPlus className="size-4" />
-            </span>
-            <div>
-              <dt className="font-medium">Et si je reprends avant la fin ?</dt>
-              <dd className="mt-0.5 text-sm text-muted-foreground">
-                Les jours s'ajoutent à ceux qu'il te reste, ils ne repartent pas de zéro. Tu ne perds jamais du temps
-                déjà payé.
+                Non. Chaque paiement est unique et volontaire - aucune carte enregistrée, aucun renouvellement
+                automatique. Rien ne se redéclenche sans que tu repasses toi-même par Mobile Money.
               </dd>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold">
-              <WifiOff className="size-4" />
+              <Lock className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Il me faut de la connexion en permanence ?</dt>
+              <dt className="font-medium">Le prix payé aujourd'hui reste-t-il garanti jusqu'à mon examen ?</dt>
               <dd className="mt-0.5 text-sm text-muted-foreground">
-                Non. Un corrigé ou un cours déjà ouvert une fois reste consultable sans réseau - de quoi réviser dans
-                le taxi ou en zone mal couverte.
+                Oui. Le tarif est figé le jour de l'achat et couvre l'accès jusqu'à ton examen, même si le prix
+                affiché baisse ensuite pour ceux qui achètent plus tard.
+              </dd>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <ArrowRightLeft className="size-4" />
+            </span>
+            <div>
+              <dt className="font-medium">Et si le paiement automatique ne passe pas ?</dt>
+              <dd className="mt-0.5 text-sm text-muted-foreground">
+                Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection -
+                un transfert direct, vérifié avant activation.
               </dd>
             </div>
           </div>
