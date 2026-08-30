@@ -20,9 +20,15 @@ class DureeMode(models.TextChoices):
 # l'autre - voir _calculer_duree_jusqua_examen). Remplace l'ancienne règle continue
 # ("jamais plus cher au jour que Mensuel"), elle-même un remplacement d'un filet de
 # seuils choisis à la main.
+#
+# Plancher redescendu de 3 000 à 2 000 FCFA le 2026-08-30, en même temps que la
+# fusion en une seule offre (Mensuel désactivé, voir migration 0013) : le prix le plus
+# bas jamais payé sur la plateforme ne doit jamais dépasser ce que coûtait l'ancienne
+# offre d'entrée, sous peine de renchérir l'abonnement pile pour qui s'y prend au
+# dernier moment - le profil le plus pressé, pas celui qu'on veut décourager.
 JOURS_PAR_TRANCHE = 30
 INCREMENT_PAR_TRANCHE = 1000
-PLANCHER_JUSQUA_EXAMEN = 3000
+PLANCHER_JUSQUA_EXAMEN = 2000
 
 
 class ProductType(models.TextChoices):
