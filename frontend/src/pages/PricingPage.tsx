@@ -528,6 +528,47 @@ export function PricingPage() {
                     ? "Choisis d'abord ton cursus, puis reprends ton abonnement."
                     : "Rien n'est engagé avant le paiement - change de cursus ici autant que tu veux."}
                 </p>
+
+                {/* Rapatrié depuis sa propre boîte sous le panneau (retouche du
+                    2026-08-30) : la colonne de droite grandit beaucoup plus que
+                    celle-ci une fois l'échéancier affiché (mesuré : jusqu'à 536 px de
+                    vide sous les puces sur desktop) - autant combler cet espace avec du
+                    vrai contenu déjà présent sur la page plutôt qu'un centrage
+                    artificiel ou une boîte séparée en plus. Liste verticale, pas la
+                    grille sm:grid-cols-3 de l'ancienne boîte pleine largeur : cette
+                    colonne fait environ la moitié de cette largeur. */}
+                <div className="mt-6 border-t border-border pt-5">
+                  <p className="font-display text-sm font-semibold">Ce qui est inclus</p>
+                  <ul className="mt-3 flex flex-col gap-2.5 text-sm">
+                    <li className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      <span>
+                        Corrigés complets en illimité
+                        <span className="block text-xs text-muted-foreground">
+                          Annales et sujets, rédigés pas à pas.
+                        </span>
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      <span>
+                        Cours et exercices d'application
+                        <span className="block text-xs text-muted-foreground">
+                          Méthode, exemple résolu, erreurs classiques.
+                        </span>
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      <span>
+                        Le quiz qui cible tes révisions
+                        <span className="block text-xs text-muted-foreground">
+                          Il repère tes lacunes et te les repropose au bon moment.
+                        </span>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div className="border-t border-border p-6 sm:border-l sm:border-t-0">
@@ -551,96 +592,63 @@ export function PricingPage() {
                         comme LE prix, et le révéler beaucoup plus haut une fois le cursus
                         choisi ressemble à un prix d'appel - la fourchette annonce l'écart
                         avant même le clic. Seuls l'échéancier et le prix exact dépendent du
-                        cursus. Un seul argument texte (le callout) plutôt que callout + puces
-                        + note de délai empilés : la répétition des trois bénéfices déjà
-                        listés dans "Ce qui est inclus" plus bas n'apprenait rien de plus ici. */}
+                        cursus.
+                        Le prix passe AVANT le callout "Exclusif Edukora" (inversé le
+                        2026-08-30) : sur une page Tarifs, c'est la première chose qu'on
+                        scanne - le callout vient ensuite justifier ce chiffre plutôt que
+                        retarder sa lecture. */}
                     <div className="mt-4 flex flex-col gap-4">
+                      {jusquaExamen ? (
+                        <div>
+                          <p className="font-display text-3xl font-semibold text-primary">
+                            {formatAmount(jusquaExamen.effective_price)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </p>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
+                            {" - "}
+                            ton {jusquaExamen.cursus.examen_display} commence le{" "}
+                            {formatDateDansNJours(jusquaExamen.effective_duration_days)}
+                          </p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="font-display text-3xl font-semibold text-primary">
+                            {formatAmount(PLANCHER_AFFICHE)}
+                            <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
+                            {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </p>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
+                            dernier mois.
+                          </p>
+                        </div>
+                      )}
                       <CalloutExclusifsJusquaExamen />
                       {jusquaExamen ? (
                         <>
-                          <div>
-                            <p className="font-display text-3xl font-semibold text-primary">
-                              {formatAmount(jusquaExamen.effective_price)}
-                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                            </p>
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
-                              {" - "}
-                              ton {jusquaExamen.cursus.examen_display} commence le{" "}
-                              {formatDateDansNJours(jusquaExamen.effective_duration_days)}
-                            </p>
-                          </div>
                           <Echeancier plan={jusquaExamen} />
                           <Button onClick={choisirFormule} size="lg" className="w-full">
                             S'abonner
                           </Button>
                         </>
                       ) : (
-                        <>
-                          <div>
-                            <p className="font-display text-3xl font-semibold text-primary">
-                              {formatAmount(PLANCHER_AFFICHE)}
-                              <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
-                              {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
-                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                            </p>
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
-                              dernier mois.
-                            </p>
-                          </div>
-                          {/* "Choisir ton cursus", pas "S'abonner" : dans cet état,
-                              selectedCursus est par définition vide (voir jusquaExamen plus
-                              haut), le clic ne fait jamais que signaler la colonne de gauche -
-                              le libellé doit décrire CETTE action, pas l'achat qui suivra.
-                              Cliquable, jamais disabled - un bouton mort ne donne aucun
-                              feedback au clic et peut passer pour une page cassée. */}
-                          <Button onClick={choisirFormule} variant="outline" size="lg" className="w-full">
-                            Choisir ton cursus
-                          </Button>
-                        </>
+                        // "Choisir ton cursus", pas "S'abonner" : dans cet état,
+                        // selectedCursus est par définition vide (voir jusquaExamen plus
+                        // haut), le clic ne fait jamais que signaler la colonne de gauche -
+                        // le libellé doit décrire CETTE action, pas l'achat qui suivra.
+                        // Cliquable, jamais disabled - un bouton mort ne donne aucun
+                        // feedback au clic et peut passer pour une page cassée.
+                        <Button onClick={choisirFormule} variant="outline" size="lg" className="w-full">
+                          Choisir ton cursus
+                        </Button>
                       )}
                     </div>
                   </>
                 )}
               </div>
             </div>
-          </div>
-
-          {/* Le socle de ce qu'on achète, énoncé une fois et en grand plutôt que
-              recopié en petit dans la carte : ce qu'on achète ne dépend pas de la
-              date d'inscription, seul le prix change. */}
-          <div className="mt-6 rounded-xl border border-border bg-card p-5 sm:p-6">
-            <p className="font-display font-semibold">Ce qui est inclus</p>
-            <ul className="mt-3 grid gap-2.5 text-sm sm:grid-cols-3">
-              <li className="flex items-start gap-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                <span>
-                  Corrigés complets en illimité
-                  <span className="block text-xs text-muted-foreground">
-                    Annales et sujets, rédigés pas à pas.
-                  </span>
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                <span>
-                  Cours et exercices d'application
-                  <span className="block text-xs text-muted-foreground">
-                    Méthode, exemple résolu, erreurs classiques.
-                  </span>
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                <span>
-                  Le quiz qui cible tes révisions
-                  <span className="block text-xs text-muted-foreground">
-                    Il repère tes lacunes et te les repropose au bon moment.
-                  </span>
-                </span>
-              </li>
-            </ul>
           </div>
 
           {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (la carte porte déjà
