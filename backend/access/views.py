@@ -1,13 +1,41 @@
 from django.shortcuts import get_object_or_404
+from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from catalog.models import Cours, Lesson
-from catalog.serializers import CoursSerializer, LessonSerializer
 
 from .models import LectureProgress
 from .services import has_access
+
+
+class _LessonProgressionSerializer(serializers.ModelSerializer):
+    """Version minimale de catalog.serializers.LessonSerializer, pour my_progression
+    ci-dessous seulement - cet endpoint liste TOUT l'historique de lecture d'un
+    utilisateur (potentiellement des centaines de lignes), sans aucune pagination. Le
+    frontend n'y lit que id/slug/title/subject.country.code (voir "Reprendre ma
+    lecture" sur CataloguePage.tsx/CoursListPage.tsx et "Ma progression" sur
+    AccountPage.tsx) : le serializer complet y réintroduirait, sans borne de page cette
+    fois, le même coût par ligne (exercises_count, related_cours, Cours.est_vitrine...)
+    déjà corrigé côté catalogue (voir catalog.views.LessonListView/CoursListView)."""
+
+    subject = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Lesson
+        fields = ["id", "slug", "title", "subject"]
+
+    def get_subject(self, obj):
+        return {"country": {"code": obj.subject.country.code}}
+
+
+class _CoursProgressionSerializer(serializers.ModelSerializer):
+    """Miroir de _LessonProgressionSerializer ci-dessus, même raison."""
+
+    class Meta:
+        model = Cours
+        fields = ["id", "slug", "titre"]
 
 
 @api_view(["GET"])
@@ -122,6 +150,7 @@ def my_progression(request):
     """Leçons et cours dont l'utilisateur a ouvert la lecture complète, du plus récent au plus ancien."""
     lessons = (
         Lesson.objects.visibles().filter(lectures__user=request.user)
+        .select_related("subject__country")
         .order_by("-lectures__last_read_at")
     )
     cours = (
@@ -130,6 +159,6 @@ def my_progression(request):
     )
 
     return Response({
-        "lessons": LessonSerializer(lessons, many=True, context={"request": request}).data,
-        "cours": CoursSerializer(cours, many=True, context={"request": request}).data,
+        "lessons": _LessonProgressionSerializer(lessons, many=True).data,
+        "cours": _CoursProgressionSerializer(cours, many=True).data,
     })

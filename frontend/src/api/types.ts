@@ -369,9 +369,29 @@ export interface CoursPreview {
   header: CoursHeader
 }
 
+// Formes allégées, pas Epreuve/Cours au complet : /access/progression/ liste TOUT
+// l'historique de lecture d'un utilisateur (aucune pagination), et seuls
+// id/slug/title(ou titre)/subject.country.code y sont réellement lus - voir
+// "Reprendre ma lecture" sur CataloguePage.tsx/CoursListPage.tsx et "Ma progression"
+// sur AccountPage.tsx (backend : access.views._LessonProgressionSerializer /
+// _CoursProgressionSerializer, qui n'exposent plus les champs coûteux du catalogue
+// complet - exercises_count, related_cours, has_access... - inutiles ici).
+export interface ProgressionEpreuve {
+  id: number
+  slug: string | null
+  title: string
+  subject: { country: { code: string } }
+}
+
+export interface ProgressionCours {
+  id: number
+  slug: string
+  titre: string
+}
+
 export interface Progression {
-  lessons: Epreuve[]
-  cours: Cours[]
+  lessons: ProgressionEpreuve[]
+  cours: ProgressionCours[]
 }
 
 export type DureeMode = "FIXE" | "JUSQUA_EXAMEN"
@@ -397,12 +417,18 @@ export interface Subscription {
   expires_at: string
   is_active: boolean
   plan_name: string | null
+  duration_mode: DureeMode
 }
 
 export interface ThemeFrequent {
+  id: number
   tag: string
   nb_epreuves: number
   frequence_pct: number
+  // false = aucune CompetenceItem pour ce thème sur ce cursus (couverture Quiz
+  // incomplète, voir la campagne de rattachement au référentiel) - le bouton "Quiz"
+  // doit se désactiver plutôt que mener à une session vide.
+  quiz_disponible: boolean
 }
 
 export interface ThemesFrequentsResponse {
@@ -415,6 +441,19 @@ export interface ThemesFrequentsResponse {
   has_access: boolean
   nb_themes_verrouilles: number
   themes: ThemeFrequent[]
+}
+
+export interface ThemeExercice {
+  lesson_slug: string
+  lesson_title: string
+  lesson_year: number | null
+  numero_exercice: string
+  has_access: boolean
+}
+
+export interface ThemeExercicesResponse {
+  tag: string
+  exercices: ThemeExercice[]
 }
 
 export interface Paginated<T> {
@@ -606,6 +645,11 @@ export interface TentativeInediteQuestion {
   id: number
   numero: string
   ordre: number
+  // Repère de sous-partie propre à CETTE question (ex. "A-I. Vérification des savoirs
+  // (4 pts)") - affiché en en-tête au-dessus quand il diffère de celui de la question
+  // précédente (voir InediteTentativePage.tsx). Chaîne vide pour la grande majorité
+  // des questions ; jamais gaté par la correction, contrairement à corrige_markdown.
+  groupe_local: string
   enonce_markdown: string
   type_reponse: TypeReponse
   choix: QuizChoix[]
