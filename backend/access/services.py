@@ -2,6 +2,8 @@ from django.utils import timezone
 
 from subscriptions.models import DureeMode, InscriptionInedite, InscriptionRepetiteur, Subscription
 
+from .models import LectureProgress
+
 
 def has_access(user, obj):
     """
@@ -42,6 +44,46 @@ def has_access_inedite(user, obj):
     return InscriptionInedite.objects.filter(
         user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(),
     ).exists()
+
+
+def bulk_active_subscription_cursus_ids(user):
+    """Ensemble des cursus_id couverts par un abonnement actif de l'utilisateur -
+    calculé une fois par requête HTTP plutôt qu'un Subscription.objects.filter(...)
+    .exists() par objet Lesson/Cours affiché sur une page (voir has_access ci-dessus et
+    catalog.serializers._HasAccessMixin.get_has_access, où ce coût se répétait une fois
+    par ligne pour tout utilisateur connecté). Un ensemble non vide suffit aussi au
+    fallback "cursus vide" de has_access : n'importe quel abonnement actif donne accès à
+    un contenu commun à toutes les séries."""
+    if not user or not user.is_authenticated:
+        return set()
+    return set(
+        Subscription.objects.filter(user=user, expires_at__gt=timezone.now())
+        .values_list("cursus_id", flat=True),
+    )
+
+
+def bulk_active_inedite_cursus_ids(user):
+    """Miroir de bulk_active_subscription_cursus_ids ci-dessus, pour has_access_inedite
+    (add-on Épreuves Inédites)."""
+    if not user or not user.is_authenticated:
+        return set()
+    return set(
+        InscriptionInedite.objects.filter(user=user, expires_at__gt=timezone.now())
+        .values_list("cursus_id", flat=True),
+    )
+
+
+def bulk_read_ids(user, *, field):
+    """Ensemble des id (Lesson ou Cours selon `field`, "lesson" ou "cours") que
+    l'utilisateur a lus - calculé une fois par requête HTTP plutôt qu'un
+    obj.lectures.filter(user=user).exists() par objet affiché sur une page (voir
+    catalog.serializers._HasAccessMixin.get_is_read)."""
+    if not user or not user.is_authenticated:
+        return set()
+    return set(
+        LectureProgress.objects.filter(user=user, **{f"{field}_id__isnull": False})
+        .values_list(f"{field}_id", flat=True),
+    )
 
 
 def has_access_jusqua_examen(user, cursus):

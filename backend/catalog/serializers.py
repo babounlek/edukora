@@ -137,7 +137,21 @@ class _HasAccessMixin:
         if self._est_vitrine(obj):
             return True
         user = self._current_user()
-        return bool(user and has_access(user, obj))
+        if user is None:
+            return False
+        # active_subscription_cursus_ids : ensemble des cursus couverts par un
+        # abonnement actif, calculé une fois par requête HTTP (voir
+        # access.services.bulk_active_subscription_cursus_ids) plutôt qu'un aller en
+        # base par objet - même correctif que _est_vitrine ci-dessus, pour tout
+        # utilisateur connecté cette fois (pas seulement l'anonyme). obj.cursus est
+        # déjà prefetch_related sur les vues liste, donc `.all()` ici ne coûte rien.
+        active_cursus_ids = self.context.get("active_subscription_cursus_ids")
+        if active_cursus_ids is not None:
+            obj_cursus_ids = [c.pk for c in obj.cursus.all()]
+            if not obj_cursus_ids:
+                return bool(active_cursus_ids)
+            return any(cid in active_cursus_ids for cid in obj_cursus_ids)
+        return bool(has_access(user, obj))
 
     def _est_vitrine(self, obj):
         # est_vitrine est un champ réel (donc gratuit) sur Lesson, mais une @property
@@ -156,7 +170,16 @@ class _HasAccessMixin:
 
     def get_is_read(self, obj):
         user = self._current_user()
-        return bool(user and obj.lectures.filter(user=user).exists())
+        if user is None:
+            return False
+        # read_lesson_ids/read_cours_ids : mêmes correctif et raison que
+        # active_subscription_cursus_ids ci-dessus (voir access.services.bulk_read_ids),
+        # posés dans le contexte par les vues liste pour toute la page en un seul aller.
+        key = "read_cours_ids" if isinstance(obj, Cours) else "read_lesson_ids"
+        read_ids = self.context.get(key)
+        if read_ids is not None:
+            return obj.pk in read_ids
+        return bool(obj.lectures.filter(user=user).exists())
 
 
 def _cours_content_summary(sections_raw):

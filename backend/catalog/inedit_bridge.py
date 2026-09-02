@@ -124,6 +124,7 @@ def _apercu_enonce(epreuve):
 
 def epreuve_inedite_catalogue_payload(
     epreuve, request, *, exercises_count=None, include_apercu=False, related_cours=None, context=None,
+    active_inedite_cursus_ids=None,
 ):
     """Sérialise une EpreuveInedite dans la même forme que LessonSerializer.Meta.fields.
     Réutilisé par le catalogue fusionné (liste) ET inedit.views.epreuve_inedite_detail
@@ -139,7 +140,11 @@ def epreuve_inedite_catalogue_payload(
     CoursSummarySerializer (has_access -> Cours.est_vitrine, une vraie requête par
     objet, voir _HasAccessMixin._est_vitrine côté catalog.serializers) ne reparte pas
     d'un contexte vierge à chaque épreuve. Sans ces deux arguments (fiche détail seule),
-    repli sur le comportement d'origine - un seul objet, coût négligeable."""
+    repli sur le comportement d'origine - un seul objet, coût négligeable.
+
+    `active_inedite_cursus_ids` : même correctif, pour has_access_inedite ci-dessous
+    (voir access.services.bulk_active_inedite_cursus_ids) - un aller en base par
+    épreuve sans lui, jamais posé pour la fiche détail (un seul objet)."""
     context = context if context is not None else {"request": request}
     if related_cours is None:
         related_cours = Cours.objects.filter(
@@ -171,7 +176,11 @@ def epreuve_inedite_catalogue_payload(
         "nature_epreuve": "",
         "nature_epreuve_display": "",
         "themes": TagSerializer(epreuve.blueprint.competences.all(), many=True).data,
-        "has_access": has_access_inedite(request.user, epreuve),
+        "has_access": (
+            any(c.pk in active_inedite_cursus_ids for c in epreuve.cursus.all())
+            if active_inedite_cursus_ids is not None
+            else has_access_inedite(request.user, epreuve)
+        ),
         "is_read": False,
         "est_vitrine": False,
         "created_at": epreuve.created_at,

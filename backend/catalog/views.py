@@ -5,7 +5,13 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from access.services import has_access, has_access_jusqua_examen
+from access.services import (
+    bulk_active_inedite_cursus_ids,
+    bulk_active_subscription_cursus_ids,
+    bulk_read_ids,
+    has_access,
+    has_access_jusqua_examen,
+)
 from quiz.models import CompetenceItem
 
 from .inedit_bridge import (
@@ -195,7 +201,17 @@ class LessonListView(generics.ListAPIView):
         pour une seule page, la pagination étant appliquée en tout dernier sur la liste
         déjà entièrement sérialisée (voir l'audit perf "catalogue lent")."""
         ordering = request.query_params.get("ordering")
-        context = self.get_serializer_context()
+        context = {
+            **self.get_serializer_context(),
+            # Calculés une fois pour toute la page (Lesson ET les Cours imbriqués via
+            # related_cours) plutôt qu'un aller en base par objet pour tout utilisateur
+            # connecté - voir _HasAccessMixin.get_has_access/get_is_read côté
+            # catalog.serializers. set() immédiat pour un visiteur anonyme (voir
+            # access.services.bulk_*), donc aucun coût ajouté hors connexion.
+            "active_subscription_cursus_ids": bulk_active_subscription_cursus_ids(request.user),
+            "read_lesson_ids": bulk_read_ids(request.user, field="lesson"),
+            "read_cours_ids": bulk_read_ids(request.user, field="cours"),
+        }
 
         lesson_qs = self.get_queryset()
         inedit_qs = build_inedit_queryset(request.query_params, min_popular_readers=MIN_POPULAR_READERS)
@@ -253,11 +269,13 @@ class LessonListView(generics.ListAPIView):
             inedit_related_cours_map = bulk_related_cours_map_inedit(page_inedit_ids)
             inedit_related_cours_ids = {c.pk for cours_list in inedit_related_cours_map.values() for c in cours_list}
             inedit_context = {**context, "est_vitrine_ids": bulk_cours_est_vitrine(inedit_related_cours_ids)}
+            active_inedite_cursus_ids = bulk_active_inedite_cursus_ids(request.user)
             inedit_payloads_by_id = {
                 obj.id: epreuve_inedite_catalogue_payload(
                     obj, request, exercises_count=exercises_counts.get(obj.id, 0),
                     related_cours=inedit_related_cours_map.get(obj.id, []),
                     context=inedit_context,
+                    active_inedite_cursus_ids=active_inedite_cursus_ids,
                 )
                 for obj in inedit_objs
             }
@@ -342,16 +360,21 @@ class CoursListView(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         """Comme generics.ListAPIView.list(), à ceci près que le contexte de
-        sérialisation porte est_vitrine_ids pré-calculé pour la seule page affichée
-        (voir bulk_cours_est_vitrine et CoursSerializer.get_est_vitrine) - sans ça,
-        Cours.est_vitrine (une @property, jamais stockée) redéclenche une requête par
-        ligne de la page, le même correctif que sur LessonListView.list."""
+        sérialisation porte est_vitrine_ids/active_subscription_cursus_ids/
+        read_cours_ids pré-calculés pour la seule page affichée (voir
+        bulk_cours_est_vitrine et CoursSerializer.get_est_vitrine, ainsi que
+        _HasAccessMixin.get_has_access/get_is_read) - sans ça, Cours.est_vitrine (une
+        @property, jamais stockée) et has_access/is_read (pour tout utilisateur
+        connecté) redéclenchent une requête par ligne de la page, le même correctif
+        que sur LessonListView.list."""
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         objs = page if page is not None else queryset
 
         context = self.get_serializer_context()
         context["est_vitrine_ids"] = bulk_cours_est_vitrine([obj.pk for obj in objs])
+        context["active_subscription_cursus_ids"] = bulk_active_subscription_cursus_ids(request.user)
+        context["read_cours_ids"] = bulk_read_ids(request.user, field="cours")
 
         serializer = self.get_serializer(objs, many=True, context=context)
         if page is not None:
