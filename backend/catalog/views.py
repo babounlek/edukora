@@ -306,7 +306,19 @@ class CoursListView(generics.ListAPIView):
         if country := params.get("country"):
             # cursus vide = notion commune à toutes les séries de tout pays (voir
             # Cours.cursus) - exclue par erreur si on filtrait juste sur cursus__country.
-            qs = qs.filter(Q(cursus__isnull=True) | Q(cursus__country__code__iexact=country))
+            #
+            # Exists()/annotate plutôt qu'un JOIN M2M direct (Q(cursus__country=...) |
+            # Q(cursus__isnull=True)) : un JOIN sur cursus multiplie chaque Cours par
+            # son nombre de cursus dans ce pays, forçant le .distinct() final à
+            # dédoublonner des lignes LARGES (content_markdown/sections_raw) - mesuré à
+            # ~0,5s rien que pour le COUNT de pagination sur ce corpus. Même correctif
+            # déjà appliqué au filtre `search` juste en dessous, pour la même raison.
+            cursus_in_country = Cursus.objects.filter(cours=OuterRef("pk"), country__code__iexact=country)
+            any_cursus = Cursus.objects.filter(cours=OuterRef("pk"))
+            qs = qs.annotate(
+                _has_cursus_in_country=Exists(cursus_in_country),
+                _has_any_cursus=Exists(any_cursus),
+            ).filter(Q(_has_cursus_in_country=True) | Q(_has_any_cursus=False))
         if params.get("exclude_read") == "true" and self.request.user.is_authenticated:
             # Même repli anonyme naturel que LessonListView ci-dessus - pas de
             # LectureProgress à exclure pour un visiteur non connecté.
@@ -327,6 +339,24 @@ class CoursListView(generics.ListAPIView):
         # ajoutés). published_at n'est jamais renseigné en pratique (aucun code ne
         # l'écrit) donc pas fiable pour ce tri, contrairement à created_at.
         return qs.distinct().order_by("-created_at")
+
+    def list(self, request, *args, **kwargs):
+        """Comme generics.ListAPIView.list(), à ceci près que le contexte de
+        sérialisation porte est_vitrine_ids pré-calculé pour la seule page affichée
+        (voir bulk_cours_est_vitrine et CoursSerializer.get_est_vitrine) - sans ça,
+        Cours.est_vitrine (une @property, jamais stockée) redéclenche une requête par
+        ligne de la page, le même correctif que sur LessonListView.list."""
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        objs = page if page is not None else queryset
+
+        context = self.get_serializer_context()
+        context["est_vitrine_ids"] = bulk_cours_est_vitrine([obj.pk for obj in objs])
+
+        serializer = self.get_serializer(objs, many=True, context=context)
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
 
 
 class CoursDetailView(generics.RetrieveAPIView):

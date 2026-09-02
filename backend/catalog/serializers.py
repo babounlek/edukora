@@ -319,6 +319,12 @@ class CoursSerializer(_HasAccessMixin, serializers.ModelSerializer):
     has_access = serializers.SerializerMethodField()
     is_read = serializers.SerializerMethodField()
     apercu_contenu = serializers.SerializerMethodField()
+    # SerializerMethodField plutôt que le ReadOnlyField auto-généré par ModelSerializer
+    # pour une @property (voir Cours.est_vitrine, "jamais stockée") : ce dernier
+    # appellerait obj.est_vitrine directement, une vraie requête à chaque ligne, sans
+    # jamais passer par _HasAccessMixin._est_vitrine ni son cache/bulk ci-dessus -
+    # c'était encore le cas jusqu'ici même après le correctif sur get_has_access.
+    est_vitrine = serializers.SerializerMethodField()
 
     class Meta:
         model = Cours
@@ -329,3 +335,6 @@ class CoursSerializer(_HasAccessMixin, serializers.ModelSerializer):
 
     def get_apercu_contenu(self, obj):
         return _cours_content_summary(obj.sections_raw)
+
+    def get_est_vitrine(self, obj):
+        return self._est_vitrine(obj)
