@@ -1,8 +1,22 @@
+from django.db.models import Count
 from rest_framework import serializers
 
 from access.services import has_access
 
-from .models import Cours, Country, Cursus, Filiere, Lesson, Series, StatutContenu, Subject, Tag, Temoignage
+from .models import (
+    Cours,
+    Country,
+    Cursus,
+    Exercise,
+    Filiere,
+    Lesson,
+    RappelDeMethode,
+    Series,
+    StatutContenu,
+    Subject,
+    Tag,
+    Temoignage,
+)
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -17,7 +31,17 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = ["id", "code", "label", "dial_code", "currency", "has_lessons"]
 
     def get_has_lessons(self, obj):
-        return obj.subjects.filter(lessons__statut=StatutContenu.VALIDE).exists()
+        # Mémoïsé par pays sur le contexte de sérialisation (partagé par toute
+        # l'arborescence de serializers imbriqués d'un même appel many=True, voir
+        # DRF Field.context) - CountrySerializer est imbriqué deux fois par Lesson/Cours
+        # (subject.country ET cursus[].country), donc sans ce cache une page de 24
+        # items relance la même requête .exists() à chaque occurrence du même pays
+        # (aujourd'hui un seul pays actif, donc jusqu'à ~50 requêtes identiques par page
+        # sans ce correctif - voir l'incident perf sur LessonListView.list).
+        cache = self.context.setdefault("_has_lessons_cache", {})
+        if obj.id not in cache:
+            cache[obj.id] = obj.subjects.filter(lessons__statut=StatutContenu.VALIDE).exists()
+        return cache[obj.id]
 
 
 class FiliereSerializer(serializers.ModelSerializer):
@@ -86,7 +110,16 @@ class CursusSerializer(serializers.ModelSerializer):
         fields = ["id", "country", "examen", "examen_display", "series"]
 
     def get_examen_display(self, obj):
-        return obj.display_examen()
+        # Mémoïsé par (pays, examen) sur le contexte de sérialisation (même patron que
+        # CountrySerializer.get_has_lessons ci-dessus) - obj.display_examen() (voir
+        # resolve_examen_label dans catalog.models) interroge ExamenLabel à chaque
+        # appel, et une page d'épreuves référence souvent le même (pays, examen) pour
+        # plusieurs Cursus distincts (une série différente par Cursus, même examen).
+        cache = self.context.setdefault("_examen_display_cache", {})
+        key = (obj.country_id, obj.examen)
+        if key not in cache:
+            cache[key] = obj.display_examen()
+        return cache[key]
 
 
 class _HasAccessMixin:
@@ -101,10 +134,25 @@ class _HasAccessMixin:
         # Une Lesson vitrine (voir has_access) est lisible par un visiteur anonyme -
         # court-circuite _current_user() ici même, qui renvoie toujours None pour lui
         # et masquerait sinon ce cas particulier.
-        if getattr(obj, "est_vitrine", False):
+        if self._est_vitrine(obj):
             return True
         user = self._current_user()
         return bool(user and has_access(user, obj))
+
+    def _est_vitrine(self, obj):
+        # est_vitrine est un champ réel (donc gratuit) sur Lesson, mais une @property
+        # recalculée par une vraie requête à chaque accès sur Cours (voir
+        # Cours.est_vitrine, "jamais stocké"). Sur une page de related_cours, les Cours
+        # référencés sont presque tous DISTINCTS d'une Lesson à l'autre (peu de
+        # doublons à dédupliquer) : un simple cache par objet ne suffit pas, il faut
+        # une vraie requête groupée - voir bulk_cours_est_vitrine, posée dans le
+        # contexte par LessonListView.list pour toute la page en un seul aller. Repli
+        # sur la property (LessonDetailView, CoursDetailView, CoursListView - un seul
+        # ou peu d'objets, coût négligeable) quand ce bulk n'est pas fourni.
+        bulk_ids = self.context.get("est_vitrine_ids")
+        if bulk_ids is not None and isinstance(obj, Cours):
+            return obj.pk in bulk_ids
+        return bool(getattr(obj, "est_vitrine", False))
 
     def get_is_read(self, obj):
         user = self._current_user()
@@ -187,6 +235,12 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
         return False
 
     def get_exercises_count(self, obj):
+        # bulk_lesson_exercises_counts pré-calculé par LessonListView.list pour toute
+        # la page en une seule requête (voir ce nom plus bas) - jamais posé par
+        # LessonDetailView (un seul objet, une requête directe reste la plus simple).
+        counts_map = self.context.get("exercises_count_map")
+        if counts_map is not None:
+            return counts_map.get(obj.id, 0)
         return obj.exercises.filter(statut=StatutContenu.VALIDE).count()
 
     def get_sujet_pdf_url(self, obj):
@@ -198,10 +252,64 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
         return request.build_absolute_uri(obj.sujet_pdf.url) if request else obj.sujet_pdf.url
 
     def get_related_cours(self, obj):
-        cours_qs = Cours.objects.filter(
-            rappels_source__exercise__lesson=obj, statut=StatutContenu.VALIDE,
-        ).distinct()
-        return CoursSummarySerializer(cours_qs, many=True, context=self.context).data
+        # bulk_related_cours_map pré-calculé par LessonListView.list pour toute la
+        # page en une seule requête (voir ce nom plus bas) - jamais posé par
+        # LessonDetailView, qui garde la requête directe ci-dessous (un seul objet).
+        cours_map = self.context.get("related_cours_map")
+        if cours_map is not None:
+            cours_list = cours_map.get(obj.id, [])
+        else:
+            cours_list = Cours.objects.filter(
+                rappels_source__exercise__lesson=obj, statut=StatutContenu.VALIDE,
+            ).distinct()
+        return CoursSummarySerializer(cours_list, many=True, context=self.context).data
+
+
+def bulk_lesson_exercises_counts(lesson_ids):
+    """Une seule requête agrégée pour tout un lot, plutôt qu'un .exercises.count() par
+    Lesson (voir LessonSerializer.get_exercises_count et LessonListView.list - même
+    correctif que inedit_bridge.bulk_exercises_counts côté EpreuveInedite)."""
+    counts = (
+        Exercise.objects.filter(lesson_id__in=lesson_ids, statut=StatutContenu.VALIDE)
+        .values("lesson_id")
+        .annotate(n=Count("id"))
+    )
+    return {row["lesson_id"]: row["n"] for row in counts}
+
+
+def bulk_cours_est_vitrine(cours_ids):
+    """Une seule requête pour tout un lot de Cours, plutôt qu'une évaluation de la
+    @property Cours.est_vitrine (jamais stockée, voir ce nom dans catalog.models) par
+    objet - voir _HasAccessMixin._est_vitrine, où ce coût se répète une fois par Cours
+    DISTINCT référencé dans related_cours (majoritairement des objets distincts d'une
+    Lesson à l'autre sur ce corpus, donc un simple cache par objet n'aurait presque
+    rien économisé)."""
+    if not cours_ids:
+        return set()
+    return set(
+        RappelDeMethode.objects.filter(
+            cours_id__in=cours_ids, exercise__lesson__est_vitrine=True,
+        ).values_list("cours_id", flat=True).distinct()
+    )
+
+
+def bulk_related_cours_map(lesson_ids):
+    """Une seule requête (+ un fetch groupé des Cours distincts) pour tout un lot,
+    plutôt qu'un Cours.objects.filter(...) par Lesson (voir
+    LessonSerializer.get_related_cours et LessonListView.list)."""
+    pairs = list(
+        RappelDeMethode.objects.filter(
+            exercise__lesson_id__in=lesson_ids, cours__statut=StatutContenu.VALIDE,
+        ).values_list("exercise__lesson_id", "cours_id").distinct()
+    )
+    cours_ids = {cours_id for _, cours_id in pairs}
+    # prefetch_related("cursus") : évite qu'une Cours partagée par plusieurs Lesson de
+    # la page ne redéclenche has_access (obj.cursus.all()) une fois par Lesson.
+    cours_by_id = {c.id: c for c in Cours.objects.filter(id__in=cours_ids).prefetch_related("cursus")}
+    result = {}
+    for lesson_id, cours_id in pairs:
+        result.setdefault(lesson_id, []).append(cours_by_id[cours_id])
+    return result
 
 
 class CoursSerializer(_HasAccessMixin, serializers.ModelSerializer):

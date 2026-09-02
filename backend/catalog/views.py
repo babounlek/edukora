@@ -5,9 +5,15 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from access.services import has_access_jusqua_examen
+from access.services import has_access, has_access_jusqua_examen
+from quiz.models import CompetenceItem
 
-from .inedit_bridge import bulk_exercises_counts, build_inedit_queryset, epreuve_inedite_catalogue_payload
+from .inedit_bridge import (
+    bulk_exercises_counts,
+    bulk_related_cours_map as bulk_related_cours_map_inedit,
+    build_inedit_queryset,
+    epreuve_inedite_catalogue_payload,
+)
 from .models import (
     Cours,
     Country,
@@ -23,6 +29,9 @@ from .models import (
     Temoignage,
 )
 from .serializers import (
+    bulk_cours_est_vitrine,
+    bulk_lesson_exercises_counts,
+    bulk_related_cours_map,
     CoursSerializer,
     CountrySerializer,
     CursusSerializer,
@@ -172,42 +181,95 @@ class LessonListView(generics.ListAPIView):
         """Fusionne Lesson (classique) et EpreuveInedite dans une seule liste
         paginée/triée - voir l'audit "Fusion du catalogue". get_queryset() ci-dessus
         reste inchangé (toujours filtré/annoté côté SQL) ; le côté EpreuveInedite est
-        construit en miroir par build_inedit_queryset, puis les deux sont sérialisés,
-        combinés et triés en Python avant pagination (voir _merge_sort_key -
-        impossible d'exprimer un tri à cheval sur deux tables en un seul ORDER BY)."""
+        construit en miroir par build_inedit_queryset.
+
+        Le tri à cheval sur deux tables reste impossible à exprimer en un seul
+        ORDER BY (voir _merge_sort_key) - mais SEULES des clés de tri légères
+        (id/year/title/created_at/popularité, via .values()) sont matérialisées pour
+        calculer cet ordre sur l'ENSEMBLE filtré : ni select_related/prefetch_related,
+        ni sérialisation (get_exercises_count, get_related_cours, CountrySerializer
+        imbriqué...) n'y sont payés. La pagination tranche ensuite ces clés, et seule la
+        page obtenue (24 items par défaut) déclenche le fetch complet + la
+        sérialisation coûteuse - jamais l'ensemble filtré. Avant ce correctif, un
+        catalogue sans filtre (543 items) coûtait jusqu'à 9000 requêtes SQL et ~40s
+        pour une seule page, la pagination étant appliquée en tout dernier sur la liste
+        déjà entièrement sérialisée (voir l'audit perf "catalogue lent")."""
         ordering = request.query_params.get("ordering")
         context = self.get_serializer_context()
 
-        lesson_objs = list(self.get_queryset())
-        lesson_payloads = LessonSerializer(lesson_objs, many=True, context=context).data
-        lesson_entries = [
+        lesson_qs = self.get_queryset()
+        inedit_qs = build_inedit_queryset(request.query_params, min_popular_readers=MIN_POPULAR_READERS)
+
+        lesson_value_fields = ["id", "year", "title", "created_at"]
+        if ordering == "popular":
+            lesson_value_fields.append("_lectures_count")
+        lesson_keys = [
             {
-                "year": obj.year, "title": obj.title, "created_at": obj.created_at,
-                "popularity": getattr(obj, "_lectures_count", 0), "payload": payload,
+                "kind": "lesson", "id": row["id"], "year": row["year"], "title": row["title"],
+                "created_at": row["created_at"], "popularity": row.get("_lectures_count") or 0,
             }
-            for obj, payload in zip(lesson_objs, lesson_payloads)
+            for row in lesson_qs.values(*lesson_value_fields)
         ]
 
-        inedit_objs = list(build_inedit_queryset(request.query_params, min_popular_readers=MIN_POPULAR_READERS))
-        exercises_counts = bulk_exercises_counts(inedit_objs)
-        inedit_entries = [
+        inedit_value_fields = ["id", "titre", "created_at"]
+        if ordering == "popular":
+            inedit_value_fields.append("_tentatives_count")
+        inedit_keys = [
             {
-                "year": None, "title": obj.titre, "created_at": obj.created_at,
-                "popularity": getattr(obj, "_tentatives_count", 0),
-                "payload": epreuve_inedite_catalogue_payload(
+                "kind": "inedite", "id": row["id"], "year": None, "title": row["titre"],
+                "created_at": row["created_at"], "popularity": row.get("_tentatives_count") or 0,
+            }
+            for row in inedit_qs.values(*inedit_value_fields)
+        ]
+
+        merged_keys = lesson_keys + inedit_keys
+        merged_keys.sort(key=_merge_sort_key(ordering))
+
+        page_keys = self.paginate_queryset(merged_keys)
+        keys_to_serialize = page_keys if page_keys is not None else merged_keys
+
+        page_lesson_ids = [k["id"] for k in keys_to_serialize if k["kind"] == "lesson"]
+        page_inedit_ids = [k["id"] for k in keys_to_serialize if k["kind"] == "inedite"]
+
+        lesson_payloads_by_id = {}
+        if page_lesson_ids:
+            lesson_objs_by_id = {obj.id: obj for obj in lesson_qs.filter(id__in=page_lesson_ids)}
+            ordered_lesson_objs = [lesson_objs_by_id[i] for i in page_lesson_ids if i in lesson_objs_by_id]
+            related_cours_map = bulk_related_cours_map(page_lesson_ids)
+            related_cours_ids = {c.pk for cours_list in related_cours_map.values() for c in cours_list}
+            page_context = {
+                **context,
+                "exercises_count_map": bulk_lesson_exercises_counts(page_lesson_ids),
+                "related_cours_map": related_cours_map,
+                "est_vitrine_ids": bulk_cours_est_vitrine(related_cours_ids),
+            }
+            payloads = LessonSerializer(ordered_lesson_objs, many=True, context=page_context).data
+            lesson_payloads_by_id = {obj.id: payload for obj, payload in zip(ordered_lesson_objs, payloads)}
+
+        inedit_payloads_by_id = {}
+        if page_inedit_ids:
+            inedit_objs = list(inedit_qs.filter(id__in=page_inedit_ids))
+            exercises_counts = bulk_exercises_counts(inedit_objs)
+            inedit_related_cours_map = bulk_related_cours_map_inedit(page_inedit_ids)
+            inedit_related_cours_ids = {c.pk for cours_list in inedit_related_cours_map.values() for c in cours_list}
+            inedit_context = {**context, "est_vitrine_ids": bulk_cours_est_vitrine(inedit_related_cours_ids)}
+            inedit_payloads_by_id = {
+                obj.id: epreuve_inedite_catalogue_payload(
                     obj, request, exercises_count=exercises_counts.get(obj.id, 0),
-                ),
+                    related_cours=inedit_related_cours_map.get(obj.id, []),
+                    context=inedit_context,
+                )
+                for obj in inedit_objs
             }
-            for obj in inedit_objs
+
+        payload_list = [
+            lesson_payloads_by_id[k["id"]] if k["kind"] == "lesson" else inedit_payloads_by_id[k["id"]]
+            for k in keys_to_serialize
+            if (k["id"] in lesson_payloads_by_id if k["kind"] == "lesson" else k["id"] in inedit_payloads_by_id)
         ]
 
-        merged = lesson_entries + inedit_entries
-        merged.sort(key=_merge_sort_key(ordering))
-        payload_list = [entry["payload"] for entry in merged]
-
-        page = self.paginate_queryset(payload_list)
-        if page is not None:
-            return self.get_paginated_response(page)
+        if page_keys is not None:
+            return self.get_paginated_response(payload_list)
         return Response(payload_list)
 
 
@@ -445,21 +507,109 @@ class ThemesFrequentsView(APIView):
             .order_by("-nb_epreuves", "name")[:MAX_THEMES_FREQUENTS],
         )
 
-        has_access = has_access_jusqua_examen(request.user, cursus)
-        themes_visibles = classement if has_access else classement[:TEASER_THEMES_FREQUENTS]
+        acces_jusqua_examen = has_access_jusqua_examen(request.user, cursus)
+        themes_visibles = classement if acces_jusqua_examen else classement[:TEASER_THEMES_FREQUENTS]
+
+        # Un thème du classement peut n'avoir aucune CompetenceItem sur SON tag - deux
+        # vocabulaires de tags coexistent dans le catalogue (voir quiz.views, même
+        # cascade pour résoudre le cours lié à une compétence) : correction-experte pose
+        # des tags de TECHNIQUE sur les questions ("tableau de variation"), le Quiz porte
+        # des tags de CHAPITRE alignés sur les savoirs ("dérivation"). Un thème sans
+        # correspondance directe peut donc avoir une vraie compétence dispo sous un tag
+        # différent, via le même savoir_officiel. Mesuré avant ce correctif : sur le top
+        # 20 de Maths BAC C, 10/20 thèmes étaient à tort marqués indisponibles alors
+        # qu'une compétence existait déjà - ne jamais retester seulement le tag exact.
+        tags_avec_quiz_direct = set(
+            CompetenceItem.objects.filter(
+                theme_id__in=[t.id for t in themes_visibles], cursus=cursus, statut=StatutContenu.VALIDE,
+            ).values_list("theme_id", flat=True),
+        )
+        savoirs_a_verifier = {
+            t.savoir_officiel_id for t in themes_visibles
+            if t.id not in tags_avec_quiz_direct and t.savoir_officiel_id is not None
+        }
+        savoirs_avec_quiz = set()
+        if savoirs_a_verifier:
+            savoirs_avec_quiz = set(
+                CompetenceItem.objects.filter(
+                    theme__savoir_officiel_id__in=savoirs_a_verifier, cursus=cursus, statut=StatutContenu.VALIDE,
+                ).values_list("theme__savoir_officiel_id", flat=True),
+            )
+        tags_avec_quiz = tags_avec_quiz_direct | {
+            t.id for t in themes_visibles if t.savoir_officiel_id in savoirs_avec_quiz
+        }
 
         return Response({
             "nb_sessions_disponibles": nb_sessions_disponibles,
             "seuil_minimum": SEUIL_MINIMUM_THEMES_FREQUENTS,
             "disponible": True,
-            "has_access": has_access,
-            "nb_themes_verrouilles": 0 if has_access else max(0, len(classement) - TEASER_THEMES_FREQUENTS),
+            "has_access": acces_jusqua_examen,
+            "nb_themes_verrouilles": 0 if acces_jusqua_examen else max(0, len(classement) - TEASER_THEMES_FREQUENTS),
             "themes": [
                 {
+                    "id": t.id,
                     "tag": t.name,
                     "nb_epreuves": t.nb_epreuves,
                     "frequence_pct": round(100 * t.nb_epreuves / nb_sessions_disponibles),
+                    "quiz_disponible": t.id in tags_avec_quiz,
                 }
                 for t in themes_visibles
             ],
         })
+
+
+class ThemeExercicesView(APIView):
+    """
+    Exercices concernés par un thème donné, pour un (cursus, matière) - alimente le
+    bouton "Exercices" à côté de chaque thème de ThemesFrequentsView (qui expose l'id
+    du Tag nécessaire ici). Contrairement au classement, aucune restriction
+    origine=OFFICIEL ni seuil minimum : l'objectif est de fournir un support
+    d'entraînement concret, pas une statistique de fréquence à l'examen réel - un
+    examen blanc qui traite le thème est tout aussi utile à pratiquer. Toujours
+    AllowAny : chaque exercice porte son propre has_access (comme EpreuveCard), le
+    frontend décide alors du lien (lecteur si accès, fiche détail sinon).
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, cursus_id, tag_id):
+        cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=cursus_id)
+        if not cursus.country.actif:
+            return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
+
+        subject_code = request.query_params.get("subject")
+        if not subject_code:
+            return Response({"error": "subject est requis."}, status=400)
+        subject = get_object_or_404(Subject, code=subject_code, country=cursus.country)
+        tag = get_object_or_404(Tag, pk=tag_id)
+
+        questions = (
+            Question.objects.filter(
+                themes=tag, exercise__lesson__statut=StatutContenu.VALIDE,
+                exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
+            )
+            .select_related("exercise__lesson")
+            .order_by("-exercise__lesson__year", "exercise__numero_exercice")
+        )
+
+        # Un exercice bavard peut porter le thème sur plusieurs de ses Question - une
+        # seule entrée par exercice, jamais par question (même principe que
+        # ThemesFrequentsView : l'unité pertinente pour l'élève est "un exercice à
+        # pratiquer", pas chacune de ses sous-questions).
+        vus = set()
+        exercices = []
+        for question in questions:
+            lesson = question.exercise.lesson
+            cle = (lesson.id, question.exercise.numero_exercice)
+            if cle in vus:
+                continue
+            vus.add(cle)
+            exercices.append({
+                "lesson_slug": lesson.slug,
+                "lesson_title": lesson.title,
+                "lesson_year": lesson.year,
+                "numero_exercice": question.exercise.numero_exercice,
+                "has_access": has_access(request.user, lesson),
+            })
+
+        return Response({"tag": tag.name, "exercices": exercices})

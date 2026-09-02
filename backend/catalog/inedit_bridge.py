@@ -9,7 +9,7 @@ même mapping de champs pour la fiche détail que pour la liste, jamais dupliqu�
 from django.db.models import Count
 
 from access.services import has_access_inedite
-from inedit.models import EpreuveInedite, ExerciceInedite
+from inedit.models import EpreuveInedite, ExerciceInedite, RappelDeMethodeInedite
 
 from .models import Cours, StatutContenu, SUBJECT_FAMILIES
 from .serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, TagSerializer
@@ -71,15 +71,40 @@ def bulk_exercises_counts(epreuves):
     return {row["epreuve_id"]: row["n"] for row in counts}
 
 
+def bulk_related_cours_map(epreuve_ids):
+    """Miroir de catalog.serializers.bulk_related_cours_map côté EpreuveInedite - une
+    seule requête (+ un fetch groupé des Cours distincts) pour tout un lot, plutôt
+    qu'un Cours.objects.filter(...) par épreuve dans epreuve_inedite_catalogue_payload
+    (voir LessonListView.list, qui appelle cette fonction pour toute la page)."""
+    pairs = list(
+        RappelDeMethodeInedite.objects.filter(
+            exercice__epreuve_id__in=epreuve_ids, cours__statut=StatutContenu.VALIDE,
+        ).values_list("exercice__epreuve_id", "cours_id").distinct()
+    )
+    cours_ids = {cours_id for _, cours_id in pairs}
+    cours_by_id = {c.id: c for c in Cours.objects.filter(id__in=cours_ids).prefetch_related("cursus")}
+    result = {}
+    for epreuve_id, cours_id in pairs:
+        result.setdefault(epreuve_id, []).append(cours_by_id[cours_id])
+    return result
+
+
 def _apercu_enonce(epreuve):
     """Aperçu public minimal : l'énoncé de la toute première question du premier
-    exercice, rien d'autre - jamais l'équivalent de catalog.rendering.
-    lesson_preview_markdown (sujet ENTIER, légitime là-bas car ce sont d'anciens
-    sujets déjà publics ailleurs). Ici, l'argument de vente d'une Épreuve Inédite est
-    justement de n'avoir jamais été vue nulle part (voir EpreuveInediteDetailPage.tsx) :
-    en dévoiler l'intégralité gratuitement grillerait à la fois l'exclusivité (contenu
-    copiable/partageable avant tout paiement) et l'effet "conditions réelles" pour
-    quiconque l'aurait déjà lu. Une seule question suffit à donner le niveau.
+    exercice, précédé du support partagé de cet exercice s'il en a un (tableau de
+    données, situation-problème, en-tête "Partie") - jamais l'équivalent de
+    catalog.rendering.lesson_preview_markdown (sujet ENTIER, légitime là-bas car ce
+    sont d'anciens sujets déjà publics ailleurs). Ici, l'argument de vente d'une
+    Épreuve Inédite est justement de n'avoir jamais été vue nulle part (voir
+    EpreuveInediteDetailPage.tsx) : en dévoiler l'intégralité gratuitement grillerait
+    à la fois l'exclusivité (contenu copiable/partageable avant tout paiement) et
+    l'effet "conditions réelles" pour quiconque l'aurait déjà lu. Une seule question
+    suffit à donner le niveau - mais sans son support partagé (ExerciceInedite.
+    enonce_intro_markdown, voir ce champ), cette question est parfois inintelligible
+    (ex. "Calculer les effectifs cumulés croissants de cette série" sans le tableau
+    de données qui précède, dans enonce_intro_markdown) : même défaut, et même
+    correctif, que EpreuveInedite.compile_from_exercices, qui inclut déjà ce support
+    avant les questions dans le document compilé complet.
 
     Renvoie aussi le numéro de cet exercice (ExerciceInedite.numero_exercice) - affiché
     en référence sous l'aperçu côté fiche détail, pour que le lecteur sache de quel
@@ -90,17 +115,36 @@ def _apercu_enonce(epreuve):
     premiere_question = premier_exercice.questions.order_by("ordre").first()
     if premiere_question is None:
         return None, None
-    return premiere_question.enonce_markdown, premier_exercice.numero_exercice
+    if intro := premier_exercice.enonce_intro_markdown:
+        markdown = f"{intro}\n\n{premiere_question.enonce_markdown}"
+    else:
+        markdown = premiere_question.enonce_markdown
+    return markdown, premier_exercice.numero_exercice
 
 
-def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None, include_apercu=False):
+def epreuve_inedite_catalogue_payload(
+    epreuve, request, *, exercises_count=None, include_apercu=False, related_cours=None, context=None,
+):
     """Sérialise une EpreuveInedite dans la même forme que LessonSerializer.Meta.fields.
     Réutilisé par le catalogue fusionné (liste) ET inedit.views.epreuve_inedite_detail
     (fiche seule). `exercises_count` pré-calculé pour la liste (voir bulk_exercises_counts) ;
     recalculé à la volée si absent (fiche détail seule - un item, coût négligeable).
     `include_apercu` : coûte 2 requêtes de plus (voir _apercu_enonce) - jamais activé
     pour la liste (un item par carte, inutile à afficher et multiplierait le coût par
-    le nombre de cartes), seulement pour la fiche détail (un seul item)."""
+    le nombre de cartes), seulement pour la fiche détail (un seul item).
+
+    `related_cours`/`context` : même correctif perf que LessonSerializer côté classique
+    (voir LessonListView.list) - la liste pré-calcule les deux en masse pour toute la
+    page (bulk_related_cours_map ci-dessus, est_vitrine_ids) et les passe ici, pour que
+    CoursSummarySerializer (has_access -> Cours.est_vitrine, une vraie requête par
+    objet, voir _HasAccessMixin._est_vitrine côté catalog.serializers) ne reparte pas
+    d'un contexte vierge à chaque épreuve. Sans ces deux arguments (fiche détail seule),
+    repli sur le comportement d'origine - un seul objet, coût négligeable."""
+    context = context if context is not None else {"request": request}
+    if related_cours is None:
+        related_cours = Cours.objects.filter(
+            rappels_source_inedit__exercice__epreuve=epreuve, statut=StatutContenu.VALIDE,
+        ).distinct()
     apercu_markdown, apercu_numero_exercice = _apercu_enonce(epreuve) if include_apercu else (None, None)
     payload = {
         "id": epreuve.id,
@@ -111,8 +155,8 @@ def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None,
         # lisible que pour Lesson/Cours, voir epreuveInediteDetailPath.
         "slug": epreuve.slug,
         "title": epreuve.titre,
-        "subject": SubjectSerializer(epreuve.subject).data,
-        "cursus": CursusSerializer(epreuve.cursus.all(), many=True).data,
+        "subject": SubjectSerializer(epreuve.subject, context=context).data,
+        "cursus": CursusSerializer(epreuve.cursus.all(), many=True, context=context).data,
         "lesson_type": None,
         "lesson_type_display": "Épreuve inédite",
         "year": None,
@@ -132,12 +176,7 @@ def epreuve_inedite_catalogue_payload(epreuve, request, *, exercises_count=None,
         "est_vitrine": False,
         "created_at": epreuve.created_at,
         "exercises_count": epreuve.exercices.count() if exercises_count is None else exercises_count,
-        "related_cours": CoursSummarySerializer(
-            Cours.objects.filter(
-                rappels_source_inedit__exercice__epreuve=epreuve, statut=StatutContenu.VALIDE,
-            ).distinct(),
-            many=True, context={"request": request},
-        ).data,
+        "related_cours": CoursSummarySerializer(related_cours, many=True, context=context).data,
         "sujet_pdf_url": None,
         "duree_minutes": epreuve.blueprint.duree_minutes,
         # Voir inedit.views.download_sujet_pdf, seul point de sortie du fichier (jamais
