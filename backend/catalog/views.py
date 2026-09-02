@@ -9,7 +9,6 @@ from access.services import (
     bulk_active_inedite_cursus_ids,
     bulk_active_subscription_cursus_ids,
     bulk_read_ids,
-    has_access,
     has_access_jusqua_examen,
 )
 from quiz.models import CompetenceItem
@@ -642,8 +641,17 @@ class ThemeExercicesView(APIView):
                 exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
             )
             .select_related("exercise__lesson")
+            .prefetch_related("exercise__lesson__cursus")
             .order_by("-exercise__lesson__year", "exercise__numero_exercice")
         )
+
+        # Ensemble des cursus couverts par un abonnement actif, calculé une fois pour
+        # tout l'appel plutôt qu'un has_access() par exercice distinct (jusqu'à
+        # quelques dizaines sur ce corpus pour un (cursus, matière, thème) fréquenté) -
+        # même correctif que catalog.serializers._HasAccessMixin.get_has_access, avec
+        # lesson.cursus désormais prefetch_related ci-dessus pour que le court-circuit
+        # "cursus vide" ne redéclenche pas non plus une requête par exercice.
+        active_cursus_ids = bulk_active_subscription_cursus_ids(request.user)
 
         # Un exercice bavard peut porter le thème sur plusieurs de ses Question - une
         # seule entrée par exercice, jamais par question (même principe que
@@ -657,12 +665,19 @@ class ThemeExercicesView(APIView):
             if cle in vus:
                 continue
             vus.add(cle)
+            if lesson.est_vitrine:
+                lesson_has_access = True
+            else:
+                lesson_cursus_ids = [c.pk for c in lesson.cursus.all()]
+                lesson_has_access = bool(active_cursus_ids) if not lesson_cursus_ids else any(
+                    cid in active_cursus_ids for cid in lesson_cursus_ids
+                )
             exercices.append({
                 "lesson_slug": lesson.slug,
                 "lesson_title": lesson.title,
                 "lesson_year": lesson.year,
                 "numero_exercice": question.exercise.numero_exercice,
-                "has_access": has_access(request.user, lesson),
+                "has_access": lesson_has_access,
             })
 
         return Response({"tag": tag.name, "exercices": exercices})
