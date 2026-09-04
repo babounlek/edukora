@@ -328,7 +328,7 @@ function CalloutExclusifsJusquaExamen() {
           Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
         </p>
         <p className="mt-1 text-sm text-foreground">
-          « Les thèmes qui reviennent le plus » - le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
+          Sache ce que réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
         </p>
       </div>
     </div>
@@ -460,11 +460,10 @@ export function PricingPage() {
           </div>
           <p className="mb-1 font-display text-sm italic text-primary">Tarifs</p>
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Plus tôt tu t'abonnes, <span className="text-primary">moins tu payes</span>.
+            Plus tôt tu t'abonnes, <span className="text-primary">plus tu économises</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Un seul abonnement qui suit ton année scolaire et devient moins cher chaque mois qui passe - jusqu'à ton
-            examen.
+            Un abonnement valable jusqu'à ton examen, dont le prix baisse chaque mois qui passe.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -538,7 +537,7 @@ export function PricingPage() {
                     grille sm:grid-cols-3 de l'ancienne boîte pleine largeur : cette
                     colonne fait environ la moitié de cette largeur. */}
                 <div className="mt-6 border-t border-border pt-5">
-                  <p className="font-display text-sm font-semibold">Ce qui est inclus</p>
+                  <p className="font-display text-sm font-semibold">Tout ce dont tu as besoin pour préparer ton examen</p>
                   <ul className="mt-3 flex flex-col gap-2.5 text-sm">
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
@@ -564,6 +563,24 @@ export function PricingPage() {
                         Le quiz qui cible tes révisions
                         <span className="block text-xs text-muted-foreground">
                           Il repère tes lacunes et te les repropose au bon moment.
+                        </span>
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      <span>
+                        Épreuves inédites Edukora
+                        <span className="block text-xs text-muted-foreground">
+                          Des sujets originaux, jamais vus ailleurs, au format de ton examen.
+                        </span>
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      <span>
+                        Les thèmes qui reviennent le plus
+                        <span className="block text-xs text-muted-foreground">
+                          Le classement des notions les plus posées, calculé sur les vraies annales.
                         </span>
                       </span>
                     </li>
@@ -837,7 +854,7 @@ export function PricingPage() {
               <ArrowRightLeft className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Et si le paiement automatique ne passe pas ?</dt>
+              <dt className="font-medium">Et si le paiement Mobile Money échoue ?</dt>
               <dd className="mt-0.5 text-sm text-muted-foreground">
                 Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection -
                 un transfert direct, vérifié avant activation.
@@ -854,7 +871,7 @@ export function PricingPage() {
           onClick={() => navigate(coursListPath(country))}
           className="group mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
-          Voir ce qu'il y a à lire avant de te décider
+          Découvrir un cours avant de t'abonner
           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
         </button>
       </section>
