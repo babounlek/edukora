@@ -30,7 +30,6 @@ const MAX_POLL_ATTEMPTS = 40
 interface PaymentMethodOption {
   value: PaymentMethod
   label: string
-  sublabel: string
   badgeClass: string
   content: ReactNode
 }
@@ -39,25 +38,30 @@ interface PaymentMethodOption {
 // couleurs de toute l'app qui doivent rester reconnaissables telles quelles - un
 // utilisateur repère "orange = Orange Money" au premier coup d'oeil, un badge dans
 // la couleur primaire de l'app casserait ce repère.
-const PAYMENT_METHODS: PaymentMethodOption[] = [
-  {
-    value: "CAMPAY",
-    label: "Campay",
-    sublabel: "Instantané",
-    badgeClass: "bg-primary text-primary-foreground",
-    content: <Zap className="size-4" fill="currentColor" />,
-  },
+//
+// Campay est isolé du reste (pas dans un tableau plat des 3 méthodes) : c'est le
+// mode recommandé - activation immédiate, aucune vérification manuelle côté équipe -
+// donc il occupe seul la carte visible par défaut. Orange/MTN restent le plan B pour
+// qui n'arrive pas à payer avec Campay, repliés derrière un lien plutôt qu'affichés
+// à poids égal (voir showManualOptions plus bas) : moins de paiements manuels à
+// vérifier à la main, moins de choix à faire pour la majorité des visiteurs.
+const CAMPAY_METHOD: PaymentMethodOption = {
+  value: "CAMPAY",
+  label: "Campay",
+  badgeClass: "bg-primary text-primary-foreground",
+  content: <Zap className="size-4" fill="currentColor" />,
+}
+
+const MANUAL_METHODS: PaymentMethodOption[] = [
   {
     value: "ORANGE",
     label: "Orange Money",
-    sublabel: "Paiement manuel",
     badgeClass: "bg-[#FF7900] text-white",
     content: "OM",
   },
   {
     value: "MTN",
     label: "MTN MoMo",
-    sublabel: "Paiement manuel",
     badgeClass: "bg-[#FFCC08] text-black",
     content: "MTN",
   },
@@ -104,6 +108,8 @@ export function SubscribePage() {
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CAMPAY")
+  // Replié par défaut - voir la note sur CAMPAY_METHOD/MANUAL_METHODS ci-dessus.
+  const [showManualOptions, setShowManualOptions] = useState(false)
   const [declaredPayment, setDeclaredPayment] = useState<ManualPayment | null>(null)
   const [phase, setPhase] = useState<PaymentPhase>("form")
   const [error, setError] = useState<string | null>(null)
@@ -373,34 +379,83 @@ export function SubscribePage() {
 
               <div className="flex flex-col gap-2.5">
                 <StepLabel n={2}>Moyen de paiement</StepLabel>
-                <div className="grid grid-cols-3 gap-2">
-                  {PAYMENT_METHODS.map((method) => (
-                    <label
-                      key={method.value}
-                      className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-input px-2 py-3.5 text-center transition-all has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
-                    >
-                      <input
-                        type="radio"
-                        name="payment-method"
-                        checked={paymentMethod === method.value}
-                        onChange={() => setPaymentMethod(method.value)}
-                        className="sr-only"
-                      />
-                      <span
-                        className={cn(
-                          "flex size-9 items-center justify-center rounded-full text-[11px] font-bold",
-                          method.badgeClass,
-                        )}
-                      >
-                        {method.content}
+
+                <label
+                  className={cn(
+                    "flex cursor-pointer items-start gap-3 rounded-xl border-2 px-4 py-3.5 transition-all",
+                    paymentMethod === "CAMPAY" ? "border-primary bg-accent ring-1 ring-primary" : "border-input",
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="payment-method"
+                    checked={paymentMethod === "CAMPAY"}
+                    onChange={() => setPaymentMethod("CAMPAY")}
+                    className="sr-only"
+                  />
+                  <span
+                    className={cn(
+                      "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-[11px] font-bold",
+                      CAMPAY_METHOD.badgeClass,
+                    )}
+                  >
+                    {CAMPAY_METHOD.content}
+                  </span>
+                  <span className="flex flex-col gap-0.5">
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
+                      <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-success">
+                        Recommandé
                       </span>
-                      <span className="flex flex-col">
-                        <span className="text-xs font-semibold leading-tight">{method.label}</span>
-                        <span className="text-[10px] leading-tight text-muted-foreground">{method.sublabel}</span>
-                      </span>
-                    </label>
-                  ))}
-                </div>
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      Paiement Mobile Money automatique - confirmation en quelques secondes, accès débloqué
+                      immédiatement.
+                    </span>
+                  </span>
+                </label>
+
+                {!showManualOptions ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowManualOptions(true)}
+                    className="self-start text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                  >
+                    Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo
+                  </button>
+                ) : (
+                  <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
+                    <p className="text-xs text-muted-foreground">
+                      Paiement manuel : tu effectues toi-même le transfert, puis déclares ta transaction. Vérifiée
+                      par notre équipe sous quelques heures.
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {MANUAL_METHODS.map((method) => (
+                        <label
+                          key={method.value}
+                          className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-input px-3 py-2.5 transition-all has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
+                        >
+                          <input
+                            type="radio"
+                            name="payment-method"
+                            checked={paymentMethod === method.value}
+                            onChange={() => setPaymentMethod(method.value)}
+                            className="sr-only"
+                          />
+                          <span
+                            className={cn(
+                              "flex size-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+                              method.badgeClass,
+                            )}
+                          >
+                            {method.content}
+                          </span>
+                          <span className="text-xs font-semibold leading-tight">{method.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col gap-2.5">
