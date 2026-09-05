@@ -236,11 +236,11 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
 // INCREMENT_PAR_TRANCHE, JOURS_PAR_TRANCHE} - recalculés ici pour dessiner
 // l'échéancier visuel ci-dessous, jamais pour fixer un prix (toujours
 // jusquaExamen.effective_price/.price, qui viennent du serveur - voir Echeancier).
-// Grille "Septembre 12 000 F ... Juin 2 000 F" (plancher redescendu de 3 000 à 2 000
-// le 2026-08-30, avec la fusion en une seule offre - voir PricingPage) : si elle
-// change côté backend, ces trois constantes doivent suivre.
-const PLANCHER_AFFICHE = 2000
-const PALIER_AFFICHE = 1000
+// Grille "Septembre 15 000 F ... Juin 3 000 F" (plancher et plafond relevés le
+// 2026-09-05, voir subscriptions.models.py) : si elle change côté backend, ces trois
+// constantes doivent suivre.
+const PLANCHER_AFFICHE = 3000
+const PALIER_AFFICHE = 1500
 const JOURS_PAR_TRANCHE_AFFICHE = 30
 
 type EtapeEcheancier = { tranche: number; prix: number }
@@ -375,8 +375,8 @@ export function PricingPage() {
   // Plafond réel de la grille Jusqu'à l'Examen, lu sur les plans chargés plutôt que
   // recopié en dur (comme PLANCHER_AFFICHE) : contrairement au plancher, qui est une
   // constante Python partagée par tous les cursus (voir PLANCHER_JUSQUA_EXAMEN côté
-  // backend), le plafond est le champ `price` de chaque Plan, seedé à 12 000 FCFA pour
-  // tous les cursus par la migration 0009 mais modifiable cursus par cursus depuis
+  // backend), le plafond est le champ `price` de chaque Plan, seedé à 15 000 FCFA pour
+  // tous les cursus par la migration 0009 (relevé de 12 000 par la 0014) mais modifiable cursus par cursus depuis
   // l'admin - un futur écart entre cursus resterait donc correct ici. Sert à afficher
   // une fourchette avant le choix du cursus plutôt qu'un plancher nu (voir son usage
   // plus bas) : montrer "dès 3 000 FCFA" seul, puis révéler 11 000 FCFA après le choix

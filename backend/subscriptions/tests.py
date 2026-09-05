@@ -89,12 +89,12 @@ class PlanEffectivePriceTests(TestCase):
     """
     Grille par tranches du 2026-08-19 (remplace la règle continue "miroir du taux
     Mensuel" du même jour) : Jusqu'à l'Examen n'a pas de prix figé, `price` sert de
-    plafond (voir Plan.effective_price) atteint à la 10e tranche de 30 jours entamée
-    (plancher redescendu à 2 000 FCFA le 2026-08-30, voir PLANCHER_JUSQUA_EXAMEN).
-    Miroir de PlanEffectiveDurationDaysTests, même tolérance d'un jour sur les bornes
-    calculées depuis `timezone.now().date()` - jours choisis loin des limites de
-    tranche (multiples de 30) pour que cette tolérance ne fasse jamais changer de
-    palier.
+    plafond (voir Plan.effective_price) atteint à la 8e tranche de 30 jours entamée
+    (plancher et plafond relevés le 2026-09-05, voir PLANCHER_JUSQUA_EXAMEN et
+    INCREMENT_PAR_TRANCHE). Miroir de PlanEffectiveDurationDaysTests, même tolérance
+    d'un jour sur les bornes calculées depuis `timezone.now().date()` - jours choisis
+    loin des limites de tranche (multiples de 30) pour que cette tolérance ne fasse
+    jamais changer de palier.
     """
 
     def test_fixe_mode_returns_price_as_is(self):
@@ -104,19 +104,19 @@ class PlanEffectivePriceTests(TestCase):
         )
         self.assertEqual(plan.effective_price(), 2000)
 
-    def test_jusqua_examen_is_capped_at_price_from_the_9th_tranche(self):
+    def test_jusqua_examen_is_capped_at_price_from_the_8th_tranche(self):
         cursus = _cursus()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=300)).date(),
+            date_debut=(timezone.now() + timedelta(days=240)).date(),
         )
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        # 300j (10e tranche) atteint tout juste le plafond de 12 000 (2 000 + 10 x
-        # 1 000) - le prix reste au plafond quel que soit le +/-1 jour de tolérance.
-        self.assertEqual(plan.effective_price(), 12000)
+        # 240j (8e tranche) atteint tout juste le plafond de 15 000 (3 000 + 8 x
+        # 1 500) - le prix reste au plafond quel que soit le +/-1 jour de tolérance.
+        self.assertEqual(plan.effective_price(), 15000)
 
     def test_jusqua_examen_applies_the_staircase_in_the_middle_zone(self):
         cursus = _cursus()
@@ -125,12 +125,12 @@ class PlanEffectivePriceTests(TestCase):
             date_debut=(timezone.now() + timedelta(days=100)).date(),
         )
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
         # 100j tombe dans la 4e tranche (90-119j) que ce soit 99, 100 ou 101 avec la
-        # tolérance d'un jour : 2 000 + 3 x 1 000.
-        self.assertEqual(plan.effective_price(), 5000)
+        # tolérance d'un jour : 3 000 + 3 x 1 500.
+        self.assertEqual(plan.effective_price(), 7500)
 
     def test_jusqua_examen_never_drops_below_the_floor_close_to_the_exam(self):
         cursus = _cursus()
@@ -139,20 +139,20 @@ class PlanEffectivePriceTests(TestCase):
             date_debut=(timezone.now() + timedelta(days=5)).date(),
         )
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        self.assertEqual(plan.effective_price(), 2000)
+        self.assertEqual(plan.effective_price(), 3000)
 
     def test_jusqua_examen_without_a_session_applies_the_same_rule_to_the_fallback_duration(self):
         cursus = _cursus()
         self.assertFalse(ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).exists())
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
-        # Repli sur duration_days=30 : pile la 2e tranche (30-59j), 2 000 + 1 000.
-        self.assertEqual(plan.effective_price(), 3000)
+        # Repli sur duration_days=30 : pile la 2e tranche (30-59j), 3 000 + 1 500.
+        self.assertEqual(plan.effective_price(), 4500)
 
 
 class SubscriptionExtendTests(TestCase):
