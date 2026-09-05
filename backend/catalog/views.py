@@ -1,4 +1,4 @@
-from django.db.models import Count, Exists, IntegerField, OuterRef, Q, Subquery
+from django.db.models import Case, Count, Exists, IntegerField, Min, OuterRef, Q, Subquery, When
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
@@ -23,6 +23,7 @@ from .models import (
     Cours,
     Country,
     Cursus,
+    Examen,
     Lesson,
     LessonType,
     Origine,
@@ -57,17 +58,61 @@ from .serializers import (
 # deux constantes qui pourraient diverger.
 MIN_POPULAR_READERS = 3
 
+# Rang de tri par niveau d'examen (BEPC avant Probatoire avant BAC), pour le tri par
+# défaut du catalogue - décision utilisateur du 2026-09-05, revient sur le "décision
+# produit : inchangé" plus bas : un catalogue sans filtre mélangeait jusqu'ici tous les
+# niveaux d'examen dans le même ordre alphabétique de titre, ce qui n'aidait personne à
+# s'y retrouver sans re-filtrer soi-même. CAP est l'équivalent technique du BEPC (voir
+# Examen.CAP), donc même rang. AUTRE (devoir surveillé/autre) reste en dernier.
+EXAMEN_RANG = {
+    Examen.BEPC: 0,
+    Examen.CAP: 0,
+    Examen.PROBATOIRE: 1,
+    Examen.BAC: 2,
+    Examen.AUTRE: 3,
+}
+EXAMEN_RANG_INCONNU = 3
+
+
+def _examen_rangs_par_lesson(lesson_ids):
+    """Rang d'examen le plus bas (voir EXAMEN_RANG) par Lesson, pour les `lesson_ids`
+    donnés - une seule requête agrégée (GROUP BY), volontairement séparée du queryset
+    déjà filtré de LessonListView.get_queryset() : Lesson.cursus est un M2M, enchaîner
+    ce Min() sur le même queryset que des filtres actifs (cursus__id, country...)
+    risquerait de réutiliser leurs jointures et de fausser le résultat. Une épreuve
+    commune à plusieurs séries d'un même examen (ex. BAC C/E) ne varie jamais en
+    pratique sur ce premier niveau - le cas où elle varierait resterait cohérent : elle
+    prend alors le rang de son cursus le plus junior (Min), jamais scindée en deux
+    lignes."""
+    if not lesson_ids:
+        return {}
+    rows = (
+        Lesson.objects.filter(id__in=lesson_ids)
+        .values("id")
+        .annotate(
+            examen_rang=Min(
+                Case(
+                    *[When(cursus__examen=code, then=rang) for code, rang in EXAMEN_RANG.items()],
+                    default=EXAMEN_RANG_INCONNU,
+                    output_field=IntegerField(),
+                ),
+            ),
+        )
+    )
+    return {row["id"]: row["examen_rang"] for row in rows}
+
 
 def _merge_sort_key(ordering):
     """Clé de tri pour la liste fusionnée Lesson + EpreuveInedite (voir
     LessonListView.list) - remplace les .order_by() de get_queryset(), impossibles une
     fois les deux querysets combinés en liste Python. Opère sur les valeurs BRUTES
-    (year/title/created_at/popularity) capturées avant sérialisation, jamais sur le
-    dict déjà sérialisé : created_at y devient une chaîne ISO (DRF DateTimeField), pas
-    un datetime - comparer les objets source évite cette ambiguïté de format. Une
-    EpreuveInedite (year=None) est toujours reléguée en fin de tri "year"/défaut -
-    décision produit actée : le tri par défaut reste par année d'examen, les inédites
-    restent découvrables via le filtre origine=INEDITE et le rail "Derniers ajouts"."""
+    (year/title/created_at/popularity/examen_rang) capturées avant sérialisation,
+    jamais sur le dict déjà sérialisé : created_at y devient une chaîne ISO (DRF
+    DateTimeField), pas un datetime - comparer les objets source évite cette ambiguïté
+    de format. Une EpreuveInedite (year=None) est toujours reléguée en fin de tri
+    "year"/défaut - décision produit actée : le tri par défaut reste par année
+    d'examen, les inédites restent découvrables via le filtre origine=INEDITE et le
+    rail "Derniers ajouts"."""
     if ordering == "year":
         return lambda e: ((1, 0) if e["year"] is None else (0, e["year"]), e["title"])
     if ordering == "recent":
@@ -77,8 +122,14 @@ def _merge_sort_key(ordering):
             year_key = (1, 0) if e["year"] is None else (0, -e["year"])
             return (-(e["popularity"] or 0), year_key)
         return key
-    # défaut = Lesson.Meta.ordering (["-year", "title"]) - décision produit : inchangé.
-    return lambda e: ((1, 0) if e["year"] is None else (0, -e["year"]), e["title"])
+    # défaut = Lesson.Meta.ordering (["-year", "title"]), désormais groupé par niveau
+    # d'examen d'abord (voir EXAMEN_RANG ci-dessus) : la préséance "année récente
+    # d'abord" ne joue plus qu'À L'INTÉRIEUR d'un même niveau, pas across niveaux -
+    # sinon un BAC 2026 repasserait toujours avant un BEPC 2025, contraire à l'objectif.
+    return lambda e: (
+        (1, e["examen_rang"], 0) if e["year"] is None else (0, e["examen_rang"], -e["year"]),
+        e["title"],
+    )
 
 
 class LessonListView(generics.ListAPIView):
@@ -236,6 +287,19 @@ class LessonListView(generics.ListAPIView):
             }
             for row in inedit_qs.values(*inedit_value_fields)
         ]
+
+        # Seul le tri par défaut groupe par niveau d'examen (voir _merge_sort_key) -
+        # inutile de payer la requête agrégée de _examen_rangs_par_lesson pour
+        # ?ordering=year/recent/popular, qui ne lisent jamais cette clé. Toujours
+        # EXAMEN_RANG_INCONNU côté inédites : décision produit inchangée, elles restent
+        # reléguées en fin de liste par leur year=None quel que soit leur cursus - voir
+        # la docstring de _merge_sort_key.
+        if not ordering:
+            examen_rangs = _examen_rangs_par_lesson([k["id"] for k in lesson_keys])
+            for k in lesson_keys:
+                k["examen_rang"] = examen_rangs.get(k["id"], EXAMEN_RANG_INCONNU)
+            for k in inedit_keys:
+                k["examen_rang"] = EXAMEN_RANG_INCONNU
 
         merged_keys = lesson_keys + inedit_keys
         merged_keys.sort(key=_merge_sort_key(ordering))

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Lock } from "lucide-react"
 
 import { getCours, previewCours } from "@/api/endpoints"
+import { ApiError } from "@/api/client"
 import type { Cours, CoursPreview } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
@@ -21,6 +22,7 @@ export function CoursDetailPage() {
 
   const [cours, setCours] = useState<Cours | null>(null)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
+  const [error, setError] = useState("")
 
   useSeo({
     title: cours?.titre ?? "Cours",
@@ -31,7 +33,15 @@ export function CoursDetailPage() {
 
   useEffect(() => {
     if (!slug) return
-    getCours(slug).then(setCours)
+    getCours(slug)
+      .then(setCours)
+      .catch((err) => {
+        if (err instanceof ApiError && err.status === 404) {
+          setError("Ce cours n'existe pas ou n'est plus disponible.")
+        } else {
+          setError(err instanceof ApiError ? err.message : "Impossible de charger ce cours.")
+        }
+      })
   }, [slug])
 
   useEffect(() => {
@@ -48,6 +58,17 @@ export function CoursDetailPage() {
       navigate(coursReaderPath(cours.slug), { replace: true })
     }
   }, [cours, navigate])
+
+  if (error && !cours) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+        <p className="text-destructive">{error}</p>
+        <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+          Retour au catalogue
+        </Link>
+      </div>
+    )
+  }
 
   if (!cours || cours.has_access) {
     return (

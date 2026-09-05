@@ -551,6 +551,45 @@ class OrderingFilterApiTests(TestCase):
         self.assertLess(titles.index("Ancien"), titles.index("Recent"))
 
 
+class DefaultOrderingGroupsByExamenLevelApiTests(TestCase):
+    """Tri par défaut de /catalog/lessons/ (sans ?ordering) - décision utilisateur du
+    2026-09-05 (voir catalog.views.EXAMEN_RANG) : groupe désormais par niveau d'examen
+    (BEPC avant Probatoire avant BAC) avant de départager par année, plutôt que de
+    mélanger tous les niveaux dans le même ordre alphabétique de titre comme avant.
+    Un élève qui arrive sur le catalogue sans filtre doit au moins voir son propre
+    niveau d'examen groupé, pas interfolé avec les autres."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC, series__isnull=True)
+        bac_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        # Années choisies pour que le tri "-year" seul (ancien défaut) placerait le BAC
+        # AVANT le BEPC (2026 > 2020) - si ce test passe quand même, c'est bien le
+        # groupement par examen qui l'emporte, pas un hasard sur les années.
+        self.bepc_lesson = Lesson.objects.create(
+            title="BEPC ancien", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, year=2020,
+        )
+        self.bepc_lesson.cursus.add(bepc)
+        self.bac_lesson = Lesson.objects.create(
+            title="BAC recent", subject=subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, year=2026,
+        )
+        self.bac_lesson.cursus.add(bac_c)
+
+    def test_bepc_groups_before_bac_regardless_of_year(self):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertLess(titles.index("BEPC ancien"), titles.index("BAC recent"))
+
+    def test_explicit_year_ordering_is_unaffected(self):
+        # ?ordering=year reste un tri global par année, jamais groupé par examen -
+        # décision distincte, laissée intacte (voir _merge_sort_key).
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "year"})
+        titles = [item["title"] for item in response.json()["results"]]
+        self.assertLess(titles.index("BEPC ancien"), titles.index("BAC recent"))
+
+
 class PopularOrderingApiTests(TestCase):
     """`?ordering=popular` sur /catalog/lessons/ - classe par nombre de lecteurs
     distincts (access.LectureProgress), avec un seuil minimum (voir

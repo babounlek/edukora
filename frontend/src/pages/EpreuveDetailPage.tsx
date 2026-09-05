@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { ArrowLeft, ArrowRight, BookOpenText, Crown, FileDown, GraduationCap, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
+import { ApiError } from "@/api/client"
 import type { Epreuve, EpreuvePreview } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -25,6 +26,7 @@ export function EpreuveDetailPage() {
 
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [preview, setPreview] = useState<EpreuvePreview | null>(null)
+  const [error, setError] = useState("")
 
   useSeo({
     title: epreuve?.title ?? "Corrigé",
@@ -35,7 +37,15 @@ export function EpreuveDetailPage() {
 
   useEffect(() => {
     if (!slug) return
-    getEpreuve(slug).then(setEpreuve)
+    getEpreuve(slug)
+      .then(setEpreuve)
+      .catch((err) => {
+        if (err instanceof ApiError && err.status === 404) {
+          setError("Cette épreuve n'existe pas ou n'est plus disponible.")
+        } else {
+          setError(err instanceof ApiError ? err.message : "Impossible de charger cette épreuve.")
+        }
+      })
   }, [slug])
 
   useEffect(() => {
@@ -69,6 +79,17 @@ export function EpreuveDetailPage() {
       navigate(epreuveDetailPath(canonicalCountry, epreuve.slug as string), { replace: true })
     }
   }, [epreuve, country, navigate])
+
+  if (error && !epreuve) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+        <p className="text-destructive">{error}</p>
+        <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+          Retour au catalogue
+        </Link>
+      </div>
+    )
+  }
 
   if (!epreuve) {
     return (

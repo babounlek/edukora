@@ -328,7 +328,7 @@ function CalloutExclusifsJusquaExamen() {
           Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
         </p>
         <p className="mt-1 text-sm text-foreground">
-          Sache ce que réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
+          Tu sauras ce que tu dois réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
         </p>
       </div>
     </div>
@@ -459,6 +459,12 @@ export function PricingPage() {
             <Sparkles className="size-5" />
           </div>
           <p className="mb-1 font-display text-sm italic text-primary">Tarifs</p>
+          {/* Tutoiement de bout en bout, y compris l'onglet Répétiteur plus bas
+              (décision du 2026-09-05) : un brouillon non commité vouvoyait cette page
+              ("acheteur adulte" payeur), rompant avec le reste du site (accueil, quiz,
+              corrigés) qui tutoie l'élève partout - jamais mergé, donc sans effet sur
+              la version publiée, mais présent dans l'arbre de travail. Écarté au
+              profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
             Plus tôt tu t'abonnes, <span className="text-primary">plus tu économises</span>.
           </h1>
