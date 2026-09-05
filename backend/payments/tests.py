@@ -399,7 +399,7 @@ class PaymentFlowAPITests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         transaction = Transaction.objects.get(pk=response.data["transaction_id"])
-        self.assertEqual(transaction.amount, 3000)
+        self.assertEqual(transaction.amount, 4000)
 
     @patch("payments.models.campay_client.init_collect")
     def test_initiate_payment_applies_available_credit_as_a_discount(self, mock_init):
@@ -677,12 +677,12 @@ class ManualPaymentDeclareAPITests(TestCase):
         )
 
         response = self.client.post(
-            "/payments/manual/declare/", self._payload(plan=plan.id, amount_declared=3000),
+            "/payments/manual/declare/", self._payload(plan=plan.id, amount_declared=4000),
         )
 
         self.assertEqual(response.status_code, 201)
         payment = ManualPayment.objects.get(pk=response.data["id"])
-        self.assertEqual(payment.amount_expected, 3000)
+        self.assertEqual(payment.amount_expected, 4000)
 
     def test_rejects_amount_declared_below_plan_price(self):
         # Constaté en production : un montant déclaré inférieur au prix de l'offre ne

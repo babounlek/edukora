@@ -21,20 +21,25 @@ class DureeMode(models.TextChoices):
 # ("jamais plus cher au jour que Mensuel"), elle-même un remplacement d'un filet de
 # seuils choisis à la main.
 #
-# Plancher et plafond relevés le 2026-09-05 (2 000 → 3 000, 12 000 → 15 000, voir
-# migration 0014) : décision utilisateur, la grille du 30/08 sous-évaluait les deux
-# bornes. Le plancher retrouve son niveau d'avant le 30/08 (la raison de l'avoir
-# baissé - ne jamais dépasser le prix de l'ancien Mensuel à 2 000 F - ne tient plus
-# depuis que Mensuel est retiré de la vente par la même migration). Le plafond
-# retrouve le niveau de l'ancien palier "Max" (365j), qui existait avant la fusion à 2
-# paliers du 19/08 - un repère déjà éprouvé, pas un montant choisi au hasard.
-# INCREMENT_PAR_TRANCHE relevé à 1 500 en même temps (au lieu de rester à 1 000) pour
-# que le plafond reste atteint par qui achète tôt (8 tranches, 240 jours) plutôt que
-# de reculer à 360 jours - hors de portée du calendrier scolaire réel (rentrée en
-# septembre, examens en juin, ~280-300 jours) et donc jamais payé en pratique.
+# Plancher et plafond une première fois relevés le 2026-09-05 (2 000 → 3 000,
+# 12 000 → 15 000, voir migration 0014) : décision utilisateur, la grille du 30/08
+# sous-évaluait les deux bornes. Le plancher retrouvait son niveau d'avant le 30/08 (la
+# raison de l'avoir baissé - ne jamais dépasser le prix de l'ancien Mensuel à 2 000 F -
+# ne tenait plus depuis que Mensuel est retiré de la vente par la même migration). Le
+# plafond retrouvait le niveau de l'ancien palier "Max" (365j), qui existait avant la
+# fusion à 2 paliers du 19/08.
+#
+# Relevés une seconde fois le même jour (3 000 → 4 000, 15 000 → 20 000, voir migration
+# 0015) : décision utilisateur, toujours pré-lancement (aucun utilisateur payant à ce
+# stade, donc aucune donnée de conversion à arbitrer - le bon moment pour se tromper).
+# INCREMENT_PAR_TRANCHE relevé à 2 000 en même temps (1 000 → 1 500 → 2 000) - même
+# ratio que la grille précédente (plafond = 5x le plancher, incrément = 0,5x le
+# plancher), donc une hausse uniforme de 33 % plutôt qu'un nouveau design : le plafond
+# reste atteint à 8 tranches (240 jours), toujours dans le calendrier scolaire réel
+# (rentrée en septembre, examens en juin, ~280-300 jours).
 JOURS_PAR_TRANCHE = 30
-INCREMENT_PAR_TRANCHE = 1500
-PLANCHER_JUSQUA_EXAMEN = 3000
+INCREMENT_PAR_TRANCHE = 2000
+PLANCHER_JUSQUA_EXAMEN = 4000
 
 
 class ProductType(models.TextChoices):
