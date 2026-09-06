@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom"
 import {
   ArrowRight,
   CheckCircle2,
-  Compass,
   ListChecks,
   Lock,
   Minus,
@@ -181,30 +180,6 @@ export function QuizStartPage() {
           prendre en main de la même façon. */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-6">
-          {/* Pilote Maths (voir le plan "parcours d'apprentissage") : entrée discrète
-              plutôt qu'un ajout à la nav globale - reste facile à retirer tant que le
-              concept n'est pas encore prouvé sur d'autres matières/cursus. */}
-          {subscriptions.length > 0 && (
-            <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent">
-              <CardContent className="flex items-center justify-between gap-3 pt-6">
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Compass className="size-4" />
-                  </span>
-                  <p className="min-w-0 truncate text-sm font-medium">
-                    Découvre ton parcours - le programme officiel, dans l'ordre
-                  </p>
-                </div>
-                <Button asChild size="sm" variant="outline" className="shrink-0">
-                  <Link to="/parcours">
-                    Voir
-                    <ArrowRight className="size-3.5" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-
           {subscriptions.length === 0 ? (
             <Card className="overflow-hidden border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
               <CardContent className="flex flex-col items-start gap-4 pt-6">

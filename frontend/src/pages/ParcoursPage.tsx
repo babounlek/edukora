@@ -165,6 +165,17 @@ export function ParcoursPage() {
       )}
 
       {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
+      {/* Discret plutôt qu'un bouton : le parcours est désormais l'entrée de nav
+          (voir Header.tsx), la config libre (matière/mode/nombre de questions, sans
+          suivre le programme) devient une option secondaire, pas une destination
+          concurrente. */}
+      <p className="mt-8 text-center text-sm text-muted-foreground">
+        Envie de t'entraîner librement, sans suivre le parcours ?{" "}
+        <Link to="/quiz" className="font-medium text-primary hover:underline">
+          Entraînement libre
+        </Link>
+      </p>
     </div>
   )
 }

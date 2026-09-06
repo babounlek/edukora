@@ -100,14 +100,14 @@ export function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   const isTarifsSection = pathname.startsWith("/tarifs")
-  const isQuizSection = !isTarifsSection && pathname.startsWith("/quiz")
+  const isParcoursSection = !isTarifsSection && pathname.startsWith("/parcours")
   const isFichesSection = !isTarifsSection && pathname.startsWith("/fiches")
   const isCoursSection =
-    !isTarifsSection && !isQuizSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
+    !isTarifsSection && !isParcoursSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
   const isEpreuvesSection =
     !isCoursSection &&
     !isTarifsSection &&
-    !isQuizSection &&
+    !isParcoursSection &&
     (pathname === epreuvesListPath(country) || pathname.startsWith("/epreuves"))
 
   // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
@@ -131,7 +131,7 @@ export function Header() {
   const navLinks = [
     { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
     { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
-    { to: "/quiz", label: "Quiz", active: isQuizSection, badge: false },
+    { to: "/parcours", label: "Parcours", active: isParcoursSection, badge: false },
     { to: "/fiches", label: "Fiches", active: isFichesSection, badge: false },
     { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
   ]
@@ -219,8 +219,8 @@ export function Header() {
           <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to={coursListPath(country)}>Cours</Link>
           </Button>
-          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to="/quiz">Quiz</Link>
+          <Button asChild variant={isParcoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
+            <Link to="/parcours">Parcours</Link>
           </Button>
           <Button asChild variant={isFichesSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to="/fiches">Fiches</Link>
