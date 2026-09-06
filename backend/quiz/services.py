@@ -1,9 +1,19 @@
 import random
 from datetime import timedelta
 
+from django.db.models import Q
 from django.utils import timezone
 
-from catalog.models import Difficulte, StatutContenu
+from access.models import LectureProgress
+from catalog.models import Cours, Difficulte, StatutContenu, Subject
+from programme.models import Module
+
+# Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
+# besoin de classer chaque savoir pour produire un histogramme (voir sa docstring), ce
+# que construire_parcours ne fait jamais (il ne renvoie que des taux bruts, le
+# classement restant une décision d'affichage). Aucun partage de constante possible
+# entre les deux bases de code : si l'une change, l'autre doit suivre à la main.
+SEUIL_MAITRISE = 70
 
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
@@ -29,19 +39,28 @@ _POIDS_THEME_NEUTRE = 1.0
 LEITNER_INTERVALS_JOURS = [1, 3, 7]
 
 
-def _items_eligibles(cursus, subject=None, theme=None):
+def _items_eligibles(cursus, subject=None, theme=None, savoir=None):
     """
     Source unique du Mode Quiz depuis la bascule : CompetenceItem, jamais
     catalog.Question. Contrairement à l'ancien pool (Question extraite d'un Exercise,
     filtrée après coup par Question.references_missing_figure faute de mieux), un
     CompetenceItem est écrit dès l'origine pour se suffire seul - aucun filtre de
     rattrapage n'est nécessaire ici : statut=VALIDE est la seule porte d'entrée.
+
+    `savoir` (distinct de `theme`) : filtre par savoir officiel plutôt que par un Tag
+    précis - un Savoir peut porter plusieurs Tags (voir programme.Savoir.tags), donc
+    filtrer sur `theme__savoir_officiel` couvre tous les CompetenceItem du savoir
+    plutôt que de forcer l'appelant à deviner lequel de ces Tags interroger. Sert le
+    parcours (voir construire_parcours) : une étape s'y lance par Savoir, jamais par
+    Tag brut.
     """
     qs = CompetenceItem.objects.filter(statut=StatutContenu.VALIDE, cursus=cursus).distinct()
     if subject:
         qs = qs.filter(subject=subject)
     if theme:
         qs = qs.filter(theme=theme)
+    if savoir:
+        qs = qs.filter(theme__savoir_officiel=savoir)
     return list(qs)
 
 
@@ -130,7 +149,7 @@ def _selection_ponderee_par_theme(items, poids_par_theme, n):
     return [item for _, item in cles[:n]]
 
 
-def generer_session(user, cursus, mode, subject=None, theme=None, n=10):
+def generer_session(user, cursus, mode, subject=None, theme=None, savoir=None, n=10):
     """
     Sélectionne jusqu'à n CompetenceItem et crée une QuizSession. Lève ValueError si
     aucun item n'est éligible pour ces critères (pas encore de banque générée pour
@@ -143,8 +162,11 @@ def generer_session(user, cursus, mode, subject=None, theme=None, n=10):
     selon le taux d'échec de l'utilisateur sur ce cursus (voir _poids_par_theme) - sans
     historique (première session, ou thème jamais pratiqué), retombe sur un poids
     neutre équivalent à l'ancien tirage uniforme.
+
+    `savoir` : voir _items_eligibles - filtre alternatif à `theme`, utilisé pour
+    lancer un quiz depuis une étape du parcours (voir construire_parcours).
     """
-    items = _items_eligibles(cursus, subject=subject, theme=theme)
+    items = _items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir)
     if not items:
         raise ValueError("Aucune question disponible pour ces critères.")
 
@@ -264,3 +286,157 @@ def maitrise_par_theme(user, cursus=None):
         s["en_revision"] = s["theme_id"] in themes_en_revision
 
     return sorted(stats.values(), key=lambda s: s["taux"])
+
+
+def maitrise_par_savoir(user, cursus=None):
+    """
+    Comme maitrise_par_theme, mais agrégée par programme.Savoir plutôt que par Tag -
+    seule alimentation interne de construire_parcours (jamais exposée telle quelle en
+    API, contrairement à maitrise_par_theme). Un Savoir peut porter plusieurs Tags
+    (voir Savoir.tags, et le cas réel documenté dans _cours_pour_competence côté vues) :
+    ce regroupement les fusionne, plutôt que de forcer l'appelant à recomposer un score
+    par savoir à partir de plusieurs entrées de maitrise_par_theme. Seules les réponses
+    dont le thème est déjà rattaché à un Savoir officiel comptent ici - un thème sans
+    rattachement n'a, par construction, aucun savoir à créditer (même situation que
+    _poids_par_theme/maitrise_par_theme pour l'historique catalog.Question, exclu pour
+    la même raison de granularité fiable).
+
+    Renvoie {savoir_id: taux} plutôt qu'une liste triée : construire_parcours doit
+    pouvoir chercher le taux d'un savoir précis pendant qu'il parcourt le programme
+    dans SON propre ordre (Module.ordre/Savoir.ordre), pas dans un ordre de tri par
+    faiblesse qui n'a de sens que pour maitrise_par_theme.
+    """
+    reponses = (
+        QuizAnswer.objects.filter(
+            quiz_question__session__user=user,
+            quiz_question__competence_item__isnull=False,
+            quiz_question__competence_item__theme__savoir_officiel__isnull=False,
+        )
+        .select_related("quiz_question__competence_item__theme")
+    )
+    if cursus:
+        reponses = reponses.filter(quiz_question__session__cursus=cursus)
+
+    stats = {}
+    for reponse in reponses:
+        savoir_id = reponse.quiz_question.competence_item.theme.savoir_officiel_id
+        s = stats.setdefault(savoir_id, {"total": 0, "reussies": 0})
+        s["total"] += 1
+        if reponse.est_correcte:
+            s["reussies"] += 1
+
+    return {savoir_id: round(100 * s["reussies"] / s["total"]) for savoir_id, s in stats.items()}
+
+
+def construire_parcours(user, cursus, subject):
+    """
+    Vue séquencée du programme officiel (voir programme.Module/Savoir) pour un
+    cursus/matière donnés, enrichie savoir par savoir avec la progression réelle de
+    l'utilisateur - alimente GET /quiz/parcours/. Contrairement à maitrise_par_theme/
+    revisions_dues (vues plates, sans notion d'ordre), c'est la structure du
+    programme officiel qui organise l'affichage (Module.ordre, Savoir.ordre, déjà
+    fiables - voir programme.Module) ; la progression de l'élève ne fait qu'annoter
+    chaque étape.
+
+    Ne filtre RIEN sur le contenu disponible : un Savoir sans Cours ni CompetenceItem
+    apparaît quand même (`cours=None`, `has_quiz=False`) plutôt que d'être masqué - la
+    structure du programme doit rester visible même incomplète (cas du BEPC
+    aujourd'hui), pas seulement les savoirs déjà couverts. C'est au frontend de
+    griser une étape sans contenu, jamais à cette fonction de la faire disparaître.
+    """
+    taux_par_savoir = maitrise_par_savoir(user, cursus=cursus)
+    savoir_ids_en_revision = set(
+        RevisionSchedule.objects.filter(user=user, cursus=cursus, theme__savoir_officiel__isnull=False)
+        .values_list("theme__savoir_officiel_id", flat=True)
+    )
+    savoir_ids_lus = set(
+        LectureProgress.objects.filter(user=user, cours__tags__savoir_officiel__isnull=False)
+        .values_list("cours__tags__savoir_officiel_id", flat=True)
+    )
+    savoir_ids_avec_quiz = set(
+        CompetenceItem.objects.filter(
+            statut=StatutContenu.VALIDE, cursus=cursus, theme__savoir_officiel__isnull=False,
+        )
+        .values_list("theme__savoir_officiel_id", flat=True)
+    )
+
+    modules = Module.objects.filter(subject=subject, cursus=cursus).prefetch_related("savoirs").distinct()
+
+    parcours = []
+    for module in modules:
+        savoirs_payload = []
+        for savoir in module.savoirs.all():
+            # Le premier Cours publié qui couvre ce savoir (voir Cours.tags ->
+            # Tag.savoir_officiel) - même relation que le niveau 2 de
+            # quiz.views._cours_pour_competence, ici interrogée directement par
+            # Savoir plutôt que déduite d'un CompetenceItem particulier.
+            cours = (
+                Cours.objects.visibles()
+                .filter(subject=subject, tags__savoir_officiel=savoir)
+                .filter(Q(cursus=cursus) | Q(cursus__isnull=True))
+                .distinct()
+                .order_by("id")
+                .first()
+            )
+            savoirs_payload.append({
+                "id": savoir.id,
+                "numero": savoir.numero,
+                "intitule": savoir.intitule,
+                # None (jamais tenté) distingué de 0% (tenté, en échec) - la vue
+                # d'ensemble doit savoir laquelle des deux situations elle affiche.
+                "taux": taux_par_savoir.get(savoir.id),
+                "en_revision": savoir.id in savoir_ids_en_revision,
+                "a_lu_le_cours": savoir.id in savoir_ids_lus,
+                "has_quiz": savoir.id in savoir_ids_avec_quiz,
+                "cours": {"slug": cours.slug, "titre": cours.titre} if cours else None,
+            })
+        parcours.append({"numero": module.numero, "titre": module.titre, "savoirs": savoirs_payload})
+    return parcours
+
+
+def resume_parcours(user, cursus):
+    """
+    Une ligne par matière ayant un programme officiel pour ce cursus (voir
+    programme.Module.cursus), réduite à un histogramme de statuts par savoir -
+    alimente le tableau de bord GET /quiz/parcours/resume/, point d'entrée
+    "toutes tes matières" au-dessus du détail séquencé (construire_parcours).
+
+    Réutilise construire_parcours tel quel plutôt que de dupliquer sa logique de
+    jointure Module/Savoir/maîtrise/Cours : au volume actuel (quelques dizaines de
+    savoirs par matière, une poignée de matières par cursus), le coût redondant est
+    négligeable et ça élimine tout risque que le résumé raconte une histoire
+    différente du détail sur lequel il renvoie.
+
+    N'exclut aucune matière, même sans aucun contenu encore rattaché (`sans_contenu`
+    == `total`) - même principe que construire_parcours pour un savoir isolé : la
+    structure du programme reste visible, c'est au frontend de l'afficher en retrait.
+    """
+    subjects = (
+        Subject.objects.filter(modules_officiels__cursus=cursus).distinct().order_by("label")
+    )
+
+    resume = []
+    for subject in subjects:
+        savoirs = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
+        # Un seul bucket par savoir, jamais un chevauchement à retrancher après coup -
+        # chaque condition est testée dans cet ordre de priorité précis (ex. un savoir
+        # sans contenu ne compte jamais pour "à réviser" même si une donnée historique
+        # incohérente le laissait croire).
+        compteurs = {"maitrises": 0, "en_revision": 0, "a_decouvrir": 0, "sans_contenu": 0}
+        for s in savoirs:
+            if not s["has_quiz"] and not s["cours"]:
+                compteurs["sans_contenu"] += 1
+            elif s["taux"] is not None and s["taux"] >= SEUIL_MAITRISE:
+                compteurs["maitrises"] += 1
+            elif s["en_revision"]:
+                compteurs["en_revision"] += 1
+            else:
+                compteurs["a_decouvrir"] += 1
+        resume.append({
+            "subject_id": subject.id,
+            "subject_code": subject.code,
+            "subject_label": subject.label,
+            "total": len(savoirs),
+            **compteurs,
+        })
+    return resume

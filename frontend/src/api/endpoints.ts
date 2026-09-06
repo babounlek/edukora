@@ -14,11 +14,11 @@ import type {
   FicheThemeEligible,
   InscriptionInedite,
   InscriptionRepetiteur,
-  MaitriseTheme,
   ManualPayment,
   MobileMoneyAccount,
   ModeQuiz,
   Paginated,
+  ParcoursModule,
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
@@ -28,7 +28,7 @@ import type {
   QuizResult,
   QuizSession,
   PlatformStats,
-  RevisionDue,
+  ResumeMatiere,
   Subject,
   Subscription,
   Temoignage,
@@ -330,6 +330,10 @@ export interface StartQuizSessionParams {
   mode?: ModeQuiz
   subject?: number
   theme?: number
+  // Alternative à theme : cible tous les CompetenceItem du savoir, quel que soit le
+  // Tag exact qui les porte (un Savoir peut en porter plusieurs) - voir
+  // ParcoursPage, qui lance toujours par savoir, jamais par theme.
+  savoir?: number
   n?: number
 }
 
@@ -364,17 +368,16 @@ export function completeQuizSession(sessionId: number) {
   return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
 }
 
-export function listRevisionsDues() {
-  return apiRequest<RevisionDue[]>("/quiz/revisions/")
-}
-
-export function getMaitrise(cursus?: number) {
-  const query = cursus ? `?cursus=${cursus}` : ""
-  return apiRequest<MaitriseTheme[]>(`/quiz/maitrise/${query}`)
-}
-
 export function listQuizSubjects(cursus: number) {
   return apiRequest<Subject[]>(`/quiz/subjects/?cursus=${cursus}`)
+}
+
+export function getParcours(cursus: number, subject: number) {
+  return apiRequest<ParcoursModule[]>(`/quiz/parcours/?cursus=${cursus}&subject=${subject}`)
+}
+
+export function getResumeParcours(cursus: number) {
+  return apiRequest<ResumeMatiere[]>(`/quiz/parcours/resume/?cursus=${cursus}`)
 }
 
 export function listMyInscriptionsInedites() {

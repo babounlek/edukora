@@ -29,6 +29,7 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework.test import APIClient
 
+from access.models import LectureProgress
 from catalog.ingestion import IngestionError
 from catalog.models import (
     Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Question, Series, StatutContenu,
@@ -41,8 +42,8 @@ from users.models import User
 from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule
 from .services import (
-    LEITNER_INTERVALS_JOURS, _poids_par_theme, enregistrer_resultat_pour_revision, generer_session,
-    maitrise_par_theme, revisions_dues,
+    LEITNER_INTERVALS_JOURS, _poids_par_theme, construire_parcours, enregistrer_resultat_pour_revision,
+    generer_session, maitrise_par_savoir, maitrise_par_theme, resume_parcours, revisions_dues,
 )
 from .views import _clean_quiz_markdown, _question_payload
 
@@ -666,6 +667,24 @@ class GenererSessionTests(TestCase):
 
         self.assertEqual(session.quiz_questions.count(), 1)
         self.assertEqual(session.quiz_questions.first().competence_item, matching)
+
+    def test_filters_by_savoir_across_several_tags(self):
+        # Un Savoir peut porter plusieurs Tags (cas réel documenté dans
+        # quiz.services._items_eligibles) : les deux doivent être couverts, pas
+        # seulement l'un des deux comme le ferait un filtre par theme= unique.
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="M")
+        savoir = Savoir.objects.create(module=module, numero="I", intitule="Dérivation")
+        theme_a = Tag.objects.create(name="dérivation - approche graphique", savoir_officiel=savoir)
+        theme_b = Tag.objects.create(name="dérivation - calcul formel", savoir_officiel=savoir)
+        item_a = _make_competence_item(self.subject, self.cursus, theme=theme_a, numero="1")
+        item_b = _make_competence_item(self.subject, self.cursus, theme=theme_b, numero="2")
+        _make_competence_item(self.subject, self.cursus, numero="3")  # savoir différent
+
+        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, savoir=savoir, n=10)
+
+        self.assertEqual(
+            {qq.competence_item_id for qq in session.quiz_questions.all()}, {item_a.id, item_b.id},
+        )
 
     def test_brouillon_items_are_not_eligible(self):
         # Le verrou de qualité est désormais explicite (statut=VALIDE), pas une
@@ -1579,6 +1598,222 @@ class MaitriseApiTests(TestCase):
         response = self.client.get(f"/quiz/maitrise/?cursus={other_cursus.id}")
 
         self.assertEqual(response.data, [])
+
+
+class ConstruireParcoursTests(TestCase):
+    """quiz.services.construire_parcours - vue séquencée du programme officiel,
+    enrichie de la progression réelle de l'utilisateur savoir par savoir."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200021", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+
+        self.module_2 = Module.objects.create(
+            subject=self.subject, classe="Tle", serie_label="C", numero="2", titre="Second module", ordre=2,
+        )
+        self.module_2.cursus.add(self.cursus)
+        self.module_1 = Module.objects.create(
+            subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="Premier module", ordre=1,
+        )
+        self.module_1.cursus.add(self.cursus)
+        self.savoir_1b = Savoir.objects.create(module=self.module_1, numero="II", intitule="Second savoir", ordre=2)
+        self.savoir_1a = Savoir.objects.create(module=self.module_1, numero="I", intitule="Premier savoir", ordre=1)
+
+    def _repondre(self, item, correcte):
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
+
+    def test_orders_modules_and_savoirs_by_ordre_not_creation(self):
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        self.assertEqual([m["titre"] for m in parcours], ["Premier module", "Second module"])
+        self.assertEqual(
+            [s["intitule"] for s in parcours[0]["savoirs"]], ["Premier savoir", "Second savoir"],
+        )
+
+    def test_savoir_without_any_content_still_appears(self):
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertEqual(savoir_payload["taux"], None)
+        self.assertFalse(savoir_payload["has_quiz"])
+        self.assertIsNone(savoir_payload["cours"])
+
+    def test_taux_reflects_real_answers(self):
+        theme = Tag.objects.create(name="premier-savoir-theme", savoir_officiel=self.savoir_1a)
+        item = _make_competence_item(self.subject, self.cursus, theme=theme, numero="1")
+        self._repondre(item, correcte=True)
+        self._repondre(item, correcte=False)
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertEqual(savoir_payload["taux"], 50)
+        self.assertTrue(savoir_payload["has_quiz"])
+
+    def test_en_revision_flag_from_revision_schedule(self):
+        theme = Tag.objects.create(name="theme-en-echec", savoir_officiel=self.savoir_1a)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            due_at=timezone.localdate() + timedelta(days=1),
+        )
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        self.assertTrue(parcours[0]["savoirs"][0]["en_revision"])
+
+    def test_a_lu_le_cours_flag_from_lecture_progress(self):
+        theme = Tag.objects.create(name="theme-cours", savoir_officiel=self.savoir_1a)
+        cours = _make_cours(self.subject, cursus=self.cursus, tags=[theme], titre="Le cours")
+        LectureProgress.objects.create(user=self.user, cours=cours)
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertTrue(savoir_payload["a_lu_le_cours"])
+        self.assertEqual(savoir_payload["cours"], {"slug": cours.slug, "titre": cours.titre})
+
+    def test_cours_found_through_a_different_tag_sharing_the_savoir(self):
+        # Même situation réelle que quiz.views._cours_pour_competence (niveau 2) :
+        # le cours est tagué différemment du quiz, les deux partagent le savoir.
+        theme_quiz = Tag.objects.create(name="theme-quiz", savoir_officiel=self.savoir_1a)
+        theme_cours = Tag.objects.create(name="theme-cours-distinct", savoir_officiel=self.savoir_1a)
+        _make_competence_item(self.subject, self.cursus, theme=theme_quiz, numero="1")
+        cours = _make_cours(self.subject, cursus=self.cursus, tags=[theme_cours], titre="Cours indirect")
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertEqual(savoir_payload["cours"], {"slug": cours.slug, "titre": cours.titre})
+
+
+class ParcoursApiTests(TestCase):
+    """GET /quiz/parcours/ (quiz.views.parcours)."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="M")
+        module.cursus.add(self.cursus)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir")
+        self.user = User.objects.create_user(phone_number="677200022", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_requires_authentication(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get(f"/quiz/parcours/?cursus={self.cursus.id}&subject={self.subject.id}")
+
+        self.assertIn(response.status_code, (401, 403))
+
+    def test_returns_modules_with_their_savoirs(self):
+        response = self.client.get(f"/quiz/parcours/?cursus={self.cursus.id}&subject={self.subject.id}")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["titre"], "M")
+        self.assertEqual(response.data[0]["savoirs"][0]["intitule"], "Un savoir")
+
+
+class ResumeParcoursTests(TestCase):
+    """quiz.services.resume_parcours - tableau de bord toutes matières, un
+    histogramme de statuts par savoir réduit depuis construire_parcours."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200023", password="x")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.maths = Subject.objects.get(country__code="CM", code="MATHS")
+        self.francais = Subject.objects.get(country__code="CM", code="FRANCAIS")
+
+    def _module_savoir(self, subject, numero="1", intitule="Un savoir"):
+        module = Module.objects.create(subject=subject, classe="Tle", serie_label="C", numero=numero, titre="M")
+        module.cursus.add(self.cursus)
+        return Savoir.objects.create(module=module, numero="I", intitule=intitule)
+
+    def test_lists_only_subjects_with_programme_officiel_for_the_cursus(self):
+        self._module_savoir(self.maths)
+        # self.francais n'a aucun Module pour ce cursus - ne doit pas apparaître.
+
+        resume = resume_parcours(self.user, self.cursus)
+
+        self.assertEqual([r["subject_label"] for r in resume], [self.maths.label])
+
+    def test_subject_without_any_content_is_entirely_sans_contenu(self):
+        self._module_savoir(self.maths)
+
+        resume = resume_parcours(self.user, self.cursus)
+
+        entry = resume[0]
+        self.assertEqual(entry["total"], 1)
+        self.assertEqual(entry["sans_contenu"], 1)
+        self.assertEqual(entry["maitrises"], 0)
+        self.assertEqual(entry["en_revision"], 0)
+        self.assertEqual(entry["a_decouvrir"], 0)
+
+    def test_each_savoir_counts_in_exactly_one_bucket(self):
+        savoir_maitrise = self._module_savoir(self.maths, numero="1", intitule="Maitrise")
+        savoir_en_revision = self._module_savoir(self.maths, numero="2", intitule="En revision")
+        savoir_a_decouvrir = self._module_savoir(self.maths, numero="3", intitule="A decouvrir")
+        # savoir_sans_contenu : aucun CompetenceItem ni Cours, laissé tel quel.
+        self._module_savoir(self.maths, numero="4", intitule="Sans contenu")
+
+        theme_maitrise = Tag.objects.create(name="theme-maitrise", savoir_officiel=savoir_maitrise)
+        item_maitrise = _make_competence_item(self.maths, self.cursus, theme=theme_maitrise, numero="1")
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item_maitrise, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+        theme_en_revision = Tag.objects.create(name="theme-en-revision", savoir_officiel=savoir_en_revision)
+        _make_competence_item(self.maths, self.cursus, theme=theme_en_revision, numero="2")
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.maths, theme=theme_en_revision,
+            due_at=timezone.localdate() + timedelta(days=1),
+        )
+
+        theme_a_decouvrir = Tag.objects.create(name="theme-a-decouvrir", savoir_officiel=savoir_a_decouvrir)
+        _make_competence_item(self.maths, self.cursus, theme=theme_a_decouvrir, numero="3")
+
+        resume = resume_parcours(self.user, self.cursus)
+
+        entry = resume[0]
+        self.assertEqual(entry["total"], 4)
+        self.assertEqual(entry["maitrises"], 1)
+        self.assertEqual(entry["en_revision"], 1)
+        self.assertEqual(entry["a_decouvrir"], 1)
+        self.assertEqual(entry["sans_contenu"], 1)
+
+
+class ResumeParcoursApiTests(TestCase):
+    """GET /quiz/parcours/resume/ (quiz.views.parcours_resume)."""
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.maths = Subject.objects.get(country__code="CM", code="MATHS")
+        module = Module.objects.create(subject=self.maths, classe="Tle", serie_label="C", numero="1", titre="M")
+        module.cursus.add(self.cursus)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir")
+        self.user = User.objects.create_user(phone_number="677200024", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_requires_authentication(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get(f"/quiz/parcours/resume/?cursus={self.cursus.id}")
+
+        self.assertIn(response.status_code, (401, 403))
+
+    def test_returns_one_entry_per_subject(self):
+        response = self.client.get(f"/quiz/parcours/resume/?cursus={self.cursus.id}")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["subject_label"], self.maths.label)
+        self.assertEqual(response.data[0]["total"], 1)
 
 
 class QuizSubjectsApiTests(TestCase):

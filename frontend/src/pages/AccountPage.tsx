@@ -1,11 +1,10 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { CheckCircle2, Copy, Crown, FileText, Gift, MessageCircle, Pencil, Target } from "lucide-react"
+import { ArrowRight, CheckCircle2, Copy, Crown, FileText, Gift, MessageCircle, Pencil, Target } from "lucide-react"
 
 import {
   downloadFicheCorrigePdf,
   downloadFicheSujetPdf,
-  getMaitrise,
   getMyProgression,
   getWhatsAppStatus,
   listMyFiches,
@@ -19,7 +18,7 @@ import {
 } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type {
-  Fiche, InscriptionInedite, InscriptionRepetiteur, MaitriseTheme, Progression, Subscription, TentativeInediteListItem,
+  Fiche, InscriptionInedite, InscriptionRepetiteur, Progression, Subscription, TentativeInediteListItem,
 } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -30,7 +29,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { tauxBarClassName } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursReaderPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
@@ -42,26 +40,12 @@ import { catalogueHomePath, coursReaderPath, epreuveReaderPath, epreuvesListPath
 // seulement les 7 cartes elles-mêmes.
 const PREVIEW_COUNT = 5
 
-/** Regroupe une liste plate de thèmes par matière, en gardant l'ordre déjà trié
- * (le plus faible d'abord) de quiz.services.maitrise_par_theme à l'intérieur de
- * chaque groupe. */
-function groupBySubject(maitrise: MaitriseTheme[]): { subject_label: string; themes: MaitriseTheme[] }[] {
-  const groups: { subject_label: string; themes: MaitriseTheme[] }[] = []
-  for (const theme of maitrise) {
-    const group = groups.find((g) => g.subject_label === theme.subject_label)
-    if (group) group.themes.push(theme)
-    else groups.push({ subject_label: theme.subject_label, themes: [theme] })
-  }
-  return groups
-}
-
 /**
  * Tronque une liste à PREVIEW_COUNT éléments avec un bouton "voir plus" - un composant
- * dédié plutôt qu'un hook appelé inline dans un .map() du parent (ex. un groupe de
- * matière par matière pour "Ma maîtrise") : les Hooks React ne peuvent pas être appelés
- * à l'intérieur d'une boucle du composant appelant, alors qu'une instance de composant
- * créée par .map() porte sans problème son propre état - chaque liste garde son
- * expansion indépendante des autres.
+ * dédié plutôt qu'un hook appelé inline dans un .map() du parent : les Hooks React ne
+ * peuvent pas être appelés à l'intérieur d'une boucle du composant appelant, alors
+ * qu'une instance de composant créée par .map() porte sans problème son propre état -
+ * chaque liste garde son expansion indépendante des autres.
  */
 function ExpandableList<T>({
   items, renderItem, previewCount = PREVIEW_COUNT,
@@ -94,7 +78,6 @@ export function AccountPage() {
   const navigate = useNavigate()
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [progression, setProgression] = useState<Progression | null>(null)
-  const [maitrise, setMaitrise] = useState<MaitriseTheme[] | null>(null)
   const [tentativesInedites, setTentativesInedites] = useState<TentativeInediteListItem[] | null>(null)
   const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
   const [fiches, setFiches] = useState<Fiche[] | null>(null)
@@ -117,7 +100,6 @@ export function AccountPage() {
     }
     listMySubscriptions().then(setSubscriptions)
     getMyProgression().then(setProgression)
-    getMaitrise().then(setMaitrise)
     listMyTentativesInedites().then(setTentativesInedites)
     listMyInscriptionsInedites().then(setInscriptionsInedites)
     listMyFiches().then(setFiches)
@@ -564,49 +546,16 @@ export function AccountPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {!maitrise || maitrise.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  Fais ton premier{" "}
-                  <Link to="/quiz" className="text-primary hover:underline">
-                    quiz
-                  </Link>{" "}
-                  pour voir apparaître ta maîtrise, thème par thème.
-                </p>
-              ) : (
-                <div className="flex flex-col gap-5">
-                  {groupBySubject(maitrise).map((group) => (
-                    <div key={group.subject_label}>
-                      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                        {group.subject_label}
-                      </p>
-                      <ExpandableList
-                        items={group.themes}
-                        renderItem={(theme) => (
-                          <li key={theme.theme_id} className="flex items-center gap-3">
-                            <div className="flex min-w-0 flex-1 flex-col gap-1">
-                              <div className="flex items-center gap-1.5">
-                                <span className="truncate text-sm">{theme.theme}</span>
-                                {theme.en_revision && (
-                                  <Badge variant="outline" className="shrink-0 text-xs">
-                                    À réviser
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                                <div
-                                  className={`h-full rounded-full transition-all ${tauxBarClassName(theme.taux)}`}
-                                  style={{ width: `${theme.taux}%` }}
-                                />
-                              </div>
-                            </div>
-                            <span className="w-10 shrink-0 text-right text-xs text-muted-foreground">{theme.taux}%</span>
-                          </li>
-                        )}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <p className="mb-3 text-sm text-muted-foreground">
+                Le détail de ta maîtrise, matière par matière et dans l'ordre du programme officiel, vit maintenant
+                sur ton parcours.
+              </p>
+              <Button asChild size="sm">
+                <Link to="/parcours">
+                  Voir mon parcours
+                  <ArrowRight className="size-3.5" />
+                </Link>
+              </Button>
             </CardContent>
           </Card>
 

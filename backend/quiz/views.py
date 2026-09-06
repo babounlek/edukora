@@ -9,10 +9,14 @@ from rest_framework.response import Response
 from catalog.models import Cours, Cursus, StatutContenu, Subject, Tag, TypeReponse
 from catalog.rendering import annotate_single_cours_link
 from catalog.serializers import CoursSummarySerializer, SubjectSerializer
+from programme.models import Savoir
 from subscriptions.models import Subscription
 
 from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare
-from .services import enregistrer_resultat_pour_revision, generer_session, maitrise_par_theme, revisions_dues
+from .services import (
+    construire_parcours, enregistrer_resultat_pour_revision, generer_session, maitrise_par_theme, resume_parcours,
+    revisions_dues,
+)
 
 
 def _get_answer(quiz_question):
@@ -280,6 +284,7 @@ def start_session(request):
 
     subject = get_object_or_404(Subject, pk=request.data["subject"]) if request.data.get("subject") else None
     theme = get_object_or_404(Tag, pk=request.data["theme"]) if request.data.get("theme") else None
+    savoir = get_object_or_404(Savoir, pk=request.data["savoir"]) if request.data.get("savoir") else None
 
     try:
         n = int(request.data.get("n") or 10)
@@ -287,7 +292,7 @@ def start_session(request):
         n = 10
 
     try:
-        session = generer_session(request.user, cursus, mode, subject=subject, theme=theme, n=n)
+        session = generer_session(request.user, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n)
     except ValueError as exc:
         return Response({"error": str(exc)}, status=404)
 
@@ -428,3 +433,29 @@ def maitrise(request):
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"]) if request.GET.get("cursus") else None
     return Response(maitrise_par_theme(request.user, cursus=cursus))
+
+
+@api_view(["GET"])
+def parcours(request):
+    """
+    Vue séquencée du programme officiel pour un cursus/matière donnés (voir
+    quiz.services.construire_parcours) - alimente la page /parcours. `cursus` et
+    `subject` sont tous deux requis : contrairement à `maitrise`/`revisions`, la
+    page qui consomme cet endpoint affiche un seul programme à la fois, jamais un
+    historique agrégé tous cursus/matières confondus.
+    """
+    cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
+    subject = get_object_or_404(Subject, pk=request.GET["subject"])
+    return Response(construire_parcours(request.user, cursus, subject))
+
+
+@api_view(["GET"])
+def parcours_resume(request):
+    """
+    Tableau de bord "toutes tes matières" (voir quiz.services.resume_parcours) : une
+    ligne par matière ayant un programme officiel pour ce cursus, réduite à un
+    histogramme de statuts par savoir. Point d'entrée au-dessus de `parcours`
+    (détail séquencé d'une seule matière).
+    """
+    cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
+    return Response(resume_parcours(request.user, cursus))

@@ -16,4 +16,6 @@ urlpatterns = [
     path("revisions/", views.list_revisions_dues, name="revisions-dues"),
     path("maitrise/", views.maitrise, name="maitrise"),
     path("subjects/", views.list_quiz_subjects, name="quiz-subjects"),
+    path("parcours/", views.parcours, name="parcours"),
+    path("parcours/resume/", views.parcours_resume, name="parcours-resume"),
 ]

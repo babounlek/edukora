@@ -97,7 +97,7 @@ export function InediteResultPage() {
           </Link>
         </Button>
         <Button asChild variant="outline" className="flex-1" size="lg">
-          <Link to="/revision">Réviser mes points faibles</Link>
+          <Link to="/parcours">Voir mon parcours</Link>
         </Button>
       </div>
     </div>

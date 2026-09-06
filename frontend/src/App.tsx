@@ -37,7 +37,8 @@ const AboutPage = lazy(() => import("@/pages/AboutPage").then((m) => ({ default:
 const QuizStartPage = lazy(() => import("@/pages/QuizStartPage").then((m) => ({ default: m.QuizStartPage })))
 const QuizSessionPage = lazy(() => import("@/pages/QuizSessionPage").then((m) => ({ default: m.QuizSessionPage })))
 const QuizResultPage = lazy(() => import("@/pages/QuizResultPage").then((m) => ({ default: m.QuizResultPage })))
-const RevisionPage = lazy(() => import("@/pages/RevisionPage").then((m) => ({ default: m.RevisionPage })))
+const ParcoursPage = lazy(() => import("@/pages/ParcoursPage").then((m) => ({ default: m.ParcoursPage })))
+const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").then((m) => ({ default: m.ParcoursSubjectPage })))
 const InediteTentativePage = lazy(() => import("@/pages/InediteTentativePage").then((m) => ({ default: m.InediteTentativePage })))
 const InediteResultPage = lazy(() => import("@/pages/InediteResultPage").then((m) => ({ default: m.InediteResultPage })))
 const FichesPage = lazy(() => import("@/pages/FichesPage").then((m) => ({ default: m.FichesPage })))
@@ -98,7 +99,12 @@ function App() {
                       <Route path="/quiz" element={<QuizStartPage />} />
                       <Route path="/quiz/session/:id" element={<QuizSessionPage />} />
                       <Route path="/quiz/session/:id/resultat" element={<QuizResultPage />} />
-                      <Route path="/revision" element={<RevisionPage />} />
+                      {/* /parcours a absorbé "à réviser" (badge par savoir) - une ancienne
+                          entrée (favori, lien externe) doit continuer à mener quelque
+                          part de cohérent plutôt qu'un 404. */}
+                      <Route path="/revision" element={<Navigate to="/parcours" replace />} />
+                      <Route path="/parcours" element={<ParcoursPage />} />
+                      <Route path="/parcours/:subjectId" element={<ParcoursSubjectPage />} />
                       <Route path="/inedit/tentative/:id" element={<InediteTentativePage />} />
                       <Route path="/inedit/tentative/:id/resultat" element={<InediteResultPage />} />
                       <Route path="/fiches" element={<FichesPage />} />

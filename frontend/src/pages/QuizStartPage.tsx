@@ -1,26 +1,23 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
   ArrowRight,
   CheckCircle2,
+  Compass,
   ListChecks,
   Lock,
   Minus,
   Plus,
-  RotateCcw,
   Sparkles,
   Target,
-  TrendingUp,
-  Trophy,
 } from "lucide-react"
 
-import { getMaitrise, listMySubscriptions, listQuizSubjects, listRevisionsDues, startQuizSession } from "@/api/endpoints"
+import { listMySubscriptions, listQuizSubjects, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { MaitriseTheme, ModeQuiz, RevisionDue, Subject, Subscription } from "@/api/types"
+import type { ModeQuiz, Subject, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide, StatChip } from "@/components/Configurateur"
+import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -33,7 +30,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { trackEvent } from "@/lib/analytics"
-import { SEUIL_MAITRISE, tauxBarClassName } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -44,58 +40,6 @@ import { cn } from "@/lib/utils"
 const N_MIN = 1
 const N_MAX = 30
 const N_PRESETS = [5, 10, 15, 20]
-
-// Points faibles affichés avant "Tout afficher" - la colonne latérale est collante,
-// une liste sans limite la ferait dépasser la hauteur de l'écran.
-const POINTS_FAIBLES_VISIBLES = 4
-
-const RING_SIZE = 112
-const RING_STROKE = 10
-const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2
-const RING_CIRCONFERENCE = 2 * Math.PI * RING_RADIUS
-
-/**
- * Anneau de maîtrise, accessoire décoratif du hero (voir plus bas) - même procédé que
- * la copie annotée "18/20" de la page À propos, mais adossé à une vraie donnée
- * (maitriseStats.moyenne) plutôt qu'une maquette figée : sans historique, l'anneau
- * reste vide et affiche une invite plutôt qu'un 0 % qui se lirait comme un échec.
- */
-function AnneauMaitrise({ percent }: { percent: number | null }) {
-  const offset = RING_CIRCONFERENCE * (1 - (percent ?? 0) / 100)
-  return (
-    <div className="relative flex size-[112px] items-center justify-center">
-      <svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="-rotate-90">
-        <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RING_RADIUS} fill="none" strokeWidth={RING_STROKE} className="stroke-border" />
-        {percent !== null && (
-          <circle
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={RING_RADIUS}
-            fill="none"
-            strokeWidth={RING_STROKE}
-            strokeLinecap="round"
-            strokeDasharray={RING_CIRCONFERENCE}
-            strokeDashoffset={offset}
-            className="stroke-primary transition-[stroke-dashoffset] duration-700 ease-out"
-          />
-        )}
-      </svg>
-      <div className="absolute flex flex-col items-center">
-        {percent !== null ? (
-          <>
-            <span className="font-display text-2xl font-semibold tabular-nums">{percent}%</span>
-            <span className="text-[0.65rem] text-muted-foreground">de maîtrise</span>
-          </>
-        ) : (
-          <>
-            <Sparkles className="size-5 text-primary" />
-            <span className="mt-1 text-[0.65rem] text-muted-foreground">1re séance</span>
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
 
 export function QuizStartPage() {
   useSeo({
@@ -116,9 +60,6 @@ export function QuizStartPage() {
   const [starting, setStarting] = useState(false)
   const [startingThemeId, setStartingThemeId] = useState<number | null>(null)
   const [error, setError] = useState("")
-  const [revisions, setRevisions] = useState<RevisionDue[]>([])
-  const [maitrise, setMaitrise] = useState<MaitriseTheme[]>([])
-  const [tousPointsFaiblesVisibles, setTousPointsFaiblesVisibles] = useState(false)
 
   useEffect(() => {
     if (authLoading) return
@@ -136,9 +77,6 @@ export function QuizStartPage() {
       setSubscriptionsLoaded(true)
       if (active.length > 0) setSelectedCursus(String(active[0].cursus.id))
     })
-    // Best-effort, jamais bloquant pour l'écran de démarrage : un échec ici ne doit
-    // pas empêcher de configurer/lancer un quiz normalement.
-    listRevisionsDues().then(setRevisions).catch(() => {})
   }, [authLoading, isAuthenticated])
 
   // Uniquement les matières ayant déjà une banque de quiz pour CE cursus (voir
@@ -161,44 +99,11 @@ export function QuizStartPage() {
     })
   }, [selectedCursus, subscriptions])
 
-  // Teaser de progression dans le hero, jamais bloquant pour la config du quiz : un
-  // échec ou une absence d'historique ne doit rien changer à l'écran de démarrage.
-  useEffect(() => {
-    if (!selectedCursus) {
-      setMaitrise([])
-      return
-    }
-    getMaitrise(Number(selectedCursus)).then(setMaitrise).catch(() => {})
-  }, [selectedCursus])
-
-  const maitriseStats = useMemo(() => {
-    if (maitrise.length === 0) return null
-    const moyenne = Math.round(maitrise.reduce((sum, t) => sum + t.taux, 0) / maitrise.length)
-    const maitrises = maitrise.filter((t) => t.taux >= SEUIL_MAITRISE).length
-    return { moyenne, maitrises, total: maitrise.length }
-  }, [maitrise])
-
-  // maitrise_par_theme trie déjà du taux le plus faible au plus élevé (voir sa
-  // docstring) : les premiers éléments SONT les points faibles, inutile de retrier.
-  // Filtré sur la matière choisie quand il y en a une, pour que le panneau parle de
-  // ce que la personne s'apprête réellement à travailler.
-  const pointsFaibles = useMemo(() => {
-    const source = selectedSubject
-      ? maitrise.filter((t) => String(t.subject_id) === selectedSubject)
-      : maitrise
-    return source.filter((t) => t.taux < SEUIL_MAITRISE)
-  }, [maitrise, selectedSubject])
-
-  const revisionsDuCursus = useMemo(
-    () => revisions.filter((r) => !selectedCursus || String(r.cursus) === selectedCursus),
-    [revisions, selectedCursus],
-  )
-
   /**
    * Démarre une séance. Sans `theme` : la configuration du formulaire. Avec `theme` :
-   * un entraînement ciblé lancé depuis "Mes points faibles" - toujours en pratique
-   * libre (un test de niveau sur un thème unique n'a pas de sens) et sans filtre
-   * matière, déjà impliqué par le thème lui-même.
+   * un entraînement ciblé sur ce seul thème - toujours en pratique libre (un test de
+   * niveau sur un thème unique n'a pas de sens) et sans filtre matière, déjà impliqué
+   * par le thème lui-même.
    */
   async function lancer(theme?: number) {
     // Un thème ciblé porte déjà sa matière ; sans lui, le formulaire exige désormais
@@ -243,9 +148,6 @@ export function QuizStartPage() {
 
   const cursusChoisi = subscriptions.find((s) => String(s.cursus.id) === selectedCursus)?.cursus
   const subjectChoisi = subjects.find((s) => String(s.id) === selectedSubject)
-  const pointsFaiblesAffiches = tousPointsFaiblesVisibles
-    ? pointsFaibles
-    : pointsFaibles.slice(0, POINTS_FAIBLES_VISIBLES)
   const enCours = starting || startingThemeId !== null
 
   return (
@@ -258,69 +160,19 @@ export function QuizStartPage() {
             backgroundSize: "24px 24px",
           }}
         />
-        <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
-          <div>
-            <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Target className="size-5" />
-            </div>
-            <Eyebrow>Entraînement personnalisé</Eyebrow>
-            <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Quiz</h1>
-            <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
-              Entraîne-toi librement, ou fais le point avec un test de niveau.
-            </p>
-            <p className="mt-2 max-w-md text-muted-foreground">
-              Chaque réponse est rattachée à un thème précis de ton programme - le quiz repère ce que tu dois
-              retravailler et te le repropose au bon moment.
-            </p>
-
-            {(maitriseStats || revisionsDuCursus.length > 0) && (
-              <div className="mt-5 flex flex-wrap gap-2">
-                {maitriseStats && (
-                  <>
-                    <StatChip icon={<Target className="size-3.5 text-primary" />}>
-                      <span className="font-medium tabular-nums">{maitriseStats.moyenne}%</span>
-                      <span className="text-muted-foreground">de maîtrise moyenne</span>
-                    </StatChip>
-                    <StatChip icon={<Trophy className="size-3.5 text-gold" />}>
-                      <span className="font-medium tabular-nums">
-                        {maitriseStats.maitrises}/{maitriseStats.total}
-                      </span>
-                      <span className="text-muted-foreground">thèmes maîtrisés</span>
-                    </StatChip>
-                  </>
-                )}
-                {revisionsDuCursus.length > 0 && (
-                  <Link
-                    to="/revision"
-                    className="flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/10 px-3 py-1.5 text-sm shadow-xs transition-colors hover:bg-warning/20"
-                  >
-                    <RotateCcw className="size-3.5 text-warning" />
-                    <span className="font-medium tabular-nums">{revisionsDuCursus.length}</span>
-                    <span className="text-muted-foreground">à réviser</span>
-                  </Link>
-                )}
-              </div>
-            )}
+        <div className="relative max-w-2xl">
+          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Target className="size-5" />
           </div>
-
-          {/* Accessoire décoratif adossé à une vraie donnée (maitriseStats) plutôt
-              qu'une maquette figée - même procédé que la copie annotée "18/20" de la
-              page À propos, mais qui reflète la progression réelle quand elle existe. */}
-          <div aria-hidden className="relative mx-auto w-full max-w-[18rem] select-none lg:mx-0 lg:justify-self-end">
-            <span className="absolute -top-3 right-6 z-10 -rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
-              Ta progression
-            </span>
-            <div className="rotate-2 rounded-lg border border-border bg-card p-6 shadow-xl transition-transform duration-300 hover:rotate-0">
-              <div className="flex flex-col items-center gap-3">
-                <AnneauMaitrise percent={maitriseStats?.moyenne ?? null} />
-                <div className="w-full border-t border-border pt-3 text-center text-xs text-muted-foreground">
-                  {maitriseStats
-                    ? `${maitriseStats.maitrises}/${maitriseStats.total} thèmes maîtrisés`
-                    : "Repère ce qu'il te reste à travailler"}
-                </div>
-              </div>
-            </div>
-          </div>
+          <Eyebrow>Entraînement personnalisé</Eyebrow>
+          <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Quiz</h1>
+          <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
+            Entraîne-toi librement, ou fais le point avec un test de niveau.
+          </p>
+          <p className="mt-2 max-w-md text-muted-foreground">
+            Chaque réponse est rattachée à un thème précis de ton programme - le quiz repère ce que tu dois
+            retravailler et te le repropose au bon moment.
+          </p>
         </div>
       </div>
 
@@ -329,40 +181,23 @@ export function QuizStartPage() {
           prendre en main de la même façon. */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-6">
-          {revisionsDuCursus.length > 0 && (
-            <Card className="overflow-hidden border-warning/30 bg-gradient-to-br from-warning/10 via-transparent to-transparent">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2.5 font-display text-base">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-warning/15 text-warning">
-                    <RotateCcw className="size-4" />
+          {/* Pilote Maths (voir le plan "parcours d'apprentissage") : entrée discrète
+              plutôt qu'un ajout à la nav globale - reste facile à retirer tant que le
+              concept n'est pas encore prouvé sur d'autres matières/cursus. */}
+          {subscriptions.length > 0 && (
+            <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent">
+              <CardContent className="flex items-center justify-between gap-3 pt-6">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Compass className="size-4" />
                   </span>
-                  {revisionsDuCursus.length} notion{revisionsDuCursus.length > 1 ? "s" : ""} à réviser aujourd'hui
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <ul className="flex flex-col gap-1.5">
-                  {revisionsDuCursus.slice(0, 3).map((revision) => (
-                    <li key={revision.id} className="flex items-center justify-between gap-3 text-sm">
-                      <span className="min-w-0 truncate">
-                        {revision.theme}
-                        <span className="text-muted-foreground"> - {revision.subject_label}</span>
-                      </span>
-                      {revision.jours_retard > 0 && (
-                        <Badge variant="outline" className="shrink-0 tabular-nums">
-                          {revision.jours_retard} j de retard
-                        </Badge>
-                      )}
-                    </li>
-                  ))}
-                  {revisionsDuCursus.length > 3 && (
-                    <li className="text-sm text-muted-foreground">
-                      + {revisionsDuCursus.length - 3} autre{revisionsDuCursus.length - 3 > 1 ? "s" : ""}
-                    </li>
-                  )}
-                </ul>
-                <Button asChild size="sm" variant="outline" className="w-fit">
-                  <Link to="/revision">
-                    Réviser maintenant
+                  <p className="min-w-0 truncate text-sm font-medium">
+                    Découvre ton parcours - le programme officiel, dans l'ordre
+                  </p>
+                </div>
+                <Button asChild size="sm" variant="outline" className="shrink-0">
+                  <Link to="/parcours">
+                    Voir
                     <ArrowRight className="size-3.5" />
                   </Link>
                 </Button>
@@ -710,83 +545,6 @@ export function QuizStartPage() {
                     <p className="text-center text-xs text-muted-foreground">
                       {!selectedCursus ? "Choisis un cursus pour commencer." : "Choisis une matière."}
                     </p>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Panneau personnel, pendant de "Mes fiches" sur /fiches : la maîtrise
-                était déjà chargée ici mais réduite à deux chiffres dans le hero. Le
-                détail vit sur /compte comme bilan ; ici il sert de lanceur - un clic
-                démarre une séance sur le thème raté, sans repasser par les filtres. */}
-            {subscriptions.length > 0 && (
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 font-display text-base">
-                    <TrendingUp className="size-4 text-primary" />
-                    Mes points faibles
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2">
-                  {maitrise.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">
-                      Fais une première séance : tes thèmes les plus fragiles apparaîtront ici, prêts à retravailler
-                      en un clic.
-                    </p>
-                  ) : pointsFaibles.length === 0 ? (
-                    <p className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <Trophy className="mt-0.5 size-4 shrink-0 text-gold" />
-                      Aucun thème sous {SEUIL_MAITRISE} % pour cette sélection - continue comme ça.
-                    </p>
-                  ) : (
-                    <>
-                      {pointsFaiblesAffiches.map((theme) => (
-                        <button
-                          key={theme.theme_id}
-                          type="button"
-                          onClick={() => lancer(theme.theme_id)}
-                          disabled={enCours}
-                          className="group flex w-full flex-col gap-1.5 rounded-xl border border-border px-3 py-2.5 text-left transition-colors hover:border-primary/40 hover:bg-accent/40 disabled:cursor-not-allowed disabled:opacity-60"
-                          aria-label={`S'entraîner sur ${theme.theme} (${theme.taux} % de réussite)`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="min-w-0 flex-1 truncate text-sm font-medium">{theme.theme}</span>
-                            {theme.en_revision && (
-                              <Badge variant="outline" className="shrink-0">
-                                À réviser
-                              </Badge>
-                            )}
-                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{theme.taux} %</span>
-                          </div>
-                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                            <div
-                              className={cn("h-full rounded-full transition-all", tauxBarClassName(theme.taux))}
-                              style={{ width: `${theme.taux}%` }}
-                            />
-                          </div>
-                          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                            {startingThemeId === theme.theme_id ? (
-                              "Préparation..."
-                            ) : (
-                              <>
-                                {theme.subject_label} - s'entraîner
-                                <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
-                              </>
-                            )}
-                          </span>
-                        </button>
-                      ))}
-                      {pointsFaibles.length > POINTS_FAIBLES_VISIBLES && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-full"
-                          onClick={() => setTousPointsFaiblesVisibles((v) => !v)}
-                        >
-                          {tousPointsFaiblesVisibles ? "Réduire" : `Tout afficher (${pointsFaibles.length})`}
-                        </Button>
-                      )}
-                    </>
                   )}
                 </CardContent>
               </Card>

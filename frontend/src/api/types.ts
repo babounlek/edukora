@@ -576,34 +576,39 @@ export interface QuizResult {
   par_theme: QuizThemeScore[]
 }
 
-export interface RevisionCours {
-  id: number
+export interface ParcoursCours {
   slug: string
   titre: string
-  has_access: boolean
 }
 
-export interface RevisionDue {
+export interface ParcoursSavoir {
   id: number
-  theme: string
-  theme_id: number
-  subject_id: number
-  subject_label: string
-  cursus: number
-  cursus_display: string
-  jours_retard: number
-  cours: RevisionCours[]
+  numero: string
+  intitule: string
+  // null = jamais tenté, distinct de 0 (tenté, en échec) - voir
+  // quiz.services.construire_parcours côté backend.
+  taux: number | null
+  en_revision: boolean
+  a_lu_le_cours: boolean
+  has_quiz: boolean
+  cours: ParcoursCours | null
 }
 
-export interface MaitriseTheme {
+export interface ParcoursModule {
+  numero: string
+  titre: string
+  savoirs: ParcoursSavoir[]
+}
+
+export interface ResumeMatiere {
   subject_id: number
+  subject_code: string
   subject_label: string
-  theme_id: number
-  theme: string
   total: number
-  reussies: number
-  taux: number
-  en_revision: boolean
+  maitrises: number
+  en_revision: number
+  a_decouvrir: number
+  sans_contenu: number
 }
 
 export interface InscriptionInedite {
