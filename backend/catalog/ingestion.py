@@ -140,13 +140,18 @@ MATIERE_MAP = {
     "histoire-geographie": "HISTOIRE_GEO",
     "histoire geographie": "HISTOIRE_GEO",
     "histoire-geo": "HISTOIRE_GEO",
-    # Décision utilisateur du 2026-08-11 : le BEPC camerounais examine parfois Histoire
-    # et Géographie séparément (contrairement au Probatoire/BAC, toujours combinés,
-    # voir bepc-histoire-2024-blanc-cameroun / bepc-geographie-2026-cameroun) - rattaché
-    # au même code HISTOIRE_GEO plutôt qu'une Subject dédiée par matière, pour que ces
-    # épreuves restent visibles à un élève qui filtre sur "Histoire-Géo".
-    "histoire": "HISTOIRE_GEO",
-    "geographie": "HISTOIRE_GEO",
+    # Décision utilisateur du 2026-09-07, qui inverse celle du 2026-08-11 ci-dessous :
+    # Histoire et Géographie redeviennent deux Subject à part entière (voir
+    # SUBJECT_FAMILIES dans catalog.models) - un élève qui filtre sur "Histoire" ne doit
+    # plus voir une épreuve de pure Géographie et réciproquement. HISTOIRE_GEO n'est
+    # conservé que pour les intitulés explicitement combinés ci-dessus
+    # (histoire-geographie/histoire geographie/histoire-geo), constatés sur
+    # bepc-histoire-2008/2017/2020-officiel-cameroun ("matiere": "Histoire-Géographie"
+    # dans le JSON source) - le BEPC camerounais examine sinon le plus souvent Histoire
+    # et Géographie séparément (bepc-histoire-2025-cameroun, bepc-geographie-2026-
+    # cameroun), tout comme le Probatoire/BAC (bac-c-d-ti-geographie-2025-cameroun).
+    "histoire": "HISTOIRE",
+    "geographie": "GEOGRAPHIE",
     "anglais": "ANGLAIS",
     # Deuxième langue vivante, examinée au BEPC camerounais (voir bepc-espagnol-2018-
     # cameroun) - décision utilisateur du 2026-08-15 : Subject à part entière, jamais un
@@ -154,6 +159,10 @@ MATIERE_MAP = {
     # épreuve d'espagnol. Contenu resté bloqué à l'ingestion jusqu'ici (5 fichiers en
     # erreur "Matière inconnue" à chaque run), faute d'exister au référentiel.
     "espagnol": "ESPAGNOL",
+    # Nouvelle matière (décision utilisateur du 2026-09-07) - même traitement
+    # qu'Espagnol/Dessin par le passé : Subject à part entière plutôt qu'un alias,
+    # même en l'absence de contenu déjà ingéré sous ce nom.
+    "allemand": "ALLEMAND",
     "economie": "ECONOMIE",
     "droit": "DROIT",
     "education civique": "EDUCATION_CIVIQUE",

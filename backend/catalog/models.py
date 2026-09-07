@@ -188,12 +188,20 @@ class Subject(models.Model):
 # catalog.views.LessonListView (paramètre ?discipline=, recherche "contient X" par
 # opposition à ?subject= qui reste une correspondance exacte). Vit ici (pas dans
 # ingestion.py) pour rester importable par le code de lecture (API) sans tirer les
-# dépendances lourdes du module d'ingestion. Seule famille aujourd'hui ; une future
-# matière composite ajouterait sa propre entrée plutôt que de généraliser un mécanisme
-# encore jamais rencontré pour un autre couple de matières.
+# dépendances lourdes du module d'ingestion.
+# HISTOIRE/GEOGRAPHIE (2026-09-07) : décision utilisateur inverse de celle du
+# 2026-08-11 (voir catalog.ingestion.MATIERE_MAP) - Histoire et Géographie redeviennent
+# deux matières à part entière, HISTOIRE_GEO n'étant conservé que pour les épreuves
+# réellement communes aux deux (constaté sur bepc-histoire-2008/2017/2020-officiel-
+# cameroun, "matiere": "Histoire-Géographie" dans le JSON source, par opposition à
+# bepc-histoire-2025/bepc-geographie-2026-cameroun qui n'examinent qu'une discipline).
+# Même mécanisme que Physique/Chimie ci-dessus : une famille combinable, pas un
+# remplacement.
 SUBJECT_FAMILIES = {
     "PHYSIQUE": "PHYSIQUE_CHIMIE",
     "CHIMIE": "PHYSIQUE_CHIMIE",
+    "HISTOIRE": "HISTOIRE_GEO",
+    "GEOGRAPHIE": "HISTOIRE_GEO",
 }
 
 
