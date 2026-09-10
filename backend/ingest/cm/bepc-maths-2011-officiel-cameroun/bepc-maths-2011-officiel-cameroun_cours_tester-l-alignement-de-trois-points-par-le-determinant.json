@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-alignement-par-le-determinant-3e",
+  "meta": {
+    "titre": "Tester l'alignement de trois points par le déterminant",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Vecteurs et colinéarité",
+    "duree_estimee_min": 30,
+    "tags": [
+      "vecteurs",
+      "colinéarité",
+      "déterminant",
+      "alignement",
+      "repère"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2011-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2011 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-maths-2011-officiel-cameroun-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois points marqués sur un plan : sont-ils sur une même ligne droite ? À l'œil, on hésite dès que l'écart est faible, et une règle mal posée ne prouve rien. Un seul calcul, deux multiplications et une soustraction, tranche la question sans appel. C'est le déterminant, et il ne se trompe jamais."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer les coordonnées d'un vecteur à partir de deux points",
+        "Savoir que trois points sont alignés quand deux vecteurs les reliant ont la même direction",
+        "Effectuer un produit et une soustraction de nombres relatifs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le déterminant décide de la colinéarité",
+      "contenu_markdown": "**Le critère.** Deux vecteurs $\\vec{u}\\,(x\\;;\\,y)$ et $\\vec{v}\\,(x'\\;;\\,y')$ sont colinéaires si et seulement si\n\n$$\\boxed{\\det(\\vec{u},\\vec{v}) = xy' - yx' = 0}$$\n\nOn calcule « en croix » : première abscisse fois seconde ordonnée, moins première ordonnée fois seconde abscisse.\n\n**Application à l'alignement.** Trois points $A$, $B$, $C$ sont alignés si et seulement si les vecteurs $\\vec{AB}$ et $\\vec{AC}$ sont colinéaires. La méthode tient donc en trois étapes :\n\n1. calculer les coordonnées de $\\vec{AB}$ et de $\\vec{AC}$ ;\n2. calculer leur déterminant ;\n3. conclure : nul, les points sont alignés ; non nul, ils ne le sont pas.\n\n**Le point de départ n'a pas d'importance.** On peut aussi tester $\\vec{BA}$ et $\\vec{BC}$, ou $\\vec{CA}$ et $\\vec{CB}$ : la conclusion est la même. Choisis le couple dont les coordonnées se calculent le plus facilement.",
+      "formule_principale": "\\det(\\vec{u},\\vec{v}) = xy' - yx'",
+      "variantes": [
+        {
+          "nom": "Comparaison des coefficients directeurs",
+          "quand_utiliser": "Quand aucun des deux vecteurs n'est vertical",
+          "contenu_markdown": "Les droites $(AB)$ et $(AC)$ sont confondues quand elles ont le même coefficient directeur. On compare alors $\\dfrac{y_{B} - y_{A}}{x_{B} - x_{A}}$ et $\\dfrac{y_{C} - y_{A}}{x_{C} - x_{A}}$. Attention : cette méthode échoue si $x_{B} = x_{A}$ ou $x_{C} = x_{A}$, cas où le coefficient directeur n'existe pas. Le déterminant, lui, fonctionne toujours."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère, on considère les points $A(-2\\;;\\,1)$, $B(1\\;;\\,2)$ et $C(-3\\;;\\,0)$. Les points $A$, $B$ et $C$ sont-ils alignés ? Justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les coordonnées de $\\vec{AB}$",
+          "justification": "On soustrait les coordonnées du départ à celles de l'arrivée",
+          "resultat_markdown": "$\\vec{AB}\\,(1 - (-2)\\;;\\;2 - 1) = (3\\;;\\,1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les coordonnées de $\\vec{AC}$",
+          "justification": "Même formule, avec le même point de départ $A$",
+          "resultat_markdown": "$\\vec{AC}\\,(-3 - (-2)\\;;\\;0 - 1) = (-1\\;;\\,-1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le déterminant des deux vecteurs",
+          "justification": "On applique $xy' - yx'$ avec $\\vec{u} = \\vec{AB}$ et $\\vec{v} = \\vec{AC}$",
+          "resultat_markdown": "$\\det = 3 \\times (-1) - 1 \\times (-1) = -3 + 1 = -2$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "Le déterminant est différent de zéro, donc les vecteurs ne sont pas colinéaires",
+          "resultat_markdown": "Les points $A$, $B$ et $C$ ne sont pas alignés"
+        }
+      ],
+      "conclusion_markdown": "Le déterminant vaut $-2 \\neq 0$ : les points ne sont pas alignés. Le contrôle par les coefficients directeurs le confirme, $\\dfrac{1}{3}$ pour $(AB)$ contre $1$ pour $(AC)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $xy' + yx'$ au lieu de $xy' - yx'$",
+          "pourquoi_faux": "Le déterminant est une **différence**. Avec une addition, on obtiendrait ici $-3 - 1 = -4$, un nombre non nul lui aussi, mais qui n'a aucune signification géométrique : la méthode donnerait parfois la bonne réponse par accident et parfois la mauvaise.",
+          "correction_markdown": "Visualise le calcul en croix : on descend de gauche à droite pour le premier produit, on remonte pour le second, et on soustrait. Écris toujours $xy' - yx'$ en toutes lettres avant de remplacer."
+        },
+        {
+          "erreur_markdown": "Utiliser deux vecteurs qui ne partent pas du même point, comme $\\vec{AB}$ et $\\vec{BC}$... puis oublier de le signaler",
+          "pourquoi_faux": "Le test reste valable avec $\\vec{AB}$ et $\\vec{BC}$, mais pas avec $\\vec{AB}$ et $\\vec{CA}$ mélangés à des points quelconques. Le risque est de tester la colinéarité de deux vecteurs qui ne relient pas les trois mêmes points.",
+          "correction_markdown": "Prends l'habitude de toujours partir du même point, en général le premier cité : $\\vec{AB}$ et $\\vec{AC}$. La rédaction est plus claire et le risque d'erreur disparaît."
+        },
+        {
+          "erreur_markdown": "Conclure « alignés » parce que la figure en donne l'impression",
+          "pourquoi_faux": "Un dessin à main levée ou même soigné ne prouve rien : trois points presque alignés se dessinent exactement comme trois points alignés. Le barème n'accorde aucun point à une conclusion non calculée.",
+          "correction_markdown": "Le dessin sert à anticiper la réponse, jamais à la justifier. Écris le déterminant, même quand le résultat te paraît évident."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les points $E(1\\;;\\,2)$, $F(3\\;;\\,6)$ et $G(-1\\;;\\,-2)$ sont-ils alignés ?",
+          "solution_markdown": "*Coordonnées des vecteurs.*\n\n$$\\vec{EF}\\,(3 - 1\\;;\\;6 - 2) = (2\\;;\\,4)$$\n\n$$\\vec{EG}\\,(-1 - 1\\;;\\;-2 - 2) = (-2\\;;\\,-4)$$\n\n*Déterminant.*\n\n$$\\det = 2 \\times (-4) - 4 \\times (-2) = -8 + 8 = 0$$\n\nLe déterminant est nul, donc les vecteurs $\\vec{EF}$ et $\\vec{EG}$ sont colinéaires : les points $E$, $F$ et $G$ sont alignés.\n\n*Remarque.* On voit d'ailleurs que $\\vec{EG} = -\\vec{EF}$, ce qui signifie que $E$ est le milieu de $[FG]$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer le nombre réel $m$ pour que les points $P(2\\;;\\,-1)$, $Q(5\\;;\\,3)$ et $R(-1\\;;\\,m)$ soient alignés.",
+          "solution_markdown": "*Étape 1 - coordonnées des vecteurs.*\n\n$$\\vec{PQ}\\,(5 - 2\\;;\\;3 - (-1)) = (3\\;;\\,4)$$\n\n$$\\vec{PR}\\,(-1 - 2\\;;\\;m - (-1)) = (-3\\;;\\,m + 1)$$\n\n*Étape 2 - condition d'alignement.* Les points sont alignés si et seulement si le déterminant est nul :\n\n$$3 \\times (m+1) - 4 \\times (-3) = 0$$\n\n*Étape 3 - résolution.*\n\n$$3m + 3 + 12 = 0$$\n\n$$3m + 15 = 0$$\n\n$$3m = -15$$\n\n$$m = -5$$\n\n*Vérification.* Pour $m = -5$, $\\vec{PR}\\,(-3\\;;\\,-4)$, et le déterminant vaut $3 \\times (-4) - 4 \\times (-3) = -12 + 12 = 0$. On remarque que $\\vec{PR} = -\\vec{PQ}$, donc $P$ est le milieu de $[QR]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère, on donne $A(0\\;;\\,3)$, $B(4\\;;\\,1)$ et $C(-2\\;;\\,4)$. Montrer que ces trois points sont alignés, puis déterminer une équation cartésienne de la droite qui les porte et vérifier que le point $D(2\\;;\\,2)$ lui appartient.",
+          "solution_markdown": "*Étape 1 - alignement.*\n\n$$\\vec{AB}\\,(4 - 0\\;;\\;1 - 3) = (4\\;;\\,-2)$$\n\n$$\\vec{AC}\\,(-2 - 0\\;;\\;4 - 3) = (-2\\;;\\,1)$$\n\n$$\\det = 4 \\times 1 - (-2) \\times (-2) = 4 - 4 = 0$$\n\nLe déterminant est nul : les points $A$, $B$ et $C$ sont alignés.\n\n*Étape 2 - équation de la droite.* Les abscisses de $A$ et $B$ sont différentes, donc la droite admet une équation de la forme $y = ax + b$.\n\n$$a = \\frac{y_{B} - y_{A}}{x_{B} - x_{A}} = \\frac{1 - 3}{4 - 0} = \\frac{-2}{4} = -\\frac{1}{2}$$\n\nLe point $A(0\\;;\\,3)$ a une abscisse nulle, donc son ordonnée est directement l'ordonnée à l'origine :\n\n$$b = 3$$\n\n$$y = -\\frac{1}{2}x + 3 \\qquad \\text{ou} \\qquad x + 2y - 6 = 0$$\n\n*Étape 3 - appartenance de $D(2\\;;\\,2)$.* On remplace dans la seconde écriture :\n\n$$2 + 2 \\times 2 - 6 = 2 + 4 - 6 = 0$$\n\nLe résultat est nul, donc $D$ appartient bien à la droite $(AB)$.\n\n*Contrôle par le déterminant.* $\\vec{AD}\\,(2\\;;\\,-1)$ et $\\vec{AB}\\,(4\\;;\\,-2)$ donnent $2 \\times (-2) - (-1) \\times 4 = -4 + 4 = 0$. Même conclusion."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois points sont alignés exactement quand deux vecteurs les reliant sont colinéaires.",
+        "Le déterminant $xy' - yx'$ est une **différence** de produits en croix : nul signifie colinéaires, non nul signifie non colinéaires.",
+        "Pars toujours du même point pour construire tes deux vecteurs, en général le premier cité.",
+        "Le déterminant fonctionne dans tous les cas, y compris pour un vecteur vertical, contrairement à la comparaison des coefficients directeurs.",
+        "Une figure ne prouve jamais un alignement : elle sert à anticiper, pas à justifier.",
+        "Au BEPC, cette question vaut environ 1 point et sert souvent d'entrée à un exercice de géométrie analytique plus long, où l'on demande ensuite une équation de droite ou un parallélisme."
+      ]
+    }
+  ]
+}
