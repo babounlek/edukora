@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-simplifier-un-quotient-de-puissances-3e",
+  "meta": {
+    "titre": "Simplifier un quotient de puissances",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Puissances",
+    "duree_estimee_min": 30,
+    "tags": [
+      "puissances",
+      "exposant négatif",
+      "puissances de 10",
+      "notation scientifique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2010-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2010 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-maths-2010-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une expression comme $\\dfrac{21 \\times 10^{-3} \\times 5^{3}}{3 \\times 10^{2} \\times 2^{-3}}$ a l'air d'un monstre. Tapée telle quelle à la calculatrice, elle t'oblige à jongler avec des parenthèses et te livre un nombre décimal sans structure. Traitée par base, elle se réduit en quatre lignes à $\\dfrac{7}{100}$. Ce cours te donne l'ordre de démontage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une puissance à exposant entier positif",
+        "Savoir que $a^{-n} = \\dfrac{1}{a^{n}}$",
+        "Savoir simplifier une fraction par un facteur commun"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Regrouper par base, puis soustraire les exposants",
+      "contenu_markdown": "Un quotient de produits de puissances se traite **base par base**, jamais dans l'ordre où les facteurs sont écrits.\n\n**Les trois règles de calcul.**\n\n$$a^{m} \\times a^{n} = a^{m+n} \\qquad \\frac{a^{m}}{a^{n}} = a^{m-n} \\qquad a^{-n} = \\frac{1}{a^{n}}$$\n\n**La conséquence la plus utile.** Un exposant négatif situé au dénominateur remonte au numérateur avec un exposant positif :\n\n$$\\boxed{\\frac{1}{a^{-n}} = a^{n}}$$\n\n**La méthode, en trois temps.**\n\n1. Regrouper les facteurs de même base, numérateur et dénominateur ensemble.\n2. Simplifier chaque groupe séparément avec les règles ci-dessus.\n3. Rassembler, puis écrire le résultat sous la forme demandée (fraction irréductible, notation scientifique...).\n\nLes facteurs numériques sans puissance (comme $21$ et $3$) forment un groupe à part, que l'on simplifie comme une fraction ordinaire.",
+      "formule_principale": "\\frac{a^{m}}{a^{n}} = a^{m-n}",
+      "variantes": [
+        {
+          "nom": "Décomposer en facteurs premiers pour faire apparaître une base commune",
+          "quand_utiliser": "Quand deux bases différentes cachent une même base, ou quand leur produit donne une puissance de 10",
+          "contenu_markdown": "$5^{3} \\times 2^{3} = (5 \\times 2)^{3} = 10^{3}$ : deux bases distinctes portant le **même** exposant se regroupent en une seule, grâce à $a^{n} \\times b^{n} = (ab)^{n}$. C'est ce qui permet, dans l'exemple ci-dessous, de ramener tout le calcul à des puissances de 10."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer le réel $D = \\dfrac{21 \\times 10^{-3} \\times 5^{3}}{3 \\times 10^{2} \\times 2^{-3}}$ et donner le résultat sous forme de fraction irréductible.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Regrouper les facteurs par base",
+          "justification": "Un quotient de produits se scinde en produit de quotients, ce qui permet de traiter chaque base isolément",
+          "resultat_markdown": "$D = \\dfrac{21}{3} \\times \\dfrac{10^{-3}}{10^{2}} \\times \\dfrac{5^{3}}{2^{-3}}$"
+        },
+        {
+          "numero": 2,
+          "action": "Simplifier le facteur numérique",
+          "justification": "$21$ et $3$ sont des entiers, on divise",
+          "resultat_markdown": "$\\dfrac{21}{3} = 7$"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier les puissances de 10",
+          "justification": "On applique $\\dfrac{a^{m}}{a^{n}} = a^{m-n}$ avec $m = -3$ et $n = 2$",
+          "resultat_markdown": "$\\dfrac{10^{-3}}{10^{2}} = 10^{-3-2} = 10^{-5}$"
+        },
+        {
+          "numero": 4,
+          "action": "Faire remonter l'exposant négatif du dénominateur",
+          "justification": "Diviser par $2^{-3}$ revient à multiplier par $2^{3}$",
+          "resultat_markdown": "$\\dfrac{5^{3}}{2^{-3}} = 5^{3} \\times 2^{3} = 125 \\times 8 = 1000 = 10^{3}$"
+        },
+        {
+          "numero": 5,
+          "action": "Rassembler les trois morceaux",
+          "justification": "On multiplie les résultats partiels et on regroupe les puissances de 10",
+          "resultat_markdown": "$D = 7 \\times 10^{-5} \\times 10^{3} = 7 \\times 10^{-2}$"
+        },
+        {
+          "numero": 6,
+          "action": "Écrire sous forme de fraction irréductible",
+          "justification": "$10^{-2} = \\dfrac{1}{100}$, et $7$ est premier sans diviseur commun avec $100$",
+          "resultat_markdown": "$D = \\dfrac{7}{100}$"
+        }
+      ],
+      "conclusion_markdown": "$D = \\dfrac{7}{100} = 0{,}07$. Le calcul direct confirme : le numérateur vaut $2{,}625$, le dénominateur $37{,}5$, et $2{,}625 \\div 37{,}5 = 0{,}07$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\dfrac{5^{3}}{2^{-3}} = \\dfrac{5^{3}}{2^{3}} = \\dfrac{125}{8}$",
+          "pourquoi_faux": "Le signe moins de l'exposant a été supprimé au lieu d'être exploité. $2^{-3} = \\dfrac{1}{8}$, et diviser par $\\dfrac{1}{8}$ revient à multiplier par $8$, pas à diviser par $8$. Le résultat est faux d'un facteur $64$.",
+          "correction_markdown": "Écris explicitement $2^{-3} = \\dfrac{1}{2^{3}}$, puis « diviser par une fraction, c'est multiplier par son inverse ». Le passage devient mécanique."
+        },
+        {
+          "erreur_markdown": "Additionner les exposants au lieu de les soustraire dans un quotient",
+          "pourquoi_faux": "$\\dfrac{10^{-3}}{10^{2}}$ vaut $10^{-5}$ et non $10^{-1}$. La multiplication additionne les exposants, la division les soustrait : ce sont deux règles différentes.",
+          "correction_markdown": "Écris toujours l'opération sur les exposants avant de calculer : $10^{-3-2}$, puis $-3 - 2 = -5$. En deux temps, la soustraction de nombres relatifs ne dérape pas."
+        },
+        {
+          "erreur_markdown": "Simplifier $\\dfrac{21 \\times 10^{-3}}{3 \\times 10^{2}}$ en mélangeant les bases",
+          "pourquoi_faux": "Les règles sur les exposants ne s'appliquent qu'entre puissances de la **même** base. On ne peut rien faire directement entre $21$ et $10^{-3}$.",
+          "correction_markdown": "Sépare d'abord physiquement les groupes en réécrivant l'expression comme un produit de quotients. Chaque groupe se simplifie ensuite sans risque de mélange."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $A = \\dfrac{4 \\times 10^{5}}{8 \\times 10^{2}}$ et donner le résultat en écriture décimale.",
+          "solution_markdown": "*Regroupement par base.*\n\n$$A = \\frac{4}{8} \\times \\frac{10^{5}}{10^{2}}$$\n\n*Facteur numérique.*\n\n$$\\frac{4}{8} = \\frac{1}{2} = 0{,}5$$\n\n*Puissances de 10.*\n\n$$\\frac{10^{5}}{10^{2}} = 10^{5-2} = 10^{3} = 1000$$\n\n*Assemblage.*\n\n$$A = 0{,}5 \\times 1000 = 500$$\n\n*Vérification.* Numérateur $4 \\times 100000 = 400000$ ; dénominateur $8 \\times 100 = 800$ ; quotient $400000 \\div 800 = 500$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $B = \\dfrac{15 \\times 2^{-2} \\times 10^{4}}{5 \\times 10^{-1}}$ et donner le résultat sous forme de fraction irréductible.",
+          "solution_markdown": "*Regroupement par base.*\n\n$$B = \\frac{15}{5} \\times 2^{-2} \\times \\frac{10^{4}}{10^{-1}}$$\n\n*Facteur numérique.*\n\n$$\\frac{15}{5} = 3$$\n\n*Puissances de 10.* On soustrait les exposants, en faisant attention au signe du second :\n\n$$\\frac{10^{4}}{10^{-1}} = 10^{4-(-1)} = 10^{4+1} = 10^{5}$$\n\n*Puissance de 2.*\n\n$$2^{-2} = \\frac{1}{2^{2}} = \\frac{1}{4}$$\n\n*Assemblage.*\n\n$$B = 3 \\times \\frac{1}{4} \\times 10^{5} = \\frac{3 \\times 100000}{4} = \\frac{300000}{4} = 75000$$\n\n$B = 75000$, soit la fraction $\\dfrac{75000}{1}$ : le résultat est un entier, donc déjà irréductible.\n\n*Vérification.* Numérateur $15 \\times 0{,}25 \\times 10000 = 37500$ ; dénominateur $5 \\times 0{,}1 = 0{,}5$ ; quotient $37500 \\div 0{,}5 = 75000$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $C = \\dfrac{6^{3} \\times 10^{-2}}{2^{3} \\times 3^{2} \\times 10^{-5}}$ et donner le résultat en notation scientifique.",
+          "solution_markdown": "*Étape 1 - décomposer $6^{3}$.* Le numérateur mélange une base composée et des bases premières : on ramène tout aux mêmes bases.\n\n$$6^{3} = (2 \\times 3)^{3} = 2^{3} \\times 3^{3}$$\n\n*Étape 2 - réécrire l'expression.*\n\n$$C = \\frac{2^{3} \\times 3^{3} \\times 10^{-2}}{2^{3} \\times 3^{2} \\times 10^{-5}}$$\n\n*Étape 3 - regrouper par base.*\n\n$$C = \\frac{2^{3}}{2^{3}} \\times \\frac{3^{3}}{3^{2}} \\times \\frac{10^{-2}}{10^{-5}}$$\n\n*Étape 4 - simplifier chaque groupe.*\n\n$$\\frac{2^{3}}{2^{3}} = 2^{3-3} = 2^{0} = 1$$\n\n$$\\frac{3^{3}}{3^{2}} = 3^{3-2} = 3^{1} = 3$$\n\n$$\\frac{10^{-2}}{10^{-5}} = 10^{-2-(-5)} = 10^{-2+5} = 10^{3}$$\n\n*Étape 5 - assembler.*\n\n$$C = 1 \\times 3 \\times 10^{3} = 3 \\times 10^{3}$$\n\nL'écriture $3 \\times 10^{3}$ est bien une notation scientifique : le facteur $3$ est compris entre $1$ et $10$.\n\n*Vérification.* $C = 3000$. Par le calcul direct : numérateur $216 \\times 0{,}01 = 2{,}16$ ; dénominateur $8 \\times 9 \\times 0{,}00001 = 0{,}00072$ ; quotient $2{,}16 \\div 0{,}00072 = 3000$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Regroupe d'abord par base : c'est la seule façon d'appliquer les règles sur les exposants sans risque.",
+        "Dans un quotient, les exposants se soustraient ; dans un produit, ils s'additionnent. Écris l'opération avant de la calculer.",
+        "Un exposant négatif au dénominateur remonte au numérateur en devenant positif : $\\dfrac{1}{a^{-n}} = a^{n}$.",
+        "$a^{n} \\times b^{n} = (ab)^{n}$ permet de fusionner deux bases portant le même exposant, et souvent de faire apparaître une puissance de 10.",
+        "Contrôle ton résultat en évaluant l'expression de départ à la calculatrice : c'est rapide et cela détecte immédiatement une erreur de signe sur un exposant.",
+        "Au BEPC, cette question ouvre régulièrement les activités numériques et vaut environ 1 point ; on te demande presque toujours une fraction irréductible ou une notation scientifique, alors relis bien la consigne finale."
+      ]
+    }
+  ]
+}
