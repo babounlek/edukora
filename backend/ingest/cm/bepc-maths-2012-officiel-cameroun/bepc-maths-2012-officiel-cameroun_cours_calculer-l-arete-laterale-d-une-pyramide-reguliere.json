@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-arete-laterale-pyramide-reguliere-3e",
+  "meta": {
+    "titre": "Calculer l'arête latérale d'une pyramide régulière",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Géométrie dans l'espace",
+    "duree_estimee_min": 35,
+    "tags": [
+      "pyramide régulière",
+      "arête latérale",
+      "apothème",
+      "diagonale d'un carré",
+      "théorème de Pythagore"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2012-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2012 (Cameroun)",
+    "exercice_numero": "6",
+    "rappel_id": "rdm-bepc-maths-2012-officiel-cameroun-ex6-q1.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Devant une pyramide, une seule question compte : où sont les triangles rectangles ? Ils sont invisibles sur le dessin en perspective, mais il y en a deux, et ils suffisent à tout calculer - arête, apothème, hauteur. Ce cours te montre comment les repérer et ne plus jamais les confondre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Appliquer le théorème de Pythagore dans un triangle rectangle",
+        "Calculer la diagonale d'un carré",
+        "Savoir que les diagonales d'un carré se coupent en leur milieu"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux triangles rectangles, deux longueurs différentes",
+      "contenu_markdown": "Dans une pyramide régulière à base carrée de côté $c$ et de hauteur $h$, le pied de la hauteur est le **centre** $O$ du carré, intersection des diagonales.\n\n**Triangle n° 1 : de $O$ vers un SOMMET de la base.** Il donne l'arête latérale. La distance du centre à un sommet est la demi-diagonale :\n\n$$OM = \\frac{c\\sqrt{2}}{2}$$\n\n$$\\boxed{\\text{arête}^{2} = h^{2} + \\left(\\frac{c\\sqrt{2}}{2}\\right)^{2} = h^{2} + \\frac{c^{2}}{2}}$$\n\n**Triangle n° 2 : de $O$ vers le MILIEU d'un côté.** Il donne l'apothème, c'est-à-dire la hauteur d'une face latérale. La distance du centre au milieu d'un côté est le demi-côté :\n\n$$OI = \\frac{c}{2}$$\n\n$$\\boxed{\\text{apothème}^{2} = h^{2} + \\left(\\frac{c}{2}\\right)^{2}}$$\n\n**L'ordre des trois longueurs.** La demi-diagonale est plus grande que le demi-côté, donc\n\n$$h < \\text{apothème} < \\text{arête latérale}$$\n\nC'est le contrôle d'ordre de grandeur à faire systématiquement : si ton arête sort plus petite que ton apothème, tu as interverti les deux triangles.",
+      "formule_principale": "\\text{arête}^{2} = h^{2} + \\frac{c^{2}}{2}",
+      "variantes": [
+        {
+          "nom": "Passer par la face latérale plutôt que par la hauteur",
+          "quand_utiliser": "Quand l'arête latérale est connue et qu'on cherche l'apothème",
+          "contenu_markdown": "Une face latérale est un triangle isocèle de côtés égaux à l'arête $a$ et de base $c$. Sa hauteur issue du sommet tombe au milieu de la base, donc\n\n$$\\text{apothème}^{2} = a^{2} - \\left(\\frac{c}{2}\\right)^{2}$$\n\nCe chemin ne fait pas intervenir la hauteur de la pyramide : il est plus court dès que l'arête a déjà été calculée, et il fournit une vérification indépendante."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$SMNPQ$ est une pyramide régulière de sommet $S$, de base le carré $MNPQ$ de côté $8$ cm et de hauteur $OS = 7$ cm. Montrer qu'une arête latérale mesure $9$ cm, puis calculer la hauteur issue de $S$ de la face latérale $SNP$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la diagonale du carré de base",
+          "justification": "Le triangle $MNP$ est rectangle en $N$, avec $MN = NP = 8$ cm",
+          "resultat_markdown": "$MP = \\sqrt{8^{2} + 8^{2}} = \\sqrt{128} = 8\\sqrt{2}$ cm"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la distance du centre à un sommet",
+          "justification": "$O$ est le centre du carré, donc le milieu de la diagonale $[MP]$",
+          "resultat_markdown": "$OM = \\dfrac{8\\sqrt{2}}{2} = 4\\sqrt{2}$ cm"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer Pythagore dans le triangle $SOM$",
+          "justification": "La hauteur $[OS]$ est perpendiculaire au plan de la base, donc ce triangle est rectangle en $O$ et son hypoténuse est l'arête $[SM]$",
+          "resultat_markdown": "$SM^{2} = 7^{2} + (4\\sqrt{2})^{2} = 49 + 32 = 81$"
+        },
+        {
+          "numero": 4,
+          "action": "Extraire la racine",
+          "justification": "Une longueur est positive",
+          "resultat_markdown": "$SM = \\sqrt{81} = 9$ cm"
+        },
+        {
+          "numero": 5,
+          "action": "Repérer le second triangle rectangle pour l'apothème",
+          "justification": "$I$ est le milieu de $[NP]$ ; le segment $[OI]$ joint le centre au milieu d'un côté, sa longueur est le demi-côté",
+          "resultat_markdown": "$OI = \\dfrac{8}{2} = 4$ cm"
+        },
+        {
+          "numero": 6,
+          "action": "Appliquer Pythagore dans le triangle $SOI$",
+          "justification": "Ce triangle est lui aussi rectangle en $O$, d'hypoténuse l'apothème $[SI]$",
+          "resultat_markdown": "$SI^{2} = 7^{2} + 4^{2} = 49 + 16 = 65$, donc $SI = \\sqrt{65} \\approx 8{,}06$ cm"
+        }
+      ],
+      "conclusion_markdown": "L'arête latérale mesure $9$ cm et l'apothème $\\sqrt{65} \\approx 8{,}06$ cm. L'ordre attendu est respecté : $7 < 8{,}06 < 9$. On peut aussi retrouver l'apothème dans la face isocèle $SNP$ : $SI^{2} = 9^{2} - 4^{2} = 81 - 16 = 65$, le même nombre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser le demi-côté au lieu de la demi-diagonale pour calculer l'arête",
+          "pourquoi_faux": "L'arête latérale joint le sommet à un **sommet** de la base, pas au milieu d'un côté. Avec $OM = 4$ au lieu de $4\\sqrt{2}$, on obtient $\\sqrt{65} \\approx 8{,}06$ cm, qui est en réalité l'apothème : la réponse est plausible mais fausse, ce qui la rend d'autant plus dangereuse.",
+          "correction_markdown": "Demande-toi toujours où arrive le segment que tu calcules : sur un sommet (demi-diagonale) ou sur le milieu d'un côté (demi-côté). Écris cette phrase dans ta copie, elle vaut un point de justification."
+        },
+        {
+          "erreur_markdown": "Écrire $(4\\sqrt{2})^{2} = 4 \\times 2 = 8$",
+          "pourquoi_faux": "Le carré porte sur le produit entier : $(4\\sqrt{2})^{2} = 4^{2} \\times (\\sqrt{2})^{2} = 16 \\times 2 = 32$. Oublier d'élever le coefficient au carré divise le résultat par $4$.",
+          "correction_markdown": "Décompose systématiquement en deux facteurs avant de calculer : le carré du nombre, puis le carré du radical. Deux lignes au lieu d'une, mais zéro erreur."
+        },
+        {
+          "erreur_markdown": "Confondre la hauteur de la pyramide et la hauteur d'une face",
+          "pourquoi_faux": "La hauteur de la pyramide est verticale, à l'intérieur du solide ; la hauteur d'une face est inclinée, sur la surface. Elles ne sont jamais égales, sauf cas dégénéré.",
+          "correction_markdown": "Retiens la chaîne $h < \\text{apothème} < \\text{arête}$ et vérifie-la sur tes résultats. Trois nombres dans le désordre signalent immédiatement une confusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pyramide régulière a pour base un carré de côté $6$ cm et pour hauteur $4$ cm. Calculer la longueur d'une arête latérale.",
+          "solution_markdown": "*Diagonale de la base.*\n\n$$d = \\sqrt{6^{2} + 6^{2}} = \\sqrt{72} = 6\\sqrt{2} \\text{ cm}$$\n\n*Distance du centre à un sommet.*\n\n$$OM = \\frac{6\\sqrt{2}}{2} = 3\\sqrt{2} \\text{ cm}$$\n\n*Théorème de Pythagore dans le triangle rectangle en $O$.*\n\n$$a^{2} = 4^{2} + (3\\sqrt{2})^{2} = 16 + 9 \\times 2 = 16 + 18 = 34$$\n\n$$a = \\sqrt{34} \\approx 5{,}83 \\text{ cm}$$\n\n*Contrôle.* L'arête $5{,}83$ cm est bien supérieure à la hauteur $4$ cm."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pyramide régulière à base carrée a une arête latérale de $13$ cm et un côté de base de $10$ cm. Calculer sa hauteur, puis son apothème.",
+          "solution_markdown": "*Étape 1 - demi-diagonale de la base.*\n\n$$d = \\sqrt{10^{2} + 10^{2}} = \\sqrt{200} = 10\\sqrt{2} \\text{ cm}$$\n\n$$OM = \\frac{10\\sqrt{2}}{2} = 5\\sqrt{2} \\text{ cm}$$\n\n*Étape 2 - hauteur.* Dans le triangle rectangle en $O$ d'hypoténuse l'arête :\n\n$$h^{2} = 13^{2} - (5\\sqrt{2})^{2} = 169 - 25 \\times 2 = 169 - 50 = 119$$\n\n$$h = \\sqrt{119} \\approx 10{,}91 \\text{ cm}$$\n\n*Étape 3 - apothème.* On passe par la face latérale, triangle isocèle de côtés $13$ cm et de base $10$ cm :\n\n$$\\text{apothème}^{2} = 13^{2} - \\left(\\frac{10}{2}\\right)^{2} = 169 - 25 = 144$$\n\n$$\\text{apothème} = \\sqrt{144} = 12 \\text{ cm}$$\n\n*Contrôle.* On vérifie avec l'autre triangle : $h^{2} + \\left(\\dfrac{c}{2}\\right)^{2} = 119 + 25 = 144$, soit bien $12^{2}$. Et l'ordre attendu est respecté : $10{,}91 < 12 < 13$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une pyramide régulière à base carrée a toutes ses arêtes égales à $10$ cm (les quatre côtés de la base et les quatre arêtes latérales). Calculer sa hauteur, son apothème, puis son volume.",
+          "solution_markdown": "*Étape 1 - demi-diagonale.* Le côté vaut $c = 10$ cm :\n\n$$OM = \\frac{10\\sqrt{2}}{2} = 5\\sqrt{2} \\text{ cm}$$\n\n*Étape 2 - hauteur.* L'arête latérale vaut aussi $10$ cm :\n\n$$h^{2} = 10^{2} - (5\\sqrt{2})^{2} = 100 - 50 = 50$$\n\n$$h = \\sqrt{50} = 5\\sqrt{2} \\approx 7{,}07 \\text{ cm}$$\n\nOn remarque que la hauteur est égale à la demi-diagonale : le triangle $SOM$ est rectangle isocèle en $O$.\n\n*Étape 3 - apothème.* Dans la face latérale, triangle équilatéral de côté $10$ cm :\n\n$$\\text{apothème}^{2} = 10^{2} - 5^{2} = 100 - 25 = 75$$\n\n$$\\text{apothème} = \\sqrt{75} = 5\\sqrt{3} \\approx 8{,}66 \\text{ cm}$$\n\n*Étape 4 - volume.* L'aire de la base vaut $10^{2} = 100$ cm² :\n\n$$V = \\frac{\\mathcal{B} \\times h}{3} = \\frac{100 \\times 5\\sqrt{2}}{3} = \\frac{500\\sqrt{2}}{3} \\approx 235{,}7 \\text{ cm}^{3}$$\n\n*Contrôle.* L'ordre attendu est respecté : $7{,}07 < 8{,}66 < 10$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le pied de la hauteur d'une pyramide régulière est le centre de la base, intersection des diagonales du carré.",
+        "Vers un **sommet** de la base, on utilise la demi-diagonale $\\dfrac{c\\sqrt{2}}{2}$ : cela donne l'arête latérale.",
+        "Vers le **milieu d'un côté**, on utilise le demi-côté $\\dfrac{c}{2}$ : cela donne l'apothème, hauteur d'une face.",
+        "$(4\\sqrt{2})^{2} = 32$, pas $8$ : le carré porte sur le coefficient et sur le radical.",
+        "Contrôle systématique : hauteur $<$ apothème $<$ arête latérale.",
+        "Au BEPC, cette configuration donne en général trois questions enchaînées - arête, patron, apothème - et ouvre parfois sur un calcul de volume ou d'aire latérale."
+      ]
+    }
+  ]
+}
