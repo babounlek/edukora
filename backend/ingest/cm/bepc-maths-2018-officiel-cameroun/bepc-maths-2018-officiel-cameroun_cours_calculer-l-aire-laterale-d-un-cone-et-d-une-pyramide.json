@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-aire-laterale-cone-et-pyramide-3e",
+  "meta": {
+    "titre": "Calculer l'aire latérale d'un cône et d'une pyramide",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Aires des solides",
+    "duree_estimee_min": 35,
+    "tags": [
+      "aire latérale",
+      "cône",
+      "pyramide",
+      "génératrice",
+      "apothème"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2018-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2018 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bepc-maths-2018-officiel-cameroun-ex5-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une mairie doit peindre un monument en béton et veut connaître la facture. La peinture ne couvre que la surface visible, celle qui monte du sol vers la pointe : l'aire latérale. Deux formules suffisent, une pour le cône, une pour la pyramide, et elles reposent toutes deux sur la même idée : dérouler la surface à plat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Appliquer le théorème de Pythagore dans un triangle rectangle",
+        "Calculer l'aire d'un triangle et d'un disque",
+        "Distinguer le rayon du diamètre d'un cercle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux formules, un même triangle rectangle caché",
+      "contenu_markdown": "**Cône de révolution.** L'aire latérale vaut\n\n$$\\boxed{\\mathcal{A}_{\\text{lat}} = \\pi r g}$$\n\noù $r$ est le rayon de la base et $g$ la **génératrice**, segment oblique joignant le sommet à un point du cercle de base. Quand $g$ n'est pas donnée, on la calcule par Pythagore dans le triangle formé par la hauteur, le rayon et la génératrice :\n\n$$g^{2} = h^{2} + r^{2}$$\n\n**Pyramide régulière.** Chaque face latérale est un triangle isocèle de base $c$ (le côté de la base) et de hauteur $a$, appelée **apothème**. Pour une base à $n$ côtés :\n\n$$\\boxed{\\mathcal{A}_{\\text{lat}} = n \\times \\frac{c \\times a}{2}}$$\n\nL'apothème se calcule lui aussi par Pythagore, dans le triangle formé par la hauteur, le **demi-côté** et l'apothème :\n\n$$a^{2} = h^{2} + \\left(\\frac{c}{2}\\right)^{2}$$\n\n**Aire totale.** Si la base est peinte ou comptée, on ajoute son aire : $\\pi r^{2}$ pour le cône, $c^{2}$ pour une pyramide à base carrée. Pour un ouvrage posé au sol, seule l'aire latérale intervient.\n\n**Le point commun.** Dans les deux cas, la longueur oblique (génératrice ou apothème) est l'hypoténuse d'un triangle rectangle dont les côtés sont la hauteur et une distance horizontale : le rayon pour le cône, le demi-côté pour la pyramide.",
+      "formule_principale": "\\mathcal{A}_{\\text{lat}} = \\pi r g",
+      "variantes": [
+        {
+          "nom": "Retrouver la formule du cône par le développement",
+          "quand_utiliser": "Pour comprendre d'où vient $\\pi r g$ plutôt que l'apprendre par cœur",
+          "contenu_markdown": "Déroulé à plat, le cône donne un secteur de disque de rayon $g$ dont l'arc a pour longueur le périmètre de la base, soit $2\\pi r$. L'aire de ce secteur vaut\n\n$$\\frac{\\text{arc}}{2\\pi g} \\times \\pi g^{2} = \\frac{2\\pi r}{2\\pi g} \\times \\pi g^{2} = \\pi r g$$\n\nLa formule n'est donc pas arbitraire : c'est l'aire d'une part de disque."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une mairie hésite entre deux ouvrages d'art en béton, à peindre à 2500 francs le mètre carré. Modèle $A$ : cône de révolution de hauteur 6 m et de diamètre de base 4 m. Modèle $B$ : pyramide régulière de hauteur 6 m et de base carrée de côté 4 m. Calculer la dépense de peinture pour chaque modèle (on prendra $\\pi = 3{,}14$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Passer du diamètre au rayon pour le cône",
+          "justification": "L'énoncé donne le diamètre, la formule utilise le rayon",
+          "resultat_markdown": "$r = \\dfrac{4}{2} = 2$ m"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la génératrice du cône",
+          "justification": "La hauteur, le rayon et la génératrice forment un triangle rectangle dont la génératrice est l'hypoténuse",
+          "resultat_markdown": "$g^{2} = 6^{2} + 2^{2} = 40$, donc $g = 2\\sqrt{10} \\approx 6{,}32$ m"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'aire latérale du cône et la dépense",
+          "justification": "On applique $\\mathcal{A} = \\pi r g$, puis on multiplie par le prix au mètre carré",
+          "resultat_markdown": "$\\mathcal{A} = 3{,}14 \\times 2 \\times 6{,}32 \\approx 39{,}72$ m², d'où $D \\approx 99\\,300$ F"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'apothème de la pyramide",
+          "justification": "Le triangle rectangle fait intervenir le **demi**-côté, soit $2$ m, et non le côté entier",
+          "resultat_markdown": "$a^{2} = 6^{2} + 2^{2} = 40$, donc $a = 2\\sqrt{10} \\approx 6{,}32$ m"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer l'aire d'une face latérale",
+          "justification": "Chaque face est un triangle isocèle de base $4$ m et de hauteur l'apothème",
+          "resultat_markdown": "$\\mathcal{A}_{1} = \\dfrac{4 \\times 6{,}32}{2} \\approx 12{,}65$ m²"
+        },
+        {
+          "numero": 6,
+          "action": "Multiplier par le nombre de faces et calculer la dépense",
+          "justification": "La base est un carré : la pyramide a quatre faces latérales identiques",
+          "resultat_markdown": "$\\mathcal{A} = 4 \\times 12{,}65 \\approx 50{,}60$ m², d'où $D \\approx 126\\,500$ F"
+        }
+      ],
+      "conclusion_markdown": "Le modèle $A$ coûte environ $99\\,300$ francs de peinture, le modèle $B$ environ $126\\,500$ francs : le cône est nettement moins coûteux. On remarque que la génératrice et l'apothème valent tous deux $2\\sqrt{10}$ m, puisque les deux triangles rectangles ont les mêmes côtés, $6$ m et $2$ m."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la hauteur à la place de la génératrice dans $\\pi r g$",
+          "pourquoi_faux": "La surface latérale est oblique : c'est la génératrice qui la mesure, pas la hauteur, qui est intérieure au solide. Avec $h = 6$ au lieu de $g = 6{,}32$, on obtient $37{,}68$ m² au lieu de $39{,}72$ m², une erreur assez petite pour passer inaperçue et assez grande pour coûter des points.",
+          "correction_markdown": "Retiens que $g > h$ toujours, puisque la génératrice est l'hypoténuse. Vérifie cette inégalité avant d'appliquer la formule."
+        },
+        {
+          "erreur_markdown": "Prendre le côté entier au lieu du demi-côté pour l'apothème",
+          "pourquoi_faux": "L'apothème tombe au **milieu** du côté de base : le triangle rectangle fait donc intervenir $\\dfrac{c}{2}$. Avec $c = 4$ au lieu de $2$, on obtiendrait $a = \\sqrt{52} \\approx 7{,}21$ m au lieu de $6{,}32$ m.",
+          "correction_markdown": "Fais un croquis du triangle rectangle avant de calculer : hauteur verticale, demi-côté horizontal, apothème en oblique. Le mot « demi » s'impose de lui-même."
+        },
+        {
+          "erreur_markdown": "Confondre diamètre et rayon",
+          "pourquoi_faux": "Les énoncés donnent très souvent le diamètre, alors que toutes les formules utilisent le rayon. Utiliser $r = 4$ au lieu de $2$ double l'aire latérale et la facture.",
+          "correction_markdown": "Dès la lecture de l'énoncé, écris une ligne « rayon $= $ diamètre $\\div 2$ » avec la valeur numérique. Cela règle la question une fois pour toutes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cône de révolution a un rayon de base de $5$ cm et une génératrice de $13$ cm. Calculer son aire latérale, puis son aire totale (on prendra $\\pi = 3{,}14$).",
+          "solution_markdown": "*Aire latérale.*\n\n$$\\mathcal{A}_{\\text{lat}} = \\pi r g = 3{,}14 \\times 5 \\times 13 = 204{,}1 \\text{ cm}^{2}$$\n\n*Aire de la base.*\n\n$$\\mathcal{A}_{\\text{base}} = \\pi r^{2} = 3{,}14 \\times 25 = 78{,}5 \\text{ cm}^{2}$$\n\n*Aire totale.*\n\n$$\\mathcal{A}_{\\text{tot}} = 204{,}1 + 78{,}5 = 282{,}6 \\text{ cm}^{2}$$\n\n*Remarque.* On peut vérifier que la hauteur vaut $\\sqrt{13^{2} - 5^{2}} = \\sqrt{144} = 12$ cm : on reconnaît le triplet $(5\\;;\\,12\\;;\\,13)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pyramide régulière a une base carrée de côté $10$ cm et une hauteur de $12$ cm. Calculer son apothème, puis son aire latérale et son aire totale.",
+          "solution_markdown": "*Étape 1 - apothème.* Le triangle rectangle fait intervenir la hauteur et le demi-côté, soit $\\dfrac{10}{2} = 5$ cm :\n\n$$a^{2} = 12^{2} + 5^{2} = 144 + 25 = 169$$\n\n$$a = \\sqrt{169} = 13 \\text{ cm}$$\n\n*Étape 2 - aire latérale.* Quatre faces triangulaires de base $10$ cm et de hauteur $13$ cm :\n\n$$\\mathcal{A}_{\\text{lat}} = 4 \\times \\frac{10 \\times 13}{2} = 4 \\times 65 = 260 \\text{ cm}^{2}$$\n\n*Étape 3 - aire totale.* On ajoute le carré de base :\n\n$$\\mathcal{A}_{\\text{tot}} = 260 + 10^{2} = 260 + 100 = 360 \\text{ cm}^{2}$$\n\n*Contrôle.* L'apothème $13$ cm est bien supérieur à la hauteur $12$ cm, comme attendu pour une hypoténuse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un chapiteau de cirque a la forme d'un cône de révolution. Son aire latérale mesure $471$ m² et le diamètre de sa base est de $20$ m. Calculer la génératrice, puis la hauteur du chapiteau (on prendra $\\pi = 3{,}14$).",
+          "solution_markdown": "*Étape 1 - rayon.*\n\n$$r = \\frac{20}{2} = 10 \\text{ m}$$\n\n*Étape 2 - génératrice.* On part de la formule de l'aire latérale et on isole $g$ :\n\n$$\\mathcal{A} = \\pi r g \\quad \\Longrightarrow \\quad g = \\frac{\\mathcal{A}}{\\pi r}$$\n\n$$g = \\frac{471}{3{,}14 \\times 10} = \\frac{471}{31{,}4} = 15 \\text{ m}$$\n\n*Étape 3 - hauteur.* Le théorème de Pythagore donne\n\n$$h^{2} = g^{2} - r^{2} = 15^{2} - 10^{2} = 225 - 100 = 125$$\n\n$$h = \\sqrt{125} = 5\\sqrt{5} \\approx 11{,}18 \\text{ m}$$\n\n*Contrôle de vraisemblance.* La hauteur $11{,}18$ m est inférieure à la génératrice $15$ m, comme il se doit. Un chapiteau de $20$ m de diamètre et d'une dizaine de mètres de haut : les proportions sont réalistes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Cône : $\\mathcal{A}_{\\text{lat}} = \\pi r g$, où $g$ est la génératrice, jamais la hauteur.",
+        "Pyramide régulière : $\\mathcal{A}_{\\text{lat}} = n \\times \\dfrac{c a}{2}$, où $a$ est l'apothème, hauteur d'une face.",
+        "Génératrice et apothème sont des hypoténuses : $g^{2} = h^{2} + r^{2}$ pour le cône, $a^{2} = h^{2} + \\left(\\dfrac{c}{2}\\right)^{2}$ pour la pyramide.",
+        "Le demi-côté, pas le côté : c'est l'erreur la plus fréquente sur l'apothème.",
+        "Diamètre ou rayon : relis l'énoncé, la formule n'utilise que le rayon.",
+        "Au BEPC nouvelle formule, cette compétence structure l'évaluation des compétences : une situation concrète de peinture ou de tôlerie, plusieurs solides à comparer, et un coût à calculer pour chacun."
+      ]
+    }
+  ]
+}
