@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-intersection-de-deux-intervalles-3e",
+  "meta": {
+    "titre": "Déterminer l'intersection de deux intervalles",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Intervalles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "intervalles",
+      "intersection",
+      "réunion",
+      "inégalités",
+      "droite graduée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2014-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-maths-2014-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Les candidats doivent avoir au moins 15 ans et au plus 18 ans. » Deux conditions, un seul ensemble de candidats : c'est exactement une intersection d'intervalles. La notation mathématique paraît abstraite, mais elle décrit des situations que tu manipules tous les jours. Une droite graduée suffit à ne jamais s'y tromper."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Placer un nombre sur une droite graduée",
+        "Traduire une inégalité en phrase et réciproquement",
+        "Distinguer une inégalité stricte d'une inégalité large"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intersection : ce qui vérifie les deux conditions à la fois",
+      "contenu_markdown": "**Les notations.** Un intervalle se lit comme une double inégalité :\n\n| Intervalle | Condition sur $x$ |\n|---|---|\n| $[a\\;;\\,b]$ | $a \\leq x \\leq b$ |\n| $]a\\;;\\,b[$ | $a < x < b$ |\n| $]\\leftarrow\\;;\\,b]$ | $x \\leq b$ |\n| $[a\\;;\\rightarrow[$ | $x \\geq a$ |\n\nLe crochet **tourné vers l'intérieur** inclut la borne ; tourné vers l'extérieur, il l'exclut. Une borne infinie porte toujours un crochet ouvert.\n\n**L'intersection.** $I \\cap J$ est l'ensemble des nombres appartenant à $I$ **et** à $J$. Sur une droite graduée, c'est la zone commune aux deux hachures.\n\n$$\\boxed{x \\in I \\cap J \\;\\Longleftrightarrow\\; x \\in I \\text{ et } x \\in J}$$\n\n**La règle des bornes.** Pour deux intervalles qui se chevauchent :\n\n- borne de gauche du résultat : la **plus grande** des deux bornes de gauche ;\n- borne de droite du résultat : la **plus petite** des deux bornes de droite.\n\nChaque borne conserve le crochet qu'elle avait dans l'intervalle dont elle provient. Si les deux intervalles ne se rencontrent pas, l'intersection est l'ensemble vide $\\varnothing$.",
+      "formule_principale": "x \\in I \\cap J \\Longleftrightarrow x \\in I \\text{ et } x \\in J",
+      "variantes": [
+        {
+          "nom": "La réunion, à ne pas confondre",
+          "quand_utiliser": "Quand l'énoncé dit « ou » au lieu de « et »",
+          "contenu_markdown": "$I \\cup J$ rassemble les nombres appartenant à $I$ **ou** à $J$ : sur la droite graduée, c'est la zone hachurée au moins une fois, donc un ensemble plus grand que chacun des deux. L'intersection, elle, est toujours plus petite que chacun des deux. Un contrôle de bon sens : si ton résultat est plus large que les intervalles de départ, tu as fait une réunion."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'égalité $]\\leftarrow\\;;\\,3] \\cap [-3\\;;\\rightarrow[ \\;=\\; [-3\\;;\\,3]$ est-elle vraie ou fausse ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire chaque intervalle en inégalité",
+          "justification": "Le crochet fermé sur $3$ inclut cette borne ; le crochet fermé sur $-3$ également",
+          "resultat_markdown": "$]\\leftarrow\\;;\\,3]$ correspond à $x \\leq 3$ ; $[-3\\;;\\rightarrow[$ correspond à $x \\geq -3$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition d'appartenance à l'intersection",
+          "justification": "Un nombre appartient à l'intersection s'il vérifie les deux conditions simultanément",
+          "resultat_markdown": "$x \\leq 3$ **et** $x \\geq -3$"
+        },
+        {
+          "numero": 3,
+          "action": "Regrouper en un encadrement",
+          "justification": "Les deux inégalités encadrent $x$",
+          "resultat_markdown": "$-3 \\leq x \\leq 3$"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire l'encadrement en intervalle",
+          "justification": "Les deux inégalités sont larges, donc les deux bornes sont incluses",
+          "resultat_markdown": "$]\\leftarrow\\;;\\,3] \\cap [-3\\;;\\rightarrow[ \\;=\\; [-3\\;;\\,3]$"
+        }
+      ],
+      "conclusion_markdown": "L'égalité proposée est **vraie**. Un contrôle rapide : le nombre $0$ appartient aux deux intervalles de départ et bien à $[-3\\;;\\,3]$ ; le nombre $5$ n'appartient pas au premier, et il est bien exclu du résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre la plus petite borne de gauche et la plus grande borne de droite",
+          "pourquoi_faux": "Cela donne un ensemble plus **grand** que chacun des deux intervalles : c'est la réunion, pas l'intersection. L'intersection ne peut jamais dépasser le plus petit des deux ensembles.",
+          "correction_markdown": "Hachure les deux intervalles sur une même droite graduée et ne garde que la zone doublement hachurée. La figure lève l'ambiguïté en trois secondes."
+        },
+        {
+          "erreur_markdown": "Changer le type de crochet en passant à l'intersection",
+          "pourquoi_faux": "Chaque borne garde le crochet qu'elle avait. Écrire $]-3\\;;\\,3[$ au lieu de $[-3\\;;\\,3]$ exclut deux nombres qui appartiennent pourtant aux deux intervalles de départ.",
+          "correction_markdown": "Vérifie chaque borne séparément : $-3$ appartient-il aux deux intervalles ? Oui, donc crochet fermé. Même test pour $3$."
+        },
+        {
+          "erreur_markdown": "Oublier que l'intersection peut être vide",
+          "pourquoi_faux": "$[1\\;;\\,2] \\cap [5\\;;\\,7]$ ne contient aucun nombre : les deux intervalles ne se chevauchent pas. Appliquer mécaniquement la règle des bornes donnerait $[5\\;;\\,2]$, une écriture qui n'a aucun sens.",
+          "correction_markdown": "Si la borne de gauche obtenue dépasse la borne de droite, conclus $I \\cap J = \\varnothing$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $[-2\\;;\\,5] \\cap [0\\;;\\,8]$.",
+          "solution_markdown": "*Traduction.* Le premier intervalle correspond à $-2 \\leq x \\leq 5$, le second à $0 \\leq x \\leq 8$.\n\n*Condition commune.* Un nombre appartient aux deux si\n\n$$-2 \\leq x \\leq 5 \\quad \\text{et} \\quad 0 \\leq x \\leq 8$$\n\nLa contrainte la plus forte à gauche est $x \\geq 0$, celle de droite est $x \\leq 5$ :\n\n$$0 \\leq x \\leq 5$$\n\n$$[-2\\;;\\,5] \\cap [0\\;;\\,8] = [0\\;;\\,5]$$\n\n*Contrôle.* Le résultat est bien contenu dans chacun des deux intervalles de départ."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $]-\\infty\\;;\\,4[ \\;\\cap\\; [4\\;;\\,9]$, puis $]1\\;;\\,6] \\cap [6\\;;\\rightarrow[$.",
+          "solution_markdown": "*Premier cas.* Le premier intervalle impose $x < 4$ (strictement), le second $x \\geq 4$. Aucun nombre ne peut être à la fois strictement inférieur à $4$ et supérieur ou égal à $4$ :\n\n$$]-\\infty\\;;\\,4[ \\;\\cap\\; [4\\;;\\,9] = \\varnothing$$\n\n*Second cas.* Le premier intervalle impose $1 < x \\leq 6$, le second $x \\geq 6$. La seule valeur qui vérifie les deux est $x = 6$, incluse dans les deux intervalles :\n\n$$]1\\;;\\,6] \\cap [6\\;;\\rightarrow[ \\;=\\; \\{6\\}$$\n\n*Remarque.* Tout se joue sur le type de crochet en $4$ et en $6$ : une borne exclue d'un côté suffit à vider l'intersection."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Traduire par un intervalle l'ensemble des réels $x$ vérifiant $-5 \\leq 2x - 1 < 7$, puis déterminer son intersection avec $[0\\;;\\rightarrow[$.",
+          "solution_markdown": "*Étape 1 - isoler $x$.* On ajoute $1$ aux trois membres :\n\n$$-5 + 1 \\leq 2x < 7 + 1$$\n\n$$-4 \\leq 2x < 8$$\n\nOn divise les trois membres par $2$, qui est positif : le sens des inégalités est conservé.\n\n$$-2 \\leq x < 4$$\n\n*Étape 2 - écrire l'intervalle.* La borne $-2$ est incluse, la borne $4$ est exclue :\n\n$$I = [-2\\;;\\,4[$$\n\n*Étape 3 - intersection avec $[0\\;;\\rightarrow[$.* Ce second ensemble impose $x \\geq 0$. La condition commune est donc\n\n$$0 \\leq x < 4$$\n\n$$I \\cap [0\\;;\\rightarrow[ \\;=\\; [0\\;;\\,4[$$\n\n*Contrôle sur trois valeurs.* $x = 0$ convient ($-5 \\leq -1 < 7$ et $0 \\geq 0$) ; $x = 3{,}9$ convient ; $x = 4$ ne convient pas, car $2 \\times 4 - 1 = 7$ n'est pas strictement inférieur à $7$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Traduis chaque intervalle en inégalité avant toute chose : c'est là que le raisonnement devient mécanique.",
+        "L'intersection correspond à « et », la réunion à « ou ». L'intersection est toujours plus petite que chacun des deux ensembles.",
+        "Borne de gauche : la plus grande des deux. Borne de droite : la plus petite des deux. Chaque borne garde son crochet d'origine.",
+        "Une droite graduée hachurée deux fois te donne la réponse plus vite et plus sûrement que n'importe quelle règle apprise par cœur.",
+        "Si la borne de gauche dépasse celle de droite, l'intersection est vide.",
+        "Au BEPC, cette notion apparaît souvent dans un exercice « vrai ou faux » des activités numériques, et sert aussi à écrire l'ensemble des solutions d'une inéquation."
+      ]
+    }
+  ]
+}
