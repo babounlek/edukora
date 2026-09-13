@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-moyenne-serie-groupee-en-classes-3e",
+  "meta": {
+    "titre": "Calculer la moyenne d'une série groupée en classes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "moyenne",
+      "centre de classe",
+      "série groupée",
+      "effectifs",
+      "statistiques"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2016-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2016 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-maths-2016-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quatre-vingts copies corrigées, mais le professeur n'a noté que le nombre d'élèves par tranche de notes : huit entre $2$ et $4$, seize entre $4$ et $6$... Comment calculer la moyenne de la classe alors qu'aucune note individuelle n'est connue ? En remplaçant chaque tranche par son milieu. L'approximation est minime, la méthode est au programme, et elle tombe presque chaque année."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une moyenne pondérée",
+        "Lire un tableau d'effectifs par classes",
+        "Calculer le milieu d'un intervalle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chaque classe est remplacée par son centre",
+      "contenu_markdown": "**Le centre d'une classe.** Pour une classe $[a\\;;\\,b[$, le centre est la demi-somme des bornes :\n\n$$c = \\frac{a + b}{2}$$\n\n**La moyenne.** On traite ensuite la série comme une série de valeurs isolées, où chaque centre $c_{i}$ est affecté de l'effectif $n_{i}$ de sa classe :\n\n$$\\boxed{\\bar{x} = \\frac{n_{1}c_{1} + n_{2}c_{2} + \\cdots + n_{p}c_{p}}{n_{1} + n_{2} + \\cdots + n_{p}} = \\frac{\\sum n_{i}c_{i}}{N}}$$\n\n**Pourquoi le centre.** À l'intérieur d'une classe, on ne sait pas comment les valeurs se répartissent. En les supposant réparties uniformément, leur moyenne est le milieu de la classe : c'est l'approximation la plus raisonnable, et la seule attendue au collège.\n\n**Le résultat est une valeur approchée.** Contrairement à la moyenne d'une série de valeurs isolées, celle d'une série groupée n'est pas exacte : l'énoncé demande d'ailleurs souvent un arrondi.\n\n**Contrôle de vraisemblance.** La moyenne doit toujours tomber entre la plus petite et la plus grande valeur de la série, et près du centre des classes les plus fournies.",
+      "formule_principale": "\\bar{x} = \\frac{\\sum n_{i}c_{i}}{N}",
+      "variantes": [
+        {
+          "nom": "Passer par les fréquences",
+          "quand_utiliser": "Quand les fréquences sont déjà calculées dans le tableau",
+          "contenu_markdown": "On peut aussi écrire $\\bar{x} = \\sum f_{i}c_{i}$, où $f_{i}$ est la fréquence de la classe. Cette forme évite la division finale, mais impose de manipuler des décimaux tout au long du calcul. Elle est commode quand les fréquences sont des nombres simples comme $0{,}1$ ou $0{,}25$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les notes de mathématiques d'une classe de troisième sont réparties ainsi : $[2\\;;\\,4[$ : 8 élèves ; $[4\\;;\\,6[$ : 16 ; $[6\\;;\\,8[$ : 24 ; $[8\\;;\\,10[$ : 20 ; $[10\\;;\\,12[$ : 12. Calculer la note moyenne de la classe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le centre de chaque classe",
+          "justification": "Le centre est la demi-somme des deux bornes",
+          "resultat_markdown": "$\\dfrac{2+4}{2} = 3$ ; $\\dfrac{4+6}{2} = 5$ ; $\\dfrac{6+8}{2} = 7$ ; $\\dfrac{8+10}{2} = 9$ ; $\\dfrac{10+12}{2} = 11$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'effectif total",
+          "justification": "C'est le dénominateur de la moyenne",
+          "resultat_markdown": "$N = 8 + 16 + 24 + 20 + 12 = 80$ élèves"
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier chaque centre par son effectif",
+          "justification": "Chaque centre pèse autant que l'effectif de sa classe",
+          "resultat_markdown": "$8 \\times 3 = 24$ ; $16 \\times 5 = 80$ ; $24 \\times 7 = 168$ ; $20 \\times 9 = 180$ ; $12 \\times 11 = 132$"
+        },
+        {
+          "numero": 4,
+          "action": "Additionner ces produits",
+          "justification": "C'est le numérateur de la moyenne",
+          "resultat_markdown": "$24 + 80 + 168 + 180 + 132 = 584$"
+        },
+        {
+          "numero": 5,
+          "action": "Diviser par l'effectif total",
+          "justification": "On applique la formule de la moyenne pondérée",
+          "resultat_markdown": "$\\bar{x} = \\dfrac{584}{80} = 7{,}3$"
+        }
+      ],
+      "conclusion_markdown": "La note moyenne de la classe est de $7{,}3$ sur $20$. Contrôle de vraisemblance : la valeur tombe bien entre $2$ et $12$, et près du centre $7$ de la classe la plus fournie, $[6\\;;\\,8[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier l'effectif par une borne de la classe au lieu du centre",
+          "pourquoi_faux": "Prendre systématiquement la borne inférieure sous-estime la moyenne (on obtiendrait $6{,}3$), prendre la borne supérieure la surestime ($8{,}3$). Seul le centre représente correctement l'ensemble de la classe.",
+          "correction_markdown": "Ajoute une ligne « centres » à ton tableau avant de commencer les multiplications. Elle rend l'erreur impossible et vaut souvent un point au barème."
+        },
+        {
+          "erreur_markdown": "Faire la moyenne des centres sans tenir compte des effectifs",
+          "pourquoi_faux": "$\\dfrac{3+5+7+9+11}{5} = 7$ traite les cinq classes comme si elles avaient le même poids, alors que l'une compte $24$ élèves et une autre seulement $8$. La moyenne obtenue n'a aucun sens.",
+          "correction_markdown": "La moyenne est **pondérée** : chaque centre est multiplié par son effectif, et l'on divise par la somme des effectifs, pas par le nombre de classes."
+        },
+        {
+          "erreur_markdown": "Diviser par le nombre de classes au lieu de l'effectif total",
+          "pourquoi_faux": "$\\dfrac{584}{5} = 116{,}8$ : le résultat sort complètement de l'intervalle des notes, ce qui devrait alerter immédiatement.",
+          "correction_markdown": "Le dénominateur est toujours le nombre d'individus observés, ici $80$ élèves. Fais le contrôle de vraisemblance : une moyenne de notes doit rester entre $0$ et $20$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la moyenne de la série suivante : $[0\\;;\\,10[$ : 5 ; $[10\\;;\\,20[$ : 15 ; $[20\\;;\\,30[$ : 10.",
+          "solution_markdown": "*Centres.* $\\dfrac{0+10}{2} = 5$ ; $\\dfrac{10+20}{2} = 15$ ; $\\dfrac{20+30}{2} = 25$.\n\n*Effectif total.* $N = 5 + 15 + 10 = 30$.\n\n*Produits.* $5 \\times 5 = 25$ ; $15 \\times 15 = 225$ ; $10 \\times 25 = 250$.\n\n*Somme.* $25 + 225 + 250 = 500$.\n\n*Moyenne.*\n\n$$\\bar{x} = \\frac{500}{30} \\approx 16{,}7$$\n\n*Contrôle.* La valeur tombe entre $0$ et $30$, et près du centre $15$ de la classe la plus fournie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les salaires mensuels (en milliers de francs) de 50 employés se répartissent ainsi : $[50\\;;\\,100[$ : 12 ; $[100\\;;\\,150[$ : 20 ; $[150\\;;\\,200[$ : 13 ; $[200\\;;\\,250[$ : 5. Calculer le salaire moyen, puis le pourcentage d'employés gagnant au moins 150 000 francs.",
+          "solution_markdown": "*Étape 1 - centres.* $75$ ; $125$ ; $175$ ; $225$.\n\n*Étape 2 - produits.*\n\n$$12 \\times 75 = 900 \\quad ; \\quad 20 \\times 125 = 2500$$\n\n$$13 \\times 175 = 2275 \\quad ; \\quad 5 \\times 225 = 1125$$\n\n*Étape 3 - somme et moyenne.*\n\n$$900 + 2500 + 2275 + 1125 = 6800$$\n\n$$\\bar{x} = \\frac{6800}{50} = 136$$\n\nLe salaire moyen est de $136\\,000$ francs.\n\n*Étape 4 - pourcentage.* Gagnent au moins $150\\,000$ francs les employés des classes $[150\\;;\\,200[$ et $[200\\;;\\,250[$, soit $13 + 5 = 18$ employés :\n\n$$\\frac{18}{50} \\times 100 = 36\\,\\%$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série groupée en trois classes $[0\\;;\\,20[$, $[20\\;;\\,40[$ et $[40\\;;\\,60[$ compte $60$ individus au total. Les effectifs des deux premières classes sont $15$ et $25$, et la moyenne de la série vaut $30$. Retrouver l'effectif de la troisième classe, puis vérifier la moyenne.",
+          "solution_markdown": "*Étape 1 - effectif manquant.* La somme des effectifs vaut $60$ :\n\n$$15 + 25 + n_{3} = 60$$\n\n$$n_{3} = 60 - 40 = 20$$\n\n*Étape 2 - centres.* $\\dfrac{0+20}{2} = 10$ ; $\\dfrac{20+40}{2} = 30$ ; $\\dfrac{40+60}{2} = 50$.\n\n*Étape 3 - vérification de la moyenne.*\n\n$$15 \\times 10 = 150 \\quad ; \\quad 25 \\times 30 = 750 \\quad ; \\quad 20 \\times 50 = 1000$$\n\n$$\\bar{x} = \\frac{150 + 750 + 1000}{60} = \\frac{1900}{60} \\approx 31{,}7$$\n\n*Étape 4 - interprétation.* La moyenne obtenue, $31{,}7$, ne coïncide pas exactement avec la valeur $30$ annoncée : c'est normal, la moyenne d'une série groupée est une **valeur approchée**, calculée en supposant les individus concentrés au centre de leur classe. L'écart de $1{,}7$ traduit le fait que la répartition réelle à l'intérieur des classes n'est pas uniforme.\n\n*Remarque.* Si l'énoncé avait imposé une moyenne exacte de $30$, il aurait fallu chercher un effectif $n_{3}$ vérifiant $\\dfrac{150 + 750 + 50n_{3}}{40 + n_{3}} = 30$, soit $900 + 50n_{3} = 1200 + 30n_{3}$, donc $20n_{3} = 300$ et $n_{3} = 15$. Les deux contraintes, effectif total et moyenne, sont donc incompatibles ici."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Remplace chaque classe par son centre, demi-somme des deux bornes : c'est la première ligne à ajouter au tableau.",
+        "La moyenne est pondérée : chaque centre est multiplié par l'effectif de sa classe.",
+        "Le dénominateur est l'effectif total, jamais le nombre de classes.",
+        "Le résultat est une valeur approchée, puisqu'on ignore la répartition réelle à l'intérieur de chaque classe.",
+        "Contrôle : la moyenne tombe entre la plus petite et la plus grande valeur, et près du centre des classes les plus fournies.",
+        "Au BEPC, cette question suit généralement la construction d'un histogramme et un calcul de pourcentage sur la même série."
+      ]
+    }
+  ]
+}
