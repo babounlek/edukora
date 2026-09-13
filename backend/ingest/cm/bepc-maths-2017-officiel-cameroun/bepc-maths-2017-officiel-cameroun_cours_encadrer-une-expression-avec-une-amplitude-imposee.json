@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-encadrement-avec-amplitude-imposee-3e",
+  "meta": {
+    "titre": "Encadrer une expression avec une amplitude imposée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Encadrements",
+    "duree_estimee_min": 35,
+    "tags": [
+      "encadrement",
+      "amplitude",
+      "inégalités",
+      "radicaux",
+      "arrondi"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2017-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-maths-2017-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "$\\sqrt{2}$ n'a pas d'écriture décimale exacte, et pourtant on a besoin de savoir entre quelles valeurs se situe une expression qui le contient. L'encadrement répond à cette question : il ne donne pas la valeur, il donne un intervalle qui la contient à coup sûr, aussi précis qu'on le souhaite. Reste à transporter correctement l'encadrement de départ à travers chaque opération."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Manipuler une double inégalité",
+        "Savoir qu'une multiplication par un nombre négatif inverse le sens d'une inégalité",
+        "Arrondir un nombre décimal à un rang donné"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Transporter l'encadrement, opération par opération",
+      "contenu_markdown": "**Le principe.** On part de l'encadrement fourni et on applique à ses trois membres la même opération, une à la fois, dans l'ordre où l'expression est construite.\n\n| Opération | Effet sur l'encadrement |\n|---|---|\n| ajouter un nombre | sens conservé |\n| multiplier par un nombre **positif** | sens conservé |\n| multiplier par un nombre **négatif** | sens **inversé** |\n| diviser par un nombre positif | sens conservé |\n\n**L'amplitude.** C'est la différence entre le majorant et le minorant :\n\n$$\\boxed{\\text{amplitude} = \\text{majorant} - \\text{minorant}}$$\n\nMultiplier l'expression par $k$ multiplie l'amplitude par $|k|$ ; ajouter un nombre ne la change pas.\n\n**Obtenir l'amplitude demandée.** L'encadrement obtenu est souvent plus fin que celui demandé. On l'**élargit** alors en arrondissant chaque borne vers l'extérieur : le minorant vers le bas, le majorant vers le haut. Arrondir vers l'intérieur risquerait d'exclure la valeur cherchée, ce qui rendrait l'encadrement faux.",
+      "formule_principale": "\\text{amplitude} = \\text{majorant} - \\text{minorant}",
+      "variantes": [
+        {
+          "nom": "Quand l'encadrement de départ est trop large",
+          "quand_utiliser": "Quand l'amplitude obtenue dépasse celle demandée",
+          "contenu_markdown": "Il faut alors repartir d'un encadrement plus fin du nombre irrationnel, avec une décimale de plus. Par exemple, si $1{,}41 < \\sqrt{2} < 1{,}42$ ne suffit pas, on utilise $1{,}414 < \\sqrt{2} < 1{,}415$. On ne peut jamais resserrer un encadrement après coup : la précision se décide au départ."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $1{,}414 < \\sqrt{2} < 1{,}415$, déterminer un encadrement de $\\dfrac{5 - 4\\sqrt{2}}{7}$ d'amplitude $2 \\times 10^{-3}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les opérations à appliquer, dans l'ordre",
+          "justification": "L'expression se construit à partir de $\\sqrt{2}$ en multipliant par $-4$, puis en ajoutant $5$, puis en divisant par $7$",
+          "resultat_markdown": "$\\sqrt{2} \\;\\to\\; -4\\sqrt{2} \\;\\to\\; 5 - 4\\sqrt{2} \\;\\to\\; \\dfrac{5 - 4\\sqrt{2}}{7}$"
+        },
+        {
+          "numero": 2,
+          "action": "Multiplier par $-4$",
+          "justification": "Le nombre est négatif, donc le sens des inégalités s'inverse : le plus grand devient le plus petit",
+          "resultat_markdown": "$-4 \\times 1{,}415 < -4\\sqrt{2} < -4 \\times 1{,}414$, soit $-5{,}66 < -4\\sqrt{2} < -5{,}656$"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter 5",
+          "justification": "L'addition conserve le sens des inégalités",
+          "resultat_markdown": "$-0{,}66 < 5 - 4\\sqrt{2} < -0{,}656$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser par 7",
+          "justification": "Le nombre est positif, le sens est conservé",
+          "resultat_markdown": "$-0{,}0943 < \\dfrac{5 - 4\\sqrt{2}}{7} < -0{,}0937$"
+        },
+        {
+          "numero": 5,
+          "action": "Comparer l'amplitude obtenue à celle demandée",
+          "justification": "On calcule la différence entre les deux bornes",
+          "resultat_markdown": "amplitude $\\approx 5{,}7 \\times 10^{-4}$, plus fine que $2 \\times 10^{-3}$"
+        },
+        {
+          "numero": 6,
+          "action": "Élargir en arrondissant vers l'extérieur au millième",
+          "justification": "Le minorant est arrondi vers le bas, le majorant vers le haut : l'encadrement reste vrai et son amplitude devient exactement $0{,}002$",
+          "resultat_markdown": "$-0{,}095 < \\dfrac{5 - 4\\sqrt{2}}{7} < -0{,}093$"
+        }
+      ],
+      "conclusion_markdown": "L'encadrement demandé est $-0{,}095 < \\dfrac{5 - 4\\sqrt{2}}{7} < -0{,}093$, d'amplitude $-0{,}093 - (-0{,}095) = 0{,}002 = 2 \\times 10^{-3}$. Contrôle : la valeur exacte vaut environ $-0{,}0938$, bien comprise entre les deux bornes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'inverser le sens en multipliant par un nombre négatif",
+          "pourquoi_faux": "On obtiendrait $-5{,}656 < -4\\sqrt{2} < -5{,}66$, où le minorant est plus grand que le majorant : l'encadrement est impossible. Multiplier par un négatif retourne l'ordre des nombres.",
+          "correction_markdown": "Après chaque multiplication par un négatif, relis l'encadrement obtenu et vérifie que le nombre de gauche est bien le plus petit. Ce contrôle d'une seconde détecte l'erreur à coup sûr."
+        },
+        {
+          "erreur_markdown": "Arrondir les bornes vers l'intérieur",
+          "pourquoi_faux": "Arrondir $-0{,}0943$ en $-0{,}094$ et $-0{,}0937$ en $-0{,}094$ resserre l'encadrement au point d'exclure éventuellement la valeur cherchée. Un encadrement faux vaut zéro point, même s'il est plus précis.",
+          "correction_markdown": "Retiens la règle : le minorant descend, le majorant monte. On n'a jamais le droit de rétrécir un encadrement, seulement de l'élargir."
+        },
+        {
+          "erreur_markdown": "Appliquer toutes les opérations en une seule ligne",
+          "pourquoi_faux": "En écrivant directement $\\dfrac{5 - 4 \\times 1{,}414}{7} < X < \\dfrac{5 - 4 \\times 1{,}415}{7}$, on garde l'ordre initial des bornes alors que la multiplication par $-4$ l'a inversé. Les deux bornes se retrouvent échangées.",
+          "correction_markdown": "Décompose en autant de lignes qu'il y a d'opérations, et indique à chaque fois si le sens est conservé ou inversé. Le barème récompense cette progression."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que $1{,}73 < \\sqrt{3} < 1{,}74$, encadrer $2\\sqrt{3} + 1$ et donner l'amplitude de l'encadrement obtenu.",
+          "solution_markdown": "*Multiplication par 2.* Le nombre est positif, le sens est conservé :\n\n$$2 \\times 1{,}73 < 2\\sqrt{3} < 2 \\times 1{,}74$$\n\n$$3{,}46 < 2\\sqrt{3} < 3{,}48$$\n\n*Addition de 1.* Le sens est conservé :\n\n$$4{,}46 < 2\\sqrt{3} + 1 < 4{,}48$$\n\n*Amplitude.*\n\n$$4{,}48 - 4{,}46 = 0{,}02 = 2 \\times 10^{-2}$$\n\n*Contrôle.* $2\\sqrt{3} + 1 \\approx 4{,}464$, bien compris entre les deux bornes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sachant que $2{,}236 < \\sqrt{5} < 2{,}237$, encadrer $\\dfrac{3 - 2\\sqrt{5}}{5}$, puis donner un encadrement d'amplitude $10^{-3}$.",
+          "solution_markdown": "*Étape 1 - multiplier par $-2$.* Le sens s'inverse :\n\n$$-2 \\times 2{,}237 < -2\\sqrt{5} < -2 \\times 2{,}236$$\n\n$$-4{,}474 < -2\\sqrt{5} < -4{,}472$$\n\n*Étape 2 - ajouter 3.* Le sens est conservé :\n\n$$-1{,}474 < 3 - 2\\sqrt{5} < -1{,}472$$\n\n*Étape 3 - diviser par 5.* Le sens est conservé :\n\n$$-0{,}2948 < \\frac{3 - 2\\sqrt{5}}{5} < -0{,}2944$$\n\nL'amplitude vaut $0{,}0004$, plus fine que $10^{-3} = 0{,}001$.\n\n*Étape 4 - élargir au millième, vers l'extérieur.*\n\n$$-0{,}295 < \\frac{3 - 2\\sqrt{5}}{5} < -0{,}294$$\n\n*Vérification de l'amplitude.* $-0{,}294 - (-0{,}295) = 0{,}001 = 10^{-3}$ ✔\n\n*Contrôle.* La valeur exacte vaut environ $-0{,}2944$, bien comprise entre les deux bornes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne $3{,}141 < \\pi < 3{,}142$. Encadrer l'aire d'un disque de rayon $4$ cm, puis déterminer un encadrement de cette aire d'amplitude $0{,}1$ cm². Combien de décimales de $\\pi$ faudrait-il pour obtenir une amplitude de $0{,}001$ cm² ?",
+          "solution_markdown": "*Étape 1 - encadrement de l'aire.* L'aire vaut $\\mathcal{A} = \\pi r^{2} = 16\\pi$. On multiplie l'encadrement par $16$, qui est positif :\n\n$$16 \\times 3{,}141 < 16\\pi < 16 \\times 3{,}142$$\n\n$$50{,}256 < \\mathcal{A} < 50{,}272$$\n\n*Étape 2 - amplitude obtenue.*\n\n$$50{,}272 - 50{,}256 = 0{,}016 \\text{ cm}^{2}$$\n\nElle est plus fine que $0{,}1$ cm² : on peut donc élargir.\n\n*Étape 3 - encadrement d'amplitude 0,1.* On arrondit vers l'extérieur au dixième :\n\n$$50{,}2 < \\mathcal{A} < 50{,}3$$\n\nL'amplitude vaut bien $50{,}3 - 50{,}2 = 0{,}1$ cm².\n\n*Étape 4 - précision nécessaire pour une amplitude de 0,001.* Si l'encadrement de $\\pi$ a une amplitude $a$, celui de l'aire a une amplitude $16a$. Il faut donc\n\n$$16a \\leq 0{,}001$$\n\n$$a \\leq \\frac{0{,}001}{16} = 0{,}0000625$$\n\nUn encadrement de $\\pi$ à $10^{-5}$ près, soit cinq décimales ($3{,}14159 < \\pi < 3{,}14160$), donne une amplitude de $10^{-5}$, inférieure à $0{,}0000625$ : cinq décimales suffisent.\n\n*Remarque.* Multiplier l'expression par $16$ multiplie l'imprécision par $16$ : plus le coefficient est grand, plus l'encadrement de départ doit être fin."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Applique les opérations une par une aux trois membres, dans l'ordre où l'expression est construite.",
+        "Seule la multiplication (ou la division) par un nombre **négatif** inverse le sens des inégalités.",
+        "L'amplitude est la différence majorant moins minorant ; elle est multipliée par $|k|$ quand on multiplie l'expression par $k$.",
+        "Pour atteindre une amplitude imposée plus large, arrondis vers l'extérieur : minorant vers le bas, majorant vers le haut.",
+        "On ne peut jamais resserrer un encadrement après coup : si l'amplitude obtenue est trop grande, il faut repartir d'un encadrement plus fin du nombre irrationnel.",
+        "Au BEPC, cette question conclut souvent un exercice sur les radicaux, après un calcul de valeur numérique et une rationalisation de dénominateur."
+      ]
+    }
+  ]
+}
