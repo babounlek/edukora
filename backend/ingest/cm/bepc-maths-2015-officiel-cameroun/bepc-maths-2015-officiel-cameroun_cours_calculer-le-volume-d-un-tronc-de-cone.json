@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-volume-d-un-tronc-de-cone-3e",
+  "meta": {
+    "titre": "Calculer le volume d'un tronc de cône",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Solides et réductions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "tronc de cône",
+      "réduction",
+      "coefficient",
+      "volume",
+      "théorème de Thalès"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2015-officiel-cameroun",
+    "epreuve_titre": "BEPC Mathématiques - Session 2015 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bepc-maths-2015-officiel-cameroun-ex5-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un seau, un abat-jour, un gobelet de fête : tous ont la forme d'un tronc de cône. Aucune formule directe n'est au programme pour en calculer le volume, et c'est une bonne nouvelle. Il suffit de voir le tronc pour ce qu'il est : un grand cône dont on a retiré la pointe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le volume d'un cône de révolution",
+        "Appliquer le théorème de Thalès dans une configuration de triangles emboîtés",
+        "Savoir que les volumes de deux solides semblables sont dans le rapport $k^{3}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le tronc, c'est le grand cône moins le petit",
+      "contenu_markdown": "**La situation.** Un plan parallèle à la base coupe un cône de sommet $C$ en deux morceaux : un petit cône de sommet $C$, et un tronc de cône entre le plan de coupe et la base.\n\n**Le petit cône est une réduction du grand.** Le coefficient de réduction se lit sur les hauteurs, ou sur les rayons, ou sur les génératrices :\n\n$$k = \\frac{\\text{hauteur du petit}}{\\text{hauteur du grand}} = \\frac{\\text{rayon du petit}}{\\text{rayon du grand}}$$\n\n**Le volume du tronc.**\n\n$$\\boxed{V_{\\text{tronc}} = V - V' = V - k^{3}V = V(1 - k^{3})}$$\n\noù $V$ est le volume du grand cône et $V'$ celui du petit.\n\n**Trois erreurs de rapport à ne pas commettre.** Les longueurs sont dans le rapport $k$, les aires dans le rapport $k^{2}$, les volumes dans le rapport $k^{3}$. Un tronc obtenu à mi-hauteur laisse donc $1 - \\dfrac{1}{8} = \\dfrac{7}{8}$ du volume total, et non la moitié.\n\n**Comment obtenir le rayon manquant.** Le théorème de Thalès, appliqué depuis le sommet du cône, relie les rayons aux hauteurs : c'est presque toujours la première question de l'exercice.",
+      "formule_principale": "V_{\\text{tronc}} = V(1 - k^{3})",
+      "variantes": [
+        {
+          "nom": "Calcul direct des deux volumes",
+          "quand_utiliser": "Quand le rayon et la hauteur du petit cône sont tous deux connus",
+          "contenu_markdown": "On calcule séparément $V = \\dfrac{\\pi R^{2}H}{3}$ et $V' = \\dfrac{\\pi r^{2}h}{3}$, puis on soustrait. Cette voie est plus longue mais ne demande aucun coefficient de réduction, et elle fournit un contrôle indépendant du résultat obtenu par $k^{3}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cône de révolution a pour axe $[AC]$ et pour génératrice $[CE]$, avec $AC = 3$ cm. Le point $B$ appartient à $[AC]$ avec $BC = 1$ cm, et $F$ à $[CE]$ avec $FB = \\dfrac{2}{3}$ cm, les droites $(FB)$ et $(AE)$ étant parallèles. Calculer le rayon $AE$, le volume $V$ du cône (avec $\\pi = 3{,}14$), puis le volume du tronc obtenu en coupant par le plan passant par $B$ parallèlement à la base.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer le théorème de Thalès depuis le sommet",
+          "justification": "Les droites $(CA)$ et $(CE)$ sont sécantes en $C$, avec $B \\in [CA]$, $F \\in [CE]$ et $(FB) \\parallel (AE)$",
+          "resultat_markdown": "$\\dfrac{CB}{CA} = \\dfrac{FB}{AE}$, soit $\\dfrac{1}{3} = \\dfrac{2/3}{AE}$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre par produit en croix",
+          "justification": "On isole $AE$",
+          "resultat_markdown": "$AE = 3 \\times \\dfrac{2}{3} = 2$ cm"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le volume du grand cône",
+          "justification": "Rayon $R = AE = 2$ cm, hauteur $H = AC = 3$ cm",
+          "resultat_markdown": "$V = \\dfrac{3{,}14 \\times 2^{2} \\times 3}{3} = 3{,}14 \\times 4 = 12{,}56$ cm³"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer le coefficient de réduction",
+          "justification": "Le petit cône a pour hauteur $CB = 1$ cm contre $CA = 3$ cm pour le grand",
+          "resultat_markdown": "$k = \\dfrac{1}{3}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le volume du petit cône",
+          "justification": "Les volumes sont dans le rapport $k^{3}$",
+          "resultat_markdown": "$V' = \\left(\\dfrac{1}{3}\\right)^{3} \\times 12{,}56 = \\dfrac{12{,}56}{27} \\approx 0{,}465$ cm³"
+        },
+        {
+          "numero": 6,
+          "action": "Soustraire pour obtenir le tronc",
+          "justification": "Le tronc est ce qui reste du grand cône une fois le petit retiré",
+          "resultat_markdown": "$V_{\\text{tronc}} = 12{,}56 - 0{,}465 \\approx 12{,}10$ cm³"
+        }
+      ],
+      "conclusion_markdown": "Le tronc de cône a un volume d'environ $12{,}10$ cm³, soit $\\dfrac{26}{27}$ du volume total. Contrôle par le calcul direct du petit cône : $\\dfrac{3{,}14 \\times (2/3)^{2} \\times 1}{3} = \\dfrac{12{,}56}{27}$, le même résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Réduire le volume dans le rapport $k$ au lieu de $k^{3}$",
+          "pourquoi_faux": "Avec $k = \\dfrac{1}{3}$, cela donnerait un petit cône de $4{,}19$ cm³ au lieu de $0{,}465$ cm³, et un tronc de $8{,}37$ cm³ au lieu de $12{,}10$ cm³. L'écart est énorme parce que le cube réduit très fortement.",
+          "correction_markdown": "Écris toujours l'exposant explicitement : $V' = k^{3}V$. Et souviens-toi qu'une pointe de cône coupée au tiers de la hauteur ne représente presque rien du volume total."
+        },
+        {
+          "erreur_markdown": "Prendre le rapport des rayons pour le rapport des volumes",
+          "pourquoi_faux": "Rayons et hauteurs sont des longueurs : leur rapport est $k$, pas $k^{3}$. Les confondre revient à la même erreur que ci-dessus.",
+          "correction_markdown": "Classe mentalement chaque grandeur : longueur, aire ou volume. L'exposant de $k$ suit immédiatement : $1$, $2$ ou $3$."
+        },
+        {
+          "erreur_markdown": "Chercher une formule directe du volume du tronc",
+          "pourquoi_faux": "Il en existe une, mais elle n'est pas au programme du collège et se retient mal. La démarche attendue est la soustraction, et c'est elle que le barème récompense.",
+          "correction_markdown": "Structure ta copie en trois temps : volume du grand cône, volume du petit, différence. Chaque étape vaut des points même si la suivante échoue."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cône de volume $54$ cm³ est coupé par un plan parallèle à la base, à mi-hauteur. Calculer le volume du petit cône, puis celui du tronc.",
+          "solution_markdown": "*Coefficient de réduction.* Le plan passe à mi-hauteur, donc\n\n$$k = \\frac{1}{2}$$\n\n*Volume du petit cône.* Les volumes sont dans le rapport $k^{3}$ :\n\n$$V' = \\left(\\frac{1}{2}\\right)^{3} \\times 54 = \\frac{54}{8} = 6{,}75 \\text{ cm}^{3}$$\n\n*Volume du tronc.*\n\n$$V_{\\text{tronc}} = 54 - 6{,}75 = 47{,}25 \\text{ cm}^{3}$$\n\n*Remarque.* Le tronc représente $\\dfrac{7}{8}$ du volume total : couper à mi-hauteur ne partage pas le cône en deux moitiés, loin de là."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cône a une hauteur de $12$ cm et un rayon de base de $5$ cm. On le coupe par un plan parallèle à la base situé à $4$ cm du sommet. Calculer le rayon de la section, puis le volume du tronc (on prendra $\\pi = 3{,}14$).",
+          "solution_markdown": "*Étape 1 - coefficient de réduction.* Le petit cône a une hauteur de $4$ cm contre $12$ cm pour le grand :\n\n$$k = \\frac{4}{12} = \\frac{1}{3}$$\n\n*Étape 2 - rayon de la section.* Un rayon est une longueur, donc réduit dans le rapport $k$ :\n\n$$r = \\frac{1}{3} \\times 5 = \\frac{5}{3} \\approx 1{,}67 \\text{ cm}$$\n\n*Étape 3 - volume du grand cône.*\n\n$$V = \\frac{3{,}14 \\times 5^{2} \\times 12}{3} = \\frac{3{,}14 \\times 25 \\times 12}{3} = \\frac{942}{3} = 314 \\text{ cm}^{3}$$\n\n*Étape 4 - volume du petit cône.*\n\n$$V' = \\left(\\frac{1}{3}\\right)^{3} \\times 314 = \\frac{314}{27} \\approx 11{,}63 \\text{ cm}^{3}$$\n\n*Étape 5 - volume du tronc.*\n\n$$V_{\\text{tronc}} = 314 - 11{,}63 \\approx 302{,}37 \\text{ cm}^{3}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un seau a la forme d'un tronc de cône de rayons $10$ cm et $15$ cm, et de hauteur $20$ cm. En prolongeant les génératrices, on reconstitue le cône complet. Calculer la hauteur totale de ce cône, puis la capacité du seau en litres (on prendra $\\pi = 3{,}14$).",
+          "solution_markdown": "*Étape 1 - coefficient de réduction.* Le petit cône, celui qui a été retiré, a pour rayon $10$ cm et le grand $15$ cm :\n\n$$k = \\frac{10}{15} = \\frac{2}{3}$$\n\n*Étape 2 - hauteur totale.* Notons $H$ la hauteur du grand cône. La hauteur du petit vaut $kH$, et le tronc mesure la différence :\n\n$$H - kH = 20$$\n\n$$H\\left(1 - \\frac{2}{3}\\right) = 20$$\n\n$$\\frac{H}{3} = 20$$\n\n$$H = 60 \\text{ cm}$$\n\nLa hauteur du petit cône vaut alors $\\dfrac{2}{3} \\times 60 = 40$ cm, et l'on vérifie $60 - 40 = 20$ cm.\n\n*Étape 3 - volume du grand cône.*\n\n$$V = \\frac{3{,}14 \\times 15^{2} \\times 60}{3} = \\frac{3{,}14 \\times 225 \\times 60}{3} = 3{,}14 \\times 4500 = 14130 \\text{ cm}^{3}$$\n\n*Étape 4 - volume du petit cône.*\n\n$$V' = \\left(\\frac{2}{3}\\right)^{3} \\times 14130 = \\frac{8}{27} \\times 14130 = 4186{,}67 \\text{ cm}^{3}$$\n\n*Étape 5 - capacité du seau.*\n\n$$V_{\\text{tronc}} = 14130 - 4186{,}67 = 9943{,}33 \\text{ cm}^{3}$$\n\nComme $1000$ cm³ $= 1$ L :\n\n$$V_{\\text{tronc}} \\approx 9{,}9 \\text{ litres}$$\n\n*Contrôle de vraisemblance.* Un seau d'une trentaine de centimètres de diamètre et de vingt centimètres de haut contenant une dizaine de litres : l'ordre de grandeur est réaliste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tronc de cône se calcule toujours par différence : grand cône moins petit cône. Aucune formule directe n'est exigée au collège.",
+        "Le petit cône est une réduction du grand, de coefficient $k$ lu sur les hauteurs ou sur les rayons.",
+        "$V' = k^{3}V$ : le volume suit le **cube** du coefficient, jamais le coefficient lui-même.",
+        "Le théorème de Thalès depuis le sommet fournit le rayon ou la hauteur manquante : c'est presque toujours la première question de l'exercice.",
+        "Structure ta copie en trois étapes distinctes, chacune rapporte des points même si la suivante échoue.",
+        "Au BEPC, cet exercice se présente sous forme d'un cône coupé par un plan parallèle à la base, et enchaîne rayon, volume total, puis volume du tronc."
+      ]
+    }
+  ]
+}
