@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-pgcd-partage-3e",
+  "meta": {
+    "titre": "Reconnaître et résoudre un problème de PGCD",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Arithmétique - diviseurs et multiples",
+    "duree_estimee_min": 30,
+    "tags": [
+      "PGCD",
+      "PPCM",
+      "décomposition en facteurs premiers",
+      "algorithme d'Euclide",
+      "partage"
+    ],
+    "savoir_officiel": {"classe": "3e", "serie_label": "", "module_numero": "13", "savoir_numero": "I"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-blanc-maths-2017-lycee-general-leclerc-cameroun",
+    "epreuve_titre": "BEPC Blanc - Mathématiques - Lycée Général Leclerc, année scolaire 2017-2018 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bepc-blanc-maths-2017-lycee-general-leclerc-cameroun-ex5-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Partager 108 m³ de céréales et 162 bidons d'huile entre le plus grand nombre possible de familles, chacune recevant des parts entières et identiques : ce type d'énoncé revient chaque année au BEPC, et il se résout en une ligne une fois qu'on a reconnu de quoi il s'agit. Toute la difficulté tient à une seule question : faut-il chercher le PGCD ou le PPCM ? Ce cours te donne le critère qui tranche à coup sûr."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les nombres premiers jusqu'à 30",
+        "Savoir effectuer une division euclidienne et en donner le reste",
+        "Savoir décomposer un entier en produit de facteurs premiers",
+        "Connaître les critères de divisibilité par 2, 3, 5 et 9"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "PGCD ou PPCM : le critère du partage",
+      "contenu_markdown": "**Le critère décisif.**\n\n| Situation de l'énoncé | Notion à employer |\n|---|---|\n| On **partage** des quantités en parts égales, on cherche le **plus grand nombre de parts** | **PGCD** |\n| On **répète** des événements, on cherche le **prochain moment commun** | **PPCM** |\n\nUn mot suffit souvent à trancher : *partager*, *répartir*, *distribuer*, *découper* appellent le PGCD ; *se retrouver*, *coïncider*, *à nouveau ensemble*, *simultanément* appellent le PPCM.\n\n**Pourquoi le PGCD.** Si $n$ familles reçoivent chacune un nombre entier de mètres cubes, alors $n$ divise le nombre total de mètres cubes. Si elles reçoivent aussi un nombre entier de bidons, $n$ divise le nombre total de bidons. Le nombre cherché est donc un **diviseur commun** aux deux quantités, et on le veut maximal : c'est le PGCD.\n\n**Les deux méthodes de calcul du PGCD.**\n\n*Méthode 1 - décomposition en facteurs premiers.* On décompose chaque nombre, puis on garde les facteurs premiers **communs**, affectés du **plus petit** exposant.\n\n$$108 = 2^{2} \\times 3^{3} \\qquad 162 = 2 \\times 3^{4}$$\n\n$$\\text{PGCD} = 2^{1} \\times 3^{3} = 54$$\n\n*Méthode 2 - algorithme d'Euclide.* On divise le plus grand par le plus petit, puis le diviseur par le reste, et ainsi de suite. Le dernier reste non nul est le PGCD.\n\n$$162 = 1 \\times 108 + 54$$\n\n$$108 = 2 \\times 54 + 0$$\n\nLe PGCD vaut 54.\n\n**Pour mémoire, le PPCM.** On garde tous les facteurs premiers, communs ou non, affectés du **plus grand** exposant :\n\n$$\\text{PPCM}(108\\,;162) = 2^{2} \\times 3^{4} = 324$$\n\nOn dispose aussi de la relation $\\text{PGCD} \\times \\text{PPCM} = a \\times b$, ici $54 \\times 324 = 17\\,496 = 108 \\times 162$.\n\n**Ne pas oublier la dernière étape.** Un problème de partage ne s'arrête pas au PGCD : l'énoncé attend presque toujours le contenu de chaque part, obtenu en divisant chaque quantité par le PGCD.",
+      "formule_principale": "nombre maximal de parts = PGCD des quantités à partager",
+      "variantes": [
+        {
+          "nom": "Le partage avec reste imposé",
+          "quand_utiliser": "Quand l'énoncé précise qu'il reste une quantité donnée après le partage",
+          "contenu_markdown": "Si l'énoncé indique qu'après avoir partagé 110 bonbons il en reste 2, et qu'après avoir partagé 164 biscuits il en reste 2 également, le nombre de parts ne divise pas 110 et 164, mais $110 - 2 = 108$ et $164 - 2 = 162$. On retranche les restes **avant** de calculer le PGCD. C'est une variante très fréquente, et l'oubli de la soustraction rend le problème insoluble."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le PAM distribue 108 m³ de céréales et 162 bidons d'huile aux familles d'un village. Chaque famille reçoit un nombre entier de bidons et un nombre entier de mètres cubes, et toutes reçoivent la même chose. Quel est le nombre maximal de familles bénéficiaires, et que reçoit chacune ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître la notion en jeu",
+          "justification": "On partage deux quantités en parts entières et égales, et on cherche le plus grand nombre de parts. Le mot « distribuer » et l'expression « nombre maximum de familles » désignent le PGCD.",
+          "resultat_markdown": "Il faut calculer $\\text{PGCD}(108\\,;\\,162)$."
+        },
+        {
+          "numero": 2,
+          "action": "Justifier que le nombre cherché divise les deux quantités",
+          "justification": "Si chaque famille reçoit un nombre entier de mètres cubes, le nombre de familles divise 108 ; s'il reçoit un nombre entier de bidons, il divise 162.",
+          "resultat_markdown": "Le nombre de familles est un diviseur commun à 108 et 162."
+        },
+        {
+          "numero": 3,
+          "action": "Décomposer 108 en facteurs premiers",
+          "justification": "On divise successivement par les nombres premiers, en commençant par le plus petit.",
+          "resultat_markdown": "$108 = 2 \\times 54 = 2 \\times 2 \\times 27 = 2^{2} \\times 3^{3}$"
+        },
+        {
+          "numero": 4,
+          "action": "Décomposer 162 en facteurs premiers",
+          "justification": "Même procédé.",
+          "resultat_markdown": "$162 = 2 \\times 81 = 2 \\times 3^{4}$"
+        },
+        {
+          "numero": 5,
+          "action": "Former le PGCD",
+          "justification": "On retient les facteurs communs, chacun avec le plus petit des deux exposants : $2^{1}$ et $3^{3}$.",
+          "resultat_markdown": "$\\text{PGCD} = 2 \\times 27 = 54$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier par l'algorithme d'Euclide",
+          "justification": "Une seconde méthode indépendante sécurise le résultat.",
+          "resultat_markdown": "$162 = 1 \\times 108 + 54$ ; $108 = 2 \\times 54 + 0$ ; dernier reste non nul : 54"
+        },
+        {
+          "numero": 7,
+          "action": "Calculer la part de chaque famille",
+          "justification": "L'énoncé attend le contenu de chaque part, pas seulement le nombre de parts.",
+          "resultat_markdown": "$\\frac{108}{54} = 2$ m³ de céréales et $\\frac{162}{54} = 3$ bidons d'huile par famille"
+        }
+      ],
+      "conclusion_markdown": "Au maximum 54 familles peuvent bénéficier de l'aide, chacune recevant 2 m³ de céréales et 3 bidons d'huile. Le contrôle est immédiat : $54 \\times 2 = 108$ et $54 \\times 3 = 162$, rien ne reste."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le PPCM au lieu du PGCD",
+          "pourquoi_faux": "Le PPCM de 108 et 162 vaut 324, soit plus de familles que de mètres cubes disponibles. Chaque famille recevrait alors une fraction de mètre cube, ce que l'énoncé exclut.",
+          "correction_markdown": "Contrôle la vraisemblance : le nombre de parts ne peut pas dépasser la plus petite des quantités partagées. S'il la dépasse, tu as calculé un PPCM."
+        },
+        {
+          "erreur_markdown": "S'arrêter au PGCD sans calculer la part de chacun",
+          "pourquoi_faux": "L'énoncé décrit ce que reçoit chaque famille : il attend donc que la part soit précisée. Une réponse limitée au nombre 54 laisse la moitié du travail non faite.",
+          "correction_markdown": "Termine toujours par les deux divisions $\\frac{a}{\\text{PGCD}}$ et $\\frac{b}{\\text{PGCD}}$, et rédige une phrase de conclusion en français."
+        },
+        {
+          "erreur_markdown": "Oublier un facteur premier dans la décomposition",
+          "pourquoi_faux": "Écrire $108 = 2 \\times 3^{3}$ au lieu de $2^{2} \\times 3^{3}$ donne un produit égal à 54, et non à 108 : la décomposition est fausse et le PGCD le sera aussi.",
+          "correction_markdown": "Vérifie systématiquement en refaisant le produit : $2^{2} \\times 3^{3} = 4 \\times 27 = 108$. Ce contrôle prend cinq secondes."
+        },
+        {
+          "erreur_markdown": "Prendre le plus grand exposant dans le PGCD",
+          "pourquoi_faux": "Le plus grand exposant donne un nombre qui ne divise pas les deux entiers. Ici $2^{2} \\times 3^{4} = 324$ ne divise ni 108 ni 162 : c'est le PPCM.",
+          "correction_markdown": "Retiens le repère : **PGCD, plus petit exposant, facteurs communs seulement** ; **PPCM, plus grand exposant, tous les facteurs**."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un fleuriste dispose de 60 roses et de 45 tulipes. Il veut composer le plus grand nombre possible de bouquets identiques, en utilisant toutes les fleurs.\n\n1. Combien de bouquets pourra-t-il faire ?\n2. Que contiendra chaque bouquet ?",
+          "solution_markdown": "**1. Nombre de bouquets.**\n\nChaque bouquet contenant un nombre entier de roses et de tulipes, et toutes les fleurs étant utilisées, le nombre de bouquets divise 60 et 45. On cherche le plus grand : c'est le PGCD.\n\n*Décomposition :*\n\n$$60 = 2^{2} \\times 3 \\times 5 \\qquad 45 = 3^{2} \\times 5$$\n\n*Facteurs communs, plus petit exposant :* $3^{1}$ et $5^{1}$.\n\n$$\\text{PGCD}(60\\,;45) = 3 \\times 5 = 15$$\n\n*Vérification par Euclide :* $60 = 1 \\times 45 + 15$ ; $45 = 3 \\times 15 + 0$. Le PGCD vaut bien 15.\n\nLe fleuriste pourra composer **15 bouquets**.\n\n**2. Composition de chaque bouquet.**\n\n$$\\frac{60}{15} = 4 \\qquad \\frac{45}{15} = 3$$\n\nChaque bouquet contiendra **4 roses et 3 tulipes**.\n\n*Contrôle :* $15 \\times 4 = 60$ et $15 \\times 3 = 45$. Toutes les fleurs sont utilisées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux cars quittent la gare routière en même temps. Le premier revient tous les 12 jours, le second tous les 18 jours.\n\n1. Dans combien de jours se retrouveront-ils de nouveau ensemble à la gare ?\n2. Combien de voyages chacun aura-t-il effectués à ce moment-là ?\n3. Expliquer pourquoi cet exercice ne relève pas du PGCD.",
+          "solution_markdown": "**1. Prochaine rencontre.**\n\nOn cherche le prochain jour qui soit à la fois un multiple de 12 et un multiple de 18 : c'est le PPCM.\n\n*Décomposition :*\n\n$$12 = 2^{2} \\times 3 \\qquad 18 = 2 \\times 3^{2}$$\n\n*Tous les facteurs, plus grand exposant :*\n\n$$\\text{PPCM}(12\\,;18) = 2^{2} \\times 3^{2} = 4 \\times 9 = 36$$\n\nLes deux cars se retrouveront ensemble dans **36 jours**.\n\n**2. Nombre de voyages.**\n\n$$\\frac{36}{12} = 3 \\qquad \\frac{36}{18} = 2$$\n\nLe premier car aura effectué **3 voyages**, le second **2 voyages**.\n\n**3. Pourquoi le PPCM et non le PGCD.**\n\nIci, rien n'est partagé : deux événements se répètent à des rythmes différents et l'on cherche le premier instant où ils coïncident. Le nombre cherché doit donc être un **multiple** commun aux deux périodes, et le plus petit possible puisqu'on veut la **prochaine** rencontre.\n\nLe PGCD de 12 et 18 vaut 6, ce qui donnerait un jour antérieur au retour du premier car : la réponse serait absurde. Le repère est le vocabulaire de l'énoncé : « se retrouveront ensemble » annonce un PPCM, là où « partager » annoncerait un PGCD."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un libraire veut ranger 253 cahiers et 341 stylos dans des cartons identiques. Après le rangement, il lui reste 1 cahier et 5 stylos, qu'il conserve pour lui.\n\n1. Montrer que le nombre de cartons divise 252 et 336.\n2. Calculer ce nombre de cartons, sachant qu'il est le plus grand possible.\n3. Déterminer le contenu de chaque carton.\n4. Le libraire souhaite finalement au moins 30 cartons. Est-ce possible en gardant des cartons identiques et les mêmes restes ? Justifier.",
+          "solution_markdown": "**1. Justification.**\n\nSoit $n$ le nombre de cartons. Sur les 253 cahiers, 1 reste de côté : ce sont donc $253 - 1 = 252$ cahiers qui sont répartis en $n$ parts entières et égales. Donc $n$ divise 252.\n\nDe même, sur les 341 stylos, 5 restent de côté : ce sont $341 - 5 = 336$ stylos qui sont répartis. Donc $n$ divise 336.\n\n**2. Calcul du nombre de cartons.**\n\nOn cherche le plus grand diviseur commun à 252 et 336.\n\n*Algorithme d'Euclide :*\n\n$$336 = 1 \\times 252 + 84$$\n\n$$252 = 3 \\times 84 + 0$$\n\nLe dernier reste non nul est 84 :\n\n$$\\text{PGCD}(252\\,;336) = 84$$\n\n*Vérification par décomposition :*\n\n$$252 = 2^{2} \\times 3^{2} \\times 7 \\qquad 336 = 2^{4} \\times 3 \\times 7$$\n\nFacteurs communs au plus petit exposant : $2^{2} \\times 3 \\times 7 = 4 \\times 21 = 84$. Confirmé.\n\nLe libraire peut donc utiliser au maximum **84 cartons**.\n\n**3. Contenu de chaque carton.**\n\n$$\\frac{252}{84} = 3 \\qquad \\frac{336}{84} = 4$$\n\nChaque carton contiendra **3 cahiers et 4 stylos**.\n\n*Contrôle :* $84 \\times 3 = 252$, plus 1 cahier restant, soit 253. Et $84 \\times 4 = 336$, plus 5 stylos restants, soit 341. Conforme à l'énoncé.\n\n**4. Au moins 30 cartons.**\n\nOui, c'est possible. Tout diviseur commun à 252 et 336 convient, et les diviseurs communs sont exactement les diviseurs du PGCD, c'est-à-dire les diviseurs de 84 :\n\n$$1,\\ 2,\\ 3,\\ 4,\\ 6,\\ 7,\\ 12,\\ 14,\\ 21,\\ 28,\\ 42,\\ 84$$\n\nParmi eux, ceux qui valent au moins 30 sont **42** et **84**.\n\n- Avec 42 cartons : $\\frac{252}{42} = 6$ cahiers et $\\frac{336}{42} = 8$ stylos par carton.\n- Avec 84 cartons : 3 cahiers et 4 stylos par carton, comme ci-dessus.\n\n**Ce que cet exercice enseigne.** Les diviseurs communs de deux entiers sont exactement les diviseurs de leur PGCD. Cette propriété, souvent négligée, permet de répondre à toutes les questions du type « quelles autres valeurs sont possibles ? » sans reprendre le calcul depuis le début."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Partager en parts égales et chercher le plus grand nombre de parts : c'est un PGCD.",
+        "Se retrouver, coïncider, recommencer ensemble : c'est un PPCM.",
+        "PGCD : facteurs communs seulement, plus petit exposant. PPCM : tous les facteurs, plus grand exposant.",
+        "Si l'énoncé mentionne un reste, retranche-le avant de calculer le PGCD.",
+        "Ne t'arrête pas au PGCD : calcule aussi ce que contient chaque part, et rédige la conclusion en français.",
+        "Au BEPC, ce type de problème apparaît presque chaque année dans l'évaluation des compétences : le reconnaître en dix secondes te libère du temps pour les autres tâches."
+      ]
+    }
+  ]
+}
