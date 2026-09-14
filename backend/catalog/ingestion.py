@@ -1122,7 +1122,10 @@ def ingest_exercise(data, source_dir=None, force=False):
     `on_delete`) puis recréé depuis `data`, exactement comme une première ingestion.
     Réservé à un ré-import délibéré après correction du JSON source (voir l'action
     admin sur ExerciseAdmin) - jamais utilisé par `run_ingestion`/la tâche planifiée,
-    qui doivent conserver le comportement idempotent par défaut.
+    qui doivent conserver le comportement idempotent par défaut. Deux liens externes à
+    l'Exercise supprimé sont préservés à travers la suppression/recréation : RappelDeMethode
+    → Cours (par `external_id`) et quiz.CompetenceItem.source_exercises (M2M, par id
+    d'item) - sans quoi ce dernier disparaît silencieusement, sans erreur.
 
     Valide et compile automatiquement : l'Exercise et le Lesson passent directement en
     VALIDE, et le Lesson est recompilé à chaque nouvel exercice ingéré - le contenu est
@@ -1338,6 +1341,7 @@ def ingest_exercise(data, source_dir=None, force=False):
 
         existing = Exercise.objects.filter(lesson=lesson, numero_exercice=numero_exercice).first()
         cours_par_external_id = {}
+        competence_item_ids = []
         if existing:
             if not force:
                 return existing, False
@@ -1349,6 +1353,14 @@ def ingest_exercise(data, source_dir=None, force=False):
             cours_par_external_id = dict(
                 existing.rappels_de_methode.exclude(cours__isnull=True).values_list("external_id", "cours_id"),
             )
+            # quiz.CompetenceItem.source_exercises (M2M, related_name
+            # competence_items_generes) ne survit pas non plus à la suppression :
+            # Django vide silencieusement la table de liaison, sans erreur ni
+            # avertissement, ce qui a déjà fait perdre ce lien de traçabilité en
+            # silence lors d'une campagne de rattachement savoir_officiel. On capture
+            # les items concernés avant suppression pour les rattacher au nouvel
+            # Exercise recréé ci-dessous.
+            competence_item_ids = list(existing.competence_items_generes.values_list("id", flat=True))
             # Chemins relevés avant suppression : Figure cascade avec l'Exercise (voir
             # catalog.models), mais Django ne supprime jamais le fichier physique d'un
             # FileField quand la ligne qui le porte disparaît - sans ça, chaque
@@ -1376,6 +1388,9 @@ def ingest_exercise(data, source_dir=None, force=False):
         )
 
         exercise.mots_cles_recherche.set(_get_or_create_tags(data.get("mots_cles_recherche")))
+
+        if competence_item_ids:
+            exercise.competence_items_generes.set(competence_item_ids)
 
         for ordre, q_data in enumerate(questions_data, start=1):
             if not q_data.get("enonce_markdown") or not q_data.get("corrige_markdown"):

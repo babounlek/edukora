@@ -5665,6 +5665,29 @@ class ForceReingestionTests(TestCase):
         self.assertEqual(new_rappel.cours_id, cours.id)
         self.assertTrue(new_rappel.cours_genere)
 
+    def test_force_preserves_quiz_competence_item_source_exercises_link(self):
+        """quiz.CompetenceItem.source_exercises est un M2M vers Exercise : sans ce
+        test, la suppression/recréation de l'Exercise vide silencieusement la table
+        de liaison (aucune erreur), et un item de quiz perd sa traçabilité vers
+        l'épreuve source sans que personne ne s'en aperçoive - voir la campagne de
+        rattachement savoir_officiel BEPC Maths 2026-09-14."""
+        payload = _exercise_payload("bac-maths-2024")
+        exercise, _ = ingest_exercise(payload, source_dir=self.source_dir)
+
+        tag = Tag.objects.create(name="Test compétence")
+        item = CompetenceItem.objects.create(
+            theme=tag, subject=exercise.lesson.subject, statut=StatutContenu.VALIDE,
+            enonce_markdown="Énoncé autonome.", corrige_markdown="Corrigé autonome.",
+        )
+        item.source_exercises.add(exercise)
+
+        corrected = _exercise_payload("bac-maths-2024")
+        corrected["questions"][0]["enonce_markdown"] = "Énoncé corrigé."
+        new_exercise, _ = ingest_exercise(corrected, source_dir=self.source_dir, force=True)
+
+        item.refresh_from_db()
+        self.assertIn(new_exercise, item.source_exercises.all())
+
     def test_force_on_an_exercise_that_does_not_exist_yet_still_creates_it(self):
         payload = _exercise_payload("bac-maths-2024-nouveau")
         exercise, created = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024-nouveau"), force=True)
