@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-association-de-resistors-en-parallele-premiere-c-e",
+  "meta": {
+    "titre": "Association de résistors en parallèle",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 20,
+    "tags": [
+      "résistors en parallèle",
+      "loi d'Ohm",
+      "loi des mailles",
+      "loi des nœuds"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "4",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-CM",
+    "epreuve_titre": "Probatoire Physique, séries C et E - Office du Baccalauréat du Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2025-officiel-cameroun-ex3-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Brancher deux ampoules côte à côte sur la même prise plutôt qu'à la suite l'une de l'autre : c'est un montage en parallèle. Savoir calculer le courant dans chaque branche d'un tel montage est l'un des calculs de base de l'électricité, indispensable dès qu'un circuit se divise en plusieurs chemins."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm $U=RI$",
+        "Loi des mailles et loi des nœuds",
+        "Notion de nœud et de branche dans un circuit"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résistors montés en parallèle",
+      "contenu_markdown": "Deux (ou plusieurs) résistors sont montés en parallèle lorsqu'ils sont branchés entre les deux mêmes nœuds du circuit : ils sont alors soumis exactement à la même tension à leurs bornes. L'intensité qui traverse chaque résistor se calcule indépendamment par la loi d'Ohm, à partir de cette tension commune ; le courant total qui entre dans le groupement est la somme des courants dans chaque branche (loi des nœuds).",
+      "formule_principale": "U_1 = U_2 = U \\quad\\text{et}\\quad I = I_1 + I_2 = \\dfrac{U}{R_1} + \\dfrac{U}{R_2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux résistors $R_1 = 20\\ \\Omega$ et $R_2 = 5\\ \\Omega$ sont montés en parallèle et soumis à une tension commune $U=10$ V. Calculer l'intensité dans chaque résistor puis le courant total.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la tension commune aux deux résistors",
+          "justification": "Les résistors en parallèle sont soumis à la même tension à leurs bornes",
+          "resultat_markdown": "$U_1 = U_2 = U = 10\\ \\text{V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'intensité dans $R_1$",
+          "justification": "On applique la loi d'Ohm à la première branche",
+          "resultat_markdown": "$I_1 = \\dfrac{U}{R_1} = \\dfrac{10}{20} = 0,5\\ \\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'intensité dans $R_2$",
+          "justification": "On applique la loi d'Ohm à la seconde branche",
+          "resultat_markdown": "$I_2 = \\dfrac{U}{R_2} = \\dfrac{10}{5} = 2\\ \\text{A}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le courant total par la loi des nœuds",
+          "justification": "Le courant qui arrive au nœud se répartit dans les deux branches puis se recombine",
+          "resultat_markdown": "$I = I_1+I_2 = 0,5+2 = 2,5\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "Le résistor de plus faible résistance ($R_2$) est traversé par le courant le plus élevé : à tension égale, le courant se répartit inversement à la résistance de chaque branche."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Supposer que le courant se répartit également entre deux résistors différents",
+          "pourquoi_faux": "Le courant ne se partage également que si les deux résistances sont identiques ; en général, la branche de plus faible résistance reçoit un courant plus grand, à tension commune fixée.",
+          "correction_markdown": "Toujours calculer séparément $I_1=U/R_1$ et $I_2=U/R_2$ ; ne jamais diviser le courant total par le nombre de branches sans vérifier que les résistances sont égales."
+        },
+        {
+          "erreur_markdown": "Utiliser la tension totale du générateur comme tension de chaque résistor sans vérifier le montage",
+          "pourquoi_faux": "Si un autre dipôle (une diode, un autre résistor) est en série avant le groupement parallèle, la tension aux bornes du groupement n'est pas la tension totale du générateur, mais celle qui reste après la chute de tension dans ce dipôle en série.",
+          "correction_markdown": "Toujours appliquer la loi des mailles pour déterminer la tension réelle aux bornes du groupement parallèle avant de calculer les courants."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux résistors identiques $R_1=R_2=15\\ \\Omega$ sont montés en parallèle sous une tension commune $U=6$ V. Calculer l'intensité dans chaque résistor et le courant total.",
+          "solution_markdown": "$$I_1 = I_2 = \\dfrac{U}{R} = \\dfrac{6}{15} = 0,4\\ \\text{A}$$\nLe courant total vaut $I=I_1+I_2=0,4+0,4=0,8\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de tension $E=12$ V, de résistance interne nulle, alimente un résistor $R_0=2\\ \\Omega$ en série avec un groupement de deux résistors identiques $R=10\\ \\Omega$ en parallèle. Calculer le courant total débité par le générateur.",
+          "solution_markdown": "La résistance équivalente du groupement parallèle de deux résistors identiques $R$ est $R_{\\text{eq}} = R/2 = 5\\ \\Omega$.\nLa résistance totale du circuit série est $R_{\\text{tot}} = R_0+R_{\\text{eq}} = 2+5=7\\ \\Omega$.\n$$I = \\dfrac{E}{R_{\\text{tot}}} = \\dfrac{12}{7} \\approx 1,71\\ \\text{A}$$\nLe générateur débite un courant total d'environ $1,71$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit comporte un générateur idéal $U=15$ V en série avec un résistor $R_0=3\\ \\Omega$, lui-même en série avec un groupement parallèle de deux résistors $R_1=6\\ \\Omega$ et $R_2=12\\ \\Omega$. Déterminer le courant total débité par le générateur, la tension aux bornes du groupement parallèle, puis le courant dans chaque résistor du groupement.",
+          "solution_markdown": "La résistance équivalente du groupement parallèle vaut $\\dfrac{1}{R_{\\text{eq}}} = \\dfrac{1}{R_1}+\\dfrac{1}{R_2} = \\dfrac{1}{6}+\\dfrac{1}{12} = \\dfrac{2}{12}+\\dfrac{1}{12}=\\dfrac{3}{12}=\\dfrac{1}{4}$, donc $R_{\\text{eq}}=4\\ \\Omega$.\n\nLa résistance totale du circuit est $R_{\\text{tot}} = R_0+R_{\\text{eq}} = 3+4=7\\ \\Omega$.\nLe courant total débité par le générateur est $I = \\dfrac{U}{R_{\\text{tot}}} = \\dfrac{15}{7} \\approx 2,14\\ \\text{A}$.\n\nLa tension aux bornes du groupement parallèle vaut $U_{\\text{eq}} = R_{\\text{eq}}\\times I = 4\\times2,14 \\approx 8,57\\ \\text{V}$.\n\nLes courants dans chaque branche valent alors $I_1 = U_{\\text{eq}}/R_1 = 8,57/6 \\approx 1,43\\ \\text{A}$ et $I_2 = U_{\\text{eq}}/R_2 = 8,57/12 \\approx 0,71\\ \\text{A}$, et l'on vérifie bien $I_1+I_2 \\approx 2,14\\ \\text{A} = I$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Des résistors en parallèle sont soumis à la même tension à leurs bornes, jamais au même courant sauf s'ils sont identiques.",
+        "L'intensité dans chaque branche se calcule indépendamment par la loi d'Ohm : $I_k = U/R_k$.",
+        "Le courant total qui entre dans le groupement est la somme des courants de chaque branche (loi des nœuds).",
+        "Si un dipôle est en série avant le groupement, sa chute de tension doit être retirée de la tension totale avant de calculer la tension du groupement parallèle.",
+        "Cette analyse est la base de tout exercice de circuit mixte (série + parallèle), très fréquent au Probatoire et au Baccalauréat."
+      ]
+    }
+  ]
+}

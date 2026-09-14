@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-loi-de-pouillet-premiere-c-e",
+  "meta": {
+    "titre": "Loi de Pouillet",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Pouillet",
+      "circuit série",
+      "f.é.m.",
+      "f.c.é.m."
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "4",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-CM",
+    "epreuve_titre": "Probatoire Physique, séries C et E - Office du Baccalauréat du Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2025-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment calculer directement l'intensité d'un courant dans un circuit série qui mélange générateurs et récepteurs, sans écrire toutes les équations de mailles une par une ? La loi de Pouillet condense tout ce calcul en une seule formule, indispensable dès qu'un circuit comporte plus d'un dipôle actif."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm pour un résistor",
+        "Notion de force électromotrice (f.é.m.) et de force contre-électromotrice (f.c.é.m.)",
+        "Loi des mailles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Pouillet",
+      "contenu_markdown": "Dans un circuit série comportant un ou plusieurs générateurs (f.é.m. $E$, résistance interne $r$) et un ou plusieurs récepteurs (f.c.é.m. $E'$, résistance interne $r'$), ainsi que des résistors de résistance totale $R$, l'intensité du courant se calcule directement à partir de la somme des f.é.m., de la somme des f.c.é.m. et de la somme de toutes les résistances du circuit.",
+      "formule_principale": "I = \\dfrac{\\sum E - \\sum E'}{\\sum r + \\sum r' + \\sum R}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit série comporte un générateur de f.é.m. $E=12$ V et de résistance interne $r=0,5\\ \\Omega$, un moteur de f.c.é.m. $E'=4$ V et de résistance interne $r'=0,5\\ \\Omega$, et un résistor $R=9\\ \\Omega$. Déterminer l'intensité du courant dans le circuit.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les f.é.m. et f.c.é.m. du circuit",
+          "justification": "Le générateur fournit une f.é.m., le moteur (récepteur) oppose une f.c.é.m.",
+          "resultat_markdown": "$E = 12$ V (générateur) ; $E' = 4$ V (moteur)"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier toutes les résistances",
+          "justification": "Chaque dipôle actif a sa résistance interne, à laquelle s'ajoute le résistor externe",
+          "resultat_markdown": "$r = 0,5\\ \\Omega\\ ;\\ r' = 0,5\\ \\Omega\\ ;\\ R = 9\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Pouillet",
+          "justification": "On divise la somme des f.é.m. moins la somme des f.c.é.m. par la somme de toutes les résistances",
+          "resultat_markdown": "$I = \\dfrac{12-4}{0,5+0,5+9} = \\dfrac{8}{10} = 0,8\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "Le courant dans ce circuit vaut $0,8$ A ; la loi de Pouillet a permis de l'obtenir en une seule étape de calcul, sans écrire séparément la loi des mailles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner la f.c.é.m. du récepteur à la f.é.m. du générateur",
+          "pourquoi_faux": "Le récepteur s'oppose au passage du courant imposé par le générateur : sa f.c.é.m. absorbe de l'énergie électrique au lieu d'en fournir, elle doit donc être soustraite, jamais ajoutée.",
+          "correction_markdown": "Retenir la formule comme \"moteur - frein\" : les générateurs poussent le courant (numérateur positif), les récepteurs actifs le freinent (numérateur négatif)."
+        },
+        {
+          "erreur_markdown": "Oublier une résistance interne dans la somme du dénominateur",
+          "pourquoi_faux": "Chaque dipôle actif (générateur ou récepteur) possède sa propre résistance interne, qui participe à la limitation du courant au même titre qu'un résistor externe.",
+          "correction_markdown": "Faire un inventaire systématique de tous les dipôles du circuit avant de calculer, et noter la résistance interne de chacun, même si elle est nulle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit série comporte un générateur de f.é.m. $E=6$ V, de résistance interne $r=1\\ \\Omega$, et un résistor $R=5\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "Il n'y a pas de récepteur actif ici, donc $E'=0$.\n$$I = \\dfrac{E}{r+R} = \\dfrac{6}{1+5} = 1\\ \\text{A}$$\nL'intensité du courant vaut $1$ A."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série comporte deux générateurs identiques de f.é.m. $E=4,5$ V et de résistance interne $r=0,5\\ \\Omega$ chacun, en série avec un résistor $R=7\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "Les f.é.m. s'additionnent car les générateurs sont en série et orientés dans le même sens : $\\sum E = 4,5+4,5=9$ V.\nLes résistances internes s'additionnent aussi : $\\sum r = 0,5+0,5=1\\ \\Omega$.\n$$I = \\dfrac{\\sum E}{\\sum r + R} = \\dfrac{9}{1+7} = \\dfrac{9}{8} = 1,125\\ \\text{A}$$\nL'intensité du courant vaut $1,125$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit série comporte un générateur ($E=20$ V, $r=1\\ \\Omega$), un moteur ($E'_1=6$ V, $r'_1=1\\ \\Omega$) et un électrolyseur ($E'_2=2$ V, $r'_2=2\\ \\Omega$), tous en série avec un résistor $R=6\\ \\Omega$. Calculer l'intensité du courant, puis la puissance totale dissipée par effet Joule dans le circuit.",
+          "solution_markdown": "On applique la loi de Pouillet en sommant toutes les f.c.é.m. et toutes les résistances :\n$$I = \\dfrac{E - (E'_1+E'_2)}{r+r'_1+r'_2+R} = \\dfrac{20-(6+2)}{1+1+2+6} = \\dfrac{12}{10} = 1,2\\ \\text{A}$$\nLa puissance dissipée par effet Joule dans l'ensemble des résistances du circuit vaut $P_J = (r+r'_1+r'_2+R)\\times I^2 = 10\\times1,2^2 = 10\\times1,44=14,4\\ \\text{W}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet donne directement l'intensité d'un circuit série : $I = \\dfrac{\\sum E - \\sum E'}{\\sum r + \\sum r' + \\sum R}$.",
+        "Les f.é.m. des générateurs s'additionnent au numérateur, les f.c.é.m. des récepteurs actifs s'y soustraient.",
+        "Toutes les résistances, internes ou externes, s'additionnent au dénominateur sans exception.",
+        "Cette loi n'est qu'une réécriture compacte de la loi des mailles : elle ne s'applique qu'à un circuit strictement série.",
+        "Au Probatoire comme au Baccalauréat, elle est mobilisée aussi bien en question de cours (l'énoncer) qu'en exercice de calcul d'intensité dans un circuit à plusieurs dipôles actifs."
+      ]
+    }
+  ]
+}

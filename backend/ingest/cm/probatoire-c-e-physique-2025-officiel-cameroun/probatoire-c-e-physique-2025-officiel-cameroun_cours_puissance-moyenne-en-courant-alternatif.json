@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-puissance-moyenne-en-courant-alternatif-premiere-c-e",
+  "meta": {
+    "titre": "Puissance moyenne en courant alternatif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Électricité en régime alternatif sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "puissance moyenne",
+      "courant alternatif",
+      "facteur de puissance",
+      "cos phi"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "4",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-CM",
+    "epreuve_titre": "Probatoire Physique, séries C et E - Office du Baccalauréat du Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-physique-2025-officiel-cameroun-ex2-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une facture d'électricité, la puissance réellement facturée n'est presque jamais le simple produit de la tension par le courant : un facteur, le facteur de puissance, vient toujours réduire ce produit. Comprendre pourquoi permet de calculer correctement la puissance de tout appareil alimenté en courant alternatif."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tension et courant efficaces en régime sinusoïdal",
+        "Notion de déphasage entre tension et courant",
+        "Puissance en courant continu $P=UI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Puissance moyenne en régime alternatif sinusoïdal",
+      "contenu_markdown": "En courant alternatif sinusoïdal, la tension et le courant sont en général déphasés d'un angle $\\varphi$. La puissance moyenne réellement consommée par un dipôle s'obtient en multipliant la tension efficace, le courant efficace et le cosinus de ce déphasage, appelé facteur de puissance.",
+      "formule_principale": "P = U \\times I \\times \\cos\\varphi"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un four électrique est alimenté sous une tension efficace $U=230$ V, parcouru par un courant efficace $I=5$ A, avec un facteur de puissance $\\cos\\varphi = 1$ (résistance pure). Calculer sa puissance moyenne, puis comparer avec un moteur de mêmes $U$ et $I$ mais de facteur de puissance $0,75$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance du four (cos phi = 1)",
+          "justification": "Un récepteur purement résistif n'introduit aucun déphasage",
+          "resultat_markdown": "$P_{\\text{four}} = 230\\times5\\times1 = 1150\\ \\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance du moteur (cos phi = 0,75)",
+          "justification": "On applique la même formule avec le facteur de puissance du moteur",
+          "resultat_markdown": "$P_{\\text{moteur}} = 230\\times5\\times0,75 = 862,5\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer les deux résultats",
+          "justification": "Malgré des valeurs efficaces $U$ et $I$ identiques, la puissance réellement consommée diffère",
+          "resultat_markdown": "$P_{\\text{four}} - P_{\\text{moteur}} = 1150-862,5 = 287,5\\ \\text{W}$"
+        }
+      ],
+      "conclusion_markdown": "À tension et courant efficaces identiques, un appareil au facteur de puissance plus faible consomme réellement moins de puissance utile, même si le réseau doit tout de même lui fournir le même courant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer systématiquement $P=UI$ sans se soucier du facteur de puissance",
+          "pourquoi_faux": "$UI$ donne la puissance apparente (en voltampères, VA), pas la puissance moyenne réellement consommée, dès que tension et courant sont déphasés.",
+          "correction_markdown": "Toujours vérifier si l'énoncé donne un facteur de puissance ou un déphasage ; si aucune information n'est donnée, l'énoncé précise en général qu'il s'agit d'un récepteur purement résistif ($\\cos\\varphi=1$)."
+        },
+        {
+          "erreur_markdown": "Confondre le facteur de puissance avec un rendement",
+          "pourquoi_faux": "Le facteur de puissance $\\cos\\varphi$ traduit un déphasage électrique entre tension et courant, pas une perte d'énergie sous forme de chaleur comme un rendement.",
+          "correction_markdown": "Ne jamais interpréter $\\cos\\varphi$ comme \"le pourcentage d'énergie utile\" : c'est une grandeur géométrique liée au déphasage, distincte du rendement énergétique de l'appareil."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un appareil est alimenté sous $U=220$ V, parcouru par $I=3$ A, avec un facteur de puissance $\\cos\\varphi=0,9$. Calculer sa puissance moyenne.",
+          "solution_markdown": "$$P = U\\times I\\times\\cos\\varphi = 220\\times3\\times0,9 = 594\\ \\text{W}$$\nLa puissance moyenne consommée vaut $594$ W."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de puissance moyenne $P=1100$ W est alimenté sous $U=220$ V avec un facteur de puissance $\\cos\\varphi=0,8$. Calculer l'intensité efficace du courant qui le traverse.",
+          "solution_markdown": "D'après $P=UI\\cos\\varphi$, on isole $I$ :\n$$I = \\dfrac{P}{U\\cos\\varphi} = \\dfrac{1100}{220\\times0,8} = \\dfrac{1100}{176} = 6,25\\ \\text{A}$$\nL'intensité efficace du courant vaut $6,25$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un atelier utilise deux moteurs identiques en parallèle sur le même réseau $U=220$ V, chacun traversé par $I=4$ A avec $\\cos\\varphi=0,7$. Calculer la puissance moyenne totale consommée, puis déterminer le facteur de puissance qu'il faudrait obtenir pour consommer la même puissance utile avec un courant total réduit de moitié.",
+          "solution_markdown": "La puissance d'un moteur vaut $P_1 = 220\\times4\\times0,7=616\\ \\text{W}$. Pour les deux moteurs identiques en parallèle, la puissance totale est $P_{\\text{tot}} = 2\\times616 = 1232\\ \\text{W}$.\n\nSi l'on veut consommer la même puissance $P_{\\text{tot}}=1232$ W avec un courant total réduit de moitié ($I'=4$ A au lieu de $8$ A pour les deux moteurs), il faut :\n$$\\cos\\varphi' = \\dfrac{P_{\\text{tot}}}{U\\times I'} = \\dfrac{1232}{220\\times4} = \\dfrac{1232}{880} = 1,4$$\nCette valeur dépasse $1$, ce qui est physiquement impossible ($\\cos\\varphi \\le 1$) : on ne peut donc pas conserver la même puissance en divisant le courant total par deux sans changer $U$. Ce résultat montre concrètement pourquoi améliorer le facteur de puissance a des limites : au mieux, avec $\\cos\\varphi'=1$, le courant minimal serait $I'_{\\min} = P_{\\text{tot}}/U = 1232/220 = 5,6$ A, une réduction réelle mais moins spectaculaire qu'espéré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La puissance moyenne en courant alternatif sinusoïdal vaut $P = UI\\cos\\varphi$, jamais simplement $UI$ dès qu'il y a déphasage.",
+        "$\\cos\\varphi$, le facteur de puissance, est toujours compris entre 0 et 1 : une valeur supérieure à 1 signale une erreur de calcul.",
+        "Un récepteur purement résistif a un facteur de puissance égal à 1 ; un moteur ou une bobine a un facteur de puissance strictement inférieur à 1.",
+        "Le facteur de puissance n'est pas un rendement : il traduit un déphasage électrique, pas une perte d'énergie sous forme de chaleur.",
+        "Ce calcul revient très régulièrement au Probatoire et au Baccalauréat, en particulier pour des exercices sur les moteurs électriques alimentés en alternatif."
+      ]
+    }
+  ]
+}

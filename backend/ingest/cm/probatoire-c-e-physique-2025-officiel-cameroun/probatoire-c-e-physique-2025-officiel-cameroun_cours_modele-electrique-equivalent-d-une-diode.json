@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-modele-electrique-equivalent-d-une-diode-tension-de-seuil-et-resistance-dynamique-premiere-c-e",
+  "meta": {
+    "titre": "Modèle électrique équivalent d'une diode (tension de seuil et résistance dynamique)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Composants électroniques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "diode",
+      "tension de seuil",
+      "résistance dynamique",
+      "récepteur à seuil"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "4",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-CM",
+    "epreuve_titre": "Probatoire Physique, séries C et E - Office du Baccalauréat du Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2025-officiel-cameroun-ex3-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une diode ne se comporte pas comme un simple résistor : en dessous d'une certaine tension, elle ne laisse quasiment rien passer, puis, une fois \"allumée\", elle conduit avec une résistance très faible. Ce comportement s'approche par un modèle linéaire à deux paramètres, simple à manipuler en calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm et notion de résistance",
+        "Loi des mailles",
+        "Notion de récepteur électrique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Modèle linéaire d'une diode en conduction",
+      "contenu_markdown": "Lorsqu'une diode conduit (elle est polarisée en direct et traversée par un courant), sa tension aux bornes ne suit pas la loi d'Ohm simple mais un modèle affine à deux paramètres : une tension de seuil $U_s$, en dessous de laquelle la diode ne conduit quasiment pas, et une résistance dynamique $r_d$, qui traduit la légère variation de tension avec le courant une fois le seuil dépassé.",
+      "formule_principale": "U = U_s + r_d \\times I"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une diode a une tension de seuil $U_s = 0,7$ V et une résistance dynamique $r_d = 1\\ \\Omega$. Elle est traversée par un courant $I = 0,3$ A. Calculer la tension à ses bornes.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le modèle à utiliser",
+          "justification": "La diode conduit, on utilise le modèle linéaire",
+          "resultat_markdown": "$U = U_s + r_d\\times I$"
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer par les valeurs numériques",
+          "justification": "On substitue $U_s=0,7$ V, $r_d=1\\ \\Omega$ et $I=0,3$ A",
+          "resultat_markdown": "$U = 0,7 + 1\\times0,3$"
+        },
+        {
+          "numero": 3,
+          "action": "Effectuer le calcul",
+          "justification": "On additionne les deux termes",
+          "resultat_markdown": "$U = 0,7+0,3 = 1\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La diode présente une tension de 1 V à ses bornes lorsqu'elle est traversée par 0,3 A : la tension de seuil (0,7 V) domine, la contribution de la résistance dynamique (0,3 V) reste secondaire pour ce courant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la loi d'Ohm simple $U=rI$ à une diode",
+          "pourquoi_faux": "Une diode n'est pas un résistor ohmique : sa caractéristique n'est pas une droite passant par l'origine, mais une droite décalée par la tension de seuil $U_s$.",
+          "correction_markdown": "Toujours utiliser le modèle affine $U=U_s+r_dI$ pour une diode en conduction, jamais la loi d'Ohm seule qui ne s'applique qu'aux résistors purs."
+        },
+        {
+          "erreur_markdown": "Confondre la résistance dynamique $r_d$ avec une résistance ohmique classique qui déterminerait seule la tension",
+          "pourquoi_faux": "$r_d$ ne mesure que la variation de tension par rapport au courant autour du point de fonctionnement ; c'est $U_s$, indépendante du courant, qui fixe l'essentiel de la tension pour de faibles courants.",
+          "correction_markdown": "Toujours calculer la tension de la diode avec les DEUX termes du modèle, jamais avec $r_d$ seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une diode a une tension de seuil $U_s=0,6$ V et une résistance dynamique $r_d=0,5\\ \\Omega$. Calculer la tension à ses bornes pour un courant $I=0,2$ A.",
+          "solution_markdown": "$$U = U_s+r_d\\times I = 0,6+0,5\\times0,2 = 0,6+0,1 = 0,7\\ \\text{V}$$\nLa tension aux bornes de la diode vaut $0,7$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une diode de tension de seuil $U_s=0,8$ V présente une tension $U=2$ V à ses bornes pour un courant $I=0,6$ A. Calculer sa résistance dynamique.",
+          "solution_markdown": "D'après $U=U_s+r_dI$, on isole $r_d$ :\n$$r_d = \\dfrac{U-U_s}{I} = \\dfrac{2-0,8}{0,6} = \\dfrac{1,2}{0,6} = 2\\ \\Omega$$\nLa résistance dynamique de la diode vaut $2\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit série comporte un générateur idéal $E=9$ V, un résistor $R=8\\ \\Omega$ et une diode de tension de seuil $U_s=1$ V et de résistance dynamique $r_d=2\\ \\Omega$. Déterminer le courant $I$ dans le circuit.",
+          "solution_markdown": "La loi des mailles donne $E = R\\times I + U_{\\text{diode}}$, avec $U_{\\text{diode}} = U_s+r_dI$ :\n$$E = RI + U_s + r_dI = (R+r_d)I + U_s$$\nOn isole $I$ :\n$$I = \\dfrac{E-U_s}{R+r_d} = \\dfrac{9-1}{8+2} = \\dfrac{8}{10} = 0,8\\ \\text{A}$$\nLe courant dans le circuit vaut $0,8$ A. On peut vérifier : la tension aux bornes de la diode est alors $U_{\\text{diode}} = 1+2\\times0,8=2,6$ V, et celle du résistor $R\\times I = 8\\times0,8=6,4$ V, soit un total de $2,6+6,4=9$ V, égal à $E$ : la loi des mailles est bien vérifiée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une diode en conduction se modélise par $U = U_s + r_d\\times I$, jamais par la loi d'Ohm simple $U=rI$.",
+        "$U_s$, la tension de seuil, ne dépend pas du courant ; $r_d$, la résistance dynamique, traduit la légère pente de la caractéristique une fois le seuil dépassé.",
+        "Dans un circuit série avec une diode, la loi des mailles doit intégrer ce modèle à deux termes, pas une simple résistance.",
+        "Pour retrouver $r_d$ ou $U_s$ à partir de mesures, il suffit d'isoler le terme cherché dans l'équation $U=U_s+r_dI$.",
+        "Ce modèle revient très régulièrement dans les circuits à diode du Probatoire et du Baccalauréat, associé à la loi des mailles et à la loi des nœuds."
+      ]
+    }
+  ]
+}

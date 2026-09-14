@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-principe-de-fonctionnement-de-l-alternateur-premiere-c-e",
+  "meta": {
+    "titre": "Principe de fonctionnement de l'alternateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "alternateur",
+      "induction électromagnétique",
+      "loi de Faraday",
+      "flux magnétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-CM",
+    "epreuve_titre": "Probatoire Physique, séries C et E - Office du Baccalauréat du Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2025-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'électricité qui arrive chez toi vient, dans l'immense majorité des centrales, d'un alternateur : une machine qui transforme le mouvement d'une turbine en tension électrique alternative. Comprendre son principe, c'est comprendre le cœur de la production d'électricité à grande échelle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique $\\Phi = BS\\cos\\theta$",
+        "Notion de force électromotrice (f.é.m.)",
+        "Idée qualitative de dérivée par rapport au temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le principe de l'induction dans un alternateur",
+      "contenu_markdown": "Un alternateur convertit de l'énergie mécanique en énergie électrique alternative grâce au phénomène d'induction électromagnétique : un aimant (ou électroaimant) appelé rotor est entraîné en rotation devant un bobinage fixe appelé stator. La rotation fait varier périodiquement le flux magnétique à travers les spires du stator, ce qui y induit une force électromotrice, d'après la loi de Faraday.",
+      "formule_principale": "e = -\\dfrac{d\\Phi}{dt}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le rotor d'un petit alternateur tourne à la vitesse angulaire $\\omega = 50$ rad/s. Le flux à travers une spire du stator s'écrit $\\Phi(t) = \\Phi_0\\cos(\\omega t)$ avec $\\Phi_0 = 4\\times10^{-3}$ Wb. Déterminer l'expression de la f.é.m. induite $e(t)$ et sa valeur maximale.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de Faraday",
+          "justification": "La f.é.m. induite est l'opposé de la dérivée temporelle du flux",
+          "resultat_markdown": "$e(t) = -\\dfrac{d\\Phi}{dt}$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver l'expression du flux",
+          "justification": "$\\Phi(t) = \\Phi_0\\cos(\\omega t)$ se dérive en $\\dfrac{d\\Phi}{dt} = -\\Phi_0\\omega\\sin(\\omega t)$",
+          "resultat_markdown": "$\\dfrac{d\\Phi}{dt} = -\\Phi_0\\omega\\sin(\\omega t)$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire e(t)",
+          "justification": "On remplace dans la loi de Faraday",
+          "resultat_markdown": "$e(t) = \\Phi_0\\omega\\sin(\\omega t) = 4\\times10^{-3}\\times50\\times\\sin(50t) = 0,2\\sin(50t)\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier la valeur maximale",
+          "justification": "La fonction sinus varie entre $-1$ et $1$, donc $e(t)$ varie entre $-0,2$ V et $0,2$ V",
+          "resultat_markdown": "$e_{\\max} = \\Phi_0\\omega = 0,2\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite est bien sinusoïdale, de même fréquence angulaire que la rotation du rotor : c'est exactement le principe de fonctionnement d'un alternateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que l'alternateur produit directement un courant continu",
+          "pourquoi_faux": "La rotation du rotor fait varier le flux de façon périodique, donc la f.é.m. induite est alternative (sinusoïdale), pas continue.",
+          "correction_markdown": "Toujours préciser que l'alternateur délivre une tension alternative ; un redresseur est nécessaire si l'on veut ensuite du courant continu."
+        },
+        {
+          "erreur_markdown": "Croire que la f.é.m. existe même quand le flux est constant",
+          "pourquoi_faux": "La loi de Faraday montre que c'est la variation du flux (sa dérivée) qui induit une f.é.m. ; un flux constant, même intense, n'induit rien.",
+          "correction_markdown": "Toujours vérifier que le flux varie réellement dans le temps avant d'affirmer qu'une f.é.m. est induite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Expliquer en une phrase pourquoi la rotation du rotor d'un alternateur permet de produire une tension électrique.",
+          "solution_markdown": "La rotation du rotor (aimant) devant le stator (bobinage fixe) fait varier périodiquement le flux magnétique à travers les spires du stator ; d'après la loi de Faraday, cette variation de flux induit une force électromotrice alternative aux bornes du stator."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur produit une f.é.m. de fréquence $f = 50$ Hz. Sachant que la fréquence de la f.é.m. est égale à la fréquence de rotation du rotor pour un alternateur à une seule paire de pôles, déterminer la vitesse angulaire $\\omega$ du rotor.",
+          "solution_markdown": "La pulsation est liée à la fréquence par $\\omega = 2\\pi f$.\n$$\\omega = 2\\pi\\times50 = 314\\ \\text{rad.s}^{-1}$$\nLe rotor tourne donc à $\\omega \\approx 314$ rad/s, soit une fréquence de rotation de 50 tours par seconde."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un alternateur possède $N=200$ spires identiques d'aire $S=0,02\\ \\text{m}^2$ chacune, tournant dans un champ magnétique $B=0,3$ T à la vitesse angulaire $\\omega=100$ rad/s. Le flux total à travers les $N$ spires vaut $\\Phi_{\\text{tot}}(t) = N B S \\cos(\\omega t)$. Déterminer l'expression de la f.é.m. induite totale $e(t)$ et sa valeur maximale.",
+          "solution_markdown": "Le flux total s'écrit $\\Phi_{\\text{tot}}(t) = NBS\\cos(\\omega t)$ avec $NBS = 200\\times0,3\\times0,02=1,2\\ \\text{Wb}$.\nLa f.é.m. induite est $e(t) = -\\dfrac{d\\Phi_{\\text{tot}}}{dt} = NBS\\,\\omega\\sin(\\omega t)$.\n$$e(t) = 1,2\\times100\\times\\sin(100t) = 120\\sin(100t)\\ \\text{V}$$\nLa valeur maximale de la f.é.m. induite vaut $e_{\\max} = NBS\\omega = 120$ V : augmenter le nombre de spires, la surface, le champ ou la vitesse de rotation augmente proportionnellement la tension produite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un alternateur convertit de l'énergie mécanique en énergie électrique alternative par induction électromagnétique.",
+        "Le schéma à retenir : rotation du rotor → variation du flux magnétique → f.é.m. induite $e = -d\\Phi/dt$.",
+        "La f.é.m. produite est toujours sinusoïdale, de fréquence liée à la vitesse de rotation du rotor.",
+        "Sans variation de flux, pas de f.é.m. induite : un flux constant, même très intense, ne produit rien.",
+        "C'est une question de cours classique au Probatoire, souvent suivie d'un exercice de calcul de f.é.m. maximale à partir du flux."
+      ]
+    }
+  ]
+}
