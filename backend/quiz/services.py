@@ -1,12 +1,13 @@
 import random
+from collections import Counter, defaultdict
 from datetime import timedelta
 
 from django.db.models import Q
 from django.utils import timezone
 
 from access.models import LectureProgress
-from catalog.models import Cours, Difficulte, StatutContenu, Subject
-from programme.models import Module
+from catalog.models import Cours, Difficulte, Lesson, Origine, Question, StatutContenu, Subject, Tag
+from programme.models import Module, Savoir
 
 # Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
 # besoin de classer chaque savoir pour produire un histogramme (voir sa docstring), ce
@@ -14,6 +15,66 @@ from programme.models import Module
 # classement restant une décision d'affichage). Aucun partage de constante possible
 # entre les deux bases de code : si l'une change, l'autre doit suivre à la main.
 SEUIL_MAITRISE = 70
+
+# construire_parcours : un Savoir peut être couvert par plusieurs Cours distincts (un
+# Tag est partagé par plusieurs Cours, un Savoir porte plusieurs Tags) - jusqu'à
+# plusieurs dizaines en pratique quand un tag est trop générique. Plafond d'affichage,
+# pas une vérité pédagogique ("il n'y a que 3 cours utiles") : au-delà, c'est un signal
+# de tagging à corriger côté données, pas une raison de charger une liste illimitée
+# côté page.
+PARCOURS_COURS_PAR_SAVOIR_MAX = 3
+
+# construire_parcours : matières où le classement des thèmes réels par fréquence
+# d'examen remplace le Module→Savoir officiel (voir
+# project_parcours_par_frequence_conception_2026_09_14) - décision arrêtée par
+# pilotage concret sur le corpus, pas un choix arbitraire : Français/Philo/
+# Histoire-Géo/Anglais testent une méthodologie sur des sujets renouvelés, pas un
+# stock fixe de notions récurrentes (BEPC Français : 94 tags, fréquence max 4,
+# aucun thème n'atteindrait SEUIL_MINIMUM_THEMES_PARCOURS). PHYSIQUE_CHIMIE et
+# PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous deux codes historiques.
+SUBJECTS_PARCOURS_PAR_FREQUENCE = {
+    "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
+}
+
+# En dessous, le signal de fréquence n'est pas fiable - même seuil et même
+# justification que catalog.views.SEUIL_MINIMUM_THEMES_FREQUENTS (mesuré sur SVT BAC
+# D Cameroun : 5 épreuves en base, occurrence max 2, "tombé 2 fois sur 5" sonnerait
+# comme une fausse promesse). Sous ce seuil, construire_parcours retombe sur
+# l'affichage Module→Savoir habituel plutôt que d'afficher un classement peu fiable.
+SEUIL_MINIMUM_THEMES_PARCOURS = 8
+
+# Fusion mécanique haute confiance (variantes grammaticales/de casse d'une même
+# notion, jamais des familles parent-enfant - voir la règle de granularité
+# "séparée" dans project_parcours_par_frequence_conception_2026_09_14) : variante ->
+# forme canonique choisie. Tag.name est unique globalement (voir catalog.Tag), donc
+# ces deux formes sont bien deux lignes distinctes en base à regrouper ici, jamais
+# une redondance à corriger côté données.
+TAGS_ALIAS_PARCOURS_FREQUENCE = {
+    "identité remarquable": "identités remarquables",
+    "vecteur": "vecteurs",
+    "effectif": "effectifs",
+    "fréquences": "fréquence",
+    "système de deux équations": "système d'équations",
+    "milieu d'un segment": "milieu",
+    "mesure d'un angle": "mesure d'angle",
+    "perpendicularité": "droites perpendiculaires",
+    "théorème de Pythagore": "Pythagore",
+    "équation produit": "équation produit nul",
+    "règle du produit nul": "équation produit nul",
+    "caryotype": "Caryotype",
+}
+
+# Tags-poubelle à exclure du classement (jamais à fusionner : un nom de discipline
+# utilisé comme tag ne désigne aucune notion précise à réviser) - mesuré sur PCT où
+# "technologie" ressortait #3 du classement sans rien dire d'utile.
+TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {"technologie", "physique", "chimie", "mécanique", "électricité", "svt", "Cameroun"}
+
+# Un thème qui n'est jamais retombé qu'une seule fois n'est justement pas un thème
+# qui "revient" - mesuré sur BEPC Maths : sur 476 thèmes candidats après filtrage,
+# 246 (plus de la moitié) n'apparaissent que dans une seule épreuve. Sans ce
+# plancher, la liste se noierait dans du bruit et perdrait la promesse même du
+# classement par fréquence.
+PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
@@ -328,6 +389,193 @@ def maitrise_par_savoir(user, cursus=None):
     return {savoir_id: round(100 * s["reussies"] / s["total"]) for savoir_id, s in stats.items()}
 
 
+def construire_parcours_par_frequence(user, cursus, subject):
+    """
+    Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
+    programme officiel (Module→Savoir), classe les thèmes réels (catalog.Tag) par
+    fréquence d'apparition dans les épreuves officielles du (cursus, subject) - voir
+    project_parcours_par_frequence_conception_2026_09_14 pour la conception complète
+    et son schéma de liaison validé.
+
+    Renvoie None si le corpus est trop mince pour un classement fiable
+    (SEUIL_MINIMUM_THEMES_PARCOURS) - à charge de l'appelant de retomber sur le
+    Module→Savoir habituel plutôt que d'afficher un classement qui n'aurait pas de
+    sens. Renvoie sinon une liste de dicts au même format qu'un
+    module["savoirs"] de construire_parcours (id/numero/intitule/taux/en_revision/
+    a_lu_le_cours/has_quiz/cours), avec des clés additives (theme_id, savoir_label,
+    nb_epreuves, frequence_pct) qu'un consommateur du format existant peut ignorer -
+    resume_parcours n'a besoin de rien de plus pour continuer à fonctionner sans
+    modification.
+
+    `Tag.savoir_officiel` est délibérément ignoré comme clé de jointure - démontré
+    non fiable (90% des tags les plus fréquents pointent hors de la plage du
+    cursus). Le pont retenu ici est entièrement basé sur des champs déjà fiables :
+    Question.savoir_officiel (agrégé par thème, pour l'étiquette informative
+    uniquement), la lignée Cours←RappelDeMethode←Exercise←Lesson.cursus (pour les
+    cours), et CompetenceItem.theme+cursus (pour le quiz, déjà correctement scopé).
+
+    Une seule requête par étape (jamais une boucle par thème candidat, qui serait un
+    N+1 sur 400-600 tags par matière) : chaque étape calcule sa donnée pour TOUS les
+    thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
+    groupe d'alias.
+    """
+    lessons = Lesson.objects.filter(
+        statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, subject=subject, cursus=cursus,
+    ).distinct()
+    nb_sessions = lessons.count()
+    if nb_sessions < SEUIL_MINIMUM_THEMES_PARCOURS:
+        return None
+
+    tags_bruts = list(
+        Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
+        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE),
+    )
+    if not tags_bruts:
+        return []
+
+    # Regroupement par alias : un groupe = une forme canonique + l'ensemble des ids
+    # de Tag qui y renvoient (lui-même si le tag n'a pas d'alias connu).
+    groupes = {}
+    for tag in tags_bruts:
+        canonique = TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag.name, tag.name)
+        groupe = groupes.setdefault(canonique, {"nom": canonique, "tag_ids": set()})
+        groupe["tag_ids"].add(tag.id)
+    tous_tag_ids = {tid for g in groupes.values() for tid in g["tag_ids"]}
+
+    # Fréquence par groupe = nb de Lesson distinctes couvertes par l'UNION de ses
+    # tags (jamais la somme des fréquences individuelles, qui compterait deux fois
+    # une épreuve mobilisant à la fois "vecteur" et "vecteurs"). Une seule requête
+    # (lesson_id, tag_id) pour tous les tags candidats, recombinée en Python.
+    tags_par_lesson = defaultdict(set)
+    for lesson_id, tag_id in (
+        Lesson.objects.filter(pk__in=lessons.values("pk"), exercises__questions__themes__id__in=tous_tag_ids)
+        .values_list("id", "exercises__questions__themes__id")
+        .distinct()
+    ):
+        tags_par_lesson[lesson_id].add(tag_id)
+    for groupe in groupes.values():
+        groupe["nb_epreuves"] = sum(
+            1 for tags_de_la_lesson in tags_par_lesson.values() if tags_de_la_lesson & groupe["tag_ids"]
+        )
+
+    # Étiquette de savoir informative (jamais une clé de jointure) : le savoir
+    # dominant parmi les Question.savoir_officiel déjà rattachées à ce thème sur ce
+    # (cursus, subject) - voir campagne de rattachement. Un thème sans savoir
+    # dominant (transversal ou hors référentiel, ex. calorimétrie) reste affiché
+    # sans étiquette plutôt que d'être exclu.
+    savoir_counts_par_tag = defaultdict(Counter)
+    for tag_id, savoir_id in (
+        Question.objects.filter(
+            themes__id__in=tous_tag_ids, exercise__lesson__in=lessons, savoir_officiel__isnull=False,
+        )
+        .values_list("themes__id", "savoir_officiel_id")
+    ):
+        savoir_counts_par_tag[tag_id][savoir_id] += 1
+    for groupe in groupes.values():
+        compteur = Counter()
+        for tag_id in groupe["tag_ids"]:
+            compteur.update(savoir_counts_par_tag.get(tag_id, {}))
+        groupe["savoir_id"] = compteur.most_common(1)[0][0] if compteur else None
+    savoirs_par_id = {
+        s.id: s for s in Savoir.objects.filter(id__in={g["savoir_id"] for g in groupes.values() if g["savoir_id"]})
+    }
+
+    # Thème -> Quiz : direct et déjà fiable (voir docstring ci-dessus).
+    tags_avec_quiz = set(
+        CompetenceItem.objects.filter(
+            theme_id__in=tous_tag_ids, cursus=cursus, statut=StatutContenu.VALIDE,
+        ).values_list("theme_id", flat=True),
+    )
+
+    # Thème -> Cours : Cours.cursus est vide en pratique (voir la conception) - le
+    # vrai signal est la lignée vers l'Exercise source de son RappelDeMethode.
+    cours_par_tag_id = defaultdict(list)
+    for cours in (
+        Cours.objects.visibles()
+        .filter(subject=subject, tags__id__in=tous_tag_ids, rappels_source__exercise__lesson__cursus=cursus)
+        .prefetch_related("tags")
+        .distinct()
+    ):
+        for tag in cours.tags.all():
+            if tag.id in tous_tag_ids:
+                cours_par_tag_id[tag.id].append(cours)
+
+    # Progression de l'utilisateur, par tag brut (avant regroupement par alias) -
+    # même source que maitrise_par_savoir (QuizAnswer via CompetenceItem), mais
+    # gardée par Tag ici puisque le thème EST le tag, pas un Savoir.
+    stats_par_tag = defaultdict(lambda: {"total": 0, "reussies": 0})
+    for reponse in (
+        QuizAnswer.objects.filter(
+            quiz_question__session__user=user,
+            quiz_question__session__cursus=cursus,
+            quiz_question__competence_item__theme_id__in=tous_tag_ids,
+        )
+        .select_related("quiz_question__competence_item")
+    ):
+        s = stats_par_tag[reponse.quiz_question.competence_item.theme_id]
+        s["total"] += 1
+        if reponse.est_correcte:
+            s["reussies"] += 1
+
+    tags_en_revision = set(
+        RevisionSchedule.objects.filter(user=user, cursus=cursus, theme_id__in=tous_tag_ids)
+        .values_list("theme_id", flat=True),
+    )
+    tags_lus = set(
+        LectureProgress.objects.filter(user=user, cours__tags__id__in=tous_tag_ids)
+        .values_list("cours__tags__id", flat=True),
+    )
+
+    resultat = []
+    for groupe in groupes.values():
+        if groupe["nb_epreuves"] < PARCOURS_FREQUENCE_OCCURRENCES_MIN:
+            continue
+        tag_ids = groupe["tag_ids"]
+
+        # Même dédoublonnage par sous_theme + plafond que construire_parcours -
+        # voir PARCOURS_COURS_PAR_SAVOIR_MAX.
+        candidats, vus = [], set()
+        for tid in tag_ids:
+            for c in cours_par_tag_id.get(tid, []):
+                if c.id not in vus:
+                    vus.add(c.id)
+                    candidats.append(c)
+        cours_finaux, sous_themes_vus = [], set()
+        for c in candidats:
+            cle = c.sous_theme or c.slug
+            if cle in sous_themes_vus:
+                continue
+            sous_themes_vus.add(cle)
+            cours_finaux.append(c)
+            if len(cours_finaux) >= PARCOURS_COURS_PAR_SAVOIR_MAX:
+                break
+
+        total = sum(stats_par_tag[tid]["total"] for tid in tag_ids if tid in stats_par_tag)
+        reussies = sum(stats_par_tag[tid]["reussies"] for tid in tag_ids if tid in stats_par_tag)
+        savoir = savoirs_par_id.get(groupe["savoir_id"])
+        theme_id = min(tag_ids)
+
+        resultat.append({
+            "id": theme_id,
+            "theme_id": theme_id,
+            "numero": "",
+            "intitule": groupe["nom"],
+            "savoir_label": savoir.intitule if savoir else None,
+            "nb_epreuves": groupe["nb_epreuves"],
+            "frequence_pct": round(100 * groupe["nb_epreuves"] / nb_sessions),
+            "taux": round(100 * reussies / total) if total else None,
+            "en_revision": bool(tag_ids & tags_en_revision),
+            "a_lu_le_cours": bool(tag_ids & tags_lus),
+            "has_quiz": bool(tag_ids & tags_avec_quiz),
+            "cours": [{"slug": c.slug, "titre": c.titre, "sous_theme": c.sous_theme} for c in cours_finaux],
+        })
+
+    resultat.sort(key=lambda d: (-d["nb_epreuves"], d["intitule"]))
+    for index, item in enumerate(resultat):
+        item["numero"] = str(index + 1)
+    return resultat
+
+
 def construire_parcours(user, cursus, subject):
     """
     Vue séquencée du programme officiel (voir programme.Module/Savoir) pour un
@@ -339,11 +587,27 @@ def construire_parcours(user, cursus, subject):
     chaque étape.
 
     Ne filtre RIEN sur le contenu disponible : un Savoir sans Cours ni CompetenceItem
-    apparaît quand même (`cours=None`, `has_quiz=False`) plutôt que d'être masqué - la
+    apparaît quand même (`cours=[]`, `has_quiz=False`) plutôt que d'être masqué - la
     structure du programme doit rester visible même incomplète (cas du BEPC
     aujourd'hui), pas seulement les savoirs déjà couverts. C'est au frontend de
     griser une étape sans contenu, jamais à cette fonction de la faire disparaître.
+
+    Pour SUBJECTS_PARCOURS_PAR_FREQUENCE, remplace entièrement cette vue par un
+    classement des thèmes réels par fréquence d'examen (voir
+    construire_parcours_par_frequence) - repris dans un unique pseudo-module pour
+    que resume_parcours (qui ne lit que module["savoirs"]) continue de fonctionner
+    sans changement. Retombe sur le Module→Savoir habituel si le corpus est encore
+    trop mince pour un classement fiable.
     """
+    if subject.code in SUBJECTS_PARCOURS_PAR_FREQUENCE:
+        themes = construire_parcours_par_frequence(user, cursus, subject)
+        if themes is not None:
+            return [{
+                "numero": "",
+                "titre": "Les thèmes qui reviennent le plus à l'examen",
+                "savoirs": themes,
+            }]
+
     taux_par_savoir = maitrise_par_savoir(user, cursus=cursus)
     savoir_ids_en_revision = set(
         RevisionSchedule.objects.filter(user=user, cursus=cursus, theme__savoir_officiel__isnull=False)
@@ -366,18 +630,42 @@ def construire_parcours(user, cursus, subject):
     for module in modules:
         savoirs_payload = []
         for savoir in module.savoirs.all():
-            # Le premier Cours publié qui couvre ce savoir (voir Cours.tags ->
+            # Tous les Cours publiés qui couvrent ce savoir (voir Cours.tags ->
             # Tag.savoir_officiel) - même relation que le niveau 2 de
             # quiz.views._cours_pour_competence, ici interrogée directement par
-            # Savoir plutôt que déduite d'un CompetenceItem particulier.
-            cours = (
+            # Savoir plutôt que déduite d'un CompetenceItem particulier. Plusieurs
+            # cours distincts sont légitimes (voir PARCOURS_COURS_PAR_SAVOIR_MAX) :
+            # l'assimilation d'un savoir peut demander plus d'une leçon.
+            #
+            # Fenêtre de candidats plus large que le plafond final : deux Cours
+            # distincts partagent parfois le même sous_theme (ex. deux exercices
+            # différents sur "Nombres complexes - similitudes") - les afficher tels
+            # quels produirait deux boutons visuellement identiques mais menant à des
+            # pages différentes. On sur-récupère un peu pour dédupliquer sur
+            # sous_theme avant de plafonner, sans pour autant charger tous les
+            # candidats (jusqu'à plusieurs centaines dans les cas de tag trop
+            # générique - voir la note sur PARCOURS_COURS_PAR_SAVOIR_MAX).
+            candidats_bruts = (
                 Cours.objects.visibles()
                 .filter(subject=subject, tags__savoir_officiel=savoir)
                 .filter(Q(cursus=cursus) | Q(cursus__isnull=True))
                 .distinct()
-                .order_by("id")
-                .first()
+                .order_by("id")[: PARCOURS_COURS_PAR_SAVOIR_MAX * 3]
             )
+            cours_candidats = []
+            sous_themes_vus = set()
+            for c in candidats_bruts:
+                # Clé de dédoublonnage = sous_theme quand renseigné (c'est lui qui
+                # s'affiche) ; à défaut le slug, pour ne jamais fusionner deux cours
+                # sans sous_theme entre eux (ils n'ont alors rien de visuellement
+                # identique à dédupliquer).
+                cle = c.sous_theme or c.slug
+                if cle in sous_themes_vus:
+                    continue
+                sous_themes_vus.add(cle)
+                cours_candidats.append(c)
+                if len(cours_candidats) >= PARCOURS_COURS_PAR_SAVOIR_MAX:
+                    break
             savoirs_payload.append({
                 "id": savoir.id,
                 "numero": savoir.numero,
@@ -388,7 +676,9 @@ def construire_parcours(user, cursus, subject):
                 "en_revision": savoir.id in savoir_ids_en_revision,
                 "a_lu_le_cours": savoir.id in savoir_ids_lus,
                 "has_quiz": savoir.id in savoir_ids_avec_quiz,
-                "cours": {"slug": cours.slug, "titre": cours.titre} if cours else None,
+                "cours": [
+                    {"slug": c.slug, "titre": c.titre, "sous_theme": c.sous_theme} for c in cours_candidats
+                ],
             })
         parcours.append({"numero": module.numero, "titre": module.titre, "savoirs": savoirs_payload})
     return parcours
