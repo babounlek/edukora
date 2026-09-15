@@ -16,7 +16,6 @@ export function Footer() {
     { to: epreuvesListPath(country), label: "Épreuves" },
     { to: coursListPath(country), label: "Cours" },
     { to: "/quiz", label: "Quiz" },
-    { to: "/fiches", label: "Fiches (répétiteurs)" },
     { to: "/tarifs", label: "Tarifs" },
   ]
 

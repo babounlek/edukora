@@ -5,12 +5,10 @@ import {
   ArrowRightLeft,
   Check,
   Crown,
-  FileText,
   Lock,
   ShieldCheck,
   Smartphone,
   Sparkles,
-  Users,
   Zap,
 } from "lucide-react"
 
@@ -22,26 +20,7 @@ import { useCountry } from "@/context/CountryContext"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SocialProofSection } from "@/components/SocialProofSection"
-
-// Palier de référence pour l'économie affichée sur les autres formules ("-16 %") : le
-// mois est le point d'entrée de la grille, c'est à lui que l'élève compare
-// spontanément. En dur plutôt que "le palier le moins cher" pour que l'affichage ne se
-// déplace pas silencieusement si un palier plus court réapparaît.
-const DUREE_REFERENCE_JOURS = 30
-
-// Sous ce seuil, l'économie n'est pas assez marquée pour mériter un badge - mieux
-// vaut ne rien afficher qu'un "-3 %" qui donne l'impression que monter en gamme ne
-// sert à rien.
-const ECONOMIE_MIN_AFFICHEE = 5
-
-function tierDuration(days: number): string {
-  if (days <= 31) return "1 mois"
-  if (days <= 90) return "3 mois"
-  return "1 an"
-}
 
 function formatDateDansNJours(jours: number): string {
   const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
@@ -172,57 +151,7 @@ function cursusVendables(plans: Plan[], productType: Plan["product_type"]): Curs
   return Array.from(parId.values()).sort(trierCursus)
 }
 
-/** Un exemplaire par durée : le prix des paliers fixes est identique pour tous les
- * cursus, la grille n'a pas à répéter les offres telles quelles. */
-function paliersUniquesParDuree(plans: Plan[]): Plan[] {
-  const parDuree = new Map<number, Plan>()
-  plans.forEach((plan) => {
-    if (!parDuree.has(plan.duration_days)) parDuree.set(plan.duration_days, plan)
-  })
-  return Array.from(parDuree.values()).sort((a, b) => a.duration_days - b.duration_days)
-}
-
-/**
- * Coût ramené à une unité lisible. Le mois est l'unité de comparaison de la grille
- * (voir DUREE_REFERENCE_JOURS) : "1 233 FCFA/mois" se compare d'un coup d'œil aux
- * 2 000 FCFA du palier d'entrée, là où "41 FCFA/jour" impose une multiplication
- * mentale avant de valoir quelque chose. Le palier d'entrée EST un mois - y répéter
- * son propre prix n'apprendrait rien, il affiche donc son coût journalier, le chiffre
- * qui le rend concret. "Mois" vaut ici 30 jours, la même convention que celle qui
- * fait appeler "1 mois" le palier de 30 jours : l'économie annoncée est donc
- * légèrement sous-estimée plutôt que flattée.
- */
-function prixUnitaire(prix: number, dureeJours: number): string {
-  if (dureeJours <= DUREE_REFERENCE_JOURS) {
-    return `≈ ${formatAmount(Math.round(prix / dureeJours))} FCFA/jour`
-  }
-  return `≈ ${formatAmount(Math.round(prix / (dureeJours / 30)))} FCFA/mois`
-}
-
-/** Prix au jour du palier de référence d'une grille, base des économies affichées.
- * `null` si cette grille n'a pas de palier de référence : aucune économie n'est alors
- * annonçable, plutôt qu'un pourcentage calculé sur un palier arbitraire. */
-function refParJourDe(tiers: Plan[]): number | null {
-  const ref = tiers.find((t) => t.duration_days === DUREE_REFERENCE_JOURS)
-  return ref ? ref.price / ref.duration_days : null
-}
-
-function economie(tier: Plan, refParJour: number | null): number | null {
-  if (!refParJour || tier.duration_days === DUREE_REFERENCE_JOURS) return null
-  const pourcent = Math.round((1 - tier.price / tier.duration_days / refParJour) * 100)
-  return pourcent >= ECONOMIE_MIN_AFFICHEE ? pourcent : null
-}
-
-/** Badge d'économie par rapport au palier mensuel de la même grille. */
-function BadgeEconomie({ pourcent }: { pourcent: number }) {
-  return (
-    <span className="rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-semibold text-success">
-      -{pourcent} % vs 1 mois
-    </span>
-  )
-}
-
-/** Puce de réassurance du hero - même gabarit que /quiz, /fiches et /cours. */
+/** Puce de réassurance du hero - même gabarit que /quiz et /cours. */
 function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
     <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
@@ -346,12 +275,10 @@ export function PricingPage() {
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   const [chargement, setChargement] = useState(true)
   const [selectedCursus, setSelectedCursus] = useState("")
-  const [selectedCursusRepetiteur, setSelectedCursusRepetiteur] = useState("")
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
   const [cursusManquant, setCursusManquant] = useState(false)
   const cursusRef = useRef<HTMLDivElement>(null)
-  const cursusRepetiteurRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     listPlans()
@@ -389,25 +316,6 @@ export function PricingPage() {
   }, [allPlans])
 
   const cursusEleve = useMemo(() => cursusVendables(allPlans, "ABONNEMENT"), [allPlans])
-  const cursusRepetiteur = useMemo(() => cursusVendables(allPlans, "ADDON_REPETITEUR"), [allPlans])
-
-  const repetiteurTiers = useMemo(
-    () =>
-      paliersUniquesParDuree(
-        allPlans.filter((p) => p.product_type === "ADDON_REPETITEUR" && p.duration_mode === "FIXE"),
-      ),
-    [allPlans],
-  )
-  // Une référence par offre, jamais une seule pour les deux : l'add-on Fiches a sa
-  // propre grille (3 000 F le mois là où l'abonnement est à 2 000), comparer son
-  // annuel au mois de l'abonnement élève afficherait une économie qui n'existe pas.
-  const refParJourRepetiteur = useMemo(() => refParJourDe(repetiteurTiers), [repetiteurTiers])
-
-  // Un seul cursus vendable (cas actuel de l'add-on Fiches) : le faire choisir n'a
-  // aucun sens, on le présélectionne.
-  useEffect(() => {
-    if (cursusRepetiteur.length === 1) setSelectedCursusRepetiteur(String(cursusRepetiteur[0].id))
-  }, [cursusRepetiteur])
 
   useEffect(() => {
     if (selectedCursus) setCursusManquant(false)
@@ -422,14 +330,6 @@ export function PricingPage() {
       return
     }
     navigate(`/abonnement?cursus=${selectedCursus}&duree=examen`)
-  }
-
-  function handleSubscribeRepetiteur() {
-    if (!selectedCursusRepetiteur) {
-      cursusRepetiteurRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
-      return
-    }
-    navigate(`/abonnement?cursus=${selectedCursusRepetiteur}&require=repetiteur`)
   }
 
   return (
@@ -459,12 +359,11 @@ export function PricingPage() {
             <Sparkles className="size-5" />
           </div>
           <p className="mb-1 font-display text-sm italic text-primary">Tarifs</p>
-          {/* Tutoiement de bout en bout, y compris l'onglet Répétiteur plus bas
-              (décision du 2026-09-05) : un brouillon non commité vouvoyait cette page
-              ("acheteur adulte" payeur), rompant avec le reste du site (accueil, quiz,
-              corrigés) qui tutoie l'élève partout - jamais mergé, donc sans effet sur
-              la version publiée, mais présent dans l'arbre de travail. Écarté au
-              profit de la cohérence de ton déjà en place ailleurs. */}
+          {/* Tutoiement de bout en bout (décision du 2026-09-05) : un brouillon non
+              commité vouvoyait cette page ("acheteur adulte" payeur), rompant avec le
+              reste du site (accueil, quiz, corrigés) qui tutoie l'élève partout - jamais
+              mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
+              travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
             Plus tôt tu t'abonnes, <span className="text-primary">plus tu économises</span>.
           </h1>
@@ -486,27 +385,20 @@ export function PricingPage() {
         </div>
       </div>
 
-      {/* Deux offres commerciales distinctes cohabitent sur cette page (abonnement
-          élève classique, add-on Fiches pour répétiteurs/enseignants) - des onglets
-          plutôt qu'un simple ancrage de scroll (essayé puis remplacé) : ils ne
-          laissent jamais les deux offres se mélanger visuellement, et l'un ou l'autre
-          public voit tout de suite qu'il y a bien un onglet "pour lui". */}
-      <Tabs defaultValue="eleve" className="mt-8 items-center">
-        <TabsList>
-          <TabsTrigger value="eleve">Élève</TabsTrigger>
-          <TabsTrigger value="repetiteur">Répétiteur ou enseignant</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="eleve" className="w-full animate-fade-up">
-          {/* Cursus et prix fusionnés dans un seul panneau large (retouche du 2026-08-30) :
-              deux colonnes séparées par une bordure à partir de sm, plutôt que deux
-              boîtes à max-w-md empilées avec plein de vide de chaque côté sur desktop -
-              défaut resté depuis la grille à deux formules (Mensuel + Jusqu'à l'Examen),
-              qui n'a plus lieu d'être avec une offre unique. Choisir un cursus met à jour
-              le prix juste à côté, sans scroll ni "étape 2" à débloquer : plus besoin de
-              l'effet qui défilait vers un second bloc pour le révéler (formuleRef/
-              formuleMiseEnAvant, retirés) - les deux tiennent déjà dans le même regard. */}
-          <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      {/* Deux offres commerciales cohabitaient ici via des onglets (abonnement élève
+          classique, add-on Fiches pour répétiteurs/enseignants) - l'add-on Fiches et le
+          public répétiteur/enseignant sont mis en veilleuse (2026-09-15), l'onglet est
+          donc retiré et seule l'offre élève reste affichée. */}
+      <div className="mt-8">
+        {/* Cursus et prix fusionnés dans un seul panneau large (retouche du 2026-08-30) :
+            deux colonnes séparées par une bordure à partir de sm, plutôt que deux
+            boîtes à max-w-md empilées avec plein de vide de chaque côté sur desktop -
+            défaut resté depuis la grille à deux formules (Mensuel + Jusqu'à l'Examen),
+            qui n'a plus lieu d'être avec une offre unique. Choisir un cursus met à jour
+            le prix juste à côté, sans scroll ni "étape 2" à débloquer : plus besoin de
+            l'effet qui défilait vers un second bloc pour le révéler (formuleRef/
+            formuleMiseEnAvant, retirés) - les deux tiennent déjà dans le même regard. */}
+        <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <div className="grid grid-cols-1 sm:grid-cols-2">
               <div
@@ -674,118 +566,13 @@ export function PricingPage() {
             </div>
           </div>
 
-          {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (la carte porte déjà
-              le sien) : une invite à agir qui ne menait nulle part elle-même, retirée
-              plutôt que complétée. La mention Mobile Money vivait ici aussi, en 12 px
-              sous la grille. Elle est remontée dans les puces du hero et détaillée dans
-              les questions en bas de page : la répéter une troisième fois ne rassurait
-              personne. */}
-        </TabsContent>
-
-        <TabsContent value="repetiteur" className="w-full animate-fade-up">
-          <div className="mx-auto max-w-xl text-center">
-            <h2 className="flex items-center justify-center gap-1.5 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              <Users className="size-6 shrink-0 text-primary" />
-              Génère des fiches d'exercices pour tes élèves
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Choisis les compétences à travailler, la difficulté et le nombre de questions - obtiens en quelques
-              secondes un PDF énoncé à distribuer à tes élèves et un PDF corrigé pour toi, à ton nom.
-            </p>
-          </div>
-
-          {/* Les paliers de l'add-on tenaient dans deux boîtes grises de la largeur
-              d'un pouce, sans prix unitaire, sans liste, sans mise en avant - un
-              produit à part entière traité comme une note de bas de page à côté de la
-              grille élève. Même gabarit de carte que celle-ci, à deux colonnes. */}
-          {repetiteurTiers.length > 0 && (
-            <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-2">
-              {repetiteurTiers.map((tier) => {
-                const pourcent = economie(tier, refParJourRepetiteur)
-                return (
-                <Card key={tier.duration_days} className="flex flex-col">
-                  <CardHeader>
-                    <CardTitle className="font-display text-lg">Add-on Fiches</CardTitle>
-                    <CardDescription>{tierDuration(tier.duration_days)}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-1 flex-col gap-4">
-                    <div>
-                      <p className="font-display text-3xl font-semibold text-primary">
-                        {formatAmount(tier.price)}
-                        <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                      </p>
-                      {/* L'intérêt de l'annuel était invisible : ni prix ramené au mois,
-                          ni économie affichée, alors que la grille élève avait les deux. */}
-                      <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                        <p className="text-xs text-muted-foreground">{prixUnitaire(tier.price, tier.duration_days)}</p>
-                        {pourcent !== null && <BadgeEconomie pourcent={pourcent} />}
-                      </div>
-                    </div>
-                    <ul className="mt-auto flex flex-col gap-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2">
-                        <FileText className="mt-0.5 size-4 shrink-0 text-success" />
-                        Fiches illimitées, énoncé + corrigé
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                        Deux PDF à ton nom, prêts à imprimer
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-                )
-              })}
-            </div>
-          )}
-          {/* Add-on distinct de l'abonnement classique (voir SubscribePage.tsx) - ne
-              débloque jamais, à lui seul, les corrigés/cours de l'onglet Élève.
-              Précisé ici plutôt que supposé implicite : même risque de confusion déjà
-              identifié pour l'add-on Épreuves Inédites. */}
-          <p className="mx-auto mt-3 max-w-md text-center text-xs text-muted-foreground">
-            Add-on séparé de l'abonnement classique - ne débloque pas les corrigés.
-          </p>
-
-          <div
-            ref={cursusRepetiteurRef}
-            className="mx-auto mt-9 max-w-md scroll-mt-24 rounded-xl border border-border bg-card p-6 text-center shadow-sm"
-          >
-            <h3 className="mb-1 font-display text-lg font-semibold">Prêt à débloquer l'add-on ?</h3>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {cursusRepetiteur.length > 1
-                ? "Choisis ton cursus pour continuer."
-                : "L'outil Fiches est disponible sur le cursus ci-dessous."}
-            </p>
-            {/* Un seul cursus vendable : aucune puce à afficher, le message ci-dessus
-                suffit à dire lequel (voir la présélection automatique plus haut). */}
-            {cursusRepetiteur.length > 1 && (
-              <div className="mb-4">
-                <CursusChips
-                  liste={cursusRepetiteur}
-                  selected={selectedCursusRepetiteur}
-                  onSelect={setSelectedCursusRepetiteur}
-                  label="Ton cursus"
-                  centre
-                />
-              </div>
-            )}
-            <Button
-              onClick={handleSubscribeRepetiteur}
-              disabled={!selectedCursusRepetiteur}
-              size="lg"
-              className="w-full sm:w-auto"
-            >
-              S'abonner
-            </Button>
-            <button
-              type="button"
-              onClick={() => navigate("/fiches")}
-              className="mt-4 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
-            >
-              ou découvrir l'outil Fiches d'abord
-            </button>
-          </div>
-        </TabsContent>
-      </Tabs>
+        {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (la carte porte déjà
+            le sien) : une invite à agir qui ne menait nulle part elle-même, retirée
+            plutôt que complétée. La mention Mobile Money vivait ici aussi, en 12 px
+            sous la grille. Elle est remontée dans les puces du hero et détaillée dans
+            les questions en bas de page : la répéter une troisième fois ne rassurait
+            personne. */}
+      </div>
 
       {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant
           la FAQ qui traite les dernières objections - de vrais témoignages publiés
@@ -801,7 +588,7 @@ export function PricingPage() {
         <SocialProofSection />
       </div>
 
-      {/* Hors des onglets : ces quatre points valent pour les deux offres. Une page de
+      {/* Une page de
           tarifs sans réponse aux objections laisse l'acheteur seul avec ses doutes au
           moment précis où il doit sortir son téléphone - c'était le trou le plus large
           de cette page. Revue le 2026-08-30 pour l'offre unique Jusqu'à l'Examen : les

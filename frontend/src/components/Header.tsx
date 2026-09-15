@@ -101,7 +101,7 @@ export function Header() {
 
   const isTarifsSection = pathname.startsWith("/tarifs")
   const isParcoursSection = !isTarifsSection && pathname.startsWith("/parcours")
-  const isFichesSection = !isTarifsSection && pathname.startsWith("/fiches")
+  const isQuizSection = !isTarifsSection && pathname.startsWith("/quiz")
   const isCoursSection =
     !isTarifsSection && !isParcoursSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
   const isEpreuvesSection =
@@ -132,7 +132,7 @@ export function Header() {
     { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
     { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
     { to: "/parcours", label: "Parcours", active: isParcoursSection, badge: false },
-    { to: "/fiches", label: "Fiches", active: isFichesSection, badge: false },
+    { to: "/quiz", label: "Quiz", active: isQuizSection, badge: false },
     { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
   ]
 
@@ -222,8 +222,8 @@ export function Header() {
           <Button asChild variant={isParcoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to="/parcours">Parcours</Link>
           </Button>
-          <Button asChild variant={isFichesSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to="/fiches">Fiches</Link>
+          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
+            <Link to="/quiz">Quiz</Link>
           </Button>
           <Button asChild variant={isTarifsSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
             <Link to="/tarifs">Tarifs</Link>

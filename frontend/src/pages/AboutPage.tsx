@@ -3,7 +3,6 @@ import {
   ArrowRight,
   BookOpen,
   Check,
-  ClipboardCheck,
   Heart,
   Landmark,
   Mail,
@@ -35,11 +34,6 @@ const PILLARS = [
     label: "Quiz",
     title: "Auto-évaluation ciblée",
     body: "Des questions par compétence pour savoir précisément ce qu'il te reste à travailler avant l'examen.",
-  },
-  {
-    label: "Fiches",
-    title: "Pour les répétiteurs",
-    body: "Des ressources pensées pour préparer un cours particulier, pas seulement pour l'élève qui le suit.",
   },
 ]
 
@@ -81,16 +75,6 @@ const AUDIENCES = [
       "Aucune reconduction automatique : l'abonnement s'arrête à sa date, il ne se débite jamais tout seul.",
       "Un éditeur identifié et joignable, pas un site anonyme derrière un formulaire.",
       "Aucune donnée revendue ni utilisée à des fins publicitaires.",
-    ],
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Enseignant",
-    points: [
-      <>Contenu <strong className="text-foreground">strictement aligné sur le programme officiel</strong> du pays, pas une paraphrase générique.</>,
-      "Une méthode de correction exigeante : raisonnement complet, pièges signalés, aucun raccourci.",
-      "Une base en amélioration continue : toute erreur que tu signales est corrigée.",
-      "Des fiches pensées pour ton usage de répétiteur, pas uniquement pour l'élève.",
     ],
   },
   {
@@ -152,7 +136,7 @@ function ChipReassurance({ icon, children }: { icon: React.ReactNode; children: 
 export function AboutPage() {
   useSeo({
     title: "À propos",
-    description: `Qui est derrière ${SITE_NAME}, comment les corrigés sont produits, et pourquoi élèves, parents, enseignants et établissements peuvent nous faire confiance.`,
+    description: `Qui est derrière ${SITE_NAME}, comment les corrigés sont produits, et pourquoi élèves, parents et établissements peuvent nous faire confiance.`,
   })
   const { country } = useCountry()
 
@@ -236,9 +220,9 @@ export function AboutPage() {
       <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <Eyebrow>Ce que tu trouves ici</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-          Quatre façons de préparer un examen sérieusement
+          Trois façons de préparer un examen sérieusement
         </h2>
-        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
           {PILLARS.map((pillar) => (
             <div key={pillar.label} className="bg-card p-6">
               <span className="text-xs font-semibold uppercase tracking-wider text-primary">{pillar.label}</span>
