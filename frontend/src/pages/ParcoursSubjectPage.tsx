@@ -4,9 +4,10 @@ import { ArrowLeft, ArrowRight, BookOpenText, CheckCircle2, Compass, RotateCcw, 
 
 import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { ParcoursCours, ParcoursModule, ParcoursSavoir, Subscription } from "@/api/types"
+import type { ParcoursModule, ParcoursSavoir, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Etape, Eyebrow, StatChip } from "@/components/Configurateur"
+import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -89,8 +90,23 @@ function compterBuckets(savoirs: SavoirEnrichi[]) {
   return buckets
 }
 
+/** Savoirs d'un module à afficher compte tenu du filtre "Afficher tout" - même
+ * critère que le bouton de bascule sous la carte "prochaines étapes", factorisé ici
+ * pour servir à la fois au rendu de chaque Card module et au sommaire de navigation
+ * (un module sans savoir affiché ne doit pas non plus apparaître dans le sommaire). */
+function savoirsVisibles(module: ParcoursModule, afficherTout: boolean): ParcoursSavoir[] {
+  if (afficherTout) return module.savoirs
+  return module.savoirs.filter((s) => {
+    const bucket = bucketDeSavoir(s)
+    return bucket === "en_revision" || bucket === "a_decouvrir"
+  })
+}
+
 function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
-  if (savoir.en_revision) return <Badge variant="outline">À réviser</Badge>
+  // "gold" reprend la même convention que tauxBarClassName/RotateCcw ailleurs sur la
+  // page (or = zone "à réviser") - un simple "outline" rendait ce statut aussi discret
+  // que "Contenu à venir", alors que c'est le plus urgent à repérer en balayant la liste.
+  if (savoir.en_revision) return <Badge variant="gold">À réviser</Badge>
   if (savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE) return <Badge variant="success">Maîtrisé</Badge>
   if (savoir.taux !== null) return <Badge variant="outline">{savoir.taux}% de réussite</Badge>
   // Cours lu mais jamais encore quizzé - distinct de "à découvrir" (jamais ouvert du
@@ -150,35 +166,49 @@ function lienCoursDuSavoir(country: string, subjectCode: string, cursusId: strin
   return `${coursListPath(country)}?${params.toString()}`
 }
 
-function LienCoursDuSavoir({ href, savoir, size }: { href: string; savoir: ParcoursSavoir; size?: "sm" }) {
-  if (savoir.cours.length === 0) return null
+/** Actions d'une étape (liste par module ET "prochaines étapes") : un seul CTA
+ * principal - le quiz s'il existe, sinon le premier cours candidat - plutôt qu'un
+ * bouton par cours candidat empilé à côté du quiz : la ligne indiquait jusqu'ici
+ * jusqu'à 4-5 boutons d'un coup, sans dire lequel faire en premier. Les cours
+ * restants (et un éventuel dépassement du plafond de 3, voir lienCoursDuSavoir)
+ * restent accessibles via "Voir tous les cours", jamais perdus. `arrow` accentue le
+ * CTA quiz dans la carte "prochaines étapes" (mise en avant), pas dans la liste. */
+function ActionsSavoir({
+  savoir, href, starting, onQuiz, size, arrow,
+}: {
+  savoir: ParcoursSavoir
+  href?: string
+  starting: boolean
+  onQuiz: () => void
+  size?: "sm"
+  arrow?: boolean
+}) {
+  const premierCours = savoir.cours[0]
   return (
-    <Button asChild size={size} variant="ghost">
-      <Link to={href}>
-        <Search />
-        Voir tous les cours
-      </Link>
-    </Button>
-  )
-}
-
-/** Un bouton par cours candidat (voir ParcoursSavoir.cours, plusieurs leçons peuvent
- * couvrir un même savoir) plutôt qu'un unique "Lire le cours" générique : le
- * sous-thème (court, curaté - voir catalog.Cours.sous_theme) distingue les cours
- * entre eux, ce que le libellé générique ne permettait pas. Fallback sur le
- * générique pour les rares cours sans sous_theme renseigné. */
-function BoutonsCours({ cours, size }: { cours: ParcoursCours[]; size?: "sm" }) {
-  return (
-    <>
-      {cours.map((c) => (
-        <Button key={c.slug} asChild size={size} variant="outline">
-          <Link to={coursDetailPath(c.slug)}>
+    <div className="flex flex-wrap items-center gap-2">
+      {savoir.has_quiz && (
+        <Button size={size} disabled={starting} onClick={onQuiz}>
+          {starting ? "Préparation..." : "Tester mes connaissances"}
+          {arrow && <ArrowRight />}
+        </Button>
+      )}
+      {premierCours && (
+        <Button asChild size={size} variant={savoir.has_quiz ? "outline" : "default"}>
+          <Link to={coursDetailPath(premierCours.slug)}>
             <BookOpenText />
-            {c.sous_theme || "Lire le cours"}
+            {premierCours.sous_theme || "Lire le cours"}
           </Link>
         </Button>
-      ))}
-    </>
+      )}
+      {href && savoir.cours.length > 0 && (
+        <Button asChild size={size} variant="ghost">
+          <Link to={href}>
+            <Search />
+            Voir tous les cours
+          </Link>
+        </Button>
+      )}
+    </div>
   )
 }
 
@@ -267,6 +297,23 @@ export function ParcoursSubjectPage() {
   const totalAvecContenu = savoirs.length - buckets.sans_contenu
   const pourcentageMaitrise = totalAvecContenu > 0 ? Math.round((100 * buckets.maitrises) / totalAvecContenu) : 0
 
+  // Sommaire de navigation entre modules - seulement utile à partir de 2 modules
+  // effectivement affichés (voir SommaireNav, qui se masque déjà si `entries` est
+  // vide) ; le mode Parcours par fréquence n'a qu'un seul pseudo-module donc ne
+  // l'affiche jamais. `long` reste court ("Module N") pour la sidebar desktop, le
+  // titre complet du module n'apparaissant qu'en infobulle et dans la Card elle-même.
+  const sommaireEntries: SommaireEntry[] = useMemo(() => {
+    if (!modules || modules.length < 2) return []
+    return modules
+      .filter((m) => savoirsVisibles(m, afficherTout).length > 0)
+      .map((m) => ({
+        id: `module-${m.numero || "unique"}`,
+        short: m.numero ? `M${m.numero}` : m.titre,
+        long: m.numero ? `Module ${m.numero}` : m.titre,
+        title: m.titre,
+      }))
+  }, [modules, afficherTout])
+
   async function lancerQuiz(params: { savoir?: number; theme?: number; mode?: "DIAGNOSTIC" }) {
     if (starting || !subjectId) return
     setStarting(true)
@@ -350,20 +397,47 @@ export function ParcoursSubjectPage() {
               : "Le programme officiel, dans l'ordre - avec ce qu'il te reste à découvrir, réviser ou maîtriser."}
           </p>
 
+          {/* Barre + puces de progression - seul endroit de la page qui les affiche
+              désormais (voir l'ancienne Card "Ta progression" juste en dessous du hero,
+              supprimée : elle répétait presque les mêmes chiffres immédiatement après). */}
           {totalAvecContenu > 0 && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
-                <span className="font-medium">
-                  {buckets.maitrises}/{totalAvecContenu}
-                </span>
-                <span className="text-muted-foreground">savoirs maîtrisés</span>
-              </StatChip>
-              {buckets.en_revision > 0 && (
-                <StatChip icon={<RotateCcw className="size-3.5 text-gold" />}>
-                  <span className="font-medium">{buckets.en_revision}</span>
-                  <span className="text-muted-foreground">à réviser</span>
+            <div className="mt-5 max-w-md">
+              <div className="mb-2 flex items-center justify-between text-sm">
+                <span className="font-medium text-foreground/90">Ta progression</span>
+                <span className="font-display font-semibold text-primary">{pourcentageMaitrise}%</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className={cn("h-full rounded-full transition-all", tauxBarClassName(pourcentageMaitrise))}
+                  style={{ width: `${pourcentageMaitrise}%` }}
+                />
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
+                  <span className="font-medium">
+                    {buckets.maitrises}/{totalAvecContenu}
+                  </span>
+                  <span className="text-muted-foreground">maîtrisés</span>
                 </StatChip>
-              )}
+                {buckets.en_revision > 0 && (
+                  <StatChip icon={<RotateCcw className="size-3.5 text-gold" />}>
+                    <span className="font-medium">{buckets.en_revision}</span>
+                    <span className="text-muted-foreground">à réviser</span>
+                  </StatChip>
+                )}
+                {buckets.a_decouvrir > 0 && (
+                  <StatChip icon={<Compass className="size-3.5 text-muted-foreground" />}>
+                    <span className="font-medium">{buckets.a_decouvrir}</span>
+                    <span className="text-muted-foreground">à découvrir</span>
+                  </StatChip>
+                )}
+                {buckets.sans_contenu > 0 && (
+                  <StatChip icon={<BookOpenText className="size-3.5 text-muted-foreground" />}>
+                    <span className="font-medium">{buckets.sans_contenu}</span>
+                    <span className="text-muted-foreground">à venir</span>
+                  </StatChip>
+                )}
+              </div>
             </div>
           )}
 
@@ -399,58 +473,8 @@ export function ParcoursSubjectPage() {
           <Skeleton className="h-96 w-full rounded-2xl" />
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
-          {/* Récapitulatif en bandeau horizontal plutôt qu'en colonne latérale : sur
-              cette page, la liste des modules est le contenu principal et mérite toute
-              la largeur - un résumé de progression se lit d'un coup d'œil, il n'a pas
-              besoin d'une colonne dédiée qui rétrécit le reste. */}
-          <Card>
-            <CardContent className="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:gap-6">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Compass className="size-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-display text-sm font-semibold">Ta progression</p>
-                  {totalAvecContenu > 0 && (
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                      <div
-                        className={cn("h-full rounded-full transition-all", tauxBarClassName(pourcentageMaitrise))}
-                        style={{ width: `${pourcentageMaitrise}%` }}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
-                  <span className="font-medium">{buckets.maitrises}</span>
-                  <span className="text-muted-foreground">maîtrisés</span>
-                </StatChip>
-                {buckets.en_revision > 0 && (
-                  <StatChip icon={<RotateCcw className="size-3.5 text-gold" />}>
-                    <span className="font-medium">{buckets.en_revision}</span>
-                    <span className="text-muted-foreground">à réviser</span>
-                  </StatChip>
-                )}
-                {buckets.a_decouvrir > 0 && (
-                  <StatChip icon={<Compass className="size-3.5 text-muted-foreground" />}>
-                    <span className="font-medium">{buckets.a_decouvrir}</span>
-                    <span className="text-muted-foreground">à découvrir</span>
-                  </StatChip>
-                )}
-                {buckets.sans_contenu > 0 && (
-                  <StatChip icon={<BookOpenText className="size-3.5 text-muted-foreground" />}>
-                    <span className="font-medium">{buckets.sans_contenu}</span>
-                    <span className="text-muted-foreground">à venir</span>
-                  </StatChip>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex min-w-0 flex-col gap-6">
-            {(etapes === "diagnostic" || etapes.length > 0) && (
+        <div className="flex min-w-0 flex-col gap-6">
+          {(etapes === "diagnostic" || etapes.length > 0) && (
               <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent">
                 <CardContent className="pt-6">
                   <p className="flex items-center gap-2 font-display text-sm font-semibold text-primary">
@@ -477,32 +501,21 @@ export function ParcoursSubjectPage() {
                         <div key={etape.id} className={cn("flex flex-col gap-2", index > 0 && "pt-4")}>
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <span className="text-xs text-muted-foreground">{etape.moduleTitre}</span>
+                            <BadgeSavoir savoir={etape} />
                             {isModeFrequence && <OccurrenceBadge savoir={etape} />}
                           </div>
                           <p className="font-display font-medium">
                             {etapes.length > 1 && <span className="text-muted-foreground">{index + 1}. </span>}
                             {etape.intitule}
                           </p>
-                          <div className="flex flex-wrap gap-2">
-                            <BoutonsCours cours={etape.cours} size={etapes.length > 1 ? "sm" : undefined} />
-                            {etape.has_quiz && (
-                              <Button
-                                size={etapes.length > 1 ? "sm" : undefined}
-                                disabled={starting}
-                                onClick={() => lancerQuiz(paramsQuizPourSavoir(etape))}
-                              >
-                                {starting ? "Préparation..." : "Tester mes connaissances"}
-                                <ArrowRight />
-                              </Button>
-                            )}
-                            {countryCode && (
-                              <LienCoursDuSavoir
-                                href={lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, etape)}
-                                savoir={etape}
-                                size={etapes.length > 1 ? "sm" : undefined}
-                              />
-                            )}
-                          </div>
+                          <ActionsSavoir
+                            savoir={etape}
+                            href={countryCode ? lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, etape) : undefined}
+                            starting={starting}
+                            onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape))}
+                            size={etapes.length > 1 ? "sm" : undefined}
+                            arrow
+                          />
                           <SansCoursIndice savoir={etape} />
                         </div>
                       ))}
@@ -536,63 +549,72 @@ export function ParcoursSubjectPage() {
               </Card>
             )}
 
-            {modules.map((module) => {
+            {(() => {
               // Masqués par défaut, jamais retirés pour de bon (voir bucketDeSavoir et
               // le bouton juste au-dessus) : la promesse de la page est "ce qu'il te
               // reste à travailler", pas un inventaire complet du programme.
-              const savoirsAffiches = afficherTout
-                ? module.savoirs
-                : module.savoirs.filter((s) => {
-                    const bucket = bucketDeSavoir(s)
-                    return bucket === "en_revision" || bucket === "a_decouvrir"
-                  })
-              if (savoirsAffiches.length === 0) return null
+              const cartes = modules.map((module) => {
+                const savoirsAffiches = savoirsVisibles(module, afficherTout)
+                if (savoirsAffiches.length === 0) return null
 
-              return (
-              <Card key={module.numero} className="overflow-hidden">
-                <CardContent className="pt-6">
-                  <p className="mb-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {/* numero vide = pseudo-module du mode Parcours par fréquence (voir
-                        quiz.services.construire_parcours_par_frequence) - un seul thème
-                        de "module" pour toute la matière, "Module ·" n'aurait aucun sens. */}
-                    {module.numero ? `Module ${module.numero} · ${module.titre}` : module.titre}
-                  </p>
-                  <div>
-                    {savoirsAffiches.map((savoir, index) => (
-                      <Etape
-                        key={savoir.id}
-                        numero={index + 1}
-                        titre={savoir.intitule}
-                        fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
-                        inactif={!savoir.has_quiz && savoir.cours.length === 0}
-                        dernier={index === savoirsAffiches.length - 1}
-                      >
-                        <div className="flex flex-wrap items-center gap-2">
-                          <BadgeSavoir savoir={savoir} />
-                          {isModeFrequence && <OccurrenceBadge savoir={savoir} />}
-                          <BoutonsCours cours={savoir.cours} size="sm" />
-                          {savoir.has_quiz && (
-                            <Button size="sm" disabled={starting} onClick={() => lancerQuiz(paramsQuizPourSavoir(savoir))}>
-                              Tester mes connaissances
-                            </Button>
-                          )}
-                          {countryCode && (
-                            <LienCoursDuSavoir
-                              href={lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, savoir)}
-                              savoir={savoir}
-                              size="sm"
-                            />
-                          )}
-                        </div>
-                        <SansCoursIndice savoir={savoir} />
-                      </Etape>
-                    ))}
+                return (
+                  <Card key={module.numero} id={`module-${module.numero || "unique"}`} className="scroll-mt-24 overflow-hidden">
+                    <CardContent className="pt-6">
+                      <p className="mb-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {/* numero vide = pseudo-module du mode Parcours par fréquence (voir
+                            quiz.services.construire_parcours_par_frequence) - un seul thème
+                            de "module" pour toute la matière, "Module ·" n'aurait aucun sens. */}
+                        {module.numero ? `Module ${module.numero} · ${module.titre}` : module.titre}
+                      </p>
+                      <div>
+                        {savoirsAffiches.map((savoir, index) => (
+                          <Etape
+                            key={savoir.id}
+                            numero={index + 1}
+                            titre={savoir.intitule}
+                            fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
+                            inactif={!savoir.has_quiz && savoir.cours.length === 0}
+                            // Repère or sur les étapes déjà en révision - distinct du bleu
+                            // neutre des autres, pour repérer l'urgent d'un simple balayage
+                            // de la liste (voir Etape.accent et BadgeSavoir, même code couleur).
+                            accent={savoir.en_revision ? "gold" : undefined}
+                            dernier={index === savoirsAffiches.length - 1}
+                          >
+                            <div className="flex flex-wrap items-center gap-2">
+                              <BadgeSavoir savoir={savoir} />
+                              {isModeFrequence && <OccurrenceBadge savoir={savoir} />}
+                            </div>
+                            <div className="mt-2">
+                              <ActionsSavoir
+                                savoir={savoir}
+                                href={countryCode ? lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, savoir) : undefined}
+                                starting={starting}
+                                onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir))}
+                                size="sm"
+                              />
+                            </div>
+                            <SansCoursIndice savoir={savoir} />
+                          </Etape>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })
+
+              // À partir de 2 modules affichés, un sommaire cliquable donne un repère
+              // spatial sur un programme long (voir sommaireEntries) - en dessous, la
+              // colonne latérale ne ferait que gaspiller de la place pour rien à sauter.
+              if (sommaireEntries.length > 1) {
+                return (
+                  <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
+                    <SommaireNav entries={sommaireEntries} ariaLabel="Sommaire des modules" />
+                    <div className="flex min-w-0 flex-col gap-6">{cartes}</div>
                   </div>
-                </CardContent>
-              </Card>
-              )
-            })}
-          </div>
+                )
+              }
+              return cartes
+            })()}
         </div>
       )}
 

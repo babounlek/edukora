@@ -57,6 +57,10 @@ interface EtapeProps {
   /** Étape pas encore accessible (dépend d'un choix précédent) - contenu assombri et
    * non interactif plutôt que masqué : l'élève voit ce qui l'attend. */
   inactif?: boolean
+  /** Teinte du badge numéro pour une étape prioritaire (ex. "à réviser" du Parcours) -
+   * distincte du bleu neutre par défaut, pour repérer l'urgent d'un simple balayage de
+   * la liste. Sans effet si `fait` ou `inactif` (qui gardent leur propre couleur). */
+  accent?: "gold"
   /** Dernière étape de la séquence - pas de trait de liaison vers une suivante. */
   dernier?: boolean
   children: ReactNode
@@ -68,7 +72,7 @@ interface EtapeProps {
  * bloc sans le retirer du flux - l'élève voit toujours qu'une 3e étape existe même
  * s'il n'a pas encore rempli la 1re.
  */
-export function Etape({ numero, titre, aide, fait, inactif, dernier, children }: EtapeProps) {
+export function Etape({ numero, titre, aide, fait, inactif, accent, dernier, children }: EtapeProps) {
   return (
     <div className={cn("relative flex gap-4", !dernier && "pb-6")}>
       {!dernier && (
@@ -84,7 +88,9 @@ export function Etape({ numero, titre, aide, fait, inactif, dernier, children }:
             ? "bg-primary text-primary-foreground"
             : inactif
               ? "bg-muted text-muted-foreground"
-              : "bg-primary/10 text-primary",
+              : accent === "gold"
+                ? "bg-gold/15 text-gold"
+                : "bg-primary/10 text-primary",
         )}
       >
         {fait ? <Check className="size-4" /> : numero}
