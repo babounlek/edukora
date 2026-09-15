@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { formatDuration } from "@/lib/duration"
 import { useSeo } from "@/lib/seo"
 import { epreuvesListPath } from "@/lib/countryPath"
+import { capitaliserTheme } from "@/lib/utils"
 
 export function InediteResultPage() {
   useSeo({ title: "Résultat de l'épreuve inédite" })
@@ -79,7 +80,7 @@ export function InediteResultPage() {
             <ul className="flex flex-col gap-3">
               {result.par_theme.map((theme) => (
                 <li key={theme.theme} className="flex items-center justify-between text-sm">
-                  <span>{theme.theme}</span>
+                  <span>{capitaliserTheme(theme.theme)}</span>
                   <span className="text-muted-foreground">
                     {theme.reussies} / {theme.total}
                   </span>

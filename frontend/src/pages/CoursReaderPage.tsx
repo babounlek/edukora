@@ -16,6 +16,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { RelatedCours } from "@/components/RelatedCours"
 import { useSeo } from "@/lib/seo"
 import { coursListPath, coursReaderPath } from "@/lib/countryPath"
+import { capitaliserTheme } from "@/lib/utils"
 
 export function CoursReaderPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -116,7 +117,7 @@ export function CoursReaderPage() {
           )}
           <Badge variant="secondary">{content.header.matiere}</Badge>
           {content.header.serie && <Badge variant="outline">Série {content.header.serie}</Badge>}
-          {content.header.sous_theme && <Badge variant="outline">{content.header.sous_theme}</Badge>}
+          {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
           {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
         </div>
       )}

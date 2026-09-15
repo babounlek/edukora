@@ -16,7 +16,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { cn } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
 function ChoixText({ texte }: { texte: string }) {
@@ -171,7 +171,7 @@ export function QuizSessionPage() {
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
         <Badge variant="secondary">{session.cursus_display}</Badge>
         <Badge variant="outline">{question.subject_label}</Badge>
-        {question.theme && <Badge variant="outline">{question.theme}</Badge>}
+        {question.theme && <Badge variant="outline">{capitaliserTheme(question.theme)}</Badge>}
       </div>
 
       <div className="mb-4 flex items-center justify-between">

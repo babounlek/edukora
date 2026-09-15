@@ -45,7 +45,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { cn } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 
 const TOUTES_DIFFICULTES = "toutes"
 const DIFFICULTE_LABELS: Record<Difficulte, string> = {
@@ -810,7 +810,7 @@ export function FichesPage() {
                                     checked={coche}
                                     disabled={disabled}
                                     onChange={() => toggleTheme(theme.theme_id)}
-                                    aria-label={theme.theme}
+                                    aria-label={capitaliserTheme(theme.theme)}
                                     className="peer sr-only"
                                   />
                                   <span
@@ -824,7 +824,7 @@ export function FichesPage() {
                                   >
                                     <Check className="size-3.5" strokeWidth={3} />
                                   </span>
-                                  <span className="min-w-0 flex-1">{theme.theme}</span>
+                                  <span className="min-w-0 flex-1">{capitaliserTheme(theme.theme)}</span>
                                   <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
                                     {disponible}
                                   </span>
@@ -1016,7 +1016,7 @@ export function FichesPage() {
                     <div className="flex flex-wrap gap-1.5 border-t border-border pt-3">
                       {selectedThemes.slice(0, 4).map((theme) => (
                         <Badge key={theme.theme_id} variant="secondary" className="max-w-full truncate font-normal">
-                          {theme.theme}
+                          {capitaliserTheme(theme.theme)}
                         </Badge>
                       ))}
                       {selectedThemes.length > 4 && (

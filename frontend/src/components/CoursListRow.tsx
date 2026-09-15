@@ -4,7 +4,7 @@ import { CheckCircle2, Clock, ListChecks, Lock, Unlock } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
 import { subjectIcon } from "@/lib/subjectIcon"
 
@@ -38,7 +38,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
         <div className="min-w-0 flex-1">
           <h3 className="truncate font-display text-sm font-medium">{cours.titre}</h3>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            {cours.sous_theme && <span className="truncate">{cours.sous_theme}</span>}
+            {cours.sous_theme && <span className="truncate">{capitaliserTheme(cours.sous_theme)}</span>}
             {cours.duree_estimee_min && (
               <span className="flex shrink-0 items-center gap-0.5">
                 <Clock className="size-3" />

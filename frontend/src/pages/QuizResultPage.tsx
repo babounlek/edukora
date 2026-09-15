@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useSeo } from "@/lib/seo"
+import { capitaliserTheme } from "@/lib/utils"
 
 export function QuizResultPage() {
   useSeo({ title: "Résultat du quiz" })
@@ -71,7 +72,7 @@ export function QuizResultPage() {
             <ul className="flex flex-col gap-3">
               {result.par_theme.map((theme) => (
                 <li key={theme.theme} className="flex items-center justify-between text-sm">
-                  <span>{theme.theme}</span>
+                  <span>{capitaliserTheme(theme.theme)}</span>
                   <span className="text-muted-foreground">
                     {theme.reussies} / {theme.total}
                   </span>

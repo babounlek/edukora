@@ -24,7 +24,7 @@ import { SEUIL_MAITRISE, tauxBarClassName } from "@/lib/maitrise"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { cn } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 
 type SavoirEnrichi = ParcoursSavoir & { moduleTitre: string }
 
@@ -196,7 +196,7 @@ function ActionsSavoir({
         <Button asChild size={size} variant={savoir.has_quiz ? "outline" : "default"}>
           <Link to={coursDetailPath(premierCours.slug)}>
             <BookOpenText />
-            {premierCours.sous_theme || "Lire le cours"}
+            {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : "Lire le cours"}
           </Link>
         </Button>
       )}
@@ -506,7 +506,7 @@ export function ParcoursSubjectPage() {
                           </div>
                           <p className="font-display font-medium">
                             {etapes.length > 1 && <span className="text-muted-foreground">{index + 1}. </span>}
-                            {etape.intitule}
+                            {capitaliserTheme(etape.intitule)}
                           </p>
                           <ActionsSavoir
                             savoir={etape}
@@ -571,7 +571,7 @@ export function ParcoursSubjectPage() {
                           <Etape
                             key={savoir.id}
                             numero={index + 1}
-                            titre={savoir.intitule}
+                            titre={capitaliserTheme(savoir.intitule)}
                             fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
                             inactif={!savoir.has_quiz && savoir.cours.length === 0}
                             // Repère or sur les étapes déjà en révision - distinct du bleu

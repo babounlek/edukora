@@ -6,6 +6,7 @@ import { getCours, previewCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cours, CoursPreview } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
+import { capitaliserTheme } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -27,7 +28,7 @@ export function CoursDetailPage() {
   useSeo({
     title: cours?.titre ?? "Cours",
     description: cours
-      ? `Cours de ${cours.subject.label}${cours.sous_theme ? ` - ${cours.sous_theme}` : ""} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.`
+      ? `Cours de ${cours.subject.label}${cours.sous_theme ? ` - ${capitaliserTheme(cours.sous_theme)}` : ""} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.`
       : undefined,
   })
 
@@ -105,7 +106,7 @@ export function CoursDetailPage() {
             ) : (
               <Badge variant="outline">Toutes séries</Badge>
             )}
-            {cours.sous_theme && <Badge variant="outline">{cours.sous_theme}</Badge>}
+            {cours.sous_theme && <Badge variant="outline">{capitaliserTheme(cours.sous_theme)}</Badge>}
             {cours.duree_estimee_min && <Badge variant="outline">{cours.duree_estimee_min} min</Badge>}
           </div>
         </div>
@@ -114,7 +115,7 @@ export function CoursDetailPage() {
           <div className="flex flex-wrap gap-1.5">
             {cours.tags.map((tag) => (
               <span key={tag.id} className="text-xs text-muted-foreground">
-                #{tag.name}
+                #{capitaliserTheme(tag.name)}
               </span>
             ))}
           </div>

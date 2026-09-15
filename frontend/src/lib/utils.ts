@@ -13,3 +13,15 @@ export function cn(...inputs: ClassValue[]) {
 export function formatAmount(amount: number): string {
   return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
 }
+
+/**
+ * Majuscule de première lettre pour l'affichage d'un nom de thème/tag - beaucoup
+ * viennent de l'ingestion sans casse normalisée (voir catalog.Tag.name, ex.
+ * "abscisse à l'origine", des milliers de tags en minuscules en base). Ne touche
+ * jamais au reste de la chaîne, qui peut porter un sigle (ADN, ARN, QCM...) qu'un
+ * toLowerCase() casserait. Purement un habillage d'affichage, jamais une correction
+ * des données.
+ */
+export function capitaliserTheme(texte: string): string {
+  return texte ? texte.charAt(0).toUpperCase() + texte.slice(1) : texte
+}

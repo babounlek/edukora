@@ -6,6 +6,7 @@ import type { Cours } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
 import { subjectIcon } from "@/lib/subjectIcon"
+import { capitaliserTheme } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -44,7 +45,7 @@ export function CoursCard({ cours, className, style }: CoursCardProps) {
           <div>
             <h3 className="line-clamp-2 font-display font-medium leading-snug">{cours.titre}</h3>
             {cours.sous_theme && (
-              <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{cours.sous_theme}</p>
+              <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{capitaliserTheme(cours.sous_theme)}</p>
             )}
           </div>
 
