@@ -807,9 +807,29 @@ def _get_or_create_tags(names):
         name = _strip_em_dash(name).strip()
         if not name:
             continue
-        tag, _ = Tag.objects.get_or_create(name=name)
-        tags.append(tag)
+        tags.append(_resolve_or_create_tag(name))
     return tags
+
+
+def _resolve_or_create_tag(name):
+    """
+    Correspondance exacte d'abord (Tag.name est sensible à la casse en base), repli
+    insensible à la casse ensuite - deux ingestions indépendantes qui recopient le
+    même thème avec une casse différente ("Alcanes" / "alcanes") ne doivent pas
+    créer deux Tag distincts pour la même notion (même pattern que
+    quiz.ingestion._resolve_theme, qui avait déjà ce repli).
+    """
+    try:
+        return Tag.objects.get(name=name)
+    except Tag.DoesNotExist:
+        pass
+    candidats = list(Tag.objects.filter(name__iexact=name))
+    if len(candidats) == 1:
+        return candidats[0]
+    if len(candidats) > 1:
+        raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
+    tag, _ = Tag.objects.get_or_create(name=name)
+    return tag
 
 
 def _format_alternatives(values, limit=25):
