@@ -62,16 +62,28 @@ function prochainesEtapes(savoirs: SavoirEnrichi[]): SavoirEnrichi[] | "diagnost
   return [...enRevision, ...nonMaitrises].slice(0, PROCHAINES_ETAPES_MAX)
 }
 
-/** Même histogramme de statuts que quiz.services.resume_parcours côté backend (voir
- * /parcours), recalculé ici sur les seuls savoirs de cette matière : un seul bucket
- * par savoir, dans le même ordre de priorité, pour que le récapitulatif de droite ne
- * raconte jamais une histoire différente de celle du tableau de bord. */
+type BucketSavoir = "maitrise" | "en_revision" | "a_decouvrir" | "sans_contenu"
+
+/** Classement d'un savoir en un seul bucket, priorité identique à
+ * quiz.services.resume_parcours côté backend - source unique de vérité pour
+ * compterBuckets (l'histogramme du bandeau) ET pour le filtre "Masquer maîtrisés/sans
+ * contenu" de la liste ci-dessous, pour que les deux racontent toujours la même
+ * histoire (un savoir compté "maîtrisé" en haut de page ne doit jamais apparaître
+ * "à réviser" dans la liste filtrée, ou inversement). */
+function bucketDeSavoir(s: ParcoursSavoir): BucketSavoir {
+  if (!s.has_quiz && s.cours.length === 0) return "sans_contenu"
+  if (s.taux !== null && s.taux >= SEUIL_MAITRISE) return "maitrise"
+  if (s.en_revision) return "en_revision"
+  return "a_decouvrir"
+}
+
 function compterBuckets(savoirs: SavoirEnrichi[]) {
   const buckets = { maitrises: 0, en_revision: 0, a_decouvrir: 0, sans_contenu: 0 }
   for (const s of savoirs) {
-    if (!s.has_quiz && s.cours.length === 0) buckets.sans_contenu++
-    else if (s.taux !== null && s.taux >= SEUIL_MAITRISE) buckets.maitrises++
-    else if (s.en_revision) buckets.en_revision++
+    const bucket = bucketDeSavoir(s)
+    if (bucket === "maitrise") buckets.maitrises++
+    else if (bucket === "sans_contenu") buckets.sans_contenu++
+    else if (bucket === "en_revision") buckets.en_revision++
     else buckets.a_decouvrir++
   }
   return buckets
@@ -185,6 +197,10 @@ export function ParcoursSubjectPage() {
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState(false)
   const [error, setError] = useState("")
   const [starting, setStarting] = useState(false)
+  // Replié par défaut : la promesse de la page est "ce qu'il te reste à travailler",
+  // pas un inventaire complet - masquer maîtrisés/sans contenu recentre la liste sans
+  // les faire disparaître pour de bon (voir bucketDeSavoir, le bouton juste en dessous).
+  const [afficherTout, setAfficherTout] = useState(false)
 
   useSeo({
     title: subjectLabel ? `Parcours ${subjectLabel}` : "Ton parcours",
@@ -496,7 +512,43 @@ export function ParcoursSubjectPage() {
               </Card>
             )}
 
-            {modules.map((module) => (
+            {buckets.maitrises + buckets.sans_contenu > 0 && (
+              <button
+                type="button"
+                onClick={() => setAfficherTout((v) => !v)}
+                className="self-start text-sm font-medium text-primary hover:underline"
+              >
+                {afficherTout
+                  ? "Masquer les savoirs maîtrisés et sans contenu"
+                  : `Afficher aussi les savoirs maîtrisés et sans contenu (${buckets.maitrises + buckets.sans_contenu})`}
+              </button>
+            )}
+
+            {!afficherTout && buckets.en_revision + buckets.a_decouvrir === 0 && savoirs.length > 0 && (
+              <Card>
+                <CardContent className="flex flex-col items-center gap-1 py-10 text-center">
+                  <CheckCircle2 className="size-6 text-success" />
+                  <p className="font-display font-medium">Tout est maîtrisé ou sans contenu pour l'instant</p>
+                  <p className="text-sm text-muted-foreground">
+                    Reviens plus tard, ou affiche le détail avec le bouton ci-dessus.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {modules.map((module) => {
+              // Masqués par défaut, jamais retirés pour de bon (voir bucketDeSavoir et
+              // le bouton juste au-dessus) : la promesse de la page est "ce qu'il te
+              // reste à travailler", pas un inventaire complet du programme.
+              const savoirsAffiches = afficherTout
+                ? module.savoirs
+                : module.savoirs.filter((s) => {
+                    const bucket = bucketDeSavoir(s)
+                    return bucket === "en_revision" || bucket === "a_decouvrir"
+                  })
+              if (savoirsAffiches.length === 0) return null
+
+              return (
               <Card key={module.numero} className="overflow-hidden">
                 <CardContent className="pt-6">
                   <p className="mb-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -506,14 +558,14 @@ export function ParcoursSubjectPage() {
                     {module.numero ? `Module ${module.numero} · ${module.titre}` : module.titre}
                   </p>
                   <div>
-                    {module.savoirs.map((savoir, index) => (
+                    {savoirsAffiches.map((savoir, index) => (
                       <Etape
                         key={savoir.id}
                         numero={index + 1}
                         titre={savoir.intitule}
                         fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
                         inactif={!savoir.has_quiz && savoir.cours.length === 0}
-                        dernier={index === module.savoirs.length - 1}
+                        dernier={index === savoirsAffiches.length - 1}
                       >
                         <div className="flex flex-wrap items-center gap-2">
                           <BadgeSavoir savoir={savoir} />
@@ -538,7 +590,8 @@ export function ParcoursSubjectPage() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
