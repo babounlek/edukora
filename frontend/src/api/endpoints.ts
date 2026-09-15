@@ -24,6 +24,7 @@ import type {
   Plan,
   Progression,
   QuizCorrige,
+  QuizFichePdfStatus,
   QuizQuestion,
   QuizResult,
   QuizSession,
@@ -32,6 +33,7 @@ import type {
   Subject,
   Subscription,
   Temoignage,
+  ThemeExercicesResponse,
   ThemesFrequentsResponse,
   TentativeInedite,
   TentativeInediteCorrige,
@@ -203,6 +205,18 @@ export interface CoursFilters {
   search?: string
   page?: number
   exclude_read?: boolean
+  // Fait remonter les cours de ce sous-thème sans exclure le reste (voir
+  // catalog.views.CoursListView) - utilisé par RelatedCours pour prioriser les
+  // suggestions sur le même sous-thème que le cours consulté.
+  sous_theme_prioritaire?: string
+  // Restreint aux cours rattachés à ce Savoir officiel (programme.Savoir.id, voir
+  // catalog.views.CoursListView) - utilisé par /parcours pour "voir tous les cours"
+  // d'un savoir au-delà du plafond d'affichage de la page.
+  savoir?: number
+  // Pendant de `savoir` ci-dessus pour les matières en mode Parcours par fréquence
+  // (voir ParcoursSavoir.theme_id) - restreint directement sur le Tag (catalog.Tag.id),
+  // sans passer par Tag.savoir_officiel. Les deux sont mutuellement exclusifs.
+  theme?: number
 }
 
 export function listCours(filters: CoursFilters = {}, signal?: AbortSignal) {
@@ -250,6 +264,15 @@ export function getThemesFrequents(cursusId: number, subjectId: string, signal?:
   // expirée" - même motif que readEpreuve/readCours.
   return apiRequest<ThemesFrequentsResponse>(
     `/catalog/cursus/${cursusId}/themes-frequents/?subject=${subjectId}`,
+    { auth: "optional", signal },
+  )
+}
+
+export function getThemeExercices(cursusId: number, tagId: number, subjectId: string, signal?: AbortSignal) {
+  // "optional" : chaque exercice porte son propre has_access (voir ThemeExercice) -
+  // même motif que getThemesFrequents, un visiteur anonyme voit la liste normalement.
+  return apiRequest<ThemeExercicesResponse>(
+    `/catalog/cursus/${cursusId}/themes-frequents/${tagId}/exercices/?subject=${subjectId}`,
     { auth: "optional", signal },
   )
 }
@@ -366,6 +389,21 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
 
 export function completeQuizSession(sessionId: number) {
   return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
+}
+
+export function requestQuizFichePdf(sessionId: number) {
+  return apiRequest<QuizFichePdfStatus>(`/quiz/sessions/${sessionId}/fiche-pdf/`, { method: "POST" })
+}
+
+export function getQuizFichePdfStatus(sessionId: number) {
+  return apiRequest<QuizFichePdfStatus>(`/quiz/sessions/${sessionId}/fiche-pdf/`)
+}
+
+export function downloadQuizFichePdf(sessionId: number) {
+  return openPdfInNewTab(
+    `${API_BASE_URL}/quiz/sessions/${sessionId}/fiche-pdf/download/`,
+    "Impossible d'ouvrir la fiche pour le moment.",
+  )
 }
 
 export function listQuizSubjects(cursus: number) {

@@ -570,15 +570,25 @@ export interface QuizThemeScore {
 
 export interface QuizResult {
   id: number
+  cursus: number
+  subject: number | null
   total_questions: number
   questions_repondues: number
   score: number
   par_theme: QuizThemeScore[]
 }
 
+export interface QuizFichePdfStatus {
+  statut: "" | "EN_COURS" | "PRETE" | "ECHEC"
+  disponible: boolean
+}
+
 export interface ParcoursCours {
   slug: string
   titre: string
+  // Court, curaté pour l'affichage (voir catalog.Cours.sous_theme) - typiquement
+  // plus lisible en libellé de bouton que `titre`, qui peut être une phrase entière.
+  sous_theme: string
 }
 
 export interface ParcoursSavoir {
@@ -591,7 +601,21 @@ export interface ParcoursSavoir {
   en_revision: boolean
   a_lu_le_cours: boolean
   has_quiz: boolean
-  cours: ParcoursCours | null
+  // Plusieurs cours peuvent couvrir un même savoir (voir
+  // quiz.services.PARCOURS_COURS_PAR_SAVOIR_MAX côté backend) - tableau plutôt
+  // qu'un cours unique, potentiellement vide plutôt que null.
+  cours: ParcoursCours[]
+  // Présent (= id d'un catalog.Tag) uniquement pour les matières en mode Parcours
+  // par fréquence (voir quiz.services.SUBJECTS_PARCOURS_PAR_FREQUENCE côté
+  // backend) - absent/null pour le Module→Savoir classique, où `id` désigne un
+  // programme.Savoir. Distingue laquelle des deux sémantiques `id` porte ici :
+  // /quiz/sessions/ et /catalog/cours/ n'acceptent pas le même paramètre selon le
+  // cas (theme= vs savoir=).
+  theme_id?: number | null
+  // Additifs, présents seulement en mode fréquence - voir la même docstring.
+  savoir_label?: string | null
+  nb_epreuves?: number
+  frequence_pct?: number
 }
 
 export interface ParcoursModule {

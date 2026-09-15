@@ -32,18 +32,23 @@ from rest_framework.test import APIClient
 from access.models import LectureProgress
 from catalog.ingestion import IngestionError
 from catalog.models import (
-    Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Question, Series, StatutContenu,
-    Subject, Tag, TypeReponse,
+    Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Origine, Question, RappelDeMethode,
+    Series, StatutContenu, Subject, Tag, TypeReponse,
 )
 from programme.models import Module, Savoir
 from subscriptions.models import Subscription
 from users.models import User
 
 from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
-from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule
+from .models import (
+    CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule, StatutFichePdf,
+)
 from .services import (
-    LEITNER_INTERVALS_JOURS, _poids_par_theme, construire_parcours, enregistrer_resultat_pour_revision,
-    generer_session, maitrise_par_savoir, maitrise_par_theme, resume_parcours, revisions_dues,
+    LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX, PARCOURS_FREQUENCE_OCCURRENCES_MIN,
+    SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE, TAGS_ALIAS_PARCOURS_FREQUENCE,
+    TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours, construire_parcours_par_frequence,
+    enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, maitrise_par_theme, resume_parcours,
+    revisions_dues,
 )
 from .views import _clean_quiz_markdown, _question_payload
 
@@ -90,6 +95,22 @@ def _make_cours(subject, cursus=None, tags=(), titre="Cours", external_id="cours
     if tags:
         cours.tags.add(*tags)
     return cours
+
+
+def _make_lesson_avec_themes(subject, cursus, title, themes_par_question):
+    """Fixture Lesson OFFICIEL/VALIDE avec un Exercise et une Question par groupe de
+    tags de `themes_par_question` (une liste de listes de Tag) - sert à peupler le
+    corpus qu'interroge construire_parcours_par_frequence (agrégation par ÉPREUVE,
+    voir sa docstring)."""
+    lesson = Lesson.objects.create(
+        title=title, subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        origine=Origine.OFFICIEL,
+    )
+    lesson.cursus.add(cursus)
+    for numero, tags in enumerate(themes_par_question, start=1):
+        question = _make_question(lesson, str(numero))
+        question.themes.add(*tags)
+    return lesson
 
 
 def _item_payload(theme="dérivation", **overrides):
@@ -1231,6 +1252,87 @@ class QuizApiTests(TestCase):
         self.assertEqual(response.data["par_theme"], [{"theme": "dérivation", "total": 1, "reussies": 1}])
         self.assertIsNotNone(QuizSession.objects.get(pk=session_id).completed_at)
 
+    def _completed_session_id(self):
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+        return session_id
+
+    @patch("quiz.views.queue_quiz_fiche_pdf_generation")
+    def test_fiche_pdf_requires_completed_session(self, mock_queue):
+        # Génération réservée à une session déjà terminée - voir la docstring de
+        # quiz.views.quiz_fiche_pdf (le contenu d'une session en cours peut encore
+        # changer, une fiche générée trop tôt figerait des réponses non encore données).
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+
+        response = self.client.post(f"/quiz/sessions/{start.data['id']}/fiche-pdf/")
+
+        self.assertEqual(response.status_code, 400)
+        mock_queue.assert_not_called()
+
+    @patch("quiz.views.queue_quiz_fiche_pdf_generation")
+    def test_fiche_pdf_denied_without_active_subscription(self, mock_queue):
+        # Revérifié à chaque appel (pas seulement au moment du quiz) : l'abonnement a pu
+        # expirer depuis - voir _has_active_subscription.
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        session_id = self._completed_session_id()
+        Subscription.objects.filter(user=self.user, cursus=self.cursus).delete()
+
+        response = self.client.post(f"/quiz/sessions/{session_id}/fiche-pdf/")
+
+        self.assertEqual(response.status_code, 403)
+        mock_queue.assert_not_called()
+
+    @patch("quiz.views.queue_quiz_fiche_pdf_generation")
+    def test_fiche_pdf_post_queues_generation_once(self, mock_queue):
+        # Un deuxième POST pendant que la génération tourne déjà ne doit pas relancer un
+        # second processus détaché - voir la docstring de quiz_fiche_pdf.
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        session_id = self._completed_session_id()
+
+        first = self.client.post(f"/quiz/sessions/{session_id}/fiche-pdf/")
+        second = self.client.post(f"/quiz/sessions/{session_id}/fiche-pdf/")
+
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(first.data, {"statut": StatutFichePdf.EN_COURS, "disponible": False})
+        self.assertEqual(second.data["statut"], StatutFichePdf.EN_COURS)
+        mock_queue.assert_called_once_with(session_id)
+
+    def test_fiche_pdf_get_polls_without_triggering_generation(self):
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        session_id = self._completed_session_id()
+
+        response = self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {"statut": "", "disponible": False})
+        self.assertEqual(QuizSession.objects.get(pk=session_id).fiche_pdf_statut, "")
+
+    def test_download_fiche_pdf_not_yet_generated(self):
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        session_id = self._completed_session_id()
+
+        response = self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/download/")
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_fiche_pdf_endpoints_denied_for_another_users_session(self):
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        session_id = self._completed_session_id()
+
+        other_user = User.objects.create_user(phone_number="677200005", password="x")
+        self.client.force_authenticate(user=other_user)
+
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/").status_code, 404)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/download/").status_code, 404)
+
 
 class EnregistrerResultatPourRevisionTests(TestCase):
     """quiz.services.enregistrer_resultat_pour_revision - moteur de la file de révision
@@ -1640,7 +1742,7 @@ class ConstruireParcoursTests(TestCase):
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual(savoir_payload["taux"], None)
         self.assertFalse(savoir_payload["has_quiz"])
-        self.assertIsNone(savoir_payload["cours"])
+        self.assertEqual(savoir_payload["cours"], [])
 
     def test_taux_reflects_real_answers(self):
         theme = Tag.objects.create(name="premier-savoir-theme", savoir_officiel=self.savoir_1a)
@@ -1674,7 +1776,9 @@ class ConstruireParcoursTests(TestCase):
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertTrue(savoir_payload["a_lu_le_cours"])
-        self.assertEqual(savoir_payload["cours"], {"slug": cours.slug, "titre": cours.titre})
+        self.assertEqual(
+            savoir_payload["cours"], [{"slug": cours.slug, "titre": cours.titre, "sous_theme": cours.sous_theme}],
+        )
 
     def test_cours_found_through_a_different_tag_sharing_the_savoir(self):
         # Même situation réelle que quiz.views._cours_pour_competence (niveau 2) :
@@ -1687,7 +1791,251 @@ class ConstruireParcoursTests(TestCase):
         parcours = construire_parcours(self.user, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
-        self.assertEqual(savoir_payload["cours"], {"slug": cours.slug, "titre": cours.titre})
+        self.assertEqual(
+            savoir_payload["cours"], [{"slug": cours.slug, "titre": cours.titre, "sous_theme": cours.sous_theme}],
+        )
+
+    def test_returns_several_distinct_cours_for_the_same_savoir(self):
+        # L'assimilation d'un savoir peut demander plus d'une leçon (voir sa
+        # docstring) - contrairement à l'ancien comportement qui n'exposait que le
+        # premier Cours trouvé, .first() sur un queryset par ailleurs souvent
+        # multi-résultats (un Tag est partagé par plusieurs Cours).
+        theme = Tag.objects.create(name="theme-plusieurs-cours", savoir_officiel=self.savoir_1a)
+        cours_a = _make_cours(
+            self.subject, cursus=self.cursus, tags=[theme], titre="Cours A", external_id="cours-a",
+        )
+        cours_b = _make_cours(
+            self.subject, cursus=self.cursus, tags=[theme], titre="Cours B", external_id="cours-b",
+        )
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertEqual([c["slug"] for c in savoir_payload["cours"]], [cours_a.slug, cours_b.slug])
+
+    def test_caps_cours_at_parcours_cours_par_savoir_max(self):
+        theme = Tag.objects.create(name="theme-beaucoup-de-cours", savoir_officiel=self.savoir_1a)
+        for i in range(PARCOURS_COURS_PAR_SAVOIR_MAX + 2):
+            _make_cours(
+                self.subject, cursus=self.cursus, tags=[theme], titre=f"Cours {i}", external_id=f"cours-cap-{i}",
+            )
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        self.assertEqual(len(savoir_payload["cours"]), PARCOURS_COURS_PAR_SAVOIR_MAX)
+
+    def test_deduplicates_cours_sharing_the_same_sous_theme(self):
+        # Deux Cours distincts peuvent légitimement partager le même sous_theme (ex.
+        # deux exercices différents sur "Nombres complexes - similitudes") - les
+        # afficher tous les deux produirait deux boutons visuellement identiques
+        # mais menant à des pages différentes, plutôt qu'un choix utile.
+        theme = Tag.objects.create(name="theme-sous-themes-partages", savoir_officiel=self.savoir_1a)
+        doublon_1 = _make_cours(
+            self.subject, cursus=self.cursus, tags=[theme], titre="Doublon 1", external_id="cours-doublon-1",
+            sous_theme="Même sous-thème",
+        )
+        _make_cours(
+            self.subject, cursus=self.cursus, tags=[theme], titre="Doublon 2", external_id="cours-doublon-2",
+            sous_theme="Même sous-thème",
+        )
+        autre = _make_cours(
+            self.subject, cursus=self.cursus, tags=[theme], titre="Autre", external_id="cours-autre",
+            sous_theme="Sous-thème distinct",
+        )
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        savoir_payload = parcours[0]["savoirs"][0]
+        # Le premier des deux doublons (ordre par id) est gardé, le second exclu -
+        # l'espace libéré profite à "autre", pas gaspillé sur un libellé répété.
+        self.assertEqual([c["slug"] for c in savoir_payload["cours"]], [doublon_1.slug, autre.slug])
+
+
+class ConstruireParcoursParFrequenceTests(TestCase):
+    """quiz.services.construire_parcours_par_frequence - classement des thèmes réels
+    par fréquence d'examen, qui remplace le Module→Savoir pour
+    SUBJECTS_PARCOURS_PAR_FREQUENCE (voir
+    project_parcours_par_frequence_conception_2026_09_14)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200023", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+
+    def test_below_reliability_floor_returns_none(self):
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+            tag = Tag.objects.create(name=f"theme-{i}")
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+
+        self.assertIsNone(construire_parcours_par_frequence(self.user, self.cursus, self.subject))
+
+    def test_ranks_themes_by_number_of_distinct_lessons(self):
+        frequent = Tag.objects.create(name="frequent")
+        rare = Tag.objects.create(name="rare")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            themes = [frequent, rare] if i < 2 else [frequent]
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [themes])
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertEqual(themes[0]["intitule"], "frequent")
+        self.assertEqual(themes[0]["nb_epreuves"], SEUIL_MINIMUM_THEMES_PARCOURS)
+        self.assertEqual(themes[0]["frequence_pct"], 100)
+        self.assertEqual(themes[1]["intitule"], "rare")
+        self.assertEqual(themes[1]["nb_epreuves"], 2)
+
+    def test_merges_known_alias_variants_into_a_single_theme(self):
+        variante, canonique = next(iter(TAGS_ALIAS_PARCOURS_FREQUENCE.items()))
+        tag_canonique = Tag.objects.create(name=canonique)
+        tag_variante = Tag.objects.create(name=variante)
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            tag = tag_canonique if i % 2 == 0 else tag_variante
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        noms = [t["intitule"] for t in themes]
+        self.assertEqual(noms.count(canonique), 1)
+        self.assertNotIn(variante, noms)
+        self.assertEqual(themes[0]["nb_epreuves"], SEUIL_MINIMUM_THEMES_PARCOURS)
+
+    def test_a_lesson_mobilizing_both_alias_variants_counts_once(self):
+        variante, canonique = next(iter(TAGS_ALIAS_PARCOURS_FREQUENCE.items()))
+        tag_canonique = Tag.objects.create(name=canonique)
+        tag_variante = Tag.objects.create(name=variante)
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag_canonique, tag_variante]])
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        # Union, jamais la somme (voir la docstring) : sinon la fréquence dépasserait
+        # nb_sessions_disponibles, un non-sens pour un frequence_pct.
+        self.assertEqual(themes[0]["nb_epreuves"], SEUIL_MINIMUM_THEMES_PARCOURS)
+        self.assertEqual(themes[0]["frequence_pct"], 100)
+
+    def test_excludes_blocklisted_junk_tags(self):
+        junk_name = next(iter(TAGS_BLOCKLIST_PARCOURS_FREQUENCE))
+        junk = Tag.objects.create(name=junk_name)
+        real = Tag.objects.create(name="notion-reelle")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[junk, real]])
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertNotIn(junk_name, [t["intitule"] for t in themes])
+
+    def test_excludes_themes_below_occurrences_min(self):
+        singleton = Tag.objects.create(name="une-seule-fois")
+        recurrent = Tag.objects.create(name="recurrent")
+        _make_lesson_avec_themes(self.subject, self.cursus, "Lesson 0", [[singleton, recurrent]])
+        for i in range(1, SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[recurrent]])
+        self.assertEqual(PARCOURS_FREQUENCE_OCCURRENCES_MIN, 2)
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertNotIn("une-seule-fois", [t["intitule"] for t in themes])
+        self.assertIn("recurrent", [t["intitule"] for t in themes])
+
+    def test_savoir_label_is_the_dominant_savoir_officiel_among_its_questions(self):
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="M")
+        savoir_majoritaire = Savoir.objects.create(module=module, numero="I", intitule="Savoir majoritaire")
+        savoir_minoritaire = Savoir.objects.create(module=module, numero="II", intitule="Savoir minoritaire")
+        tag = Tag.objects.create(name="theme-avec-savoir")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            lesson = _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+            question = lesson.exercises.get().questions.get()
+            question.savoir_officiel = savoir_majoritaire if i < 6 else savoir_minoritaire
+            question.save()
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertEqual(themes[0]["savoir_label"], "Savoir majoritaire")
+
+    def test_theme_without_any_savoir_officiel_still_appears_unlabelled(self):
+        # Le point même de cette conception (voir sa docstring) : un thème hors
+        # référentiel (ex. calorimétrie) reste affiché sans étiquette plutôt que
+        # d'être exclu.
+        tag = Tag.objects.create(name="theme-hors-referentiel")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertEqual(themes[0]["intitule"], "theme-hors-referentiel")
+        self.assertIsNone(themes[0]["savoir_label"])
+
+    def test_theme_to_quiz_is_direct_via_competence_item(self):
+        tag = Tag.objects.create(name="theme-avec-quiz")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+        _make_competence_item(self.subject, self.cursus, theme=tag, numero="1")
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertTrue(themes[0]["has_quiz"])
+
+    def test_theme_to_cours_follows_rappel_de_methode_lineage_not_cours_cursus(self):
+        # Cours.cursus est vide en pratique (voir la conception) - le vrai signal est
+        # la lignée Cours←RappelDeMethode←Exercise←Lesson.cursus.
+        tag = Tag.objects.create(name="theme-avec-cours")
+        lesson = None
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            lesson = _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+        cours = _make_cours(self.subject, tags=[tag], titre="Le cours du thème")
+        exercise = lesson.exercises.get()
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-theme-avec-cours", competence="x", contenu_markdown="x", cours=cours,
+        )
+
+        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+
+        self.assertEqual(
+            themes[0]["cours"], [{"slug": cours.slug, "titre": cours.titre, "sous_theme": cours.sous_theme}],
+        )
+
+    def test_other_subjects_are_untouched(self):
+        self.assertNotIn("FRANCAIS", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+
+
+class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
+    """construire_parcours doit basculer en mode fréquence pour
+    SUBJECTS_PARCOURS_PAR_FREQUENCE quand le corpus est assez fourni, tout en restant
+    consommable par resume_parcours sans changement (voir sa docstring)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200024", password="x")
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="M")
+        module.cursus.add(self.cursus)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_falls_back_to_module_savoir_below_the_reliability_floor(self):
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        self.assertEqual(parcours[0]["titre"], "M")
+
+    def test_switches_to_frequence_mode_once_reliable(self):
+        tag = Tag.objects.create(name="theme-frequent")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+
+        parcours = construire_parcours(self.user, self.cursus, self.subject)
+
+        self.assertEqual(len(parcours), 1)
+        self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "theme-frequent")
+
+    def test_resume_parcours_still_works_in_frequence_mode(self):
+        tag = Tag.objects.create(name="theme-frequent")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
+
+        resume = resume_parcours(self.user, self.cursus)
+
+        matiere = next(r for r in resume if r["subject_id"] == self.subject.id)
+        self.assertEqual(matiere["total"], 1)
 
 
 class ParcoursApiTests(TestCase):

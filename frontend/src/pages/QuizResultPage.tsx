@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { Trophy } from "lucide-react"
+import { Download, Loader2, Trophy } from "lucide-react"
 
-import { completeQuizSession } from "@/api/endpoints"
+import { completeQuizSession, downloadQuizFichePdf, getQuizFichePdfStatus, requestQuizFichePdf } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { QuizResult } from "@/api/types"
+import type { QuizFichePdfStatus, QuizResult } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useSeo } from "@/lib/seo"
+
+// Même intervalle que FichesPage.tsx (POLL_INTERVAL_MS), même raison : la génération
+// tourne hors ligne (voir quiz.pdf, jamais dans le thread de la requête HTTP), il faut
+// donc interroger le statut jusqu'à ce qu'elle soit prête.
+const FICHE_PDF_POLL_INTERVAL_MS = 2500
 
 export function QuizResultPage() {
   useSeo({ title: "Résultat du quiz" })
@@ -17,6 +22,9 @@ export function QuizResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<QuizResult | null>(null)
   const [error, setError] = useState("")
+  const [fichePdfStatut, setFichePdfStatut] = useState<QuizFichePdfStatus["statut"] | null>(null)
+  const [fichePdfError, setFichePdfError] = useState("")
+  const pollRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (!id) return
@@ -28,6 +36,49 @@ export function QuizResultPage() {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce résultat.")
       })
   }, [id])
+
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) window.clearInterval(pollRef.current)
+    }
+  }, [])
+
+  function pollFichePdf(sessionId: number) {
+    if (pollRef.current) window.clearInterval(pollRef.current)
+    pollRef.current = window.setInterval(async () => {
+      try {
+        const status = await getQuizFichePdfStatus(sessionId)
+        if (status.statut !== "EN_COURS") {
+          if (pollRef.current) window.clearInterval(pollRef.current)
+          setFichePdfStatut(status.statut)
+        }
+      } catch {
+        // une erreur ponctuelle du réseau ne doit pas interrompre l'attente
+      }
+    }, FICHE_PDF_POLL_INTERVAL_MS)
+  }
+
+  async function handleGenererFichePdf() {
+    if (!id) return
+    setFichePdfError("")
+    try {
+      const status = await requestQuizFichePdf(Number(id))
+      setFichePdfStatut(status.statut)
+      if (status.statut === "EN_COURS") pollFichePdf(Number(id))
+    } catch (err) {
+      setFichePdfStatut(null)
+      setFichePdfError(err instanceof ApiError ? err.message : "Impossible de générer la fiche pour le moment.")
+    }
+  }
+
+  async function handleTelechargerFichePdf() {
+    if (!id) return
+    try {
+      await downloadQuizFichePdf(Number(id))
+    } catch {
+      setFichePdfError("Impossible d'ouvrir la fiche pour le moment.")
+    }
+  }
 
   if (error) {
     return (
@@ -81,10 +132,42 @@ export function QuizResultPage() {
         </Card>
       )}
 
+      <div className="mb-6 flex flex-col items-center gap-2 text-center">
+        {fichePdfStatut === "PRETE" ? (
+          <Button variant="outline" onClick={handleTelechargerFichePdf}>
+            <Download className="mr-2 size-4" />
+            Ouvrir la fiche PDF
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={handleGenererFichePdf} disabled={fichePdfStatut === "EN_COURS"}>
+            {fichePdfStatut === "EN_COURS" ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Préparation de la fiche...
+              </>
+            ) : (
+              <>
+                <Download className="mr-2 size-4" />
+                Télécharger la fiche PDF
+              </>
+            )}
+          </Button>
+        )}
+        {fichePdfStatut === "ECHEC" && (
+          <p className="text-sm text-destructive">La génération a échoué, réessaie dans un instant.</p>
+        )}
+        {fichePdfError && <p className="text-sm text-destructive">{fichePdfError}</p>}
+      </div>
+
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button onClick={() => navigate("/quiz")} className="flex-1" size="lg">
           Refaire un quiz
         </Button>
+        {result.subject && (
+          <Button asChild variant="outline" className="flex-1" size="lg">
+            <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>Retour au parcours</Link>
+          </Button>
+        )}
         <Button asChild variant="outline" className="flex-1" size="lg">
           <Link to="/compte">Mon compte</Link>
         </Button>

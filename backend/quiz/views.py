@@ -1,6 +1,7 @@
 import re
 
 from django.db.models import Q
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.decorators import api_view
@@ -12,11 +13,19 @@ from catalog.serializers import CoursSummarySerializer, SubjectSerializer
 from programme.models import Savoir
 from subscriptions.models import Subscription
 
-from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare
+from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, StatutFichePdf
+from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     construire_parcours, enregistrer_resultat_pour_revision, generer_session, maitrise_par_theme, resume_parcours,
     revisions_dues,
 )
+
+
+def _has_active_subscription(user, cursus):
+    """Même vérification que start_session (voir sa docstring) - revérifiée à chaque
+    téléchargement de fiche PDF puisqu'un abonnement peut avoir expiré depuis la fin
+    du quiz, même principe que inedit.views.download_sujet_pdf."""
+    return Subscription.objects.filter(user=user, cursus=cursus, expires_at__gt=timezone.now()).exists()
 
 
 def _get_answer(quiz_question):
@@ -251,6 +260,8 @@ def _resultat_payload(session):
 
     return {
         "id": session.id,
+        "cursus": session.cursus_id,
+        "subject": session.subject_id,
         "total_questions": quiz_questions.count(),
         "questions_repondues": repondues,
         "score": reussies,
@@ -273,9 +284,7 @@ def start_session(request):
         # refuse pas juste l'accès (voir catalog.models.VisibleQuerySet).
         return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
 
-    if not Subscription.objects.filter(
-        user=request.user, cursus=cursus, expires_at__gt=timezone.now(),
-    ).exists():
+    if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     mode = request.data.get("mode") or ModeQuiz.PRATIQUE
@@ -372,6 +381,50 @@ def complete_session(request, session_id):
         session.completed_at = timezone.now()
         session.save(update_fields=["completed_at"])
     return Response(_resultat_payload(session))
+
+
+def _fiche_pdf_payload(session):
+    return {"statut": session.fiche_pdf_statut, "disponible": bool(session.fiche_pdf)}
+
+
+@api_view(["GET", "POST"])
+def quiz_fiche_pdf(request, session_id):
+    """
+    Fiche PDF (énoncés+corrigé) d'une QuizSession terminée - réservée aux abonnés actifs
+    sur le cursus de la session, revérifié à CHAQUE appel (l'abonnement peut avoir expiré
+    depuis la fin du quiz, voir _has_active_subscription). POST déclenche la génération en
+    arrière-plan (no-op si déjà en cours ou déjà prête - le contenu d'une session terminée
+    ne change plus, jamais besoin de régénérer) ; GET sert au poll pendant que le PDF se
+    génère hors ligne (voir quiz.pdf, jamais dans le thread de cette requête). Même
+    couple GET/POST que fiches.views.create_fiche + fiche_detail, fusionné ici en une
+    seule vue car les deux portent sur la même ressource (LA fiche de CETTE session, pas
+    une collection).
+    """
+    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    if not session.completed_at:
+        return Response({"error": "Le quiz doit être terminé avant de générer une fiche."}, status=400)
+    if not _has_active_subscription(request.user, session.cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    if request.method == "POST" and session.fiche_pdf_statut not in (StatutFichePdf.EN_COURS, StatutFichePdf.PRETE):
+        session.fiche_pdf_statut = StatutFichePdf.EN_COURS
+        session.save(update_fields=["fiche_pdf_statut"])
+        queue_quiz_fiche_pdf_generation(session.id)
+
+    return Response(_fiche_pdf_payload(session))
+
+
+@api_view(["GET"])
+def download_quiz_fiche_pdf(request, session_id):
+    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    if not _has_active_subscription(request.user, session.cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+    if not session.fiche_pdf:
+        return Response({"error": "PDF pas encore généré."}, status=404)
+    return FileResponse(
+        session.fiche_pdf.open("rb"), as_attachment=False,
+        filename=f"quiz-{session.pk}-fiche.pdf", content_type="application/pdf",
+    )
 
 
 @api_view(["GET"])

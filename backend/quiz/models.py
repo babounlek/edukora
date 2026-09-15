@@ -2,10 +2,36 @@ from django.db import models
 
 from catalog.models import Difficulte, StatutContenu, TypeReponse
 
+from .storage import protected_storage
+
+
+def _fiche_pdf_upload_to(session, filename):
+    # Préfixé par le code pays puis l'utilisateur - même convention que les autres
+    # storages de PDF privés du projet (voir fiches.models._sujet_pdf_upload_to,
+    # inedit.models._sujet_pdf_upload_to) : sans lui, deux élèves de pays différents
+    # dont les sessions partageraient un même id (impossible ici, id auto-incrémenté
+    # global, mais la convention reste appliquée pour rester cohérent avec ces deux
+    # autres apps) pourraient collider.
+    return f"{session.cursus.country.code.lower()}/{session.user_id}/session-{session.pk}-fiche.pdf"
+
 
 class ModeQuiz(models.TextChoices):
     PRATIQUE = "PRATIQUE", "Pratique libre"
     DIAGNOSTIC = "DIAGNOSTIC", "Test de niveau"
+
+
+class StatutFichePdf(models.TextChoices):
+    """
+    Cycle de vie de la génération PDF de la fiche d'une QuizSession - même patron que
+    fiches.models.StatutGeneration (voir sa docstring), décliné ici pour une ressource
+    créée à la demande de l'élève lui-même APRÈS coup (la QuizSession existe déjà bien
+    avant qu'une fiche ne soit jamais demandée), d'où l'absence de valeur par défaut :
+    QuizSession.fiche_pdf_statut reste vide tant qu'aucune génération n'a été demandée.
+    """
+
+    EN_COURS = "EN_COURS", "Génération en cours"
+    PRETE = "PRETE", "Prête"
+    ECHEC = "ECHEC", "Échec"
 
 
 class ResultatDeclare(models.TextChoices):
@@ -108,6 +134,15 @@ class QuizSession(models.Model):
     mode = models.CharField(max_length=10, choices=ModeQuiz.choices)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
+
+    fiche_pdf_statut = models.CharField(
+        max_length=10, choices=StatutFichePdf.choices, blank=True,
+        help_text="Vide tant qu'aucune fiche PDF n'a été demandée - voir StatutFichePdf.",
+    )
+    fiche_pdf = models.FileField(
+        storage=protected_storage, upload_to=_fiche_pdf_upload_to, blank=True,
+        help_text="Énoncés + corrigé de cette session, générés à la demande - voir quiz.pdf.",
+    )
 
     class Meta:
         ordering = ["-started_at"]

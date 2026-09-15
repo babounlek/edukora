@@ -358,6 +358,15 @@ if SPACES_BUCKET:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {"default_acl": "private", "querystring_auth": True},
         },
+        # Fiche PDF (énoncés+corrigé) d'une QuizSession terminée (voir quiz/pdf.py) -
+        # même raisonnement que "fiches_protected" ci-dessus : réservée à l'abonné qui a
+        # passé ce quiz, jamais public-read. Emplacement dédié plutôt que de réutiliser
+        # "fiches_protected" : cette fiche est propre à la tentative d'un élève, sans
+        # rapport avec l'outil Fiches du répétiteur.
+        "quiz_protected": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {"default_acl": "private", "querystring_auth": True},
+        },
     }
 else:
     STORAGES = {
@@ -372,6 +381,10 @@ else:
         "fiches_protected": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "fiches")},
+        },
+        "quiz_protected": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "quiz")},
         },
     }
 
