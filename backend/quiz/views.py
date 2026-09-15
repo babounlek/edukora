@@ -395,19 +395,20 @@ def _fiche_pdf_payload(session):
 def quiz_fiche_pdf(request, session_id):
     """
     Statut des deux PDF (Fiche = énoncés seuls, Correction = énoncés+corrigé) d'une
-    QuizSession terminée - réservée aux abonnés actifs sur le cursus de la session,
-    revérifié à CHAQUE appel (l'abonnement peut avoir expiré depuis la fin du quiz, voir
-    _has_active_subscription). POST déclenche la génération des deux en arrière-plan
-    (no-op si déjà en cours ou déjà prête - le contenu d'une session terminée ne change
-    plus, jamais besoin de régénérer) ; GET sert au poll pendant qu'ils se génèrent hors
-    ligne (voir quiz.pdf, jamais dans le thread de cette requête). Même couple GET/POST
-    que fiches.views.create_fiche + fiche_detail, fusionné ici en une seule vue car les
-    deux portent sur la même ressource (LA paire de PDF de CETTE session, pas une
-    collection).
+    QuizSession - réservée aux abonnés actifs sur le cursus de la session, revérifié à
+    CHAQUE appel (l'abonnement peut avoir expiré depuis, voir _has_active_subscription).
+    Disponible dès le début de la session, pas seulement une fois terminée : le tirage
+    des QuizQuestion est figé à la création (voir QuizQuestion, "jamais modifiée après
+    création"), donc le contenu des deux PDF ne dépend pas de l'avancement de l'élève -
+    rien n'empêche de les vouloir imprimer avant même d'avoir répondu à la première
+    question. POST déclenche la génération des deux en arrière-plan (no-op si déjà en
+    cours ou déjà prête - le contenu ne change jamais après le tirage initial, jamais
+    besoin de régénérer) ; GET sert au poll pendant qu'ils se génèrent hors ligne (voir
+    quiz.pdf, jamais dans le thread de cette requête). Même couple GET/POST que
+    fiches.views.create_fiche + fiche_detail, fusionné ici en une seule vue car les deux
+    portent sur la même ressource (LA paire de PDF de CETTE session, pas une collection).
     """
     session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
-    if not session.completed_at:
-        return Response({"error": "Le quiz doit être terminé avant de générer une fiche."}, status=400)
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 

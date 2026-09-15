@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
+import rehypeRaw from "rehype-raw"
 import { ArrowLeft, BookOpenText, Check, X } from "lucide-react"
 
 import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
@@ -12,6 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
@@ -21,7 +23,7 @@ function ChoixText({ texte }: { texte: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkMath]}
-      rehypePlugins={[rehypeKatex]}
+      rehypePlugins={[rehypeRaw, rehypeKatex]}
       components={{ p: ({ children }) => <>{children}</> }}
     >
       {texte}
@@ -66,7 +68,7 @@ export function QuizSessionPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+      <div className="mx-auto max-w-5xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/quiz" className="mt-3 inline-block text-sm text-primary hover:underline">
           Retour au quiz
@@ -77,7 +79,7 @@ export function QuizSessionPage() {
 
   if (!session) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-5xl px-4 py-10">
         <Skeleton className="mb-6 h-4 w-32" />
         <Skeleton className="mb-3 h-6 w-full" />
         <Skeleton className="h-4 w-3/4" />
@@ -157,11 +159,14 @@ export function QuizSessionPage() {
     : question.enonce_markdown
 
   return (
-    <div className="mx-auto max-w-2xl animate-fade-up px-4 py-8 sm:px-6">
-      <Link to="/quiz" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="size-4" />
-        Quitter le quiz
-      </Link>
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-8 sm:px-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <Link to="/quiz" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
+          <ArrowLeft className="size-4" />
+          Quitter le quiz
+        </Link>
+        <QuizFichePdfButtons sessionId={session.id} />
+      </div>
 
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
         <Badge variant="secondary">{session.cursus_display}</Badge>

@@ -1259,18 +1259,19 @@ class QuizApiTests(TestCase):
         return session_id
 
     @patch("quiz.views.queue_quiz_fiche_pdf_generation")
-    def test_fiche_pdf_requires_completed_session(self, mock_queue):
-        # Génération réservée à une session déjà terminée - voir la docstring de
-        # quiz.views.quiz_fiche_pdf (le contenu d'une session en cours peut encore
-        # changer, une fiche générée trop tôt figerait des réponses non encore données).
+    def test_fiche_pdf_works_for_a_session_still_in_progress(self, mock_queue):
+        # Le tirage des QuizQuestion est figé à la création (voir QuizQuestion, "jamais
+        # modifiée après création") - le contenu des deux PDF ne dépend donc pas de
+        # l'avancement de l'élève, voir la docstring de quiz.views.quiz_fiche_pdf.
         self._subscribe()
         self.client.force_authenticate(user=self.user)
         start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
 
         response = self.client.post(f"/quiz/sessions/{start.data['id']}/fiche-pdf/")
 
-        self.assertEqual(response.status_code, 400)
-        mock_queue.assert_not_called()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["statut"], StatutFichePdf.EN_COURS)
+        mock_queue.assert_called_once_with(start.data["id"])
 
     @patch("quiz.views.queue_quiz_fiche_pdf_generation")
     def test_fiche_pdf_denied_without_active_subscription(self, mock_queue):

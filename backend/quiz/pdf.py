@@ -1,5 +1,6 @@
 """
-Génère les deux PDF d'une QuizSession terminée - "Fiche" (énoncés seuls, à retravailler
+Génère les deux PDF d'une QuizSession, disponibles dès sa création (pas seulement une
+fois terminée - voir la docstring de quiz.views.quiz_fiche_pdf) - "Fiche" (énoncés seuls, à retravailler
 sans la correction sous les yeux) et "Correction" (énoncés + corrigé, pour ne pas avoir à
 rouvrir la Fiche à côté) - jamais un seul document combiné, décision produit du
 2026-09-15. Ni l'un ni l'autre ne fait référence à la tentative de l'élève (pas de "ta
