@@ -399,10 +399,17 @@ export function getQuizFichePdfStatus(sessionId: number) {
   return apiRequest<QuizFichePdfStatus>(`/quiz/sessions/${sessionId}/fiche-pdf/`)
 }
 
-export function downloadQuizFichePdf(sessionId: number) {
+export function downloadQuizSujetPdf(sessionId: number) {
   return openPdfInNewTab(
-    `${API_BASE_URL}/quiz/sessions/${sessionId}/fiche-pdf/download/`,
+    `${API_BASE_URL}/quiz/sessions/${sessionId}/sujet.pdf`,
     "Impossible d'ouvrir la fiche pour le moment.",
+  )
+}
+
+export function downloadQuizCorrigePdf(sessionId: number) {
+  return openPdfInNewTab(
+    `${API_BASE_URL}/quiz/sessions/${sessionId}/corrige.pdf`,
+    "Impossible d'ouvrir la correction pour le moment.",
   )
 }
 

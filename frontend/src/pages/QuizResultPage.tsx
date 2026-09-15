@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { Download, Loader2, Trophy } from "lucide-react"
 
-import { completeQuizSession, downloadQuizFichePdf, getQuizFichePdfStatus, requestQuizFichePdf } from "@/api/endpoints"
+import {
+  completeQuizSession, downloadQuizCorrigePdf, downloadQuizSujetPdf, getQuizFichePdfStatus, requestQuizFichePdf,
+} from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizFichePdfStatus, QuizResult } from "@/api/types"
 import { Button } from "@/components/ui/button"
@@ -71,12 +73,21 @@ export function QuizResultPage() {
     }
   }
 
-  async function handleTelechargerFichePdf() {
+  async function handleTelechargerSujetPdf() {
     if (!id) return
     try {
-      await downloadQuizFichePdf(Number(id))
+      await downloadQuizSujetPdf(Number(id))
     } catch {
       setFichePdfError("Impossible d'ouvrir la fiche pour le moment.")
+    }
+  }
+
+  async function handleTelechargerCorrigePdf() {
+    if (!id) return
+    try {
+      await downloadQuizCorrigePdf(Number(id))
+    } catch {
+      setFichePdfError("Impossible d'ouvrir la correction pour le moment.")
     }
   }
 
@@ -134,16 +145,22 @@ export function QuizResultPage() {
 
       <div className="mb-6 flex flex-col items-center gap-2 text-center">
         {fichePdfStatut === "PRETE" ? (
-          <Button variant="outline" onClick={handleTelechargerFichePdf}>
-            <Download className="mr-2 size-4" />
-            Ouvrir la fiche PDF
-          </Button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button variant="outline" onClick={handleTelechargerSujetPdf}>
+              <Download className="mr-2 size-4" />
+              1. Fiche
+            </Button>
+            <Button variant="outline" onClick={handleTelechargerCorrigePdf}>
+              <Download className="mr-2 size-4" />
+              2. Correction
+            </Button>
+          </div>
         ) : (
           <Button variant="outline" onClick={handleGenererFichePdf} disabled={fichePdfStatut === "EN_COURS"}>
             {fichePdfStatut === "EN_COURS" ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
-                Préparation de la fiche...
+                Préparation des fiches...
               </>
             ) : (
               <>

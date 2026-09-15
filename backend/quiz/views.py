@@ -384,21 +384,26 @@ def complete_session(request, session_id):
 
 
 def _fiche_pdf_payload(session):
-    return {"statut": session.fiche_pdf_statut, "disponible": bool(session.fiche_pdf)}
+    return {
+        "statut": session.fiche_pdf_statut,
+        "sujet_pdf_disponible": bool(session.sujet_pdf),
+        "corrige_pdf_disponible": bool(session.corrige_pdf),
+    }
 
 
 @api_view(["GET", "POST"])
 def quiz_fiche_pdf(request, session_id):
     """
-    Fiche PDF (énoncés+corrigé) d'une QuizSession terminée - réservée aux abonnés actifs
-    sur le cursus de la session, revérifié à CHAQUE appel (l'abonnement peut avoir expiré
-    depuis la fin du quiz, voir _has_active_subscription). POST déclenche la génération en
-    arrière-plan (no-op si déjà en cours ou déjà prête - le contenu d'une session terminée
-    ne change plus, jamais besoin de régénérer) ; GET sert au poll pendant que le PDF se
-    génère hors ligne (voir quiz.pdf, jamais dans le thread de cette requête). Même
-    couple GET/POST que fiches.views.create_fiche + fiche_detail, fusionné ici en une
-    seule vue car les deux portent sur la même ressource (LA fiche de CETTE session, pas
-    une collection).
+    Statut des deux PDF (Fiche = énoncés seuls, Correction = énoncés+corrigé) d'une
+    QuizSession terminée - réservée aux abonnés actifs sur le cursus de la session,
+    revérifié à CHAQUE appel (l'abonnement peut avoir expiré depuis la fin du quiz, voir
+    _has_active_subscription). POST déclenche la génération des deux en arrière-plan
+    (no-op si déjà en cours ou déjà prête - le contenu d'une session terminée ne change
+    plus, jamais besoin de régénérer) ; GET sert au poll pendant qu'ils se génèrent hors
+    ligne (voir quiz.pdf, jamais dans le thread de cette requête). Même couple GET/POST
+    que fiches.views.create_fiche + fiche_detail, fusionné ici en une seule vue car les
+    deux portent sur la même ressource (LA paire de PDF de CETTE session, pas une
+    collection).
     """
     session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
     if not session.completed_at:
@@ -415,15 +420,28 @@ def quiz_fiche_pdf(request, session_id):
 
 
 @api_view(["GET"])
-def download_quiz_fiche_pdf(request, session_id):
+def download_quiz_sujet_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
-    if not session.fiche_pdf:
+    if not session.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
     return FileResponse(
-        session.fiche_pdf.open("rb"), as_attachment=False,
+        session.sujet_pdf.open("rb"), as_attachment=False,
         filename=f"quiz-{session.pk}-fiche.pdf", content_type="application/pdf",
+    )
+
+
+@api_view(["GET"])
+def download_quiz_corrige_pdf(request, session_id):
+    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    if not _has_active_subscription(request.user, session.cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+    if not session.corrige_pdf:
+        return Response({"error": "PDF pas encore généré."}, status=404)
+    return FileResponse(
+        session.corrige_pdf.open("rb"), as_attachment=False,
+        filename=f"quiz-{session.pk}-correction.pdf", content_type="application/pdf",
     )
 
 

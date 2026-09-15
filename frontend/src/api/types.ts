@@ -580,7 +580,8 @@ export interface QuizResult {
 
 export interface QuizFichePdfStatus {
   statut: "" | "EN_COURS" | "PRETE" | "ECHEC"
-  disponible: boolean
+  sujet_pdf_disponible: boolean
+  corrige_pdf_disponible: boolean
 }
 
 export interface ParcoursCours {

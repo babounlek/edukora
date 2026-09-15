@@ -1,16 +1,18 @@
 """
-Génère la fiche PDF (énoncés + corrigé, un seul document combiné) d'une QuizSession
-terminée - décision produit du 2026-09-15 : pas de référence à la tentative de l'élève
-(pas de "ta réponse" ni de score), pour que la fiche reste utilisable comme support de
-révision même longtemps après, indépendamment de ce qu'il avait répondu ce jour-là.
-Réutilise les briques bas niveau de catalog.sujet_pdf (Playwright hors ligne,
-protection LaTeX, résolution des chemins média), même pattern que fiches/pdf.py et
-inedit/sujet_pdf.py.
+Génère les deux PDF d'une QuizSession terminée - "Fiche" (énoncés seuls, à retravailler
+sans la correction sous les yeux) et "Correction" (énoncés + corrigé, pour ne pas avoir à
+rouvrir la Fiche à côté) - jamais un seul document combiné, décision produit du
+2026-09-15. Ni l'un ni l'autre ne fait référence à la tentative de l'élève (pas de "ta
+réponse" ni de score) : les deux restent utilisables comme support de révision même
+longtemps après, indépendamment de ce qu'il avait répondu ce jour-là. Réutilise les
+briques bas niveau de catalog.sujet_pdf (Playwright hors ligne, protection LaTeX,
+résolution des chemins média), même pattern que fiches/pdf.py (sujet/corrigé séparés,
+même raisonnement) et inedit/sujet_pdf.py.
 
 Contrainte dure héritée de catalog.sujet_pdf (voir sa docstring de module, source de
 vérité) : Playwright ne doit JAMAIS tourner dans le thread d'une requête HTTP (lenteur,
 non-fiabilité constatée en pratique) - toujours un processus détaché, voir
-queue_quiz_fiche_pdf_generation. generate_quiz_fiche_pdf()/save_quiz_fiche_pdf()
+queue_quiz_fiche_pdf_generation. generate_quiz_fiche_pdfs()/save_quiz_fiche_pdfs()
 ci-dessous ne sont JAMAIS appelées depuis une vue HTTP, seulement depuis la commande de
 gestion `generate_quiz_fiche_pdf`.
 """
@@ -63,17 +65,24 @@ def _resolve_cours_links(markdown_text):
     )
 
 
-# ?ref=pdf_quiz_fiche distingue la provenance (même convention ?ref= que
-# catalog.sujet_pdf._lesson_deep_link et fiches/pdf.py) - seule façon de mesurer combien
-# de visites viennent réellement d'une fiche de quiz téléchargée.
-def _deep_link(session):
+# ?ref=pdf_quiz_fiche / ?ref=pdf_quiz_correction distinguent la provenance de chaque
+# variante (même convention ?ref= que catalog.sujet_pdf._lesson_deep_link et
+# fiches/pdf.py._sujet_deep_link/_corrige_deep_link) - seule façon de mesurer combien de
+# visites viennent réellement de l'une ou l'autre fiche téléchargée.
+def _sujet_deep_link(session):
     country_code = session.cursus.country.code.lower()
     return f"{settings.FRONTEND_URL}/{country_code}?ref=pdf_quiz_fiche"
 
 
-def _bloc_question(quiz_question):
+def _corrige_deep_link(session):
+    country_code = session.cursus.country.code.lower()
+    return f"{settings.FRONTEND_URL}/{country_code}?ref=pdf_quiz_correction"
+
+
+def _bloc_question(quiz_question, *, avec_corrige):
     """
-    Un bloc "Question N" du PDF, énoncé puis corrigé - jamais la réponse donnée par
+    Un bloc "Question N" du PDF - énoncé seul si avec_corrige=False (le PDF "Fiche"),
+    énoncé puis corrigé sinon (le PDF "Correction") ; jamais la réponse donnée par
     l'élève ni une indication correct/incorrect (voir la docstring de module). Import
     différé de quiz.views : quiz.views importe ce module au niveau top-level (voir
     queue_quiz_fiche_pdf_generation, appelée depuis quiz.views.quiz_fiche_pdf), un
@@ -84,40 +93,44 @@ def _bloc_question(quiz_question):
     contenu = quiz_question.contenu
     if quiz_question.competence_item_id:
         enonce = contenu.enonce_markdown.strip()
-        corrige = _competence_item_corrige(contenu).strip()
     else:
         enonce = _clean_quiz_markdown(contenu.enonce_markdown).strip()
-        corrige = contenu.corrige_markdown.strip()
 
-    # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
-    # titres ("### Rappel de méthode", puis "### Corrigé") ; les plus anciens (et
-    # l'historique catalog.Question) n'en ont aucun - sans ce repli, l'énoncé et sa
-    # solution se toucheraient sans démarcation visible (même logique que
-    # fiches.pdf._bloc_question).
-    if not corrige.startswith("#"):
-        corrige = f"### Corrigé\n\n{corrige}"
+    blocs = [f"## Question {quiz_question.ordre}", enonce]
+    if avec_corrige:
+        if quiz_question.competence_item_id:
+            corrige = _competence_item_corrige(contenu).strip()
+        else:
+            corrige = contenu.corrige_markdown.strip()
+        # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
+        # titres ("### Rappel de méthode", puis "### Corrigé") ; les plus anciens (et
+        # l'historique catalog.Question) n'en ont aucun - sans ce repli, l'énoncé et sa
+        # solution se toucheraient sans démarcation visible (même logique que
+        # fiches.pdf._bloc_question).
+        if not corrige.startswith("#"):
+            corrige = f"### Corrigé\n\n{corrige}"
+        blocs.append(corrige)
 
-    return "\n\n".join([f"## Question {quiz_question.ordre}", enonce, corrige])
+    return "\n\n".join(blocs)
 
 
-def _combined_markdown(session):
+def _combined_markdown(session, *, avec_corrige):
     quiz_questions = (
         session.quiz_questions
         .select_related("question__exercise__lesson__subject", "competence_item__theme", "competence_item__subject")
         .order_by("ordre")
     )
-    return "\n\n".join(_bloc_question(qq) for qq in quiz_questions)
+    return "\n\n".join(_bloc_question(qq, avec_corrige=avec_corrige) for qq in quiz_questions)
 
 
-def _render_html(session):
-    markdown_text = _resolve_cours_links(_resolve_media_paths(_combined_markdown(session)))
+def _render_html(session, *, avec_corrige, template_name, deep_link):
+    markdown_text = _resolve_cours_links(_resolve_media_paths(_combined_markdown(session, avec_corrige=avec_corrige)))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
     content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
     content_html = _restore_math(content_html, math_spans)
 
-    deep_link = _deep_link(session)
-    return render_to_string("quiz/fiche_pdf_template.html", {
+    return render_to_string(template_name, {
         "session": session,
         "subject_label": session.subject.label if session.subject_id else "",
         "cursus_display": _cursus_display(session.cursus),
@@ -160,15 +173,23 @@ def _render_pdf_bytes(html):
     return pdf_bytes
 
 
-def generate_quiz_fiche_pdf(session):
-    """Retourne les octets du PDF. Bas niveau : voir save_quiz_fiche_pdf pour l'usage normal."""
-    return _render_pdf_bytes(_render_html(session))
+def generate_quiz_fiche_pdfs(session):
+    """Retourne (sujet_bytes, corrige_bytes). Bas niveau : voir save_quiz_fiche_pdfs pour l'usage normal."""
+    sujet_html = _render_html(
+        session, avec_corrige=False, template_name="quiz/fiche_sujet_pdf_template.html",
+        deep_link=_sujet_deep_link(session),
+    )
+    corrige_html = _render_html(
+        session, avec_corrige=True, template_name="quiz/fiche_corrige_pdf_template.html",
+        deep_link=_corrige_deep_link(session),
+    )
+    return _render_pdf_bytes(sujet_html), _render_pdf_bytes(corrige_html)
 
 
-def save_quiz_fiche_pdf(session):
+def save_quiz_fiche_pdfs(session):
     """
-    Génère le PDF et l'enregistre sur la QuizSession, statut PRETE si la génération
-    réussit. Point d'entrée normal - à appeler hors ligne uniquement (commande
+    Génère les deux PDF et les enregistre sur la QuizSession, statut PRETE si les deux
+    réussissent. Point d'entrée normal - à appeler hors ligne uniquement (commande
     `generate_quiz_fiche_pdf`), jamais depuis une vue HTTP (voir docstring de module).
     Laisse toute exception remonter : l'appelant (la commande de gestion) est
     responsable de passer `fiche_pdf_statut` à ECHEC et de logger - jamais avalée
@@ -176,12 +197,15 @@ def save_quiz_fiche_pdf(session):
     """
     from .models import StatutFichePdf
 
-    pdf_bytes = generate_quiz_fiche_pdf(session)
-    if session.fiche_pdf:
-        session.fiche_pdf.delete(save=False)
-    session.fiche_pdf.save(f"session-{session.pk}-fiche.pdf", ContentFile(pdf_bytes), save=False)
+    sujet_bytes, corrige_bytes = generate_quiz_fiche_pdfs(session)
+    if session.sujet_pdf:
+        session.sujet_pdf.delete(save=False)
+    if session.corrige_pdf:
+        session.corrige_pdf.delete(save=False)
+    session.sujet_pdf.save(f"session-{session.pk}-fiche.pdf", ContentFile(sujet_bytes), save=False)
+    session.corrige_pdf.save(f"session-{session.pk}-correction.pdf", ContentFile(corrige_bytes), save=False)
     session.fiche_pdf_statut = StatutFichePdf.PRETE
-    session.save(update_fields=["fiche_pdf", "fiche_pdf_statut"])
+    session.save(update_fields=["sujet_pdf", "corrige_pdf", "fiche_pdf_statut"])
 
 
 def queue_quiz_fiche_pdf_generation(session_id):
@@ -191,7 +215,7 @@ def queue_quiz_fiche_pdf_generation(session_id):
     queue_sujet_pdf_generation, même pattern (Popen nu, PYTHONUTF8 forcé), répliqué ici
     plutôt qu'importé (commande cible et fichier de log différents, même choix que
     fiches.pdf.queue_fiche_pdf_generation). Point d'entrée normal depuis une vue
-    (contrairement à generate_quiz_fiche_pdf/save_quiz_fiche_pdf, jamais appelées depuis
+    (contrairement à generate_quiz_fiche_pdfs/save_quiz_fiche_pdfs, jamais appelées depuis
     une requête HTTP).
     """
     manage_py = Path(settings.BASE_DIR) / "manage.py"

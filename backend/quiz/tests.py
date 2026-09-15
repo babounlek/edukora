@@ -1298,7 +1298,9 @@ class QuizApiTests(TestCase):
         second = self.client.post(f"/quiz/sessions/{session_id}/fiche-pdf/")
 
         self.assertEqual(first.status_code, 200)
-        self.assertEqual(first.data, {"statut": StatutFichePdf.EN_COURS, "disponible": False})
+        self.assertEqual(
+            first.data, {"statut": StatutFichePdf.EN_COURS, "sujet_pdf_disponible": False, "corrige_pdf_disponible": False},
+        )
         self.assertEqual(second.data["statut"], StatutFichePdf.EN_COURS)
         mock_queue.assert_called_once_with(session_id)
 
@@ -1310,17 +1312,18 @@ class QuizApiTests(TestCase):
         response = self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, {"statut": "", "disponible": False})
+        self.assertEqual(
+            response.data, {"statut": "", "sujet_pdf_disponible": False, "corrige_pdf_disponible": False},
+        )
         self.assertEqual(QuizSession.objects.get(pk=session_id).fiche_pdf_statut, "")
 
-    def test_download_fiche_pdf_not_yet_generated(self):
+    def test_download_sujet_and_corrige_pdf_not_yet_generated(self):
         self._subscribe()
         self.client.force_authenticate(user=self.user)
         session_id = self._completed_session_id()
 
-        response = self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/download/")
-
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/sujet.pdf").status_code, 404)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/corrige.pdf").status_code, 404)
 
     def test_fiche_pdf_endpoints_denied_for_another_users_session(self):
         self._subscribe()
@@ -1331,7 +1334,8 @@ class QuizApiTests(TestCase):
         self.client.force_authenticate(user=other_user)
 
         self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/").status_code, 404)
-        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/fiche-pdf/download/").status_code, 404)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/sujet.pdf").status_code, 404)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{session_id}/corrige.pdf").status_code, 404)
 
 
 class EnregistrerResultatPourRevisionTests(TestCase):

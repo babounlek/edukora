@@ -5,7 +5,7 @@ from catalog.models import Difficulte, StatutContenu, TypeReponse
 from .storage import protected_storage
 
 
-def _fiche_pdf_upload_to(session, filename):
+def _sujet_pdf_upload_to(session, filename):
     # Préfixé par le code pays puis l'utilisateur - même convention que les autres
     # storages de PDF privés du projet (voir fiches.models._sujet_pdf_upload_to,
     # inedit.models._sujet_pdf_upload_to) : sans lui, deux élèves de pays différents
@@ -15,6 +15,10 @@ def _fiche_pdf_upload_to(session, filename):
     return f"{session.cursus.country.code.lower()}/{session.user_id}/session-{session.pk}-fiche.pdf"
 
 
+def _corrige_pdf_upload_to(session, filename):
+    return f"{session.cursus.country.code.lower()}/{session.user_id}/session-{session.pk}-correction.pdf"
+
+
 class ModeQuiz(models.TextChoices):
     PRATIQUE = "PRATIQUE", "Pratique libre"
     DIAGNOSTIC = "DIAGNOSTIC", "Test de niveau"
@@ -22,10 +26,11 @@ class ModeQuiz(models.TextChoices):
 
 class StatutFichePdf(models.TextChoices):
     """
-    Cycle de vie de la génération PDF de la fiche d'une QuizSession - même patron que
-    fiches.models.StatutGeneration (voir sa docstring), décliné ici pour une ressource
-    créée à la demande de l'élève lui-même APRÈS coup (la QuizSession existe déjà bien
-    avant qu'une fiche ne soit jamais demandée), d'où l'absence de valeur par défaut :
+    Cycle de vie de la génération des DEUX PDF (sujet_pdf/corrige_pdf) d'une QuizSession -
+    même patron que fiches.models.StatutGeneration (voir sa docstring, un seul statut y
+    gouverne déjà sa propre paire sujet/corrigé), décliné ici pour une ressource créée à
+    la demande de l'élève lui-même APRÈS coup (la QuizSession existe déjà bien avant
+    qu'une fiche ne soit jamais demandée), d'où l'absence de valeur par défaut :
     QuizSession.fiche_pdf_statut reste vide tant qu'aucune génération n'a été demandée.
     """
 
@@ -139,8 +144,16 @@ class QuizSession(models.Model):
         max_length=10, choices=StatutFichePdf.choices, blank=True,
         help_text="Vide tant qu'aucune fiche PDF n'a été demandée - voir StatutFichePdf.",
     )
-    fiche_pdf = models.FileField(
-        storage=protected_storage, upload_to=_fiche_pdf_upload_to, blank=True,
+    # Deux PDF distincts, générés ensemble (voir quiz.pdf.save_quiz_fiche_pdf) - même
+    # décision produit que fiches.models.FicheGeneree (voir sa docstring) : l'élève doit
+    # pouvoir imprimer/partager la fiche d'exercices seule (sujet_pdf) sans que le
+    # corrigé y figure déjà, et retrouver la correction complète séparément.
+    sujet_pdf = models.FileField(
+        storage=protected_storage, upload_to=_sujet_pdf_upload_to, blank=True,
+        help_text="Énoncés seuls de cette session, générés à la demande - voir quiz.pdf.",
+    )
+    corrige_pdf = models.FileField(
+        storage=protected_storage, upload_to=_corrige_pdf_upload_to, blank=True,
         help_text="Énoncés + corrigé de cette session, générés à la demande - voir quiz.pdf.",
     )
 
