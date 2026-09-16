@@ -15,6 +15,7 @@ export function Footer() {
   const platformLinks = [
     { to: epreuvesListPath(country), label: "Épreuves" },
     { to: coursListPath(country), label: "Cours" },
+    { to: "/parcours", label: "Parcours" },
     { to: "/quiz", label: "Quiz" },
     { to: "/tarifs", label: "Tarifs" },
   ]

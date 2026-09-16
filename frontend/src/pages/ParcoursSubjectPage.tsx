@@ -11,6 +11,7 @@ import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Select,
@@ -19,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { coursDetailPath, coursListPath } from "@/lib/countryPath"
+import { coursDetailPath } from "@/lib/countryPath"
 import { SEUIL_MAITRISE, tauxBarClassName } from "@/lib/maitrise"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
@@ -43,6 +44,14 @@ function aplatirSavoirs(modules: ParcoursModule[]): SavoirEnrichi[] {
 // Nombre d'étapes mises en avant en tête de page - au-delà, la file perdrait son
 // intérêt (autant reprendre la liste complète en dessous).
 const PROCHAINES_ETAPES_MAX = 3
+
+// Au-delà de ce nombre de savoirs affichés dans un même module, la carte passe en
+// pagination "Afficher plus" - sans ça, le mode Parcours par fréquence (un seul
+// pseudo-module qui peut dépasser 200 thèmes, voir isModeFrequence) rendait une page
+// d'un seul tenant, bien plus longue que n'importe quel module du programme classique.
+// Même palier que FICHES_RECENTES_VISIBLES dans FichesPage.tsx (même principe de
+// divulgation progressive), sans lien de valeur entre les deux.
+const SAVOIRS_PAGE_SIZE = 25
 
 /** Prochaines étapes recommandées, mises en avant en tête de page plutôt que de
  * laisser l'élève chercher lui-même dans la liste. Aucun historique de quiz du tout
@@ -145,41 +154,20 @@ function SansCoursIndice({ savoir }: { savoir: ParcoursSavoir }) {
   )
 }
 
-/** URL du catalogue de cours filtré sur ce savoir précis (voir le nouveau paramètre
- * `savoir` de CoursListView, même relation Cours.tags -> Tag.savoir_officiel que
- * construire_parcours) - permet de dépasser le plafond d'affichage de 3 cours par
- * savoir ici (voir PARCOURS_COURS_PAR_SAVOIR_MAX côté backend), jamais exposé au
- * frontend puisque cette page n'a pas besoin de savoir si elle a été plafonnée. Le
- * matière/cursus restent aussi en filtre pour ne jamais mélanger avec une autre série.
- * `savoir_label` est un paramètre d'affichage pur (jamais lu par l'API), voir
- * CoursListPage. */
-function lienCoursDuSavoir(country: string, subjectCode: string, cursusId: string, savoir: ParcoursSavoir): string {
-  const params = new URLSearchParams({
-    subject: subjectCode,
-    cursus: cursusId,
-    // theme_id (mode Parcours par fréquence) et id-en-tant-que-Savoir (Module→Savoir
-    // classique) ne sont pas le même paramètre côté API (voir catalog.views.
-    // CoursListView) - même bascule que lancerQuiz ci-dessous.
-    ...(savoir.theme_id ? { theme: String(savoir.theme_id) } : { savoir: String(savoir.id) }),
-    savoir_label: savoir.intitule,
-  })
-  return `${coursListPath(country)}?${params.toString()}`
-}
-
 /** Actions d'une étape (liste par module ET "prochaines étapes") : un seul CTA
  * principal - le quiz s'il existe, sinon le premier cours candidat - plutôt qu'un
  * bouton par cours candidat empilé à côté du quiz : la ligne indiquait jusqu'ici
- * jusqu'à 4-5 boutons d'un coup, sans dire lequel faire en premier. Les cours
- * restants (et un éventuel dépassement du plafond de 3, voir lienCoursDuSavoir)
- * restent accessibles via "Voir tous les cours", jamais perdus. `arrow` accentue le
- * CTA quiz dans la carte "prochaines étapes" (mise en avant), pas dans la liste. */
+ * jusqu'à 4-5 boutons d'un coup, sans dire lequel faire en premier. Pas de "Voir tous
+ * les cours" ici (retiré le 2026-09-16, le lien vers le catalogue filtré ne menait
+ * nulle part d'utilisable) - le premier cours candidat reste la seule porte d'entrée
+ * vers les cours de ce savoir. `arrow` accentue le CTA quiz dans la carte "prochaines
+ * étapes" (mise en avant), pas dans la liste. */
 function ActionsSavoir({
-  savoir, href, starting, onQuiz, size, arrow,
+  savoir, starting, onQuiz, size, arrow,
 }: {
   savoir: ParcoursSavoir
-  href?: string
   starting: boolean
-  onQuiz: () => void
+  onQuiz: (openInNewTab?: boolean) => void
   size?: "sm"
   arrow?: boolean
 }) {
@@ -187,7 +175,19 @@ function ActionsSavoir({
   return (
     <div className="flex flex-wrap items-center gap-2">
       {savoir.has_quiz && (
-        <Button size={size} disabled={starting} onClick={onQuiz}>
+        <Button
+          size={size}
+          disabled={starting}
+          onClick={(e) => onQuiz(e.ctrlKey || e.metaKey)}
+          // Un <button> n'a jamais l'entrée "Ouvrir dans un nouvel onglet" au clic
+          // droit (réservée aux <a href> par le navigateur, quoi qu'on fasse en JS) -
+          // Ctrl/Cmd-clic et le clic milieu couvrent l'intention réelle (garder ce
+          // Parcours ouvert pendant le quiz). Le clic milieu ne déclenche jamais
+          // "click" sur un bouton natif, seulement "auxclick" : d'où ce handler séparé.
+          onAuxClick={(e) => {
+            if (e.button === 1) onQuiz(true)
+          }}
+        >
           {starting ? "Préparation..." : "Tester mes connaissances"}
           {arrow && <ArrowRight />}
         </Button>
@@ -197,14 +197,6 @@ function ActionsSavoir({
           <Link to={coursDetailPath(premierCours.slug)}>
             <BookOpenText />
             {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : "Lire le cours"}
-          </Link>
-        </Button>
-      )}
-      {href && savoir.cours.length > 0 && (
-        <Button asChild size={size} variant="ghost">
-          <Link to={href}>
-            <Search />
-            Voir tous les cours
           </Link>
         </Button>
       )}
@@ -231,6 +223,22 @@ export function ParcoursSubjectPage() {
   // pas un inventaire complet - masquer maîtrisés/sans contenu recentre la liste sans
   // les faire disparaître pour de bon (voir bucketDeSavoir, le bouton juste en dessous).
   const [afficherTout, setAfficherTout] = useState(false)
+  // Nombre de savoirs révélés par module ("module-<numero>", voir sommaireEntries) -
+  // absent de la map = encore au premier palier (SAVOIRS_PAGE_SIZE). Un compteur par
+  // module plutôt qu'un simple booléen "déplié" : chaque clic sur "Afficher plus"
+  // ajoute un palier de plus au lieu de tout révéler d'un coup (moins de contenu qui
+  // apparaît en une fois). Réinitialisé au changement de cursus/matière (effet
+  // ci-dessous) : sans ça un module resterait déplié pour un programme sans rapport.
+  const [visibleParModule, setVisibleParModule] = useState<Record<string, number>>({})
+  // Filtre texte sur l'intitulé des savoirs (voir son seuil d'affichage,
+  // totalSavoirsAffiches ci-dessous) - contourne la pagination : un thème cherché doit
+  // apparaître tout de suite, pas après plusieurs "Afficher plus".
+  const [recherche, setRecherche] = useState("")
+
+  useEffect(() => {
+    setVisibleParModule({})
+    setRecherche("")
+  }, [selectedCursus, subjectId])
 
   useSeo({
     title: subjectLabel ? `Parcours ${subjectLabel}` : "Ton parcours",
@@ -282,12 +290,6 @@ export function ParcoursSubjectPage() {
       .catch((err) => setError(err instanceof ApiError ? err.message : "Impossible de charger ton parcours."))
   }, [selectedCursus, subjectId])
 
-  // Pays du cursus sélectionné - nécessaire pour construire un lien vers le
-  // catalogue de cours (/:country/cours), qui est préfixé par pays.
-  const countryCode = subscriptions
-    .find((s) => String(s.cursus.id) === selectedCursus)
-    ?.cursus.country.code.toLowerCase()
-
   // numero vide = pseudo-module du mode Parcours par fréquence (voir
   // construire_parcours_par_frequence côté backend) - un seul module, sans numérotation.
   const isModeFrequence = modules?.length === 1 && modules[0].numero === ""
@@ -304,20 +306,42 @@ export function ParcoursSubjectPage() {
   // titre complet du module n'apparaissant qu'en infobulle et dans la Card elle-même.
   const sommaireEntries: SommaireEntry[] = useMemo(() => {
     if (!modules || modules.length < 2) return []
+    const rechercheNormalisee = recherche.trim().toLowerCase()
     return modules
-      .filter((m) => savoirsVisibles(m, afficherTout).length > 0)
+      .filter((m) => {
+        const visibles = savoirsVisibles(m, afficherTout)
+        if (!rechercheNormalisee) return visibles.length > 0
+        return visibles.some((s) => s.intitule.toLowerCase().includes(rechercheNormalisee))
+      })
       .map((m) => ({
         id: `module-${m.numero || "unique"}`,
         short: m.numero ? `M${m.numero}` : m.titre,
         long: m.numero ? `Module ${m.numero}` : m.titre,
         title: m.titre,
       }))
-  }, [modules, afficherTout])
+  }, [modules, afficherTout, recherche])
 
-  async function lancerQuiz(params: { savoir?: number; theme?: number; mode?: "DIAGNOSTIC" }) {
+  // Décide si le champ de recherche mérite sa place - inutile sur un petit programme
+  // que l'œil parcourt déjà d'un coup (voir SAVOIRS_PAGE_SIZE, même palier que la
+  // pagination : au-delà, balayer visuellement devient plus lent que taper un mot).
+  const totalSavoirsAffiches = useMemo(
+    () => (modules ? modules.reduce((sum, m) => sum + savoirsVisibles(m, afficherTout).length, 0) : 0),
+    [modules, afficherTout],
+  )
+
+  async function lancerQuiz(
+    params: { savoir?: number; theme?: number; mode?: "DIAGNOSTIC" },
+    openInNewTab = false,
+  ) {
     if (starting || !subjectId) return
     setStarting(true)
     setError("")
+    // Ouvert tout de suite, de façon synchrone dans le gestionnaire de clic - après un
+    // await, la plupart des navigateurs ne rattachent plus un window.open() au geste
+    // utilisateur et le bloquent comme un pop-up. On ouvre donc un onglet vide dès
+    // maintenant, qu'on redirige une fois la session créée (pas de noopener : on doit
+    // garder la référence pour le rediriger, la destination reste notre propre site).
+    const nouvelOnglet = openInNewTab ? window.open("", "_blank") : null
     try {
       const session = await startQuizSession({
         cursus: Number(selectedCursus),
@@ -326,8 +350,20 @@ export function ParcoursSubjectPage() {
         ...params,
       })
       trackEvent("quiz_started", { cursus_id: Number(selectedCursus), mode: params.mode ?? "PRATIQUE", source: "parcours" })
-      navigate(`/quiz/session/${session.id}`)
+      const url = `/quiz/session/${session.id}`
+      if (openInNewTab) {
+        // Reste sur cette page plutôt que de naviguer : contrairement au cas normal,
+        // rien n'unmonte ce composant, donc `starting` doit redescendre à false pour
+        // que le bouton reste utilisable dans cet onglet. Repli sur l'onglet courant
+        // si l'onglet vide n'a pas pu s'ouvrir (bloqueur de pop-up malgré tout).
+        if (nouvelOnglet) nouvelOnglet.location.href = url
+        else navigate(url)
+        setStarting(false)
+      } else {
+        navigate(url)
+      }
     } catch (err) {
+      nouvelOnglet?.close()
       setError(err instanceof ApiError ? err.message : "Impossible de démarrer ce quiz. Réessaie plus tard.")
       setStarting(false)
     }
@@ -510,9 +546,8 @@ export function ParcoursSubjectPage() {
                           </p>
                           <ActionsSavoir
                             savoir={etape}
-                            href={countryCode ? lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, etape) : undefined}
                             starting={starting}
-                            onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape))}
+                            onQuiz={(openInNewTab) => lancerQuiz(paramsQuizPourSavoir(etape), openInNewTab)}
                             size={etapes.length > 1 ? "sm" : undefined}
                             arrow
                           />
@@ -537,6 +572,19 @@ export function ParcoursSubjectPage() {
               </button>
             )}
 
+            {totalSavoirsAffiches > SAVOIRS_PAGE_SIZE && (
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={recherche}
+                  onChange={(e) => setRecherche(e.target.value)}
+                  placeholder="Filtrer les thèmes..."
+                  className="pl-9"
+                  aria-label="Filtrer les thèmes"
+                />
+              </div>
+            )}
+
             {!afficherTout && buckets.en_revision + buckets.a_decouvrir === 0 && savoirs.length > 0 && (
               <Card>
                 <CardContent className="flex flex-col items-center gap-1 py-10 text-center">
@@ -550,15 +598,32 @@ export function ParcoursSubjectPage() {
             )}
 
             {(() => {
+              const rechercheNormalisee = recherche.trim().toLowerCase()
+
               // Masqués par défaut, jamais retirés pour de bon (voir bucketDeSavoir et
               // le bouton juste au-dessus) : la promesse de la page est "ce qu'il te
               // reste à travailler", pas un inventaire complet du programme.
               const cartes = modules.map((module) => {
                 const savoirsAffiches = savoirsVisibles(module, afficherTout)
-                if (savoirsAffiches.length === 0) return null
+                // Rang conservé depuis la liste complète du module (pas l'index dans les
+                // résultats de recherche) : un thème trouvé en 3ᵉ position de la
+                // recherche garde le numéro qui reflète sa vraie place dans l'ordre de
+                // fréquence, pas son rang parmi les seuls résultats.
+                const indexes = savoirsAffiches.map((savoir, i) => ({ savoir, rang: i + 1 }))
+                const resultats = rechercheNormalisee
+                  ? indexes.filter(({ savoir }) => savoir.intitule.toLowerCase().includes(rechercheNormalisee))
+                  : indexes
+                if (resultats.length === 0) return null
+
+                const moduleKey = module.numero || "unique"
+                const visibleCount = visibleParModule[moduleKey] ?? SAVOIRS_PAGE_SIZE
+                // Pagination désactivée pendant une recherche : un thème trouvé doit
+                // apparaître tout de suite, jamais caché derrière un "Afficher plus".
+                const resultatsMontres = rechercheNormalisee ? resultats : resultats.slice(0, visibleCount)
+                const resteAAfficher = rechercheNormalisee ? 0 : resultats.length - resultatsMontres.length
 
                 return (
-                  <Card key={module.numero} id={`module-${module.numero || "unique"}`} className="scroll-mt-24 overflow-hidden">
+                  <Card key={module.numero} id={`module-${moduleKey}`} className="scroll-mt-24 overflow-hidden">
                     <CardContent className="pt-6">
                       <p className="mb-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                         {/* numero vide = pseudo-module du mode Parcours par fréquence (voir
@@ -567,10 +632,10 @@ export function ParcoursSubjectPage() {
                         {module.numero ? `Module ${module.numero} · ${module.titre}` : module.titre}
                       </p>
                       <div>
-                        {savoirsAffiches.map((savoir, index) => (
+                        {resultatsMontres.map(({ savoir, rang }, index) => (
                           <Etape
                             key={savoir.id}
-                            numero={index + 1}
+                            numero={rang}
                             titre={capitaliserTheme(savoir.intitule)}
                             fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
                             inactif={!savoir.has_quiz && savoir.cours.length === 0}
@@ -578,7 +643,7 @@ export function ParcoursSubjectPage() {
                             // neutre des autres, pour repérer l'urgent d'un simple balayage
                             // de la liste (voir Etape.accent et BadgeSavoir, même code couleur).
                             accent={savoir.en_revision ? "gold" : undefined}
-                            dernier={index === savoirsAffiches.length - 1}
+                            dernier={resteAAfficher === 0 && index === resultatsMontres.length - 1}
                           >
                             <div className="flex flex-wrap items-center gap-2">
                               <BadgeSavoir savoir={savoir} />
@@ -587,9 +652,8 @@ export function ParcoursSubjectPage() {
                             <div className="mt-2">
                               <ActionsSavoir
                                 savoir={savoir}
-                                href={countryCode ? lienCoursDuSavoir(countryCode, subjectCode, selectedCursus, savoir) : undefined}
                                 starting={starting}
-                                onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir))}
+                                onQuiz={(openInNewTab) => lancerQuiz(paramsQuizPourSavoir(savoir), openInNewTab)}
                                 size="sm"
                               />
                             </div>
@@ -597,10 +661,37 @@ export function ParcoursSubjectPage() {
                           </Etape>
                         ))}
                       </div>
+                      {resteAAfficher > 0 && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="mt-4 w-full"
+                          onClick={() =>
+                            setVisibleParModule((prev) => ({
+                              ...prev,
+                              [moduleKey]: visibleCount + SAVOIRS_PAGE_SIZE,
+                            }))
+                          }
+                        >
+                          Afficher plus
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 )
               })
+
+              if (rechercheNormalisee && cartes.every((carte) => carte === null)) {
+                return (
+                  <Card>
+                    <CardContent className="flex flex-col items-center gap-1 py-10 text-center">
+                      <Search className="size-6 text-muted-foreground" />
+                      <p className="font-display font-medium">Aucun thème ne correspond à « {recherche.trim()} »</p>
+                      <p className="text-sm text-muted-foreground">Essaie un autre mot, ou efface la recherche.</p>
+                    </CardContent>
+                  </Card>
+                )
+              }
 
               // À partir de 2 modules affichés, un sommaire cliquable donne un repère
               // spatial sur un programme long (voir sommaireEntries) - en dessous, la
