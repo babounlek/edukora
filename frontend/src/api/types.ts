@@ -550,6 +550,7 @@ export interface QuizSession {
   id: number
   mode: ModeQuiz
   cursus: number
+  subject: number | null
   cursus_display: string
   started_at: string
   completed_at: string | null

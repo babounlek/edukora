@@ -167,7 +167,7 @@ function ActionsSavoir({
 }: {
   savoir: ParcoursSavoir
   starting: boolean
-  onQuiz: (openInNewTab?: boolean) => void
+  onQuiz: () => void
   size?: "sm"
   arrow?: boolean
 }) {
@@ -175,19 +175,9 @@ function ActionsSavoir({
   return (
     <div className="flex flex-wrap items-center gap-2">
       {savoir.has_quiz && (
-        <Button
-          size={size}
-          disabled={starting}
-          onClick={(e) => onQuiz(e.ctrlKey || e.metaKey)}
-          // Un <button> n'a jamais l'entrée "Ouvrir dans un nouvel onglet" au clic
-          // droit (réservée aux <a href> par le navigateur, quoi qu'on fasse en JS) -
-          // Ctrl/Cmd-clic et le clic milieu couvrent l'intention réelle (garder ce
-          // Parcours ouvert pendant le quiz). Le clic milieu ne déclenche jamais
-          // "click" sur un bouton natif, seulement "auxclick" : d'où ce handler séparé.
-          onAuxClick={(e) => {
-            if (e.button === 1) onQuiz(true)
-          }}
-        >
+        // Toujours ouvert dans un nouvel onglet : ce Parcours reste affiché pendant
+        // le quiz plutôt que de disparaître derrière une navigation en place.
+        <Button size={size} disabled={starting} onClick={() => onQuiz()}>
           {starting ? "Préparation..." : "Tester mes connaissances"}
           {arrow && <ArrowRight />}
         </Button>
@@ -547,7 +537,7 @@ export function ParcoursSubjectPage() {
                           <ActionsSavoir
                             savoir={etape}
                             starting={starting}
-                            onQuiz={(openInNewTab) => lancerQuiz(paramsQuizPourSavoir(etape), openInNewTab)}
+                            onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape), true)}
                             size={etapes.length > 1 ? "sm" : undefined}
                             arrow
                           />
@@ -653,7 +643,7 @@ export function ParcoursSubjectPage() {
                               <ActionsSavoir
                                 savoir={savoir}
                                 starting={starting}
-                                onQuiz={(openInNewTab) => lancerQuiz(paramsQuizPourSavoir(savoir), openInNewTab)}
+                                onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
                                 size="sm"
                               />
                             </div>

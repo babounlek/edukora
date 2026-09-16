@@ -217,7 +217,10 @@ def _session_payload(session):
         "cursus": session.cursus_id,
         # Uniforme pour toute la session (generer_session filtre sur un seul cursus),
         # contrairement à la matière qui peut varier d'une question à l'autre - voir
-        # _question_payload.
+        # _question_payload. Repris tel quel dans _resultat_payload (même origine
+        # Parcours) pour que "Quitter le quiz" en cours de session et "Retour au
+        # parcours" en fin de session pointent vers la même page.
+        "subject": session.subject_id,
         "cursus_display": _cursus_display(session.cursus),
         "started_at": session.started_at,
         "completed_at": session.completed_at,

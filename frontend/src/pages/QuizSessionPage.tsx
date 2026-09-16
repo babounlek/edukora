@@ -161,7 +161,10 @@ export function QuizSessionPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-8 sm:px-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <Link to="/quiz" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
+        <Link
+          to={session.subject ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
+        >
           <ArrowLeft className="size-4" />
           Quitter le quiz
         </Link>
