@@ -26,6 +26,8 @@ from quiz.models import CompetenceItem
 
 BLOQUANT, ALERTE, INFO = "BLOQUANT", "ALERTE", "INFO"
 
+_TITRE_RAPPEL = re.compile(r"###\s*Rappel de m[eé]thode", re.IGNORECASE)
+
 _RELATIF = re.compile(r"^(\d+)\s*([mhd])$")
 
 
@@ -192,6 +194,26 @@ def gate_structure(since):
             "structure", BLOQUANT,
             f"{total} Question sans aucun thème (invisibles du Parcours par thèmes) - ex. {exemples}",
         ))
+
+    for ex in _scoped(Exercise.objects.filter(rappels_de_methode__isnull=False), since).distinct().select_related("lesson"):
+        # Sans le titre, le rendu n'affiche jamais le rappel alors qu'il existe en base
+        # (Programmation Bac TI 2022/2023, corrigé le 2026-09-19).
+        nb_rappels = ex.rappels_de_methode.count()
+        nb_titres = len(_TITRE_RAPPEL.findall(ex.corrige_markdown or ""))
+        # Partiel = ALERTE : un titre peut légitimement couvrir plusieurs sous-questions.
+        if nb_titres < nb_rappels:
+            findings.append(Finding(
+                "structure", BLOQUANT if nb_titres == 0 else ALERTE,
+                f"{ex.lesson.slug}#{ex.numero_exercice} : {nb_rappels} rappel(s) en base mais {nb_titres} titre(s) "
+                "`### Rappel de méthode` dans le corrigé (rappels jamais affichés)",
+            ))
+        sans_cours = ex.rappels_de_methode.filter(cours__isnull=True).count()
+        if sans_cours:
+            findings.append(Finding(
+                "structure", ALERTE,
+                f"{ex.lesson.slug}#{ex.numero_exercice} : {sans_cours} rappel(s) sans cours lié "
+                "(cours non ingérés ? voir les erreurs du run)",
+            ))
 
     for label, model in (("Question", Question), ("CompetenceItem", CompetenceItem)):
         for item in _scoped(model.objects.filter(type_reponse=TypeReponse.QCM), since):
