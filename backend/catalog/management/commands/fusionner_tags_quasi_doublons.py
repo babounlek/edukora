@@ -5,7 +5,11 @@ clé de rapprochement `catalog.tunnel.tag_key`. Prolonge `fusionner_tags_doublon
 traitait que la casse et les espaces.
 
 Un groupe dont les Tag pointent vers un `savoir_officiel` DIFFÉRENT n'est jamais fusionné
-(même règle que `fusionner_tags_doublons`, listé pour arbitrage). Le survivant est le Tag
+(même règle que `fusionner_tags_doublons`, listé pour arbitrage), SAUF avec
+`--savoirs-equivalents` : le conflit est alors ignoré quand tous les savoirs portent le même
+intitulé aux accents, ponctuation et petits mots près (« SUITES NUMERIQUES » dans deux
+classes, « EQUATIONS, INEQUATIONS, SYSTEMES » / « ÉQUATIONS, INÉQUATIONS ET SYSTÈMES »), donc
+que le lien perdu n'apporte rien de plus au survivant. Le survivant est le Tag
 qui porte un `savoir_officiel` si un seul en a un, sinon celui qui a le plus de contenu lié ;
 si un autre membre du groupe est la même forme AVEC les accents, le survivant en prend
 l'orthographe. Chaque groupe est fusionné dans un savepoint : une contrainte d'unicité
@@ -13,8 +17,10 @@ l'orthographe. Chaque groupe est fusionné dans un savepoint : une contrainte d'
 
     python manage.py fusionner_tags_quasi_doublons            # simulation
     python manage.py fusionner_tags_quasi_doublons --apply
+    python manage.py fusionner_tags_quasi_doublons --savoirs-equivalents --apply
 """
 
+import re
 import unicodedata
 from collections import defaultdict
 
@@ -24,11 +30,25 @@ from django.db import IntegrityError, transaction
 from catalog.management.commands.fusionner_tags_doublons import _merge_relations, _related_count
 from catalog.models import Tag
 from catalog.tunnel import tag_key
+from programme.models import Savoir
 
 
 def _accent_fold(name):
     decomposed = unicodedata.normalize("NFKD", name)
     return "".join(c for c in decomposed if not unicodedata.combining(c)).lower()
+
+
+_PETITS_MOTS = {"et", "de", "des", "du", "la", "le", "les", "d", "l", "en", "a", "au", "aux"}
+
+
+def _intitule_normalise(intitule):
+    mots = re.sub(r"[^a-z0-9]+", " ", _accent_fold(intitule)).split()
+    return " ".join(m for m in mots if m not in _PETITS_MOTS)
+
+
+def _savoirs_equivalents(savoir_ids):
+    intitules = {_intitule_normalise(i) for i in Savoir.objects.filter(id__in=savoir_ids).values_list("intitule", flat=True)}
+    return len(intitules) == 1
 
 
 def _accent_count(name):
@@ -40,6 +60,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--apply", action="store_true", help="Écrit réellement les fusions (sinon simulation).")
+        parser.add_argument(
+            "--savoirs-equivalents", action="store_true",
+            help="Fusionne aussi un groupe en conflit de savoir_officiel si les savoirs ont le même intitulé normalisé.",
+        )
 
     def handle(self, *args, **options):
         appliquer = options["apply"]
@@ -52,7 +76,7 @@ class Command(BaseCommand):
         conflits, sautes, fusionnes, supprimes = [], [], 0, 0
         for tags in groupes:
             savoirs = {t.savoir_officiel_id for t in tags if t.savoir_officiel_id is not None}
-            if len(savoirs) > 1:
+            if len(savoirs) > 1 and not (options["savoirs_equivalents"] and _savoirs_equivalents(savoirs)):
                 conflits.append(tags)
                 continue
 

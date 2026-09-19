@@ -149,3 +149,33 @@ class IngestionReusesTagVariantTests(TestCase):
         Tag.objects.create(name="Limites")
         _VARIANT_INDEX["built_at"] = None
         self.assertIsNone(find_tag_variant("limites"))
+
+
+class FusionQuasiDoublonsSavoirsTests(TestCase):
+    def _tag_avec_savoir(self, nom, numero_module, intitule):
+        from catalog.models import Subject
+        from programme.models import Module, Savoir
+
+        subject = Subject.objects.filter(country__code="CM").first()
+        module = Module.objects.create(subject=subject, classe="Tle", serie_label="C", numero=numero_module, titre="M")
+        savoir = Savoir.objects.create(module=module, intitule=intitule)
+        return Tag.objects.create(name=nom, savoir_officiel=savoir)
+
+    def _groupe(self, intitule_a, intitule_b):
+        self._tag_avec_savoir("suite numérique", "1", intitule_a)
+        self._tag_avec_savoir("Suites numériques", "2", intitule_b)
+
+    def test_conflicting_savoirs_are_left_alone_by_default(self):
+        self._groupe("SUITES NUMERIQUES", "Suites numériques")
+        call_command("fusionner_tags_quasi_doublons", "--apply", stdout=StringIO())
+        self.assertEqual(Tag.objects.filter(name__icontains="suite").count(), 2)
+
+    def test_equivalent_savoirs_are_merged_on_request(self):
+        self._groupe("SUITES NUMERIQUES", "Suites numériques")
+        call_command("fusionner_tags_quasi_doublons", "--savoirs-equivalents", "--apply", stdout=StringIO())
+        self.assertEqual(Tag.objects.filter(name__icontains="suite").count(), 1)
+
+    def test_different_savoirs_stay_separate_even_on_request(self):
+        self._groupe("Suites numériques", "Statistiques descriptives")
+        call_command("fusionner_tags_quasi_doublons", "--savoirs-equivalents", "--apply", stdout=StringIO())
+        self.assertEqual(Tag.objects.filter(name__icontains="suite").count(), 2)
