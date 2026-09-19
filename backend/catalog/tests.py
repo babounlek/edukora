@@ -3625,7 +3625,7 @@ class QuestionIngestionTests(TestCase):
 
         self.assertIn("![Figure du corrigé](", exercise.questions.first().enonce_markdown)
 
-    def test_figure_without_fichier_is_dropped_with_incertitude_note(self):
+    def test_figure_without_fichier_is_dropped_without_incertitude_note(self):
         # Constaté en production (probatoire-c-d-chimie 2008/2011/2013-cameroun) : la
         # compétence décrit une figure qu'elle sait avoir existé sur le sujet source
         # (id + description) mais n'a pas pu en extraire une image exploitable (scan
@@ -3640,9 +3640,9 @@ class QuestionIngestionTests(TestCase):
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
         self.assertEqual(exercise.figures.count(), 0)
-        self.assertTrue(any("fig-1" in note for note in exercise.incertitudes))
+        self.assertEqual(exercise.incertitudes, [])
 
-    def test_figure_entry_as_bare_string_is_dropped_with_incertitude_note(self):
+    def test_figure_entry_as_bare_string_is_dropped_without_incertitude_note(self):
         # Constaté en production (bac-c-physique-2024, bac-d-physique-2019/2022-
         # cameroun, 9 fichiers) : la compétence a émis l'id de la figure comme simple
         # chaîne au lieu de l'objet {"id", "fichier", ...} attendu - même traitement
@@ -3652,7 +3652,7 @@ class QuestionIngestionTests(TestCase):
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
         self.assertEqual(exercise.figures.count(), 0)
-        self.assertTrue(any("fig-orpheline" in note for note in exercise.incertitudes))
+        self.assertEqual(exercise.incertitudes, [])
 
 
 class PhysiqueChimieClassificationTests(TestCase):

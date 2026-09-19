@@ -1015,7 +1015,7 @@ def _compress_figure_image(raw_bytes, filename):
     En cas d'échec (fichier corrompu, format non reconnu par Pillow) : retombe sur les
     octets et le nom de fichier d'origine plutôt que de faire échouer l'ingestion de
     tout l'exercice pour une seule figure - même philosophie que le reste de cette
-    fonction (voir sans_fichier/illisibles_indispensables dans _attach_figures) : la
+    fonction (voir illisibles_indispensables dans _attach_figures) : la
     qualité d'une figure est un problème pour un humain à trancher plus tard, jamais
     un motif de blocage automatique.
     """
@@ -1068,7 +1068,6 @@ def _attach_figures(exercise, figures_data, source_dir):
 
     questions = list(exercise.questions.all())
     illisibles_indispensables = []
-    sans_fichier = []
 
     for fig_data in figures_data:
         if isinstance(fig_data, str):
@@ -1080,7 +1079,6 @@ def _attach_figures(exercise, figures_data, source_dir):
             # donc traité identiquement : ignoré à l'ingestion plutôt que de faire
             # échouer tout l'exercice pour une figure qui n'était de toute façon pas
             # exploitable telle quelle.
-            sans_fichier.append(fig_data)
             continue
         filename = fig_data.get("fichier")
         fig_id = fig_data.get("id")
@@ -1094,10 +1092,10 @@ def _attach_figures(exercise, figures_data, source_dir):
             # référencée par un placeholder `![...]` dans enonce/corrige_markdown
             # (vérifié corpus-wide, 2026-08 : aucun des cas rencontrés ne s'appuie sur
             # l'image pour la lisibilité du texte), donc rien n'est perdu à l'ignorer
-            # plutôt qu'à faire échouer l'ingestion de tout l'exercice pour ça. Tracée
-            # dans les incertitudes (comme le filet "illisible" ci-dessous) pour qu'un
-            # humain puisse plus tard fournir l'image si elle s'avère nécessaire.
-            sans_fichier.append(fig_id)
+            plutôt qu'à faire échouer l'ingestion de tout l'exercice pour ça. Ce sont
+            # en pratique des tracés que le corrigé construit (diagramme de Fresnel,
+            # courbe à tracer...) plutôt que des images perdues du sujet : aucune
+            # trace dans les incertitudes (172 notes purgées le 2026-09-19).
             continue
 
         image_path = source_dir / filename
@@ -1163,15 +1161,6 @@ def _attach_figures(exercise, figures_data, source_dir):
         note = (
             f"Figure(s) indispensable(s) mais illisible(s) : {', '.join(illisibles_indispensables)} - "
             "questions dépendantes non fiables."
-        )
-        if note not in exercise.incertitudes:
-            exercise.incertitudes = [note, *exercise.incertitudes]
-            exercise.save(update_fields=["incertitudes"])
-
-    if sans_fichier:
-        note = (
-            f"Figure(s) décrite(s) dans le JSON source sans fichier image fourni, ignorée(s) à "
-            f"l'ingestion : {', '.join(sans_fichier)}."
         )
         if note not in exercise.incertitudes:
             exercise.incertitudes = [note, *exercise.incertitudes]
