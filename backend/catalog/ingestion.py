@@ -357,6 +357,24 @@ def _resolve_subject(matiere_raw, country):
         raise IngestionError(f"Subject introuvable en base pour le code {code!r} et le pays {country}.")
 
 
+def _refuser_informatique_generique_en_serie_ti(subject, cursus_list):
+    """
+    Décision utilisateur du 2026-09-17 : en Série TI, l'Informatique se décompose toujours
+    en Programmation, Systèmes d'Information ou Réseaux, Internet et Sécurité Informatique,
+    jamais « Informatique » générique (réservé au BEPC et au BAC C/D/E théorique). Refuser
+    à l'ingestion plutôt que de laisser une épreuve mal classée, à reprendre ensuite par
+    `corriger_ti_informatique_split` (une seule occurrence constatée, 2026-09-19).
+    """
+    if subject.code != "INFORMATIQUE":
+        return
+    if any(c.series_id is not None and c.series.code == "TI" for c in cursus_list):
+        raise IngestionError(
+            "Série TI : matiere ne peut pas être « Informatique » - utiliser « Programmation », "
+            "« Systèmes d'Information » ou « Réseaux, Internet et Sécurité Informatique » selon la "
+            "discipline réellement examinée.",
+        )
+
+
 def _subject_family_codes(code):
     """
     Tous les codes de Subject d'une même famille (ex. {PHYSIQUE, CHIMIE,
@@ -1256,6 +1274,7 @@ def ingest_exercise(data, source_dir=None, force=False):
             return existing, False
 
     cursus_list = _resolve_cursus_list(data["examen"], data.get("serie"), country)
+    _refuser_informatique_generique_en_serie_ti(subject, cursus_list)
 
     # Tout ce qui suit est all-or-nothing (y compris la création du Lesson s'il est
     # nouveau) : sans ce bloc, une IngestionError levée plus loin par _attach_figures
@@ -1369,6 +1388,7 @@ def ingest_exercise(data, source_dir=None, force=False):
         existing = Exercise.objects.filter(lesson=lesson, numero_exercice=numero_exercice).first()
         cours_par_external_id = {}
         competence_item_ids = []
+        themes_precedents = {}
         if existing:
             if not force:
                 return existing, False
@@ -1388,6 +1408,13 @@ def ingest_exercise(data, source_dir=None, force=False):
             # les items concernés avant suppression pour les rattacher au nouvel
             # Exercise recréé ci-dessous.
             competence_item_ids = list(existing.competence_items_generes.values_list("id", flat=True))
+            # Thèmes des sous-questions : une Question dont le JSON source n'en porte pas
+            # (thèmes attribués après coup, exercice existant seulement en base) les
+            # perdrait à la recréation. Restaurés plus bas, par numéro, quand le JSON n'en
+            # fournit pas.
+            themes_precedents = {
+                q.numero: list(q.themes.values_list("name", flat=True)) for q in existing.questions.all()
+            }
             # Chemins relevés avant suppression : Figure cascade avec l'Exercise (voir
             # catalog.models), mais Django ne supprime jamais le fichier physique d'un
             # FileField quand la ligne qui le porte disparaît - sans ça, chaque
@@ -1447,7 +1474,7 @@ def ingest_exercise(data, source_dir=None, force=False):
                 # précision par sous-question (voir Question.savoir_officiel).
                 savoir_officiel=savoir_officiel,
             )
-            themes = _get_or_create_tags(q_data.get("themes"))
+            themes = _get_or_create_tags(q_data.get("themes") or themes_precedents.get(question.numero))
             question.themes.set(themes)
             # Conservé en plus du rattachement direct ci-dessus : c'est ce lien-là qui fait
             # progresser le mapping des tags historiques, et les épreuves déjà en base n'ont
@@ -1686,6 +1713,7 @@ def ingest_cours(data, source_dir=None):
     country = lesson_source.cursus.first().country
     _validate_pays_matches_country(meta.get("pays"), country)
     subject = _resolve_subject(meta["matiere"], country)
+    _refuser_informatique_generique_en_serie_ti(subject, list(lesson_source.cursus.select_related("series")))
 
     # all-or-nothing, même raison que le bloc équivalent d'ingest_exercise : sans ce
     # bloc, une exception levée par compile_from_sections() (ex. une forme de section

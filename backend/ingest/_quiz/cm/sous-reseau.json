@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-sous-reseau-faible-0",
+    "theme": "sous-réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un administrateur veut découper le réseau de classe C **192.168.50.0/24** en **4 sous-réseaux** de taille égale. Combien de bits doit-il emprunter à la partie hôte ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEmprunter n bits à la partie hôte permet de créer 2ⁿ sous-réseaux. On cherche donc le plus petit n tel que 2ⁿ soit supérieur ou égal au nombre de sous-réseaux voulus.\n\n### Corrigé\n\n- n = 1 : 2¹ = 2 sous-réseaux (insuffisant)\n- n = 2 : 2² = 4 sous-réseaux (exactement ce qu'il faut)\n\nIl faut emprunter **2 bits** (le nouveau masque est /26). Réponse : **b**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "1 bit"},
+      {"lettre": "b", "texte": "2 bits"},
+      {"lettre": "c", "texte": "3 bits"},
+      {"lettre": "d", "texte": "4 bits"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10597]
+  },
+  {
+    "external_id": "cqc-sous-reseau-faible-1",
+    "theme": "sous-réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Écrire en notation décimale pointée les masques de sous-réseau suivants :\n\n1. /28\n2. /20",
+    "corrige_markdown": "### Rappel de méthode\n\nUn masque /n comporte n bits à 1 consécutifs suivis de 0. On remplit les octets un par un : un octet de huit 1 vaut 255, et un octet partiellement rempli se calcule en additionnant les poids 128, 64, 32, 16, ... des bits à 1.\n\n### Corrigé\n\n1. /28 : 3 octets pleins (24 bits) + 4 bits à 1 dans le dernier octet : 11110000 = 128 + 64 + 32 + 16 = 240. Masque : **255.255.255.240**.\n2. /20 : 2 octets pleins (16 bits) + 4 bits à 1 dans le troisième octet : 11110000 = 240. Masque : **255.255.240.0**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597]
+  },
+  {
+    "external_id": "cqc-sous-reseau-moyenne-2",
+    "theme": "sous-réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le réseau **195.24.8.0/24** est découpé avec le masque **255.255.255.192**. Quelle est l'adresse du sous-réseau auquel appartient l'hôte **195.24.8.150** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nAvec un masque dont le dernier octet vaut 256 − t, les sous-réseaux sont espacés d'un « pas » t dans ce dernier octet. L'adresse du sous-réseau d'un hôte est le plus grand multiple du pas inférieur ou égal à son dernier octet.\n\n### Corrigé\n\nMasque 255.255.255.192 : pas = 256 − 192 = 64. Les sous-réseaux sont 195.24.8.0, .64, .128 et .192. Comme 128 ≤ 150 < 192, l'hôte est dans le sous-réseau **195.24.8.128** (plage 128 à 191).\n\nVérification binaire : 150 = 10010110 ; ET avec 11000000 = 10000000 = 128. Réponse : **b**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "195.24.8.64"},
+      {"lettre": "b", "texte": "195.24.8.128"},
+      {"lettre": "c", "texte": "195.24.8.192"},
+      {"lettre": "d", "texte": "195.24.8.0"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10597, 7597]
+  },
+  {
+    "external_id": "cqc-sous-reseau-moyenne-3",
+    "theme": "sous-réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un lycée dispose du réseau de classe B **172.20.0.0** (masque par défaut). On veut le découper en **au moins 10 sous-réseaux** de même taille (le sous-réseau zéro est utilisable).\n\n1. Combien de bits faut-il emprunter ?\n2. Donner le nouveau masque en notation décimale pointée et en notation /n.\n3. Donner l'adresse du deuxième sous-réseau et l'adresse de diffusion du premier.\n4. Combien de machines chaque sous-réseau peut-il accueillir ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn emprunte n bits tels que 2ⁿ ≥ nombre de sous-réseaux voulu ; le masque s'allonge de n bits ; le pas entre sous-réseaux est la valeur du plus petit bit emprunté ; les hôtes par sous-réseau valent 2ʰ − 2 avec h le nombre de bits d'hôte restants.\n\n### Corrigé\n\n1. 2³ = 8 < 10 et 2⁴ = 16 ≥ 10 : il faut emprunter **4 bits**.\n2. Le masque par défaut /16 devient /20. Troisième octet : 11110000 = 240. Masque : **255.255.240.0 (/20)**.\n3. Pas dans le troisième octet : 256 − 240 = 16. Premier sous-réseau : 172.20.0.0 ; deuxième : **172.20.16.0**. Diffusion du premier : 172.20.15.255 (dernière adresse avant 172.20.16.0).\n4. Bits d'hôte : 32 − 20 = 12, soit 2¹² − 2 = 4096 − 2 = **4094 machines**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597, 9939]
+  },
+  {
+    "external_id": "cqc-sous-reseau-elevee-4",
+    "theme": "sous-réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un poste a pour adresse **172.16.83.14** et pour masque **255.255.252.0**. Quelle est l'adresse de diffusion (broadcast) de son sous-réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn calcule l'adresse réseau par un ET bit à bit entre l'adresse et le masque, puis l'adresse de diffusion en mettant à 1 tous les bits de la partie hôte (bits où le masque vaut 0). Seul l'octet où le masque n'est ni 255 ni 0 demande un calcul.\n\n### Corrigé\n\nMasque 255.255.252.0 = /22. Troisième octet : 83 = 01010011 et 252 = 11111100. ET : 01010000 = 80. Adresse réseau : 172.16.80.0.\n\nBits d'hôte du troisième octet : les 2 derniers, mis à 1 : 01010011 = 83. Tous les bits du quatrième octet à 1 : 255. Adresse de diffusion : **172.16.83.255**.\n\nVérification par le pas : 256 − 252 = 4, le sous-réseau va de 80 à 83 dans le troisième octet. Réponse : **a**.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "172.16.83.255"},
+      {"lettre": "b", "texte": "172.16.255.255"},
+      {"lettre": "c", "texte": "172.16.80.255"},
+      {"lettre": "d", "texte": "172.16.84.0"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [9939, 7597]
+  }
+]

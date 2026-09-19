@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-adresse-mac-faible-0",
+    "theme": "adresse MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Quelle est la taille d'une adresse MAC (adresse physique d'une carte réseau) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse MAC identifie une interface réseau au niveau de la couche liaison de données. Elle est codée sur 48 bits, soit 6 octets, et s'écrit en hexadécimal (12 chiffres hexadécimaux), par exemple avec des groupes de deux chiffres séparés par des tirets ou des deux-points.\n\n### Corrigé\n\nUne adresse MAC fait **48 bits (6 octets)**.\n\n- 32 bits est la taille d'une adresse IPv4.\n- 128 bits est la taille d'une adresse IPv6.\n- 64 bits ne correspond à aucune taille standard d'adresse MAC.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "32 bits (4 octets)"},
+      {"lettre": "b", "texte": "48 bits (6 octets)"},
+      {"lettre": "c", "texte": "64 bits (8 octets)"},
+      {"lettre": "d", "texte": "128 bits (16 octets)"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-adresse-mac-faible-1",
+    "theme": "adresse MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Parmi les valeurs suivantes, laquelle est une adresse MAC correctement écrite ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse MAC comporte 6 groupes de 2 chiffres hexadécimaux (0-9 et A-F), séparés par des tirets ou des deux-points. Il faut donc vérifier le nombre de groupes et que chaque caractère est un chiffre hexadécimal.\n\n### Corrigé\n\nLa bonne réponse est **00:1A:2B:3C:4D:5E** : 6 groupes de 2 chiffres hexadécimaux.\n\n- 00:1A:2B:3C:4D n'a que 5 groupes (40 bits au lieu de 48).\n- 172.16.5.20 est une adresse IPv4, écrite en décimal pointé.\n- 00:1G:2B:3C:4D:5E contient la lettre G, qui n'est pas un chiffre hexadécimal.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "00:1A:2B:3C:4D"},
+      {"lettre": "b", "texte": "172.16.5.20"},
+      {"lettre": "c", "texte": "00:1A:2B:3C:4D:5E"},
+      {"lettre": "d", "texte": "00:1G:2B:3C:4D:5E"}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-adresse-mac-moyenne-2",
+    "theme": "adresse MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un poste A (réseau 1) envoie des données à un serveur B (réseau 2). Les deux réseaux sont reliés par un unique routeur, et l'on suppose qu'aucune traduction d'adresse (NAT) n'est utilisée. Que devient l'adresse IP et l'adresse MAC dans les trames qui circulent entre A et B ?",
+    "corrige_markdown": "### Rappel de méthode\n\nL'adresse IP (couche réseau) identifie la source et la destination de bout en bout. L'adresse MAC (couche liaison) n'a de valeur que sur un lien local : à chaque traversée de routeur, la trame est reconstruite avec de nouvelles adresses MAC.\n\n### Corrigé\n\nLes adresses IP source (A) et destination (B) restent **inchangées** pendant tout le trajet. Les adresses MAC, elles, sont **remplacées à chaque saut** : entre A et le routeur, la trame porte la MAC de A et celle du routeur ; entre le routeur et B, elle porte la MAC du routeur (côté réseau 2) et celle de B.\n\nLa bonne réponse est donc la **b**.\n\n- a est faux : les MAC ne traversent pas un routeur.\n- c inverse les rôles des deux adresses.\n- d est faux : les adresses IP ne changent pas en l'absence de NAT.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "L'adresse IP et l'adresse MAC de A restent inchangées de bout en bout."},
+      {"lettre": "b", "texte": "Les adresses IP restent inchangées, mais les adresses MAC source et destination sont remplacées à la traversée du routeur."},
+      {"lettre": "c", "texte": "Les adresses IP sont remplacées par le routeur, mais les adresses MAC restent inchangées."},
+      {"lettre": "d", "texte": "Les adresses IP et les adresses MAC sont toutes remplacées par le routeur."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-adresse-mac-moyenne-3",
+    "theme": "adresse MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "La carte Ethernet d'un ordinateur portable a pour adresse MAC **3C-52-82-A1-07-FC**.\n\n1. Combien de bits et combien de chiffres hexadécimaux comporte cette adresse ?\n2. Quelle moitié de l'adresse identifie le constructeur de la carte ? Donner sa valeur.\n3. Pourquoi deux cartes réseau ne doivent-elles pas avoir la même adresse MAC sur un même réseau local ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse MAC (48 bits) se compose de deux moitiés de 24 bits : les 3 premiers octets forment l'identifiant du constructeur (OUI), les 3 derniers sont un numéro de série attribué par ce constructeur à chaque carte. C'est ce découpage qui garantit l'unicité mondiale.\n\n### Corrigé\n\n1. L'adresse comporte 6 octets, soit **48 bits**, écrits avec **12 chiffres hexadécimaux** (6 groupes de 2).\n2. La première moitié, **3C-52-82** (24 bits), identifie le constructeur ; la seconde, A1-07-FC, est le numéro propre à la carte.\n3. Sur un réseau local, les trames sont acheminées grâce à l'adresse MAC de destination. Si deux cartes avaient la même adresse, les trames qui leur sont destinées seraient reçues par les deux machines (ou mal aiguillées par les commutateurs) : la communication serait perturbée. L'unicité de l'adresse MAC permet d'identifier sans ambiguïté chaque interface.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-adresse-mac-elevee-4",
+    "theme": "adresse MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans un réseau local Ethernet, le poste A (adresse IP 192.168.5.10) veut envoyer un message au poste B (adresse IP 192.168.5.20). Il connaît l'adresse IP de B mais pas son adresse MAC.\n\n1. Pourquoi A a-t-il besoin de l'adresse MAC de B pour envoyer la trame ?\n2. Décrire comment A obtient l'adresse MAC de B (nom du protocole, adresse MAC de destination de la requête, réponse).\n3. Où A conserve-t-il ensuite cette information ?",
+    "corrige_markdown": "### Rappel de méthode\n\nSur un réseau local, une trame est livrée grâce aux adresses MAC (couche 2), alors que les applications désignent les machines par leurs adresses IP (couche 3). Le protocole ARP (Address Resolution Protocol) fait la correspondance IP vers MAC : une requête est diffusée à tout le réseau, et seule la machine concernée répond.\n\n### Corrigé\n\n1. Les commutateurs et les cartes réseau n'examinent que l'adresse MAC de destination de la trame ; l'adresse IP seule ne permet pas de la livrer sur le réseau local.\n2. A utilise le protocole **ARP**. Il émet une requête du type « Qui possède l'adresse 192.168.5.20 ? » en **diffusion**, avec l'adresse MAC de destination **FF-FF-FF-FF-FF-FF** (tous les bits à 1), donc reçue par tous les postes du réseau. Seul B reconnaît son adresse IP et répond directement à A (en unicast) en indiquant sa propre adresse MAC.\n3. A enregistre la correspondance 192.168.5.20 / adresse MAC de B dans sa **table (cache) ARP**, ce qui lui évite de rediffuser une requête pour les envois suivants.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596, 10587]
+  }
+]

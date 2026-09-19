@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-csma-cd-faible-0",
+    "theme": "CSMA/CD",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Que signifie le sigle CSMA/CD, méthode d'accès utilisée par Ethernet ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn sigle réseau se décompose mot à mot : CSMA/CD associe l'écoute de la porteuse (avant d'émettre) et la détection des collisions (pendant l'émission).\n\n### Corrigé\n\nCSMA/CD = *Carrier Sense Multiple Access with Collision Detection* : accès multiple avec écoute de la porteuse et détection de collision. La bonne réponse est **a)**.\n\n- b) désigne CSMA/CA (*Collision Avoidance*), méthode utilisée par le Wi-Fi, qui évite les collisions au lieu de les détecter.\n- c) et d) sont des expressions inventées, qui ne correspondent à aucune méthode d'accès.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Carrier Sense Multiple Access with Collision Detection"},
+      {"lettre": "b", "texte": "Carrier Sense Multiple Access with Collision Avoidance"},
+      {"lettre": "c", "texte": "Central Server Multiple Access with Cable Detection"},
+      {"lettre": "d", "texte": "Circuit Switched Multiple Access with Collision Detection"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-csma-cd-faible-1",
+    "theme": "CSMA/CD",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une station Ethernet qui utilise CSMA/CD a une trame à envoyer. Que fait-elle en tout premier lieu ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe « CS » de CSMA/CD (*Carrier Sense*) signifie qu'une station écoute le support avant de parler : elle n'émet que si aucun signal n'y circule déjà.\n\n### Corrigé\n\nLa station **écoute le support** et n'émet que s'il est libre : réponse **b)**.\n\n- a) faux : émettre sans écouter multiplierait les collisions ; la détection de collision intervient pendant l'émission, pas à la place de l'écoute.\n- c) faux : le jeton est le principe du Token Ring, pas d'Ethernet.\n- d) faux : l'échange RTS/CTS relève du CSMA/CA (Wi-Fi).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Elle émet aussitôt, puis vérifie s'il y a eu une collision."},
+      {"lettre": "b", "texte": "Elle écoute le support pour vérifier qu'aucune autre station n'émet."},
+      {"lettre": "c", "texte": "Elle attend de recevoir un jeton avant d'émettre."},
+      {"lettre": "d", "texte": "Elle envoie une demande RTS et attend un CTS de la destination."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10587]
+  },
+  {
+    "external_id": "cqc-csma-cd-moyenne-2",
+    "theme": "CSMA/CD",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans un atelier d'un lycée technique, douze ordinateurs sont reliés par des câbles à paires torsadées (connecteurs RJ45) à un même concentrateur (hub) Ethernet classique.\n\n1. Donner la topologie physique de ce réseau.\n2. Donner sa topologie logique et expliquer pourquoi elle diffère de la topologie physique.\n3. Décrire comment les stations se partagent l'accès au support dans cette topologie logique.",
+    "corrige_markdown": "### Rappel de méthode\n\nOn distingue la topologie physique (disposition réelle des câbles et équipements) de la topologie logique (façon dont les données circulent et dont les stations accèdent au support). Un hub se contente de répéter chaque signal reçu vers tous ses ports.\n\n### Corrigé\n\n1. Topologie physique : **étoile**, chaque machine étant reliée par son propre câble au hub central.\n2. Topologie logique : **bus**. Le hub répète les signaux vers tous les ports : toutes les stations reçoivent toutes les trames et partagent de fait un seul support, comme sur un câble coaxial en bus. La disposition des câbles (étoile) ne dit donc rien de la façon dont les données circulent.\n3. Le support étant partagé, Ethernet emploie **CSMA/CD** : la station écoute le support avant d'émettre ; si deux stations émettent en même temps, la collision est détectée, les deux arrêtent leur émission et retentent après une attente aléatoire.\n\nRemarque : avec un commutateur (switch) en full-duplex, chaque port est un lien dédié et les collisions n'existent plus ; le raisonnement ci-dessus décrit le modèle Ethernet partagé (hub ou bus).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-csma-cd-moyenne-3",
+    "theme": "CSMA/CD",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Deux stations d'un segment Ethernet partagé commencent à émettre presque en même temps, et leurs signaux entrent en collision. Que se passe-t-il ensuite avec la méthode CSMA/CD ?",
+    "corrige_markdown": "### Rappel de méthode\n\nAprès une collision, CSMA/CD impose : (1) l'arrêt immédiat de l'émission, (2) l'envoi d'un court signal de brouillage pour que toutes les stations sachent qu'il y a eu collision, (3) une attente d'une durée aléatoire (algorithme de recul exponentiel binaire) avant de retenter.\n\n### Corrigé\n\nLa bonne réponse est **c)**.\n\n- a) faux : retransmettre immédiatement provoquerait presque sûrement une nouvelle collision.\n- b) faux : il n'existe pas de station prioritaire en Ethernet ; les deux stations arrêtent leur émission.\n- d) faux : si les deux attendaient exactement la même durée fixe, elles retenteraient au même instant et entreraient de nouveau en collision ; c'est le caractère aléatoire du délai qui les départage.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Les deux stations retransmettent aussitôt leur trame pour ne pas perdre de temps."},
+      {"lettre": "b", "texte": "La station ayant la plus petite adresse MAC continue d'émettre, l'autre abandonne définitivement."},
+      {"lettre": "c", "texte": "Les deux stations interrompent leur émission, puis chacune retente après un délai d'attente aléatoire."},
+      {"lettre": "d", "texte": "Les deux stations attendent la même durée fixe, définie par le standard, avant de retenter."}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [10596, 10587]
+  },
+  {
+    "external_id": "cqc-csma-cd-elevee-4",
+    "theme": "CSMA/CD",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Sur un segment Ethernet partagé à 10 Mbit/s, le temps maximal d'aller-retour d'un signal entre les deux stations les plus éloignées est de 40 µs. Une station veut émettre une trame de 40 octets.\n\n1. Calculer la durée d'émission de cette trame.\n2. La station détectera-t-elle à coup sûr une collision survenue à l'autre extrémité du segment ? Justifier.\n3. Calculer la taille minimale (en octets) qu'une trame doit avoir pour que CSMA/CD fonctionne sur ce segment. Le standard Ethernet impose 64 octets : comment cela se situe-t-il par rapport à ce calcul ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour qu'une station détecte une collision, elle doit encore être en train d'émettre quand le signal de collision lui revient. La durée d'émission d'une trame doit donc être au moins égale au temps d'aller-retour maximal du signal sur le segment. Durée d'émission = nombre de bits / débit.\n\n### Corrigé\n\n1. 40 octets = 320 bits. À 10 Mbit/s : 320 / (10 × 10^6) = 32 × 10^-6 s = **32 µs**.\n2. Le temps d'aller-retour maximal est de 40 µs, or 32 µs < 40 µs : la station a **fini d'émettre** avant que la trace de la collision ne lui revienne. Elle ne détectera donc pas la collision et croira sa trame bien transmise : la collision n'est pas garantie d'être détectée.\n3. Il faut une durée d'émission d'au moins 40 µs, soit 10 × 10^6 × 40 × 10^-6 = 400 bits = **50 octets** au minimum. Le standard impose 64 octets (512 bits, soit 51,2 µs à 10 Mbit/s), valeur supérieure à ce minimum : cette marge permet des segments un peu plus longs que dans cet exemple.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596, 10587]
+  }
+]

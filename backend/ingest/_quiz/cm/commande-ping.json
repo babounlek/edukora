@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-commande-ping-faible-0",
+    "theme": "commande PING",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "À quoi sert la commande `ping` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa commande `ping` est un outil de diagnostic : elle envoie de petits messages à une machine cible et attend une réponse. Elle permet de savoir si la machine est joignable et de mesurer le temps de réponse (latence) ainsi que les éventuelles pertes.\n\n### Corrigé\n\nLa bonne réponse est **c**.\n\n- a décrit la commande `ipconfig` (configuration IP locale).\n- b décrit la commande `tracert` (chemin suivi à travers les routeurs).\n- d décrit le rôle d'un serveur DHCP.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Afficher l'adresse IP, le masque et la passerelle de la machine locale."},
+      {"lettre": "b", "texte": "Afficher la liste des routeurs traversés pour atteindre une destination."},
+      {"lettre": "c", "texte": "Vérifier qu'une machine est joignable sur le réseau et mesurer son temps de réponse."},
+      {"lettre": "d", "texte": "Attribuer une adresse IP à une machine du réseau."}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [10583, 10596]
+  },
+  {
+    "external_id": "cqc-commande-ping-faible-1",
+    "theme": "commande PING",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Quand on exécute `ping`, la machine émet des messages « Echo Request » et attend des messages « Echo Reply ». À quel protocole appartiennent ces messages ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa commande `ping` ne transporte pas de données d'application : elle s'appuie sur ICMP (Internet Control Message Protocol), protocole de la couche réseau dédié aux messages de contrôle et d'erreur, qui n'utilise ni TCP ni UDP.\n\n### Corrigé\n\nLa bonne réponse est **d** : **ICMP**. La requête est un message ICMP « Echo Request » ; la machine joignable répond par un message ICMP « Echo Reply ».\n\n- TCP et UDP sont des protocoles de transport qui acheminent des données d'application ; ping n'en utilise aucun.\n- DHCP sert à attribuer des adresses IP, pas à tester la connectivité.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "TCP"},
+      {"lettre": "b", "texte": "UDP"},
+      {"lettre": "c", "texte": "DHCP"},
+      {"lettre": "d", "texte": "ICMP"}
+    ],
+    "reponse_correcte": "d",
+    "source_exercises": [10596, 10583]
+  },
+  {
+    "external_id": "cqc-commande-ping-moyenne-2",
+    "theme": "commande PING",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un technicien exécute `ping 10.5.0.9` et obtient à la fin :\n\n```\nStatistiques Ping pour 10.5.0.9 :\n    Paquets : envoyés = 8, reçus = 6, perdus = 2\nDurée approximative des boucles en millisecondes :\n    Minimum = 12ms, Maximum = 48ms, Moyenne = 27ms\n```\n\nQuel est le pourcentage de paquets perdus ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe taux de perte se calcule par rapport au nombre de paquets **envoyés** : perte (%) = paquets perdus ÷ paquets envoyés × 100. Les délais (minimum, maximum, moyenne) mesurent la latence et ne servent pas à calculer la perte.\n\n### Corrigé\n\nPerte = 2 ÷ 8 × 100 = **25 %** (la réponse **a**). Vérification : 6 reçus sur 8 envoyés font 75 % de réussite, donc 25 % de perte.\n\n- b (2 %) confond le nombre de paquets perdus avec un pourcentage.\n- c (33 %) vient de la division par les paquets reçus (2 ÷ 6) au lieu des paquets envoyés.\n- d (75 %) est le taux de paquets reçus.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "25 %"},
+      {"lettre": "b", "texte": "2 %"},
+      {"lettre": "c", "texte": "33 %"},
+      {"lettre": "d", "texte": "75 %"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [10596, 10583]
+  },
+  {
+    "external_id": "cqc-commande-ping-moyenne-3",
+    "theme": "commande PING",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un élève exécute `ping 192.168.10.25` et obtient quatre fois le message « Délai d'attente de la demande dépassé ». Il en conclut : « la machine 192.168.10.25 est éteinte ».\n\nSa conclusion est-elle nécessairement exacte ? Justifier en donnant au moins trois causes possibles de cette absence de réponse.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn ping réussi prouve que l'hôte est joignable ; un ping sans réponse ne prouve pas à lui seul que l'hôte est éteint. Il signale seulement qu'aucun « Echo Reply » n'est revenu, ce qui peut avoir plusieurs causes qu'il faut examiner une à une.\n\n### Corrigé\n\nLa conclusion **n'est pas nécessairement exacte**. Absence de réponse possible pour plusieurs raisons :\n\n- la machine est effectivement éteinte ou déconnectée du réseau ;\n- un **pare-feu** (sur la machine cible ou sur le trajet) bloque les messages ICMP, alors que la machine fonctionne ;\n- l'adresse saisie est **erronée** ou la machine se trouve dans un autre réseau non joignable (mauvaise passerelle, absence de route) ;\n- un problème physique ou de configuration (câble, commutateur, masque de sous-réseau incorrect).\n\nPour affiner le diagnostic, il faut tester d'autres éléments (voisins, passerelle) plutôt que de conclure sur un seul ping.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10583, 10587]
+  },
+  {
+    "external_id": "cqc-commande-ping-elevee-4",
+    "theme": "commande PING",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un utilisateur ne parvient plus à ouvrir de site web depuis son poste (adresse 192.168.0.34, passerelle 192.168.0.1). Le technicien effectue les tests suivants :\n\n- `ping 127.0.0.1` : réponses normales ;\n- `ping 192.168.0.1` : réponses normales ;\n- `ping 8.8.8.8` (serveur public sur Internet) : réponses normales ;\n- `ping www.exemple.cm` : message « La requête Ping n'a pas pu trouver l'hôte www.exemple.cm ».\n\n1. Que teste chacun des trois premiers pings ?\n2. Quelle est la cause la plus probable de la panne ? Justifier.\n3. Que doit vérifier le technicien en priorité ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn diagnostique une panne du plus proche au plus lointain : d'abord la pile réseau locale (127.0.0.1), puis le réseau local et la passerelle, puis une machine distante par son adresse IP, enfin par son nom. Si les tests par adresse IP réussissent mais que le test par nom échoue, le problème est la résolution de noms (DNS), pas la connectivité IP.\n\n### Corrigé\n\n1. `ping 127.0.0.1` teste la pile TCP/IP de la machine elle-même (adresse de bouclage, sans passer par le câble). `ping 192.168.0.1` teste la liaison avec la passerelle sur le réseau local. `ping 8.8.8.8` teste la sortie vers Internet par une adresse IP, donc la passerelle et le routage.\n2. Les trois premiers tests réussissent : la connectivité IP jusqu'à Internet est bonne. Seul le test par **nom** échoue, avec un message d'hôte introuvable : la cause la plus probable est un problème de **résolution de noms (DNS)**, car le nom n'est pas converti en adresse IP.\n3. Il doit vérifier l'adresse du **serveur DNS** configurée sur le poste (souvent fournie par le DHCP) et l'accessibilité de ce serveur, puis corriger la configuration.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10583, 10587, 10596]
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-adresse-ip-faible-0",
+    "theme": "adresse IP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien configure un poste avec l'adresse IPv4 **172.20.5.9**. À quelle classe d'adresses appartient cette adresse ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa classe d'une adresse IPv4 se déduit de son premier octet : 1 à 126 pour la classe A, 128 à 191 pour la classe B, 192 à 223 pour la classe C (224 à 239 : classe D, multidiffusion).\n\n### Corrigé\n\nLe premier octet de 172.20.5.9 vaut 172, valeur comprise entre 128 et 191 : l'adresse est de **classe B** (masque par défaut 255.255.0.0). Réponse : **b**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Classe A"},
+      {"lettre": "b", "texte": "Classe B"},
+      {"lettre": "c", "texte": "Classe C"},
+      {"lettre": "d", "texte": "Classe D"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [9944]
+  },
+  {
+    "external_id": "cqc-adresse-ip-faible-1",
+    "theme": "adresse IP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour chacune des adresses IPv4 suivantes, indiquer si elle est **privée** ou **publique** :\n\n1. 10.4.6.2\n2. 172.31.0.9\n3. 172.32.0.9\n4. 192.169.1.5",
+    "corrige_markdown": "### Rappel de méthode\n\nTrois plages sont réservées aux adresses privées (non routables sur Internet) : 10.0.0.0 à 10.255.255.255, 172.16.0.0 à 172.31.255.255 et 192.168.0.0 à 192.168.255.255. Toute autre adresse unicast est publique. Il faut comparer les octets significatifs de chaque plage, pas seulement le premier.\n\n### Corrigé\n\n1. 10.4.6.2 : premier octet 10, donc dans 10.0.0.0/8 : **privée**.\n2. 172.31.0.9 : deuxième octet 31, compris entre 16 et 31 : **privée**.\n3. 172.32.0.9 : deuxième octet 32, hors de la plage 16 à 31 : **publique**.\n4. 192.169.1.5 : la plage privée est 192.168.x.x, or ici le deuxième octet vaut 169 : **publique**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9944, 7597]
+  },
+  {
+    "external_id": "cqc-adresse-ip-moyenne-2",
+    "theme": "adresse IP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une machine possède l'adresse IPv4 **130.45.200.17** et utilise le masque par défaut de sa classe. Quelle affirmation est correcte ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe masque par défaut découpe l'adresse en partie réseau et partie hôte : classe A, 1 octet de réseau (255.0.0.0) ; classe B, 2 octets (255.255.0.0) ; classe C, 3 octets (255.255.255.0). L'adresse réseau s'obtient en mettant la partie hôte à 0.\n\n### Corrigé\n\nLe premier octet est 130, compris entre 128 et 191 : classe B, masque 255.255.0.0. Les deux premiers octets forment le réseau : **130.45.0.0** ; les deux derniers, **200.17**, identifient l'hôte. Réponse : **b**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Réseau 130.45.200.0, hôte 17"},
+      {"lettre": "b", "texte": "Réseau 130.45.0.0, hôte 200.17"},
+      {"lettre": "c", "texte": "Réseau 130.0.0.0, hôte 45.200.17"},
+      {"lettre": "d", "texte": "Réseau 130.45.200.17, hôte 0"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [7597, 9944]
+  },
+  {
+    "external_id": "cqc-adresse-ip-moyenne-3",
+    "theme": "adresse IP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Deux postes d'un même établissement ont les adresses IPv4 **172.16.5.10** et **172.16.9.200**. Aucun découpage en sous-réseaux n'a été fait : chaque poste utilise le masque par défaut de sa classe.\n\n1. Ces deux postes sont-ils dans le même réseau ? Justifier.\n2. Donner l'adresse de diffusion (broadcast) de ce réseau.",
+    "corrige_markdown": "### Rappel de méthode\n\nDeux machines sont dans le même réseau si leurs parties réseau (déterminées par le masque) sont identiques. L'adresse de diffusion s'obtient en mettant tous les bits de la partie hôte à 1.\n\n### Corrigé\n\n1. Premier octet 172 : classe B, masque par défaut 255.255.0.0. La partie réseau comprend les deux premiers octets : 172.16 pour les deux machines. Elles sont donc **dans le même réseau (172.16.0.0)**, malgré des troisièmes octets différents (5 et 9), car ceux-ci appartiennent à la partie hôte. Elles communiquent directement, sans routeur.\n2. La partie hôte occupe les deux derniers octets, tous mis à 1 : adresse de diffusion **172.16.255.255**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7597]
+  },
+  {
+    "external_id": "cqc-adresse-ip-elevee-4",
+    "theme": "adresse IP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une interface réseau est configurée avec l'adresse IPv4 écrite en binaire : **10101100.00011001.00000110.00001010**. Quelle est la classe et la nature (privée ou publique) de cette adresse ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour classer une adresse écrite en binaire, on la convertit d'abord en notation décimale pointée (chaque octet = somme des poids 128, 64, 32, 16, 8, 4, 2, 1 des bits à 1), puis on applique les plages de classes et de plages privées.\n\n### Corrigé\n\n- 10101100 = 128 + 32 + 8 + 4 = 172\n- 00011001 = 16 + 8 + 1 = 25\n- 00000110 = 4 + 2 = 6\n- 00001010 = 8 + 2 = 10\n\nAdresse : **172.25.6.10**. Premier octet 172 (entre 128 et 191) : classe B. Le deuxième octet 25 est compris entre 16 et 31 : l'adresse appartient à la plage privée 172.16.0.0 à 172.31.255.255. Réponse : **a** (classe B, privée).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Classe B, adresse privée"},
+      {"lettre": "b", "texte": "Classe B, adresse publique"},
+      {"lettre": "c", "texte": "Classe C, adresse privée"},
+      {"lettre": "d", "texte": "Classe A, adresse publique"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [9944, 7597]
+  }
+]

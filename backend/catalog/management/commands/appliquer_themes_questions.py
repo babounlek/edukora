@@ -16,6 +16,7 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.utils import timezone
 from django.db.models import Count
 
 from catalog.ingestion import IngestionError, _get_or_create_tags
@@ -68,6 +69,9 @@ class Command(BaseCommand):
                 except IngestionError as exc:
                     raise CommandError(f"Question {pk} : {exc}") from exc
                 question.themes.add(*tags)
+                # Ajouter un thème (M2M) ne touche pas `updated_at` : sans ça, le tunnel de
+                # validation (périmètre par date de modification) ne verrait jamais ces questions.
+                Question.objects.filter(pk=question.pk).update(updated_at=timezone.now())
                 nouveaux.update(t.name for t in tags)
                 appliquees += 1
             if options["dry_run"]:

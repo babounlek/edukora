@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-ipconfig-all-faible-0",
+    "theme": "ipconfig /all",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien veut relever, sur un poste Windows, l'adresse physique (adresse MAC) de la carte réseau, ainsi que l'état d'activation du DHCP. Quelle commande doit-il saisir dans l'invite de commandes ?",
+    "corrige_markdown": "### Rappel de méthode\n\nSous Windows, `ipconfig` seule n'affiche que l'essentiel de la configuration IP (adresse IPv4, masque, passerelle). Pour obtenir les informations détaillées (adresse physique, état du DHCP, serveurs DNS, bail), on ajoute l'option `/all`.\n\n### Corrigé\n\nL'adresse physique et l'état du DHCP ne figurent que dans l'affichage détaillé : la bonne réponse est **b) `ipconfig /all`**.\n\n- `ipconfig` seule : n'affiche pas l'adresse physique.\n- `ipconfig /release` : libère le bail DHCP (l'adresse IP obtenue est abandonnée), elle n'affiche pas de détails.\n- `ipconfig /flushdns` : vide le cache du résolveur DNS local.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "`ipconfig`"},
+      {"lettre": "b", "texte": "`ipconfig /all`"},
+      {"lettre": "c", "texte": "`ipconfig /release`"},
+      {"lettre": "d", "texte": "`ipconfig /flushdns`"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10596]
+  },
+  {
+    "external_id": "cqc-ipconfig-all-moyenne-1",
+    "theme": "ipconfig /all",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans un cybercafé de Bafoussam, on exécute `ipconfig /all` sur un poste et on obtient (extrait) :\n\n```\nCarte Ethernet Ethernet :\n\n   Description . . . . . . . . . . : Realtek PCIe GbE Family Controller\n   Adresse physique . . . . . . . . : 5C-BA-EF-12-A4-7D\n   DHCP activé . . . . . . . . . . : Oui\n   Adresse IPv4. . . . . . . . . . : 192.168.10.37(préféré)\n   Masque de sous-réseau. . . . . . : 255.255.255.0\n   Bail obtenu. . . . . . . . . . . : lundi 12 mai 2025 08:15:02\n   Bail expirant. . . . . . . . . . : lundi 12 mai 2025 16:15:02\n   Passerelle par défaut. . . . . . : 192.168.10.1\n   Serveur DHCP . . . . . . . . . . : 192.168.10.2\n   Serveurs DNS. . . . . . . . . . . : 192.168.10.2\n                                       8.8.8.8\n```\n\nÀ partir de cet affichage :\n\n1. Relever l'adresse physique de la carte, l'adresse IP du poste et l'adresse de la passerelle.\n2. Le poste a-t-il une configuration IP statique ou dynamique ? Justifier.\n3. Quelle est la durée du bail DHCP ?\n4. Donner l'adresse du réseau et l'adresse de diffusion (broadcast) auxquelles appartient ce poste.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans la sortie de `ipconfig /all`, chaque ligne correspond à un paramètre précis : « Adresse physique » = adresse MAC ; « DHCP activé » indique le mode d'attribution de l'adresse ; « Bail obtenu / expirant » donne la durée de validité de l'adresse ; l'adresse de réseau s'obtient en appliquant le masque à l'adresse IP (ET logique bit à bit).\n\n### Corrigé\n\n1. Adresse physique : **5C-BA-EF-12-A4-7D** ; adresse IP : **192.168.10.37** ; passerelle par défaut : **192.168.10.1**.\n2. La ligne « DHCP activé : Oui » et la présence d'un « Serveur DHCP » et d'un bail montrent que la configuration est **dynamique** (adresse attribuée par le serveur DHCP 192.168.10.2).\n3. Bail : de 08:15:02 à 16:15:02, soit une durée de **8 heures**.\n4. Masque 255.255.255.0 (/24) : les trois premiers octets identifient le réseau. Adresse de réseau : **192.168.10.0** ; adresse de diffusion : **192.168.10.255**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596]
+  },
+  {
+    "external_id": "cqc-ipconfig-all-moyenne-2",
+    "theme": "ipconfig /all",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Sur un poste d'un laboratoire, `ipconfig /all` donne (extrait) :\n\n```\nCarte Ethernet Ethernet :\n\n   Adresse physique . . . . . . . . : 00-1B-44-11-3A-B6\n   DHCP activé . . . . . . . . . . : Non\n   Adresse IPv4. . . . . . . . . . : 172.16.5.20(préféré)\n   Masque de sous-réseau. . . . . . : 255.255.255.0\n   Passerelle par défaut. . . . . . : 172.16.6.1\n   Serveurs DNS. . . . . . . . . . . : 172.16.5.10\n```\n\nCe poste communique correctement avec les autres machines du laboratoire mais n'arrive à joindre aucun serveur extérieur au laboratoire. Quelle est la cause la plus probable, d'après cet affichage ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour sortir de son réseau local, un poste envoie ses paquets à la passerelle par défaut, qui doit obligatoirement se trouver dans le même réseau que lui. Pour le vérifier, on compare l'adresse de réseau de l'adresse IP et celle de la passerelle, en appliquant le même masque.\n\n### Corrigé\n\nAvec le masque 255.255.255.0, le poste est dans le réseau **172.16.5.0**, alors que la passerelle 172.16.6.1 est dans le réseau **172.16.6.0** : elle n'est donc pas joignable directement. La bonne réponse est **b)**.\n\n- a) faux : un DHCP désactivé signifie seulement que la configuration est manuelle ; elle fonctionne très bien (le poste communique avec les machines locales).\n- c) faux : 255.255.255.0 est un masque valide ; on peut utiliser un masque /24 sur n'importe quelle plage d'adresses.\n- d) faux : 172.16.5.20 est bien une adresse privée (plage 172.16.0.0 à 172.31.255.255), ce qui n'empêche pas d'accéder à l'extérieur via une passerelle.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Le DHCP est désactivé, ce qui interdit toute communication réseau."},
+      {"lettre": "b", "texte": "La passerelle par défaut n'appartient pas au même réseau que le poste."},
+      {"lettre": "c", "texte": "Le masque 255.255.255.0 est invalide pour une adresse commençant par 172."},
+      {"lettre": "d", "texte": "L'adresse 172.16.5.20 est une adresse publique, donc bloquée par les routeurs."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10596]
+  },
+  {
+    "external_id": "cqc-ipconfig-all-elevee-3",
+    "theme": "ipconfig /all",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un ordinateur portable est branché par câble au réseau d'un lycée et connecté en Wi-Fi à un téléphone. Après `ipconfig /all`, on lit (extrait) :\n\n```\nCarte Ethernet Ethernet :\n\n   Adresse physique . . . . . . . . : 8C-16-45-A0-2E-91\n   DHCP activé . . . . . . . . . . : Oui\n   Adresse d'autoconfiguration IPv4 : 169.254.31.8(préféré)\n   Masque de sous-réseau. . . . . . : 255.255.0.0\n   Passerelle par défaut. . . . . . :\n   Serveur DHCP . . . . . . . . . . :\n\nCarte réseau sans fil Wi-Fi :\n\n   Adresse physique . . . . . . . . : 8C-16-45-A0-2E-92\n   DHCP activé . . . . . . . . . . : Oui\n   Adresse IPv4. . . . . . . . . . : 192.168.43.112(préféré)\n   Masque de sous-réseau. . . . . . : 255.255.255.0\n   Passerelle par défaut. . . . . . : 192.168.43.1\n   Serveur DHCP . . . . . . . . . . : 192.168.43.1\n```\n\n1. Expliquer pourquoi la carte Ethernet possède une adresse en 169.254.x.x alors que le DHCP est activé.\n2. Quelle sera la conséquence pour la communication avec Internet et avec les autres machines du réseau du lycée ?\n3. Proposer une démarche de dépannage, avec les commandes utiles, une fois le problème matériel ou serveur résolu.",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand un client configuré en DHCP ne reçoit aucune réponse d'un serveur DHCP, Windows lui attribue lui-même une adresse dite d'auto-configuration (APIPA) dans la plage 169.254.0.0/16, sans passerelle ni serveur DHCP. Une telle adresse est le signe d'un DHCP injoignable, pas d'une configuration manuelle.\n\n### Corrigé\n\n1. La carte Ethernet a demandé une adresse IP mais **aucun serveur DHCP n'a répondu** (câble ou prise défaillant, port du commutateur inactif, serveur DHCP arrêté ou hors de portée). Windows a alors utilisé l'auto-configuration : 169.254.31.8 / 255.255.0.0. Les champs « Passerelle par défaut » et « Serveur DHCP » sont vides, ce qui confirme le diagnostic.\n2. Cette adresse n'est valable que sur le lien local et il n'y a pas de passerelle : **aucun accès à Internet** ni aux machines du réseau du lycée (qui sont dans un autre plan d'adressage). Seules des machines elles-mêmes en 169.254.x.x sur le même segment pourraient être jointes. Le portable garde un accès à Internet uniquement via l'autre carte (Wi-Fi, 192.168.43.112).\n3. Démarche : vérifier le câble, la prise et le voyant du port du commutateur ; vérifier que le serveur DHCP fonctionne ; puis, sur le poste, `ipconfig /release` (abandon de l'adresse actuelle) suivi de `ipconfig /renew` (nouvelle demande DHCP) et enfin `ipconfig /all` pour contrôler qu'une adresse valide, une passerelle et un serveur DHCP apparaissent.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596]
+  }
+]

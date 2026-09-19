@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-adresse-de-diffusion-faible-0",
+    "theme": "adresse de diffusion",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un poste du réseau d'un lycée a l'adresse IP **172.20.9.37** et le masque **255.255.255.0**. Quelle est l'adresse de diffusion (broadcast) de son réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nL'adresse de diffusion d'un réseau s'obtient en mettant à 1 tous les bits de la partie hôte. Avec le masque 255.255.255.0, la partie hôte est le dernier octet, qui prend donc la valeur 11111111 en binaire, soit 255.\n\n### Corrigé\n\nLe masque 255.255.255.0 fixe la partie réseau sur les trois premiers octets : 172.20.9. La partie hôte est le dernier octet, mis à 255 : l'adresse de diffusion est **172.20.9.255**.\n\n- 172.20.9.254 est la dernière adresse utilisable par une machine, pas l'adresse de diffusion.\n- 172.20.255.255 correspondrait à un masque 255.255.0.0.\n- 172.20.9.0 est l'adresse du réseau (bits hôtes à 0).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "172.20.9.255"},
+      {"lettre": "b", "texte": "172.20.9.254"},
+      {"lettre": "c", "texte": "172.20.255.255"},
+      {"lettre": "d", "texte": "172.20.9.0"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [9944, 9939]
+  },
+  {
+    "external_id": "cqc-adresse-de-diffusion-faible-1",
+    "theme": "adresse de diffusion",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un réseau d'entreprise a pour adresse **10.6.0.0** et pour masque **255.255.0.0**. Quelle est son adresse de diffusion ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn met à 1 tous les bits laissés à 0 par le masque (la partie hôte). Chaque octet du masque égal à 0 correspond à un octet de l'adresse de diffusion égal à 255 ; chaque octet du masque égal à 255 est recopié depuis l'adresse réseau.\n\n### Corrigé\n\nLe masque 255.255.0.0 laisse les deux premiers octets à la partie réseau (10.6) et les deux derniers à la partie hôte, qui passent à 255 : l'adresse de diffusion est **10.6.255.255**.\n\n- 10.6.0.255 ne met à 1 que le dernier octet, ce qui conviendrait à un masque 255.255.255.0.\n- 10.255.255.255 correspondrait à un masque 255.0.0.0.\n- 10.6.255.254 est la dernière adresse utilisable, pas l'adresse de diffusion.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "10.6.0.255"},
+      {"lettre": "b", "texte": "10.6.255.255"},
+      {"lettre": "c", "texte": "10.255.255.255"},
+      {"lettre": "d", "texte": "10.6.255.254"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [9944, 9939]
+  },
+  {
+    "external_id": "cqc-adresse-de-diffusion-moyenne-2",
+    "theme": "adresse de diffusion",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un ordinateur a l'adresse IP **192.168.1.70/26**. Quelle est l'adresse de diffusion du sous-réseau auquel il appartient ?",
+    "corrige_markdown": "### Rappel de méthode\n\nAvec un préfixe /n, il reste 32 − n bits hôtes et les sous-réseaux se succèdent par blocs de $2^{32-n}$ adresses dans l'octet concerné. L'adresse de diffusion est la dernière adresse du bloc qui contient l'adresse donnée.\n\n### Corrigé\n\nAvec /26, il reste 6 bits hôtes : les blocs font $2^6 = 64$ adresses (masque 255.255.255.192). Les blocs sont 0-63, 64-127, 128-191, 192-255. L'adresse 70 est dans le bloc 64-127 : réseau 192.168.1.64, diffusion **192.168.1.127**.\n\nVérification en binaire : 70 = 01000110 ; les 6 derniers bits (000110) passent à 1, ce qui donne 01111111 = 127.\n\n- 192.168.1.63 est l'adresse de diffusion du bloc précédent (erreur sur le bloc).\n- 192.168.1.126 est la dernière adresse utilisable, pas l'adresse de diffusion.\n- 192.168.1.255 serait celle d'un réseau /24 entier.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "192.168.1.63"},
+      {"lettre": "b", "texte": "192.168.1.126"},
+      {"lettre": "c", "texte": "192.168.1.127"},
+      {"lettre": "d", "texte": "192.168.1.255"}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [9939, 10597]
+  },
+  {
+    "external_id": "cqc-adresse-de-diffusion-moyenne-3",
+    "theme": "adresse de diffusion",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un poste d'un cybercafé est configuré avec l'adresse **10.20.30.140** et le masque **255.255.255.224**.\n\n1. Déterminer l'adresse du sous-réseau.\n2. Déterminer l'adresse de diffusion.\n3. Donner la plage des adresses utilisables par des machines.",
+    "corrige_markdown": "### Rappel de méthode\n\nLe masque 255.255.255.224 laisse 5 bits hôtes (224 = 11100000) : les blocs font $2^5 = 32$ adresses. L'adresse réseau est le début du bloc (bits hôtes à 0), l'adresse de diffusion en est la fin (bits hôtes à 1), et la plage utilisable va de « réseau + 1 » à « diffusion − 1 ».\n\n### Corrigé\n\nBlocs de 32 dans le dernier octet : 0, 32, 64, 96, 128, 160... Comme 128 ≤ 140 < 160, l'adresse appartient au bloc 128-159.\n\n1. Adresse du sous-réseau : **10.20.30.128**.\n2. Adresse de diffusion : **10.20.30.159**.\n3. Plage utilisable : de **10.20.30.129** à **10.20.30.158**, soit 30 machines ($2^5 - 2$).\n\nVérification en binaire : 140 = 10001100 ; les 5 derniers bits (01100) à 0 donnent 10000000 = 128 (réseau), à 1 donnent 10011111 = 159 (diffusion).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597, 9939]
+  },
+  {
+    "external_id": "cqc-adresse-de-diffusion-elevee-4",
+    "theme": "adresse de diffusion",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Une administration dispose de la machine d'adresse **172.16.75.200/20**.\n\n1. Déterminer l'adresse réseau et l'adresse de diffusion de son sous-réseau.\n2. Combien de machines peut-on y connecter au maximum ?\n3. La machine d'adresse 172.16.80.1 appartient-elle à ce sous-réseau ? Justifier.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn masque /20 est 255.255.240.0 : les 4 premiers bits du troisième octet font partie du réseau, les 4 derniers de l'hôte. Les blocs avancent donc par pas de 16 dans le troisième octet. On repère le bloc qui contient l'adresse, puis l'adresse de diffusion est la dernière adresse de ce bloc (bits hôtes à 1 sur 12 bits).\n\n### Corrigé\n\n1. Il reste 12 bits hôtes (4 dans le troisième octet, 8 dans le quatrième). Blocs du troisième octet : 0, 16, 32, 48, 64, 80... Comme 64 ≤ 75 < 80, on est dans le bloc 64-79.\n   - Adresse réseau : **172.16.64.0**.\n   - Adresse de diffusion : **172.16.79.255**.\n   - Vérification en binaire : 75 = 01001011 ; bits hôtes 1011 remplacés par 0000 (réseau, 01000000 = 64) puis par 1111 (diffusion, 01001111 = 79), avec le quatrième octet à 255.\n2. Nombre de machines : $2^{12} - 2 = 4096 - 2 = $ **4094** (on retire l'adresse réseau et l'adresse de diffusion).\n3. La plage du sous-réseau s'arrête à 172.16.79.255 ; le troisième octet 80 dépasse 79, donc 172.16.80.1 appartient au **sous-réseau suivant** (172.16.80.0/20), pas à celui-ci.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597, 9939]
+  }
+]

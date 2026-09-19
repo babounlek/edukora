@@ -1,0 +1,350 @@
+{
+ "adresse IP": {
+  "tag_id": 6682,
+  "n_questions_corpus": 9,
+  "materiel_reference": [
+   {
+    "exercise_id": 9944,
+    "lecon": "informatique-bac-c-d-et-e-2026-blanc",
+    "enonce_markdown": "**6.** L'adresse IP suivante **192.168.25.8** est utilisée par le PC3 connecté au réseau ci-dessus.\n\na) Définir l'expression : **Adresse IP**. *[1 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne adresse IP est un identifiant numérique unique attribué à chaque équipement connecté à un réseau utilisant le protocole IP (Internet Protocol), permettant de le localiser et de communiquer avec les autres équipements du réseau ; elle se compose de quatre nombres décimaux séparés par des points en IPv4.\n\nUne adresse IP est donc l'identifiant numérique unique attribué à un équipement (ordinateur, imprimante, serveur) connecté à un réseau, qui permet de l'identifier de façon unique et d'échanger des données avec les autres machines du réseau."
+   },
+   {
+    "exercise_id": 7597,
+    "lecon": "informatique-bac-c-2023",
+    "enonce_markdown": "Identifier l'adresse IP de cet ordinateur. (0,25 pt)",
+    "corrige_markdown": "### Rappel de méthode\nL'adresse IP de la machine figure directement dans la sortie de la commande ipconfig /all, sur la ligne \"IP Address\".\n\n### Corrigé\n**192.168.0.23**"
+   },
+   {
+    "exercise_id": 10587,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**4.** Donner deux différences entre l'adresse MAC et l'adresse IP d'un ordinateur. *[0,25x2=0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne différence entre adresse MAC et adresse IP se formule toujours en comparant un même critère pour les deux adresses (attribution, portée), jamais en décrivant l'une sans rapport avec l'autre.\n\n**Première différence (attribution).** L'adresse MAC est une adresse physique gravée par le constructeur dans la carte réseau : elle est fixe et unique au monde. L'adresse IP est une adresse logique attribuée par un administrateur ou par un serveur DHCP en fonction du réseau auquel la machine se connecte : elle peut changer d'une connexion à l'autre.\n\n**Seconde différence (portée).** L'adresse MAC identifie une machine uniquement sur son réseau local ; elle n'est jamais transmise au-delà d'un routeur. L'adresse IP permet, elle, d'identifier une machine et de faire transiter des données jusqu'à elle à travers plusieurs réseaux interconnectés, y compris sur Internet.\n\n### Piège à éviter\nNe réponds pas avec une seule différence reformulée deux fois (par exemple « l'une est physique, l'autre est logique » puis « l'une est fixe, l'autre change ») : ce sont deux formulations "
+   }
+  ]
+ },
+ "sous-réseau": {
+  "tag_id": 6690,
+  "n_questions_corpus": 9,
+  "materiel_reference": [
+   {
+    "exercise_id": 9939,
+    "lecon": "informatique-bac-c-d-et-e-2025-blanc",
+    "enonce_markdown": "d) Déterminer le nombre d'adresses utilisables pour les hôtes (machines). *[1 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe nombre d'adresses utilisables pour les hôtes d'un sous-réseau se calcule à partir du nombre n de bits restant pour la partie hôte, par la formule 2 puissance n moins 2 : on retranche l'adresse réseau elle-même et l'adresse de diffusion, qui ne peuvent être attribuées à aucune machine du sous-réseau.\n\n**Étape 1.** Avec un masque /24, la partie hôte occupe le dernier octet, soit n = 32 − 24 = 8 bits.\n\n**Étape 2.** Le nombre total d'adresses possibles sur 8 bits est 2⁸ = 256.\n\n**Étape 3.** On retire les deux adresses non attribuables à une machine : l'adresse réseau (192.168.13.0) et l'adresse de diffusion (192.168.13.255), soit 256 − 2 = **254 adresses utilisables** pour les hôtes.\n\n### Piège à éviter\nN'oublie jamais de retrancher les 2 adresses réservées : répondre simplement 256 ignore que l'adresse réseau et l'adresse de diffusion ne peuvent jamais être attribuées à un poste, un serveur ou une imprimante du réseau."
+   },
+   {
+    "exercise_id": 7597,
+    "lecon": "informatique-bac-c-2023",
+    "enonce_markdown": "On donne l'adresse IP suivante à un des ordinateurs : 192.168.1.21. Dire, en justifiant votre réponse, si cette machine pourra communiquer avec les autres. (0,5 pt)",
+    "corrige_markdown": "### Rappel de méthode\nDeux machines ne peuvent communiquer directement (sans routeur) que si elles appartiennent au même sous-réseau, c'est-à-dire si leurs adresses IP partagent la même partie réseau selon le masque utilisé.\n\n### Corrigé\n**Non**, cette machine ne pourra pas communiquer directement avec les autres.\n\n**Justification** : avec le masque 255.255.255.0 (/24) utilisé sur ce réseau, la partie réseau correspond aux 3 premiers octets. Les autres machines appartiennent au réseau **192.168.0.0/24**, alors que l'adresse 192.168.1.21 appartient au réseau **192.168.1.0/24** (troisième octet différent : 1 au lieu de 0). Ces deux machines sont donc sur des sous-réseaux différents et ne peuvent pas communiquer directement sans passer par un routeur.\n\n### Piège à éviter\nNe pas conclure \"oui\" simplement parce que les deux premiers octets (192.168) sont identiques : c'est le masque de sous-réseau qui détermine jusqu'où doit porter la comparaison, ici jusqu'au 3ᵉ octet inclus."
+   },
+   {
+    "exercise_id": 7596,
+    "lecon": "informatique-bac-c-2022",
+    "enonce_markdown": "b. Déterminer l'adresse IP de ce réseau. (0,75 pt)",
+    "corrige_markdown": "### Rappel de méthode\nL'adresse réseau (network ID) s'obtient en mettant à 0 toute la partie hôte de l'adresse IP donnée, selon le masque de sous-réseau. En notation CIDR /24, les 24 premiers bits (les 3 premiers octets) désignent le réseau, le dernier octet désigne l'hôte.\n\n### Corrigé\nL'adresse 192.168.10.102/24 a un masque /24, soit 255.255.255.0 : les 3 premiers octets (192.168.10) désignent le réseau, le dernier octet est réservé à la partie hôte.\n\nL'adresse de ce réseau est donc : **192.168.10.0/24** (masque 255.255.255.0).\n\n### Piège à éviter\nNe pas confondre l'adresse réseau (192.168.10.0, hôte à 0) avec l'adresse de diffusion/broadcast (192.168.10.255, hôte à 255) : ce sont les deux adresses particulières, non attribuables à un poste, aux extrémités du sous-réseau."
+   }
+  ]
+ },
+ "VLSM": {
+  "tag_id": 23591,
+  "n_questions_corpus": 1,
+  "materiel_reference": [
+   {
+    "exercise_id": 10597,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "2) Pour définir un découpage en au moins 6 sous-réseaux, indiquer le nombre de bit à emprunter par l'ingénieur système et en déduire le nouveau masque de sous-réseau qui sera utilisé pour chaque sous-réseau sous la notation décimale pointée et sous la notation /n. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPour découper un réseau en au moins N sous-réseaux, il faut emprunter n bits à la partie hôte, où n est le plus petit entier tel que 2 puissance n soit supérieur ou égal à N. Le nouveau masque s'obtient en ajoutant ces n bits empruntés au masque par défaut.\n\n### Corrigé détaillé\nIl faut au moins 6 sous-réseaux, donc chercher le plus petit n tel que 2ⁿ ≥ 6.\n\n- n = 1 : 2¹ = 2 sous-réseaux (insuffisant, 2 < 6)\n- n = 2 : 2² = 4 sous-réseaux (insuffisant, 4 < 6)\n- n = 3 : 2³ = 8 sous-réseaux (suffisant, 8 ≥ 6)\n\nIl faut donc emprunter **3 bits** à la partie hôte.\n\nLe masque par défaut de la classe C (question 1) est /24, soit 255.255.255.0. En ajoutant les 3 bits empruntés, le nouveau masque devient **/27**.\n\nSur le dernier octet, les 3 premiers bits (côté fort) deviennent des bits de réseau : 11100000 en binaire = 128+64+32 = **224**.\n\nNouveau masque de sous-réseau :\n- Notation décimale pointée : **255.255.255.224**\n- Notation /n : **/27**\n\n**Vérification croisée** : avec n = 3, il reste 8 - 3 = 5 bits pour les hôtes, soit 2⁵ - 2 = 30 machines maximum par sous-réseau"
+   }
+  ]
+ },
+ "nombre d'hôtes": {
+  "tag_id": 19894,
+  "n_questions_corpus": 2,
+  "materiel_reference": [
+   {
+    "exercise_id": 9939,
+    "lecon": "informatique-bac-c-d-et-e-2025-blanc",
+    "enonce_markdown": "d) Déterminer le nombre d'adresses utilisables pour les hôtes (machines). *[1 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe nombre d'adresses utilisables pour les hôtes d'un sous-réseau se calcule à partir du nombre n de bits restant pour la partie hôte, par la formule 2 puissance n moins 2 : on retranche l'adresse réseau elle-même et l'adresse de diffusion, qui ne peuvent être attribuées à aucune machine du sous-réseau.\n\n**Étape 1.** Avec un masque /24, la partie hôte occupe le dernier octet, soit n = 32 − 24 = 8 bits.\n\n**Étape 2.** Le nombre total d'adresses possibles sur 8 bits est 2⁸ = 256.\n\n**Étape 3.** On retire les deux adresses non attribuables à une machine : l'adresse réseau (192.168.13.0) et l'adresse de diffusion (192.168.13.255), soit 256 − 2 = **254 adresses utilisables** pour les hôtes.\n\n### Piège à éviter\nN'oublie jamais de retrancher les 2 adresses réservées : répondre simplement 256 ignore que l'adresse réseau et l'adresse de diffusion ne peuvent jamais être attribuées à un poste, un serveur ou une imprimante du réseau."
+   },
+   {
+    "exercise_id": 10597,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "3) Déterminer le nombre maximum de machines que peut contenir chaque sous-réseau. *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe nombre maximal de machines (hôtes) utilisables dans un sous-réseau se calcule par la formule 2 puissance h moins 2, où h est le nombre de bits restés disponibles pour la partie hôte après l'emprunt : on retire systématiquement 2 adresses, celle du réseau lui-même et celle de diffusion (broadcast), qui ne peuvent jamais être attribuées à une machine.\n\n### Corrigé détaillé\nAvec un masque /27, il reste 32 - 27 = 5 bits pour la partie hôte (sur les 8 bits du dernier octet, 3 ont été empruntés à la question 2, il en reste 8 - 3 = 5).\n\nNombre maximal de machines par sous-réseau = 2⁵ - 2 = 32 - 2 = **30 machines**.\n\nLes 2 adresses retirées correspondent à l'adresse du sous-réseau lui-même (tous les bits hôtes à 0) et à l'adresse de diffusion du sous-réseau (tous les bits hôtes à 1), qui ne peuvent jamais être attribuées à une machine.\n\n### Piège à éviter\nNe pas oublier de soustraire les 2 adresses réservées : répondre 32 machines (2⁵ sans soustraction) est l'erreur la plus fréquente sur ce type de question.\n\n### Conseil\nRetiens le réflexe : nombre d'hôtes utilisable"
+   }
+  ]
+ },
+ "adresse de diffusion": {
+  "tag_id": 19888,
+  "n_questions_corpus": 4,
+  "materiel_reference": [
+   {
+    "exercise_id": 9944,
+    "lecon": "informatique-bac-c-d-et-e-2026-blanc",
+    "enonce_markdown": "c) Écrire sur votre feuille de composition l'adresse de diffusion de ce réseau. *[0.5 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nL'adresse de diffusion (broadcast) d'un réseau s'obtient en mettant à 1 tous les bits de la partie hôte de l'adresse, c'est-à-dire tous les bits laissés à 0 par le masque de sous-réseau ; pour un masque 255.255.255.0, seul le dernier octet est concerné et prend la valeur 255.\n\nLe réseau de PC3 a pour masque 255.255.255.0 (classe C, établi à la question précédente), donc l'adresse réseau est 192.168.25.0 et seul le dernier octet varie pour identifier les hôtes. L'adresse de diffusion s'obtient en portant ce dernier octet à sa valeur maximale : 192.168.25.255.\n\n### Conseil\nPour retrouver rapidement une adresse de diffusion en classe C, garde les trois premiers octets du réseau inchangés et remplace directement le dernier par 255 : c'est un raccourci fiable tant que le masque est 255.255.255.0."
+   },
+   {
+    "exercise_id": 9939,
+    "lecon": "informatique-bac-c-d-et-e-2025-blanc",
+    "enonce_markdown": "c) Déterminer l'adresse réseau et l'adresse de diffusion du sous-réseau auquel appartient cette adresse. *[1 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPour déterminer l'adresse réseau d'une adresse IP donnée avec son masque, on met à zéro tous les bits de la partie hôte ; pour déterminer l'adresse de diffusion (broadcast), on met à un tous les bits de la partie hôte, ce qui revient à écrire 255 dans un octet entièrement dédié à la partie hôte.\n\n**Étape 1.** D'après la question précédente, l'adresse 192.168.13.1/24 a pour partie réseau les trois premiers octets (192.168.13) et pour partie hôte le dernier octet (ici la valeur 1).\n\n**Étape 2.** Adresse réseau : on met le dernier octet (partie hôte) à 0, ce qui donne **192.168.13.0**.\n\n**Étape 3.** Adresse de diffusion : on met tous les bits du dernier octet à 1, soit 11111111 en binaire, ce qui vaut 255 en décimal, ce qui donne **192.168.13.255**."
+   },
+   {
+    "exercise_id": 10597,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "4) Intéressons nous au deuxième sous réseau du découpage précédant. Déterminer la plus petite adresse utilisable ainsi que la plus grande adresse utilisable *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPour lister les sous-réseaux issus d'un découpage, on calcule la taille d'un bloc par 2 puissance h (h étant le nombre de bits hôtes), puis on énumère les sous-réseaux successifs par pas de cette taille dans l'octet concerné. Dans chaque sous-réseau, la première adresse (bits hôtes à 0) et la dernière (bits hôtes à 1) sont réservées, si bien que la plage utilisable va de la première adresse plus 1 à la dernière adresse moins 1.\n\n### Corrigé détaillé\nAvec 5 bits hôtes (question 3), la taille d'un bloc de sous-réseau est 2⁵ = 32 adresses. Les sous-réseaux se succèdent donc par pas de 32 dans le dernier octet :\n\n- Sous-réseau 1 : 193.1.1.**0** à 193.1.1.**31**\n- Sous-réseau 2 : 193.1.1.**32** à 193.1.1.**63**\n- Sous-réseau 3 : 193.1.1.**64** à 193.1.1.**95**\n- (et ainsi de suite jusqu'au 8e sous-réseau, 193.1.1.224 à 193.1.1.255)\n\nLe **deuxième sous-réseau** est donc 193.1.1.32/27, dont l'adresse réseau est 193.1.1.32 et l'adresse de diffusion 193.1.1.63.\n\nLa plage utilisable exclut ces deux adresses réservées :\n- Plus petite adresse utilisable : **193.1.1.33**\n- P"
+   }
+  ]
+ },
+ "adresse MAC": {
+  "tag_id": 23300,
+  "n_questions_corpus": 3,
+  "materiel_reference": [
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "5) Identifier l'adresse MAC de la deuxième carte réseau et présenter la différence qui existe entre une adresse MAC et une adresse IP *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne différence valable entre adresse MAC et adresse IP compare le même critère pour les deux adresses : leur attribution (gravée en usine contre configurée par un administrateur ou un serveur DHCP), leur portée (locale contre inter-réseaux) et leur format (48 bits en hexadécimal contre 32 bits en décimal pointé pour l'IPv4).\n\n### Corrigé détaillé\n**Adresse MAC de la deuxième carte réseau** (carte réseau sans fil Wi-Fi) : **34-23-87-F2-98-9D**.\n\n**Différence entre adresse MAC et adresse IP** :\n\n- **Attribution** : l'adresse MAC est gravée par le constructeur dans la carte réseau, elle est fixe et unique au monde. L'adresse IP est attribuée par un administrateur ou par un serveur DHCP selon le réseau de connexion, et peut donc changer.\n- **Portée** : l'adresse MAC identifie une machine uniquement sur son réseau local, elle n'est jamais transmise au-delà d'un routeur (couche 2, liaison de données). L'adresse IP permet d'acheminer des données à travers plusieurs réseaux interconnectés, y compris Internet (couche 3, réseau).\n- **Format** : l'adresse MAC s'écrit sur 4"
+   },
+   {
+    "exercise_id": 10587,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**4.** Donner deux différences entre l'adresse MAC et l'adresse IP d'un ordinateur. *[0,25x2=0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne différence entre adresse MAC et adresse IP se formule toujours en comparant un même critère pour les deux adresses (attribution, portée), jamais en décrivant l'une sans rapport avec l'autre.\n\n**Première différence (attribution).** L'adresse MAC est une adresse physique gravée par le constructeur dans la carte réseau : elle est fixe et unique au monde. L'adresse IP est une adresse logique attribuée par un administrateur ou par un serveur DHCP en fonction du réseau auquel la machine se connecte : elle peut changer d'une connexion à l'autre.\n\n**Seconde différence (portée).** L'adresse MAC identifie une machine uniquement sur son réseau local ; elle n'est jamais transmise au-delà d'un routeur. L'adresse IP permet, elle, d'identifier une machine et de faire transiter des données jusqu'à elle à travers plusieurs réseaux interconnectés, y compris sur Internet.\n\n### Piège à éviter\nNe réponds pas avec une seule différence reformulée deux fois (par exemple « l'une est physique, l'autre est logique » puis « l'une est fixe, l'autre change ») : ce sont deux formulations "
+   }
+  ]
+ },
+ "DHCP": {
+  "tag_id": 6703,
+  "n_questions_corpus": 6,
+  "materiel_reference": [
+   {
+    "exercise_id": 10566,
+    "lecon": "informatique-bac-c-d-et-e-2",
+    "enonce_markdown": "Décrire le mode d'adressage IP de ce réseau et justifier la réponse. *[0,5 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe mode d'adressage IP d'un réseau est statique quand chaque machine reçoit une adresse configurée manuellement une fois pour toutes, et dynamique quand un serveur DHCP l'attribue automatiquement pour une durée limitée.\n\nL'encart des caractéristiques du serveur indique explicitement **« DHCP Activated : Yes »**. Le service DHCP (Dynamic Host Configuration Protocol) a précisément pour rôle d'attribuer automatiquement, à chaque poste qui se connecte, une adresse IP ainsi que le masque de sous-réseau, la passerelle par défaut et le serveur DNS à utiliser.\n\nLe réseau de cet établissement fonctionne donc en **adressage IP dynamique** pour les postes clients (poste 1, 2, 3) : ils reçoivent leur configuration automatiquement du serveur DHCP plutôt que d'être configurés un par un.\n\nLe serveur lui-même (128.100.10.3), le routeur (128.100.0.1) et l'imprimante réseau (128.100.0.200) doivent en revanche garder une adresse fixe pour rester joignables de façon prévisible par tous les autres équipements : ces trois machines-là sont donc en **adressage statique**, ce qui est la"
+   },
+   {
+    "exercise_id": 7597,
+    "lecon": "informatique-bac-c-2023",
+    "enonce_markdown": "Déterminer le mode d'adressage utilisé. (0,5 pt)",
+    "corrige_markdown": "### Rappel de méthode\nLa mention \"DHCP Activated: Yes\" dans la configuration réseau indique que l'adresse IP est attribuée automatiquement par un serveur DHCP : le mode d'adressage est donc dynamique.\n\n### Corrigé\nLe mode d'adressage utilisé est le mode **dynamique** (attribution automatique de l'adresse IP par un serveur **DHCP**), comme l'indique la ligne \"DHCP Activated: Yes\" de la configuration.\n\n### Piège à éviter\nNe pas répondre \"statique\" par réflexe : le mode statique correspondrait à \"DHCP Activated: No\", avec une adresse IP configurée manuellement."
+   },
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "3) indiquer le type d'adressage qui a été utilisé lors de la configuration de la carte réseau sans fil WI-FI et justifier la réponse donnée. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPour déterminer si une carte réseau utilise un adressage statique ou dynamique, il faut examiner l'attribut « DHCP activé » et la présence d'un bail (durée de location de l'adresse) dans le résultat d'ipconfig /all : un DHCP activé accompagné d'un bail obtenu/expirant signale un adressage dynamique.\n\n### Corrigé détaillé\nL'analyse de la carte « réseau sans fil Wi-Fi » montre trois indices concordants : « DHCP activé : Oui », un « Serveur DHCP : 192.168.43.253 », ainsi qu'un « Bail obtenu : jeudi 6 mai 2021 17:25:34 » et un « Bail expirant : jeudi 6 mai 2021 18:25:33 ».\n\nLa carte Wi-Fi utilise donc un **adressage dynamique (DHCP)**.\n\n**Justification** : l'adresse IPv4 (192.168.43.184) n'a pas été saisie manuellement par un utilisateur. Elle a été attribuée automatiquement, pour une durée limitée d'une heure (de 17h25 à 18h25), par un serveur DHCP identifié à l'adresse 192.168.43.253. Le fait que cette attribution soit limitée dans le temps par un bail, renouvelable à son expiration, est la caractéristique même de l'adressage dynamique : une adresse fixe configuré"
+   }
+  ]
+ },
+ "commande PING": {
+  "tag_id": 23232,
+  "n_questions_corpus": 4,
+  "materiel_reference": [
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "2) La commande **Ping** permet de vérifier la communication entre deux équipements connectés au réseau. Indiquer le protocole utilisé lors de l'exécution de la commande **ping**. *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLa commande `ping` ne transporte aucune donnée applicative : elle sert uniquement à tester la joignabilité d'un hôte distant, grâce à un protocole de la couche réseau dédié aux messages de contrôle, distinct de TCP et UDP qui transportent les données.\n\n### Corrigé détaillé\nLe protocole utilisé lors de l'exécution de la commande ping est **ICMP** (Internet Control Message Protocol).\n\nConcrètement, `ping` envoie un message ICMP de type « Echo Request » (demande d'écho) vers la machine cible. Si celle-ci est joignable, elle répond par un message ICMP de type « Echo Reply » (réponse d'écho). Le temps écoulé entre l'envoi de la requête et la réception de la réponse permet de mesurer la latence de la liaison réseau, et l'absence de réponse signale un problème de connectivité, de configuration ou de filtrage.\n\n### Piège à éviter\nNe pas confondre avec TCP ou UDP : `ping` n'établit aucune connexion et ne transporte aucune donnée applicative, il n'utilise donc ni l'un ni l'autre.\n\n### Conseil\nAssocie systématiquement « ping » à « ICMP » et à la paire « Echo Request / Echo"
+   },
+   {
+    "exercise_id": 10587,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**14.** Indiquer la commande réseau complète que doit saisir l'utilisateur à partir du terminal de sa machine virtuelle pour s'assurer qu'elle peut accéder à la machine physique. *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPour vérifier qu'une machine peut en joindre une autre à travers le réseau, on utilise la commande ping suivie de l'adresse IP de la machine à tester : cette commande envoie des paquets de test et attend une réponse.\n\nLa machine virtuelle communique avec la machine physique, son hôte, via l'adaptateur réseau VMnet1, sur lequel la machine physique porte l'adresse IPv4 192.168.22.1. Depuis le terminal de la machine virtuelle, l'utilisateur doit donc saisir la commande **ping 192.168.22.1**. Si la machine physique répond, une série de lignes affichant le temps de réponse et le nombre d'octets transmis confirme que la machine virtuelle peut effectivement l'atteindre.\n\n### Piège à éviter\nNe propose pas de « pinguer » l'adresse Wi-Fi 192.168.43.228 : cette adresse est celle de la machine physique sur le réseau externe, alors que la machine virtuelle communique avec elle via le réseau interne VMnet1, dont l'adresse de l'hôte est 192.168.22.1."
+   },
+   {
+    "exercise_id": 10583,
+    "lecon": "informatique-bac-ti-2020",
+    "enonce_markdown": "**2.** Donnez le rôle de la commande PING.",
+    "corrige_markdown": "### Rappel de méthode\nPING est un utilitaire de diagnostic réseau fondé sur le protocole ICMP : il sert à vérifier qu'un hôte distant répond, avant même de chercher pourquoi une application ne fonctionne pas.\n\nLa commande **PING** sert à tester l'accessibilité (la joignabilité) d'un hôte sur un réseau IP : elle envoie des paquets ICMP de type « Echo Request » vers l'adresse indiquée et mesure le temps mis par la réponse « Echo Reply » à revenir, ce qui permet de vérifier qu'une machine distante est bien connectée et de mesurer approximativement la qualité de la liaison."
+   }
+  ]
+ },
+ "ipconfig /all": {
+  "tag_id": 23584,
+  "n_questions_corpus": 1,
+  "materiel_reference": [
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "1) Indiquer la commande ayant permis d'obtenir les informations présentes sur l'image *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nSous Windows, la commande `ipconfig` seule n'affiche que l'essentiel pour chaque carte réseau active : l'adresse IPv4, le masque de sous-réseau et la passerelle par défaut. Dès que l'affichage montre en plus l'adresse physique (MAC), l'état du DHCP, la description du modèle de carte, un bail (obtenu/expirant) ou les serveurs DNS, c'est que l'option `/all` a été ajoutée.\n\n### Corrigé détaillé\nL'image affiche, pour chacune des deux cartes réseau, des informations qu'`ipconfig` seul ne fournit jamais : la description précise du modèle de carte (« Qualcomm Atheros AR8172/8176/8178 PCI-E », « Carte réseau Broadcom 802.11n »), l'adresse physique de chaque carte (20-25-64-1E-B9-1F et 34-23-87-F2-98-9D), l'état d'activation du DHCP, le bail DHCP obtenu et expirant, le DUID de client DHCPv6 et l'état de NetBIOS sur TCP/IP.\n\nCette richesse de détails, en particulier la présence de l'adresse physique et des dates de bail, est la signature caractéristique de l'option `/all`.\n\nLa commande exécutée est donc : `ipconfig /all`\n\n### Piège à éviter\nNe pas répondre simplement « ip"
+   }
+  ]
+ },
+ "CSMA/CD": {
+  "tag_id": 23319,
+  "n_questions_corpus": 2,
+  "materiel_reference": [
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "4) Identifier la topologie logique utilisée dans la première carte réseau et décrire son fonctionnement *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLa topologie logique décrit la façon dont les données circulent réellement et dont les stations accèdent au support de transmission, indépendamment du câblage physique réel. Le réseau Ethernet fonctionne selon une topologie logique en bus : toutes les stations partagent logiquement un seul support de communication, même si elles sont câblées physiquement en étoile autour d'un commutateur.\n\n### Corrigé détaillé\nLa carte « Ethernet Ethernet » (première carte listée) utilise la technologie Ethernet. Sa topologie logique est donc une **topologie en bus** : toutes les trames émises par une machine sont logiquement diffusées à l'ensemble des machines connectées au même segment, comme si elles partageaient un unique support de transmission, même si le câblage physique réel (aujourd'hui presque toujours une étoile autour d'un commutateur) donne une impression différente.\n\n**Fonctionnement** : pour gérer l'accès à ce support logiquement partagé et éviter que deux machines n'émettent en même temps, Ethernet utilise la méthode d'accès **CSMA/CD** (Carrier Sense Multiple Ac"
+   },
+   {
+    "exercise_id": 10587,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**13.** Décrire le fonctionnement de la topologie logique associée à la carte réseau filaire de cet ordinateur. *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLa topologie logique d'un réseau décrit la façon dont les données circulent et dont les stations accèdent au support, indépendamment de la disposition physique des câbles.\n\nLa carte réseau filaire de cet ordinateur (Intel 82579LM Gigabit Network Connection) est une carte Ethernet. Le réseau Ethernet fonctionne selon une **topologie logique en bus** : même lorsque les câbles sont physiquement raccordés en étoile autour d'un commutateur, toutes les stations partagent logiquement un seul support de communication. L'accès à ce support est régi par la méthode **CSMA/CD** (Carrier Sense Multiple Access with Collision Detection) : avant d'émettre, une station écoute le support pour vérifier qu'il est libre ; si deux stations émettent malgré tout au même instant, une collision est détectée, les deux stations interrompent immédiatement leur émission, puis chacune retransmet après un délai d'attente aléatoire, ce qui réduit la probabilité d'une nouvelle collision.\n\n### Piège à éviter\nNe décris pas la topologie physique (en étoile, autour d'un switch) à la place de la topo"
+   }
+  ]
+ },
+ "câbles réseau": {
+  "tag_id": 23589,
+  "n_questions_corpus": 1,
+  "materiel_reference": [
+   {
+    "exercise_id": 10596,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "6) La première carte réseau relie cet ordinateur au réseau via un connecteur ST. Indiquer le type de câble réseau qui a été raccordé à ce connecteur et citer un autre connecteur pouvant remplacer le connecteur ST pour le même type de câble. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe connecteur ST (Straight Tip) et le connecteur SC (Subscriber Connector) sont tous deux des connecteurs réservés aux câbles à fibre optique ; ils ne sont jamais utilisés avec des câbles en cuivre (paire torsadée ou coaxial).\n\n### Corrigé détaillé\nLe connecteur ST est exclusivement utilisé avec des câbles à **fibre optique**. Le câble raccordé à la première carte réseau via ce connecteur est donc un **câble à fibre optique**.\n\nUn autre connecteur pouvant remplacer le connecteur ST pour ce même type de câble (fibre optique) est le connecteur **SC** (Subscriber Connector).\n\n### Piège à éviter\nNe pas répondre RJ45 : ce connecteur est réservé aux câbles à paires torsadées (cuivre), jamais à la fibre optique. De même, le connecteur BNC est réservé au câble coaxial (cuivre), pas à la fibre.\n\n### Conseil\nMémorise l'association par famille de support : paire torsadée → RJ45 ; câble coaxial → connecteur BNC ; fibre optique → connecteurs ST ou SC."
+   }
+  ]
+ },
+ "virtualisation": {
+  "tag_id": 23305,
+  "n_questions_corpus": 6,
+  "materiel_reference": [
+   {
+    "exercise_id": 10598,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "1) Définir virtualisation *[0,5pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne définition d'examen doit répondre à la question à quoi cela sert-il, jamais à quel logiciel ou quel exemple l'illustre : elle décrit la technique elle-même et son objectif, indépendamment de tout outil particulier qui la met en œuvre.\n\n### Corrigé détaillé\n**Virtualisation** : technique qui permet, à partir d'une seule machine physique (l'hôte), de créer et de faire fonctionner plusieurs systèmes d'exploitation indépendants (machines virtuelles), chacun disposant de ressources logiques (processeur, mémoire, disque, réseau) simulées à partir du matériel réel, grâce à un logiciel appelé hyperviseur.\n\nDans le contexte de l'énoncé, cette technique permettrait de faire fonctionner une machine virtuelle sous Windows XP sur un ordinateur récent, pour exécuter l'ancienne application serveur sans avoir à maintenir un parc de machines physiques obsolètes.\n\n### Piège à éviter\nNe pas définir la virtualisation en citant uniquement un logiciel (« c'est VMware » ou « c'est VirtualBox ») : ce sont des exemples d'hyperviseurs, pas une définition de la notion elle-même.\n\n### "
+   },
+   {
+    "exercise_id": 10587,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**1.** Définir : **virtualisation**, **bande passante**. *[0,5x2=1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne définition en réseaux informatiques porte sur la fonction ou la caractéristique technique du terme, jamais sur un exemple d'utilisation ou sur le nom d'un logiciel qui l'illustre.\n\n**Virtualisation.** La virtualisation est une technique qui permet, à partir d'une seule machine physique, de créer et de faire fonctionner plusieurs machines virtuelles indépendantes, chacune disposant de ses propres ressources logiques (processeur, mémoire, carte réseau) simulées à partir des ressources matérielles réelles de l'hôte.\n\n**Bande passante.** La bande passante désigne la quantité maximale de données qu'un support de transmission (câble, liaison sans fil) peut transporter par unité de temps ; elle s'exprime en bit par seconde (bit/s) et ses multiples (kbit/s, Mbit/s, Gbit/s).\n\n### Piège à éviter\nNe confonds pas la bande passante avec le débit réel. La bande passante est la capacité théorique maximale du support, alors que le débit effectif, souvent inférieur, dépend en plus du trafic, de la distance et des équipements traversés.\n\n### Conseil\nPour bande passante, cite "
+   }
+  ]
+ },
+ "hyperviseur": {
+  "tag_id": 23597,
+  "n_questions_corpus": 2,
+  "materiel_reference": [
+   {
+    "exercise_id": 10598,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "3) Pour implémenter la solution de virtualisation, vous optez pour un hyperviseur de type 2. Etablir la différence qui existe entre un hyperviseur de type 1 et un hyperviseur de type 2 *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUn hyperviseur de type 1 (natif ou bare-metal) s'installe directement sur le matériel physique, sans système d'exploitation hôte intermédiaire, et gère lui-même l'accès aux ressources. Un hyperviseur de type 2 (hébergé) s'installe comme une simple application au-dessus d'un système d'exploitation hôte déjà présent, qui reste responsable de l'accès réel au matériel.\n\n### Corrigé détaillé\n**Hyperviseur de type 1** (natif, bare-metal) : il s'installe directement sur le matériel physique du serveur, sans système d'exploitation hôte intermédiaire. Il gère lui-même l'allocation des ressources matérielles (processeur, mémoire, stockage) aux différentes machines virtuelles. Cette proximité avec le matériel lui donne de meilleures performances et une meilleure fiabilité, ce qui le destine principalement aux environnements de serveurs et de centres de données.\n\n**Hyperviseur de type 2** (hébergé) : il s'installe comme une application ordinaire au-dessus d'un système d'exploitation hôte déjà présent sur la machine (par exemple Windows 10). C'est ce système d'exploitation h"
+   }
+  ]
+ },
+ "Cloud Computing": {
+  "tag_id": 23324,
+  "n_questions_corpus": 5,
+  "materiel_reference": [
+   {
+    "exercise_id": 10599,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "5) Identifier le type de cloud décrit dans la dernière phrase du texte. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUn cloud communautaire est mis en place lorsque plusieurs organisations distinctes, ayant des besoins communs (exigences de sécurité, de conformité ou une application métier partagée), s'associent pour partager une même infrastructure cloud, par opposition au cloud privé (une seule organisation) et au cloud public (accessible à n'importe quel client).\n\n### Corrigé détaillé\nLa dernière phrase du texte indique : « plusieurs organisations qui ont des besoins communs peuvent s'associer pour l'hébergement d'une application métier très spécialisée, mais commune à toutes ».\n\nCette description correspond exactement au **cloud communautaire** (Community Cloud) : une infrastructure cloud est partagée entre plusieurs organisations qui ont des besoins ou des contraintes communes (ici, une même application métier spécialisée), sans être ouverte au grand public (ce qui exclurait le cloud public) ni réservée à une seule organisation (ce qui exclurait le cloud privé).\n\n### Piège à éviter\nNe pas répondre « cloud public » : le cloud public est accessible à n'importe quel client s"
+   },
+   {
+    "exercise_id": 10588,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**1.** Définir : **moteur de recherche**, **Cloud Computing**. *[0,5x2=1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne définition de service Internet s'énonce en termes de fonction rendue à l'utilisateur, jamais en citant un exemple de service qui l'illustre.\n\n**Moteur de recherche.** Un moteur de recherche est un service en ligne qui explore et indexe en permanence le contenu du Web, puis permet à un utilisateur de retrouver, à partir de mots-clés saisis dans une requête, les pages web jugées les plus pertinentes.\n\n**Cloud Computing.** Le Cloud Computing (informatique en nuage) est un modèle d'exploitation informatique qui donne accès, via Internet, à des ressources informatiques (stockage, puissance de calcul, logiciels) hébergées et gérées à distance par un prestataire, sans que l'utilisateur ait à posséder ou à administrer le matériel correspondant.\n\n### Piège à éviter\nNe définis pas le moteur de recherche par « c'est Google » : Google est un exemple de moteur de recherche, pas sa définition. La définition doit rester valable pour n'importe quel moteur de recherche (Bing, Yahoo...)."
+   }
+  ]
+ },
+ "sécurité informatique": {
+  "tag_id": 6686,
+  "n_questions_corpus": 21,
+  "materiel_reference": [
+   {
+    "exercise_id": 9969,
+    "lecon": "informatique-probatoire-a-2025-a4-bilingue",
+    "enonce_markdown": "**b.** sécuriser vos données. *[1 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nSécuriser des données informatiques consiste à réduire le risque de leur perte ou de leur divulgation : la réponse attendue est une action concrète de protection, jamais une description de la donnée elle-même.\n\nUne action possible est la sauvegarde régulière des données (copie de sécurité) sur un support externe, comme un disque dur externe ou une clé USB, ou dans un espace de stockage en ligne (Cloud), afin de pouvoir les restaurer en cas de perte, de panne ou d'attaque. L'installation d'un antivirus ou la protection par mot de passe sont également des réponses acceptées.\n\n### Conseil\nSi la question ne précise pas le type de menace, cite la sauvegarde en priorité : c'est la réponse la plus universellement acceptée pour « sécuriser des données », quelle que soit la cause de la perte."
+   },
+   {
+    "exercise_id": 8995,
+    "lecon": "informatique-bepc-2024-lycee-bilingue-de-mutengene",
+    "enonce_markdown": "Répondre par vrai ou faux : « Les logiciels Avast, Kaspersky, Norton et AVG sont des anti-virus. » *[0,5 pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUn logiciel antivirus se reconnaît le plus souvent à son nom commercial : quelques éditeurs dominent largement ce marché, et leurs produits reviennent régulièrement dans les énoncés d'examen.\n\n### Corrigé\nVrai. Avast, Kaspersky, Norton et AVG sont effectivement des logiciels antivirus, conçus pour détecter, bloquer et supprimer les virus informatiques."
+   },
+   {
+    "exercise_id": 10252,
+    "lecon": "informatique-probatoire-c-d-et-e-2024",
+    "enonce_markdown": "**2.** Citer deux techniques de protection à utiliser pour protéger les données d'un ordinateur. *[1 pt]*",
+    "corrige_markdown": "Deux techniques de protection des données, parmi les plus attendues :\n\n1. La **sauvegarde régulière** des données (backup) sur un support externe ou un espace de stockage en ligne, pour pouvoir les restaurer en cas de perte, de panne matérielle ou d'attaque.\n2. L'installation et la **mise à jour régulière d'un antivirus**, qui détecte et élimine les programmes malveillants avant qu'ils n'endommagent ou ne volent les données.\n\nUne contrainte de mot de passe robuste ou l'usage d'un pare-feu sont également acceptés.\n\n### Piège à éviter\nUne technique qui protège le matériel (un onduleur contre les coupures de courant, par exemple) ne protège pas nécessairement les données elles-mêmes : reste centré sur ce qui empêche la perte, le vol ou l'altération de l'information."
+   }
+  ]
+ },
+ "chiffrement de César": {
+  "tag_id": 23341,
+  "n_questions_corpus": 2,
+  "materiel_reference": [
+   {
+    "exercise_id": 10600,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "2) Si l'un des fichiers à protéger contient le mot de passe d'un utilisateur du système suivant : « Elodie marche ». Déterminer l'équivalant de ce mot de passe suite à un chiffrement César. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe chiffrement de César décale chaque lettre du message clair d'un nombre fixe de positions dans l'alphabet, appelé le décalage ou la clé. Lorsque l'énoncé ne précise pas explicitement ce décalage, la convention historique veut que l'on retienne le décalage attribué à Jules César lui-même, qui est de 3.\n\n### Corrigé détaillé\nL'énoncé ne précise pas explicitement la valeur du décalage à utiliser pour ce chiffrement de César. Conformément à la convention historique (le décalage originellement utilisé par Jules César est de 3), chaque lettre du mot de passe est décalée de 3 positions vers l'avant dans l'alphabet (A devient D, B devient E, etc., et le décalage boucle en fin d'alphabet : X devient A, Y devient B, Z devient C). Les espaces ne sont pas des lettres et restent inchangés.\n\nMessage clair : **E L O D I E   M A R C H E**\n\n| Lettre claire | E | L | O | D | I | E | M | A | R | C | H | E |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Décalage +3 | H | O | R | G | L | H | P | D | U | F | K | H |\n\nMessage chiffré : **HORGLH PDUFKH**\n\n### Piège à éviter"
+   },
+   {
+    "exercise_id": 10589,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**b.** Déterminer le message original (message en clair). *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nLe chiffrement de César décale chaque lettre du message clair d'un nombre fixe de positions dans l'alphabet ; pour déchiffrer, il faut retrouver ce décalage puis l'appliquer en sens inverse à chaque lettre du message chiffré.\n\nLe décalage du chiffrement de César historique est de 3 lettres. En reculant chaque lettre du message chiffré de 3 rangs dans l'alphabet, on obtient :\n\n| Lettre chiffrée | U | G | Y | D | P | L | G | L | H | Q | E | D | V |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Lettre déchiffrée (-3) | R | D | V | A | M | I | D | I | E | N | B | A | S |\n\nEn reconstituant les mots à partir des espaces du message chiffré (UGY / D / PLGL / HQ / EDV), on obtient : RDV / A / MIDI / EN / BAS, soit le message en clair **« RDV A MIDI EN BAS »** (Rendez-vous à midi en bas).\n\n### Piège à éviter\nNe te contente pas de tester un seul décalage au hasard : si le décalage de 3 n'avait donné aucun mot reconnaissable, il aurait fallu tester méthodiquement les 25 décalages possibles, une attaque par force brute réalisable à la main puisque l'alphabet ne"
+   }
+  ]
+ },
+ "moteur de recherche": {
+  "tag_id": 10592,
+  "n_questions_corpus": 4,
+  "materiel_reference": [
+   {
+    "exercise_id": 8195,
+    "lecon": "informatique-bepc-2024",
+    "enonce_markdown": "3.3. Naviguer sur Internet.",
+    "corrige_markdown": "### Rappel de méthode\nUn navigateur web est le logiciel d'application qui affiche les pages d'Internet et permet de passer d'un site à l'autre à partir de leur adresse (URL). Il ne faut pas le confondre avec un moteur de recherche, qui est un site web consulté à l'intérieur du navigateur pour trouver des pages à partir de mots-clés.\n\n### Corrigé\nLe logiciel de la liste qui affiche les pages web est Mozilla Firefox.\n\nRéponse : **Mozilla Firefox**. Autres navigateurs : Google Chrome, Microsoft Edge, Opera, Safari.\n\n### Piège à éviter\nFirefox est un navigateur, Google est un moteur de recherche : on ouvre Google *dans* Firefox, jamais l'inverse. Cette confusion est l'erreur la plus fréquente sur ce type de question. Attention aussi à Google Chrome, dont le nom contient « Google » alors qu'il s'agit bien d'un navigateur.\n\n### Conseil\nUne image simple à retenir : le navigateur est la voiture, le moteur de recherche est le GPS qu'on utilise à l'intérieur. Si la question parle d'afficher un site, c'est le navigateur ; si elle parle de trouver un site à partir de mots-clés, c'est le moteur d"
+   },
+   {
+    "exercise_id": 10599,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "3) Indiquer la différence qui existe entre un annuaire de recherche et un moteur de recherche *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUn annuaire de recherche référence des sites classés manuellement dans des catégories construites par des documentalistes humains, la recherche s'y fait par navigation de catégorie en catégorie. Un moteur de recherche indexe automatiquement le contenu du Web grâce à des robots logiciels et permet une recherche par mots-clés dans une base constituée sans intervention humaine directe.\n\n### Corrigé détaillé\n**Annuaire de recherche** : base de données de sites web classés manuellement par thème ou par catégorie par des documentalistes humains (exemple historique : Yahoo! Annuaire). L'utilisateur trouve l'information en naviguant de catégorie en catégorie, du général vers le particulier.\n\n**Moteur de recherche** : outil qui parcourt et indexe automatiquement le contenu du Web à l'aide de robots logiciels (crawlers), sans intervention humaine directe sur le classement. L'utilisateur trouve l'information en saisissant des mots-clés dans une barre de recherche (exemple : Google).\n\nLa différence essentielle est donc le mode de constitution de la base (classement humain c"
+   },
+   {
+    "exercise_id": 10588,
+    "lecon": "informatique-bac-ti-2021-2",
+    "enonce_markdown": "**1.** Définir : **moteur de recherche**, **Cloud Computing**. *[0,5x2=1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne définition de service Internet s'énonce en termes de fonction rendue à l'utilisateur, jamais en citant un exemple de service qui l'illustre.\n\n**Moteur de recherche.** Un moteur de recherche est un service en ligne qui explore et indexe en permanence le contenu du Web, puis permet à un utilisateur de retrouver, à partir de mots-clés saisis dans une requête, les pages web jugées les plus pertinentes.\n\n**Cloud Computing.** Le Cloud Computing (informatique en nuage) est un modèle d'exploitation informatique qui donne accès, via Internet, à des ressources informatiques (stockage, puissance de calcul, logiciels) hébergées et gérées à distance par un prestataire, sans que l'utilisateur ait à posséder ou à administrer le matériel correspondant.\n\n### Piège à éviter\nNe définis pas le moteur de recherche par « c'est Google » : Google est un exemple de moteur de recherche, pas sa définition. La définition doit rester valable pour n'importe quel moteur de recherche (Bing, Yahoo...)."
+   }
+  ]
+ },
+ "opérateurs de recherche avancée": {
+  "tag_id": 23606,
+  "n_questions_corpus": 1,
+  "materiel_reference": [
+   {
+    "exercise_id": 10599,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "4) Il existe plusieurs commandes permettant dans le cas d'un moteur de recherche d'optimiser la recherche. Donner deux (02) d'entre ces commandes en illustrant à chaque fois par un exemple d'utilisation. *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nPlacer un groupe de mots entre guillemets impose au moteur de recherche de retrouver cette expression exacte, dans cet ordre précis et sans mot intercalé, plutôt que de chercher chaque mot indépendamment. L'opérateur intitle: restreint la recherche du mot qui le suit au titre de la page, une zone précise et généralement très représentative de son sujet.\n\n### Corrigé détaillé\n**Commande 1 : les guillemets \"...\" (expression exacte)**\n\nPlacer une expression entre guillemets impose au moteur de recherche de la retrouver telle quelle, mot pour mot et dans le même ordre, sans qu'aucun mot ne soit intercalé.\n\nExemple : la recherche `\"réseau informatique\"` ne renverra que les pages contenant exactement cette expression, et exclura une page qui contiendrait seulement « réseau de neurones » et « informatique » séparément.\n\n**Commande 2 : l'opérateur `intitle:`**\n\nCet opérateur restreint la recherche du mot qui le suit au seul titre de la page.\n\nExemple : la recherche `intitle:tutoriel réseau` ne renverra que des pages dont le titre contient le mot « tutoriel », le mot « r"
+   }
+  ]
+ },
+ "technologies d'accès à Internet": {
+  "tag_id": 23605,
+  "n_questions_corpus": 1,
+  "materiel_reference": [
+   {
+    "exercise_id": 10599,
+    "lecon": "informatique-bac-ti-2021-blanc",
+    "enonce_markdown": "1) Citer quatre (04) technologies d'accès à Internet en excluant celles citées dans le texte *[1pt]*",
+    "corrige_markdown": "### Rappel de méthode\nUne technologie d'accès à Internet est le support ou la liaison physique/radio qui relie l'abonné au réseau de son fournisseur d'accès : elle se distingue du service qui circule ensuite sur cette liaison (courrier électronique, WWW, etc.).\n\n### Corrigé détaillé\nEn excluant le WIFI et le satellite déjà cités dans le texte, quatre autres technologies d'accès à Internet peuvent être citées :\n\n1. **ADSL** (Asymmetric Digital Subscriber Line) : accès Internet à haut débit via la ligne téléphonique en cuivre existante.\n2. **La fibre optique (FTTH)** : accès très haut débit par un câble en fibre de verre acheminé jusqu'au domicile de l'abonné.\n3. **Le réseau mobile (3G/4G/5G)** : accès à Internet via les antennes relais du réseau de téléphonie mobile.\n4. **Le modem câble** : accès Internet via le réseau de télévision par câble coaxial.\n\n### Piège à éviter\nNe pas reciter le WIFI ou le satellite : ces deux technologies sont déjà données par l'énoncé et ne comptent donc pas parmi les quatre réponses attendues.\n\n### Conseil\nClasse toujours les technologies d'accès en deux "
+   }
+  ]
+ }
+}

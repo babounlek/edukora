@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-dhcp-faible-0",
+    "theme": "DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Quel est le rôle principal d'un serveur DHCP dans un réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDHCP (Dynamic Host Configuration Protocol) automatise la configuration réseau des machines clientes : un poste qui se connecte reçoit de lui, sans intervention manuelle, une adresse IP, un masque de sous-réseau, une passerelle par défaut et l'adresse d'un serveur DNS.\n\n### Corrigé\n\nLa bonne réponse est **c** : le serveur DHCP attribue automatiquement les paramètres IP aux machines du réseau.\n\n- a décrit le rôle d'un serveur DNS.\n- b décrit la commande ping (protocole ICMP).\n- d décrit le rôle d'un pare-feu, pas celui du DHCP.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Traduire les noms de domaine en adresses IP."},
+      {"lettre": "b", "texte": "Vérifier qu'une machine distante répond aux messages."},
+      {"lettre": "c", "texte": "Attribuer automatiquement aux machines une adresse IP, un masque et une passerelle."},
+      {"lettre": "d", "texte": "Bloquer les connexions non autorisées venant de l'extérieur."}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [10566, 7597]
+  },
+  {
+    "external_id": "cqc-dhcp-faible-1",
+    "theme": "DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans le réseau d'une école, un serveur DHCP attribue automatiquement les adresses. Parmi les équipements suivants, lequel est-il préférable de configurer avec une adresse IP **statique** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse statique est configurée manuellement et ne change pas ; une adresse dynamique est attribuée par le DHCP pour une durée limitée (bail) et peut changer. On réserve l'adressage statique aux équipements que les autres machines doivent toujours retrouver à la même adresse (serveurs, imprimantes réseau, routeur).\n\n### Corrigé\n\nLa bonne réponse est **a** : le serveur de fichiers doit être joignable en permanence à une adresse connue de tous les postes ; si son adresse changeait à chaque bail, les accès seraient interrompus.\n\nLes équipements des choix b, c et d (téléphone, portable de visiteur, tablette prêtée) sont mobiles ou temporaires : l'adressage dynamique leur convient très bien.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Le serveur de fichiers auquel tous les postes accèdent chaque jour."},
+      {"lettre": "b", "texte": "Le téléphone d'un élève connecté quelques minutes au Wi-Fi."},
+      {"lettre": "c", "texte": "L'ordinateur portable d'un visiteur de passage."},
+      {"lettre": "d", "texte": "Une tablette prêtée à un élève pour la journée."}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [10566, 7597]
+  },
+  {
+    "external_id": "cqc-dhcp-moyenne-2",
+    "theme": "DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un poste qui vient d'être branché au réseau obtient sa configuration IP auprès d'un serveur DHCP. Quel est l'ordre correct des quatre messages échangés ?",
+    "corrige_markdown": "### Rappel de méthode\n\nL'échange DHCP suit quatre étapes, souvent retenues par l'acronyme DORA : le client cherche un serveur, le serveur propose une adresse, le client accepte la proposition, le serveur confirme et fixe la durée du bail.\n\n### Corrigé\n\nLe bon ordre est **b** :\n\n1. **Discover** : le client diffuse un message pour trouver un serveur DHCP (il n'a pas encore d'adresse).\n2. **Offer** : un serveur lui propose une adresse et une configuration.\n3. **Request** : le client demande officiellement cette adresse.\n4. **Acknowledge** : le serveur confirme l'attribution et indique la durée du bail.\n\nLes autres propositions inversent des étapes : un serveur ne peut proposer (Offer) qu'après avoir reçu une demande de découverte, et la confirmation (Acknowledge) ne vient qu'après la demande (Request).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Offer, Discover, Request, Acknowledge"},
+      {"lettre": "b", "texte": "Discover, Offer, Request, Acknowledge"},
+      {"lettre": "c", "texte": "Discover, Request, Offer, Acknowledge"},
+      {"lettre": "d", "texte": "Request, Offer, Discover, Acknowledge"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10566, 10596]
+  },
+  {
+    "external_id": "cqc-dhcp-moyenne-3",
+    "theme": "DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Sur un ordinateur, la commande `ipconfig /all` affiche notamment pour la carte Ethernet :\n\n```\nDHCP activé . . . . . : Oui\nAdresse IPv4 . . . . . : 10.10.10.54\nServeur DHCP . . . . . : 10.10.10.1\nBail obtenu . . . . . : lundi 8:05:12\nBail expirant . . . . : lundi 16:05:12\n```\n\n1. Quel est le mode d'adressage de cette carte ? Justifier.\n2. Quelle est la durée du bail ?\n3. Que se passe-t-il à l'approche de l'expiration du bail ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans le résultat de `ipconfig /all`, « DHCP activé : Oui » associé à un serveur DHCP et à un bail (durée de location de l'adresse) indique un adressage dynamique ; la durée du bail est la différence entre « bail expirant » et « bail obtenu ».\n\n### Corrigé\n\n1. Adressage **dynamique** : le DHCP est activé, un serveur DHCP (10.10.10.1) est indiqué et un bail est associé à l'adresse.\n2. Durée du bail : de 8 h 05 à 16 h 05, soit **8 heures**.\n3. À l'approche de l'expiration (généralement à la moitié de la durée du bail), le client demande au serveur de **renouveler** son bail et conserve alors son adresse. Si le renouvellement échoue jusqu'à l'expiration, l'adresse est libérée : le client doit recommencer la procédure d'obtention (Discover) et peut recevoir une autre adresse.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10596, 7597, 10566]
+  },
+  {
+    "external_id": "cqc-dhcp-elevee-4",
+    "theme": "DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans un réseau 192.168.50.0/24, le serveur DHCP distribue des adresses dans la plage **192.168.50.100 à 192.168.50.150** (bornes incluses). Une imprimante réseau est configurée manuellement avec l'adresse **192.168.50.120**. Depuis quelques jours, des postes perdent par moments l'accès à l'imprimante et Windows signale un conflit d'adresse IP.\n\n1. Expliquer la cause du problème.\n2. Combien d'adresses le serveur peut-il distribuer au maximum en même temps ?\n3. Proposer deux solutions pour supprimer le conflit.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse configurée en statique doit être située hors de la plage distribuée par le DHCP, ou être exclue de cette plage. Sinon le serveur, qui ignore que l'adresse est déjà utilisée, peut l'attribuer à un poste client : deux machines portent alors la même adresse (conflit).\n\n### Corrigé\n\n1. L'adresse 192.168.50.120 de l'imprimante est **comprise dans la plage DHCP** (100 à 150). Quand le serveur l'attribue à un poste, l'imprimante et ce poste ont la même adresse IP, d'où le conflit et la perte d'accès.\n2. Nombre d'adresses : 150 − 100 + 1 = **51** adresses au maximum.\n3. Solutions possibles :\n   - **exclure** 192.168.50.120 de la plage DHCP (par exemple en distribuant 100-119 et 121-150) ;\n   - **déplacer** l'imprimante sur une adresse statique hors plage (par exemple 192.168.50.10) ;\n   - ou créer sur le serveur une **réservation DHCP** liant l'adresse 192.168.50.120 à l'adresse MAC de l'imprimante.\n\n(Si l'on exclut l'adresse, la plage distribuable tombe à 50 adresses.)",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10566, 7597]
+  }
+]

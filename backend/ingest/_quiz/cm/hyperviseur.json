@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-hyperviseur-faible-0",
+    "theme": "hyperviseur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un centre de données installe un logiciel de virtualisation directement sur le matériel d'un serveur, sans aucun système d'exploitation intermédiaire. De quel type d'hyperviseur s'agit-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn classe un hyperviseur selon ce sur quoi il s'installe : directement sur le matériel (type 1, natif ou « bare-metal ») ou sur un système d'exploitation déjà présent (type 2, hébergé).\n\n### Corrigé\n\nLe logiciel est installé directement sur le matériel, sans système hôte : c'est un hyperviseur de **type 1** (natif, bare-metal). Réponse **a**.\n\n- **b** est faux : un type 2 s'installe comme une application au-dessus d'un système d'exploitation.\n- **c** et **d** sont faux : « type 3 » n'existe pas dans cette classification, et un hyperviseur n'est pas un pare-feu.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Un hyperviseur de type 1 (natif, bare-metal)."},
+      {"lettre": "b", "texte": "Un hyperviseur de type 2 (hébergé)."},
+      {"lettre": "c", "texte": "Un hyperviseur de type 3."},
+      {"lettre": "d", "texte": "Un pare-feu matériel."}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [10598]
+  },
+  {
+    "external_id": "cqc-hyperviseur-faible-1",
+    "theme": "hyperviseur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "1. Quel est le rôle d'un hyperviseur ?\n2. Citer deux exemples d'hyperviseurs de type 1 et deux exemples d'hyperviseurs de type 2.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn hyperviseur est la couche logicielle qui crée les machines virtuelles et leur répartit les ressources de l'hôte. Pour les exemples, on retient la famille (type 1 ou type 2) selon le mode d'installation du produit.\n\n### Corrigé\n\n1. L'hyperviseur crée, exécute et supervise les machines virtuelles ; il alloue à chacune une part des ressources physiques (processeur, mémoire, stockage, réseau) et les isole les unes des autres.\n2. Type 1 : VMware ESXi, Microsoft Hyper-V, Xen, Proxmox VE (basé sur KVM). Type 2 : Oracle VirtualBox, VMware Workstation, Parallels Desktop. Deux exemples de chaque type suffisent.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10598]
+  },
+  {
+    "external_id": "cqc-hyperviseur-moyenne-2",
+    "theme": "hyperviseur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une étudiante en Série TI possède un ordinateur portable sous Windows. Elle veut y tester rapidement une distribution Linux dans une fenêtre, sans reformater son disque ni quitter Windows. Quelle solution correspond à ce besoin ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand on travaille sur un poste de bureau qui garde son système d'exploitation, on choisit un hyperviseur de type 2, installé comme une application. Un type 1 remplace le système de la machine pour servir de socle à des serveurs.\n\n### Corrigé\n\nLa bonne réponse est **b** : Oracle VirtualBox est un hyperviseur de type 2, il s'installe comme une application sous Windows et permet de lancer une VM Linux dans une fenêtre.\n\n- **a** VMware ESXi est de type 1 : il s'installe à la place du système sur un serveur.\n- **c** Proxmox VE est de type 1 : c'est un système dédié à la virtualisation de serveurs.\n- **d** Xen est de type 1 : il s'exécute directement sur le matériel.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Installer VMware ESXi à la place de Windows."},
+      {"lettre": "b", "texte": "Installer Oracle VirtualBox sous Windows."},
+      {"lettre": "c", "texte": "Installer Proxmox VE à la place de Windows."},
+      {"lettre": "d", "texte": "Installer Xen directement sur le portable à la place de Windows."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10598]
+  },
+  {
+    "external_id": "cqc-hyperviseur-moyenne-3",
+    "theme": "hyperviseur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour chacune des trois situations suivantes, indiquer le type d'hyperviseur (1 ou 2) le plus adapté et justifier en une phrase.\n\n**S1.** Un opérateur de télécommunications héberge 150 machines virtuelles de production, en service 24 h/24, sur des serveurs dédiés.\n\n**S2.** Un formateur en informatique veut montrer à ses élèves, depuis son ordinateur de bureau sous Windows, l'installation d'un système d'exploitation dans une VM.\n\n**S3.** Une mairie déploie, sur un serveur neuf, plusieurs services internes qui doivent rester performants et fiables.",
+    "corrige_markdown": "### Rappel de méthode\n\nLe choix dépend du contexte : un hyperviseur de type 1, installé sur le matériel, offre performances et fiabilité pour la production ; un hyperviseur de type 2, installé sous un système existant, convient à l'usage occasionnel sur un poste de travail.\n\n### Corrigé\n\n- **S1 : type 1.** La production continue, à grande échelle, demande de bonnes performances et de la stabilité, ce que permet l'accès direct au matériel sans système intermédiaire.\n- **S2 : type 2.** Le formateur doit garder son Windows et lancer la VM comme une application (par exemple VirtualBox), pour un usage ponctuel de démonstration.\n- **S3 : type 1.** Sur un serveur neuf dédié aux services, on installe l'hyperviseur directement sur le matériel (par exemple ESXi, Hyper-V ou Proxmox VE) pour réduire les pertes de performance et les points de panne.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10598]
+  },
+  {
+    "external_id": "cqc-hyperviseur-elevee-4",
+    "theme": "hyperviseur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un administrateur active le rôle Hyper-V sur un Windows Server. Un collègue affirme : « C'est un hyperviseur de type 2, puisqu'on l'a activé depuis Windows. » Quelle affirmation est **exacte** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour classer un hyperviseur, on ne regarde pas comment on l'installe mais où il s'exécute une fois démarré : directement sur le matériel (type 1) ou comme un simple processus au-dessus d'un système d'exploitation (type 2).\n\n### Corrigé\n\nLa bonne réponse est **b** : Hyper-V est de type 1. Après activation du rôle, l'hyperviseur démarre avant le système et s'exécute directement sur le matériel ; le Windows d'origine devient une machine virtuelle privilégiée (la « partition parent ») qui gère l'administration.\n\n- **a** est faux : le fait de l'activer depuis Windows ne fait pas de lui un type 2.\n- **c** est faux : l'ordre d'installation du système n'est pas le critère de classement.\n- **d** est faux : Hyper-V est bien un hyperviseur, pas un conteneur.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Le collègue a raison : le rôle s'active depuis Windows, donc c'est un type 2."},
+      {"lettre": "b", "texte": "C'est un type 1 : une fois activé, il s'exécute directement sur le matériel et Windows devient une partition privilégiée."},
+      {"lettre": "c", "texte": "C'est un type 2, car Windows Server a été installé avant l'hyperviseur."},
+      {"lettre": "d", "texte": "Ce n'est pas un hyperviseur mais un conteneur applicatif."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10598]
+  }
+]

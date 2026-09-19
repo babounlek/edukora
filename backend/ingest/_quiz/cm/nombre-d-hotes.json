@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-nombre-d-hotes-faible-0",
+    "theme": "nombre d'hôtes",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un sous-réseau utilise le masque **/29**. Combien d'adresses peuvent être attribuées à des machines (hôtes) dans ce sous-réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe nombre d'hôtes utilisables est 2ʰ − 2, où h = 32 − n est le nombre de bits d'hôte pour un masque /n : on retire l'adresse du réseau (bits d'hôte à 0) et l'adresse de diffusion (bits d'hôte à 1).\n\n### Corrigé\n\nh = 32 − 29 = 3 bits d'hôte. Nombre d'adresses : 2³ = 8. Hôtes utilisables : 8 − 2 = **6**. Réponse : **b**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "8"},
+      {"lettre": "b", "texte": "6"},
+      {"lettre": "c", "texte": "30"},
+      {"lettre": "d", "texte": "4"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [9939, 10597]
+  },
+  {
+    "external_id": "cqc-nombre-d-hotes-moyenne-1",
+    "theme": "nombre d'hôtes",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un réseau utilise le masque **255.255.254.0**. Combien de machines au maximum peut-il contenir ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour un masque en notation décimale, on compte d'abord les bits à 1 (donc n de /n), on en déduit les bits d'hôte h = 32 − n, puis le nombre de machines 2ʰ − 2.\n\n### Corrigé\n\n255.255.254.0 : deux octets pleins (16 bits) + 254 = 11111110 (7 bits à 1) = 23 bits, soit /23. Bits d'hôte : 32 − 23 = 9. Adresses : 2⁹ = 512. Machines : 512 − 2 = **510**. Réponse : **a**.\n\nRemarque : ce réseau regroupe deux blocs de 256 adresses, d'où 510 et non 254.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "510"},
+      {"lettre": "b", "texte": "512"},
+      {"lettre": "c", "texte": "254"},
+      {"lettre": "d", "texte": "1022"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [9939]
+  },
+  {
+    "external_id": "cqc-nombre-d-hotes-moyenne-2",
+    "theme": "nombre d'hôtes",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une PME compte **900 postes** à connecter dans un même sous-réseau.\n\n1. Quel est le plus petit nombre de bits d'hôte nécessaire ?\n2. En déduire le masque correspondant (notation /n et décimale pointée).\n3. Combien d'adresses resteront disponibles après connexion des 900 postes ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn cherche le plus petit h tel que 2ʰ − 2 ≥ nombre de machines. Le masque est alors /(32 − h). Les adresses restantes valent (2ʰ − 2) moins le nombre de machines connectées.\n\n### Corrigé\n\n1. h = 9 : 2⁹ − 2 = 510 < 900 (insuffisant) ; h = 10 : 2¹⁰ − 2 = 1022 ≥ 900. Il faut **10 bits d'hôte**.\n2. Masque : /(32 − 10) = **/22**. Troisième octet : 6 bits à 1 = 11111100 = 252. Notation décimale : **255.255.252.0**.\n3. Adresses restantes : 1022 − 900 = **122**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9939, 10597]
+  },
+  {
+    "external_id": "cqc-nombre-d-hotes-elevee-3",
+    "theme": "nombre d'hôtes",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le réseau **192.168.40.0/24** est découpé en **8 sous-réseaux de même taille**.\n\n1. Quel est le nouveau masque ?\n2. Combien d'hôtes chaque sous-réseau peut-il contenir ?\n3. Quel est le nombre total d'hôtes utilisables sur l'ensemble des 8 sous-réseaux ?\n4. Comparer avec les 254 hôtes du réseau non découpé et expliquer la différence.",
+    "corrige_markdown": "### Rappel de méthode\n\nEmprunter n bits crée 2ⁿ sous-réseaux et laisse h = (bits d'hôte initiaux) − n bits d'hôte. Chaque sous-réseau perd 2 adresses (réseau et diffusion), d'où le nombre d'hôtes 2ʰ − 2 par sous-réseau. Le découpage réduit donc le total d'hôtes utilisables.\n\n### Corrigé\n\n1. 8 = 2³ : 3 bits empruntés, masque **/27** (255.255.255.224).\n2. Bits d'hôte : 8 − 3 = 5 ; 2⁵ − 2 = **30 hôtes** par sous-réseau.\n3. Total : 8 × 30 = **240 hôtes**.\n4. 254 − 240 = **14 adresses** de moins. Chaque sous-réseau consomme sa propre adresse réseau et sa propre adresse de diffusion : 8 × 2 = 16 adresses réservées au lieu de 2, soit 14 de plus perdues.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9939, 10597]
+  }
+]

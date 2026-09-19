@@ -1,0 +1,73 @@
+[
+  {
+    "external_id": "cqc-operateurs-de-recherche-avancee-faible-0",
+    "theme": "opérateurs de recherche avancée",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Kevin cherche des pages sur le félin « jaguar » mais obtient surtout des pages sur la marque de voitures. Quelle requête doit-il saisir pour écarter les pages contenant le mot « voiture » ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn signe moins `-` collé juste devant un mot (sans espace) demande au moteur d'exclure les pages qui contiennent ce mot.\n\n### Corrigé\n\nLa requête `jaguar -voiture` cherche « jaguar » en excluant les pages contenant « voiture ». Réponse **b**.\n\nLes guillemets (proposition a) imposent une expression exacte, `intitle:` (proposition c) restreint au titre et `site:` (proposition d) restreint à un site : aucun n'exclut un mot.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "`\"jaguar voiture\"`"},
+      {"lettre": "b", "texte": "`jaguar -voiture`"},
+      {"lettre": "c", "texte": "`jaguar intitle:voiture`"},
+      {"lettre": "d", "texte": "`jaguar site:voiture`"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10599]
+  },
+  {
+    "external_id": "cqc-operateurs-de-recherche-avancee-moyenne-1",
+    "theme": "opérateurs de recherche avancée",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une élève de Terminale TI veut trouver uniquement des documents au format PDF contenant l'expression exacte « sécurité informatique ». Quelle requête est la plus adaptée ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes guillemets imposent l'expression exacte, et l'opérateur `filetype:` suivi d'une extension restreint les résultats aux fichiers de ce format. On peut combiner les deux dans une même requête.\n\n### Corrigé\n\n`\"sécurité informatique\" filetype:pdf` réunit les deux contraintes. Réponse **a**.\n\n- b : `pdf` seul est un simple mot-clé, il ne limite pas au format PDF et l'expression n'est pas exacte.\n- c : le signe `-` exclut l'expression au lieu de la chercher.\n- d : `intitle:pdf` cherche le mot « pdf » dans le titre des pages, pas le format du fichier.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "`\"sécurité informatique\" filetype:pdf`"},
+      {"lettre": "b", "texte": "`sécurité informatique pdf`"},
+      {"lettre": "c", "texte": "`filetype:pdf -\"sécurité informatique\"`"},
+      {"lettre": "d", "texte": "`intitle:pdf \"sécurité informatique\"`"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [10599]
+  },
+  {
+    "external_id": "cqc-operateurs-de-recherche-avancee-moyenne-2",
+    "theme": "opérateurs de recherche avancée",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "On veut retrouver uniquement des pages du site `wikipedia.org` dont le titre contient le mot « pare-feu » et qui ne contiennent pas le mot « jeu ». Écrire une requête qui utilise les opérateurs adaptés, puis expliquer le rôle de chacun.",
+    "corrige_markdown": "### Rappel de méthode\n\nOn traduit chaque contrainte par un opérateur : `site:` pour limiter à un domaine, `intitle:` pour imposer un mot dans le titre (il s'applique au mot qui le suit immédiatement), `-` pour exclure un mot. Les opérateurs se combinent dans une même requête.\n\n### Corrigé\n\nRequête possible : `site:wikipedia.org intitle:pare-feu -jeu`\n\n- `site:wikipedia.org` : limite la recherche aux pages de ce site ;\n- `intitle:pare-feu` : le mot « pare-feu » doit figurer dans le titre de la page ;\n- `-jeu` : exclut les pages contenant le mot « jeu ».\n\nL'ordre des éléments n'a pas d'importance, mais chaque opérateur doit être collé à son argument, sans espace après les deux-points ni après le signe moins.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10599]
+  },
+  {
+    "external_id": "cqc-operateurs-de-recherche-avancee-elevee-3",
+    "theme": "opérateurs de recherche avancée",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "On saisit dans un moteur de recherche la requête suivante :\n\n`intitle:cryptographie chiffrement -\"clé publique\" filetype:pdf`\n\nParmi les résultats suivants, lequel correspond réellement à cette requête ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour interpréter une requête composée, on la décompose opérateur par opérateur : `intitle:` ne porte que sur le mot qui le suit immédiatement, les mots sans opérateur peuvent apparaître n'importe où dans la page, les guillemets précédés de `-` excluent une expression exacte, et `filetype:` impose le format.\n\n### Corrigé\n\nContraintes : (1) « cryptographie » dans le titre ; (2) « chiffrement » quelque part dans le document ; (3) l'expression exacte « clé publique » absente ; (4) fichier PDF.\n\nSeule la proposition **c** les respecte toutes.\n\n- a : la page est au format HTML, pas PDF.\n- b : le mot « cryptographie » n'est pas dans le titre.\n- d : le document contient l'expression exclue « clé publique ».",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Une page web HTML intitulée « Cryptographie : les bases » qui parle de chiffrement et ne contient pas l'expression « clé publique »"},
+      {"lettre": "b", "texte": "Un fichier PDF intitulé « Les protocoles sécurisés » dont le texte parle de cryptographie et de chiffrement, sans l'expression « clé publique »"},
+      {"lettre": "c", "texte": "Un fichier PDF intitulé « Introduction à la cryptographie » dont le texte parle de chiffrement et ne contient jamais l'expression « clé publique »"},
+      {"lettre": "d", "texte": "Un fichier PDF intitulé « Cryptographie moderne » dont le texte parle de chiffrement et détaille la « clé publique »"}
+    ],
+    "reponse_correcte": "c",
+    "source_exercises": [10599]
+  }
+]

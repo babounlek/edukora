@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-chiffrement-de-cesar-faible-0",
+    "theme": "chiffrement de César",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un message est protégé par un chiffrement de César. Que représente exactement la **clé** de ce chiffrement ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe chiffrement de César est un chiffrement par substitution : chaque lettre du message clair est remplacée par la lettre située un nombre fixe de rangs plus loin dans l'alphabet, en revenant au début après Z. Ce nombre fixe est la clé.\n\n### Corrigé\n\nLa clé est le nombre de positions dont on décale chaque lettre dans l'alphabet (le décalage), le même pour toutes les lettres du message. C'est la réponse **b**. Les autres propositions décrivent autre chose : une clé n'est pas le nombre de lettres du message, ni une permutation arbitraire de l'alphabet (ce serait une substitution générale, avec 26 ! clés possibles), ni un mot secret répété (c'est le principe de Vigenère).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Le nombre de lettres que contient le message."},
+      {"lettre": "b", "texte": "Le nombre de positions dont on décale chaque lettre dans l'alphabet."},
+      {"lettre": "c", "texte": "Un ordre quelconque et secret des 26 lettres de l'alphabet."},
+      {"lettre": "d", "texte": "Un mot secret que l'on répète sous le message pour décaler les lettres."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10600, 10589]
+  },
+  {
+    "external_id": "cqc-chiffrement-de-cesar-faible-1",
+    "theme": "chiffrement de César",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "On utilise le chiffrement de César avec la clé $4$ (décalage de $4$ rangs vers l'avant dans l'alphabet de 26 lettres, A = 0). Quel est le chiffré du mot **PAIN** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour chiffrer, on remplace chaque lettre de rang $x$ (A = 0, B = 1, ..., Z = 25) par la lettre de rang $(x + k) \\bmod 26$, où $k$ est la clé.\n\n### Corrigé\n\nAvec $k = 4$ :\n\n- P (15) : $15 + 4 = 19$, soit T\n- A (0) : $0 + 4 = 4$, soit E\n- I (8) : $8 + 4 = 12$, soit M\n- N (13) : $13 + 4 = 17$, soit R\n\nLe chiffré est **TEMR** (réponse **b**). Vérification en sens inverse : T (19) $-4 = 15$ (P), E $-4 = 0$ (A), M (12) $-4 = 8$ (I), R (17) $-4 = 13$ (N), on retrouve PAIN. SDLQ correspond à la clé 3, UFNS à la clé 5, et LWEJ résulte d'un décalage vers l'arrière (déchiffrement au lieu de chiffrement).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "SDLQ"},
+      {"lettre": "b", "texte": "TEMR"},
+      {"lettre": "c", "texte": "UFNS"},
+      {"lettre": "d", "texte": "LWEJ"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10600]
+  },
+  {
+    "external_id": "cqc-chiffrement-de-cesar-moyenne-0",
+    "theme": "chiffrement de César",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un administrateur reçoit le mot chiffré **CVFHNL**, obtenu avec un chiffrement de César de clé $7$ (alphabet de 26 lettres, A = 0). Quel est le mot en clair ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour déchiffrer un message chiffré avec la clé $k$, on applique le décalage inverse : chaque lettre de rang $y$ devient la lettre de rang $(y - k) \\bmod 26$. Si le résultat est négatif, on ajoute 26.\n\n### Corrigé\n\nAvec $k = 7$ :\n\n- C (2) : $2 - 7 = -5$, $-5 + 26 = 21$, soit V\n- V (21) : $21 - 7 = 14$, soit O\n- F (5) : $5 - 7 = -2$, $-2 + 26 = 24$, soit Y\n- H (7) : $7 - 7 = 0$, soit A\n- N (13) : $13 - 7 = 6$, soit G\n- L (11) : $11 - 7 = 4$, soit E\n\nLe mot en clair est **VOYAGE** (réponse **b**). Vérification en sens direct : V (21) $+7 = 28 \\equiv 2$ (C), O (14) $+7 = 21$ (V), Y (24) $+7 = 31 \\equiv 5$ (F), A $+7 = 7$ (H), G (6) $+7 = 13$ (N), E (4) $+7 = 11$ (L) : on retrouve CVFHNL. JCMOUS vient d'un décalage vers l'avant (on a chiffré au lieu de déchiffrer), WPZBHF d'un décalage de 6 et UNXZFD d'un décalage de 8.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "JCMOUS"},
+      {"lettre": "b", "texte": "VOYAGE"},
+      {"lettre": "c", "texte": "WPZBHF"},
+      {"lettre": "d", "texte": "UNXZFD"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10589]
+  },
+  {
+    "external_id": "cqc-chiffrement-de-cesar-moyenne-1",
+    "theme": "chiffrement de César",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien sait que le mot clair **RESEAU** a été chiffré en **ANBNJD** par un chiffrement de César (alphabet de 26 lettres, A = 0), mais il a perdu la clé.\n\n1. Déterminer la clé de décalage.\n2. Avec cette même clé, déchiffrer le mot **UDWMR**.",
+    "corrige_markdown": "### Rappel de méthode\n\nComme le décalage est le même pour toutes les lettres, il suffit de comparer une lettre claire et la lettre chiffrée correspondante : la clé est $k \\equiv (\\text{rang chiffré} - \\text{rang clair}) \\bmod 26$. On la vérifie sur les autres lettres, puis on déchiffre en soustrayant $k$.\n\n### Corrigé\n\n**1.** R (17) devient A (0) : $k \\equiv 0 - 17 = -17 \\equiv 9 \\pmod{26}$. Vérification avec les autres lettres : E (4) $+9 = 13$ (N) ; S (18) $+9 = 27 \\equiv 1$ (B) ; E devient N ; A (0) $+9 = 9$ (J) ; U (20) $+9 = 29 \\equiv 3$ (D). On obtient bien ANBNJD, donc la clé est **9**.\n\n**2.** On soustrait 9 à chaque lettre de UDWMR :\n\n- U (20) : $20 - 9 = 11$, soit L\n- D (3) : $3 - 9 = -6$, $-6 + 26 = 20$, soit U\n- W (22) : $22 - 9 = 13$, soit N\n- M (12) : $12 - 9 = 3$, soit D\n- R (17) : $17 - 9 = 8$, soit I\n\nLe mot en clair est **LUNDI**. Vérification : L (11) $+9 = 20$ (U), U (20) $+9 = 29 \\equiv 3$ (D), N (13) $+9 = 22$ (W), D (3) $+9 = 12$ (M), I (8) $+9 = 17$ (R) : on retrouve UDWMR.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10589, 10600]
+  },
+  {
+    "external_id": "cqc-chiffrement-de-cesar-elevee-0",
+    "theme": "chiffrement de César",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour « renforcer » la sécurité, un développeur chiffre le mot **CAFE** avec un chiffrement de César de clé $11$, puis rechiffre le résultat avec un second chiffrement de César de clé $17$ (alphabet de 26 lettres, A = 0).\n\n1. Calculer le mot obtenu après les deux chiffrements.\n2. Quel chiffrement de César unique donne le même résultat ? Le double chiffrement est-il plus sûr ?\n3. Combien de clés un attaquant doit-il tester au maximum pour casser un chiffrement de César, et pourquoi cette méthode est-elle réalisable à la main ?",
+    "corrige_markdown": "### Rappel de méthode\n\nChiffrer avec la clé $k_1$ puis avec la clé $k_2$ revient à ajouter $k_1 + k_2$ modulo 26 : les décalages se composent par addition. La sécurité d'un chiffrement dépend de la taille de l'espace des clés, que l'on peut parcourir en entier si elle est petite (attaque par force brute).\n\n### Corrigé\n\n**1.** Première étape, clé 11 : C (2) $+11 = 13$ (N) ; A (0) $+11 = 11$ (L) ; F (5) $+11 = 16$ (Q) ; E (4) $+11 = 15$ (P). On obtient NLQP.\nSeconde étape, clé 17 : N (13) $+17 = 30 \\equiv 4$ (E) ; L (11) $+17 = 28 \\equiv 2$ (C) ; Q (16) $+17 = 33 \\equiv 7$ (H) ; P (15) $+17 = 32 \\equiv 6$ (G). Le résultat est **ECHG**.\n\n**2.** Le décalage total est $11 + 17 = 28 \\equiv 2 \\pmod{26}$. Un chiffrement de clé 2 seule donne : C (2) $+2 = 4$ (E), A $+2 = 2$ (C), F (5) $+2 = 7$ (H), E (4) $+2 = 6$ (G), soit ECHG, identique. Vérification en sens inverse : E $-2 = C$, C $-2 = A$, H $-2 = F$, G $-2 = E$. Le double chiffrement équivaut donc à un chiffrement simple de clé 2 : il n'apporte **aucune** sécurité supplémentaire, car on reste dans le même ensemble de 26 décalages.\n\n**3.** Il n'y a que 26 clés possibles, dont la clé 0 qui ne change rien : l'attaquant teste au plus **25 décalages** non triviaux et reconnaît le bon en lisant un texte cohérent. Cette attaque par force brute est réalisable à la main. Par ailleurs, chaque lettre claire est toujours remplacée par la même lettre chiffrée : l'analyse de fréquences (la lettre la plus fréquente en français est E) permet de deviner la clé en quelques secondes.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10589, 10600]
+  }
+]

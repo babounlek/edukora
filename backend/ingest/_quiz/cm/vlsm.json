@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-vlsm-faible-0",
+    "theme": "VLSM",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "En VLSM, un service doit accueillir **50 machines**. Quel est le masque le plus restrictif (le plus long) qui convient à ce sous-réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn VLSM, on choisit pour chaque sous-réseau le plus petit bloc d'adresses qui couvre le besoin : il faut le plus petit h tel que 2ʰ − 2 ≥ nombre de machines, et le masque vaut alors /(32 − h).\n\n### Corrigé\n\n- h = 5 : 2⁵ − 2 = 30 < 50 (insuffisant)\n- h = 6 : 2⁶ − 2 = 62 ≥ 50 (suffisant)\n\nIl faut 6 bits d'hôte, donc un masque /(32 − 6) = **/26** (255.255.255.192). Réponse : **b**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "/25"},
+      {"lettre": "b", "texte": "/26"},
+      {"lettre": "c", "texte": "/27"},
+      {"lettre": "d", "texte": "/28"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10597, 9939]
+  },
+  {
+    "external_id": "cqc-vlsm-moyenne-1",
+    "theme": "VLSM",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une entreprise dispose du bloc **192.168.20.0/24** et doit y installer trois réseaux locaux : **LAN-A** (100 machines), **LAN-B** (50 machines) et **LAN-C** (20 machines). En appliquant le VLSM (allocation dans l'ordre décroissant des besoins, à partir du début du bloc), donner pour chaque LAN le masque (notation /n), l'adresse réseau, l'adresse de diffusion et la plage d'adresses utilisables.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn VLSM, on trie les besoins du plus grand au plus petit, on attribue à chacun le plus petit bloc de taille 2ʰ tel que 2ʰ − 2 ≥ besoin, et on place les blocs les uns à la suite des autres sans chevauchement.\n\n### Corrigé\n\n- LAN-A (100) : h = 7 car 2⁷ − 2 = 126 ≥ 100 (2⁶ − 2 = 62 est insuffisant) : **/25**, bloc de 128 adresses : réseau **192.168.20.0/25**, diffusion 192.168.20.127, hôtes **192.168.20.1 à 192.168.20.126**.\n- LAN-B (50) : h = 6 car 2⁶ − 2 = 62 ≥ 50 : **/26**, bloc de 64 : réseau **192.168.20.128/26**, diffusion 192.168.20.191, hôtes **192.168.20.129 à 192.168.20.190**.\n- LAN-C (20) : h = 5 car 2⁵ − 2 = 30 ≥ 20 (2⁴ − 2 = 14 est insuffisant) : **/27**, bloc de 32 : réseau **192.168.20.192/27**, diffusion 192.168.20.223, hôtes **192.168.20.193 à 192.168.20.222**.\n\nIl reste libre la plage 192.168.20.224 à 192.168.20.255 (32 adresses) pour une extension future.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597, 9939]
+  },
+  {
+    "external_id": "cqc-vlsm-moyenne-2",
+    "theme": "VLSM",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans le bloc **172.30.4.0/24**, un administrateur a déjà attribué **172.30.4.0/26** au premier réseau local, puis **172.30.4.64/27** au deuxième. Quelle est la première adresse réseau encore disponible, sans chevauchement, pour un troisième sous-réseau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn VLSM, chaque sous-réseau occupe un bloc contigu dont la taille est 2ʰ. L'adresse réseau suivante disponible est celle qui suit immédiatement l'adresse de diffusion du dernier bloc alloué.\n\n### Corrigé\n\n- 172.30.4.0/26 : bloc de 64 adresses, de .0 à .63.\n- 172.30.4.64/27 : bloc de 32 adresses, de .64 à .95 (diffusion .95).\n\nLa première adresse libre est donc .96, soit **172.30.4.96**. Réponse : **b**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "172.30.4.65"},
+      {"lettre": "b", "texte": "172.30.4.96"},
+      {"lettre": "c", "texte": "172.30.4.128"},
+      {"lettre": "d", "texte": "172.30.4.95"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [10597]
+  },
+  {
+    "external_id": "cqc-vlsm-elevee-3",
+    "theme": "VLSM",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un opérateur dispose du bloc **172.18.10.0/24** pour équiper un site comprenant : **LAN1** (60 machines), **LAN2** (28 machines), **LAN3** (12 machines) et **deux liaisons point à point** entre routeurs (2 adresses utilisables chacune).\n\n1. Donner le plan d'adressage VLSM (masque, adresse réseau, adresse de diffusion de chaque sous-réseau), en allouant du plus grand au plus petit besoin à partir du début du bloc.\n2. Combien d'adresses du bloc restent inutilisées ?\n3. Pourquoi faut-il commencer par le plus grand besoin ?",
+    "corrige_markdown": "### Rappel de méthode\n\nOn trie les besoins par ordre décroissant, on prend pour chacun le plus petit bloc 2ʰ tel que 2ʰ − 2 ≥ besoin, et on place les blocs à la suite. Trier ainsi garantit que chaque bloc commence à une adresse multiple de sa taille, donc que l'alignement CIDR est respecté.\n\n### Corrigé\n\n1. Plan d'adressage :\n- LAN1 (60) : 2⁶ − 2 = 62 ≥ 60, **/26** : réseau **172.18.10.0/26**, diffusion 172.18.10.63.\n- LAN2 (28) : 2⁵ − 2 = 30 ≥ 28, **/27** : réseau **172.18.10.64/27**, diffusion 172.18.10.95.\n- LAN3 (12) : 2⁴ − 2 = 14 ≥ 12, **/28** : réseau **172.18.10.96/28**, diffusion 172.18.10.111.\n- Liaison 1 (2) : 2² − 2 = 2, **/30** : réseau **172.18.10.112/30**, diffusion 172.18.10.115.\n- Liaison 2 (2) : **/30** : réseau **172.18.10.116/30**, diffusion 172.18.10.119.\n\n2. La dernière adresse utilisée est .119 ; la plage .120 à .255 est libre, soit 256 − 120 = **136 adresses**.\n\n3. Si l'on plaçait d'abord un petit bloc (par exemple un /30 en .0), le bloc suivant de 64 adresses ne pourrait pas commencer en .4 : une adresse réseau /26 doit être un multiple de 64. Il faudrait sauter jusqu'en .64 et l'on gaspillerait des adresses, voire on manquerait de place.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10597, 9939]
+  }
+]

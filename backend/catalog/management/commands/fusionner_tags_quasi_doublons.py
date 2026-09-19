@@ -18,6 +18,12 @@ l'orthographe. Chaque groupe est fusionné dans un savepoint : une contrainte d'
     python manage.py fusionner_tags_quasi_doublons            # simulation
     python manage.py fusionner_tags_quasi_doublons --apply
     python manage.py fusionner_tags_quasi_doublons --savoirs-equivalents --apply
+    python manage.py fusionner_tags_quasi_doublons --tous-savoirs --exclure "registre,puissance,trace" --apply
+
+`--tous-savoirs` fusionne aussi les groupes dont les savoirs officiels sont RÉELLEMENT différents
+(même notion rattachée à des classes/séries différentes : le Tag garde le savoir du survivant,
+`savoir_officiel` étant en standby). `--exclure` liste les vrais homonymes à garder séparés
+(clé de rapprochement `tag_key`, ex. « registre » français / registres du processeur).
 """
 
 import re
@@ -60,6 +66,8 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--apply", action="store_true", help="Écrit réellement les fusions (sinon simulation).")
+        parser.add_argument("--tous-savoirs", action="store_true", help="Fusionne aussi les groupes en conflit de savoirs différents.")
+        parser.add_argument("--exclure", default="", help="Noms (séparés par des virgules) de groupes à ne jamais fusionner.")
         parser.add_argument(
             "--savoirs-equivalents", action="store_true",
             help="Fusionne aussi un groupe en conflit de savoir_officiel si les savoirs ont le même intitulé normalisé.",
@@ -73,10 +81,16 @@ class Command(BaseCommand):
             groupes[tag_key(tag.name)].append(tag)
         groupes = [tags for tags in groupes.values() if len(tags) > 1]
 
+        exclus = {tag_key(n.strip()) for n in options["exclure"].split(",") if n.strip()}
         conflits, sautes, fusionnes, supprimes = [], [], 0, 0
         for tags in groupes:
             savoirs = {t.savoir_officiel_id for t in tags if t.savoir_officiel_id is not None}
-            if len(savoirs) > 1 and not (options["savoirs_equivalents"] and _savoirs_equivalents(savoirs)):
+            if tag_key(tags[0].name) in exclus:
+                conflits.append(tags)
+                continue
+            if len(savoirs) > 1 and not (
+                options["tous_savoirs"] or (options["savoirs_equivalents"] and _savoirs_equivalents(savoirs))
+            ):
                 conflits.append(tags)
                 continue
 
