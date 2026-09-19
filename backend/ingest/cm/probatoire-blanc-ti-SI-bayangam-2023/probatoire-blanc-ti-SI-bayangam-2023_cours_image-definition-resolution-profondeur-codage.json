@@ -1,0 +1,108 @@
+{
+  "cours_id": "cours-image-definition-resolution-profondeur-codage-bayangam2023",
+  "meta": {
+    "titre": "Definition, resolution et profondeur de codage d'une image numerique",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Multimedia",
+    "duree_estimee_min": 12,
+    "tags": [
+      "definition d'image",
+      "resolution",
+      "profondeur de codage",
+      "pixels"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
+    "epreuve_titre": "Epreuve de maintenance informatique et multimedia, Examen Blanc Probatoire TI, Lycee Bilingue de Bayangam, 2023",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-bay2023-ex4-q1a",
+    "rappels_lies": [
+      "rdm-bay2023-ex4-q1b",
+      "rdm-bay2023-ex4-q1c"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux photos peuvent afficher exactement le meme nombre de pixels et pourtant ne pas peser le meme poids en megaoctets, ni s'afficher avec la meme richesse de couleurs. Trois notions distinctes permettent de decrire completement une image numerique : sa definition, sa resolution, et sa profondeur de codage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel et qu'une image numerique est composee d'une grille de pixels",
+        "Maitriser les puissances de 2 et les conversions bits/octets (1 octet = 8 bits)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois notions a ne pas confondre",
+      "contenu_markdown": "**La definition** d'une image est le **nombre total de points (pixels)** qui la composent, exprimee sous la forme largeur x hauteur (par exemple 600 x 800) ou par leur produit. C'est une mesure absolue, independante de la taille physique d'affichage ou d'impression.\n\n**La resolution** d'une image est le **nombre de pixels par unite de longueur**, generalement exprime en points par pouce (ppp, ou *dpi* en anglais pour *dots per inch*). Elle mesure la finesse de l'image lors de son affichage a l'ecran ou de son impression sur papier : une meme definition peut donner une image nette ou grossiere selon la taille a laquelle on l'imprime.\n\n**La profondeur de codage de couleur** (ou profondeur de couleur) est le **nombre de bits utilises pour coder la couleur d'un seul pixel**. Elle fixe le nombre de couleurs differentes que chaque pixel peut prendre : avec n bits, un pixel peut prendre 2^n couleurs distinctes. Une palette de 16 millions de couleurs correspond a 24 bits par pixel (2^24 = 16 777 216), soit 8 bits (un octet) pour chacune des trois composantes rouge, vert, bleu."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une image a une definition de 1000 x 1000 pixels et une profondeur de codage de 24 bits. Combien d'octets par pixel cela represente-t-il, et combien de couleurs differentes chaque pixel peut-il prendre ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la profondeur de codage en octets",
+          "justification": "1 octet = 8 bits.",
+          "resultat_markdown": "24 bits / 8 = **3 octets par pixel**."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de couleurs possibles",
+          "justification": "Avec n bits, un pixel peut prendre 2^n valeurs distinctes.",
+          "resultat_markdown": "2^24 = **16 777 216 couleurs**, soit environ 16 millions de couleurs."
+        }
+      ],
+      "conclusion_markdown": "La profondeur de codage en bits se convertit directement en octets par pixel (utile pour calculer le poids d'un fichier) et en nombre de couleurs affichables (2^n)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre definition et resolution.",
+          "pourquoi_faux": "La definition compte les pixels (un nombre fixe, propre au fichier) ; la resolution rapporte ces pixels a une distance physique et peut varier selon la taille d'impression choisie, a definition constante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image a une profondeur de codage de 8 bits. Combien de couleurs differentes chaque pixel peut-il prendre ?",
+          "solution_markdown": "Avec n bits, un pixel peut prendre 2^n couleurs distinctes. Ici n = 8, donc 2^8 = **256 couleurs** differentes par pixel."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux images ont la meme definition de 2000 x 1500 pixels, mais l'une est imprimee au format d'une carte postale et l'autre au format d'une affiche murale. Laquelle a la meilleure resolution d'impression, et pourquoi ?",
+          "solution_markdown": "La carte postale a la meilleure resolution. La resolution est le nombre de pixels par unite de longueur (ppp/dpi) : a definition egale (meme nombre total de pixels), plus la surface d'impression est petite, plus les pixels sont rapproches, donc plus la resolution (et la finesse percue) est elevee. L'affiche murale, beaucoup plus grande, repartit les memes pixels sur une surface bien plus vaste : sa resolution est donc plus faible, et l'image y paraitra moins nette."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image a une definition de 800 x 600 pixels et une profondeur de codage de 16 bits. Calculer le nombre d'octets necessaires pour coder uniquement les couleurs de tous les pixels (hors tout autre metadonnee).",
+          "solution_markdown": "Nombre de pixels : 800 x 600 = 480 000 pixels. Profondeur de codage en octets : 16 bits / 8 = 2 octets par pixel. Poids total en couleur : 480 000 x 2 = **960 000 octets**, soit environ 937,5 Kio (960 000 / 1024)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La definition compte le nombre total de pixels (largeur x hauteur).",
+        "La resolution mesure la densite de pixels par unite de longueur (ppp/dpi).",
+        "La profondeur de codage fixe, en bits par pixel, le nombre de couleurs possibles (2^n)."
+      ]
+    }
+  ]
+}

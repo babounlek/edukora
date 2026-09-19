@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-definir-carte-reseau-bayangam2023",
+  "meta": {
+    "titre": "Definir la carte reseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Reseaux informatiques",
+    "duree_estimee_min": 12,
+    "tags": [
+      "carte reseau",
+      "NIC",
+      "adresse MAC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
+    "epreuve_titre": "Epreuve de maintenance informatique et multimedia, Examen Blanc Probatoire TI, Lycee Bilingue de Bayangam, 2023",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bay2023-ex3-q3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur peut posseder un processeur puissant et un disque dur volumineux sans pour autant pouvoir echanger la moindre donnee avec un autre poste du bureau. Il lui manque un composant precis, charge specifiquement de la communication reseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un reseau informatique relie plusieurs ordinateurs entre eux pour echanger des donnees",
+        "Savoir qu'un ordinateur est compose de plusieurs composants materiels distincts (carte-mere, disque dur, carte reseau...)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Definition et role de la carte reseau",
+      "contenu_markdown": "La **carte reseau** (interface reseau, NIC pour *Network Interface Card*) est le composant qui permet a un ordinateur de communiquer avec les autres elements d'un reseau.\n\nInstallee a l'interieur de l'ordinateur (sous forme de carte d'extension) ou integree directement a la carte-mere, elle assure deux fonctions :\n\n1. **Convertir** les donnees numeriques traitees par l'ordinateur en signaux transmissibles sur le support de communication (impulsions electriques sur un cable Ethernet, ondes radio en Wi-Fi), et reciproquement a la reception.\n2. **Identifier** l'ordinateur sur le reseau, grace a une adresse physique unique gravee sur la carte, appelee **adresse MAC**.\n\nSans carte reseau, un ordinateur reste une machine isolee, incapable de rejoindre un reseau local ou Internet."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ordinateur relie par cable Ethernet a une box Internet ne parvient a acceder a aucun site web, alors que la box et le cable fonctionnent normalement (verifies sur un autre poste). Quel composant de l'ordinateur faut-il verifier en priorite, et pourquoi ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le composant responsable de la communication reseau de l'ordinateur",
+          "justification": "C'est la carte reseau qui permet a un ordinateur de communiquer avec les autres elements d'un reseau ; box et cable ne suffisent pas sans elle.",
+          "resultat_markdown": "Il faut verifier la carte reseau de l'ordinateur."
+        },
+        {
+          "numero": 2,
+          "action": "Justifier l'elimination des autres composants",
+          "justification": "La box et le cable ayant ete verifies fonctionnels sur un autre poste, la panne se situe necessairement du cote de l'ordinateur qui ne se connecte pas.",
+          "resultat_markdown": "Le probleme ne peut venir ni de la box ni du cable, deja valides ; il reste la carte reseau (ou son pilote) comme cause probable."
+        }
+      ],
+      "conclusion_markdown": "Quand le support de communication (box, cable) est valide independamment, c'est la carte reseau de l'ordinateur en panne qu'il faut examiner en priorite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la carte reseau avec le cable ou la box Internet.",
+          "pourquoi_faux": "Le cable et la box (modem/routeur) font partie du support et de l'infrastructure du reseau, mais c'est la carte reseau, installee dans l'ordinateur lui-meme, qui lui permet physiquement de s'y raccorder et d'etre identifie dessus."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelles sont les deux fonctions principales de la carte reseau ?",
+          "solution_markdown": "1) Convertir les donnees numeriques de l'ordinateur en signaux transmissibles sur le support de communication (impulsions electriques, ondes radio), et reciproquement a la reception. 2) Identifier l'ordinateur sur le reseau grace a son adresse MAC, unique et gravee sur la carte."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux ordinateurs du meme reseau local possedent-ils la meme adresse MAC ? Justifier.",
+          "solution_markdown": "Non. L'adresse MAC est une adresse physique unique gravee sur chaque carte reseau lors de sa fabrication ; elle identifie precisement l'ordinateur qui la porte sur le reseau. Deux cartes reseau, donc deux ordinateurs, ne peuvent pas porter la meme adresse MAC sans provoquer un conflit d'identification sur le reseau."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur portable se connecte a Internet aussi bien par cable Ethernet que par Wi-Fi. Combien de cartes reseau possede-t-il au minimum, et pourquoi ?",
+          "solution_markdown": "Au minimum deux cartes reseau distinctes : une carte reseau filaire (Ethernet), qui convertit les donnees en impulsions electriques transmises par le cable, et une carte reseau sans fil (Wi-Fi), qui convertit les memes donnees en ondes radio. Chaque support de transmission (cable ou air) exige sa propre carte reseau adaptee a sa methode de conversion du signal ; c'est pourquoi un meme ordinateur porte generalement deux adresses MAC distinctes, une par carte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La carte reseau permet a un ordinateur de communiquer avec les autres elements d'un reseau.",
+        "Elle convertit les donnees numeriques en signaux transmissibles sur le support (cable ou Wi-Fi).",
+        "Chaque carte reseau porte une adresse MAC unique qui identifie l'ordinateur sur le reseau."
+      ]
+    }
+  ]
+}

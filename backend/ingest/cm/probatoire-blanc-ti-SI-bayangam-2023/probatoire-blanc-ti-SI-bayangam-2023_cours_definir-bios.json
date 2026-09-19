@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-definir-bios-bayangam2023",
+  "meta": {
+    "titre": "Definir le BIOS",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 12,
+    "tags": [
+      "bios",
+      "demarrage",
+      "POST",
+      "carte-mere"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
+    "epreuve_titre": "Epreuve de maintenance informatique et multimedia, Examen Blanc Probatoire TI, Lycee Bilingue de Bayangam, 2023",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bay2023-ex1-q1d",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Appuyer sur le bouton d'allumage d'un ordinateur declenche une suite d'operations invisibles avant meme que Windows ou tout autre systeme d'exploitation n'apparaisse a l'ecran. Un programme special, grave dans une puce de la carte-mere, prend les commandes en tout premier : c'est le BIOS."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que l'ordinateur est compose de materiel (carte-mere, processeur, memoire...) et de logiciels (systeme d'exploitation, applications)",
+        "Savoir ce qu'est une puce electronique et une carte-mere"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Definition et role du BIOS",
+      "contenu_markdown": "Le **BIOS** (*Basic Input/Output System*, systeme d'entree-sortie de base) est un micro-logiciel enregistre dans une puce de la carte-mere, independante du disque dur.\n\nDes la mise sous tension de l'ordinateur, le BIOS execute deux missions dans l'ordre :\n\n1. Le **test POST** (*Power-On Self-Test*) : il verifie que les composants essentiels (processeur, memoire, cartes) fonctionnent correctement, et signale toute anomalie par un bip sonore ou un message a l'ecran.\n2. La **recherche du systeme d'exploitation** : une fois le materiel valide, le BIOS localise le peripherique de demarrage (disque dur, cle USB...) et lui transmet le controle pour lancer le systeme d'exploitation installe.\n\nLe BIOS gere egalement, tout au long du fonctionnement de la machine, le dialogue de bas niveau entre le processeur et certains peripheriques d'entree-sortie, d'ou son nom."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ordinateur emet plusieurs bips sonores au demarrage puis l'ecran reste completement noir, sans qu'aucun logo ni systeme d'exploitation n'apparaisse. A quelle etape du demarrage ce probleme se situe-t-il, et que peut-on en deduire ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le programme responsable de cette etape du demarrage",
+          "justification": "Avant tout affichage du systeme d'exploitation, c'est le BIOS qui prend les commandes et execute le test POST.",
+          "resultat_markdown": "Le probleme se situe dans la phase geree par le BIOS, avant meme le chargement du systeme d'exploitation."
+        },
+        {
+          "numero": 2,
+          "action": "Interpreter les bips sonores",
+          "justification": "Le test POST du BIOS signale toute anomalie materielle detectee par un bip sonore ou un message a l'ecran, meme quand l'ecran ne peut pas encore afficher de message.",
+          "resultat_markdown": "Les bips indiquent que le test POST a detecte un composant materiel defaillant (souvent la memoire RAM ou la carte graphique)."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la nature de la panne",
+          "justification": "Puisque le BIOS ne parvient pas a valider le materiel, il ne peut pas transmettre le controle au systeme d'exploitation.",
+          "resultat_markdown": "La panne est materielle et se situe avant le demarrage du systeme d'exploitation : verifier le materiel signale par le code de bips (RAM, carte graphique) avant tout diagnostic logiciel."
+        }
+      ],
+      "conclusion_markdown": "Un ecran noir accompagne de bips au demarrage renvoie presque toujours a une anomalie detectee par le test POST du BIOS, jamais a un probleme du systeme d'exploitation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le BIOS avec le systeme d'exploitation.",
+          "pourquoi_faux": "Le BIOS s'execute AVANT le systeme d'exploitation, ne propose ni bureau ni icones ; sa seule fonction est de verifier le materiel puis de passer la main au systeme d'exploitation. Sur les machines recentes, il est souvent remplace par une version plus moderne appelee UEFI, qui joue le meme role."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les deux missions executees par le BIOS dans l'ordre, des la mise sous tension de l'ordinateur.",
+          "solution_markdown": "1) Le test POST, qui verifie que les composants essentiels (processeur, memoire, cartes) fonctionnent correctement et signale toute anomalie par un bip ou un message. 2) La recherche du systeme d'exploitation : une fois le materiel valide, le BIOS localise le peripherique de demarrage et lui transmet le controle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien affirme : « Le BIOS, c'est le systeme d'exploitation qui demarre en premier. » Corriger cette affirmation.",
+          "solution_markdown": "L'affirmation est fausse. Le BIOS n'est pas un systeme d'exploitation : c'est un micro-logiciel grave dans une puce de la carte-mere, independant du disque dur, qui s'execute AVANT tout systeme d'exploitation. Il ne propose ni bureau ni icones ; sa seule fonction est de verifier le materiel (test POST) puis de transmettre le controle au systeme d'exploitation une fois celui-ci localise. Le systeme d'exploitation (Windows, Linux...) demarre seulement apres, une fois le BIOS ayant termine son travail."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur passe le test POST sans aucun bip d'erreur, mais reste ensuite bloque sur un ecran affichant « No bootable device found ». Expliquer a quelle etape se situe cette nouvelle panne, en la distinguant de l'exemple resolu ci-dessus.",
+          "solution_markdown": "Le test POST reussi (aucun bip d'erreur) signifie que le materiel essentiel (processeur, memoire, cartes) est valide. Le message « No bootable device found » apparait a la seconde mission du BIOS : la recherche du systeme d'exploitation. Le BIOS a termine sa verification materielle mais ne parvient pas a localiser de peripherique de demarrage valide (disque dur absent, mal detecte, ou ne contenant pas de systeme d'exploitation installe). Contrairement a l'exemple resolu (panne materielle detectee au POST, avant meme le message), cette panne se situe une etape plus tard : le materiel est valide, mais aucun systeme d'exploitation n'a pu etre localise pour prendre la suite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le BIOS est un micro-logiciel grave dans une puce de la carte-mere, distinct du disque dur.",
+        "Il execute le test POST (verification materielle) des la mise sous tension.",
+        "Il recherche ensuite le systeme d'exploitation et lui transmet le controle de la machine."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-image-matricielle-vs-vectorielle-bayangam2023",
+  "meta": {
+    "titre": "Image matricielle et image vectorielle",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Multimedia",
+    "duree_estimee_min": 12,
+    "tags": [
+      "image matricielle",
+      "bitmap",
+      "image vectorielle",
+      "logo",
+      "pixelisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
+    "epreuve_titre": "Epreuve de maintenance informatique et multimedia, Examen Blanc Probatoire TI, Lycee Bilingue de Bayangam, 2023",
+    "exercice_numero": 5,
+    "rappel_id": "rdm-bay2023-ex5-q1",
+    "rappels_lies": [
+      "rdm-bay2023-ex5-q2",
+      "rdm-bay2023-ex5-q3"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un logo imprime en petit format sur une carte de visite parait net, mais devient flou et pixelise des qu'on l'agrandit sur une affiche. Ce probleme classique en infographie s'explique par le choix du mauvais type d'image pour cet usage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel et la notion de definition d'une image (nombre de pixels)",
+        "Avoir une premiere idee de ce qu'est une equation ou une forme geometrique simple (ligne, cercle, polygone)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux facons fondamentalement differentes de decrire une image",
+      "contenu_markdown": "**L'image matricielle** (ou *bitmap*) est composee d'une **grille de pixels**, chacun ayant sa propre couleur codee et enregistree individuellement. C'est le format produit par les appareils photo et les scanners. Son defaut majeur : la definition (le nombre de pixels) est fixee une fois pour toutes ; agrandir l'image ne cree pas de nouveaux details, chaque pixel existant occupe simplement une surface plus grande, ce qui rend les contours flous et visiblement pixelises (« en escalier »).\n\n**L'image vectorielle** est composee de **formes geometriques** (lignes, courbes, polygones, cercles) definies par des **equations mathematiques** (coordonnees de points, rayons, epaisseurs de trait) plutot que par des pixels. Lorsqu'on l'agrandit, le logiciel recalcule simplement ces equations a la nouvelle taille : les contours restent parfaitement nets quelle que soit l'echelle.\n\n**Consequence pratique.** Une **photographie** (paysage, portrait, scene reelle) est necessairement une image matricielle, car elle provient d'un capteur qui enregistre des pixels. Un **logo, un pictogramme ou une police de caracteres**, en revanche, doit etre concu en image vectorielle : ce type de visuel est reutilise a des tailles tres variees (favicon minuscule, en-tete de document, grande banderole publicitaire), et seul le format vectoriel garantit une nettete parfaite a chacune de ces tailles, sans jamais avoir a etre redessine."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un logo imprime en petit format sur une carte de visite est net. Agrandi sur une affiche, il devient flou et pixelise. De quel type d'image s'agit-il probablement, et que faudrait-il faire pour eviter ce probleme a l'avenir ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Interpreter le symptome",
+          "justification": "Le flou et la pixelisation a l'agrandissement sont la signature d'un nombre de pixels fixe.",
+          "resultat_markdown": "Le logo est une **image matricielle (bitmap)** : sa definition fixe ne suffit plus quand on l'agrandit fortement."
+        },
+        {
+          "numero": 2,
+          "action": "Proposer une solution durable",
+          "justification": "Un logo est reutilise a des tailles tres variees ; il doit rester net a toutes les echelles.",
+          "resultat_markdown": "Redessiner le logo en **image vectorielle**, avec un logiciel de dessin vectoriel, pour qu'il reste net quelle que soit la taille d'impression."
+        }
+      ],
+      "conclusion_markdown": "Pour un visuel reutilise a des tailles variees comme un logo, l'image vectorielle est le choix technique correct des la conception."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'augmenter la resolution d'impression corrige le flou d'une image matricielle deja agrandie.",
+          "pourquoi_faux": "Le probleme n'est pas la resolution d'impression mais le nombre de pixels disponibles dans le fichier source : au-dela d'une certaine taille, ces pixels manquants ne peuvent pas etre recrees, seule une image vectorielle (ou une image matricielle de definition plus elevee des le depart) evite le probleme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une police de caracteres utilisee dans un logiciel de traitement de texte doit rester nette qu'elle soit affichee en tres petit ou imprimee en tres grand sur une affiche. De quel type d'image s'agit-il, et pourquoi ?",
+          "solution_markdown": "Il s'agit d'une image vectorielle. Les polices de caracteres sont definies par des equations mathematiques (courbes, contours des lettres) plutot que par des pixels fixes ; elles peuvent donc etre recalculees a n'importe quelle taille sans jamais devenir floues ou pixelisees, contrairement a une image matricielle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une photographie de paysage prise avec un appareil photo est-elle une image matricielle ou vectorielle ? Justifier en vous appuyant sur l'origine de l'image.",
+          "solution_markdown": "C'est une image matricielle. Elle provient d'un capteur photographique qui enregistre la scene sous forme d'une grille de pixels, chacun avec sa propre couleur mesuree par le capteur ; ce mode d'acquisition produit necessairement une definition fixe de pixels, jamais des equations mathematiques de formes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un designer doit creer un logo qui sera imprime a la fois sur une carte de visite (3 cm de large) et sur une banderole publicitaire (5 metres de large). Il decide de le dessiner directement en photographiant un croquis papier avec son telephone. Cette methode est-elle adaptee ? Proposer la methode correcte.",
+          "solution_markdown": "Cette methode n'est pas adaptee. Photographier le croquis produit une image matricielle a definition fixe : nette sur la carte de visite (petite surface), elle deviendra forcement floue et pixelisee une fois agrandie a 5 metres sur la banderole, puisque l'agrandissement ne cree aucun pixel supplementaire. La methode correcte consiste a redessiner le logo directement en image vectorielle avec un logiciel de dessin vectoriel (formes definies par des equations) : le meme fichier pourra alors etre imprime a n'importe quelle taille, de la carte de visite a la banderole, en restant parfaitement net."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'image matricielle est une grille de pixels fixes ; l'agrandir la rend floue et pixelisee.",
+        "L'image vectorielle est definie par des equations mathematiques et reste nette a toute echelle.",
+        "Les photos sont matricielles par nature ; les logos et pictogrammes doivent etre vectoriels."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-role-memoire-ram-bayangam2023",
+  "meta": {
+    "titre": "Role de la memoire RAM",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 12,
+    "tags": [
+      "memoire RAM",
+      "memoire vive",
+      "memoire volatile"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
+    "epreuve_titre": "Epreuve de maintenance informatique et multimedia, Examen Blanc Probatoire TI, Lycee Bilingue de Bayangam, 2023",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bay2023-ex1-q2b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs equipes du meme processeur peuvent avoir des vitesses de travail tres differentes selon la quantite de RAM installee. Comprendre pourquoi impose de savoir ce que fait exactement cette memoire, et en quoi elle differe du disque dur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que l'ordinateur possede plusieurs memoires distinctes (RAM, disque dur) jouant des roles differents",
+        "Savoir ce qu'est un programme en cours d'execution"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Definition et role de la RAM",
+      "contenu_markdown": "La **memoire RAM** (*Random Access Memory*, memoire vive) est une memoire de **travail volatile** : elle stocke temporairement, pendant leur execution, les programmes en cours d'utilisation ainsi que les donnees que le processeur manipule a un instant donne.\n\nSon role tient en deux points :\n\n1. Offrir au processeur un espace de travail auquel il peut acceder tres rapidement, bien plus vite qu'au disque dur, pour y lire et y ecrire les informations dont il a besoin immediatement.\n2. Permettre de faire fonctionner **plusieurs programmes simultanement** : plus la capacite de RAM est grande, plus l'ordinateur peut garder de programmes ouverts en meme temps sans ralentir.\n\nSon contenu est **volatile** : il est integralement perdu des que l'ordinateur est eteint, contrairement au disque dur qui conserve les donnees durablement."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un utilisateur travaille sur un ordinateur avec 4 Go de RAM. Il ouvre simultanement un navigateur avec 15 onglets, un logiciel de montage video et un traitement de texte, et constate que la machine devient tres lente. Expliquer ce phenomene en s'appuyant sur le role de la RAM.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qui consomme de la RAM",
+          "justification": "Chaque programme en cours d'execution, ainsi que les donnees qu'il manipule, occupe une partie de la memoire RAM disponible tant qu'il reste ouvert.",
+          "resultat_markdown": "Le navigateur (15 onglets), le logiciel de montage video et le traitement de texte occupent simultanement de l'espace en RAM."
+        },
+        {
+          "numero": 2,
+          "action": "Comparer la demande a la capacite disponible",
+          "justification": "La RAM permet de faire fonctionner plusieurs programmes simultanement, mais seulement dans la limite de sa capacite totale.",
+          "resultat_markdown": "Avec seulement 4 Go, la demande cumulee des trois logiciels ouverts (dont un logiciel de montage video, gourmand en memoire) depasse probablement la capacite disponible."
+        }
+      ],
+      "conclusion_markdown": "Quand la RAM disponible ne suffit plus a contenir tous les programmes ouverts et leurs donnees, l'ordinateur ralentit fortement : augmenter la quantite de RAM installee est la solution technique adaptee a ce symptome."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Presenter la RAM comme un espace de stockage permanent.",
+          "pourquoi_faux": "Un fichier enregistre « dans la RAM » sans etre sauvegarde sur le disque dur disparait a la moindre coupure de courant, car la RAM est volatile."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La RAM est-elle une memoire volatile ou une memoire permanente ? Que se passe-t-il pour son contenu a l'extinction de l'ordinateur ?",
+          "solution_markdown": "La RAM est une memoire volatile. Son contenu integral est perdu des que l'ordinateur est eteint, contrairement au disque dur qui conserve les donnees durablement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux ordinateurs ont un processeur identique mais l'un a 4 Go de RAM et l'autre 16 Go. Lequel supportera le mieux l'ouverture simultanee de nombreux logiciels, et pourquoi ?",
+          "solution_markdown": "L'ordinateur avec 16 Go de RAM. Plus la capacite de RAM est grande, plus l'ordinateur peut garder de programmes ouverts en meme temps sans ralentir, car chaque programme en cours d'execution occupe une partie de cette memoire de travail. Avec seulement 4 Go, la RAM sature plus rapidement lorsque plusieurs logiciels tournent simultanement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien propose de resoudre un probleme de lenteur en installant un disque dur plus grand a la place de l'ancien, sans toucher a la RAM. Ce choix est-il pertinent si la lenteur provient d'une saturation de la memoire de travail lors de l'utilisation simultanee de plusieurs logiciels ? Justifier.",
+          "solution_markdown": "Non, ce choix n'est pas pertinent dans ce cas. La capacite du disque dur ne conditionne que le volume de fichiers stockables durablement, pas le nombre de programmes utilisables simultanement sans ralentissement : c'est la RAM qui joue ce role. Si la lenteur vient d'une saturation de la memoire de travail (plusieurs logiciels ouverts a la fois), la solution adaptee est d'augmenter la capacite de RAM, pas la capacite de stockage du disque dur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La RAM est une memoire de travail volatile, distincte du disque dur qui stocke durablement.",
+        "Elle contient les programmes en cours d'execution et les donnees manipulees a l'instant present.",
+        "Plus sa capacite est grande, plus de programmes peuvent tourner simultanement sans ralentissement."
+      ]
+    }
+  ]
+}
