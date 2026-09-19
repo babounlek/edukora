@@ -1,6 +1,40 @@
 import { describe, expect, it } from "vitest"
 
-import { extractCallouts } from "./markdown"
+import { extractCallouts, extractSolutionToggles, italicizeQuotes, normalizeMathBlocks } from "./markdown"
+
+describe("extractSolutionToggles", () => {
+  it("garde une solution multi-ligne entière dans le toggle, fence de code compris", () => {
+    const markdown = [
+      "### Solution",
+      "",
+      "```php",
+      "$i = 0;",
+      "while ($i < 3) {",
+      "    $i++;",
+      "}",
+      "```",
+      "",
+      "### Exercice 2",
+      "",
+      "Suite.",
+    ].join("\n")
+
+    const result = extractSolutionToggles(markdown)
+    const quoted = result.split("\n").filter((line) => line.startsWith(">"))
+
+    expect(quoted).toContain("> $i = 0;")
+    expect(quoted).toContain("> ```")
+    expect(result).toContain("\n### Exercice 2\n\nSuite.")
+  })
+
+  it("garde une solution en plusieurs paragraphes jusqu'à la fin du texte", () => {
+    const result = extractSolutionToggles("### Solution\n\nPremier paragraphe.\n\nSecond paragraphe.")
+    const unquoted = result.split("\n").filter((line) => line && !line.startsWith(">"))
+
+    expect(unquoted).toEqual([])
+    expect(result).toContain("> Second paragraphe.")
+  })
+})
 
 describe("extractCallouts", () => {
   it("garde un marqueur [COURS_LINK:...] injecté après un Rappel de méthode dans le même blockquote", () => {
@@ -62,5 +96,44 @@ describe("extractCallouts", () => {
 
     expect(result).toContain("\n2. Choisir la réponse juste\n")
     expect(result).not.toContain("> 2. Choisir la réponse juste")
+  })
+})
+
+describe("code protégé des transformations de rendu", () => {
+  it("normalizeMathBlocks ne prend pas `$$a` ... `$$a` pour une formule display", () => {
+    const markdown = "Écrire `$c=$$a;` puis\n\nla valeur `$$a` équivaut à `$b`."
+
+    expect(normalizeMathBlocks(markdown)).toBe(markdown)
+  })
+
+  it("italicizeQuotes laisse intacts les guillemets d'un fence et d'un span de code", () => {
+    const markdown = 'Afficher `echo " ";` :\n\n```php\necho "a";\n```\n\nPuis « texte » normal.'
+    const result = italicizeQuotes(markdown)
+
+    expect(result).toContain('`echo " ";`')
+    expect(result).toContain('echo "a";')
+    expect(result).toContain("*«texte»*".replace("«texte»", "« texte »"))
+  })
+})
+
+describe("normalizeMathBlocks dans une citation", () => {
+  it("garde chaque ligne d'un bloc display multi-lignes préfixée par > (solution masquée)", () => {
+    const markdown = [
+      "> [SOLUTION_TOGGLE]",
+      ">",
+      "> $$",
+      "> \begin{array}{c|c}",
+      "> \hline",
+      "> x & 1 \\\\",
+      "> \end{array}",
+      "> $$",
+    ].join("\n")
+
+    const result = normalizeMathBlocks(markdown)
+    const lignes = result.split("\n").filter((l) => l.trim())
+
+    expect(lignes.every((l) => l.startsWith(">"))).toBe(true)
+    expect(result).toContain("> \hline")
+    expect(result.match(/> \$\$/g)).toHaveLength(2)
   })
 })

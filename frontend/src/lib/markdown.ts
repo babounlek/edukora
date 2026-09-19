@@ -14,13 +14,45 @@
  * sont pas modifiées.
  */
 export function normalizeMathBlocks(markdown: string): string {
-  return markdown
-    .replace(/\$\$([\s\S]*?)\$\$/g, (match, inner: string) => {
+  return mapOutsideCode(markdown, (text) =>
+    text.replace(/(^[ \t]*(?:>[ \t]?)+)?\$\$([\s\S]*?)\$\$/gm, (match, quotePrefix: string | undefined, inner: string) => {
       if (!match.includes("\n")) return match
+
+      if (quotePrefix) {
+        // Bloc display DANS une citation (solution masquée, encadré) : chaque ligne
+        // regénérée garde son préfixe ">" - sinon le bloc sortait de la citation et les
+        // ">" restants finissaient dans la formule (KaTeX : "\hline valid only within array").
+        const prefix = quotePrefix.trimEnd()
+        const body = inner
+          .split("\n")
+          .map((line) => line.replace(/^[ \t]*(?:>[ \t]?)+/, ""))
+          .join("\n")
+          .trim()
+          .split("\n")
+          .map((line) => (line ? `${prefix} ${line}` : prefix))
+        return [prefix, `${prefix} $$`, ...body, `${prefix} $$`, `${prefix} `].join("\n")
+      }
+
       return `\n\n$$\n${inner.trim()}\n$$\n\n`
-    })
+    }),
+  )
     .replace(/\n{3,}/g, "\n\n")
     .trim()
+}
+
+const CODE_SEGMENT_RE = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`)/g
+
+/**
+ * Applique `transform` uniquement au texte HORS code (bloc fencé ou span inline). Sans ça,
+ * du code PHP comme `$c=$$a;` ou `echo " ";` était pris pour une formule display `$$...$$`
+ * ou un guillemet à mettre en italique : le code affiché s'en trouvait corrompu, voire
+ * le rendu en erreur KaTeX.
+ */
+function mapOutsideCode(markdown: string, transform: (text: string) => string): string {
+  return markdown
+    .split(CODE_SEGMENT_RE)
+    .map((segment, index) => (index % 2 === 1 ? segment : transform(segment)))
+    .join("")
 }
 
 const MATH_SPAN_RE = /\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/g
@@ -35,15 +67,17 @@ const STRAIGHT_QUOTE_RE = /"([^"\n*$]+)"/g
  * dans une formule LaTeX ; seuls les segments hors-maths sont transformés.
  */
 export function italicizeQuotes(markdown: string): string {
-  return markdown
-    .split(new RegExp(`(${MATH_SPAN_RE.source})`, "g"))
-    .map((chunk, index) => {
-      if (index % 2 === 1) return chunk
-      return chunk
-        .replace(GUILLEMET_RE, (_match, inner: string) => `*«${inner}»*`)
-        .replace(STRAIGHT_QUOTE_RE, (_match, inner: string) => `*"${inner}"*`)
-    })
-    .join("")
+  return mapOutsideCode(markdown, (text) =>
+    text
+      .split(new RegExp(`(${MATH_SPAN_RE.source})`, "g"))
+      .map((chunk, index) => {
+        if (index % 2 === 1) return chunk
+        return chunk
+          .replace(GUILLEMET_RE, (_match, inner: string) => `*«${inner}»*`)
+          .replace(STRAIGHT_QUOTE_RE, (_match, inner: string) => `*"${inner}"*`)
+      })
+      .join(""),
+  )
 }
 
 /** Aplati un arbre de nœuds React (tel que reçu par un composant react-markdown) en texte brut. */
@@ -117,7 +151,10 @@ export function extractCallouts(markdown: string): string {
   return markdown
 }
 
-const SOLUTION_HEADING_RE = /^###[ \t]*Solution[ \t]*\n+([\s\S]*?)(?=\n#{1,6}[ \t]|\n---|\n*$)/gm
+// `(?![\s\S])` = fin du texte : avec le flag `m`, un `$` s'arrêtait à la fin de la PREMIÈRE
+// ligne du corps, laissant le reste d'une solution multi-ligne (fence de code, calcul)
+// visible en clair, hors du bouton, et cassant le fence.
+const SOLUTION_HEADING_RE = /^###[ \t]*Solution[ \t]*\n+([\s\S]*?)(?=\n#{1,6}[ \t]|\n---|\n*(?![\s\S]))/gm
 
 /**
  * Un exercice d'auto-évaluation d'un Cours ("### Solution", voir Cours._render_section)
