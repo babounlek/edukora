@@ -67,11 +67,30 @@ Les items entrent `statut=VALIDE` et sont immédiatement servables en Quiz (voir
 `quiz.ingestion.ingest_competence_item`) - aucune étape de relecture humaine
 supplémentaire dans ce pipeline.
 
+## Étape 3 bis - Tunnel de validation (obligatoire)
+
+Les items étant servables dès l'ingestion, sans relecture humaine, cette étape est la
+seule barrière avant qu'un élève ne les voie. Depuis la racine du dépôt (`D:\edukora`),
+avec `<since>` = durée depuis le début du lot (`2h`, `90m`) :
+
+```bash
+bash scripts/tunnel_validation.sh <since>
+```
+
+Doit se terminer sur `TUNNEL VALIDÉ` (code 0) : structure (QCM cohérent, thème
+présent), vocabulaire de thèmes (quasi-doublons de Tag, ALERTE à trancher), couverture,
+puis vrai moteur KaTeX sur le périmètre. En cas de BLOQUANT ou d'échec de rendu, les
+items fautifs sont déjà en ligne : les corriger sans attendre (JSON source puis
+réingestion) ou les repasser en `BROUILLON` depuis l'admin. Un quasi-doublon de Tag
+se règle en reprenant la forme existante du thème dans le JSON, jamais par fusion en
+masse sans l'utilisateur.
+
 ## Étape 4 - Rapport
 
 Résumer pour l'utilisateur : compétences traitées, items créés, erreurs éventuelles
-(fichier + détail). Ne jamais passer sous silence une erreur d'ingestion, même si le
-reste du lot a réussi.
+(fichier + détail), et la sortie du tunnel (validé, ou anomalies restantes). Ne jamais
+passer sous silence une erreur d'ingestion ni un échec du tunnel, même si le reste du
+lot a réussi ; ne jamais annoncer le lot terminé sans `TUNNEL VALIDÉ`.
 
 ## NFR à respecter
 

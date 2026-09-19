@@ -132,6 +132,24 @@ correctif. Ne jamais corriger silencieusement une anomalie de grande ampleur san
 l'avoir d'abord présentée - notamment tout ce qui touche potentiellement à une
 correction déjà publiée à des élèves.
 
+## Mode tunnel : la même vérification, limitée au dernier round d'ingestion
+
+Cet audit corpus-entier est la vérification périodique. À la fin de CHAQUE round
+d'ingestion, les skills producteurs (`correction-experte`, `concepteur-quiz-competence`,
+`concepteur-epreuve-inedite`, `generer-batch-quiz-competence`) lancent à la place sa
+version restreinte au contenu créé/modifié récemment :
+
+```bash
+bash scripts/tunnel_validation.sh <since>     # since = 2h, 90m, 1d ou datetime ISO
+```
+
+Le script enchaîne `manage.py valider_ingestion --since` (structure, vocabulaire de
+thèmes, couverture, et écriture d'un dump de rendu restreint) puis le même
+`audit-rendu.test.ts` que l'étape 2 ci-dessus - même moteur, périmètre réduit
+(`dump_rendering_corpus --since` produit aussi ce dump seul). Tout échec de rendu
+remonté par le tunnel se triage exactement comme à l'étape 3. Le tunnel ne dispense pas
+de cet audit corpus-entier après un correctif plateforme (étape 4).
+
 ## Portée non couverte par cet audit (à traiter séparément si besoin)
 
 Le PDF de sujet (`catalog/sujet_pdf.py`) utilise un **second moteur de rendu totalement
