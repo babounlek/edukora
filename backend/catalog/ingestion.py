@@ -52,7 +52,7 @@ from .ingestion_repairs import (
     _dedupe_exercise_heading,
     _dedupe_question_enonce,
     _dedupe_trailing_exercise_reference,
-    _flag_part_headers_in_intro,
+    _drop_processing_notes,
     _merge_series_from_folder_name,
     _repair_dict_shaped_cours_sections,
     _repair_double_json_escaping,
@@ -1437,7 +1437,7 @@ def ingest_exercise(data, source_dir=None, force=False):
             points=points,
             groupes=groupes,
             enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
-            incertitudes=data.get("incertitudes") or [],
+            incertitudes=_drop_processing_notes(data.get("incertitudes") or []),
             statut=StatutContenu.VALIDE,
         )
 
@@ -1529,52 +1529,9 @@ def ingest_exercise(data, source_dir=None, force=False):
                 )
 
         _attach_figures(exercise, data.get("figures") or [], source_dir)
-        _flag_part_headers_in_intro(exercise)
-        if was_repaired:
-            note = "Contenu source JSON doublement échappé, corrigé automatiquement à l'ingestion (voir _repair_double_json_escaping) - vérifier qu'aucune commande LaTeX n'a été altérée."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_missing_separators:
-            note = "Séparateur de ligne LaTeX manquant dans une matrice/un système d'équations, corrigé automatiquement à l'ingestion (voir _repair_missing_matrix_row_separators) - vérifier le rendu."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_glued_hline:
-            note = "\\hline collé au token suivant dans un tableau, corrigé automatiquement à l'ingestion (voir _repair_glued_hline) - vérifier le rendu."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_narrow_columns:
-            note = "Spécificateur de colonnes trop court sur un \\begin{array}, élargi automatiquement à l'ingestion (voir _repair_narrow_array_columns) - vérifier le rendu."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_missing_heading:
-            note = "Titre \"Exercice N\"/\"Problème\" absent de l'énoncé source, reconstruit automatiquement depuis numero_exercice/points à l'ingestion (voir _repair_missing_exercise_heading)."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_misplaced_heading:
-            note = "Titre \"Exercice N\"/\"Problème\" placé après son propre préambule dans l'énoncé source, repositionné automatiquement en tête à l'ingestion (voir _reposition_trailing_exercise_reference)."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_series_from_folder:
-            note = "Série(s) annoncée(s) par le nom du dossier mais absente(s) du champ 'serie' du JSON, ajoutée(s) automatiquement à l'ingestion (voir _merge_series_from_folder_name) - vérifier sur le sujet source si le nom du dossier dit vrai."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_duplicate_heading:
-            note = "Repère \"Exercice N\"/\"Problème\" présent à la fois dans l'intro et en tête d'une question, dédupliqué automatiquement à l'ingestion (voir _dedupe_exercise_heading)."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
-        if had_trailing_duplicate_heading:
-            note = "Repère \"Exercice N\"/\"Problème\" répété en tête de la première question après un chapeau/une fiche d'identité en fin d'intro, dédupliqué automatiquement à l'ingestion (voir _dedupe_trailing_exercise_reference)."
-            if note not in exercise.incertitudes:
-                exercise.incertitudes = [note, *exercise.incertitudes]
-                exercise.save(update_fields=["incertitudes"])
+        # Les réparations automatiques ci-dessus (was_repaired, had_*) ne laissent aucune
+        # trace dans `incertitudes` : ce champ est réservé aux doutes réels sur le
+        # contenu de l'épreuve, pas au journal de traitement.
         exercise.compile_from_questions()
 
         if cours_par_external_id:

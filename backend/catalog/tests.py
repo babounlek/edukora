@@ -4473,7 +4473,7 @@ class DoubleJsonEscapingRepairTests(TestCase):
         self.assertNotIn("\\n", question.corrige_markdown)
         self.assertIn("$\\mathbb{R}$", question.corrige_markdown)
         self.assertNotIn("\\\\mathbb", question.corrige_markdown)
-        self.assertTrue(any("doublement échappé" in note for note in exercise.incertitudes))
+        self.assertFalse(any("doublement échappé" in note for note in exercise.incertitudes))
 
     def test_never_touches_already_correct_content_with_reserved_json_letters(self):
         # \bar, \tan, \theta, \forall, \rightarrow, \underline commencent tous par une
@@ -4700,7 +4700,7 @@ class DoubleJsonEscapingRepairTests(TestCase):
         self.assertIn("\n", questions[0].corrige_markdown)
         self.assertNotIn("\\n", questions[0].corrige_markdown)
         self.assertEqual(questions[1].corrige_markdown, "Soit $\\theta$ un angle.")
-        self.assertTrue(any("doublement échappé" in note for note in exercise.incertitudes))
+        self.assertFalse(any("doublement échappé" in note for note in exercise.incertitudes))
 
     def test_repairs_a_newline_glued_to_a_single_letter_row_label_inside_math(self):
         # Reproduit bac-c-maths-1987 à 1992/bac-d-maths-2007/bac-c-maths-probatoire-2014
@@ -4780,7 +4780,7 @@ class MissingMatrixRowSeparatorRepairTests(TestCase):
             question.corrige_markdown,
             r"Le système : $\begin{cases}a+2b=0&(L_1)\\2a+b+3c=0&(L_2)\\-a+b-3c=0&(L_3)\end{cases}$.",
         )
-        self.assertTrue(any("Séparateur de ligne LaTeX manquant" in note for note in exercise.incertitudes))
+        self.assertFalse(any("Séparateur de ligne LaTeX manquant" in note for note in exercise.incertitudes))
 
     def test_doubles_a_single_backslash_before_a_bare_digit_inside_a_pmatrix(self):
         payload = _exercise_payload("bac-maths-2024")
@@ -4844,7 +4844,7 @@ class GluedHlineRepairTests(TestCase):
             question.corrige_markdown,
             r"$$\begin{array}{|c|c|}\hline x & 1\\\hline\end{array}$$",
         )
-        self.assertTrue(any(r"\hline collé" in note for note in exercise.incertitudes))
+        self.assertFalse(any(r"\hline collé" in note for note in exercise.incertitudes))
 
     def test_never_touches_a_correctly_spaced_hline(self):
         payload = _exercise_payload("bac-maths-2024")
@@ -4884,7 +4884,7 @@ class NarrowArrayColumnsRepairTests(TestCase):
             question.corrige_markdown,
             r"$$\begin{array}{|c|ccccc|}\hline x&-\infty&&0&&+\infty\\\hline\end{array}$$",
         )
-        self.assertTrue(any("Spécificateur de colonnes" in note for note in exercise.incertitudes))
+        self.assertFalse(any("Spécificateur de colonnes" in note for note in exercise.incertitudes))
 
     def test_never_narrows_or_touches_an_already_matching_spec(self):
         payload = _exercise_payload("bac-maths-2024")
@@ -4921,7 +4921,7 @@ class MissingExerciseHeadingRepairTests(TestCase):
 
         self.assertEqual(exercise.enonce_intro_markdown, "**Exercice 1 (4 points)**")
         self.assertTrue(exercise.enonce_markdown.startswith("**Exercice 1 (4 points)**"))
-        self.assertTrue(any("Titre" in note for note in exercise.incertitudes))
+        self.assertFalse(any("Titre" in note for note in exercise.incertitudes))
 
     def test_injects_a_heading_without_points_when_points_is_absent(self):
         payload = _exercise_payload("bac-maths-2024")
@@ -5077,7 +5077,7 @@ class RepositionTrailingExerciseReferenceTests(TestCase):
             "**Exercice II (3 pts)**\n\nUne enquête menée dans une classe de troisième...\n\n"
             "| Modalité | 2 | 5 |\n|---|---|---|",
         )
-        self.assertTrue(any("repositionné" in note for note in exercise.incertitudes))
+        self.assertFalse(any("repositionné" in note for note in exercise.incertitudes))
 
     def test_moves_the_reference_after_a_part_title_and_its_italic_subtitle(self):
         # mathematiques-bepc-2003-cameroun, exercice 1 : le repère doit se glisser après
@@ -5189,7 +5189,7 @@ class DuplicateExerciseHeadingDedupeTests(TestCase):
         self.assertEqual(exercise.questions.get().enonce_markdown, "1. Nommer le composé $A$.")
         self.assertEqual(exercise.enonce_intro_markdown, "Exercice 1 (5 points) - hydrocarbures et isomérie")
         self.assertEqual(exercise.enonce_markdown.count("Exercice 1"), 1)
-        self.assertTrue(any("dédupliqué" in note for note in exercise.incertitudes))
+        self.assertFalse(any("dédupliqué" in note for note in exercise.incertitudes))
 
     def test_matches_a_roman_numbered_heading_with_an_arabic_one(self):
         # L'intro numérote en arabe, la question en romain (constaté sur les épreuves
@@ -5324,7 +5324,7 @@ class TrailingExerciseReferenceDedupeTests(TestCase):
 
         self.assertEqual(exercise.questions.get().enonce_markdown, "L'unité de longueur est le centimètre.")
         self.assertEqual(exercise.enonce_markdown.count("Exercice 1"), 1)
-        self.assertTrue(any("dédupliqué" in note for note in exercise.incertitudes))
+        self.assertFalse(any("dédupliqué" in note for note in exercise.incertitudes))
 
     def test_matches_by_key_even_when_the_points_suffix_is_missing_from_the_repeat(self):
         # probatoire-c-e-maths-2013 : la question ne répète que "**Exercice 1**", sans
@@ -5517,7 +5517,7 @@ class SeriesFromFolderNameMergeTests(TestCase):
         )
 
         self.assertEqual(self._series_codes(exercise), ["C", "D"])
-        self.assertTrue(any("nom du dossier" in note for note in exercise.incertitudes))
+        self.assertFalse(any("nom du dossier" in note for note in exercise.incertitudes))
 
     def test_never_removes_a_series_only_the_json_knows(self):
         # bac-c-maths-2019-cameroun : le JSON porte C et E quand le nom ne dit que "c" -
@@ -5577,21 +5577,21 @@ class PartHeaderInIntroSafetyNetTests(TestCase):
     isolés (voir Exercise._render_question_enonce), donc "Partie A" disparaissait
     purement et simplement pour le lecteur."""
 
-    def test_flags_partie_header_left_in_intro(self):
+    def test_does_not_note_partie_header_left_in_intro(self):
         payload = _exercise_payload("bac-maths-2024")
         payload["enonce_intro_markdown"] = "Contexte partagé.\n\n**Partie A : Étude (2 points).**"
 
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
-        self.assertTrue(any("repère de partie" in note for note in exercise.incertitudes))
+        self.assertFalse(any("repère de partie" in note for note in exercise.incertitudes))
 
-    def test_flags_roman_numeral_header_left_in_intro(self):
+    def test_does_not_note_roman_numeral_header_left_in_intro(self):
         payload = _exercise_payload("bac-maths-2024")
         payload["enonce_intro_markdown"] = "Contexte partagé.\n\n**II.** La suite de l'énoncé."
 
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
-        self.assertTrue(any("repère de partie" in note for note in exercise.incertitudes))
+        self.assertFalse(any("repère de partie" in note for note in exercise.incertitudes))
 
     def test_does_not_flag_a_normal_intro(self):
         payload = _exercise_payload("bac-maths-2024")

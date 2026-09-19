@@ -170,17 +170,40 @@ _BARE_SITUATION_PROBLEME_HEADER_RE = re.compile(r"^\*\*\s*Situation[\s-]+probl[e
 _BARE_COMPETENCE_LABEL_RE = re.compile(r"^\*\*\s*Comp[eé]tence\s+(?:cibl[eé]e|vis[eé]e|[eé]valu[eé]e)\b", re.IGNORECASE)
 
 
-def _flag_part_headers_in_intro(exercise):
-    if not _INTRO_PART_HEADER_RE.search(exercise.enonce_intro_markdown):
-        return
-    note = (
-        "enonce_intro_markdown contient un repère de partie (\"Partie X\", \"I.\"...) - "
-        "doit être porté par la première Question de cette partie, pas par l'intro "
-        "partagée de l'exercice (voir SKILL.md, \"Erreur déjà rencontrée\")."
+# `incertitudes` est réservé aux doutes réels sur le contenu de l'épreuve. Les notes de
+# traitement que la compétence de correction glisse dans son JSON (journal de
+# réparations, référentiel programme inaccessible, cours non générés, remarques
+# purement informatives sur le PDF) n'en sont pas : nettoyées en base le 2026-09-19
+# (3661 entrées / 2058 exercices), et filtrées ici pour ne pas revenir à la prochaine
+# ingestion.
+_PROCESSING_NOTE_RES = [
+    re.compile(pattern, re.IGNORECASE)
+    for pattern in (
+        # Journal de réparations automatiques
+        r"reconstruit automatiquement|dédupliqué automatiquement|repositionné automatiquement"
+        r"|corrigé automatiquement à l.ingestion|élargi automatiquement|automatiquement à l.ingestion"
+        r"|enonce_intro_markdown contient un repère de partie|_repair_|_dedupe_|_reposition_|_merge_series",
+        # Référentiel programme inaccessible / cours non générés
+        r"savoir_officiel.{0,120}(non renseign|null|laiss|inaccessible|absent|vide|hors périmètre)"
+        r"|fichier référentiel|fichier de référentiel|programme_officiel_cm|référentiel programme"
+        r"|référentiel savoir_officiel|hors périmètre (actuel )?du référentiel|fixture"
+        r"|rappels? .{0,100}(cours|coursé)|non coursé|cours pédagogiques associés|sans cours"
+        r"|aucun fichier de cours|cours_ge|cours associés|cours (à|a) générer|coursés? maximum",
+        # Remarques informatives sur le PDF source
+        r"BEPC camerounais ne comporte pas de série|sans couche de texte|sans couche texte"
+        r"|numérisation sans|épreuve scannée|scan sans|MINEDUC|Ndolomath"
+        r"|recueil (commercial|compilé)|filigrane|epreuves-tg|PDF source est chiffré"
+        r"|fichier PDF source est chiffré|bandeau publicitaire",
     )
-    if note not in exercise.incertitudes:
-        exercise.incertitudes = [note, *exercise.incertitudes]
-        exercise.save(update_fields=["incertitudes"])
+]
+
+
+def _drop_processing_notes(notes):
+    return [
+        note
+        for note in notes
+        if not (isinstance(note, str) and any(rx.search(note) for rx in _PROCESSING_NOTE_RES))
+    ]
 
 
 # "\n" seul (backslash+n) est ambigu à l'intérieur d'une zone de maths ($...$ ou
