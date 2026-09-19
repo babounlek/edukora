@@ -179,6 +179,30 @@ MATIERE_MAP = {
     "education physique et sportive": "EPS",
     "education physique": "EPS",
     "informatique": "INFORMATIQUE",
+    # Décision utilisateur du 2026-09-16, précisée le 2026-09-17 : en Série TI
+    # (Probatoire et BAC), l'Informatique n'est PAS une seule épreuve généraliste - elle
+    # se décompose systématiquement en trois épreuves distinctes au sein d'une même
+    # session (voir SUBJECT_FAMILIES dans catalog.models). "informatique" seul ne
+    # continue de résoudre vers le code combiné INFORMATIQUE que pour le BEPC et le
+    # Bac C/D/E théorique (hors Série TI) - voir corriger_ti_informatique_split, qui a
+    # repris les 10 Lesson de Série TI déjà en base à cette date (toutes CM) mal
+    # rattachées à INFORMATIQUE.
+    "programmation": "PROGRAMMATION",
+    "systeme d'information": "SYSTEMES_INFORMATION",
+    "systemes d'information": "SYSTEMES_INFORMATION",
+    "systeme d information": "SYSTEMES_INFORMATION",
+    "systemes d information": "SYSTEMES_INFORMATION",
+    # "Informatique Théorique" est l'ancien intitulé officiel de cette même discipline
+    # pour la Série TI (constaté sur bac-ti-informatique-theorique-2022-officiel-
+    # cameroun, contenu UML/base de données/modélisation - rien de commun avec
+    # l'Algorithmique et Programmation) - décision utilisateur du 2026-09-17.
+    "informatique theorique": "SYSTEMES_INFORMATION",
+    "reseaux, internet et securite informatique": "RESEAUX_SECURITE",
+    "reseaux internet et securite informatique": "RESEAUX_SECURITE",
+    "reseau, internet et securite informatique": "RESEAUX_SECURITE",
+    "reseaux et securite informatique": "RESEAUX_SECURITE",
+    "reseaux et internet": "RESEAUX_SECURITE",
+    "securite informatique": "RESEAUX_SECURITE",
     # Matière officielle distincte au BEPC camerounais (une seule épreuve couvrant les
     # trois volets), à ne pas confondre avec PHYSIQUE_CHIMIE (Probatoire/BAC, qui ne
     # couvre pas la technologie) - décision utilisateur du 2026-08-08 : nouvelle Subject

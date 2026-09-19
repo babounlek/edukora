@@ -29,7 +29,14 @@ SUBJECTS = [
     ("LITTERATURE", "Littérature"),
     ("EPS", "Éducation physique et sportive"),
     ("INFORMATIQUE", "Informatique"),
+    # Décomposition de l'Informatique en Série TI (2026-09-16) - voir
+    # catalog.models.SUBJECT_FAMILIES : INFORMATIQUE reste le code combiné, ces trois
+    # codes couvrent le cas normal d'une copie mono-discipline.
+    ("PROGRAMMATION", "Programmation"),
+    ("SYSTEMES_INFORMATION", "Systèmes d'Information"),
+    ("RESEAUX_SECURITE", "Réseaux, Internet et Sécurité Informatique"),
     ("PHYSIQUE_CHIMIE_TECH", "Physique-Chimie-Technologie"),
+    ("DESSIN", "Dessin"),
 ]
 
 SERIES = [

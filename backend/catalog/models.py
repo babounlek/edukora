@@ -197,6 +197,25 @@ class Subject(models.Model):
 # bepc-histoire-2025/bepc-geographie-2026-cameroun qui n'examinent qu'une discipline).
 # Même mécanisme que Physique/Chimie ci-dessus : une famille combinable, pas un
 # remplacement.
+# PROGRAMMATION/SYSTEMES_INFORMATION/RESEAUX_SECURITE (2026-09-16) : décision
+# utilisateur - la Série TI (Technologie de l'Information) examine l'Informatique en
+# plusieurs épreuves distinctes au sein d'une même session (Programmation, Systèmes
+# d'Information, Réseaux/Internet/Sécurité Informatique), chacune avec sa propre copie -
+# contrairement au BEPC et au Bac C/D/E théorique où "Informatique" reste une seule
+# épreuve généraliste. Même mécanisme que Physique/Chimie et Histoire/Géographie :
+# INFORMATIQUE reste le code combiné pour une éventuelle copie qui mélangerait
+# effectivement les trois (ancien format non éclaté), les trois disciplines devenant
+# aussi des Subject à part entière pour le cas normal d'une copie mono-discipline.
+# Aucun contenu TI encore ingéré au moment de cette décision - intitulés/synonymes à
+# affiner sur le premier corpus réel (voir catalog.ingestion.MATIERE_MAP).
+SUBJECT_FAMILIES = {
+    "PHYSIQUE": "PHYSIQUE_CHIMIE",
+    "CHIMIE": "PHYSIQUE_CHIMIE",
+    "HISTOIRE": "HISTOIRE_GEO",
+    "GEOGRAPHIE": "HISTOIRE_GEO",
+    "PROGRAMMATION": "INFORMATIQUE",
+    "SYSTEMES_INFORMATION": "INFORMATIQUE",
+    "RESEAUX_SECURITE": "INFORMATIQUE",
 SUBJECT_FAMILIES = {
     "PHYSIQUE": "PHYSIQUE_CHIMIE",
     "CHIMIE": "PHYSIQUE_CHIMIE",
@@ -608,8 +627,12 @@ class Lesson(models.Model):
         help_text="Ex : 4h. Affiché dans l'en-tête, jamais dans le corps du contenu.",
     )
     coefficient = models.CharField(
-        max_length=20, blank=True,
-        help_text="Ex : 7. Affiché dans l'en-tête, jamais dans le corps du contenu.",
+        max_length=50, blank=True,
+        help_text=(
+            "Ex : 7, ou une valeur composite quand elle diffère par série sur une même "
+            "épreuve (ex : « 3 (série A) / 2 (séries C, D, TI) »). Affiché dans "
+            "l'en-tête, jamais dans le corps du contenu."
+        ),
     )
 
     statut = models.CharField(max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON)
@@ -950,7 +973,7 @@ class Figure(models.Model):
         max_length=30, blank=True,
         help_text="Ex : figure geometrique, courbe, tableau, schema, document, carte, graphique (valeur libre, non contrainte).",
     )
-    legende = models.CharField(max_length=500, blank=True)
+    legende = models.TextField(blank=True)
     indispensable = models.BooleanField(default=True)
     lisibilite = models.CharField(
         max_length=10, blank=True,
