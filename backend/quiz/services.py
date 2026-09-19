@@ -34,6 +34,8 @@ PARCOURS_COURS_PAR_SAVOIR_MAX = 3
 # PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous deux codes historiques.
 SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
+    # Filière technique (TI) : signal de fréquence traité comme pour les sciences.
+    "PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE",
 }
 
 # En dessous, le signal de fréquence n'est pas fiable - même seuil et même
@@ -42,6 +44,11 @@ SUBJECTS_PARCOURS_PAR_FREQUENCE = {
 # comme une fausse promesse). Sous ce seuil, construire_parcours retombe sur
 # l'affichage Module→Savoir habituel plutôt que d'afficher un classement peu fiable.
 SEUIL_MINIMUM_THEMES_PARCOURS = 8
+
+# Filière TI : corpus mince (1 à 6 épreuves par matière et cursus en base), le seuil
+# général les renverrait tous au Module→Savoir. On classe quand même les thèmes, sans
+# plancher d'occurrences (un thème vu une fois reste utile à réviser sur si peu d'épreuves).
+SUBJECTS_CORPUS_MINCE_PARCOURS = {"PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE"}
 
 # Fusion mécanique haute confiance (variantes grammaticales/de casse d'une même
 # notion, jamais des familles parent-enfant - voir la règle de granularité
@@ -419,11 +426,14 @@ def construire_parcours_par_frequence(user, cursus, subject):
     thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
     groupe d'alias.
     """
-    lessons = Lesson.objects.filter(
-        statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, subject=subject, cursus=cursus,
-    ).distinct()
+    mince = subject.code in SUBJECTS_CORPUS_MINCE_PARCOURS
+    lessons = Lesson.objects.filter(statut=StatutContenu.VALIDE, subject=subject, cursus=cursus)
+    if not mince:
+        # Corpus mince (TI) : les blancs/établissements comptent, sinon le Probatoire n'a aucune épreuve officielle.
+        lessons = lessons.filter(origine=Origine.OFFICIEL)
+    lessons = lessons.distinct()
     nb_sessions = lessons.count()
-    if nb_sessions < SEUIL_MINIMUM_THEMES_PARCOURS:
+    if nb_sessions < (1 if mince else SEUIL_MINIMUM_THEMES_PARCOURS):
         return None
 
     tags_bruts = list(
@@ -528,7 +538,7 @@ def construire_parcours_par_frequence(user, cursus, subject):
 
     resultat = []
     for groupe in groupes.values():
-        if groupe["nb_epreuves"] < PARCOURS_FREQUENCE_OCCURRENCES_MIN:
+        if groupe["nb_epreuves"] < (1 if mince else PARCOURS_FREQUENCE_OCCURRENCES_MIN):
             continue
         tag_ids = groupe["tag_ids"]
 

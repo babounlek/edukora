@@ -56,6 +56,8 @@ SYSTEMES_INFORMATION = {
     # "Informatique Théorique" est l'ancien intitulé de cette discipline pour la
     # Série TI (voir la règle dédiée dans le SKILL.md de correction-experte).
     "bac-ti-informatique-theorique-2022-officiel-cameroun.pdf",
+    # Blanc Probatoire TI 2023 : titre déjà "Systèmes d'Information", resté sous INFORMATIQUE.
+    "probatoire-blanc-ti-SI-bayangam-2023.pdf",
 }
 RESEAUX_SECURITE = {
     "bac-ti-informatique-reseaux-2021-officiel-cameroun",
