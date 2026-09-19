@@ -1,0 +1,84 @@
+{
+  "cours_id": "cours-recherche-dichotomique-binaire-bacprog2023",
+  "meta": {
+    "titre": "La recherche dichotomique (recherche binaire) dans un tableau trie",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmique (langage C)",
+    "duree_estimee_min": 12,
+    "tags": [
+      "recherche dichotomique",
+      "recherche binaire",
+      "tableau trie",
+      "complexite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
+    "epreuve_titre": "Epreuve programmation au baccalaureat TI, 2023, Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bacprog2023-ex3-q4b",
+    "rappels_lies": [
+      "rdm-bacprog2023-ex3-q5",
+      "rdm-bacprog2023-ex3-q6"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chercher un nom dans un annuaire papier ne se fait pas en tournant les pages une a une depuis le debut : on ouvre au milieu, on decide de quel cote continuer, puis on recommence sur une moitie deux fois plus petite. C'est exactement le principe de la recherche dichotomique."
+    },
+    {
+      "type": "regle",
+      "titre": "Principe et condition de validite",
+      "contenu_markdown": "La **recherche dichotomique** (ou recherche binaire) cherche une valeur `VAL` dans un tableau en reduisant a chaque etape de moitie la zone ou elle peut se trouver, plutot que de parcourir le tableau case par case (comme le ferait une recherche sequentielle).\n\nA chaque iteration, sur l'intervalle courant `[INF, SUP]` :\n\n1. On calcule l'indice du milieu : `MIL = (INF+SUP)/2`.\n2. On compare `VAL` a `A[MIL]` :\n   - si `VAL < A[MIL]`, la valeur cherchee ne peut etre que dans la moitie **gauche** : on pose `SUP=MIL-1` ;\n   - si `VAL > A[MIL]`, elle ne peut etre que dans la moitie **droite** : on pose `INF=MIL+1` ;\n   - si `VAL == A[MIL]`, la valeur est trouvee a la position `MIL`.\n3. On repete tant que l'intervalle n'est pas vide (`INF <= SUP`) et que la valeur n'a pas encore ete trouvee.\n\n**Condition indispensable, jamais verifiee par le code lui-meme** : cet algorithme ne fonctionne correctement QUE si le tableau est **trie par ordre croissant**. C'est cet ordre qui garantit qu'eliminer une moitie de l'intervalle en fonction de la comparaison avec `A[MIL]` ne fait jamais disparaitre la valeur cherchee si elle etait presente. Sur un tableau non trie, l'algorithme s'execute sans erreur mais peut conclure a tort que la valeur est absente, alors qu'elle figure bel et bien dans le tableau."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Tableau A = [2, 5, 8, 12, 16, 23], VAL=12. Tracer la recherche dichotomique.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Premiere iteration : INF=0, SUP=5",
+          "justification": "MIL = (0+5)/2 = 2 (division entiere), A[2]=8.",
+          "resultat_markdown": "VAL(12) > A[2](8) : on pose INF = 2+1 = 3."
+        },
+        {
+          "numero": 2,
+          "action": "Deuxieme iteration : INF=3, SUP=5",
+          "justification": "MIL = (3+5)/2 = 4, A[4]=16.",
+          "resultat_markdown": "VAL(12) < A[4](16) : on pose SUP = 4-1 = 3."
+        },
+        {
+          "numero": 3,
+          "action": "Troisieme iteration : INF=3, SUP=3",
+          "justification": "MIL = (3+3)/2 = 3, A[3]=12.",
+          "resultat_markdown": "VAL(12) == A[3](12) : POS=3, la recherche s'arrete, la valeur est trouvee a la position 3."
+        }
+      ],
+      "conclusion_markdown": "Sur un tableau correctement trie, chaque comparaison elimine bien la moitie qui ne peut pas contenir la valeur cherchee, d'ou une recherche en un nombre d'etapes tres reduit (logarithmique) par rapport a la taille du tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer une recherche dichotomique a un tableau dont on n'a pas verifie qu'il est trie.",
+          "pourquoi_faux": "Sur un tableau non trie, l'algorithme reste syntaxiquement correct et se termine normalement, mais son resultat n'est plus fiable : il peut affirmer qu'une valeur presente dans le tableau ne s'y trouve pas, car les eliminations de moitie d'intervalle reposent entierement sur l'hypothese d'un tableau trie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La recherche dichotomique elimine a chaque etape la moitie de l'intervalle de recherche.",
+        "Elle exige un tableau trie par ordre croissant pour garantir un resultat correct.",
+        "Sur un tableau non trie, elle peut conclure a tort qu'une valeur presente est absente."
+      ]
+    }
+  ]
+}

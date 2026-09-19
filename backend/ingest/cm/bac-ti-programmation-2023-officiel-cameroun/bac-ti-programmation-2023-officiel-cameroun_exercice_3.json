@@ -1,0 +1,290 @@
+{
+  "epreuve_source": "bac-ti-programmation-2023-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": 3,
+  "introduction_markdown": "Partie II : Programmation procedurale en C",
+  "points": "10",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-programmation-2023-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": 4,
+      "type": "document",
+      "legende": "Programme C source (recherche dichotomique dans un tableau) analyse dans cet exercice",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 3**\n\nSoit le programme C suivant :\n\n![fig-1](bac-ti-programmation-2023-officiel-cameroun_exercice_3_fig_1.png)\n\nEn vous servant du code source ci-dessus et de vos connaissances en programmation C, repondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Decrire la bibliotheque utilisee dans ce code. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nEn langage C, une bibliothèque se déclare au début du programme avec la directive `#include`, qui fournit au compilateur les prototypes des fonctions qu'elle contient. `stdio.h` (standard input/output) regroupe les fonctions d'entrée-sortie, notamment `printf()` pour afficher et `scanf()` pour lire au clavier ; `math.h` et `string.h` offrent respectivement les fonctions mathématiques et de chaînes. Attention : utiliser une fonction sans inclure sa bibliothèque provoque un avertissement ou une erreur de compilation.\n\nLa bibliotheque utilisee dans ce code est **`stdio.h`** (Standard Input/Output), incluse a la ligne 1 par `#include <stdio.h>`. Elle fournit les fonctions standard d'entree-sortie du langage C utilisees tout au long de ce programme : `printf()` pour afficher du texte a l'ecran, et `scanf()` pour lire une valeur saisie au clavier.",
+      "themes": [
+        "langage C",
+        "bibliotheque standard",
+        "stdio.h"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q1",
+          "competence": "Identifier la bibliotheque stdio.h et son role",
+          "contenu_markdown": "En langage C, une bibliothèque se déclare au début du programme avec la directive `#include`, qui fournit au compilateur les prototypes des fonctions qu'elle contient. `stdio.h` (standard input/output) regroupe les fonctions d'entrée-sortie, notamment `printf()` pour afficher et `scanf()` pour lire au clavier ; `math.h` et `string.h` offrent respectivement les fonctions mathématiques et de chaînes. Attention : utiliser une fonction sans inclure sa bibliothèque provoque un avertissement ou une erreur de compilation.",
+          "cours_genere": true,
+          "cours_id": "cours-bibliotheques-standard-c-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "enonce_markdown": "Identifier dans ce code, une variable manipulant une structure de donnee. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne structure de données organise plusieurs valeurs sous un même nom. En C, le tableau est la structure de base : il regroupe des éléments de même type, stockés de façon contiguë et accessibles par leur indice. Il se déclare par `type nom[taille];` et ses éléments sont numérotés à partir de 0, de sorte que le dernier indice vaut `taille - 1`. Attention : une variable simple (entier, réel, caractère) n'est pas une structure de données, et le langage C ne vérifie pas les dépassements d'indice.\n\nLa variable manipulant une structure de donnee est le **tableau `A`**, declare ligne 4 par `int A[50];`. Un tableau est une structure de donnees qui regroupe, sous un seul nom, une collection d'elements de meme type (ici, au plus 50 entiers), chacun etant accessible individuellement par son indice, comme `A[I]`.",
+      "themes": [
+        "langage C",
+        "tableau",
+        "structure de donnees"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q2",
+          "competence": "Identifier une variable de type tableau",
+          "contenu_markdown": "Une structure de données organise plusieurs valeurs sous un même nom. En C, le tableau est la structure de base : il regroupe des éléments de même type, stockés de façon contiguë et accessibles par leur indice. Il se déclare par `type nom[taille];` et ses éléments sont numérotés à partir de 0, de sorte que le dernier indice vaut `taille - 1`. Attention : une variable simple (entier, réel, caractère) n'est pas une structure de données, et le langage C ne vérifie pas les dépassements d'indice.",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-declaration-tableau-algorithmique-en-c-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "enonce_markdown": "Donner le role de la fonction scanf(\"%d\", &N ) de la ligne 12 tout en decrivant ses differents parametres. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf(format, adresses...)` lit des données saisies au clavier et les range dans des variables. Le premier paramètre est la chaîne de format, qui précise le type attendu (`%d` entier, `%f` réel, `%c` caractère, `%s` chaîne) ; les suivants sont les adresses des variables de destination, obtenues avec l'opérateur `&`. Attention : oublier le `&` devant une variable simple provoque un comportement indéfini, sauf pour un tableau de caractères dont le nom est déjà une adresse.\n\nLa fonction `scanf(\"%d\", &N )` lit une valeur entiere saisie au clavier par l'utilisateur et la stocke dans la variable `N`.\n\nSes deux parametres sont :\n\n1. `\"%d\"` : la **chaine de format**, qui indique a `scanf()` que la valeur a lire doit etre interpretee comme un entier decimal (`%d` = decimal).\n2. `&N` : l'**adresse memoire** de la variable `N`, obtenue grace a l'operateur d'adresse `&`. `scanf()` a besoin de cette adresse, et non de la valeur de `N`, car elle doit ecrire directement la valeur saisie a cet emplacement memoire (passage par adresse) pour que `N` soit effectivement modifiee apres l'appel.",
+      "themes": [
+        "langage C",
+        "scanf",
+        "saisie clavier"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q3",
+          "competence": "Role et parametres de scanf()",
+          "contenu_markdown": "La fonction `scanf(format, adresses...)` lit des données saisies au clavier et les range dans des variables. Le premier paramètre est la chaîne de format, qui précise le type attendu (`%d` entier, `%f` réel, `%c` caractère, `%s` chaîne) ; les suivants sont les adresses des variables de destination, obtenues avec l'opérateur `&`. Attention : oublier le `&` devant une variable simple provoque un comportement indéfini, sauf pour un tableau de caractères dont le nom est déjà une adresse.",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-instruction-lecture-en-scanf-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.1",
+      "enonce_markdown": "Donner avec exactitude le role : de la plage des lignes 13 a 17. (0.5pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour donner le rôle d'un bloc de code, on repère sa structure de contrôle (boucle `for`, `while`, test `if`) et on décrit ce que fait une itération, puis l'effet d'ensemble une fois la boucle terminée. Une boucle `for` qui parcourt tous les indices d'un tableau en lisant une valeur à chaque tour avec `scanf` réalise la saisie du tableau ; si elle affiche les valeurs, c'est un parcours d'affichage. Attention : l'indice d'un tableau commence à 0, ce qui fixe les bornes de la boucle.\n\nLa plage des lignes 13 a 17 est une boucle `for` qui parcourt les indices `I` de 0 a `N-1` : pour chaque indice, elle affiche une invite (« Element I : ») puis lit au clavier, via `scanf(\"%d\", &A[I])`, la valeur entiere saisie par l'utilisateur pour la stocker dans la case `A[I]`. C'est la **boucle de saisie des N elements du tableau A**.",
+      "themes": [
+        "langage C",
+        "boucle for",
+        "saisie de tableau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q4a",
+          "competence": "Decrire l'effet global d'une boucle de saisie",
+          "contenu_markdown": "Pour donner le rôle d'un bloc de code, on repère sa structure de contrôle (boucle `for`, `while`, test `if`) et on décrit ce que fait une itération, puis l'effet d'ensemble une fois la boucle terminée. Une boucle `for` qui parcourt tous les indices d'un tableau en lisant une valeur à chaque tour avec `scanf` réalise la saisie du tableau ; si elle affiche les valeurs, c'est un parcours d'affichage. Attention : l'indice d'un tableau commence à 0, ce qui fixe les bornes de la boucle.",
+          "cours_genere": true,
+          "cours_id": "cours-decrire-l-algorithme-realise-par-un-extrait-de-code-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.2",
+      "enonce_markdown": "Donner avec exactitude le role : de la plage des lignes 30 a 39. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier un algorithme classique dans un extrait, on repère ses variables caractéristiques et ses affectations. La recherche dichotomique travaille sur un tableau trié : elle garde deux bornes (début et fin), calcule l'indice du milieu, compare la valeur cherchée à l'élément central, puis élimine la moitié inutile en déplaçant l'une des bornes. La boucle s'arrête quand la valeur est trouvée ou quand l'intervalle devient vide. Attention : la complexité logarithmique n'est obtenue que si le tableau est trié.\n\nLa plage des lignes 30 a 39 met en oeuvre l'algorithme de **recherche dichotomique (recherche binaire)** de la valeur `VAL` dans le tableau `A`. A chaque iteration, elle calcule l'indice du milieu `MIL` de l'intervalle de recherche courant `[INF, SUP]`, compare `VAL` a `A[MIL]`, puis reduit l'intervalle de moitie en eliminant la moitie ou `VAL` ne peut pas se trouver : `SUP=MIL-1` si `VAL` est plus petit que `A[MIL]`, `INF=MIL+1` si `VAL` est plus grand. La boucle s'arrete des que la valeur est trouvee (`POS=MIL`) ou des que l'intervalle devient vide (`INF>SUP`), ce qui signale une recherche infructueuse.",
+      "themes": [
+        "langage C",
+        "recherche dichotomique",
+        "recherche binaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q4b",
+          "competence": "Reconnaitre et decrire l'algorithme de recherche dichotomique",
+          "contenu_markdown": "Pour identifier un algorithme classique dans un extrait, on repère ses variables caractéristiques et ses affectations. La recherche dichotomique travaille sur un tableau trié : elle garde deux bornes (début et fin), calcule l'indice du milieu, compare la valeur cherchée à l'élément central, puis élimine la moitié inutile en déplaçant l'une des bornes. La boucle s'arrête quand la valeur est trouvée ou quand l'intervalle devient vide. Attention : la complexité logarithmique n'est obtenue que si le tableau est trié.",
+          "cours_genere": true,
+          "cours_id": "cours-recherche-dichotomique-binaire-bacprog2023"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "enonce_markdown": "Donner la trace d'execution de cet algorithme pour les valeurs suivantes : 15  6  17  5  9. Sachant que la valeur recherchee est VAL=5. (2 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne trace d'exécution se construit dans un tableau dont chaque colonne est une variable et chaque ligne une étape. On commence par les valeurs initiales, puis on évalue la condition de la boucle avant chaque tour, on exécute les instructions dans l'ordre en recopiant les nouvelles valeurs, et on termine quand la condition devient fausse. Pour une recherche dichotomique, on note les bornes, l'indice du milieu, l'élément comparé et la borne modifiée. Attention : appliquer les instructions telles qu'écrites, même si les données ne sont pas triées.\n\nAvec `A = [15, 6, 17, 5, 9]` (N=5) et `VAL=5`, la boucle des lignes 30 a 39 se deroule ainsi :\n\n| Etape | INF | SUP | POS | MIL | A[MIL] | Comparaison (VAL=5) | Action |\n|---|---|---|---|---|---|---|---|\n| Initialisation | 0 | 4 | -1 | - | - | - | - |\n| Iteration 1 | 0 | 4 | -1 | (4+0)/2 = 2 | A[2] = 17 | 5 < 17 | SUP = 2-1 = 1 |\n| Iteration 2 | 0 | 1 | -1 | (1+0)/2 = 0 | A[0] = 15 | 5 < 15 | SUP = 0-1 = -1 |\n| Fin de boucle | 0 | -1 | -1 | - | - | INF(0) <= SUP(-1) est faux | arret de la boucle |\n\nLa boucle s'arrete parce que `INF <= SUP` devient faux, sans que `POS` ait jamais ete modifie : `POS` reste egal a **-1**. Le script affiche donc :\n\n> « La valeur recherchee ne se trouve pas dans le tableau. »",
+      "themes": [
+        "langage C",
+        "recherche dichotomique",
+        "trace d'execution"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q5",
+          "competence": "Tracer l'execution d'une recherche dichotomique",
+          "contenu_markdown": "Une trace d'exécution se construit dans un tableau dont chaque colonne est une variable et chaque ligne une étape. On commence par les valeurs initiales, puis on évalue la condition de la boucle avant chaque tour, on exécute les instructions dans l'ordre en recopiant les nouvelles valeurs, et on termine quand la condition devient fausse. Pour une recherche dichotomique, on note les bornes, l'indice du milieu, l'élément comparé et la borne modifiée. Attention : appliquer les instructions telles qu'écrites, même si les données ne sont pas triées.",
+          "cours_genere": true,
+          "cours_id": "cours-recherche-dichotomique-binaire-bacprog2023"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "enonce_markdown": "Deduire de ce qui precede ce que fait exactement ce programme. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour dire ce que fait un programme, on regroupe les rôles de ses blocs successifs : déclarations, lecture des données, traitement, affichage des résultats. Le rôle global se formule en une phrase qui nomme l'algorithme utilisé et le résultat produit. On vérifie aussi ses conditions de validité : la recherche dichotomique suppose un tableau trié par ordre croissant. Attention : sur un tableau non trié, le programme s'exécute sans erreur mais peut conclure à tort qu'une valeur est absente.\n\nCe programme lit un tableau de `N` entiers saisis par l'utilisateur (`N` <= 50), une valeur `VAL` a rechercher, puis recherche cette valeur dans le tableau au moyen de l'algorithme de **recherche dichotomique**, avant d'afficher si elle a ete trouvee et, le cas echeant, sa position.\n\n**Piege a eviter** : la recherche dichotomique ne fonctionne correctement que sur un tableau **trie par ordre croissant**, car elle elimine a chaque etape la moitie de l'intervalle en supposant cet ordre. Le tableau `[15, 6, 17, 5, 9]` de la question precedente n'est pas trie : la valeur 5 y est pourtant bien presente (a l'indice 3), mais l'algorithme, execute fidelement tel qu'il est ecrit, conclut a tort qu'elle est absente. Ce programme suppose donc implicitement, sans le verifier, que le tableau saisi est deja trie - une hypothese que rien dans le code ne garantit.",
+      "themes": [
+        "langage C",
+        "recherche dichotomique",
+        "synthese"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q6",
+          "competence": "Deduire la fonction du programme et sa limite",
+          "contenu_markdown": "Pour dire ce que fait un programme, on regroupe les rôles de ses blocs successifs : déclarations, lecture des données, traitement, affichage des résultats. Le rôle global se formule en une phrase qui nomme l'algorithme utilisé et le résultat produit. On vérifie aussi ses conditions de validité : la recherche dichotomique suppose un tableau trié par ordre croissant. Attention : sur un tableau non trié, le programme s'exécute sans erreur mais peut conclure à tort qu'une valeur est absente.",
+          "cours_genere": true,
+          "cours_id": "cours-recherche-dichotomique-binaire-bacprog2023"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "enonce_markdown": "Etablir la difference entre une variable globale et une variable locale. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable est la zone du programme où elle est visible. Une variable globale est déclarée en dehors de toute fonction : elle est accessible à toutes les fonctions et existe pendant toute l'exécution. Une variable locale est déclarée dans une fonction ou un bloc : elle n'est visible qu'à cet endroit et sa mémoire est libérée à la sortie. Attention : une variable locale de même nom qu'une globale masque cette dernière, et abuser des globales rend le code difficile à maintenir.\n\nUne **variable globale** est declaree en dehors de toute fonction : elle est accessible et modifiable depuis n'importe quelle fonction du programme, et existe pendant toute la duree d'execution de celui-ci. Une **variable locale** est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et accessible qu'a l'interieur de cette fonction, et elle est detruite des que l'on en sort. Dans ce programme, toutes les variables (`A`, `VAL`, `POS`, `N`, `I`, `INF`, `MIL`, `SUP`) sont declarees a l'interieur de la fonction `main()` : ce sont donc toutes des variables **locales** a `main()`.",
+      "themes": [
+        "langage C",
+        "variable globale",
+        "variable locale",
+        "portee"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q7",
+          "competence": "Distinguer variable globale et variable locale",
+          "contenu_markdown": "La portée d'une variable est la zone du programme où elle est visible. Une variable globale est déclarée en dehors de toute fonction : elle est accessible à toutes les fonctions et existe pendant toute l'exécution. Une variable locale est déclarée dans une fonction ou un bloc : elle n'est visible qu'à cet endroit et sa mémoire est libérée à la sortie. Attention : une variable locale de même nom qu'une globale masque cette dernière, et abuser des globales rend le code difficile à maintenir.",
+          "cours_genere": true,
+          "cours_id": "cours-portee-des-variables-en-langage-c-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "enonce_markdown": "Reecrire les instructions des lignes 30 a 39 en utilisant la boucle do…while () en lieu et place de while ( ). (1,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa boucle `while (condition) { ... }` teste la condition avant chaque tour, donc son corps peut ne jamais s'exécuter. La boucle `do { ... } while (condition);` exécute d'abord le corps puis teste la condition : il s'exécute au moins une fois, et le point-virgule final est obligatoire. Pour convertir, on place le corps dans `do`, on garde la même condition de poursuite dans `while` et on conserve les initialisations avant la boucle. Attention : si la condition est fausse dès le départ, le `do...while` exécute quand même un tour.\n\nEn remplacant `while` par `do...while`, les lignes 30 a 39 deviennent :\n\n```c\nPOS=-1;\ndo\n    {\n        MIL=(SUP+INF)/2;\n        if (VAL < A[MIL])\n            SUP=MIL-1;\n        else if (VAL > A[MIL])\n            INF=MIL+1;\n        else\n            POS=MIL;\n    } while ((INF<=SUP) && (POS==-1));\n```\n\n**Piege a eviter** : une boucle `while` teste sa condition AVANT chaque execution du corps, alors qu'une boucle `do...while` execute toujours son corps **au moins une fois** avant de tester la condition. Tant que `N >= 1`, cela ne change rien ici, puisque `INF=0 <= SUP=N-1` est deja vrai des le depart. Mais si `N=0` (tableau vide), la version `while` ne rentre jamais dans la boucle (`0 <= -1` est faux), alors que la version `do...while` execute son corps une premiere fois malgre tout : `MIL` vaudrait alors `(-1+0)/2 = 0` et le programme accederait a `A[0]`, une case du tableau qui n'a jamais ete initialisee par la boucle de saisie puisque `N=0`.",
+      "themes": [
+        "langage C",
+        "do while",
+        "while"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q8",
+          "competence": "Convertir une boucle while en do...while",
+          "contenu_markdown": "La boucle `while (condition) { ... }` teste la condition avant chaque tour, donc son corps peut ne jamais s'exécuter. La boucle `do { ... } while (condition);` exécute d'abord le corps puis teste la condition : il s'exécute au moins une fois, et le point-virgule final est obligatoire. Pour convertir, on place le corps dans `do`, on garde la même condition de poursuite dans `while` et on conserve les initialisations avant la boucle. Attention : si la condition est fausse dès le départ, le `do...while` exécute quand même un tour.",
+          "cours_genere": true,
+          "cours_id": "cours-simulation-boucle-do-while-en-c-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": 9,
+      "enonce_markdown": "Citer un (01) exemple d'IDE utilise pour compiler le code en langage C. (0.5pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour compiler et exécuter du code C, on utilise un compilateur (par exemple GCC), souvent fourni dans un environnement de développement intégré qui réunit éditeur, compilateur et débogueur. Parmi les IDE courants pour le C, on cite Code::Blocks, Dev-C++, CLion, Eclipse CDT ou Visual Studio. Attention : un IDE n'est pas un compilateur, il en pilote un, et le simple éditeur de texte ne suffit pas à lancer la compilation.\n\nUn exemple d'IDE utilise pour compiler du code en langage C est **Code::Blocks** (on peut aussi citer Dev-C++, ou Visual Studio Code associe a un compilateur comme GCC/MinGW).",
+      "themes": [
+        "langage C",
+        "IDE",
+        "compilation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex3-q9",
+          "competence": "Citer un IDE de compilation C",
+          "contenu_markdown": "Pour compiler et exécuter du code C, on utilise un compilateur (par exemple GCC), souvent fourni dans un environnement de développement intégré qui réunit éditeur, compilateur et débogueur. Parmi les IDE courants pour le C, on cite Code::Blocks, Dev-C++, CLion, Eclipse CDT ou Visual Studio. Attention : un IDE n'est pas un compilateur, il en pilote un, et le simple éditeur de texte ne suffit pas à lancer la compilation.",
+          "cours_genere": true,
+          "cours_id": "cours-citer-des-environnements-de-developpement-integres-ide-c-bacprog2023-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "recherche dichotomique",
+    "tableau",
+    "scanf",
+    "do while",
+    "portee des variables"
+  ],
+  "incertitudes": [
+    "Le sujet source n'indique pas de bareme total explicite pour cette partie (Partie II), et la question 8 (conversion while -> do...while) n'affiche aucun point associe dans le document scanne, contrairement a toutes les autres questions. En supposant, comme c'est l'usage, que cette partie totalise 10 points (symetrique aux 10 points de la Partie I), la question 8 se voit attribuer par deduction 1,5 pt (10 - somme des 8 autres questions = 10 - 8,5 = 1,5).",
+    "Le tableau donne en exemple pour la question 5 (15, 6, 17, 5, 9) n'est pas trie par ordre croissant, alors que l'algorithme de recherche dichotomique employe dans le programme suppose un tableau trie pour fonctionner correctement. La trace d'execution fournie suit fidelement le code tel qu'ecrit et aboutit donc a la conclusion (correcte du point de vue du code, mais contre-intuitive) que la valeur 5, pourtant presente dans le tableau, n'est pas trouvee. Ce point est explicitement releve comme piege dans le corrige de la question 6."
+  ],
+  "statut": "brouillon"
+}

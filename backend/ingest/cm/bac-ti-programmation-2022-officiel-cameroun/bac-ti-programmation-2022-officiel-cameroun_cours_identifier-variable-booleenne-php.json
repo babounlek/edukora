@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-identifier-une-variable-de-type-booleen-dans-un-script-php",
+  "meta": {
+    "titre": "Identifier une variable de type booleen dans un script PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web (PHP)",
+    "duree_estimee_min": 10,
+    "tags": [
+      "PHP",
+      "booleen",
+      "mysqli",
+      "type de donnees"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalaureat TI, 2022, Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2022-ex2-q4-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "PHP est un langage a typage faible : une variable ne porte pas son type dans sa declaration. Pourtant, certaines fonctions du langage renvoient explicitement un booleen (`true`/`false`), et savoir reperer ces variables est indispensable pour comprendre pourquoi un `if(!$x)` a ete place a tel endroit du code."
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaitre un booleen a la fonction qui l'a produit, pas a son nom",
+      "contenu_markdown": "En PHP, une variable est booleenne si la valeur qu'elle recoit provient d'une fonction ou d'une expression dont la documentation garantit un retour `true`/`false` (ou d'une comparaison, ou de l'operateur logique `!`, `&&`, `||`). Exemples frequents : `empty()`, `isset()`, `is_numeric()`, et surtout, pour les bases de donnees, les methodes qui peuvent **echouer** comme `mysqli->query()` : en cas d'echec elles renvoient `false` au lieu de l'objet resultat attendu en cas de succes. Une variable qui recoit tantot un objet, tantot `false`, est donc bien une variable a vocation booleenne des qu'elle est testee avec `if(!$var)` ou `if($var)`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans `$result = $idcom->query($requete); if(!$result) { echo \"Lecture impossible\"; }`, quelle variable est booleenne, et pourquoi ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la fonction qui produit la variable",
+          "justification": "query() est documentee pour renvoyer soit un objet mysqli_result, soit false en cas d'echec.",
+          "resultat_markdown": "$result peut valoir un objet mysqli_result OU false."
+        },
+        {
+          "numero": 2,
+          "action": "Observer comment la variable est utilisee juste apres",
+          "justification": "Le test if(!$result) n'a de sens que si $result peut valoir false.",
+          "resultat_markdown": "Le code teste explicitement le cas ou $result vaut false : c'est la preuve que $result vehicule un booleen implicite."
+        }
+      ],
+      "conclusion_markdown": "$result est la variable de type booleen (implicite) de ce code : elle vaut false en cas d'echec de la requete, un objet resultat sinon."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher un mot-cle bool ou une declaration explicite pour reperer une variable booleenne en PHP.",
+          "pourquoi_faux": "PHP est a typage dynamique : aucune variable n'est declaree avec un type. Il faut raisonner sur les valeurs que peut prendre la variable (true/false) et sur la fonction qui les produit, pas sur une syntaxe de declaration."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En PHP, une variable booleenne se reconnait a la fonction qui la produit (ex: query(), empty(), isset()), pas a une declaration de type.",
+        "Une methode qui peut echouer (comme mysqli->query()) renvoie souvent false en cas d'echec : la variable qui la recoit est donc booleenne des qu'elle sert a un test if."
+      ]
+    }
+  ]
+}

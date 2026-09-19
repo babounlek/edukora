@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-placer-prototype-fonction-c",
+  "meta": {
+    "titre": "Où placer le prototype d'une fonction dans un programme C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctions en langage C",
+    "duree_estimee_min": 10,
+    "tags": [
+      "prototype",
+      "fonction",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalauréat TI, 2022, Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bacprog2022-ex3-q6",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le compilateur C lit le fichier une seule fois, de haut en bas : appeler une fonction qu'il n'a pas encore rencontrée lui pose un problème. Le prototype est là pour l'en avertir."
+    },
+    {
+      "type": "regle",
+      "titre": "Le prototype se place avant le premier appel de la fonction",
+      "contenu_markdown": "Le **prototype** déclare l'en-tête d'une fonction sans son corps : `type_retour nom(type1, type2);`. Il doit apparaître **avant** tout appel, donc en pratique :\n\n1. après les directives `#include` et `#define` ;\n2. après les définitions de types (`struct`) dont il a besoin ;\n3. **avant** la fonction `main()`.\n\nLa définition complète de la fonction peut alors être écrite plus bas dans le fichier."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Où placer le prototype de `float somme(struct produit list[], int n);` dans un programme qui définit `struct produit` et appelle `somme` dans `main()` ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer ce dont dépend le prototype",
+          "justification": "Il utilise le type struct produit, qui doit être déjà défini.",
+          "resultat_markdown": "Le prototype vient après la définition de struct produit."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le premier appel",
+          "justification": "La fonction est appelée dans main().",
+          "resultat_markdown": "Le prototype vient avant main()."
+        }
+      ],
+      "conclusion_markdown": "Ordre : #include, #define, struct produit, prototype de somme, main(), puis la définition de somme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer le prototype après main() ou avant la définition de struct produit.",
+          "pourquoi_faux": "Après main(), le compilateur a déjà rencontré l'appel sans connaître la fonction ; avant la struct, il ne connaît pas encore le type utilisé dans le prototype."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le prototype déclare la fonction avant qu'elle soit appelée.",
+        "Il se place après #include, #define et les types, avant main().",
+        "Sans déclaration préalable, le compilateur signale un avertissement ou une erreur à l'appel."
+      ]
+    }
+  ]
+}

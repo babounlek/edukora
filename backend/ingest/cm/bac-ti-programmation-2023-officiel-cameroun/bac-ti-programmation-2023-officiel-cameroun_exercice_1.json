@@ -1,0 +1,114 @@
+{
+  "epreuve_source": "bac-ti-programmation-2023-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": 1,
+  "introduction_markdown": "Partie I : Programmation web - I/ Programmation HTML et JavaScript (3 points)",
+  "points": "3",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-programmation-2023-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "schema",
+      "legende": "Maquette du formulaire form.html : champs NomP, Ville, Sexe, Tel, Res_Test, Etat_Vac, Nom_Vac et bouton Envoyer",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\nDans l'optique de lutter contre la pandemie du COVID19, le Gouvernement Camerounais fait des dons en materiels par ville et en fonction du nombre d'infectes. Pour ce faire, il souhaite mettre sur pied un site web devant permettre d'enregistrer les cas de contagion dans chaque ville du Cameroun. Vous etes sollicite pour concevoir la page d'accueil (index.php), le formulaire d'enregistrement (form.html) des informations d'un patient a la base de donnees (PATIENT) et au fichier de traitement des donnees du formulaire (traitement.php).\n\n![fig-1](bac-ti-programmation-2023-officiel-cameroun_exercice_1_fig_1.png)\n\nEn vous servant de la figure 1 et de vos connaissances en programmation web, repondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Ecrire le code HTML qui a permis de creer le formulaire de la figure 1. (1,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour reproduire un formulaire à partir d'une maquette, on encadre les champs dans une balise `<form>` dont l'attribut `action` désigne le script de traitement et `method` le mode d'envoi (`get` ou `post`). Chaque champ se code avec `<input>` : `type=\"text\"` pour une saisie libre, `type=\"radio\"` pour un choix unique (les boutons d'un même groupe partagent le même `name`), `<select>` pour une liste déroulante, et `type=\"submit\"` pour le bouton d'envoi. Attention : sans attribut `name`, la valeur d'un champ n'est pas transmise au serveur.\n\nD'apres la figure 1, le formulaire comporte les champs NomP, Ville, Sexe (M/F), Tel, Res_Test (Positif/Negatif), Etat_Vac (Vaccine/Non vaccine), Nom_Vac, et un bouton Envoyer :\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Formulaire d'enregistrement patient</title>\n</head>\n<body>\n    <form action=\"traitement.php\" method=\"post\" onsubmit=\"return verification();\">\n        NomP <input type=\"text\" name=\"nomP\"><br><br>\n        Ville <input type=\"text\" name=\"ville\"><br><br>\n        Sexe\n        <input type=\"radio\" name=\"Sexe\" value=\"M\" checked> M\n        <input type=\"radio\" name=\"Sexe\" value=\"F\"> F\n        <br><br>\n        Tel <input type=\"text\" name=\"Tel\"><br><br>\n        Res_Test\n        <input type=\"radio\" name=\"Res_Test\" value=\"Positif\"> Positif\n        <input type=\"radio\" name=\"Res_Test\" value=\"Negatif\" checked> Negatif\n        <br><br>\n        Etat_Vac\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Vaccine\"> Vaccine\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Non vaccine\" checked> Non vaccine\n        <br><br>\n        Nom_Vac <input type=\"text\" name=\"NomVac\"><br><br>\n        <input type=\"submit\" value=\"Envoyer\">\n    </form>\n</body>\n</html>\n```\n\nLes noms des champs (`nomP`, `ville`, `Tel`, `NomVac`) sont choisis pour correspondre exactement aux cles utilisees par `$_POST['nomP']`, `$_POST['ville']`, `$_POST['Tel']` et `$_POST['NomVac']` dans `traitement.php`, puisque PHP recupere les donnees d'un formulaire par le nom de ses champs.",
+      "themes": [
+        "HTML",
+        "formulaire",
+        "programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex1-q1",
+          "competence": "Ecrire le code HTML d'un formulaire a partir de sa maquette",
+          "contenu_markdown": "Pour reproduire un formulaire à partir d'une maquette, on encadre les champs dans une balise `<form>` dont l'attribut `action` désigne le script de traitement et `method` le mode d'envoi (`get` ou `post`). Chaque champ se code avec `<input>` : `type=\"text\"` pour une saisie libre, `type=\"radio\"` pour un choix unique (les boutons d'un même groupe partagent le même `name`), `<select>` pour une liste déroulante, et `type=\"submit\"` pour le bouton d'envoi. Attention : sans attribut `name`, la valeur d'un champ n'est pas transmise au serveur.",
+          "cours_genere": true,
+          "cours_id": "cours-definition-et-role-d-un-formulaire-html-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": "2.1",
+      "enonce_markdown": "Citer un avantage du JavaScript. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nJavaScript est un langage interprété directement par le navigateur : le code s'exécute côté client, sur l'ordinateur de l'utilisateur, sans aller-retour avec le serveur. Ses atouts sont la réactivité de la page, la validation immédiate des saisies, la modification dynamique du contenu HTML et l'allègement de la charge du serveur. Attention : une validation côté client reste contournable et ne remplace jamais le contrôle côté serveur.\n\nUn avantage du JavaScript est qu'il s'execute directement dans le navigateur du client (cote client), sans solliciter le serveur : il permet donc de valider les donnees saisies et de reagir immediatement aux actions de l'utilisateur, sans attendre de reponse du serveur, ce qui allege la charge de ce dernier et ameliore la reactivite de la page.",
+      "themes": [
+        "JavaScript",
+        "cote client"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex1-q2a",
+          "competence": "Avantage du JavaScript cote client",
+          "contenu_markdown": "JavaScript est un langage interprété directement par le navigateur : le code s'exécute côté client, sur l'ordinateur de l'utilisateur, sans aller-retour avec le serveur. Ses atouts sont la réactivité de la page, la validation immédiate des saisies, la modification dynamique du contenu HTML et l'allègement de la charge du serveur. Attention : une validation côté client reste contournable et ne remplace jamais le contrôle côté serveur.",
+          "cours_genere": true,
+          "cours_id": "cours-javascript-langage-interprete-leger-bacprog2023-dup"
+        }
+      ]
+    },
+    {
+      "numero": "2.2",
+      "enonce_markdown": "Ecrire une fonction JavaScript nommee « verification() » qui permettra de verifier si le champ « Tel » contient 09 caracteres. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour valider un champ de formulaire, on accède à sa valeur par le DOM (par exemple `document.forms[0].champ.value`), puis on teste une propriété de cette chaîne, notamment `.length` pour le nombre de caractères. La fonction affiche un message avec `alert()` si la condition n'est pas respectée et renvoie `false` ; sinon elle renvoie `true`. Elle est appelée dans l'attribut `onsubmit=\"return nomFonction();\"` de la balise `<form>`. Attention : sans le mot `return` dans `onsubmit`, le formulaire est envoyé même quand la fonction renvoie `false`.\n\nLa fonction lit la valeur du champ Tel via le DOM, puis compare la longueur de la chaine saisie a 9 caracteres :\n\n```javascript\nfunction verification() {\n    var tel = document.forms[0].Tel.value;\n    if (tel.length != 9) {\n        alert(\"Le champ Tel doit contenir exactement 9 caracteres.\");\n        return false;\n    }\n    return true;\n}\n```\n\nSi la longueur est differente de 9, la fonction affiche une alerte et retourne `false`, ce qui, combine a `onsubmit=\"return verification();\"` sur la balise `<form>`, empeche l'envoi du formulaire tant que le champ Tel n'a pas exactement 9 caracteres.",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2023-ex1-q2b",
+          "competence": "Ecrire une fonction JavaScript de validation de longueur de saisie",
+          "contenu_markdown": "Pour valider un champ de formulaire, on accède à sa valeur par le DOM (par exemple `document.forms[0].champ.value`), puis on teste une propriété de cette chaîne, notamment `.length` pour le nombre de caractères. La fonction affiche un message avec `alert()` si la condition n'est pas respectée et renvoie `false` ; sinon elle renvoie `true`. Elle est appelée dans l'attribut `onsubmit=\"return nomFonction();\"` de la balise `<form>`. Attention : sans le mot `return` dans `onsubmit`, le formulaire est envoyé même quand la fonction renvoie `false`.",
+          "cours_genere": true,
+          "cours_id": "cours-validation-d-un-formulaire-avec-javascript-bacprog2023-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "formulaire HTML",
+    "JavaScript",
+    "validation de formulaire",
+    "programmation web"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

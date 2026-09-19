@@ -1,0 +1,79 @@
+{
+  "cours_id": "cours-role-methode-query-mysqli-bacprog2023",
+  "meta": {
+    "titre": "La methode query() de mysqli : executer et interpreter une requete SQL",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web (PHP)",
+    "duree_estimee_min": 12,
+    "tags": [
+      "mysqli",
+      "query",
+      "PHP",
+      "SQL",
+      "gestion d'erreur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
+    "epreuve_titre": "Epreuve programmation au baccalaureat TI, 2023, Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2023-ex2-q3c",
+    "rappels_lies": [
+      "rdm-bacprog2023-ex2-q3d",
+      "rdm-bacprog2023-ex2-q3e"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une connexion a une base de donnees ne sert a rien si on ne peut pas ensuite lui envoyer d'ordres : creer, lire, modifier ou supprimer des donnees. En PHP oriente objet avec mysqli, une seule methode se charge d'envoyer n'importe quelle requete SQL au serveur : `query()`."
+    },
+    {
+      "type": "regle",
+      "titre": "Envoyer une requete et interpreter son retour",
+      "contenu_markdown": "La methode **`query()`** d'un objet `mysqli` envoie au serveur MySQL la requete SQL passee en argument (une chaine de caracteres) et l'execute :\n\n```php\n$result = $connexion->query($requete);\n```\n\nSa valeur de retour depend du type de requete et de son succes :\n\n- Pour une requete de **modification** (`INSERT`, `UPDATE`, `DELETE`, `CREATE`...), elle retourne **`true`** si l'execution a reussi, **`false`** en cas d'echec (erreur de syntaxe SQL, table ou base inexistante, contrainte violee...).\n- Pour une requete de **lecture** (`SELECT`), elle retourne, en cas de succes, un **objet `mysqli_result`** que l'on peut ensuite parcourir (avec `fetch_assoc()` par exemple) pour lire les lignes du resultat.\n\nC'est pourquoi on teste presque toujours son retour avec `if (!$result) { ... }` : cela permet de detecter un echec et d'afficher, via `$connexion->errno` et `$connexion->error`, le code et le message d'erreur renvoyes par MySQL, plutot que de laisser le script se comporter silencieusement de maniere incorrecte."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un script PHP execute `$r = $cnx->query(\"INSERT INTO eleves VALUES ('1','Awa')\");` alors que la table `eleves` n'existe pas encore dans la base. Que vaut `$r`, et comment le script peut-il le detecter ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Determiner le comportement de query() face a une table inexistante",
+          "justification": "MySQL refuse d'inserer dans une table qui n'existe pas et signale une erreur.",
+          "resultat_markdown": "`query()` echoue et retourne **`false`** dans `$r`."
+        },
+        {
+          "numero": 2,
+          "action": "Detecter l'echec dans le script",
+          "justification": "Un test sur la valeur de retour permet de reagir a l'echec plutot que de l'ignorer.",
+          "resultat_markdown": "Le script teste `if (!$r) { echo $cnx->error; }`, ce qui affichera un message du type « Table 'eleves' doesn't exist »."
+        }
+      ],
+      "conclusion_markdown": "Toujours tester le retour de query() avant de supposer qu'une requete a reussi, surtout pour une requete de modification qui ne renvoie ni resultat ni exception par defaut."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Supposer que query() leve automatiquement une exception ou arrete le script en cas d'erreur SQL.",
+          "pourquoi_faux": "Par defaut, mysqli ne leve pas d'exception : query() retourne simplement false et laisse le script continuer normalement si son retour n'est pas teste, ce qui peut masquer une erreur silencieuse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "query() envoie une requete SQL au serveur MySQL via une connexion mysqli deja etablie.",
+        "Elle retourne true/false pour une requete de modification, un objet mysqli_result pour un SELECT.",
+        "Tester son retour (if (!$result)) permet de detecter un echec et d'en afficher la cause (errno, error)."
+      ]
+    }
+  ]
+}

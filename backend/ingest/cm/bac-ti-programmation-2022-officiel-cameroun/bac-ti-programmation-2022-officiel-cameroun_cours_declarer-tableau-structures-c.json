@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-declarer-un-tableau-de-structures-en-c",
+  "meta": {
+    "titre": "Declarer un tableau de structures en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures en langage C",
+    "duree_estimee_min": 12,
+    "tags": [
+      "struct",
+      "tableau",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalaureat TI, 2022, Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bacprog2022-ex3-q3-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Gerer un seul produit ne demande qu'une variable de type struct. Gerer les produits d'une facture entiere demande d'en stocker plusieurs, tous de la meme forme : c'est exactement ce que permet un tableau de structures."
+    },
+    {
+      "type": "regle",
+      "titre": "struct NomType tableau[TAILLE] : plusieurs enregistrements du meme type",
+      "contenu_markdown": "Une fois un type structure defini (`struct produit { ... };`), on peut declarer un **tableau de structures** exactement comme un tableau de n'importe quel autre type :\n\n```c\nstruct produit list[Max];\n```\n\nCela reserve en memoire `Max` emplacements consecutifs, chacun capable de contenir une structure `produit` complete (tous ses champs). On accede a un element particulier avec l'operateur d'indexation, puis a l'un de ses champs avec le point : `list[2].prix` designe le champ `prix` du 3e element du tableau (index 2). Cette combinaison tableau + structure est le moyen standard, en C, de representer une liste d'enregistrements homogenes (une liste de produits, d'eleves, de contacts...)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que represente `list[1].designation` dans `struct produit list[4];` ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'element du tableau vise par l'indice",
+          "justification": "Les indices d'un tableau en C commencent a 0.",
+          "resultat_markdown": "list[1] designe le 2e element du tableau list."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le champ vise par le point",
+          "justification": "L'operateur . acces un champ d'une structure.",
+          "resultat_markdown": "list[1].designation designe le champ designation du 2e produit stocke dans le tableau."
+        }
+      ],
+      "conclusion_markdown": "list[1].designation est donc le nom du 2e produit enregistre dans le tableau de structures list."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ecrire list.prix[2] au lieu de list[2].prix.",
+          "pourquoi_faux": "L'indexation porte sur le tableau list lui-meme (pour choisir quel element), pas sur un champ individuel : il faut d'abord selectionner l'element (list[2]), puis seulement acceder a son champ (.prix)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "struct NomType tableau[N]; declare un tableau de N elements, chacun de type NomType.",
+        "tableau[i].champ accede au champ champ du (i+1)-eme element (les indices commencent a 0).",
+        "C'est le moyen standard en C de representer une liste d'enregistrements homogenes."
+      ]
+    }
+  ]
+}

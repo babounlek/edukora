@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-extension-fichier-php-serveur-web",
+  "meta": {
+    "titre": "Choisir l'extension d'un fichier contenant du code PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web côté serveur",
+    "duree_estimee_min": 10,
+    "tags": [
+      "PHP",
+      "extension .php",
+      "serveur web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalauréat TI, 2022, Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2022-ex2-q3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un même fichier peut contenir du HTML et du PHP, pourtant le navigateur n'affiche jamais le code PHP : c'est le serveur qui décide, d'après l'extension du fichier, s'il doit d'abord l'exécuter."
+    },
+    {
+      "type": "regle",
+      "titre": "L'extension .php déclenche l'interpréteur PHP",
+      "contenu_markdown": "Le serveur web choisit le traitement d'un fichier d'après son **extension**. Un fichier `.html` est renvoyé tel quel au navigateur. Un fichier `.php` est d'abord confié à l'**interpréteur PHP** : les blocs délimités par `<?php ... ?>` sont exécutés sur le serveur, et seul le HTML produit est envoyé au client.\n\nUn fichier qui mélange HTML et PHP doit donc être enregistré avec l'extension `.php` (par exemple `recherche.php`)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un fichier contient un formulaire HTML et un bloc `<?php ... ?>` qui interroge une base de données. Sous quelle extension faut-il l'enregistrer ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la présence de code PHP",
+          "justification": "Le fichier contient une balise <?php ... ?>.",
+          "resultat_markdown": "Le fichier doit être exécuté côté serveur."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire l'extension",
+          "justification": "Seule l'extension .php provoque l'appel de l'interpréteur PHP.",
+          "resultat_markdown": "Extension **.php**."
+        }
+      ],
+      "conclusion_markdown": "Le fichier est enregistré en `.php` ; le serveur exécute le bloc PHP puis renvoie la page HTML obtenue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Enregistrer le fichier en .html parce qu'il contient surtout du HTML.",
+          "pourquoi_faux": "Le serveur renverrait le fichier sans l'exécuter : le navigateur afficherait le texte brut des instructions PHP au lieu de leur résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'extension indique au serveur comment traiter le fichier.",
+        "Tout fichier contenant du PHP s'enregistre en .php.",
+        "Le navigateur ne reçoit jamais le code PHP, seulement le HTML produit."
+      ]
+    }
+  ]
+}

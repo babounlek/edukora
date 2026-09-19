@@ -1,0 +1,55 @@
+{
+  "cours_id": "cours-creer-une-base-de-donnees-et-une-table-en-sql-bacprog2023",
+  "meta": {
+    "titre": "Creer une base de donnees et une table en SQL (CREATE DATABASE / CREATE TABLE)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases de donnees (SQL)",
+    "duree_estimee_min": 12,
+    "tags": [
+      "SQL",
+      "CREATE DATABASE",
+      "CREATE TABLE",
+      "LDD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
+    "epreuve_titre": "Epreuve programmation au baccalaureat TI, 2023, Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2023-ex2-q4",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant qu'un script PHP puisse inserer la moindre ligne de donnees, la base et la table qui vont l'accueillir doivent deja exister sur le serveur MySQL : ce sont deux instructions SQL de creation, a executer une seule fois, qui posent ce prealable."
+    },
+    {
+      "type": "regle",
+      "titre": "Deux instructions de creation, dans le bon ordre",
+      "contenu_markdown": "**`CREATE DATABASE nom_base;`** cree une nouvelle base de donnees vide sur le serveur MySQL. Elle doit etre executee avant toute connexion a cette base (sans quoi la connexion, ou toute requete qui la suit, echoue en signalant que la base est inconnue).\n\n**`CREATE TABLE nom_table (colonne1 type1, colonne2 type2, ...);`** cree, a l'interieur de la base **selectionnee** (avec `USE nom_base;`, ou en la precisant autrement selon le contexte), une table dont chaque colonne a un nom et un type de donnees (`INT`, `VARCHAR(n)`, `DATE`...). On y ajoute souvent une colonne identifiant auto-incrementee, declaree `INT AUTO_INCREMENT PRIMARY KEY`, qui attribue automatiquement un numero unique et croissant a chaque nouvelle ligne inseree.\n\nLes colonnes de la table doivent correspondre exactement aux valeurs que le code PHP s'attend a inserer ou a lire : c'est en observant les colonnes utilisees dans une instruction `INSERT INTO` (ou dans un formulaire HTML associe) que l'on retrouve la structure de table a creer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ecrire directement CREATE TABLE sans avoir cree ni selectionne de base au prealable.",
+          "pourquoi_faux": "MySQL a besoin de savoir dans QUELLE base creer la table ; sans CREATE DATABASE puis USE (ou une connexion deja ouverte sur cette base), la commande CREATE TABLE echoue faute de base courante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE DATABASE cree une base vide ; CREATE TABLE cree une table a l'interieur d'une base existante.",
+        "Chaque colonne d'une table a un nom et un type ; une colonne identifiant est souvent auto-incrementee.",
+        "Les colonnes a creer se deduisent des valeurs que le script PHP insere ou lit reellement."
+      ]
+    }
+  ]
+}

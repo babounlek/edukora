@@ -1,0 +1,77 @@
+{
+  "cours_id": "cours-role-des-proprietes-et-methodes-dun-resultat-mysqli-num-rows-field-count-fetch-fields",
+  "meta": {
+    "titre": "field_count, num_rows, fetch_fields() : exploiter un resultat mysqli oriente objet",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web (PHP)",
+    "duree_estimee_min": 14,
+    "tags": [
+      "mysqli",
+      "field_count",
+      "num_rows",
+      "fetch_fields",
+      "PHP",
+      "SQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalaureat TI, 2022, Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2022-ex2-q7",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois qu'une requete SELECT a reussi, il reste a savoir combien de lignes et de colonnes elle a renvoyees, et comment s'appellent ces colonnes, pour pouvoir construire dynamiquement un tableau HTML de resultats -- sans connaitre a l'avance la structure exacte de la requete."
+    },
+    {
+      "type": "regle",
+      "titre": "Trois informations complementaires sur un objet mysqli_result",
+      "contenu_markdown": "Lorsqu'une requete `SELECT` reussit via `$result = $connexion->query($sql);`, l'objet `$result` (de type `mysqli_result`) expose plusieurs proprietes et methodes utiles :\n\n- **`$result->num_rows`** (propriete) : le nombre de lignes contenues dans le resultat.\n- **`$result->field_count`** (propriete) : le nombre de colonnes (champs) selectionnees par la requete.\n- **`$result->fetch_fields()`** (methode) : renvoie un tableau d'objets, un par colonne, chacun exposant notamment `->name` (le nom de la colonne, ou son alias `AS`). Utile pour generer automatiquement les en-tetes `<th>` d'un tableau HTML sans les ecrire en dur.\n\nCes trois informations permettent de generer un affichage totalement generique, qui s'adapte a n'importe quelle requete SELECT sans modifier le code d'affichage."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une requete `SELECT id_article, designation, prix FROM article` renvoie 5 lignes. Que valent field_count et num_rows sur le resultat ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les colonnes selectionnees dans la requete",
+          "justification": "field_count correspond au nombre de colonnes du SELECT, pas au nombre de colonnes de la table.",
+          "resultat_markdown": "3 colonnes selectionnees (id_article, designation, prix) donc field_count vaut 3."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les lignes renvoyees par la requete",
+          "justification": "num_rows correspond au nombre de lignes trouvees repondant a la condition (ici aucune condition WHERE, donc toute la table).",
+          "resultat_markdown": "num_rows vaut 5."
+        }
+      ],
+      "conclusion_markdown": "field_count et num_rows permettent de dimensionner les boucles d'affichage (colonnes, puis lignes) sans connaitre a l'avance le contenu de la table."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre field_count (nombre de colonnes du resultat) avec num_rows (nombre de lignes du resultat).",
+          "pourquoi_faux": "Les deux sont des proprietes numeriques d'apparence similaire mais mesurent des dimensions differentes du meme tableau de resultats : l'une les colonnes, l'autre les lignes. Inverser les deux dans les bornes de boucles imbriquees affiche un tableau incorrect ou provoque une erreur d'indice."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "num_rows : nombre de lignes du resultat d'une requete SELECT.",
+        "field_count : nombre de colonnes selectionnees par la requete.",
+        "fetch_fields() : tableau d'objets decrivant chaque colonne (dont son nom, via ->name), utile pour generer des en-tetes de tableau dynamiquement."
+      ]
+    }
+  ]
+}

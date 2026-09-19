@@ -1,0 +1,73 @@
+{
+  "cours_id": "cours-role-des-instructions-daffichage-de-mise-en-forme-en-c",
+  "meta": {
+    "titre": "Le role d'un printf sans variable : mise en forme de l'affichage",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Entrees-sorties en langage C",
+    "duree_estimee_min": 8,
+    "tags": [
+      "printf",
+      "affichage",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
+    "epreuve_titre": "Epreuve de Programmation au Baccalaureat TI, 2022, Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bacprog2022-ex3-q3-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les instructions d'un programme ne calculent pas ou n'affichent pas une donnee : certaines ne servent qu'a rendre la sortie du programme plus lisible pour l'utilisateur qui la lit sur l'ecran."
+    },
+    {
+      "type": "regle",
+      "titre": "printf() peut ne servir qu'a la mise en forme",
+      "contenu_markdown": "La fonction `printf()` affiche a l'ecran le texte donne en argument, en interpretant les sequences d'echappement comme `\\n` (saut de ligne). Rien n'empeche d'appeler `printf()` avec une chaine ne contenant **aucune information utile**, uniquement des sauts de ligne : `printf(\"\\n\\n\");` par exemple n'affiche rien d'autre que deux lignes vides. Ce type d'instruction ne calcule ni ne transmet aucune donnee du programme : son unique role est d'espacer visuellement deux blocs de sortie consecutifs (par exemple, separer une phase de saisie d'une phase de resultats), pour ameliorer la lisibilite de ce que voit l'utilisateur."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme affiche `printf(\"\\n\\n\");` juste apres une boucle de saisie et juste avant une boucle d'affichage de resultats. Quel est le role de cette ligne ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Verifier si l'instruction manipule une variable du programme",
+          "justification": "printf(\"\\n\\n\") ne contient aucun specificateur de format (%d, %s...), donc aucune variable n'est affichee.",
+          "resultat_markdown": "Aucune donnee du programme n'est affichee par cette ligne."
+        },
+        {
+          "numero": 2,
+          "action": "Observer son emplacement dans le programme",
+          "justification": "Elle se situe entre deux phases distinctes du programme (saisie, puis affichage).",
+          "resultat_markdown": "Elle separe visuellement ces deux phases par deux lignes vides."
+        }
+      ],
+      "conclusion_markdown": "Cette instruction sert uniquement a ameliorer la lisibilite de la sortie du programme, en aerant l'affichage entre deux blocs logiquement distincts."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher a tout prix quelle variable est affichee par un printf qui ne contient que des \\n.",
+          "pourquoi_faux": "Un printf peut tres bien n'avoir aucun role de calcul ou d'affichage de donnees : sa seule fonction peut etre esthetique (mise en forme), ce qui est une reponse valide en soi."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "printf() peut servir uniquement a la mise en forme de l'affichage, sans afficher de donnee du programme.",
+        "printf(\"\\n\\n\") insere simplement des lignes vides, souvent pour separer deux phases d'un programme (saisie / resultats)."
+      ]
+    }
+  ]
+}
