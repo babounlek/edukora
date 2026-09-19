@@ -828,6 +828,13 @@ def _resolve_or_create_tag(name):
         return candidats[0]
     if len(candidats) > 1:
         raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
+    # Variante aux accents/pluriel près d'un Tag existant ("elimination" -> "élimination") :
+    # réutilisée plutôt que recréée (voir catalog.tunnel.find_tag_variant).
+    from .tunnel import find_tag_variant
+
+    variante = find_tag_variant(name)
+    if variante is not None:
+        return variante
     tag, _ = Tag.objects.get_or_create(name=name)
     return tag
 

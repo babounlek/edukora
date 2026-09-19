@@ -12,6 +12,7 @@ scripts/tunnel_validation.sh.
 """
 
 import re
+import time
 import unicodedata
 from collections import defaultdict
 from dataclasses import dataclass
@@ -110,12 +111,52 @@ class Finding:
 
 
 def tag_key(name):
-    """Clé de rapprochement : sans accent, casse, ponctuation ni pluriel simple."""
-    ascii_name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii").lower()
+    """Clé de rapprochement : sans accent, casse, tirets ni pluriel simple."""
+    # Seuls les signes diacritiques sont retirés : un caractère non latin (API "/aɪ/" ≠ "/aʊ/")
+    # doit rester distinct, un encodage en ASCII les aurait tous effacés.
+    decomposed = unicodedata.normalize("NFKD", name)
+    folded = "".join(c for c in decomposed if not unicodedata.combining(c)).lower()
     # Seuls espaces, tirets et apostrophes sont neutralisés : "$_GET"/"gets()" (code) ne
     # doivent jamais se confondre avec le mot "get".
-    words = re.sub(r"[\s'\-]+", " ", ascii_name).split()
+    words = re.sub(r"[\s'\-]+", " ", folded).split()
     return " ".join(w[:-1] if len(w) > 3 and w[-1] in "sx" and w[-2].isalpha() else w for w in words)
+
+
+_VARIANT_INDEX = {"built_at": None, "by_key": {}}
+_AMBIGU = object()
+
+
+def _rebuild_variant_index():
+    by_key = {}
+    for tag_id, name in Tag.objects.values_list("id", "name"):
+        key = tag_key(name)
+        by_key[key] = _AMBIGU if key in by_key else tag_id
+    _VARIANT_INDEX["by_key"] = by_key
+    _VARIANT_INDEX["built_at"] = time.monotonic()
+
+
+def find_tag_variant(name, ttl_seconds=60):
+    """
+    Tag existant équivalent à `name` aux accents, casse, tirets et pluriel simple près (clé
+    `tag_key`), ou None. Utilisé à l'ingestion pour ne plus recréer "elimination" quand
+    "élimination" existe. Ambigu (plusieurs Tag pour la même clé, ex. un conflit de
+    savoir_officiel laissé volontairement) : None, on ne devine pas. L'index est mis en
+    cache `ttl_seconds` puis reconstruit ; une entrée dont le Tag a disparu depuis
+    (fusion) le fait reconstruire aussitôt.
+    """
+    built_at = _VARIANT_INDEX["built_at"]
+    if built_at is None or time.monotonic() - built_at > ttl_seconds:
+        _rebuild_variant_index()
+    key = tag_key(name)
+    for attempt in range(2):
+        tag_id = _VARIANT_INDEX["by_key"].get(key)
+        if tag_id is None or tag_id is _AMBIGU:
+            return None
+        tag = Tag.objects.filter(pk=tag_id).first()
+        if tag is not None:
+            return tag
+        _rebuild_variant_index()
+    return None
 
 
 def _scope_counts(since):

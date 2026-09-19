@@ -10,7 +10,7 @@ from django.utils import timezone
 
 from .ingestion import ingest_exercise
 from .models import Tag
-from .tunnel import ALERTE, BLOQUANT, gate_structure, gate_tags, parse_since, tag_key
+from .tunnel import ALERTE, BLOQUANT, _VARIANT_INDEX, find_tag_variant, gate_structure, gate_tags, parse_since, tag_key
 
 
 def _payload(themes, numero="1"):
@@ -69,7 +69,8 @@ class TunnelGatesTests(TestCase):
 
     def test_accent_variant_of_an_existing_tag_is_flagged(self):
         Tag.objects.create(name="Héritage")
-        self._ingest(["heritage"])
+        question = self._ingest(["Dérivation"]).questions.get()
+        question.themes.add(Tag.objects.create(name="heritage"))
         findings = gate_tags(timezone.now() - timezone.timedelta(hours=1))
         self.assertTrue(any(f.severity == ALERTE and "quasi-doublon" in f.message for f in findings))
 
@@ -126,3 +127,25 @@ class AppliquerThemesQuestionsTests(TestCase):
         question = self._question()
         self._apply({str(question.pk): ["thème"]}, dry_run=True)
         self.assertFalse(question.themes.exists())
+
+
+class TagKeyNonLatinTests(SimpleTestCase):
+    def test_phonetic_symbols_are_not_erased(self):
+        self.assertNotEqual(tag_key("diphtongue /aɪ/"), tag_key("diphtongue /aʊ/"))
+        self.assertEqual(tag_key("Énergie cinétique"), tag_key("energie cinetique"))
+
+
+class IngestionReusesTagVariantTests(TestCase):
+    def setUp(self):
+        _VARIANT_INDEX["built_at"] = None
+
+    def test_ingestion_reuses_an_accent_or_plural_variant_instead_of_creating_a_tag(self):
+        Tag.objects.create(name="élimination de paramètre")
+        ingest_exercise(_payload(["Elimination de parametres"]), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(Tag.objects.filter(name__icontains="limination").count(), 1)
+
+    def test_ambiguous_variants_are_never_guessed(self):
+        Tag.objects.create(name="limite")
+        Tag.objects.create(name="Limites")
+        _VARIANT_INDEX["built_at"] = None
+        self.assertIsNone(find_tag_variant("limites"))

@@ -146,6 +146,12 @@ def _resolve_theme(theme_name, allow_create=False):
         return candidats[0]
     if len(candidats) > 1:
         raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
+    # Variante aux accents/pluriel près d'un Tag existant : réutilisée (voir catalog.tunnel).
+    from catalog.tunnel import find_tag_variant
+
+    variante = find_tag_variant(name)
+    if variante is not None:
+        return variante
     if allow_create:
         tag, _ = Tag.objects.get_or_create(name=name)
         return tag
