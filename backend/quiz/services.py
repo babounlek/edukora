@@ -97,12 +97,13 @@ TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {"technologie", "physique", "chimie", "méca
 # classement par fréquence.
 PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 
-# Gros corpus (BAC C/D Maths : 41-44 épreuves) : le plancher fixe de 2 laisserait
-# ~390 thèmes, une liste qu'aucun élève ne parcourt jusqu'au bout. Au-delà de ce
-# nombre d'épreuves, le plancher devient proportionnel (10 %, soit 5 pour 44
-# épreuves) ; en dessous, le plancher fixe est conservé tel quel.
-PARCOURS_FREQUENCE_GROS_CORPUS = 30
-PARCOURS_FREQUENCE_PLANCHER_PCT = 10
+# Le plancher fixe de 2 laisse 250 à 380 thèmes sur les gros corpus de Maths (BAC C :
+# 382, Probatoire C : 295), une liste qu'aucun élève ne parcourt jusqu'au bout. On
+# relève donc le plancher, d'une occurrence à la fois, jusqu'à ramener la liste à
+# ce plafond : la règle ne touche que les listes trop longues (BAC C : plancher 5,
+# 101 thèmes ; Probatoire C : plancher 5, 99 thèmes) et laisse intacts les corpus
+# déjà courts (BAC A, TI : plancher 2).
+PARCOURS_FREQUENCE_THEMES_MAX = 130
 
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
@@ -564,14 +565,13 @@ def construire_parcours_par_frequence(user, cursus, subject):
         .values_list("cours__tags__id", flat=True),
     )
 
-    if mince:
-        plancher = 1
-    elif nb_sessions >= PARCOURS_FREQUENCE_GROS_CORPUS:
-        plancher = max(
-            PARCOURS_FREQUENCE_OCCURRENCES_MIN, -(-nb_sessions * PARCOURS_FREQUENCE_PLANCHER_PCT // 100),
-        )
-    else:
-        plancher = PARCOURS_FREQUENCE_OCCURRENCES_MIN
+    plancher = 1 if mince else PARCOURS_FREQUENCE_OCCURRENCES_MIN
+    if not mince:
+        while (
+            plancher < nb_sessions
+            and sum(1 for g in groupes.values() if g["nb_epreuves"] >= plancher) > PARCOURS_FREQUENCE_THEMES_MAX
+        ):
+            plancher += 1
 
     resultat = []
     for groupe in groupes.values():
