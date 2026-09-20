@@ -1,8 +1,9 @@
 import random
+import unicodedata
 from collections import Counter, defaultdict
 from datetime import timedelta
 
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.utils import timezone
 
 from access.models import LectureProgress
@@ -69,6 +70,19 @@ TAGS_ALIAS_PARCOURS_FREQUENCE = {
     "équation produit": "équation produit nul",
     "règle du produit nul": "équation produit nul",
     "caryotype": "Caryotype",
+    # Maths Terminale (BAC C/D) : mêmes notions écrites de deux façons (jamais
+    # parent-enfant - "dérivée d'un produit" reste distinct de "dérivée").
+    "dérivation": "dérivée",
+    "représentation graphique": "tracé de courbe",
+    "monotonie": "sens de variation",
+    "variations": "sens de variation",
+    "calcul d'aire": "aires",
+    "tangente à une courbe": "Tangente",
+    "intégrale": "calcul intégral",
+    "noyau d'un endomorphisme": "noyau",
+    "vecteurs colinéaires": "colinéarité",
+    "convergence de suite": "convergence",
+    "distance entre deux points": "distance",
 }
 
 # Tags-poubelle à exclure du classement (jamais à fusionner : un nom de discipline
@@ -82,6 +96,13 @@ TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {"technologie", "physique", "chimie", "méca
 # plancher, la liste se noierait dans du bruit et perdrait la promesse même du
 # classement par fréquence.
 PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
+
+# Gros corpus (BAC C/D Maths : 41-44 épreuves) : le plancher fixe de 2 laisserait
+# ~390 thèmes, une liste qu'aucun élève ne parcourt jusqu'au bout. Au-delà de ce
+# nombre d'épreuves, le plancher devient proportionnel (10 %, soit 5 pour 44
+# épreuves) ; en dessous, le plancher fixe est conservé tel quel.
+PARCOURS_FREQUENCE_GROS_CORPUS = 30
+PARCOURS_FREQUENCE_PLANCHER_PCT = 10
 
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
@@ -396,6 +417,12 @@ def maitrise_par_savoir(user, cursus=None):
     return {savoir_id: round(100 * s["reussies"] / s["total"]) for savoir_id, s in stats.items()}
 
 
+def _normaliser_pour_recherche(texte):
+    """Minuscules sans accents, pour comparer un nom de thème à un titre de cours."""
+    decompose = unicodedata.normalize("NFD", texte.lower())
+    return "".join(ch for ch in decompose if unicodedata.category(ch) != "Mn")
+
+
 def construire_parcours_par_frequence(user, cursus, subject):
     """
     Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
@@ -503,6 +530,7 @@ def construire_parcours_par_frequence(user, cursus, subject):
     for cours in (
         Cours.objects.visibles()
         .filter(subject=subject, tags__id__in=tous_tag_ids, rappels_source__exercise__lesson__cursus=cursus)
+        .annotate(nb_rappels=Count("rappels_source", distinct=True))
         .prefetch_related("tags")
         .distinct()
     ):
@@ -536,9 +564,18 @@ def construire_parcours_par_frequence(user, cursus, subject):
         .values_list("cours__tags__id", flat=True),
     )
 
+    if mince:
+        plancher = 1
+    elif nb_sessions >= PARCOURS_FREQUENCE_GROS_CORPUS:
+        plancher = max(
+            PARCOURS_FREQUENCE_OCCURRENCES_MIN, -(-nb_sessions * PARCOURS_FREQUENCE_PLANCHER_PCT // 100),
+        )
+    else:
+        plancher = PARCOURS_FREQUENCE_OCCURRENCES_MIN
+
     resultat = []
     for groupe in groupes.values():
-        if groupe["nb_epreuves"] < (1 if mince else PARCOURS_FREQUENCE_OCCURRENCES_MIN):
+        if groupe["nb_epreuves"] < plancher:
             continue
         tag_ids = groupe["tag_ids"]
 
@@ -550,6 +587,17 @@ def construire_parcours_par_frequence(user, cursus, subject):
                 if c.id not in vus:
                     vus.add(c.id)
                     candidats.append(c)
+        # Du plus pertinent au moins pertinent (jusqu'ici : ordre des id, donc "ellipse"
+        # proposait un cours de probabilités) : le thème apparaît dans le titre, puis
+        # le cours sert le plus d'exercices de ce cursus, puis il est le plus ciblé
+        # (peu de tags), puis id pour la stabilité.
+        nom_normalise = _normaliser_pour_recherche(groupe["nom"])
+        candidats.sort(key=lambda c: (
+            nom_normalise not in _normaliser_pour_recherche(f"{c.titre} {c.sous_theme or ''}"),
+            -c.nb_rappels,
+            len(c.tags.all()),
+            c.id,
+        ))
         cours_finaux, sous_themes_vus = [], set()
         for c in candidats:
             cle = c.sous_theme or c.slug
