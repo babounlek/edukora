@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-loi-de-pouillet-1ere-ce",
+  "meta": {
+    "titre": "La loi de Pouillet dans un circuit série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques et dipôles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Pouillet",
+      "circuit série",
+      "force électromotrice",
+      "force contre-électromotrice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-officiel-2024-cameroun",
+    "epreuve_titre": "Épreuve de physique théorique au probatoire C et E 2024",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probc-e-phy2024-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Plutôt que de résoudre à chaque fois un système d'équations pour trouver l'intensité dans un circuit série, il existe une formule directe qui condense tout le calcul en une seule ligne : la loi de Pouillet. Elle est particulièrement utile dès qu'un circuit série comporte plusieurs résistances et un seul générateur, ce qui est le cas le plus fréquent au Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de résistance équivalente d'un circuit série",
+        "Force électromotrice (f.é.m.) et force contre-électromotrice (f.c.é.m.)",
+        "Loi d'additivité des tensions dans un circuit série"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Énoncé de la loi de Pouillet",
+      "contenu_markdown": "Dans un circuit électrique série ne comportant qu'un seul générateur, l'intensité du courant continu qui le parcourt est égale au quotient de la somme algébrique des forces électromotrices et des forces contre-électromotrices présentes dans le circuit, par la somme de toutes les résistances (interne du générateur et externes des récepteurs) placées en série.",
+      "formule_principale": "I = \\dfrac{\\sum E - \\sum E'}{\\sum R}",
+      "variantes": [
+        {
+          "nom": "Circuit sans récepteur actif",
+          "quand_utiliser": "Quand tous les récepteurs sont de simples conducteurs ohmiques (pas de moteur, pas d'électrolyseur)",
+          "contenu_markdown": "La somme des f.c.é.m. est nulle et la loi se réduit à $I = \\dfrac{E}{R+r}$, où R est la somme des résistances externes et r la résistance interne du générateur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit série comprend un générateur de f.é.m. $E = 20\\ \\text{V}$ et de résistance interne $r = 1\\ \\Omega$, deux conducteurs ohmiques $R_1 = 4\\ \\Omega$ et $R_2 = 5\\ \\Omega$, et un moteur de f.c.é.m. $E' = 3\\ \\text{V}$ et de résistance interne $r' = 2\\ \\Omega$. Calculer l'intensité du courant dans le circuit.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la somme des f.é.m. et des f.c.é.m.",
+          "justification": "Le générateur fournit une f.é.m. E, le moteur oppose une f.c.é.m. E'",
+          "resultat_markdown": "$\\sum E = 20\\ \\text{V}$, $\\sum E' = 3\\ \\text{V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme de toutes les résistances du circuit série",
+          "justification": "En série, toutes les résistances (internes et externes) s'additionnent",
+          "resultat_markdown": "$\\sum R = r + R_1 + R_2 + r' = 1+4+5+2 = 12\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Pouillet",
+          "justification": "$I = \\dfrac{\\sum E - \\sum E'}{\\sum R}$",
+          "resultat_markdown": "$I = \\dfrac{20-3}{12} = \\dfrac{17}{12} \\approx 1,42\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité du courant dans ce circuit série est $I \\approx 1,42\\ \\text{A}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'inclure la résistance interne r du générateur dans la somme des résistances",
+          "pourquoi_faux": "La résistance interne fait partie intégrante du circuit série au même titre que les résistances externes : l'omettre surestime l'intensité calculée.",
+          "correction_markdown": "Toujours faire la liste complète des résistances du circuit (internes et externes) avant d'appliquer la formule, plutôt que de ne recenser que les résistances visibles sur le schéma."
+        },
+        {
+          "erreur_markdown": "Additionner une f.c.é.m. au lieu de la soustraire dans la loi de Pouillet",
+          "pourquoi_faux": "La f.c.é.m. s'oppose au passage du courant imposé par le générateur ; elle diminue donc l'intensité disponible, d'où le signe moins devant $\\sum E'$.",
+          "correction_markdown": "Retiens que la f.c.é.m. « freine » le courant : elle se retranche toujours de la somme des f.é.m. au numérateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 4,5\\ \\text{V}$ et de résistance interne $r = 0,5\\ \\Omega$ alimente en série un conducteur ohmique $R = 4\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "Il n'y a pas de f.c.é.m. dans ce circuit : $I = \\dfrac{E}{R+r} = \\dfrac{4,5}{4+0,5} = \\dfrac{4,5}{4,5} = 1\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série comporte un générateur ($E = 12\\ \\text{V}$, $r = 1\\ \\Omega$) et trois conducteurs ohmiques identiques de résistance $R = 3\\ \\Omega$ chacun. Calculer l'intensité du courant.",
+          "solution_markdown": "Les trois résistances en série s'additionnent : $3R = 9\\ \\Omega$.\n\n$I = \\dfrac{E}{3R+r} = \\dfrac{12}{9+1} = \\dfrac{12}{10} = 1,2\\ \\text{A}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit série comprend deux générateurs identiques ($E = 6\\ \\text{V}$, $r = 0,5\\ \\Omega$ chacun) branchés en opposition (leurs f.é.m. se retranchent), un électrolyseur de f.c.é.m. $E' = 2\\ \\text{V}$ et de résistance interne $r' = 1\\ \\Omega$, et un conducteur ohmique $R = 2,5\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "Deux générateurs identiques branchés en opposition ont des f.é.m. qui se retranchent : $\\sum E = 6 - 6 = 0\\ \\text{V}$... mais si l'un est plus fort que l'autre dans le montage réel, on utilise ici l'énoncé général : $\\sum E$ correspond à la somme algébrique effective. Ici, les deux générateurs étant strictement identiques et montés en opposition, aucune f.é.m. nette ne subsiste dans le sens direct : $\\sum E = 0\\ \\text{V}$.\n\n$\\sum E' = 2\\ \\text{V}$ (l'électrolyseur, seul récepteur actif).\n\n$\\sum R = r + r + r' + R = 0,5+0,5+1+2,5 = 4,5\\ \\Omega$.\n\n$I = \\dfrac{\\sum E - \\sum E'}{\\sum R} = \\dfrac{0-2}{4,5} = -0,44\\ \\text{A}$.\n\nLe signe négatif indique que le courant circule en réalité dans le sens imposé par la f.c.é.m. de l'électrolyseur (donc dans le sens opposé à celui choisi arbitrairement comme positif), avec une intensité de $0,44\\ \\text{A}$ en valeur absolue."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet donne directement l'intensité d'un circuit série à un seul générateur : I = (somme des f.é.m. moins somme des f.c.é.m.) divisée par la somme de toutes les résistances.",
+        "N'oublie jamais la résistance interne du générateur dans la somme des résistances : elle appartient au circuit série au même titre que les résistances externes.",
+        "Une f.c.é.m. (moteur, électrolyseur) se soustrait toujours au numérateur, jamais ne s'ajoute : elle s'oppose au passage du courant.",
+        "Un résultat négatif signale que le courant circule en sens inverse du sens positif choisi : ce n'est pas une erreur de calcul, mais une information physique à interpréter.",
+        "Au Probatoire, cette loi est le point de départ de presque tous les exercices de circuit série : sais l'énoncer avec précision et l'appliquer sans oublier un terme."
+      ]
+    }
+  ]
+}

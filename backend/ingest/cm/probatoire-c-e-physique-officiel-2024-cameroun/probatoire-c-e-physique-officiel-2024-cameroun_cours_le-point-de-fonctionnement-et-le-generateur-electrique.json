@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-point-de-fonctionnement-et-generateur-electrique-1ere-ce",
+  "meta": {
+    "titre": "Le point de fonctionnement et le générateur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques et dipôles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "point de fonctionnement",
+      "générateur électrique",
+      "dipôle actif",
+      "caractéristique tension-courant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-officiel-2024-cameroun",
+    "epreuve_titre": "Épreuve de physique théorique au probatoire C et E 2024",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probc-e-phy2024-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu branches une lampe sur une pile, la lampe ne s'allume ni avec l'intensité maximale que la pile pourrait fournir seule, ni avec n'importe quelle valeur : un point précis d'intensité et de tension s'impose, déterminé par la rencontre entre ce que la pile peut donner et ce que la lampe accepte de recevoir. Ce point, c'est le point de fonctionnement du circuit. Comprendre comment il se fixe permet de prévoir le comportement réel de n'importe quel circuit série, sans avoir besoin de le monter physiquement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de dipôle électrique (actif ou passif)",
+        "Lecture d'une caractéristique tension-courant U = f(I)",
+        "Loi d'Ohm pour un conducteur ohmique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Point de fonctionnement et générateur électrique",
+      "contenu_markdown": "Un **générateur électrique** est un dipôle actif : il convertit une forme d'énergie non électrique (chimique dans une pile, mécanique dans une dynamo, lumineuse dans une cellule photovoltaïque) en énergie électrique, qu'il fournit ensuite à un circuit extérieur. Il est caractérisé par sa force électromotrice $E$ et sa résistance interne $r$.\n\nLorsqu'un générateur est associé à un récepteur (dipôle passif) dans un circuit série, chacun des deux dipôles possède sa propre caractéristique $U = f(I)$. Le courant qui s'établit réellement dans le circuit correspond au couple $(I, U)$ commun aux deux caractéristiques : c'est le **point de fonctionnement** du circuit, obtenu graphiquement par l'intersection des deux courbes, ou par le calcul en résolvant simultanément les deux équations $U = f(I)$.",
+      "formule_principale": "U = E - rI",
+      "variantes": [
+        {
+          "nom": "Résolution graphique",
+          "quand_utiliser": "Quand les caractéristiques du générateur et du récepteur sont données sous forme de courbes",
+          "contenu_markdown": "Le point de fonctionnement est l'intersection visuelle des deux courbes tracées sur le même repère (I, U)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E = 12\\ \\text{V}$ et de résistance interne $r = 1\\ \\Omega$ est branché aux bornes d'un récepteur ohmique de résistance $R = 5\\ \\Omega$. Déterminer le point de fonctionnement du circuit.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la caractéristique du générateur",
+          "justification": "Un générateur de f.é.m. E et de résistance interne r a pour caractéristique U = E - rI",
+          "resultat_markdown": "$U = 12 - 1\\times I$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la caractéristique du récepteur ohmique",
+          "justification": "Un conducteur ohmique de résistance R suit la loi d'Ohm U = RI",
+          "resultat_markdown": "$U = 5\\times I$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre le système pour trouver I",
+          "justification": "Le point de fonctionnement vérifie les deux équations simultanément",
+          "resultat_markdown": "$5I = 12 - I \\Rightarrow 6I = 12 \\Rightarrow I = 2\\ \\text{A}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer U correspondant",
+          "justification": "On reporte I dans l'une des deux équations",
+          "resultat_markdown": "$U = 5\\times2 = 10\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Le point de fonctionnement du circuit est $(I = 2\\ \\text{A}\\ ;\\ U = 10\\ \\text{V})$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la f.é.m. E du générateur avec la tension U à ses bornes",
+          "pourquoi_faux": "E est une caractéristique fixe du générateur, alors que U dépend du courant débité : U = E - rI n'est égal à E que si r ou I est nul.",
+          "correction_markdown": "Toujours écrire la relation complète U = E - rI et ne l'assimiler à E que si le générateur ne débite aucun courant (circuit ouvert)."
+        },
+        {
+          "erreur_markdown": "Définir le générateur uniquement par « ce qui fait circuler le courant », sans mentionner la conversion d'énergie",
+          "pourquoi_faux": "Cette formulation ne dit rien de la nature physique du dipôle ; un fil conducteur laisse aussi circuler le courant sans être un générateur.",
+          "correction_markdown": "Toujours définir un générateur par la conversion d'énergie qu'il réalise (chimique, mécanique... vers électrique), pas seulement par son effet sur le circuit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 6\\ \\text{V}$ et de résistance interne $r = 0,5\\ \\Omega$ alimente un conducteur ohmique de résistance $R = 5,5\\ \\Omega$. Déterminer le point de fonctionnement du circuit.",
+          "solution_markdown": "Caractéristique du générateur : $U = 6 - 0,5I$. Caractéristique du récepteur : $U = 5,5I$.\n\nEn égalant : $5,5I = 6 - 0,5I \\Rightarrow 6I = 6 \\Rightarrow I = 1\\ \\text{A}$.\n\n$U = 5,5\\times1 = 5,5\\ \\text{V}$.\n\nLe point de fonctionnement est $(I = 1\\ \\text{A}\\ ;\\ U = 5,5\\ \\text{V})$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 9\\ \\text{V}$ et de résistance interne $r = 2\\ \\Omega$ alimente en série deux conducteurs ohmiques $R_1 = 3\\ \\Omega$ et $R_2 = 4\\ \\Omega$. Déterminer l'intensité du courant dans le circuit et la tension aux bornes de $R_2$.",
+          "solution_markdown": "En série, les résistances s'ajoutent : $R = R_1 + R_2 = 3+4 = 7\\ \\Omega$.\n\nPar la loi de Pouillet : $I = \\dfrac{E}{R+r} = \\dfrac{9}{7+2} = \\dfrac{9}{9} = 1\\ \\text{A}$.\n\nTension aux bornes de $R_2$ : $U_2 = R_2\\times I = 4\\times1 = 4\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 24\\ \\text{V}$ et de résistance interne $r = 1\\ \\Omega$ alimente un moteur qui, lorsqu'il tourne, présente une f.c.é.m. $E' = 15\\ \\text{V}$ et une résistance interne $r' = 2\\ \\Omega$. Déterminer le point de fonctionnement du circuit (intensité et tension aux bornes du moteur).",
+          "solution_markdown": "Le moteur, en fonctionnement, est un récepteur actif : sa caractéristique s'écrit $U = E' + r'I$ (tension nécessaire pour vaincre la f.c.é.m. et sa résistance interne).\n\nCaractéristique du générateur : $U = E - rI = 24 - I$.\n\nCaractéristique du moteur : $U = E' + r'I = 15 + 2I$.\n\nEn égalant : $24 - I = 15 + 2I \\Rightarrow 9 = 3I \\Rightarrow I = 3\\ \\text{A}$.\n\n$U = 15 + 2\\times3 = 21\\ \\text{V}$.\n\nLe point de fonctionnement est $(I = 3\\ \\text{A}\\ ;\\ U = 21\\ \\text{V})$, ce que l'on vérifie avec l'autre équation : $24 - 3 = 21\\ \\text{V}$. Cette méthode par loi de Pouillet généralisée (avec f.c.é.m.) reprend exactement la même démarche que pour un récepteur purement ohmique, en ajoutant simplement le terme de f.c.é.m."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un générateur électrique convertit une énergie non électrique en énergie électrique : c'est sa fonction, pas seulement son effet sur le courant.",
+        "Le point de fonctionnement d'un circuit série est l'unique couple (I, U) qui vérifie simultanément les caractéristiques du générateur et du récepteur.",
+        "Graphiquement, ce point est l'intersection des deux courbes U = f(I) ; algébriquement, c'est la solution du système formé par les deux équations.",
+        "Ne confonds jamais la f.é.m. E (grandeur fixe du générateur) avec la tension U à ses bornes, qui chute dès que le générateur débite un courant.",
+        "Au Probatoire, cette notion revient aussi bien en question de cours (définir, énoncer) qu'en exercice de calcul d'un circuit série avec un ou plusieurs récepteurs."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "epreuve_source": "bac-ti-programmation-2022-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 1,
+  "introduction_markdown": "Partie I : Programmation web - I/ Programmation HTML et JavaScript (3 points)",
+  "points": "3",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-programmation-2022-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "schema",
+      "legende": "Interface de la page de recherche d'article en magasin : champs Mot-cle, Dans la categorie, Trier par, En ordre, bouton OK",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\nUne entreprise de la place souhaite mettre sur pied une application web dynamique de gestion de son magasin. Souhaitant faire une programmation modulaire, elle vous confie le module sur la recherche des informations sur un article. L'interface de cette page se presente comme l'indique l'extrait de la figure ci-dessous.\n\n![fig-1](bac-ti-programmation-2022-officiel-cameroun_exercice_1_fig_1.png)\n\nAfin de vous faciliter le travail, le code PHP ci-dessous vous est propose :\n\n```php\n 1  <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n 2  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n 3  <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\">\n 4  <head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n 5  <title>Rechercher un article dans le magasin</title>\n 6  </head>\n 7  <body>\n 8  <form action=\"<?php echo $_SERVER['PHP_SELF']?>\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n 9  <fieldset><legend><b>Rechercher un article en magasin</b></legend>\n10  Mot-cle: </td><td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/>\n11  Dans la categorie : <select name=\"categorie\">\n12  <option value=\"tous\">Tous</option>\n13  <option value=\"informatique\">Informatique</option>\n14  <option value=\"divers\">Divers</option>\n15  </select>\n16  Trier par : <select name=\"tri\">\n17  <option value=\"prix\">Prix</option>\n18  <option value=\"categorie\">Categorie</option>\n19  <option value=\"id_article\">Code</option>\n20  </select>\n21  En ordre: Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n22  Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n23  Envoyer</td><td><input type=\"submit\" name=\"\" value=\"OK\"/>\n24  </fieldset>\n25  </form>\n26  <?php\n27  if(!empty($_POST['motcle'])) {\n28  $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n29  $motcle=($_POST['motcle']);\n30  $categorie=($_POST['categorie']);\n31  $ordre=($_POST['ordre']);\n32  $tri=($_POST['tri']);\n33  //Requete SQL\n34  $reqcategorie=($_POST['categorie']==\"tous\")?\"\":\"AND categorie='$categorie'\";\n35  $requete=\"SELECT id_article AS 'Code article',designation AS 'Description',prix,\n36  categorie AS 'Categorie' FROM article WHERE lower(designation)\n37  LIKE '%$motcle%'\".$reqcategorie.\"ORDER BY $tri $ordre\";\n38  $result=$idcom->query($requete);\n39  if(!$result) {\n40  echo \"Lecture impossible\";\n41  }\n42  else{\n43  $nbcol=$result->field_count;\n44  $nbart=$result->num_rows;\n45  $titres=$result->fetch_fields();\n46  echo \"<h3> Il y a $nbart articles correspondant au mot-cle : $motcle</h3>\";\n47  //Affichage des titres du tableau\n48  echo \"<table border=\\\"1\\\"> <tr>\";\n49  foreach($titres as $nomcol=>$val) {\n50  echo \"<th>\", $titres[$nomcol]->name ,\"</th>\";\n51  }\n52  echo \"</tr>\";\n53  //Affichage des valeurs du tableau\n54  for($i=0;$i<$nbart;$i++) {\n55  $ligne=$result->fetch_row();\n56  echo \"<tr>\";\n57  for($j=0;$j<$nbcol;$j++) {\n58  echo \"<td>\",$ligne[$j],\"</td>\";\n59  }\n60  echo \"</tr>\";\n61  }\n62  echo \"</table>\";\n63  $result->close();\n64  $idcom->close();\n65  }\n66  }\n67  ?>\n68  </body>\n69  </html>\n```\n\nEn vous servant du code ci-dessus et de vos connaissances en programmation web, repondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Definir l'expression : Serveur web. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un terme informatique, on donne d'abord sa nature (logiciel, matériel, langage), puis son rôle, puis son fonctionnement en une phrase. Un serveur web est un logiciel qui reçoit les requêtes HTTP envoyées par les navigateurs (les clients), les traite, éventuellement en exécutant un script côté serveur, puis renvoie une réponse, le plus souvent une page HTML. Attention : le mot désigne aussi, par extension, la machine qui héberge ce logiciel, ce qu'il est utile de préciser.\n\nUn **serveur web** est un logiciel installe sur une machine connectee a un reseau (Internet ou intranet), dont le role est d'ecouter les requetes HTTP envoyees par les navigateurs (les clients), de les traiter -- ce qui peut inclure l'execution d'un script cote serveur comme du PHP -- puis de renvoyer une reponse (le plus souvent une page HTML) au client qui l'a demandee. Par extension, on appelle aussi \"serveur web\" la machine physique qui heberge ce logiciel. Exemples : Apache, Nginx, IIS.",
+      "themes": [
+        "serveur web",
+        "programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex1-q1",
+          "competence": "Definir la notion de serveur web",
+          "contenu_markdown": "Pour définir un terme informatique, on donne d'abord sa nature (logiciel, matériel, langage), puis son rôle, puis son fonctionnement en une phrase. Un serveur web est un logiciel qui reçoit les requêtes HTTP envoyées par les navigateurs (les clients), les traite, éventuellement en exécutant un script côté serveur, puis renvoie une réponse, le plus souvent une page HTML. Attention : le mot désigne aussi, par extension, la machine qui héberge ce logiciel, ce qu'il est utile de préciser.",
+          "cours_genere": true,
+          "cours_id": "cours-serveur-web-definition-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "enonce_markdown": "Ecrire le code HTML qui permet d'inserer le contenu du formulaire (ligne 10 a 23) dans un tableau de 5 lignes et 2 colonnes. (1,5 pt)",
+      "corrige_markdown": "Les lignes 10 a 23 du formulaire regroupent 5 blocs logiques : le champ Mot-cle, le select Categorie, le select Trier par, les boutons radio En ordre, et le bouton Envoyer. On les place donc dans un tableau de 5 lignes et 2 colonnes : la 1ere colonne porte le libelle, la 2eme colonne porte le champ de saisie correspondant.\n\n```html\n<table border=\"1\">\n  <tr>\n    <td>Mot-cle:</td>\n    <td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/></td>\n  </tr>\n  <tr>\n    <td>Dans la categorie :</td>\n    <td>\n      <select name=\"categorie\">\n        <option value=\"tous\">Tous</option>\n        <option value=\"informatique\">Informatique</option>\n        <option value=\"divers\">Divers</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>Trier par :</td>\n    <td>\n      <select name=\"tri\">\n        <option value=\"prix\">Prix</option>\n        <option value=\"categorie\">Categorie</option>\n        <option value=\"id_article\">Code</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>En ordre:</td>\n    <td>\n      Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n      Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n    </td>\n  </tr>\n  <tr>\n    <td>Envoyer</td>\n    <td><input type=\"submit\" name=\"\" value=\"OK\"/></td>\n  </tr>\n</table>\n```\n\n### Rappel de méthode\nPour mettre en forme un formulaire HTML, on l'insère dans une balise `<table>` : chaque ligne est un `<tr>` et chaque cellule un `<td>`. On place généralement le libellé dans la première colonne et le champ de saisie (`<input>`, `<select>`) dans la seconde. Le tableau doit se trouver à l'intérieur de la balise `<form>`, et le nombre de `<tr>` et de `<td>` doit correspondre exactement à la structure demandée. Attention : ne pas oublier de fermer chaque balise.\n\nChaque `<tr>` correspond a une ligne du tableau et chaque ligne contient exactement deux `<td>` : le libelle, puis le champ de formulaire associe -- on retrouve bien les 5 lignes x 2 colonnes demandees, sans modifier le nom (`name=\"...\"`) d'aucun champ, puisque c'est par ce nom que le script PHP recupere les valeurs saisies via `$_POST`.",
+      "themes": [
+        "HTML",
+        "formulaire",
+        "tableau HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex1-q2",
+          "competence": "Mettre en forme les champs d'un formulaire HTML a l'aide d'un tableau (balise table)",
+          "contenu_markdown": "Pour mettre en forme un formulaire HTML, on l'insère dans une balise `<table>` : chaque ligne est un `<tr>` et chaque cellule un `<td>`. On place généralement le libellé dans la première colonne et le champ de saisie (`<input>`, `<select>`) dans la seconde. Le tableau doit se trouver à l'intérieur de la balise `<form>`, et le nombre de `<tr>` et de `<td>` doit correspondre exactement à la structure demandée. Attention : ne pas oublier de fermer chaque balise.",
+          "cours_genere": true,
+          "cours_id": "cours-mise-en-forme-formulaire-html-tableau-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "enonce_markdown": "Ecrire le code JavaScript qui permet, apres un clic sur le bouton OK, de tester si le champ de saisie Mot-cle est bien renseigne par une chaine de caractere et d'afficher le message \"Saisissez un mot-cle valide\" dans le cas ou aucune valeur n'est entree ou qu'elle soit erronee. (1 pt)",
+      "corrige_markdown": "Il faut une fonction declenchee au clic sur le bouton OK (attribut `onclick`), qui lit la valeur du champ `motcle` via le DOM, puis verifie deux choses : que le champ n'est pas vide, et que la valeur saisie n'est pas purement numerique -- un mot-cle de recherche doit etre du texte, pas un nombre. On utilise `isNaN()` (\"is Not a Number\") pour ce second test : `isNaN(valeur)` renvoie `true` si `valeur` n'est PAS un nombre valide, et `false` si c'en est un. Retourner `false` depuis le gestionnaire empeche la soumission du formulaire :\n\n```javascript\nfunction verifierMotCle() {\n    var motcle = document.forms[0].motcle.value;\n    if (motcle == \"\" || !isNaN(motcle)) {\n        alert(\"Saisissez un mot-cle valide\");\n        return false;\n    }\n    return true;\n}\n```\n\n```html\n<input type=\"submit\" name=\"\" value=\"OK\" onclick=\"return verifierMotCle();\"/>\n```\n\n### Rappel de méthode\nLa validation côté client s'écrit dans une fonction JavaScript appelée par l'attribut `onclick` du bouton. Elle lit la valeur du champ avec `document.getElementById(...).value` ou via le nom du formulaire, teste si elle est vide, puis peut vérifier son type avec `isNaN()`, qui renvoie `true` si la valeur n'est pas un nombre. Si le test échoue, on affiche un message avec `alert()` et on retourne `false` pour bloquer l'envoi. Attention : `isNaN(\"\")` renvoie `false`, donc le test de champ vide reste nécessaire.\n\n`motcle == \"\"` detecte un champ laisse vide ; `!isNaN(motcle)` detecte au contraire un champ rempli mais uniquement avec des chiffres (donc convertible en nombre), ce qui n'est pas un mot-cle valide. Dans les deux cas, le message d'erreur s'affiche et `return false` bloque l'envoi du formulaire ; sinon la fonction renvoie `true` et la soumission se poursuit normalement.",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire",
+        "isNaN"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex1-q3",
+          "competence": "Valider en JavaScript qu'un champ est rempli par du texte et non par un nombre",
+          "contenu_markdown": "La validation côté client s'écrit dans une fonction JavaScript appelée par l'attribut `onclick` du bouton. Elle lit la valeur du champ avec `document.getElementById(...).value` ou via le nom du formulaire, teste si elle est vide, puis peut vérifier son type avec `isNaN()`, qui renvoie `true` si la valeur n'est pas un nombre. Si le test échoue, on affiche un message avec `alert()` et on retourne `false` pour bloquer l'envoi. Attention : `isNaN(\"\")` renvoie `false`, donc le test de champ vide reste nécessaire.",
+          "cours_genere": true,
+          "cours_id": "cours-validation-formulaire-javascript-bacprog2022-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "serveur web",
+    "formulaire HTML",
+    "tableau HTML",
+    "JavaScript",
+    "validation de formulaire",
+    "isNaN"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

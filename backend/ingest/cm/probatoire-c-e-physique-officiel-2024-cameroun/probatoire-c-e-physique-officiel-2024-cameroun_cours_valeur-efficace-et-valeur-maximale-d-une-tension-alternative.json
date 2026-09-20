@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-valeur-efficace-et-valeur-maximale-1ere-ce",
+  "meta": {
+    "titre": "Valeur efficace et valeur maximale d'une tension alternative",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Courant alternatif et induction",
+    "duree_estimee_min": 22,
+    "tags": [
+      "alternateur",
+      "flux magnétique",
+      "valeur efficace",
+      "valeur maximale",
+      "tension alternative"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-officiel-2024-cameroun",
+    "epreuve_titre": "Épreuve de physique théorique au probatoire C et E 2024",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probc-e-phy2024-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un appareil électroménager marqué « 230 V » fonctionne sur le secteur alternatif, dont la tension oscille en réalité entre +325 V et -325 V. Ce n'est pourtant pas cette valeur extrême de 325 V qui figure sur la plaque signalétique, mais 230 V : c'est la valeur efficace, seule pertinente pour prévoir si un appareil fonctionnera normalement sur une source alternative."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Flux magnétique à travers une bobine et loi de Faraday (f.é.m. induite)",
+        "Fonction sinusoïdale du temps : amplitude, pulsation",
+        "Notion de puissance électrique moyenne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Valeur efficace d'une tension alternative sinusoïdale",
+      "contenu_markdown": "Pour un alternateur dont le flux à travers le rotor s'écrit $\\Phi = \\Phi_m\\cos(\\omega t)$, la f.é.m. induite est $e(t) = -\\dfrac{d\\Phi}{dt} = \\Phi_m\\,\\omega\\,\\sin(\\omega t)$, de valeur maximale $E_{max} = \\Phi_m\\,\\omega$, avec $\\Phi_m = N\\times B\\times S$. Pour juger si une telle source peut alimenter normalement un récepteur dont la tension nominale de fonctionnement est connue, il faut comparer cette tension nominale à la **valeur efficace** de la tension alternative, et non à sa valeur maximale : c'est la valeur efficace qui caractérise l'énergie électrique réellement transmise en moyenne au récepteur.",
+      "formule_principale": "U_{eff} = \\dfrac{U_{max}}{\\sqrt{2}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un alternateur a un rotor de $N = 1000$ spires, de surface $S = 130\\ \\text{cm}^2$, plongé dans un champ magnétique $B = 0,1\\ \\text{T}$, tournant à la vitesse angulaire $\\omega = 62,8\\ \\text{rad.s}^{-1}$. Un récepteur nécessite une tension de $80\\ \\text{V}$ pour fonctionner normalement. Cet alternateur peut-il l'alimenter correctement ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le flux maximal à travers le rotor",
+          "justification": "Phi_m = N x B x S, avec S converti en m^2",
+          "resultat_markdown": "$\\Phi_m = 1000\\times0,1\\times1,30\\times10^{-2} = 1,3\\ \\text{Wb}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la f.é.m. maximale",
+          "justification": "E_max = Phi_m x omega",
+          "resultat_markdown": "$E_{max} = 1,3\\times62,8 = 81,64\\ \\text{V}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la valeur efficace correspondante",
+          "justification": "E_eff = E_max / racine(2)",
+          "resultat_markdown": "$E_{eff} = \\dfrac{81,64}{\\sqrt{2}} \\approx 57,7\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer la valeur efficace à la tension nominale requise",
+          "justification": "C'est la valeur efficace, pas la valeur maximale, qui doit être comparée à la tension nominale",
+          "resultat_markdown": "$57,7\\ \\text{V} < 80\\ \\text{V}$ : la tension efficace est insuffisante"
+        }
+      ],
+      "conclusion_markdown": "Bien que la valeur maximale (81,6 V) soit proche des 80 V requis, la valeur efficace réellement disponible (57,7 V) est insuffisante : cet alternateur ne peut pas alimenter normalement ce récepteur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer directement la valeur maximale de la tension alternative à la tension nominale requise",
+          "pourquoi_faux": "La valeur maximale n'est atteinte qu'à des instants isolés ; l'énergie moyenne réellement transmise au récepteur est déterminée par la valeur efficace, systématiquement plus faible d'un facteur racine de 2.",
+          "correction_markdown": "Calcule toujours la valeur efficace (Umax divisé par racine de 2) avant de la comparer à une tension nominale de fonctionnement."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la surface S de cm² en m² avant de calculer le flux",
+          "pourquoi_faux": "Le flux magnétique s'exprime en webers, avec une surface en m² : garder des cm² donne un flux 10 000 fois trop grand.",
+          "correction_markdown": "Convertis systématiquement les surfaces en m² (1 cm² = 10^-4 m²) avant de calculer un flux magnétique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une tension alternative a une valeur maximale $U_{max} = 100\\ \\text{V}$. Calculer sa valeur efficace.",
+          "solution_markdown": "$U_{eff} = \\dfrac{100}{\\sqrt{2}} \\approx 70,7\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur a un rotor de $N = 500$ spires, de surface $S = 100\\ \\text{cm}^2$, dans un champ $B = 0,2\\ \\text{T}$, tournant à $\\omega = 100\\ \\text{rad.s}^{-1}$. Calculer la valeur efficace de la f.é.m. produite.",
+          "solution_markdown": "$\\Phi_m = N\\times B\\times S = 500\\times0,2\\times1,00\\times10^{-2} = 1,0\\ \\text{Wb}$.\n\n$E_{max} = \\Phi_m\\times\\omega = 1,0\\times100 = 100\\ \\text{V}$.\n\n$E_{eff} = \\dfrac{100}{\\sqrt{2}} \\approx 70,7\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un récepteur nécessite une tension efficace minimale de $48\\ \\text{V}$ pour fonctionner. Un alternateur produit un flux maximal $\\Phi_m = 0,8\\ \\text{Wb}$ à travers son rotor tournant à $\\omega = 120\\ \\text{rad.s}^{-1}$. Déterminer si cet alternateur convient, puis calculer la vitesse angulaire minimale qu'il faudrait pour que la tension efficace atteigne tout juste 48 V.",
+          "solution_markdown": "F.é.m. maximale : $E_{max} = \\Phi_m\\times\\omega = 0,8\\times120 = 96\\ \\text{V}$.\n\nF.é.m. efficace : $E_{eff} = \\dfrac{96}{\\sqrt{2}} \\approx 67,9\\ \\text{V}$.\n\nComme $67,9\\ \\text{V} > 48\\ \\text{V}$, cet alternateur convient largement pour ce récepteur.\n\nPour trouver la vitesse angulaire minimale $\\omega_{min}$ correspondant tout juste à $E_{eff} = 48\\ \\text{V}$ : $E_{max,min} = E_{eff}\\times\\sqrt{2} = 48\\times1,414 \\approx 67,9\\ \\text{V}$.\n\n$\\omega_{min} = \\dfrac{E_{max,min}}{\\Phi_m} = \\dfrac{67,9}{0,8} \\approx 84,9\\ \\text{rad.s}^{-1}$.\n\nEn dessous de cette vitesse angulaire, la tension efficace deviendrait insuffisante pour ce récepteur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La f.é.m. maximale d'un alternateur se calcule par Emax = Phi_m x omega, avec Phi_m = N x B x S (S en m²).",
+        "La valeur efficace d'une tension sinusoïdale vaut Umax divisé par racine de 2 : c'est toujours elle qu'il faut comparer à une tension nominale requise, jamais la valeur maximale.",
+        "Une valeur maximale proche de la tension requise ne garantit rien : la valeur efficace correspondante peut rester nettement insuffisante.",
+        "Convertis toujours les surfaces en m² avant de calculer un flux magnétique, sous peine d'une erreur de plusieurs ordres de grandeur.",
+        "Cette distinction valeur efficace / valeur maximale est un point clé du programme d'électricité en Première C-E, testé aussi bien en cours qu'en situation-problème."
+      ]
+    }
+  ]
+}

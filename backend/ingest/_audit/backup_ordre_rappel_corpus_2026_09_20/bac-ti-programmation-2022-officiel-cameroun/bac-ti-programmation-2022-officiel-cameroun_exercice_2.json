@@ -1,0 +1,287 @@
+{
+  "epreuve_source": "bac-ti-programmation-2022-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 2,
+  "introduction_markdown": "Partie I : Programmation web - II/ Programmation PHP (7 points)",
+  "points": "7",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-2",
+      "fichier": "bac-ti-programmation-2022-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": 1,
+      "type": "schema",
+      "legende": "Schema du fonctionnement d'une page web dynamique : navigateur, serveur web + PHP, serveur MySQL, et cycle requete/reponse en 6 etapes",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\nMeme contexte et meme code PHP que l'exercice 1 (recherche d'article en magasin) :\n\n```php\n 1  <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n 2  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n 3  <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\">\n 4  <head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n 5  <title>Rechercher un article dans le magasin</title>\n 6  </head>\n 7  <body>\n 8  <form action=\"<?php echo $_SERVER['PHP_SELF']?>\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n 9  <fieldset><legend><b>Rechercher un article en magasin</b></legend>\n10  Mot-cle: </td><td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/>\n11  Dans la categorie : <select name=\"categorie\">\n12  <option value=\"tous\">Tous</option>\n13  <option value=\"informatique\">Informatique</option>\n14  <option value=\"divers\">Divers</option>\n15  </select>\n16  Trier par : <select name=\"tri\">\n17  <option value=\"prix\">Prix</option>\n18  <option value=\"categorie\">Categorie</option>\n19  <option value=\"id_article\">Code</option>\n20  </select>\n21  En ordre: Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n22  Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n23  Envoyer</td><td><input type=\"submit\" name=\"\" value=\"OK\"/>\n24  </fieldset>\n25  </form>\n26  <?php\n27  if(!empty($_POST['motcle'])) {\n28  $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n29  $motcle=($_POST['motcle']);\n30  $categorie=($_POST['categorie']);\n31  $ordre=($_POST['ordre']);\n32  $tri=($_POST['tri']);\n33  //Requete SQL\n34  $reqcategorie=($_POST['categorie']==\"tous\")?\"\":\"AND categorie='$categorie'\";\n35  $requete=\"SELECT id_article AS 'Code article',designation AS 'Description',prix,\n36  categorie AS 'Categorie' FROM article WHERE lower(designation)\n37  LIKE '%$motcle%'\".$reqcategorie.\"ORDER BY $tri $ordre\";\n38  $result=$idcom->query($requete);\n39  if(!$result) {\n40  echo \"Lecture impossible\";\n41  }\n42  else{\n43  $nbcol=$result->field_count;\n44  $nbart=$result->num_rows;\n45  $titres=$result->fetch_fields();\n46  echo \"<h3> Il y a $nbart articles correspondant au mot-cle : $motcle</h3>\";\n47  //Affichage des titres du tableau\n48  echo \"<table border=\\\"1\\\"> <tr>\";\n49  foreach($titres as $nomcol=>$val) {\n50  echo \"<th>\", $titres[$nomcol]->name ,\"</th>\";\n51  }\n52  echo \"</tr>\";\n53  //Affichage des valeurs du tableau\n54  for($i=0;$i<$nbart;$i++) {\n55  $ligne=$result->fetch_row();\n56  echo \"<tr>\";\n57  for($j=0;$j<$nbcol;$j++) {\n58  echo \"<td>\",$ligne[$j],\"</td>\";\n59  }\n60  echo \"</tr>\";\n61  }\n62  echo \"</table>\";\n63  $result->close();\n64  $idcom->close();\n65  }\n66  }\n67  ?>\n68  </body>\n69  </html>\n```\n\nEn vous servant du code ci-dessus et de vos connaissances en programmation web, repondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Nommer deux exemples d'environnement integre de developpement web. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn environnement intégré de développement (EDI ou IDE) est un logiciel unique qui réunit un éditeur de code avec coloration syntaxique et autocomplétion, un explorateur de projets et souvent des outils de test ou de débogage. Pour citer des exemples, on retient des outils réels adaptés au développement web, comme Visual Studio Code, NetBeans ou PhpStorm. Attention : un simple navigateur ou un serveur local seul n'est pas un EDI.\n\nUn environnement integre de developpement (EDI/IDE) regroupe dans un meme outil un editeur de code, un explorateur de fichiers et souvent un serveur local, pour developper des sites web. Deux exemples : **Visual Studio Code** (avec des extensions PHP/HTML) et **Sublime Text**. On peut aussi citer NetBeans, Eclipse (PDT) ou PhpStorm.",
+      "themes": [
+        "EDI",
+        "outils de developpement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q1",
+          "competence": "Citer des environnements integres de developpement web",
+          "contenu_markdown": "Un environnement intégré de développement (EDI ou IDE) est un logiciel unique qui réunit un éditeur de code avec coloration syntaxique et autocomplétion, un explorateur de projets et souvent des outils de test ou de débogage. Pour citer des exemples, on retient des outils réels adaptés au développement web, comme Visual Studio Code, NetBeans ou PhpStorm. Attention : un simple navigateur ou un serveur local seul n'est pas un EDI.",
+          "cours_genere": true,
+          "cours_id": "cours-outils-developpement-site-web-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "enonce_markdown": "Decrire a l'aide d'un schema le fonctionnement d'une page web dynamique. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne page web dynamique est générée au moment de la requête, contrairement à une page statique. Le schéma suit toujours le même cycle : le navigateur envoie une requête HTTP au serveur web, qui transmet le script à l'interpréteur (PHP) ; celui-ci interroge au besoin le SGBD, reçoit les données, construit une page HTML, puis le serveur la renvoie au navigateur. Un bon schéma nomme chaque acteur et numérote les échanges dans l'ordre. Attention : le navigateur ne voit jamais le code PHP, seulement le HTML produit.\n\nUne page web dynamique, contrairement a une page statique, genere son contenu HTML au moment de la requete, en fonction des donnees saisies par l'utilisateur et/ou du contenu d'une base de donnees. Le cycle complet, applique au cas de la recherche d'article, se deroule en six etapes :\n\n![fig-2](bac-ti-programmation-2022-officiel-cameroun_exercice_2_fig_2.png)\n\n1. Le navigateur (client) envoie une requete HTTP (methode POST) contenant le mot-cle saisi.\n2. Le serveur web recoit la requete et transmet le script a l'interpreteur PHP, qui execute le code situe entre `<?php` et `?>` ; ce code construit une requete SQL a partir du mot-cle recu.\n3. Le serveur de base de donnees (MySQL) execute cette requete SQL et renvoie les lignes trouvees.\n4. Le script PHP parcourt ces lignes (boucles `for`/`while`) et construit dynamiquement le tableau HTML de resultats.\n5. Le serveur web renvoie la page HTML complete (formulaire + tableau de resultats) au navigateur.\n6. Le navigateur affiche cette page a l'utilisateur.\n\nC'est cette generation du HTML \"a la demande\", a partir de donnees variables, qui distingue la page dynamique d'une page statique dont le contenu HTML est fige a l'avance sur le serveur.",
+      "themes": [
+        "page web dynamique",
+        "architecture client-serveur",
+        "PHP",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q2",
+          "competence": "Decrire le fonctionnement d'une page web dynamique (client, serveur web+PHP, SGBD)",
+          "contenu_markdown": "Une page web dynamique est générée au moment de la requête, contrairement à une page statique. Le schéma suit toujours le même cycle : le navigateur envoie une requête HTTP au serveur web, qui transmet le script à l'interpréteur (PHP) ; celui-ci interroge au besoin le SGBD, reçoit les données, construit une page HTML, puis le serveur la renvoie au navigateur. Un bon schéma nomme chaque acteur et numérote les échanges dans l'ordre. Attention : le navigateur ne voit jamais le code PHP, seulement le HTML produit.",
+          "cours_genere": true,
+          "cours_id": "cours-fonctionnement-page-web-dynamique-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "enonce_markdown": "Determiner le format a utiliser pour enregistrer ce code. Justifier votre reponse. (0,5 pt)",
+      "corrige_markdown": "Ce code doit etre enregistre avec l'**extension `.php`** (par exemple `recherche.php`).\n\n**Justification** : le fichier melange du HTML et du code PHP delimite par les balises `<?php ... ?>` (lignes 26 a 67).\n\n### Rappel de méthode\nLe format (l'extension) d'un fichier indique au serveur web comment le traiter. Un fichier contenant du code PHP, même mélangé à du HTML, doit être enregistré avec l'extension `.php` pour que le serveur le confie à l'interpréteur PHP avant d'envoyer la réponse. Attention : enregistré en `.html`, le fichier serait renvoyé tel quel et le navigateur afficherait le code PHP au lieu de son résultat.\n\nSeule l'extension `.php` indique au serveur web qu'il doit transmettre le fichier a l'interpreteur PHP avant de renvoyer une reponse au client. Si le fichier etait enregistre en `.html`, le serveur le renverrait tel quel, sans executer le code PHP : le navigateur afficherait alors le texte brut des instructions PHP (ou rien d'exploitable) au lieu du resultat de la recherche.",
+      "themes": [
+        "extension de fichier",
+        "PHP",
+        "serveur web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q3",
+          "competence": "Justifier l'utilisation de l'extension .php pour un script contenant du code PHP",
+          "contenu_markdown": "Le format (l'extension) d'un fichier indique au serveur web comment le traiter. Un fichier contenant du code PHP, même mélangé à du HTML, doit être enregistré avec l'extension `.php` pour que le serveur le confie à l'interpréteur PHP avant d'envoyer la réponse. Attention : enregistré en `.html`, le fichier serait renvoyé tel quel et le navigateur afficherait le code PHP au lieu de son résultat.",
+          "cours_genere": true,
+          "cours_id": "cours-fonctionnement-page-web-dynamique-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.1",
+      "enonce_markdown": "Identifier dans ce code les numeros correspondant au debut et a la fin du code PHP. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn bloc PHP est délimité par la balise d'ouverture `<?php` et la balise de fermeture `?>`. Tout ce qui est situé entre les deux est exécuté par l'interpréteur sur le serveur, alors que le reste du fichier est du HTML envoyé tel quel au navigateur. Pour répondre, on repère donc les numéros de ligne de ces deux balises. Attention : un fichier peut contenir plusieurs blocs PHP successifs, et la balise de fermeture peut être omise en fin de fichier.\n\nLe code PHP commence a la **ligne 26** (`<?php`) et se termine a la **ligne 67** (`?>`). Tout ce qui se trouve entre ces deux lignes est execute par l'interpreteur PHP avant l'envoi de la page au navigateur ; le reste du fichier (lignes 1 a 25 et 68-69) est du HTML pur, envoye tel quel.",
+      "themes": [
+        "balises PHP",
+        "structure d'un script PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q4-1",
+          "competence": "Reperer les balises d'ouverture et de fermeture d'un bloc de code PHP",
+          "contenu_markdown": "Un bloc PHP est délimité par la balise d'ouverture `<?php` et la balise de fermeture `?>`. Tout ce qui est situé entre les deux est exécuté par l'interpréteur sur le serveur, alors que le reste du fichier est du HTML envoyé tel quel au navigateur. Pour répondre, on repère donc les numéros de ligne de ces deux balises. Attention : un fichier peut contenir plusieurs blocs PHP successifs, et la balise de fermeture peut être omise en fin de fichier.",
+          "cours_genere": true,
+          "cours_id": "cours-balises-ouverture-fermeture-php-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.2",
+      "enonce_markdown": "Identifier dans ce code une variable de type booleen. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne variable booléenne ne peut prendre que deux valeurs, `true` ou `false`. En PHP, elle provient d'un test de comparaison, d'une affectation explicite ou d'une fonction qui renvoie `false` en cas d'échec. Ainsi `query()` de mysqli renvoie `false` si la requête SQL échoue, ce qui justifie un test du type `if(!$variable)`. Attention : une variable qui contient un objet ou un nombre n'est pas booléenne, même si on peut la tester dans une condition.\n\nLa variable **`$result`** (ligne 38 : `$result = $idcom->query($requete);`) peut prendre une valeur booleenne : la methode `query()` de mysqli renvoie un objet resultat en cas de succes, mais renvoie la valeur booleenne `false` si la requete SQL echoue. C'est justement ce que teste la ligne 39 (`if(!$result)`), qui verifie si `$result` vaut `false` avant d'exploiter les donnees.",
+      "themes": [
+        "type booleen",
+        "PHP",
+        "mysqli"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q4-2",
+          "competence": "Identifier une variable de type booleen dans un script PHP",
+          "contenu_markdown": "Une variable booléenne ne peut prendre que deux valeurs, `true` ou `false`. En PHP, elle provient d'un test de comparaison, d'une affectation explicite ou d'une fonction qui renvoie `false` en cas d'échec. Ainsi `query()` de mysqli renvoie `false` si la requête SQL échoue, ce qui justifie un test du type `if(!$variable)`. Attention : une variable qui contient un objet ou un nombre n'est pas booléenne, même si on peut la tester dans une condition.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-une-variable-de-type-booleen-dans-un-script-php"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "enonce_markdown": "Donner le role de la variable : $_POST['motcle']. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\n`$_POST` est un tableau associatif superglobal de PHP qui contient les données envoyées par un formulaire dont la méthode est `method=\"post\"`. La clé correspond à l'attribut `name` du champ HTML, si bien que `$_POST['nom']` récupère, côté serveur, la valeur saisie dans le champ de ce nom. Attention : c'est l'attribut `name` qui sert de clé, pas `id`, et il faut nettoyer la valeur avant de l'insérer dans une requête SQL.\n\n`$_POST['motcle']` recupere, cote serveur, la valeur saisie par l'utilisateur dans le champ de formulaire nomme `motcle` (le champ de texte Mot-cle), lorsque le formulaire est envoye avec la methode `method=\"post\"`. C'est ce mot-cle qui sera ensuite utilise dans la clause `WHERE lower(designation) LIKE '%$motcle%'` de la requete SQL pour filtrer les articles dont la designation contient ce mot-cle.",
+      "themes": [
+        "$_POST",
+        "formulaire",
+        "PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q5",
+          "competence": "Donner le role de $_POST['nom_du_champ']",
+          "contenu_markdown": "`$_POST` est un tableau associatif superglobal de PHP qui contient les données envoyées par un formulaire dont la méthode est `method=\"post\"`. La clé correspond à l'attribut `name` du champ HTML, si bien que `$_POST['nom']` récupère, côté serveur, la valeur saisie dans le champ de ce nom. Attention : c'est l'attribut `name` qui sert de clé, pas `id`, et il faut nettoyer la valeur avant de l'insérer dans une requête SQL.",
+          "cours_genere": true,
+          "cours_id": "cours-role-donnees-post-formulaire-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "enonce_markdown": "Donner respectivement le role de la ligne 38 et la ligne 64. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nPour donner le rôle d'une ligne de code, on identifie l'objet, la méthode appelée et ce qu'elle produit. Avec mysqli, `$connexion->query($requete)` exécute une requête SQL sur la connexion et renvoie un objet résultat, ou `false` en cas d'échec ; `$connexion->close()` ferme la connexion à la base et libère les ressources. Attention : une requête SELECT réussie renvoie un objet résultat, mais les requêtes de modification renvoient simplement `true`.\n\n**Ligne 38** (`$result = $idcom->query($requete);`) : execute la requete SQL contenue dans `$requete` sur la connexion `$idcom`, et stocke le resultat (l'ensemble des lignes trouvees, ou `false` en cas d'echec) dans la variable `$result`.\n\n**Ligne 64** (`$idcom->close();`) : ferme la connexion a la base de donnees `$idcom`, liberant les ressources associees sur le serveur MySQL une fois que le script n'en a plus besoin.",
+      "themes": [
+        "mysqli",
+        "query",
+        "close"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q6",
+          "competence": "Donner le role de query() et de close() en mysqli",
+          "contenu_markdown": "Pour donner le rôle d'une ligne de code, on identifie l'objet, la méthode appelée et ce qu'elle produit. Avec mysqli, `$connexion->query($requete)` exécute une requête SQL sur la connexion et renvoie un objet résultat, ou `false` en cas d'échec ; `$connexion->close()` ferme la connexion à la base et libère les ressources. Attention : une requête SELECT réussie renvoie un objet résultat, mais les requêtes de modification renvoient simplement `true`.",
+          "cours_genere": true,
+          "cours_id": "cours-role-methode-query-mysqli-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "enonce_markdown": "Donner le role de field_count, num_rows et fetch_fields() dans ce code. (1,5 pt)",
+      "corrige_markdown": "Ces trois membres appartiennent a l'objet resultat `$result` renvoye par `$idcom->query()` :\n\n### Rappel de méthode\nL'objet résultat renvoyé par un SELECT en mysqli possède des propriétés et des méthodes de description. `field_count` donne le nombre de colonnes du résultat, `num_rows` le nombre de lignes obtenues, et `fetch_fields()` retourne un tableau d'objets décrivant chaque colonne (nom, type), utile pour générer les en-têtes d'un tableau HTML. Attention : `num_rows` compte des lignes, pas des colonnes, et `num_rows` vaut 0 quand la recherche ne trouve rien, ce qu'on teste pour afficher un message.\n\n**`$result->field_count`** (ligne 43) : nombre de colonnes (champs) presentes dans le resultat de la requete -- ici 4 (Code article, Description, prix, Categorie). Utilise ligne 57 pour bornes la boucle interne d'affichage des colonnes.\n- **`$result->num_rows`** (ligne 44) : nombre de lignes (d'articles) renvoyees par la requete. Utilise a la fois pour l'affichage du message (\"Il y a $nbart articles...\") et pour bornes la boucle externe d'affichage des lignes (ligne 54).\n- **`$result->fetch_fields()`** (ligne 45) : renvoie un tableau d'objets decrivant chaque colonne du resultat (dont le nom, accessible via `->name`) ; utilise ligne 49-51 pour afficher les en-tetes du tableau HTML.",
+      "themes": [
+        "mysqli",
+        "field_count",
+        "num_rows",
+        "fetch_fields"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q7",
+          "competence": "Donner le role de field_count, num_rows et fetch_fields() sur un resultat mysqli",
+          "contenu_markdown": "L'objet résultat renvoyé par un SELECT en mysqli possède des propriétés et des méthodes de description. `field_count` donne le nombre de colonnes du résultat, `num_rows` le nombre de lignes obtenues, et `fetch_fields()` retourne un tableau d'objets décrivant chaque colonne (nom, type), utile pour générer les en-têtes d'un tableau HTML. Attention : `num_rows` compte des lignes, pas des colonnes, et `num_rows` vaut 0 quand la recherche ne trouve rien, ce qu'on teste pour afficher un message.",
+          "cours_genere": true,
+          "cours_id": "cours-role-des-proprietes-et-methodes-dun-resultat-mysqli-num-rows-field-count-fetch-fields"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "enonce_markdown": "Ecrire la requete qui cree la base de donnees manipulee dans ce code. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nEn SQL, la base de données se crée avec `CREATE DATABASE nom_base;`, et le nom à utiliser se lit dans le code qui s'y connecte : en mysqli, c'est le quatrième argument du constructeur `new mysqli(hôte, utilisateur, mot_de_passe, base)`. On ne confond pas la création de la base avec celle des tables, qui utilise `CREATE TABLE`. Attention : la requête se termine par un point-virgule et le nom doit être identique à celui du script.\n\nLa base de donnees manipulee (ligne 28 : `new mysqli(\"localhost\",\"root\",\"\", \"magasin\")`) se nomme `magasin` :\n\n```sql\nCREATE DATABASE magasin;\n```",
+      "themes": [
+        "SQL",
+        "CREATE DATABASE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q8",
+          "competence": "Ecrire une requete CREATE DATABASE",
+          "contenu_markdown": "En SQL, la base de données se crée avec `CREATE DATABASE nom_base;`, et le nom à utiliser se lit dans le code qui s'y connecte : en mysqli, c'est le quatrième argument du constructeur `new mysqli(hôte, utilisateur, mot_de_passe, base)`. On ne confond pas la création de la base avec celle des tables, qui utilise `CREATE TABLE`. Attention : la requête se termine par un point-virgule et le nom doit être identique à celui du script.",
+          "cours_genere": true,
+          "cours_id": "cours-creer-bd-table-sql-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 9,
+      "enonce_markdown": "Reecrire le bout de code allant de la ligne 54 a la ligne 61 en utilisant exclusivement la boucle while(). (1,5 pt)",
+      "corrige_markdown": "Le code original (lignes 54-61) est une boucle `for` qui parcourt les `$nbart` lignes du resultat, et pour chacune, une boucle `for` interne qui parcourt les `$nbcol` colonnes :\n\n```php\n$i = 0;\nwhile ($i < $nbart) {\n    $ligne = $result->fetch_row();\n    echo \"<tr>\";\n    $j = 0;\n    while ($j < $nbcol) {\n        echo \"<td>\", $ligne[$j], \"</td>\";\n        $j++;\n    }\n    echo \"</tr>\";\n    $i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se convertit en `while` selon trois étapes : l'initialisation se place avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle. Pour deux boucles imbriquées, on applique la règle à chacune, en réinitialisant le compteur interne avant chaque tour de la boucle externe. Attention : oublier l'incrément ou la réinitialisation du compteur interne provoque une boucle infinie ou un affichage incomplet.\n\nLa conversion suit la meme methode pour chacune des deux boucles `for` : l'initialisation (`$i=0` / `$j=0`) est placee avant le `while`, la condition d'arret (`$i<$nbart` / `$j<$nbcol`) devient la condition du `while`, et l'increment (`$i++` / `$j++`) est reporte a la toute fin du corps de la boucle -- juste avant l'accolade fermante -- afin de reproduire exactement le meme comportement d'execution que la boucle `for` d'origine.",
+      "themes": [
+        "PHP",
+        "boucle for",
+        "boucle while",
+        "conversion de boucle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex2-q9",
+          "competence": "Convertir une boucle for imbriquee en boucle while en PHP",
+          "contenu_markdown": "Toute boucle `for (init; condition; incrément)` se convertit en `while` selon trois étapes : l'initialisation se place avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle. Pour deux boucles imbriquées, on applique la règle à chacune, en réinitialisant le compteur interne avant chaque tour de la boucle externe. Attention : oublier l'incrément ou la réinitialisation du compteur interne provoque une boucle infinie ou un affichage incomplet.",
+          "cours_genere": true,
+          "cours_id": "cours-convertir-for-while-php-bacprog2022-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "mysqli",
+    "page web dynamique",
+    "CREATE DATABASE",
+    "for vers while",
+    "field_count",
+    "num_rows"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

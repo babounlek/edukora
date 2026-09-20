@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-tension-totale-dun-circuit-serie-avec-moteur-1ere-ce",
+  "meta": {
+    "titre": "Évaluer la tension totale d'un circuit série comportant un moteur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques et dipôles",
+    "duree_estimee_min": 22,
+    "tags": [
+      "rendement d'un moteur",
+      "circuit série",
+      "loi d'additivité des tensions",
+      "puissance électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-officiel-2024-cameroun",
+    "epreuve_titre": "Épreuve de physique théorique au probatoire C et E 2024",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probc-e-phy2024-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique n'est jamais seul dans un circuit : un ampèremètre, des fils, parfois une résistance additionnelle l'accompagnent, chacun avec sa propre chute de tension. Pour vérifier qu'un moteur reçoit bien la tension dont il a besoin, il faut donc remonter du rendement du moteur jusqu'à la tension totale imposée par la source, en tenant compte de tout le circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Rendement d'un récepteur électrique (rapport puissance utile / puissance absorbée)",
+        "Relation entre puissance électrique, tension et intensité (P = UI)",
+        "Loi d'additivité des tensions dans un circuit série"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tension totale d'un circuit série avec moteur",
+      "contenu_markdown": "Pour évaluer la tension totale $U_{AB}$ aux bornes d'un circuit série comportant un récepteur actif (moteur) et des résistances, on procède en deux temps : d'abord remonter du rendement du moteur à la tension $U_M$ à ses bornes, à l'aide de $P_{elec} = P_{utile}/\\eta$ puis $U_M = P_{elec}/I$ ; ensuite ajouter les chutes de tension $R\\,I$ aux bornes de chaque résistance du circuit, conformément à la loi d'additivité des tensions dans un circuit série.",
+      "formule_principale": "U_{AB} = U_M + \\sum R_i\\, I",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur, de puissance mécanique utile $P_m = 80\\ \\text{W}$ et de rendement $\\eta = 0,8$, est parcouru par un courant $I = 2\\ \\text{A}$ dans un circuit série comportant aussi un ampèremètre de résistance $r = 5\\ \\Omega$ et une résistance $R = 10\\ \\Omega$. Évaluer la tension totale $U_{AB}$ aux bornes du circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance électrique absorbée par le moteur",
+          "justification": "eta = Pm / Pelec, donc Pelec = Pm / eta",
+          "resultat_markdown": "$P_{elec} = \\dfrac{80}{0,8} = 100\\ \\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la tension aux bornes du moteur",
+          "justification": "Pelec = UM x I, donc UM = Pelec / I",
+          "resultat_markdown": "$U_M = \\dfrac{100}{2} = 50\\ \\text{V}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les chutes de tension dans les résistances du circuit",
+          "justification": "R et r sont parcourues par le même courant I (circuit série)",
+          "resultat_markdown": "$(R+r)\\times I = (10+5)\\times2 = 30\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "Additionner pour obtenir la tension totale",
+          "justification": "Loi d'additivité des tensions dans un circuit série",
+          "resultat_markdown": "$U_{AB} = U_M + 30 = 50+30 = 80\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La tension totale du circuit est $U_{AB} = 80\\ \\text{V}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser Pm par I directement pour obtenir UM, en oubliant de passer par le rendement",
+          "pourquoi_faux": "Pm est la puissance mécanique utile, pas la puissance électrique absorbée par le moteur : diviser Pm par I donne une tension trop faible, qui ignore les pertes internes du moteur.",
+          "correction_markdown": "Passe toujours par Pelec = Pm / eta avant de diviser par I pour obtenir la tension aux bornes du moteur."
+        },
+        {
+          "erreur_markdown": "Oublier la résistance interne r de l'ampèremètre dans le calcul de la tension totale",
+          "pourquoi_faux": "Un ampèremètre réel n'est jamais parfait : sa résistance interne, si elle n'est pas négligeable, provoque une chute de tension qui doit être comptée comme celle de n'importe quelle résistance du circuit série.",
+          "correction_markdown": "Vérifie toujours dans l'énoncé si la résistance de l'ampèremètre est donnée comme négligeable ou non avant de l'omettre du calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur de puissance utile $P_m = 40\\ \\text{W}$ et de rendement $\\eta = 0,5$ est parcouru par un courant $I = 1\\ \\text{A}$. Calculer la tension à ses bornes.",
+          "solution_markdown": "$P_{elec} = \\dfrac{40}{0,5} = 80\\ \\text{W}$.\n\n$U_M = \\dfrac{80}{1} = 80\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de puissance utile $P_m = 60\\ \\text{W}$ et de rendement $\\eta = 0,75$ est associé en série à une résistance $R = 4\\ \\Omega$ et parcouru par un courant $I = 2\\ \\text{A}$. Calculer la tension totale du circuit.",
+          "solution_markdown": "$P_{elec} = \\dfrac{60}{0,75} = 80\\ \\text{W}$.\n\n$U_M = \\dfrac{80}{2} = 40\\ \\text{V}$.\n\n$U_{totale} = U_M + R\\times I = 40 + 4\\times2 = 40+8 = 48\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur alimenté sous une tension totale $U_{AB} = 66\\ \\text{V}$ dans un circuit série avec un ampèremètre de résistance $r = 3\\ \\Omega$ et une résistance $R = 6\\ \\Omega$ est parcouru par un courant $I = 3\\ \\text{A}$. Sachant que sa puissance mécanique utile est $P_m = 90\\ \\text{W}$, calculer son rendement.",
+          "solution_markdown": "Chute de tension dans les résistances : $(R+r)\\times I = (6+3)\\times3 = 27\\ \\text{V}$.\n\nTension aux bornes du moteur : $U_M = U_{AB} - 27 = 66-27 = 39\\ \\text{V}$.\n\nPuissance électrique absorbée par le moteur : $P_{elec} = U_M\\times I = 39\\times3 = 117\\ \\text{W}$.\n\nRendement : $\\eta = \\dfrac{P_m}{P_{elec}} = \\dfrac{90}{117} \\approx 0,77$, soit environ 77 %."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver la tension aux bornes d'un moteur, remonte toujours du rendement : Pelec = Pm / eta, puis UM = Pelec / I.",
+        "La tension totale d'un circuit série s'obtient en ajoutant à UM toutes les chutes de tension R.I des résistances traversées par le même courant.",
+        "N'oublie jamais la résistance interne d'un ampèremètre si l'énoncé précise qu'elle n'est pas négligeable : elle compte comme n'importe quelle résistance du circuit.",
+        "La même méthode, utilisée à l'envers, permet de retrouver le rendement d'un moteur à partir d'une tension totale mesurée.",
+        "Cette démarche en deux temps (moteur, puis résistances) est la clé de toute situation-problème mêlant un moteur et un circuit série au Probatoire."
+      ]
+    }
+  ]
+}
