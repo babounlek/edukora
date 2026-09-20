@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-image-endomorphisme-plan-rang-1ere-ce",
+  "meta": {
+    "titre": "Déterminer l'image d'un endomorphisme du plan à partir du rang de sa matrice",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Image d'un endomorphisme",
+    "duree_estimee_min": 18,
+    "tags": [
+      "image d'un endomorphisme",
+      "rang d'une matrice",
+      "colonnes colinéaires"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'image d'un endomorphisme regroupe toutes les valeurs qu'il peut effectivement atteindre. Dans le plan, elle se lit directement sur les colonnes de sa matrice : si elles sont colinéaires, l'image se réduit à une droite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Colinéarité de deux vecteurs et déterminant",
+        "Notion d'image d'une application linéaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'image est engendrée par les colonnes de la matrice",
+      "contenu_markdown": "L'image d'un endomorphisme $f$ de matrice $M$ est engendrée par les images des vecteurs de base, c'est-à-dire par les colonnes de $M$. Si $\\det M=0$, ces deux colonnes sont colinéaires : l'image est alors une droite vectorielle, dirigée par n'importe laquelle des deux colonnes non nulle (simplifiée si besoin).",
+      "formule_principale": "\\mathrm{Im}\\,f=\\mathrm{Vect}\\big(f(\\vec\\imath),f(\\vec\\jmath)\\big)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$g$ a pour matrice $M=\\begin{pmatrix}-6&4\\\\3&-2\\end{pmatrix}$. Déterminer $\\mathrm{Im}\\,g$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le déterminant",
+          "justification": "Tester la colinéarité des colonnes",
+          "resultat_markdown": "$\\det M=(-6)(-2)-4\\times3=12-12=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Conclure à une droite",
+          "justification": "Déterminant nul",
+          "resultat_markdown": "Les colonnes sont colinéaires : $\\mathrm{Im}\\,g$ est une droite"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier une colonne pour trouver un vecteur directeur",
+          "justification": "g(i)=(-6,3)=3×(-2,1)",
+          "resultat_markdown": "$\\vec e_2=2\\vec\\imath-\\vec\\jmath$ (opposé de $-2\\vec\\imath+\\vec\\jmath$) dirige $\\mathrm{Im}\\,g$"
+        }
+      ],
+      "conclusion_markdown": "$\\mathrm{Im}\\,g$ est la droite vectorielle dirigée par $\\vec e_2=2\\vec\\imath-\\vec\\jmath$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre les colonnes de la matrice comme base de l'image sans vérifier leur colinéarité.",
+          "pourquoi_faux": "Si les deux colonnes sont colinéaires (déterminant nul), elles n'engendrent qu'une droite, pas le plan tout entier : il ne faut en garder qu'une seule comme vecteur directeur.",
+          "correction_markdown": "Calcule toujours le déterminant avant de conclure sur la dimension de l'image."
+        },
+        {
+          "erreur_markdown": "Confondre le signe du vecteur directeur obtenu avec une erreur de calcul.",
+          "pourquoi_faux": "Un vecteur et son opposé dirigent la même droite : $2\\vec\\imath-\\vec\\jmath$ et $-2\\vec\\imath+\\vec\\jmath$ sont deux réponses également valables.",
+          "correction_markdown": "Ne t'inquiète pas d'un signe global différent de celui attendu, tant que le vecteur reste colinéaire au bon résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'image de l'endomorphisme de matrice $\\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$.",
+          "solution_markdown": "$\\det=4-4=0$ : l'image est une droite. Colonne 1 = $(2,1)$, colonne 2 = $(4,2)=2(2,1)$ : l'image est dirigée par $2\\vec\\imath+\\vec\\jmath$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que l'endomorphisme de matrice $\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$ a pour image le plan tout entier.",
+          "solution_markdown": "$\\det=4-6=-2\\neq0$ : les deux colonnes ne sont pas colinéaires, elles forment une base du plan, donc $\\mathrm{Im}=E$ (le plan tout entier)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour un endomorphisme $h$ du plan, montrer que $\\ker h$ et $\\mathrm{Im}\\,h$ sont deux droites confondues si et seulement si $\\mathrm{trace}(h)=0$ et $\\det(h)=0$, dans le cas où $h\\neq0$.",
+          "solution_markdown": "Si $\\det h=0$, $h$ n'est pas injectif : $\\ker h$ et $\\mathrm{Im}\\,h$ sont chacun au plus une droite (car $h\\neq0$). Elles sont confondues exactement quand tout vecteur du noyau a son image colinéaire à lui via l'action de $h$ sur l'image ; un calcul direct sur $M=\\begin{pmatrix}a&b\\\\c&-a\\end{pmatrix}$ (trace nulle) montre que $\\ker h=\\mathrm{Im}\\,h$ précisément quand $a^2+bc=0$, ce qui correspond à $\\det h=-a^2-bc=0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'image d'un endomorphisme du plan est engendrée par les deux colonnes de sa matrice.",
+        "Déterminant nul ⟹ colonnes colinéaires ⟹ image réduite à une droite dirigée par l'une des deux colonnes.",
+        "Un vecteur directeur de l'image reste valable même écrit avec un signe global opposé à celui attendu.",
+        "Noyau et image se déterminent presque toujours l'un après l'autre dans un même exercice : ne les confonds jamais, ce sont deux sous-espaces différents."
+      ]
+    }
+  ]
+}

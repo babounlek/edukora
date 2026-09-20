@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-modeliser-graphe-non-oriente-1ere-ce",
+  "meta": {
+    "titre": "Modéliser une situation par un graphe non orienté",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Graphes - Modélisation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "graphe non orienté",
+      "sommet",
+      "arête",
+      "modélisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un réseau de villages qui coopèrent, un ensemble d'amis sur un réseau social, un plan de routes entre villes : toutes ces situations partagent la même structure cachée, faite d'éléments et de liens symétriques entre eux. Le graphe est l'outil qui rend cette structure visible et calculable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Aucun prérequis mathématique particulier : ce cours introduit le vocabulaire de base des graphes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sommets et arêtes",
+      "contenu_markdown": "Un graphe non orienté est constitué de sommets (les éléments du réseau) et d'arêtes (les liens entre deux sommets). Pour modéliser une situation concrète par un graphe : on associe un sommet à chaque élément du réseau, puis on relie deux sommets par une arête chaque fois que les deux éléments correspondants sont directement en relation. Lorsque la relation modélisée est symétrique (si $X$ est en relation avec $Y$, alors $Y$ l'est aussi avec $X$), chaque relation ne donne lieu qu'à une seule arête, tracée une seule fois.",
+      "formule_principale": "\\text{Graphe }G=(S,A)\\ :\\ S=\\text{sommets},\\ A=\\text{arêtes}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un réseau relie cinq villages B, E, M, N, T. B coopère avec E et N ; E coopère avec M ; M coopère avec T, B et N ; N coopère avec T ; T coopère avec E. Modéliser ce réseau par un graphe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Associer un sommet à chaque village",
+          "justification": "Chaque village est un élément du réseau à représenter",
+          "resultat_markdown": "Sommets : $B,E,M,N,T$"
+        },
+        {
+          "numero": 2,
+          "action": "Relier les sommets selon les coopérations, sans dupliquer",
+          "justification": "La coopération est une relation symétrique : chaque paire de villages coopérant l'un avec l'autre ne donne qu'une seule arête",
+          "resultat_markdown": "Arêtes : $\\{B,E\\},\\{B,N\\},\\{B,M\\},\\{E,M\\},\\{E,T\\},\\{M,T\\},\\{M,N\\},\\{N,T\\}$"
+        }
+      ],
+      "conclusion_markdown": "Le graphe obtenu comporte $5$ sommets et $8$ arêtes ; il représente fidèlement toutes les relations de coopération du réseau, sans qu'aucune paire ne soit comptée deux fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer une arête deux fois parce qu'elle est mentionnée dans les lignes de ses deux extrémités.",
+          "pourquoi_faux": "Dans un graphe non orienté, une arête relie une paire de sommets une seule fois ; la mentionner à deux endroits d'un tableau ne crée pas deux arêtes distinctes.",
+          "correction_markdown": "Dresse la liste de toutes les paires reliées avant de tracer, et élimine les doublons."
+        },
+        {
+          "erreur_markdown": "Ajouter une boucle (arête d'un sommet vers lui-même) sans que la situation ne le justifie.",
+          "pourquoi_faux": "Une boucle représenterait qu'un élément est en relation avec lui-même, ce qui n'a en général pas de sens pour ce type de réseau.",
+          "correction_markdown": "Ne relie un sommet à lui-même que si l'énoncé décrit explicitement une telle relation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Trois amis P, Q, R se téléphonent : P appelle Q, Q appelle R, R appelle P. Modéliser cette situation par un graphe.",
+          "solution_markdown": "Sommets $P,Q,R$ ; arêtes $\\{P,Q\\},\\{Q,R\\},\\{R,P\\}$ : le graphe est un triangle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quatre équipes A, B, C, D participent à un tournoi où chaque équipe joue contre toutes les autres exactement une fois. Modéliser ce tournoi par un graphe et compter ses arêtes.",
+          "solution_markdown": "Sommets $A,B,C,D$ ; comme chaque équipe affronte les trois autres, le graphe est complet à $4$ sommets, avec $\\dbinom42=6$ arêtes : $\\{A,B\\},\\{A,C\\},\\{A,D\\},\\{B,C\\},\\{B,D\\},\\{C,D\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un réseau de 4 stations de bus S1, S2, S3, S4 fonctionne ainsi : chaque station est reliée à exactement 2 autres stations, de sorte que l'on puisse revenir à son point de départ en suivant les lignes sans repasser deux fois par la même station. Proposer un graphe possible et calculer la somme de ses degrés.",
+          "solution_markdown": "Une solution possible est un cycle : $\\{S_1,S_2\\},\\{S_2,S_3\\},\\{S_3,S_4\\},\\{S_4,S_1\\}$, soit $4$ arêtes. Chaque sommet a degré $2$ (relié à ses deux voisins immédiats du cycle), donc la somme des degrés vaut $4\\times2=8$, ce qui correspond bien au double du nombre d'arêtes ($2\\times4=8$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Modéliser une situation par un graphe consiste à associer un sommet à chaque élément et une arête à chaque relation directe et symétrique entre deux éléments.",
+        "Chaque relation ne donne lieu qu'à une seule arête, même si elle apparaît deux fois dans l'énoncé (une fois pour chaque extrémité).",
+        "Une fois le graphe dressé, il devient facile de répondre à des questions sur les degrés, le nombre d'arêtes ou les chemins entre deux sommets.",
+        "Au Probatoire, ce type d'exercice évalue avant tout la rigueur de la modélisation : un graphe bien dessiné rend les questions suivantes presque automatiques."
+      ]
+    }
+  ]
+}

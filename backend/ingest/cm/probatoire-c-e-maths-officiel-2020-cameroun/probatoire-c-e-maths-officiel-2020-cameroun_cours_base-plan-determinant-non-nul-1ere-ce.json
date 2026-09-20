@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-base-plan-determinant-non-nul-1ere-ce",
+  "meta": {
+    "titre": "Montrer que deux vecteurs forment une base d'un plan vectoriel",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Bases d'un plan",
+    "duree_estimee_min": 12,
+    "tags": [
+      "base",
+      "déterminant",
+      "colinéarité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II3a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Changer de base est une technique puissante pour simplifier un problème (par exemple rendre une matrice diagonale). Encore faut-il d'abord vérifier que les deux vecteurs proposés forment bien une base : un simple déterminant suffit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'un déterminant de deux vecteurs",
+        "Dimension d'un plan vectoriel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminant non nul = base",
+      "contenu_markdown": "Dans un espace vectoriel de dimension 2, une famille de deux vecteurs $(\\vec u,\\vec v)$ en est une base si et seulement si $\\vec u$ et $\\vec v$ ne sont pas colinéaires, ce qui équivaut à $\\det(\\vec u,\\vec v)\\neq0$ (déterminant calculé à partir des coordonnées de $\\vec u$ et $\\vec v$ dans une base connue).",
+      "formule_principale": "\\det(\\vec u,\\vec v)\\neq0 \\iff (\\vec u,\\vec v) \\text{ est une base}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $\\vec e_1=-2\\vec\\imath-3\\vec\\jmath$ et $\\vec e_2=2\\vec\\imath-\\vec\\jmath$ forment une base de $E$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire les coordonnées",
+          "justification": "Dans la base (i,j)",
+          "resultat_markdown": "$\\vec e_1(-2;-3)$, $\\vec e_2(2;-1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le déterminant",
+          "justification": "ad-bc avec a=-2,b=2,c=-3,d=-1",
+          "resultat_markdown": "$\\det(\\vec e_1,\\vec e_2)=(-2)(-1)-(-3)(2)=2+6=8$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "8 ≠ 0",
+          "resultat_markdown": "$\\vec e_1,\\vec e_2$ non colinéaires"
+        }
+      ],
+      "conclusion_markdown": "Comme $\\det(\\vec e_1,\\vec e_2)=8\\neq0$, $(\\vec e_1,\\vec e_2)$ est une base de $E$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Vérifier « à l'œil » que deux vecteurs semblent différents et conclure qu'ils forment une base.",
+          "pourquoi_faux": "Deux vecteurs peuvent sembler différents tout en étant colinéaires (l'un multiple de l'autre par un facteur non entier ou négatif) : seul le calcul du déterminant tranche avec certitude.",
+          "correction_markdown": "Calcule systématiquement le déterminant, même quand la colinéarité paraît improbable au premier coup d'œil."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les vecteurs $\\vec u(1;2)$ et $\\vec v(3;4)$ forment-ils une base du plan ?",
+          "solution_markdown": "$\\det=1\\times4-2\\times3=4-6=-2\\neq0$ : oui, ils forment une base."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour quelle valeur de $m$ les vecteurs $\\vec u(2;m)$ et $\\vec v(m;8)$ ne forment-ils PAS une base ?",
+          "solution_markdown": "$\\det=16-m^2=0 \\iff m=4$ ou $m=-4$ : pour ces deux valeurs, les vecteurs sont colinéaires et ne forment pas de base."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si $(\\vec e_1,\\vec e_2)$ est une base et $\\vec f_1=\\vec e_1+\\vec e_2$, $\\vec f_2=\\vec e_1-\\vec e_2$, montrer que $(\\vec f_1,\\vec f_2)$ est encore une base.",
+          "solution_markdown": "Dans la base $(\\vec e_1,\\vec e_2)$, $\\vec f_1(1;1)$ et $\\vec f_2(1;-1)$. $\\det(\\vec f_1,\\vec f_2)=1\\times(-1)-1\\times1=-2\\neq0$ : $(\\vec f_1,\\vec f_2)$ est bien une base."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux vecteurs d'un plan forment une base si et seulement si leur déterminant est non nul.",
+        "Ne jamais conclure « à l'œil » : le calcul du déterminant est la seule preuve rigoureuse.",
+        "Cette vérification précède presque toujours un changement de base destiné à simplifier une matrice (la rendre diagonale, par exemple)."
+      ]
+    }
+  ]
+}

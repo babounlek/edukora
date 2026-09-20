@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-montrer-quun-ensemble-defini-par-fu-egale-lambda-u-est-un-sous-espace-vectoriel-probamaths2025",
+  "meta": {
+    "titre": "Montrer qu'un ensemble défini par f(u) = λu est un sous-espace vectoriel",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Sous-espaces vectoriels",
+    "duree_estimee_min": 25,
+    "tags": [
+      "sous-espace vectoriel",
+      "endomorphisme",
+      "sous-espace propre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2025-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2025",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2025-cameroun-ex1-q4",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'ensemble des vecteurs qu'un endomorphisme se contente de « dilater » d'un facteur fixe, sans changer leur direction, forme toujours un sous-espace vectoriel : une propriété qui se démontre en trois lignes dès que l'on connaît la bonne méthode."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'un sous-espace vectoriel",
+        "Linéarité d'un endomorphisme",
+        "Vecteur nul d'un espace vectoriel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode en deux points",
+      "contenu_markdown": "Pour montrer qu'une partie $F$ d'un espace vectoriel $E$ est un sous-espace vectoriel, il suffit de vérifier : (1) $F$ n'est pas vide (en général, $\\vec 0\\in F$) ; (2) $F$ est stable par combinaison linéaire : pour tous $\\vec u,\\vec v\\in F$ et tous réels $\\lambda,\\mu$, $\\lambda\\vec u+\\mu\\vec v\\in F$. Lorsque $F=\\{\\vec u\\in E,\\ f(\\vec u)=k\\vec u\\}$ pour un endomorphisme $f$ et un réel $k$ fixés, ces deux points se vérifient directement grâce à la linéarité de $f$.",
+      "formule_principale": "F=\\{\\vec u\\in E,\\ f(\\vec u)=k\\vec u\\}\\ \\text{est un sous-espace vectoriel de } E"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f$ est un endomorphisme de $E$. Montrer que $F=\\{\\vec u\\in E,\\ f(\\vec u)=-2\\vec u\\}$ est un sous-espace vectoriel de $E$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que F n'est pas vide",
+          "justification": "Tout endomorphisme vérifie f(0)=0",
+          "resultat_markdown": "$f(\\vec 0)=\\vec 0=-2\\vec 0$, donc $\\vec 0\\in F$."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier la stabilité par combinaison linéaire",
+          "justification": "Utiliser la linéarité de f sur deux vecteurs de F",
+          "resultat_markdown": "Pour $\\vec u,\\vec v\\in F$ et $\\lambda,\\mu\\in\\mathbb R$ : $f(\\lambda\\vec u+\\mu\\vec v)=\\lambda f(\\vec u)+\\mu f(\\vec v)=\\lambda(-2\\vec u)+\\mu(-2\\vec v)=-2(\\lambda\\vec u+\\mu\\vec v)$, donc $\\lambda\\vec u+\\mu\\vec v\\in F$."
+        }
+      ],
+      "conclusion_markdown": "$F$ contient $\\vec 0$ et est stable par combinaison linéaire : $F$ est un sous-espace vectoriel de $E$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher à résoudre explicitement l'équation $f(\\vec u)=k\\vec u$ pour « voir » que c'est un sous-espace vectoriel.",
+          "pourquoi_faux": "La question demande une démonstration générale (stabilité + non-vacuité), pas une résolution explicite : celle-ci n'est ni nécessaire ni toujours possible sans connaître la matrice de $f$.",
+          "correction_markdown": "Appliquer directement la méthode en deux points, qui ne nécessite que la linéarité de $f$."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la non-vacuité de $F$ et ne traiter que la stabilité.",
+          "pourquoi_faux": "Un ensemble stable par combinaison linéaire mais vide n'est pas un sous-espace vectoriel par convention (un sous-espace vectoriel contient toujours $\\vec 0$).",
+          "correction_markdown": "Toujours commencer par vérifier $\\vec 0\\in F$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$f$ est un endomorphisme de $E$. Montrer que $\\ker f=\\{\\vec u\\in E,\\ f(\\vec u)=\\vec 0\\}$ est un sous-espace vectoriel de $E$.",
+          "solution_markdown": "C'est le cas particulier $k=0$ : $f(\\vec 0)=\\vec 0$ donc $\\vec 0\\in\\ker f$ ; et pour $\\vec u,\\vec v\\in\\ker f$, $f(\\lambda\\vec u+\\mu\\vec v)=\\lambda f(\\vec u)+\\mu f(\\vec v)=\\vec 0$, donc $\\lambda\\vec u+\\mu\\vec v\\in\\ker f$. **$\\ker f$ est un sous-espace vectoriel.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que l'ensemble des points fixes $F=\\{\\vec u\\in E,\\ f(\\vec u)=\\vec u\\}$ d'un endomorphisme $f$ est un sous-espace vectoriel de $E$.",
+          "solution_markdown": "C'est le cas $k=1$ : $f(\\vec 0)=\\vec 0$ donc $\\vec 0\\in F$ ; pour $\\vec u,\\vec v\\in F$, $f(\\lambda\\vec u+\\mu\\vec v)=\\lambda f(\\vec u)+\\mu f(\\vec v)=\\lambda\\vec u+\\mu\\vec v$. **$F$ est un sous-espace vectoriel.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi cette méthode ne permet-elle pas de conclure que $G=\\{\\vec u\\in E,\\ f(\\vec u)=\\vec u+\\vec i\\}$ (où $\\vec i$ est un vecteur fixé non nul) est un sous-espace vectoriel ?",
+          "solution_markdown": "$f(\\vec 0)=\\vec 0$, mais $\\vec 0+\\vec i=\\vec i\\neq\\vec 0$ (car $\\vec i\\neq\\vec 0$) : donc $\\vec 0\\notin G$ en général. **$G$ n'est pas un sous-espace vectoriel** (l'équation n'est pas de la forme $f(\\vec u)=k\\vec u$, elle est affine et non linéaire en $\\vec u$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour $F=\\{\\vec u\\in E,\\ f(\\vec u)=k\\vec u\\}$, deux étapes suffisent toujours : $\\vec 0\\in F$ (car $f(\\vec 0)=\\vec 0=k\\vec 0$), puis stabilité par combinaison linéaire via la linéarité de $f$.",
+        "Cette méthode s'applique pour n'importe quelle valeur de $k$ (y compris $k=0$ pour le noyau, $k=1$ pour les points fixes) : la valeur de $k$ n'intervient jamais dans la démonstration elle-même."
+      ]
+    }
+  ]
+}

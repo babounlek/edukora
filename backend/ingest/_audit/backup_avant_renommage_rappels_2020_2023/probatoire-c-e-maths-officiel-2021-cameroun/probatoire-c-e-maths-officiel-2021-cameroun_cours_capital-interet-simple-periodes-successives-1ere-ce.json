@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-capital-interet-simple-periodes-successives-1ere-ce",
+  "meta": {
+    "titre": "Calculer un capital après un intérêt simple sur des périodes successives, avec un retrait intermédiaire",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Calcul financier - Intérêt simple",
+    "duree_estimee_min": 20,
+    "tags": [
+      "intérêt simple",
+      "capital",
+      "équations",
+      "calcul financier"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "4",
+    "rappel_id": "r-4-2",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un compte d'épargne évolue rarement d'un seul bloc : un dépôt initial, un retrait quelques années plus tard, puis un nouveau calcul d'intérêts sur ce qui reste. Suivre un capital à travers plusieurs étapes de ce type, et retrouver un montant manquant à partir du résultat final, est une compétence financière de base directement transposable à un livret réel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de pourcentage",
+        "Résolution d'une équation du premier degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Faire évoluer un capital à intérêt simple, étape par étape",
+      "contenu_markdown": "À intérêt simple, un capital $C$ placé pendant $n$ années à un taux annuel $t$ (écriture décimale) rapporte chaque année le même intérêt $Ct$, calculé uniquement sur le capital initial : au bout de $n$ années, le capital disponible est $C(1+nt)$. Quand un retrait a lieu entre deux placements, on calcule d'abord le capital disponible juste avant ce retrait, on lui retranche le montant retiré, puis on applique de nouveau la formule de l'intérêt simple au reste, sur la durée du placement suivant. Si le montant retiré est inconnu, cette chaîne de calculs, égalée au résultat final donné par l'énoncé, fournit une équation du premier degré qui permet de le retrouver.",
+      "formule_principale": "C_n = C_0(1+nt)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un capital de 500 000 F est placé à intérêt simple à 6 % par an pendant 3 ans. Un montant $x$ est ensuite retiré, et le reste est replacé à intérêt simple à 6 % pendant 2 ans, pour atteindre 504 000 F. Déterminer $x$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le capital après le premier placement",
+          "justification": "Application de $C_n=C_0(1+nt)$ avec $C_0=500\\,000$, $n=3$, $t=0{,}06$",
+          "resultat_markdown": "$C_1=500\\,000\\times(1+3\\times0{,}06)=500\\,000\\times1{,}18=590\\,000$ F"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer le capital replacé après le retrait de x",
+          "justification": "Le reste après retrait est ce qui sert de nouveau capital initial pour la seconde période",
+          "resultat_markdown": "Capital replacé $=590\\,000-x$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer de nouveau la formule de l'intérêt simple sur la seconde durée",
+          "justification": "$n'=2$ ans, même taux $t=0{,}06$",
+          "resultat_markdown": "$(590\\,000-x)\\times(1+2\\times0{,}06)=(590\\,000-x)\\times1{,}12$"
+        },
+        {
+          "numero": 4,
+          "action": "Égaler ce résultat au capital final donné et résoudre",
+          "justification": "L'énoncé indique que ce second capital atteint 504 000 F",
+          "resultat_markdown": "$(590\\,000-x)\\times1{,}12=504\\,000 \\;\\Rightarrow\\; 590\\,000-x=450\\,000 \\;\\Rightarrow\\; x=140\\,000$"
+        }
+      ],
+      "conclusion_markdown": "Le montant retiré est de 140 000 F. On peut vérifier : $590\\,000-140\\,000=450\\,000$, et $450\\,000\\times1{,}12=504\\,000$ F, qui correspond bien à la valeur annoncée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer le même nombre d'années aux deux périodes de placement.",
+          "pourquoi_faux": "Les deux placements ont ici des durées différentes (3 ans puis 2 ans) : utiliser la même durée pour les deux fausse complètement le facteur multiplicateur $(1+nt)$ de la seconde étape.",
+          "correction_markdown": "Recalcule bien la durée de CHAQUE période séparément à partir des dates données, sans supposer qu'elles sont égales."
+        },
+        {
+          "erreur_markdown": "Calculer l'intérêt composé (capital de l'année précédente augmenté chaque année) au lieu de l'intérêt simple.",
+          "pourquoi_faux": "À intérêt simple, l'intérêt annuel se calcule toujours sur le capital INITIAL de la période, jamais sur le capital de l'année précédente : les intérêts ne produisent pas eux-mêmes d'intérêts.",
+          "correction_markdown": "Utilise directement la formule $C_0(1+nt)$ pour toute la durée d'une période à intérêt simple, sans recalculer année par année."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un capital de 200 000 F est placé à intérêt simple à 5 % par an pendant 4 ans. Quel est le capital final ?",
+          "solution_markdown": "$C=200\\,000\\times(1+4\\times0{,}05)=200\\,000\\times1{,}2=240\\,000$ F."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un capital de 300 000 F, placé à intérêt simple pendant 5 ans, a rapporté 45 000 F d'intérêts au total. Quel est le taux annuel ?",
+          "solution_markdown": "L'intérêt total est $Cnt=45\\,000$, donc $300\\,000\\times5\\times t=45\\,000 \\;\\Rightarrow\\; t=\\dfrac{45\\,000}{1\\,500\\,000}=0{,}03=3\\,\\%$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un capital $C_0$ est placé à intérêt simple à 8 % pendant 2 ans. La moitié du capital obtenu est alors retirée, et le reste est replacé à intérêt simple à 8 % pendant 3 ans, pour atteindre finalement 348 000 F. Déterminer $C_0$.",
+          "solution_markdown": "Après 2 ans : $C_1=C_0\\times1{,}16$. Après retrait de la moitié, il reste $\\dfrac{C_1}{2}=0{,}58\\,C_0$. Après 3 ans supplémentaires à 8 % : $0{,}58\\,C_0\\times(1+3\\times0{,}08)=0{,}58\\,C_0\\times1{,}24=0{,}7192\\,C_0$. On résout $0{,}7192\\,C_0=348\\,000 \\;\\Rightarrow\\; C_0=\\dfrac{348\\,000}{0{,}7192}\\approx483\\,871$ F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "À intérêt simple, le capital après n années est C₀(1+nt) : l'intérêt de chaque année se calcule toujours sur le capital INITIAL de la période.",
+        "Un retrait entre deux placements interrompt la chaîne : calcule le capital juste avant le retrait, retranche le montant retiré, puis reprends le calcul avec ce reste comme nouveau capital de départ.",
+        "Une seule inconnue (souvent le montant retiré) suffit à transformer la situation en équation du premier degré, à condition de bien identifier le capital final donné par l'énoncé.",
+        "Vérifie toujours ton résultat en remontant la chaîne de calculs dans l'ordre : c'est la meilleure garantie contre une erreur de durée ou de taux."
+      ]
+    }
+  ]
+}

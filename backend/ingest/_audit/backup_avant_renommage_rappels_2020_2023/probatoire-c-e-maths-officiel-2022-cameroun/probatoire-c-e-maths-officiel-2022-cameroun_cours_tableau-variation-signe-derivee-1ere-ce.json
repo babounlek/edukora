@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-tableau-variation-signe-derivee-1ere-ce",
+  "meta": {
+    "titre": "Signe de la dérivée et sens de variation",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dérivation - étude de fonctions",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dérivée",
+      "sens de variation",
+      "tableau de variations",
+      "polynôme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-2b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la dérivée $f'$ calculée, la question naturelle est : où la fonction $f$ monte-t-elle, où descend-elle ? Le lien entre le signe de $f'$ et les variations de $f$ est l'outil qui transforme une simple formule algébrique en une image complète du comportement de la courbe, indispensable pour compter les solutions d'une équation ou localiser un extremum."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la dérivée d'une fonction polynôme",
+        "Savoir étudier le signe d'un trinôme du second degré (discriminant, racines, tableau de signes)",
+        "Connaître la définition d'une fonction strictement croissante ou décroissante sur un intervalle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Théorème du lien dérivée-variations",
+      "contenu_markdown": "Soit $f$ une fonction dérivable sur un intervalle $I$.\n\n- Si $f'(x) > 0$ pour tout $x$ à l'intérieur de $I$ (sauf éventuellement en un nombre fini de points où elle s'annule), alors $f$ est **strictement croissante** sur $I$.\n- Si $f'(x) < 0$ pour tout $x$ à l'intérieur de $I$ (sauf éventuellement en un nombre fini de points où elle s'annule), alors $f$ est **strictement décroissante** sur $I$.\n- Si $f'(x) = 0$ pour tout $x$ de $I$, alors $f$ est constante sur $I$.\n\n**Méthode.** 1) Calculer $f'(x)$. 2) Étudier le signe de $f'(x)$ sur le domaine de définition, en résolvant $f'(x)=0$ puis en dressant un tableau de signes. 3) En déduire le tableau de variations de $f$, en calculant $f$ aux bornes des intervalles et aux valeurs qui annulent $f'$ (extrema locaux).",
+      "formule_principale": "f'(x) > 0 \\text{ sur } I \\iff f \\text{ strictement croissante sur } I"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère $f(x)=\\dfrac{1}{3}x^{3}+\\dfrac{3}{2}x^{2}-4x-\\dfrac{31}{6}$, de dérivée $f'(x)=x^{2}+3x-4$. Dresser le tableau de variations de $f$ sur $\\mathbb R$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Résoudre f'(x) = 0",
+          "justification": "Le trinôme x²+3x-4 a pour discriminant Δ = 3² - 4×1×(-4) = 9+16 = 25 = 5², donc deux racines réelles",
+          "resultat_markdown": "$x=\\dfrac{-3-5}{2}=-4$ ou $x=\\dfrac{-3+5}{2}=1$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de f'(x) = x²+3x-4",
+          "justification": "Un trinôme du second degré à coefficient dominant positif (ici 1 > 0) est du signe de son coefficient dominant à l'extérieur des racines, et du signe opposé entre les racines",
+          "resultat_markdown": "$f'(x)>0$ sur $]-\\infty;-4[\\cup]1;+\\infty[$ ; $f'(x)<0$ sur $]-4;1[$ ; $f'(-4)=f'(1)=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les valeurs de f aux points critiques",
+          "justification": "on remplace x=-4 puis x=1 dans f(x)",
+          "resultat_markdown": "$f(-4)=\\dfrac{1}{3}(-64)+\\dfrac{3}{2}(16)-4(-4)-\\dfrac{31}{6}=-\\dfrac{64}{3}+24+16-\\dfrac{31}{6}=-\\dfrac{128}{6}+40-\\dfrac{31}{6}=40-\\dfrac{159}{6}=\\dfrac{240-159}{6}=\\dfrac{81}{6}=\\dfrac{27}{2}$ ; $f(1)=\\dfrac{1}{3}+\\dfrac{3}{2}-4-\\dfrac{31}{6}=\\dfrac{2}{6}+\\dfrac{9}{6}-\\dfrac{24}{6}-\\dfrac{31}{6}=\\dfrac{2+9-24-31}{6}=-\\dfrac{44}{6}=-\\dfrac{22}{3}$"
+        },
+        {
+          "numero": 4,
+          "action": "Dresser le tableau de variations complet",
+          "justification": "f croît là où f'>0, décroît là où f'<0",
+          "resultat_markdown": "$$\\begin{array}{|c|ccccccc|}\\hline x & -\\infty & & -4 & & 1 & & +\\infty \\\\\\hline f'(x) & & + & 0 & - & 0 & + & \\\\\\hline & & & \\frac{27}{2} & & & & +\\infty \\\\ f(x) & & \\nearrow & & \\searrow & & \\nearrow & \\\\ & -\\infty & & & & -\\frac{22}{3} & & \\\\\\hline\\end{array}$$"
+        }
+      ],
+      "conclusion_markdown": "$f$ est strictement croissante sur $]-\\infty;-4]$, strictement décroissante sur $[-4;1]$, puis strictement croissante sur $[1;+\\infty[$. Elle admet un maximum local $\\frac{27}{2}$ en $x=-4$ et un minimum local $-\\frac{22}{3}$ en $x=1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Annoncer le sens de variation à partir du signe de f(x) au lieu du signe de f'(x)",
+          "pourquoi_faux": "C'est le signe de la DÉRIVÉE qui gouverne la croissance ou la décroissance, pas le signe de la fonction elle-même : une fonction peut être négative et croissante en même temps.",
+          "correction_markdown": "Toujours dresser le tableau de signes de f'(x), jamais de f(x), pour en déduire les variations."
+        },
+        {
+          "erreur_markdown": "Oublier de placer les valeurs de f aux points critiques dans le tableau de variations",
+          "pourquoi_faux": "Le tableau de variations sans les valeurs numériques aux extrema ne permet pas de compter le nombre de solutions d'une équation f(x)=k ni de comparer les extrema entre eux.",
+          "correction_markdown": "Calcule systématiquement f(x) pour chaque valeur qui annule f'(x), et reporte le résultat dans le tableau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=x^{2}-4x+1$, de dérivée $g'(x)=2x-4$. Étudier le signe de $g'$ et en déduire les variations de $g$ sur $\\mathbb R$.",
+          "solution_markdown": "$g'(x)=0 \\iff x=2$. $g'(x)<0$ pour $x<2$ et $g'(x)>0$ pour $x>2$ (coefficient 2>0). Donc $g$ est décroissante sur $]-\\infty;2]$ et croissante sur $[2;+\\infty[$, avec un minimum $g(2)=4-8+1=-3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h(x)=\\dfrac{1}{3}x^{3}-x^{2}-3x+2$, de dérivée $h'(x)=x^{2}-2x-3$. Dresser le tableau de variations de $h$.",
+          "solution_markdown": "$h'(x)=0$ : $\\Delta=4+12=16=4^2$, racines $x=\\frac{2-4}{2}=-1$ et $x=\\frac{2+4}{2}=3$. $h'>0$ sur $]-\\infty;-1[\\cup]3;+\\infty[$, $h'<0$ sur $]-1;3[$. $h(-1)=-\\frac13-1+3+2=\\frac{11}{3}$ (maximum local). $h(3)=9-9-9+2=-7$ (minimum local). Donc $h$ croît sur $]-\\infty;-1]$, décroît sur $[-1;3]$, croît sur $[3;+\\infty[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=x^{3}-3x^{2}+3x-1$, de dérivée $k'(x)=3x^{2}-6x+3=3(x-1)^{2}$. Étudier le signe de $k'$ et en déduire que $k$ est strictement croissante sur $\\mathbb R$ malgré l'annulation de $k'$ en un point.",
+          "solution_markdown": "$k'(x)=3(x-1)^{2}\\ge 0$ pour tout $x$, avec égalité uniquement en $x=1$ (un seul point isolé). Comme $k'$ ne s'annule qu'en un nombre fini de points (ici un seul) sans être négative nulle part, le théorème s'applique quand même : $k$ est strictement croissante sur $\\mathbb R$ tout entier, y compris au voisinage de $x=1$. On vérifie d'ailleurs que $k(x)=(x-1)^3$, dont la stricte croissance sur $\\mathbb R$ est bien connue."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le signe de f'(x) détermine entièrement le sens de variation de f : f' positive ⟹ f croissante, f' négative ⟹ f décroissante.",
+        "Pour une fonction polynôme, l'étude du signe de f' se ramène à un problème de signe de trinôme (discriminant, racines) déjà maîtrisé au collège/lycée.",
+        "Le tableau de variations doit toujours comporter les valeurs numériques de f aux points où f' s'annule : ce sont les extrema locaux, indispensables pour compter les solutions d'une équation f(x)=k.",
+        "Une dérivée qui s'annule en un point isolé sans changer de signe n'empêche pas la stricte monotonie sur tout l'intervalle (cas d'un carré parfait comme 3(x-1)²)."
+      ]
+    }
+  ]
+}

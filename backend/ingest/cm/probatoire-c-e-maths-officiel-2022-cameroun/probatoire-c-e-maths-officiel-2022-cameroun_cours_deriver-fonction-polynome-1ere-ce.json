@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-deriver-fonction-polynome-1ere-ce",
+  "meta": {
+    "titre": "Dériver une fonction polynôme terme à terme",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dérivation",
+    "duree_estimee_min": 12,
+    "tags": [
+      "dérivation",
+      "fonction polynôme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2022-cameroun-r-2-2a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La dérivée est l'outil qui permet de savoir, sans tracer aucune courbe, si une fonction monte ou descend en chaque point. Pour une fonction polynôme, ce calcul est entièrement mécanique : une règle simple, appliquée terme à terme, suffit à obtenir la dérivée complète, quelle que soit la complexité apparente du polynôme de départ."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de fonction dérivée",
+        "Savoir manipuler les puissances et les fractions"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La règle de dérivation d'un monôme",
+      "contenu_markdown": "Pour tout entier $n\\ge1$ et tout réel $a$, la dérivée du monôme $ax^n$ est :\n$$(ax^n)'=na\\,x^{n-1}$$\n\nCas particuliers utiles : la dérivée d'une fonction affine $ax$ est la constante $a$ ; la dérivée d'une constante est $0$.\n\n**Méthode.** La dérivée d'une somme de monômes est la somme de leurs dérivées : on dérive donc chaque terme du polynôme séparément, avec la règle ci-dessus, puis on additionne les résultats.",
+      "formule_principale": "(ax^n)'=n a\\,x^{n-1}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la dérivée de $f(x)=\\dfrac13x^3+\\dfrac32x^2-4x-\\dfrac{31}{6}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver le terme en x³",
+          "justification": "règle (ax^n)'=na x^(n-1) avec a=1/3, n=3",
+          "resultat_markdown": "$\\left(\\dfrac13x^3\\right)'=3\\times\\dfrac13x^2=x^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le terme en x²",
+          "justification": "règle avec a=3/2, n=2",
+          "resultat_markdown": "$\\left(\\dfrac32x^2\\right)'=2\\times\\dfrac32x=3x$"
+        },
+        {
+          "numero": 3,
+          "action": "Dériver le terme affine et la constante",
+          "justification": "dérivée de -4x est -4, dérivée de la constante -31/6 est 0",
+          "resultat_markdown": "$(-4x)'=-4$, $\\left(-\\dfrac{31}{6}\\right)'=0$"
+        },
+        {
+          "numero": 4,
+          "action": "Additionner les quatre dérivées",
+          "justification": "la dérivée d'une somme est la somme des dérivées",
+          "resultat_markdown": "$f'(x)=x^2+3x-4+0$"
+        }
+      ],
+      "conclusion_markdown": "$f'(x)=x^2+3x-4$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de multiplier par l'exposant d'origine (dériver ax^n en ax^(n-1) sans le facteur n)",
+          "pourquoi_faux": "La règle exige de multiplier le coefficient a par l'exposant n AVANT de diminuer l'exposant de 1 : oublier ce facteur change complètement le résultat.",
+          "correction_markdown": "Écris toujours explicitement le produit n×a avant de simplifier, plutôt que de le faire de tête."
+        },
+        {
+          "erreur_markdown": "Dériver la constante comme si elle donnait elle-même une constante non nulle",
+          "pourquoi_faux": "Une constante ne varie jamais, donc son taux de variation est nul en tout point : la dérivée d'une constante est toujours 0, quelle que soit sa valeur.",
+          "correction_markdown": "Retiens que TOUT terme constant disparaît complètement lors de la dérivation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de $g(x)=x^2-3x+5$.",
+          "solution_markdown": "$(x^2)'=2x$, $(-3x)'=-3$, $(5)'=0$. Donc $g'(x)=2x-3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la dérivée de $h(x)=\\dfrac14x^4-2x^3+x-7$.",
+          "solution_markdown": "$\\left(\\dfrac14x^4\\right)'=4\\times\\dfrac14x^3=x^3$, $(-2x^3)'=-6x^2$, $(x)'=1$, $(-7)'=0$. Donc $h'(x)=x^3-6x^2+1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le polynôme $k(x)=ax^3+bx^2-2x+1$ a pour dérivée $k'(x)=3x^2+4x-2$. Déterminer les réels $a$ et $b$.",
+          "solution_markdown": "En dérivant l'expression générale : $k'(x)=3ax^2+2bx-2$. En identifiant avec $3x^2+4x-2$ (deux polynômes égaux ont les mêmes coefficients) : $3a=3$ donne $a=1$, et $2b=4$ donne $b=2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La dérivée de ax^n est na·x^(n-1) : multiplie par l'exposant, puis diminue l'exposant de 1.",
+        "La dérivée d'une fonction affine ax est la constante a ; la dérivée d'une constante est 0.",
+        "On dérive un polynôme terme à terme, puis on additionne les résultats.",
+        "Vérifie toujours ton résultat en comptant les degrés : la dérivée d'un polynôme de degré n est un polynôme de degré n-1.",
+        "Ce calcul est la première étape systématique de toute étude de variations d'une fonction polynôme, au Probatoire comme au Baccalauréat."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-trace-polygone-frequences-cumulees-croissantes-premiere-a",
+  "meta": {
+    "titre": "Tracé du polygone des fréquences cumulées croissantes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Statistiques - Représentations graphiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "statistiques",
+      "fréquences cumulées croissantes",
+      "représentation graphique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "2",
+    "rappel_id": "r-2-3a",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien d'élèves parcourent moins de 5 hm pour aller à l'école ? Le polygone des fréquences cumulées croissantes répond visuellement à ce type de question - et, comme on le verra dans un cours voisin, il permet aussi de lire graphiquement la médiane d'une série."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau statistique en classes",
+        "Notion de fréquence (en %) d'une classe",
+        "Placer un point dans un repère à partir de ses coordonnées"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire le polygone point par point",
+      "contenu_markdown": "Pour une série groupée en classes $[e_0\\,;e_1[$, $[e_1\\,;e_2[$, ..., on calcule d'abord la fréquence cumulée croissante (FCC) à chaque borne : la FCC à $e_0$ (borne inférieure de la première classe) est $0$ ; la FCC à $e_1$ est la fréquence de la première classe ; la FCC à $e_2$ s'obtient en ajoutant la fréquence de la deuxième classe à la FCC précédente, et ainsi de suite jusqu'à la dernière borne, où la FCC doit atteindre $100\\,\\%$. On place alors, dans un repère (abscisses : la grandeur mesurée ; ordonnées : la FCC en %), les points (borne ; FCC correspondante), et on les relie par des segments de droite consécutifs.",
+      "formule_principale": "\\text{FCC}(e_{i+1})=\\text{FCC}(e_i)+f_i"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire le polygone des fréquences cumulées croissantes de la série : classes $[0;2[$, $[2;3[$, $[3;5[$, $[5;7[$, $[7;9[$, de fréquences respectives 20 %, 10 %, 30 %, 25 %, 15 %.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les fréquences cumulées croissantes borne par borne",
+          "justification": "On additionne progressivement les fréquences à partir de 0",
+          "resultat_markdown": "FCC(0)=0 ; FCC(2)=20 ; FCC(3)=20+10=30 ; FCC(5)=30+30=60 ; FCC(7)=60+25=85 ; FCC(9)=85+15=100"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que la dernière FCC atteint 100 %",
+          "justification": "La somme de toutes les fréquences doit valoir 100 %",
+          "resultat_markdown": "$20+10+30+25+15=100$ : la vérification est correcte"
+        },
+        {
+          "numero": 3,
+          "action": "Placer les points et les relier",
+          "justification": "Chaque point a pour coordonnées (borne ; FCC à cette borne)",
+          "resultat_markdown": "Points $(0;0)$, $(2;20)$, $(3;30)$, $(5;60)$, $(7;85)$, $(9;100)$, reliés par des segments consécutifs"
+        }
+      ],
+      "conclusion_markdown": "Le polygone obtenu part de (0;0), monte par segments jusqu'à (9;100), avec une pente plus forte sur les classes de fréquence plus élevée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Commencer le polygone au point (2 ; 20) au lieu de (0 ; 0).",
+          "pourquoi_faux": "Le premier point du polygone doit toujours être placé à la borne INFÉRIEURE de la première classe, avec une fréquence cumulée nulle (rien n'a encore été cumulé avant cette borne).",
+          "correction_markdown": "Ajoute systématiquement le point de départ (borne inférieure de la première classe ; 0) avant de tracer le reste du polygone."
+        },
+        {
+          "erreur_markdown": "Utiliser les fréquences de chaque classe (non cumulées) comme ordonnées, au lieu des fréquences CUMULÉES.",
+          "pourquoi_faux": "Le polygone des fréquences cumulées croissantes doit être croissant (ou constant), jamais décroissant : utiliser des fréquences non cumulées donnerait une courbe qui monte et descend, ce qui n'a pas de sens pour cette représentation.",
+          "correction_markdown": "Vérifie que chaque valeur portée en ordonnée est bien supérieure ou égale à la précédente : c'est le signe que ce sont bien des fréquences CUMULÉES."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série a deux classes : $[0;10[$ (40 %) et $[10;20[$ (60 %). Donner les points du polygone des FCC.",
+          "solution_markdown": "FCC(0)=0, FCC(10)=40, FCC(20)=100. Points : (0;0), (10;40), (20;100)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série a les classes $[0;5[$, $[5;10[$, $[10;15[$ de fréquences 25 %, 45 %, 30 %. Calculer les FCC à chaque borne et vérifier la cohérence du total.",
+          "solution_markdown": "FCC(0)=0 ; FCC(5)=25 ; FCC(10)=25+45=70 ; FCC(15)=70+30=100. Vérification : $25+45+30=100$, cohérent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de fréquences inconnues a pour FCC : 0, 15, 40, 40, 70, 100 aux bornes 0, 2, 4, 6, 8, 10. Que peut-on en déduire sur la classe [4;6[, et cela pose-t-il un problème pour tracer le polygone ?",
+          "solution_markdown": "La fréquence de la classe [4;6[ est FCC(6)-FCC(4)=40-40=0 % : aucun élément de la série n'appartient à cette classe. Le polygone reste néanmoins parfaitement traçable : le segment entre les points (4;40) et (6;40) est simplement horizontal, ce qui traduit exactement cette fréquence nulle - ce n'est pas une erreur, mais une information statistique à part entière."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le polygone des FCC part toujours du point (borne inférieure de la première classe ; 0).",
+        "Chaque point suivant a pour ordonnée la fréquence cumulée jusqu'à cette borne, obtenue en additionnant progressivement les fréquences des classes.",
+        "La dernière FCC doit toujours valoir 100 % : c'est une vérification systématique à faire avant de tracer.",
+        "Le polygone est toujours croissant ou constant, jamais décroissant : une pente nulle signale une classe de fréquence nulle, pas une erreur."
+      ]
+    }
+  ]
+}

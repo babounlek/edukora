@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-plans-non-paralleles-vecteurs-normaux-1ere-ce",
+  "meta": {
+    "titre": "Montrer que deux plans ne sont pas parallèles via leurs vecteurs normaux",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace - plans",
+    "duree_estimee_min": 12,
+    "tags": [
+      "géométrie dans l'espace",
+      "plans",
+      "vecteur normal"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "4",
+    "rappel_id": "r-4-2a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour savoir si deux plans de l'espace, donnés par leurs équations cartésiennes, sont parallèles ou sécants, il n'est jamais nécessaire de les tracer ni de résoudre un système : il suffit de lire les coefficients de $x$, $y$, $z$ dans chaque équation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un vecteur normal à partir d'une équation cartésienne ax+by+cz+d=0",
+        "Savoir tester la colinéarité de deux vecteurs de l'espace"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère du vecteur normal",
+      "contenu_markdown": "Un plan d'équation cartésienne $ax+by+cz+d=0$ admet pour vecteur normal $\\vec n=(a;b;c)$ (les coefficients de $x$, $y$, $z$).\n\n**Critère de parallélisme.** Deux plans, de vecteurs normaux $\\vec n$ et $\\vec n'$, sont parallèles si et seulement si $\\vec n$ et $\\vec n'$ sont colinéaires. Ils ne sont donc PAS parallèles (et donc sécants, puisque deux plans de l'espace sont soit parallèles soit sécants selon une droite) dès que $\\vec n$ et $\\vec n'$ ne sont pas colinéaires.\n\n**Test pratique de colinéarité.** $\\vec n=(a;b;c)$ et $\\vec n'=(a';b';c')$ sont colinéaires si et seulement s'il existe un réel $\\lambda$ tel que $a=\\lambda a'$, $b=\\lambda b'$ et $c=\\lambda c'$ simultanément. Il suffit de trouver DEUX rapports $\\frac{a}{a'}$ et $\\frac{b}{b'}$ différents pour conclure à la non-colinéarité, sans avoir à tester le troisième.",
+      "formule_principale": "(P) \\parallel (Q) \\iff \\vec n \\text{ et } \\vec n' \\text{ colinéaires}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $(P): 2x-y+z=0$ et $(Q): x+y-z+2=0$ ne sont pas parallèles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les vecteurs normaux",
+          "justification": "coefficients de x, y, z dans chaque équation",
+          "resultat_markdown": "$\\vec n=(2;-1;1)$ pour (P), $\\vec n'=(1;1;-1)$ pour (Q)"
+        },
+        {
+          "numero": 2,
+          "action": "Tester la colinéarité par les rapports",
+          "justification": "on cherche λ tel que n = λn'",
+          "resultat_markdown": "première coordonnée : $2=\\lambda\\times1 \\Rightarrow \\lambda=2$ ; deuxième : $-1=\\lambda\\times1 \\Rightarrow \\lambda=-1$"
+        },
+        {
+          "numero": 3,
+          "action": "Constater l'incompatibilité",
+          "justification": "deux valeurs différentes de λ obtenues",
+          "resultat_markdown": "$\\lambda=2\\neq-1=\\lambda$ : contradiction"
+        }
+      ],
+      "conclusion_markdown": "n et n' ne sont pas colinéaires, donc (P) et (Q) ne sont pas parallèles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer les coefficients constants d (le terme sans x,y,z) pour juger du parallélisme",
+          "pourquoi_faux": "Le terme constant d ne joue aucun rôle dans le parallélisme de deux plans : seuls les vecteurs normaux (a,b,c) comptent. Le terme d ne sert qu'à distinguer deux plans parallèles DISTINCTS d'un seul et même plan.",
+          "correction_markdown": "Concentre-toi uniquement sur les coefficients de x, y, z pour juger du parallélisme ; le terme constant n'intervient que si tu veux ensuite savoir si les plans sont confondus."
+        },
+        {
+          "erreur_markdown": "Conclure à la colinéarité en ne vérifiant qu'un seul rapport",
+          "pourquoi_faux": "Il faut que le MÊME λ convienne pour les trois coordonnées à la fois ; un seul rapport correct ne suffit pas à garantir la colinéarité du vecteur entier.",
+          "correction_markdown": "Vérifie toujours au moins deux rapports différents : s'ils diffèrent, la non-colinéarité est immédiatement établie ; s'ils coïncident, vérifie le troisième pour confirmer la colinéarité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les plans $(P_1): x+2y-z+1=0$ et $(P_2): 2x+4y-2z+5=0$ sont-ils parallèles ?",
+          "solution_markdown": "$\\vec n_1=(1;2;-1)$, $\\vec n_2=(2;4;-2)=2\\times(1;2;-1)=2\\vec n_1$ : les deux vecteurs normaux sont colinéaires (λ=2 fonctionne pour les trois coordonnées). Les plans sont parallèles (et même distincts, car les équations ne sont pas proportionnelles terme à terme avec la constante)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les plans $(P_1): 3x-y+2z-1=0$ et $(P_2): x+y+z=0$ sont-ils parallèles ?",
+          "solution_markdown": "$\\vec n_1=(3;-1;2)$, $\\vec n_2=(1;1;1)$. Rapport sur la première coordonnée : $3/1=3$. Rapport sur la deuxième : $-1/1=-1$. Comme $3\\neq-1$, les vecteurs ne sont pas colinéaires : les plans ne sont PAS parallèles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer la valeur de $m$ pour laquelle les plans $(P): mx+2y-z+1=0$ et $(Q): 3x+6y-3z-2=0$ sont parallèles.",
+          "solution_markdown": "$\\vec n=(m;2;-1)$, $\\vec n'=(3;6;-3)$. Pour la colinéarité, il faut le même $\\lambda$ sur les trois coordonnées. Avec les deuxième et troisième coordonnées : $\\frac{2}{6}=\\frac13$ et $\\frac{-1}{-3}=\\frac13$ : ces deux rapports coïncident déjà, donc $\\lambda=\\frac13$. Il faut alors $\\frac{m}{3}=\\frac13$, soit $m=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le vecteur normal d'un plan ax+by+cz+d=0 est directement lisible : n=(a;b;c).",
+        "Deux plans sont parallèles si et seulement si leurs vecteurs normaux sont colinéaires.",
+        "Pour réfuter la colinéarité, il suffit de trouver deux rapports coordonnée par coordonnée qui diffèrent.",
+        "Le terme constant d de l'équation ne joue aucun rôle dans le test de parallélisme.",
+        "Ce test précède presque toujours la recherche de la droite d'intersection de deux plans sécants, au Probatoire série C/E."
+      ]
+    }
+  ]
+}

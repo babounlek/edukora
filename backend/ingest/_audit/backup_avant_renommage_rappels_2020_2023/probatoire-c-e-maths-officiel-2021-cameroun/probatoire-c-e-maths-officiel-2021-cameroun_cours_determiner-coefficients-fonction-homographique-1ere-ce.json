@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-determiner-coefficients-fonction-homographique-1ere-ce",
+  "meta": {
+    "titre": "Déterminer les coefficients d'une décomposition d'une fonction rationnelle par identification",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Fonctions homographiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "fonction homographique",
+      "identification de coefficients",
+      "décomposition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "3",
+    "rappel_id": "r-3-2a",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Écrire $f(x)=\\dfrac{x^2-4}{1-x}$ sous la forme $ax+b+\\dfrac{c}{1-x}$ prépare directement l'étude de l'asymptote oblique de $f$. Trouver $a$, $b$, $c$ ne demande ni intuition ni tâtonnement : une identification systématique des coefficients suffit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Réduction d'une expression au même dénominateur",
+        "Développement d'un produit de deux polynômes",
+        "Identification de deux polynômes égaux (coefficients de même degré égaux)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Réduire au même dénominateur puis identifier",
+      "contenu_markdown": "Pour déterminer les coefficients $a$, $b$, $c$ d'une décomposition annoncée $f(x)=ax+b+\\dfrac{c}{q(x)}$ (avec $q$ le dénominateur de $f$), on réduit le membre de droite au même dénominateur $q(x)$, on développe le numérateur obtenu, puis on identifie ce numérateur avec celui de $f(x)$ : deux polynômes sont égaux pour toute valeur de $x$ si et seulement si leurs coefficients de même degré sont égaux, ce qui donne un système d'équations en $a$, $b$, $c$.",
+      "formule_principale": "ax+b+\\dfrac{c}{q(x)}=\\dfrac{(ax+b)q(x)+c}{q(x)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer les réels $a$, $b$, $c$ tels que, pour tout $x\\neq1$, $\\dfrac{x^2-4}{1-x}=ax+b+\\dfrac{c}{1-x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire le membre de droite au même dénominateur",
+          "justification": "$ax+b+\\dfrac{c}{1-x}=\\dfrac{(ax+b)(1-x)+c}{1-x}$",
+          "resultat_markdown": "Numérateur : $(ax+b)(1-x)+c=ax-ax^2+b-bx+c=-ax^2+(a-b)x+(b+c)$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier avec le numérateur de f(x)",
+          "justification": "Le numérateur de f(x) est $x^2-4=1x^2+0x-4$",
+          "resultat_markdown": "$\\begin{cases}-a=1\\\\a-b=0\\\\b+c=-4\\end{cases}$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre le système",
+          "justification": "Résolution en cascade : a d'abord, puis b, puis c",
+          "resultat_markdown": "$a=-1$ ; $b=a=-1$ ; $c=-4-b=-3$"
+        }
+      ],
+      "conclusion_markdown": "$a=-1$, $b=-1$, $c=-3$, soit $f(x)=-x-1+\\dfrac{-3}{1-x}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Développer $(ax+b)(1-x)$ en oubliant le signe négatif porté par le \"-x\" du second facteur, obtenant $ax^2$ au lieu de $-ax^2$.",
+          "pourquoi_faux": "$(ax+b)(1-x)=ax\\times1+ax\\times(-x)+b\\times1+b\\times(-x)=ax-ax^2+b-bx$ : le terme en $x^2$ est bien $-ax^2$, avec un signe moins.",
+          "correction_markdown": "Développe terme à terme avec précaution, sans regrouper mentalement les signes ; vérifie chaque produit séparément."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat en recomposant l'expression trouvée.",
+          "pourquoi_faux": "Une erreur de signe dans le système d'équations passe facilement inaperçue si on ne recompose pas l'expression de départ à partir des valeurs de a, b, c trouvées.",
+          "correction_markdown": "Recompose systématiquement $ax+b+\\dfrac{c}{q(x)}$ avec les valeurs trouvées et vérifie qu'on retombe bien sur f(x) de départ."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $a,b$ tels que $\\dfrac{2x+3}{x-1}=a+\\dfrac{b}{x-1}$.",
+          "solution_markdown": "$a+\\dfrac{b}{x-1}=\\dfrac{a(x-1)+b}{x-1}=\\dfrac{ax+(b-a)}{x-1}$. Identification avec $2x+3$ : $a=2$ et $b-a=3 \\Rightarrow b=5$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $a,b,c$ tels que $\\dfrac{x^2+1}{x+2}=ax+b+\\dfrac{c}{x+2}$.",
+          "solution_markdown": "$(ax+b)(x+2)+c=ax^2+2ax+bx+2b+c=ax^2+(2a+b)x+(2b+c)$. Identification avec $x^2+0x+1$ : $a=1$ ; $2a+b=0 \\Rightarrow b=-2$ ; $2b+c=1 \\Rightarrow c=1-2b=1+4=5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer $a,b,c$ tels que $\\dfrac{2x^2-3x+1}{2-x}=ax+b+\\dfrac{c}{2-x}$, puis vérifier le résultat en substituant $x=0$ dans les deux membres.",
+          "solution_markdown": "$(ax+b)(2-x)+c=2ax-ax^2+2b-bx+c=-ax^2+(2a-b)x+(2b+c)$. Identification avec $2x^2-3x+1$ : $-a=2\\Rightarrow a=-2$ ; $2a-b=-3\\Rightarrow-4-b=-3\\Rightarrow b=-1$ ; $2b+c=1\\Rightarrow-2+c=1\\Rightarrow c=3$. Vérification en $x=0$ : membre gauche $\\dfrac{1}{2}$ ; membre droit $0-1+\\dfrac{3}{2}=\\dfrac12$. Les deux coïncident, ce qui confirme le résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour identifier des coefficients, réduis toujours le membre annoncé au même dénominateur que la fonction de départ.",
+        "Développe le numérateur obtenu avec soin, terme à terme, en surveillant particulièrement les signes issus d'un facteur du type (1-x) ou (2-x).",
+        "Identifie ensuite les coefficients de même degré entre les deux numérateurs : cela donne un système que l'on résout en cascade.",
+        "Vérifie systématiquement le résultat en recomposant l'expression, ou en substituant une valeur numérique simple dans les deux membres."
+      ]
+    }
+  ]
+}

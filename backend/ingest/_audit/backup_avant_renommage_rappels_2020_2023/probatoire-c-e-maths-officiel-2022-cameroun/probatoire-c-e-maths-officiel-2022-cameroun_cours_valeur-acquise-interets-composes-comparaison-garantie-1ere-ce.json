@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-valeur-acquise-interets-composes-comparaison-garantie-1ere-ce",
+  "meta": {
+    "titre": "Valeur acquise par intérêts composés et comparaison à une garantie",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites et applications financières",
+    "duree_estimee_min": 18,
+    "tags": [
+      "intérêts composés",
+      "calcul financier",
+      "comparaison de valeurs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "5",
+    "rappel_id": "r-5-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un prêt non remboursé pendant plusieurs années ne reste pas à sa valeur initiale : les intérêts s'accumulent sur les intérêts déjà produits, ce qui fait grossir la dette bien plus vite qu'on ne l'imagine. Évaluer précisément cette croissance, sans arrondir trop tôt, est indispensable pour juger si une garantie couvre réellement le risque."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une suite géométrique de raison q=1+t/100 modélise une croissance à taux constant",
+        "Savoir calculer une puissance d'un nombre décimal, éventuellement via une écriture fractionnaire",
+        "Savoir comparer deux nombres décimaux avec précision"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule des intérêts composés",
+      "contenu_markdown": "Un capital $C_0$ placé (ou emprunté) à un taux d'intérêt annuel composé $t\\,\\%$, sans aucun versement ni remboursement intermédiaire, vaut après $n$ années :\n$$C_n=C_0\\times\\left(1+\\frac{t}{100}\\right)^n$$\n\n**Pourquoi « composé ».** Contrairement à un intérêt simple (où seul le capital initial produit des intérêts chaque année), l'intérêt composé s'applique chaque année sur le capital ACTUALISÉ de l'année précédente (capital + intérêts déjà accumulés) : c'est ce mécanisme qui explique la croissance exponentielle, plus rapide qu'une simple proportionnalité.\n\n**Évaluer un risque financier.** Pour juger si une garantie couvre un emprunt à échéance, on compare directement la valeur acquise $C_n$ à la valeur de la garantie : si $C_n>\\text{garantie}$, un risque existe (même faible), car la garantie ne couvre plus l'intégralité de la dette.",
+      "formule_principale": "C_n=C_0\\left(1+\\dfrac{t}{100}\\right)^n"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un prêt de $10\\,000\\,000$ FCFA est contracté à $12{,}5\\,\\%$ d'intérêt annuel composé, sur 5 ans sans remboursement. Une garantie de $18\\,000\\,000$ FCFA couvre-t-elle la dette à l'échéance ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la formule avec les données",
+          "justification": "C0=10 000 000, t=12,5, n=5",
+          "resultat_markdown": "$C_5=10\\,000\\,000\\times1{,}125^5$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer 1,125^5 via l'écriture fractionnaire 9/8",
+          "justification": "1,125 = 9/8, calcul exact plus sûr qu'un arrondi décimal",
+          "resultat_markdown": "$1{,}125^5=\\dfrac{9^5}{8^5}=\\dfrac{59\\,049}{32\\,768}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la valeur acquise",
+          "justification": "multiplication puis division",
+          "resultat_markdown": "$C_5=\\dfrac{590\\,490\\,000\\,000}{32\\,768}\\approx18\\,020\\,324{,}71$ FCFA"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer à la garantie",
+          "justification": "18 020 324,71 comparé à 18 000 000",
+          "resultat_markdown": "$18\\,020\\,324{,}71>18\\,000\\,000$"
+        }
+      ],
+      "conclusion_markdown": "La dette dépasse légèrement la garantie (d'environ 20 325 FCFA) : la garantie ne couvre pas intégralement le risque."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrondir 1,125^5 trop tôt (par exemple à 1,80) avant de multiplier",
+          "pourquoi_faux": "Quand l'écart final à détecter est faible en proportion (ici environ 0,1% de la dette), un arrondi grossier en cours de calcul peut faire disparaître complètement cet écart, menant à une conclusion inverse de la réalité.",
+          "correction_markdown": "Mène le calcul de la puissance en écriture fractionnaire exacte le plus longtemps possible, et ne repasse en décimal qu'à la toute fin, pour la comparaison."
+        },
+        {
+          "erreur_markdown": "Confondre intérêt simple (croissance linéaire, C0×(1+nt/100)) et intérêt composé (croissance exponentielle, C0×(1+t/100)^n)",
+          "pourquoi_faux": "Les deux formules donnent des résultats très différents sur plusieurs années : l'intérêt composé croît beaucoup plus vite, car les intérêts des années précédentes génèrent eux-mêmes des intérêts.",
+          "correction_markdown": "Vérifie toujours dans l'énoncé si les intérêts sont explicitement qualifiés de « composés » (auquel cas c'est une puissance) ou « simples » (auquel cas c'est une simple multiplication par n)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un capital de $500\\,000$ FCFA est placé à $10\\,\\%$ d'intérêt composé annuel pendant 2 ans. Quelle est sa valeur acquise ?",
+          "solution_markdown": "$C_2=500\\,000\\times(1{,}1)^2=500\\,000\\times1{,}21=605\\,000$ FCFA."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un prêt de $2\\,000\\,000$ FCFA est contracté à $8\\,\\%$ d'intérêt composé annuel sur 3 ans, sans remboursement. Une garantie de $2\\,500\\,000$ FCFA suffit-elle à couvrir la dette à l'échéance ?",
+          "solution_markdown": "$C_3=2\\,000\\,000\\times(1{,}08)^3$. $(1{,}08)^2=1{,}1664$, $(1{,}08)^3=1{,}1664\\times1{,}08=1{,}259712$. $C_3=2\\,000\\,000\\times1{,}259712=2\\,519\\,424$ FCFA. Comme $2\\,519\\,424>2\\,500\\,000$, la garantie ne suffit PAS : il manque environ $19\\,424$ FCFA."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour le prêt de l'exemple résolu (10 000 000 FCFA à 12,5% composé sur 5 ans), quelle devrait être la valeur minimale de la garantie pour couvrir intégralement la dette, à l'unité de FCFA près (arrondi au FCFA supérieur) ?",
+          "solution_markdown": "La dette exacte est $C_5=\\dfrac{590\\,490\\,000\\,000}{32\\,768}\\approx18\\,020\\,324{,}71$ FCFA, une valeur qui n'est pas un nombre entier de FCFA. Une garantie exprimée en FCFA entiers doit donc couvrir AU MOINS cette valeur : le plus petit entier supérieur ou égal à $18\\,020\\,324{,}71$ est $18\\,020\\,325$ FCFA. C'est ce montant minimal (et non $18\\,020\\,324$, qui laisserait encore un centime de risque) qui garantirait une couverture intégrale de la dette."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule des intérêts composés est Cn = C0×(1+t/100)^n : chaque année, les intérêts précédents génèrent eux-mêmes des intérêts.",
+        "Pour un calcul exact, écris le taux composé sous forme de fraction irréductible (ex. 1,125 = 9/8) plutôt que de multiplier des décimaux arrondis.",
+        "Compare la valeur acquise exacte (ou avec toutes ses décimales) à la garantie disponible : un écart, même faible en proportion, reste un risque réel.",
+        "Ne confonds jamais intérêt simple (croissance linéaire) et intérêt composé (croissance exponentielle, en puissance de n).",
+        "Ce type de calcul financier est un classique des situations-problèmes du Probatoire, où la précision du calcul conditionne directement la validité de la conclusion."
+      ]
+    }
+  ]
+}

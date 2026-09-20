@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-utiliser-le-determinant-pour-caracteriser-un-automorphisme-du-plan-terminale-c",
+  "meta": {
+    "titre": "Utiliser le déterminant pour caractériser un automorphisme du plan",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes du plan",
+    "duree_estimee_min": 15,
+    "tags": [
+      "déterminant",
+      "automorphisme",
+      "bijectivité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-II2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Décider si un endomorphisme est bijectif ne demande jamais de résoudre un système : il suffit de calculer un unique nombre, le déterminant de sa matrice."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Matrice d'un endomorphisme dans une base",
+        "Calcul d'un déterminant $2\\times2$ : $\\det\\begin{pmatrix}p&q\\\\r&s\\end{pmatrix}=ps-qr$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminant non nul équivaut à automorphisme",
+      "contenu_markdown": "Un endomorphisme d'un plan vectoriel est un automorphisme (c'est-à-dire bijectif) si et seulement si le déterminant de sa matrice est non nul. Si le déterminant est nul, l'endomorphisme n'est pas bijectif : il possède un noyau non réduit au vecteur nul.",
+      "formule_principale": "g \\text{ automorphisme} \\iff \\det M\\neq0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'endomorphisme $g$ a pour matrice $M=\\begin{pmatrix}2&1\\\\-1&3\\end{pmatrix}$. Est-ce un automorphisme ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients",
+          "justification": "M est de la forme (p,q;r,s)",
+          "resultat_markdown": "$p=2,\\ q=1,\\ r=-1,\\ s=3$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le déterminant",
+          "justification": "det M = ps - qr",
+          "resultat_markdown": "$\\det M=2\\times3-1\\times(-1)=6+1=7$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "det M est non nul",
+          "resultat_markdown": "$\\det M=7\\neq0$"
+        }
+      ],
+      "conclusion_markdown": "$\\det M=7\\neq0$ : $g$ est un automorphisme du plan."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $ps+qr$ au lieu de $ps-qr$.",
+          "pourquoi_faux": "La formule du déterminant 2x2 comporte une soustraction ; l'inverser donne un résultat totalement différent.",
+          "correction_markdown": "Mémorise la formule sous la forme (produit de la diagonale principale) moins (produit de l'autre diagonale)."
+        },
+        {
+          "erreur_markdown": "Conclure qu'un déterminant nul signifie que l'endomorphisme est l'application nulle.",
+          "pourquoi_faux": "Un déterminant nul signifie seulement que l'endomorphisme n'est pas bijectif ; il peut très bien être non nul sur certains vecteurs (son image est alors une droite).",
+          "correction_markdown": "Un déterminant nul entraîne seulement « non automorphisme », jamais « application nulle »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "L'endomorphisme $h$ a pour matrice $M=\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$. Est-ce un automorphisme ?",
+          "solution_markdown": "$\\det M=1\\times4-2\\times3=4-6=-2\\neq0$ : $h$ est un automorphisme."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'endomorphisme $g$ a pour matrice $M=\\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$. Est-ce un automorphisme ? Que remarque-t-on sur les colonnes de M ?",
+          "solution_markdown": "$\\det M=2\\times2-4\\times1=4-4=0$ : $g$ n'est pas un automorphisme. On remarque que la deuxième colonne $(4,2)$ est le double de la première $(2,1)$ : les deux colonnes sont proportionnelles, ce qui explique un déterminant nul."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'endomorphisme $g_a$ dépend d'un paramètre réel $a$ et a pour matrice $M(a)=\\begin{pmatrix}a&1\\\\1&a\\end{pmatrix}$. Pour quelles valeurs de $a$ l'endomorphisme $g_a$ est-il un automorphisme ?",
+          "solution_markdown": "$\\det M(a)=a\\times a-1\\times1=a^2-1=(a-1)(a+1)$. Ce déterminant est nul si et seulement si $a=1$ ou $a=-1$. Donc $g_a$ est un automorphisme pour tout $a\\in\\mathbb R\\setminus\\{-1,1\\}$, et n'est pas un automorphisme lorsque $a=1$ ou $a=-1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\det M\\neq0 \\iff$ automorphisme ; $\\det M=0 \\iff$ pas d'automorphisme (existence d'un noyau non trivial).",
+        "Formule pratique : $\\det\\begin{pmatrix}p&q\\\\r&s\\end{pmatrix}=ps-qr$.",
+        "Un déterminant nul se traduit souvent par des colonnes proportionnelles dans la matrice."
+      ]
+    }
+  ]
+}

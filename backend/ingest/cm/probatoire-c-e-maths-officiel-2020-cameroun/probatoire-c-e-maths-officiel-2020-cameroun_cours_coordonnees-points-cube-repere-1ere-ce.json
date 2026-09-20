@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-coordonnees-points-cube-repere-1ere-ce",
+  "meta": {
+    "titre": "Coordonnées de points remarquables dans un cube rapporté à un repère d'arête",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace - Repérage",
+    "duree_estimee_min": 15,
+    "tags": [
+      "repère de l'espace",
+      "cube",
+      "coordonnées",
+      "milieu"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "4",
+    "rappel_id": "r-4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cube rapporté à un repère formé par trois arêtes issues d'un même sommet devient un terrain de jeu purement numérique : chaque sommet, puis chaque point remarquable (milieu, centre), s'obtient par une simple lecture ou une moyenne de coordonnées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles vectorielle",
+        "Coordonnées du milieu d'un segment dans un repère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sommets en 0/1, milieux par moyenne",
+      "contenu_markdown": "Dans un cube d'arête 1 rapporté au repère $\\left(A;\\overrightarrow{AB},\\overrightarrow{AD},\\overrightarrow{AE}\\right)$, chaque sommet a des coordonnées valant 0 ou 1 sur chaque axe, selon qu'il se trouve du côté de $A$ ou du côté opposé le long de cette arête. Les coordonnées d'un milieu $M$ de $[PQ]$ sont la moyenne des coordonnées de $P$ et $Q$, axe par axe : $M=\\left(\\dfrac{x_P+x_Q}{2};\\dfrac{y_P+y_Q}{2};\\dfrac{z_P+z_Q}{2}\\right)$.",
+      "formule_principale": "M \\text{ milieu de } [PQ] \\implies M=\\left(\\dfrac{x_P+x_Q}{2};\\dfrac{y_P+y_Q}{2};\\dfrac{z_P+z_Q}{2}\\right)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le cube $ABCDEFGH$ d'arête 1, repère $(A;\\overrightarrow{AB},\\overrightarrow{AD},\\overrightarrow{AE})$, déterminer les coordonnées de $C$, $H$, et du milieu $I$ de $[AD]$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer les sommets de base",
+          "justification": "Définition du repère",
+          "resultat_markdown": "$A(0;0;0)$, $B(1;0;0)$, $D(0;1;0)$, $E(0;0;1)$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire C et H",
+          "justification": "C = A+AB+AD, H = A+AD+AE",
+          "resultat_markdown": "$C(1;1;0)$, $H(0;1;1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le milieu I de [AD]",
+          "justification": "Moyenne des coordonnées de A et D",
+          "resultat_markdown": "$I\\left(0;\\frac12;0\\right)$"
+        }
+      ],
+      "conclusion_markdown": "$C(1;1;0)$, $H(0;1;1)$, $I\\left(0;\\frac12;0\\right)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se tromper sur la position relative des sommets (par exemple placer G au-dessus de D au lieu de C).",
+          "pourquoi_faux": "La correspondance entre sommets du dessus et du dessous dépend entièrement du nommage $ABCDEFGH$ donné par l'énoncé ou la figure : il faut la lire sur le schéma, jamais la supposer universelle.",
+          "correction_markdown": "Identifie toujours sur la figure quel sommet du dessus est relié par une arête verticale à quel sommet du dessous, avant d'écrire la moindre coordonnée."
+        },
+        {
+          "erreur_markdown": "Calculer le milieu en additionnant les coordonnées sans diviser par 2.",
+          "pourquoi_faux": "La moyenne exige une division par 2 après la somme ; l'oublier double toutes les coordonnées du milieu.",
+          "correction_markdown": "Vérifie toujours que chaque coordonnée du milieu est bien comprise entre celles des deux extrémités du segment."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le même cube, donner les coordonnées de F et G.",
+          "solution_markdown": "$F=A+\\overrightarrow{AB}+\\overrightarrow{AE}=(1;0;1)$. $G=A+\\overrightarrow{AB}+\\overrightarrow{AD}+\\overrightarrow{AE}=(1;1;1)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer les coordonnées du milieu J de [FG].",
+          "solution_markdown": "$F(1;0;1)$, $G(1;1;1)$, donc $J=\\left(1;\\frac{0+1}2;1\\right)=\\left(1;\\frac12;1\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer les coordonnées du centre O du cube (point d'intersection des quatre grandes diagonales, par exemple milieu de [AG]).",
+          "solution_markdown": "$A(0;0;0)$, $G(1;1;1)$, donc $O=\\left(\\frac12;\\frac12;\\frac12\\right)$ : c'est bien le point « au centre » du cube, équidistant de tous les sommets."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un cube rapporté au repère (A; AB, AD, AE), chaque sommet a des coordonnées valant 0 ou 1 sur chaque axe.",
+        "Identifie toujours la correspondance dessus/dessous des sommets sur la figure avant d'écrire une seule coordonnée.",
+        "Le milieu d'un segment s'obtient en moyennant les coordonnées de ses extrémités, axe par axe.",
+        "Cette mise en coordonnées transforme tout le reste du problème (produits scalaires, équations de plan) en calcul purement numérique."
+      ]
+    }
+  ]
+}

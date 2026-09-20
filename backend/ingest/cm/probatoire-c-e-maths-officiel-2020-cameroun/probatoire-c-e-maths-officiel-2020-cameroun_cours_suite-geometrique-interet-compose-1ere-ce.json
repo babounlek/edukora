@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-suite-geometrique-interet-compose-1ere-ce",
+  "meta": {
+    "titre": "Croissance à taux fixe et suite géométrique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Applications financières",
+    "duree_estimee_min": 18,
+    "tags": [
+      "suite géométrique",
+      "intérêts composés",
+      "pourcentage d'augmentation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "5",
+    "rappel_id": "r-5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un capital qui « prend x % » chaque mois ne grandit jamais de la même quantité d'un mois à l'autre : il grandit toujours du même POURCENTAGE. Cette différence, en apparence subtile, transforme le problème en une suite géométrique, jamais arithmétique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'un pourcentage d'augmentation",
+        "Terme général d'une suite géométrique $u_n=u_0\\times q^n$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une augmentation de t% par période = raison q = 1+t/100",
+      "contenu_markdown": "Si un capital $u_0$ augmente de $t\\,\\%$ à chaque période, le capital après une période est $u_1=u_0+\\dfrac{t}{100}u_0=u_0\\left(1+\\dfrac{t}{100}\\right)$. La suite $(u_n)$ est donc géométrique de raison $q=1+\\dfrac{t}{100}$, et après $n$ périodes : $u_n=u_0\\times q^n$.",
+      "formule_principale": "u_n=u_0\\times\\left(1+\\dfrac{t}{100}\\right)^n"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un capital de 200 000 FCFA augmente de 5 % chaque mois. Calculer le capital après 19 mois.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la raison",
+          "justification": "Augmentation de 5% par mois",
+          "resultat_markdown": "$q=1+\\frac{5}{100}=1{,}05$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du terme général",
+          "justification": "u_19 = u_0 × q^19",
+          "resultat_markdown": "$u_{19}=200\\,000\\times1{,}05^{19}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement",
+          "justification": "1,05^19 ≈ 2,52695",
+          "resultat_markdown": "$u_{19}\\approx505\\,390$ FCFA"
+        }
+      ],
+      "conclusion_markdown": "Après 19 mois, le capital atteint environ 505 390 FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Traiter une augmentation de 5 % par mois comme un ajout FIXE de 5 % du capital initial chaque mois (donc une suite arithmétique de raison $0{,}05\\times u_0$).",
+          "pourquoi_faux": "Une augmentation « de 5 % » porte toujours sur le montant ACTUEL, pas sur le montant initial : le supplément grandit lui-même d'un mois à l'autre, ce qui est la signature d'une suite géométrique, pas arithmétique.",
+          "correction_markdown": "Dès qu'un énoncé parle d'un pourcentage d'augmentation périodique, pense immédiatement « suite géométrique », jamais « suite arithmétique »."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre de périodes de croissance avec le nombre de mois calendaires (oublier que le premier dépôt ne correspond à aucune croissance).",
+          "pourquoi_faux": "Le dépôt initial ($u_0$) correspond au mois de départ, SANS croissance encore appliquée ; c'est seulement à partir du mois suivant que la première multiplication par $q$ intervient.",
+          "correction_markdown": "Compte soigneusement le nombre de mois ÉCOULÉS entre le dépôt initial et la date finale, pas le nombre total de mois mentionnés."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un capital de 100 000 FCFA augmente de 10 % par an. Quel est son montant après 3 ans ?",
+          "solution_markdown": "$u_3=100\\,000\\times1{,}1^3=100\\,000\\times1{,}331=133\\,100$ FCFA."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un capital de 50 000 FCFA double en combien d'années s'il augmente de 20 % par an (donner une estimation par encadrement, sans logarithme) ?",
+          "solution_markdown": "$1{,}2^1=1{,}2$ ; $1{,}2^2=1{,}44$ ; $1{,}2^3=1{,}728$ ; $1{,}2^4=2{,}0736$. Le capital double (facteur 2) entre 3 et 4 ans, plus précisément dès la 4e année ($1{,}2^4>2$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux capitaux égaux à 10 000 FCFA évoluent, l'un avec +8 % par an (géométrique), l'autre avec +800 FCFA par an (arithmétique, soit 8% de la valeur initiale ajoutés chaque année). Lequel est le plus grand après 10 ans ?",
+          "solution_markdown": "Géométrique : $10\\,000\\times1{,}08^{10}\\approx10\\,000\\times2{,}159=21\\,590$ FCFA. Arithmétique : $10\\,000+10\\times800=18\\,000$ FCFA. Le capital géométrique dépasse le capital arithmétique, et l'écart se creuse d'autant plus que le nombre d'années augmente : c'est la caractéristique d'une croissance en pourcentage face à une croissance à montant fixe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une croissance de t % par période donne une suite géométrique de raison q = 1 + t/100, jamais une suite arithmétique.",
+        "Le terme général s'obtient directement par u_n = u_0 × q^n, sans calculer les termes intermédiaires un par un.",
+        "Compte soigneusement le nombre de périodes de croissance RÉELLEMENT écoulées entre le dépôt initial et la date d'évaluation.",
+        "Pour calculer une puissance élevée de q à la main, élève successivement au carré (q, q², q⁴, q⁸...) puis recombine les exposants qui somment au nombre voulu."
+      ]
+    }
+  ]
+}

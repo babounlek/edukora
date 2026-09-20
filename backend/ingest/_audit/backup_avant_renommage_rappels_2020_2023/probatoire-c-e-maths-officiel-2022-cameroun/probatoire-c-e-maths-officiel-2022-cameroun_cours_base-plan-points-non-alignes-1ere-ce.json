@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-base-plan-points-non-alignes-1ere-ce",
+  "meta": {
+    "titre": "Base d'un plan à partir de trois points non alignés",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - bases d'un plan",
+    "duree_estimee_min": 12,
+    "tags": [
+      "algèbre linéaire",
+      "base d'un plan vectoriel",
+      "points alignés"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-2a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un exercice pose $\\vec\\imath=\\overrightarrow{AB}$ et $\\vec\\jmath=\\overrightarrow{AC}$ à partir de trois points $A$, $B$, $C$, il n'est presque jamais nécessaire de calculer un déterminant pour justifier que ces deux vecteurs forment une base : l'hypothèse géométrique de départ (les trois points ne sont pas alignés) suffit à elle seule à le garantir."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un plan vectoriel est de dimension 2",
+        "Connaître le lien entre alignement de trois points et colinéarité de deux vecteurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Non-alignement et non-colinéarité",
+      "contenu_markdown": "Dans un plan vectoriel de dimension $2$, une famille de deux vecteurs non colinéaires en est automatiquement une base (c'est une conséquence directe de la dimension : deux vecteurs non colinéaires sont libres, et une famille libre de deux vecteurs dans un espace de dimension 2 est génératrice, donc une base).\n\n**Cas particulier des vecteurs AB et AC.** Trois points $A$, $B$, $C$ sont alignés si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires (l'un est multiple de l'autre). Par contraposée : si $A$, $B$, $C$ NE SONT PAS alignés, alors $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires, et forment donc une base du plan, sans qu'aucun calcul de coordonnées ou de déterminant ne soit nécessaire.",
+      "formule_principale": "A,B,C \\text{ non alignés} \\implies (\\overrightarrow{AB};\\overrightarrow{AC}) \\text{ est une base du plan}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$A$, $B$, $C$ sont trois points non alignés du plan. On pose $\\vec\\imath=\\overrightarrow{AB}$ et $\\vec\\jmath=\\overrightarrow{AC}$. Justifier que $(\\vec\\imath;\\vec\\jmath)$ est une base du plan.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Supposer par l'absurde que i et j sont colinéaires",
+          "justification": "on veut montrer que ce n'est pas le cas, par un raisonnement par contraposée",
+          "resultat_markdown": "s'il existait $\\lambda$ tel que $\\overrightarrow{AC}=\\lambda\\overrightarrow{AB}$"
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter géométriquement cette colinéarité",
+          "justification": "un vecteur multiple d'un autre partant du même point signifie un alignement",
+          "resultat_markdown": "cela signifierait que $C$ appartient à la droite $(AB)$, donc que $A,B,C$ sont alignés"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure par contradiction avec l'hypothèse",
+          "justification": "l'énoncé donne A, B, C non alignés",
+          "resultat_markdown": "contradiction, donc $\\vec\\imath$ et $\\vec\\jmath$ ne sont pas colinéaires"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la base",
+          "justification": "deux vecteurs non colinéaires dans un plan de dimension 2 forment une base",
+          "resultat_markdown": "$(\\vec\\imath;\\vec\\jmath)$ est une base du plan"
+        }
+      ],
+      "conclusion_markdown": "(i;j) est une base du plan, sans qu'aucun système de coordonnées n'ait été nécessaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer un déterminant à partir de coordonnées inexistantes dans l'énoncé",
+          "pourquoi_faux": "Quand le problème est posé de façon purement vectorielle (sans repère ni coordonnées), il n'y a rien à calculer : c'est l'argument géométrique (non-alignement) qui doit être utilisé, pas un calcul numérique impossible à mener.",
+          "correction_markdown": "Repère si l'énoncé donne des coordonnées ou seulement une configuration géométrique : dans le second cas, utilise l'argument par l'absurde sur l'alignement, jamais un déterminant chiffré."
+        },
+        {
+          "erreur_markdown": "Affirmer que AB et AC forment une base sans justifier la non-colinéarité",
+          "pourquoi_faux": "La conclusion (base) découle d'une hypothèse précise (non-alignement) : sauter l'étape de justification prive la démonstration de sa rigueur, même si le résultat final est correct.",
+          "correction_markdown": "Rédige toujours explicitement le lien logique : non-alignement ⟹ non-colinéarité ⟹ base, sans sauter d'étape."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$P$, $Q$, $R$ sont trois points non alignés. $(\\overrightarrow{PQ};\\overrightarrow{PR})$ est-elle une base du plan ?",
+          "solution_markdown": "Oui : P, Q, R non alignés entraîne que PQ et PR ne sont pas colinéaires, donc (PQ;PR) est une base du plan (deux vecteurs non colinéaires dans un plan de dimension 2)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$E$, $F$, $G$ sont trois points ALIGNÉS. Que peut-on dire de $(\\overrightarrow{EF};\\overrightarrow{EG})$ ?",
+          "solution_markdown": "E, F, G alignés signifie que EF et EG sont colinéaires (l'un est un multiple de l'autre). Une famille de deux vecteurs colinéaires ne peut jamais être une base (elle n'engendre qu'une droite, pas tout le plan) : (EF;EG) n'est PAS une base du plan."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$A$, $B$, $C$ sont non alignés. $I$ est le milieu de $[BC]$. Montrer que $(\\overrightarrow{AB};\\overrightarrow{AI})$ est aussi une base du plan.",
+          "solution_markdown": "$\\overrightarrow{AI}=\\overrightarrow{AB}+\\overrightarrow{BI}=\\overrightarrow{AB}+\\frac12\\overrightarrow{BC}=\\overrightarrow{AB}+\\frac12(\\overrightarrow{AC}-\\overrightarrow{AB})=\\frac12\\overrightarrow{AB}+\\frac12\\overrightarrow{AC}$. Si AB et AI étaient colinéaires, il existerait $\\lambda$ tel que $\\frac12\\vec\\imath+\\frac12\\vec\\jmath=\\lambda\\vec\\imath$ (avec $\\vec\\imath=\\overrightarrow{AB}$, $\\vec\\jmath=\\overrightarrow{AC}$), soit $\\frac12\\vec\\jmath=\\left(\\lambda-\\frac12\\right)\\vec\\imath$ : cela rendrait $\\vec\\imath$ et $\\vec\\jmath$ colinéaires, ce qui est exclu car A,B,C ne sont pas alignés. Donc AB et AI ne sont pas colinéaires, et forment une base du plan."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un plan de dimension 2, deux vecteurs non colinéaires forment automatiquement une base : aucun troisième vecteur n'est nécessaire, et aucune vérification supplémentaire n'est requise.",
+        "Trois points A, B, C sont alignés si et seulement si AB et AC sont colinéaires.",
+        "Par contraposée : A, B, C non alignés entraîne directement que (AB;AC) est une base du plan.",
+        "Sans coordonnées explicites dans l'énoncé, cet argument géométrique remplace complètement un calcul de déterminant.",
+        "Ce résultat sert de point de départ classique à tout exercice qui construit ensuite un endomorphisme ou une matrice dans la base (AB;AC)."
+      ]
+    }
+  ]
+}

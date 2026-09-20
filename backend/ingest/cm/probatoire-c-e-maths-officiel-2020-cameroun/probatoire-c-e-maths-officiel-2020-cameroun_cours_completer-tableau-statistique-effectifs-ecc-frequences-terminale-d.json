@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-completer-tableau-statistique-effectifs-ecc-frequences-terminale-d",
+  "meta": {
+    "titre": "Compléter un tableau statistique croisant effectifs et effectifs cumulés croissants",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Statistiques - Tableaux d'effectifs",
+    "duree_estimee_min": 18,
+    "tags": [
+      "effectif cumulé croissant",
+      "tableau statistique",
+      "effectif total"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau statistique partiellement donné (avec seulement quelques effectifs ou quelques effectifs cumulés) peut presque toujours être complété entièrement à l'aide de deux relations très simples entre effectifs et effectifs cumulés croissants."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire : classe, effectif, effectif cumulé croissant (ECC)",
+        "Addition et soustraction élémentaires"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "ECC(k) = ECC(k-1) + effectif(k)",
+      "contenu_markdown": "Pour une série groupée en classes ordonnées, l'effectif cumulé croissant d'une classe est la somme de son propre effectif et de l'effectif cumulé croissant de la classe précédente : $\\mathrm{ECC}(k)=\\mathrm{ECC}(k-1)+n_k$. Deux conséquences immédiates permettent de compléter n'importe quel tableau incomplet : (1) l'effectif d'une classe s'obtient par soustraction, $n_k=\\mathrm{ECC}(k)-\\mathrm{ECC}(k-1)$ ; (2) le dernier effectif cumulé croissant est toujours égal à l'effectif total $N$ de la population.",
+      "formule_principale": "\\mathrm{ECC}(k)=\\mathrm{ECC}(k-1)+n_k \\quad\\text{et}\\quad \\mathrm{ECC}(\\text{dernière classe})=N"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série a 5 classes d'amplitude 3 débutant à $[0;3[$, d'effectif total $N=60$. On sait que l'effectif de $[0;3[$ est 18 (avec donc $\\mathrm{ECC}([0;3[)=18$) et que $\\mathrm{ECC}([3;6[)=26$. Compléter le tableau, sachant que les effectifs des trois dernières classes sont respectivement 12, 20 et 2.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Effectif de la 2e classe par soustraction",
+          "justification": "n_2 = ECC(2) - ECC(1)",
+          "resultat_markdown": "$n([3;6[)=26-18=8$"
+        },
+        {
+          "numero": 2,
+          "action": "ECC des classes suivantes par addition progressive",
+          "justification": "ECC(k) = ECC(k-1) + n_k, avec les effectifs 12, 20, 2 donnés",
+          "resultat_markdown": "$\\mathrm{ECC}([6;9[)=26+12=38$, $\\mathrm{ECC}([9;12[)=38+20=58$, $\\mathrm{ECC}([12;15[)=58+2=60$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la cohérence avec l'effectif total",
+          "justification": "le dernier ECC doit être égal à N",
+          "resultat_markdown": "Dernier ECC $=60=N$ : cohérent. Somme des effectifs $18+8+12+20+2=60$ également cohérente."
+        }
+      ],
+      "conclusion_markdown": "Le tableau complet donne les effectifs $18,8,12,20,2$ et les ECC $18,26,38,58,60$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre effectif d'une classe et effectif cumulé croissant de cette classe.",
+          "pourquoi_faux": "L'effectif cumulé croissant d'une classe inclut TOUS les individus des classes qui la précèdent, pas seulement ceux de la classe en cours : les deux notions ne coïncident que pour la toute première classe.",
+          "correction_markdown": "Avant tout calcul, identifie clairement dans l'énoncé si le nombre donné est un effectif propre à une classe ou un cumul depuis le début de la série."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que le dernier ECC calculé correspond bien à l'effectif total annoncé par ailleurs dans l'énoncé.",
+          "pourquoi_faux": "Cette vérification est le principal garde-fou contre une erreur de calcul propagée sur tout le tableau : si le dernier ECC ne tombe pas sur N, une erreur s'est glissée quelque part.",
+          "correction_markdown": "Termine systématiquement le remplissage d'un tableau statistique par cette vérification de cohérence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série a pour ECC successifs 5, 12, 20, 30. Donner les effectifs de chaque classe.",
+          "solution_markdown": "$n_1=5$, $n_2=12-5=7$, $n_3=20-12=8$, $n_4=30-20=10$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de 4 classes a pour effectif total $N=50$. Les trois premiers effectifs sont 10, 15, 12. Calculer l'effectif de la dernière classe et l'ECC de chaque classe.",
+          "solution_markdown": "Effectif de la 4e classe : $50-(10+15+12)=13$. ECC : $10,\\ 25,\\ 37,\\ 50$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 5 classes a pour ECC $12,?,45,?,80$ (effectif total 80), et l'on sait que les effectifs des classes 2 et 4 sont égaux. Déterminer cet effectif commun.",
+          "solution_markdown": "Soit $x$ l'effectif commun des classes 2 et 4. $\\mathrm{ECC}(2)=12+x$, $\\mathrm{ECC}(3)=12+x+n_3=45$, $\\mathrm{ECC}(4)=45+x$, $\\mathrm{ECC}(5)=45+x+n_5=80$. On ne connaît pas directement $n_3$ et $n_5$, mais la somme totale des effectifs vaut 80 : $12+x+n_3+x+n_5=80$, soit $n_3+n_5=68-2x$. Par ailleurs $n_3=45-12-x=33-x$ et $n_5=80-45-x=35-x$, donc $n_3+n_5=68-2x$ : l'équation est automatiquement vérifiée quel que soit $x$, ce qui montre qu'une seule contrainte supplémentaire (ex. valeur de $n_3$) est nécessaire pour déterminer $x$ ; l'exercice illustre qu'un tableau incomplet n'est pas toujours entièrement déterminé sans donnée supplémentaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux relations suffisent à compléter tout tableau statistique à classes : ECC(k) = ECC(k-1) + effectif(k), et le dernier ECC vaut toujours l'effectif total N.",
+        "Termine toujours par une double vérification : somme des effectifs = N, et dernier ECC = N."
+      ]
+    }
+  ]
+}

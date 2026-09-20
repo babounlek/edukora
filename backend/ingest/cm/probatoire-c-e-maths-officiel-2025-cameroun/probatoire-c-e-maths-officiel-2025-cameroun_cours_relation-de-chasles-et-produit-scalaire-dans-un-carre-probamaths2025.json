@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-relation-de-chasles-et-produit-scalaire-dans-un-carre-probamaths2025",
+  "meta": {
+    "titre": "Relation de Chasles et calcul d'un produit scalaire dans un carré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie vectorielle - Produit scalaire",
+    "duree_estimee_min": 25,
+    "tags": [
+      "relation de Chasles",
+      "produit scalaire",
+      "bilinéarité",
+      "carré"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2025-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2025",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2025-cameroun-ex3-q1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer le produit scalaire de deux vecteurs joignant un sommet d'un carré à des milieux de côtés semble complexe tant que l'on ne pense pas à les réexprimer, via la relation de Chasles, dans les deux directions naturelles du carré : ses deux côtés issus du même sommet, orthogonaux et de même longueur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles pour les vecteurs",
+        "Bilinéarité du produit scalaire",
+        "Produit scalaire de deux vecteurs orthogonaux (nul) et d'un vecteur avec lui-même (norme au carré)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décomposer avant de calculer",
+      "contenu_markdown": "Dans un carré $ABCD$ de côté $a$, les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AD}$ (deux côtés issus du même sommet) sont orthogonaux et de même norme $a$ : $\\overrightarrow{AB}\\cdot\\overrightarrow{AB}=a^2$, $\\overrightarrow{AD}\\cdot\\overrightarrow{AD}=a^2$, $\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=0$. Pour calculer le produit scalaire de deux vecteurs quelconques de la figure (joignant des sommets ou des milieux de côtés), on les décompose d'abord, par la relation de Chasles, en combinaisons de $\\overrightarrow{AB}$ et $\\overrightarrow{AD}$, puis on développe le produit scalaire par bilinéarité : $(\\alpha\\overrightarrow{AB}+\\beta\\overrightarrow{AD})\\cdot(\\gamma\\overrightarrow{AB}+\\delta\\overrightarrow{AD})=\\alpha\\gamma\\, a^2+\\beta\\delta\\, a^2$ (les termes croisés s'annulent par orthogonalité).",
+      "formule_principale": "(\\alpha\\overrightarrow{AB}+\\beta\\overrightarrow{AD})\\cdot(\\gamma\\overrightarrow{AB}+\\delta\\overrightarrow{AD})=(\\alpha\\gamma+\\beta\\delta)\\,a^2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré de côté $a$. $K$ est le milieu de $[AB]$. Calculer $\\overrightarrow{AC}\\cdot\\overrightarrow{DK}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer AC",
+          "justification": "AC est la diagonale, somme des deux côtés issus de A",
+          "resultat_markdown": "$\\overrightarrow{AC}=\\overrightarrow{AB}+\\overrightarrow{AD}$."
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer DK",
+          "justification": "Chasles via A",
+          "resultat_markdown": "$\\overrightarrow{DK}=\\overrightarrow{DA}+\\overrightarrow{AK}=-\\overrightarrow{AD}+\\frac12\\overrightarrow{AB}$."
+        },
+        {
+          "numero": 3,
+          "action": "Développer le produit scalaire par bilinéarité",
+          "justification": "Utiliser AB.AB=a², AD.AD=a², AB.AD=0",
+          "resultat_markdown": "$\\overrightarrow{AC}\\cdot\\overrightarrow{DK}=(\\overrightarrow{AB}+\\overrightarrow{AD})\\cdot\\left(\\frac12\\overrightarrow{AB}-\\overrightarrow{AD}\\right)=\\frac12a^2-a^2=-\\frac12a^2$."
+        }
+      ],
+      "conclusion_markdown": "$\\overrightarrow{AC}\\cdot\\overrightarrow{DK}=-\\dfrac{a^2}{2}$ : la décomposition dans la base (AB, AD) rend le calcul mécanique, sans jamais avoir besoin de mesurer un angle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier un terme croisé lors du développement de la bilinéarité (4 produits à développer pour deux sommes de deux vecteurs).",
+          "pourquoi_faux": "Même si deux des quatre termes s'annulent par orthogonalité, les deux autres portent le résultat final : les omettre fausse tout le calcul.",
+          "correction_markdown": "Développer systématiquement les 4 termes avant de simplifier, jamais de tête."
+        },
+        {
+          "erreur_markdown": "Décomposer les vecteurs dans des directions différentes pour les deux vecteurs du produit scalaire.",
+          "pourquoi_faux": "Le calcul par bilinéarité n'est simple que si les deux vecteurs sont exprimés dans la MÊME base de deux vecteurs orthogonaux.",
+          "correction_markdown": "Toujours choisir une seule paire de côtés orthogonaux issus d'un même sommet comme référence pour les deux vecteurs à décomposer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABCD$ carré de côté $a$. Calculer $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}$.",
+          "solution_markdown": "$\\overrightarrow{AC}=\\overrightarrow{AB}+\\overrightarrow{AD}$, donc $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}=\\overrightarrow{AB}\\cdot\\overrightarrow{AB}+\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=a^2+0=a^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABCD$ carré de côté $a$, $K$ milieu de $[AB]$, $L$ milieu de $[AD]$. Calculer $\\overrightarrow{DK}\\cdot\\overrightarrow{BL}$.",
+          "solution_markdown": "$\\overrightarrow{DK}=-\\overrightarrow{AD}+\\frac12\\overrightarrow{AB}$, $\\overrightarrow{BL}=-\\overrightarrow{AB}+\\frac12\\overrightarrow{AD}$. Produit : $\\left(\\frac12\\overrightarrow{AB}-\\overrightarrow{AD}\\right)\\cdot\\left(-\\overrightarrow{AB}+\\frac12\\overrightarrow{AD}\\right)=-\\frac12a^2-\\frac12a^2=-a^2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCD$ carré de côté $a$, $K$ milieu de $[BC]$. Calculer $\\overrightarrow{AK}\\cdot\\overrightarrow{AK}$ et en déduire $AK$.",
+          "solution_markdown": "$\\overrightarrow{AK}=\\overrightarrow{AB}+\\overrightarrow{BK}=\\overrightarrow{AB}+\\frac12\\overrightarrow{AD}$ (car $\\overrightarrow{BC}=\\overrightarrow{AD}$). $\\overrightarrow{AK}\\cdot\\overrightarrow{AK}=a^2+\\frac14a^2=\\frac54a^2$. Donc $AK=\\sqrt{\\frac54a^2}=\\frac{a\\sqrt5}{2}$ (cohérent avec le calcul par Pythagore dans le triangle $ABK$ rectangle en $B$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un carré $ABCD$ de côté $a$ : $\\overrightarrow{AB}\\cdot\\overrightarrow{AB}=\\overrightarrow{AD}\\cdot\\overrightarrow{AD}=a^2$ et $\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=0$.",
+        "Décomposer tout vecteur de la figure, via Chasles, en combinaison de deux côtés orthogonaux issus d'un même sommet, puis développer le produit scalaire par bilinéarité en 4 termes."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-transmission-signe-constant-par-recurrence-1ere-ce",
+  "meta": {
+    "titre": "Montrer par récurrence qu'une suite garde un signe constant",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Récurrence",
+    "duree_estimee_min": 25,
+    "tags": [
+      "récurrence",
+      "signe constant",
+      "suite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB1b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour montrer qu'une suite reste toujours positive (ou toujours strictement inférieure à une valeur), le raisonnement par récurrence est l'outil naturel : il suffit de vérifier que la propriété se transmet d'un rang au suivant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Principe du raisonnement par récurrence (initialisation, hérédité, conclusion)",
+        "Étude de fonction ou de signe pour établir l'étape d'hérédité"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Récurrence pour un signe constant",
+      "contenu_markdown": "Pour montrer qu'une propriété du type $P(n): u_n\\in I$ (I un intervalle, ou $u_n>a$, ou $u_n\\neq a$) est vraie pour tout $n$, on procède par récurrence : (1) Initialisation : vérifier $P(0)$ directement à partir de la valeur donnée de $u_0$. (2) Hérédité : supposer $P(n)$ vraie et montrer que $u_{n+1}=g(u_n)$ vérifie encore $P(n+1)$, en utilisant les propriétés (signe, sens de variation) de la fonction $g$ sur l'intervalle $I$. (3) Conclure par le principe de récurrence que $P(n)$ est vraie pour tout entier $n$.",
+      "formule_principale": "P(0) \\text{ vraie} \\ \\text{et} \\ [P(n)\\Rightarrow P(n+1)] \\ \\Longrightarrow \\ \\forall n,\\ P(n)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$u_0=2$ et $u_{n+1}=\\dfrac{2u_n-1}{u_n}$. Montrer par récurrence que $u_n\\neq0$ pour tout $n$, sachant que $u_n>1$ pour tout $n$ (déjà établi).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialisation",
+          "justification": "u_0=2",
+          "resultat_markdown": "$u_0=2\\neq0$"
+        },
+        {
+          "numero": 2,
+          "action": "Hérédité",
+          "justification": "on suppose u_n>1 (fait déjà acquis), donc u_n≠0",
+          "resultat_markdown": "puisque $u_n>1>0$, $u_n\\neq0$, donc $u_{n+1}=\\dfrac{2u_n-1}{u_n}$ est bien défini"
+        }
+      ],
+      "conclusion_markdown": "Pour tout $n$, $u_n\\neq0$, ce qui garantit que la suite est bien définie à tout rang."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Omettre l'étape d'initialisation en pensant qu'elle est « évidente ».",
+          "pourquoi_faux": "Sans initialisation vérifiée, l'hérédité seule ne prouve rien : une propriété peut se transmettre indéfiniment sans jamais être vraie au départ.",
+          "correction_markdown": "Toujours écrire explicitement la vérification numérique de l'initialisation, même quand elle semble immédiate."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$u_0=3$, $u_{n+1}=u_n+2$. Montrer par récurrence que $u_n>0$ pour tout $n$.",
+          "solution_markdown": "Initialisation : $u_0=3>0$. Hérédité : si $u_n>0$, alors $u_{n+1}=u_n+2>2>0$. Conclusion : $u_n>0$ pour tout $n$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$u_0=0{,}5$, $u_{n+1}=u_n^2$. Montrer par récurrence que $0<u_n<1$ pour tout $n$.",
+          "solution_markdown": "Initialisation : $0<0{,}5<1$. Hérédité : si $0<u_n<1$, alors $0<u_n^2<u_n<1$ (car élever au carré un nombre entre 0 et 1 le diminue strictement), donc $0<u_{n+1}<1$. Conclusion établie."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la propriété de signe établie par récurrence est-elle indispensable avant d'étudier le sens de variation de la suite avec la fonction associée ?",
+          "solution_markdown": "Le sens de variation de $g$ n'est en général valable que sur un intervalle précis (là où $g$ est monotone) ; sans garantir que tous les $u_n$ restent dans cet intervalle, on ne peut pas appliquer la monotonie de $g$ pour comparer $u_{n+1}$ et $u_n$, ni pour justifier que la suite converge vers un point fixe situé dans cet intervalle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour garantir qu'une suite récurrente reste dans un intervalle donné à tout rang, on procède par récurrence : initialisation numérique, puis hérédité s'appuyant sur les propriétés de la fonction associée."
+      ]
+    }
+  ]
+}

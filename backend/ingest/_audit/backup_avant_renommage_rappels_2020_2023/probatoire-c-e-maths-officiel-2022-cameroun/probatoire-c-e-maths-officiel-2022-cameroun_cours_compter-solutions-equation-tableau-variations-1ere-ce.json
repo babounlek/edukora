@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-compter-solutions-equation-tableau-variations-1ere-ce",
+  "meta": {
+    "titre": "Compter le nombre de solutions d'une équation à partir du tableau de variations",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - théorème de la bijection",
+    "duree_estimee_min": 22,
+    "tags": [
+      "fonction polynôme",
+      "théorème de la bijection",
+      "nombre de solutions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-1b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de fois la courbe d'une fonction croise-t-elle l'axe des abscisses ? Sans tracer la courbe point par point, le tableau de variations, combiné au théorème de la bijection, répond à cette question avec une certitude totale : c'est l'outil qui transforme une intuition graphique en une preuve rigoureuse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir étudier le signe d'une dérivée et en déduire un tableau de variations",
+        "Connaître le théorème des valeurs intermédiaires et son corollaire, le théorème de la bijection",
+        "Savoir calculer des limites en +∞ et -∞ pour une fonction polynôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le théorème de la bijection, intervalle par intervalle",
+      "contenu_markdown": "Si $f$ est continue et STRICTEMENT monotone sur un intervalle $I$, alors $f$ réalise une bijection de $I$ vers l'intervalle image $f(I)$ : l'équation $f(x)=0$ admet donc, sur $I$, **une unique solution si et seulement si $0$ appartient à $f(I)$** (l'intervalle délimité par les valeurs de $f$, ou ses limites, aux extrémités de $I$), et **aucune solution sinon**.\n\n**Méthode pour compter le nombre total de solutions sur $\\mathbb R$.** 1) Dresser le tableau de variations complet de $f$ (signe de $f'$, limites, valeurs aux points où $f'=0$). 2) Découper $\\mathbb R$ en intervalles de monotonie stricte. 3) Sur CHAQUE intervalle, vérifier si $0$ est strictement compris entre les deux valeurs (ou limites) aux bornes ; si oui, une solution unique y existe. 4) Additionner le nombre de solutions trouvées sur chaque intervalle : les intervalles étant disjoints, les solutions le sont aussi.",
+      "formule_principale": "f \\text{ continue et strictement monotone sur } I \\implies f(x)=0 \\text{ a au plus une solution sur } I"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $f(x)=\\dfrac13x^3+\\dfrac32x^2-4x-\\dfrac{31}{6}$ s'annule exactement trois fois sur $\\mathbb R$, sachant que $f'(x)=x^2+3x-4=(x+4)(x-1)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Étudier le signe de f' et dresser les trois intervalles de monotonie",
+          "justification": "f'(x)=(x+4)(x-1) est un trinôme positif à l'extérieur des racines -4 et 1",
+          "resultat_markdown": "$f$ croissante sur $]-\\infty;-4]$, décroissante sur $[-4;1]$, croissante sur $[1;+\\infty[$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les valeurs (ou limites) aux bornes de chaque intervalle",
+          "justification": "on évalue f aux points de rupture et on calcule les limites à l'infini",
+          "resultat_markdown": "$\\lim_{-\\infty}f=-\\infty$, $f(-4)=\\dfrac{27}{2}$, $f(1)=-\\dfrac{22}{3}$, $\\lim_{+\\infty}f=+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que 0 est bien encadré sur chacun des trois intervalles",
+          "justification": "on compare 0 aux valeurs trouvées à l'étape 2",
+          "resultat_markdown": "$0\\in]-\\infty;\\frac{27}{2}[$, $0\\in]-\\frac{22}{3};\\frac{27}{2}[$, $0\\in]-\\frac{22}{3};+\\infty[$ : les trois conditions sont vérifiées"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par addition",
+          "justification": "une solution unique sur chacun des trois intervalles disjoints",
+          "resultat_markdown": "3 solutions au total"
+        }
+      ],
+      "conclusion_markdown": "L'équation f(x)=0 admet exactement trois solutions réelles distinctes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer le théorème de la bijection sur ℝ tout entier au lieu de le découper en intervalles",
+          "pourquoi_faux": "f n'est pas monotone sur ℝ tout entier (elle change de sens de variation), donc le théorème de la bijection ne s'applique pas directement sur ℝ : il ne s'applique que sur un intervalle où f est STRICTEMENT monotone.",
+          "correction_markdown": "Découpe systématiquement le domaine en intervalles de monotonie stricte avant d'appliquer le théorème sur chacun séparément."
+        },
+        {
+          "erreur_markdown": "Se contenter de constater un changement de signe global sans traiter chaque intervalle",
+          "pourquoi_faux": "Un changement de signe entre deux valeurs éloignées ne dit rien sur le nombre EXACT de solutions si la fonction n'est pas monotone entre ces deux valeurs : il pourrait y avoir 1, 3, 5... solutions.",
+          "correction_markdown": "Compte toujours une solution par intervalle de monotonie où 0 est encadré, jamais une seule fois pour l'ensemble du domaine."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fonction $g$ est strictement croissante sur $\\mathbb R$, avec $\\lim_{-\\infty}g=-\\infty$ et $\\lim_{+\\infty}g=+\\infty$. Combien de solutions l'équation $g(x)=0$ admet-elle ?",
+          "solution_markdown": "g est continue (implicite pour une fonction usuelle) et strictement monotone sur ℝ tout entier, et 0 est bien encadré par les limites -∞ et +∞. D'après le théorème de la bijection, l'équation g(x)=0 admet exactement UNE solution sur ℝ."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction $h$ admet le tableau de variations suivant : croissante sur $]-\\infty;0]$ de $-\\infty$ à $2$, puis décroissante sur $[0;+\\infty[$ de $2$ à $-\\infty$. Combien de solutions l'équation $h(x)=0$ admet-elle ?",
+          "solution_markdown": "Sur $]-\\infty;0]$ : h croissante de -∞ à 2, et 0∈]-∞;2[, donc une solution. Sur $[0;+\\infty[$ : h décroissante de 2 à -∞, et 0∈]-∞;2[, donc une solution également. Au total : 2 solutions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction $k$ est strictement croissante sur $]-\\infty;-1]$ de $-\\infty$ à $-3$, strictement décroissante sur $[-1;2]$ de $-3$ à $-5$, puis strictement croissante sur $[2;+\\infty[$ de $-5$ à $+\\infty$. Combien de solutions l'équation $k(x)=0$ admet-elle ?",
+          "solution_markdown": "Sur $]-\\infty;-1]$ : k va de -∞ à -3, et 0 n'est PAS dans ]-∞;-3[ (car 0 > -3) : aucune solution ici. Sur $[-1;2]$ : k va de -3 à -5, et 0 n'est pas dans [-5;-3] : aucune solution. Sur $[2;+\\infty[$ : k va de -5 à +∞, et 0∈]-5;+∞[ : une solution. Au total : 1 seule solution, bien que la fonction change deux fois de sens de variation - un exemple qui montre qu'il faut vérifier CHAQUE intervalle sans présumer du résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème de la bijection ne s'applique que sur un intervalle où la fonction est continue ET strictement monotone.",
+        "Découpe toujours le domaine d'étude en intervalles de monotonie stricte à partir du tableau de variations.",
+        "Sur chaque intervalle, une solution existe si et seulement si 0 est strictement encadré par les valeurs (ou limites) aux bornes.",
+        "Le nombre total de solutions est la somme des solutions trouvées sur chaque intervalle, jamais une déduction globale à partir d'un seul changement de signe.",
+        "Cette méthode est incontournable au Probatoire et au Baccalauréat dès qu'une question demande de « montrer que l'équation f(x)=0 admet exactement n solutions »."
+      ]
+    }
+  ]
+}

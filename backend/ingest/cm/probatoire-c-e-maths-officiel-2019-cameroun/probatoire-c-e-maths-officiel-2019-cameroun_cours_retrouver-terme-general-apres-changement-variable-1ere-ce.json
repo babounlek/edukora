@@ -1,0 +1,103 @@
+{
+  "cours_id": "cours-retrouver-terme-general-apres-changement-variable-1ere-ce",
+  "meta": {
+    "titre": "Revenir de v_n à u_n après un changement de suite auxiliaire",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Changement de variable",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suite auxiliaire",
+      "changement de variable",
+      "fonction réciproque"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB3c",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver le terme général de la suite auxiliaire $(v_n)$ n'est jamais le but final : il faut ensuite « défaire » le changement de variable pour retrouver l'expression explicite de la suite d'origine $(u_n)$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'une équation simple pour isoler une variable (ici $u_n$ à partir de $v_n$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Revenir à u_n à partir de v_n",
+      "contenu_markdown": "Si $v_n=h(u_n)$ pour une fonction $h$ inversible, et que le terme général $v_n$ est connu explicitement, on retrouve $u_n$ en résolvant l'équation $v_n=h(u_n)$ d'inconnue $u_n$, c'est-à-dire en appliquant la réciproque de $h$ : $u_n=h^{-1}(v_n)$.",
+      "formule_principale": "v_n=h(u_n) \\ \\text{connu} \\ \\Longrightarrow \\ u_n=h^{-1}(v_n)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$v_n=\\dfrac{1}{u_n-1}=n+1$ (établi). Exprimer $u_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler u_n - 1",
+          "justification": "inverser la relation v_n = 1/(u_n - 1)",
+          "resultat_markdown": "$u_n-1=\\dfrac{1}{v_n}=\\dfrac{1}{n+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler u_n",
+          "justification": "ajouter 1 des deux côtés",
+          "resultat_markdown": "$u_n=1+\\dfrac{1}{n+1}=\\dfrac{n+1+1}{n+1}=\\dfrac{n+2}{n+1}$"
+        }
+      ],
+      "conclusion_markdown": "$u_n=\\dfrac{n+2}{n+1}$ pour tout $n\\geq0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de vérifier que $v_n\\neq0$ avant d'inverser la relation $v_n=\\frac{1}{u_n-1}$ en $u_n-1=\\frac{1}{v_n}$.",
+          "pourquoi_faux": "Diviser par $v_n$ n'a de sens que si $v_n$ ne s'annule jamais ; si la suite arithmétique $(v_n)$ pouvait s'annuler à un rang donné, l'inversion échouerait à ce rang.",
+          "correction_markdown": "Toujours vérifier, à partir de la formule explicite de $v_n$, qu'elle ne s'annule pour aucune valeur de $n$ dans le domaine étudié, avant d'inverser la relation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$v_n=u_n-3$ et $v_n=2n$. Exprimer $u_n$.",
+          "solution_markdown": "$u_n=v_n+3=2n+3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$v_n=\\dfrac{1}{u_n}$ et $v_n=n+1$. Exprimer $u_n$.",
+          "solution_markdown": "$u_n=\\dfrac{1}{v_n}=\\dfrac{1}{n+1}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$v_n=\\sqrt{u_n}$ (avec $u_n\\geq0$) et $v_n=n$. Exprimer $u_n$ et vérifier la cohérence pour $n=0$.",
+          "solution_markdown": "$u_n=v_n^2=n^2$. Pour $n=0$ : $u_0=0$ et $v_0=\\sqrt{0}=0=n$, cohérent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour revenir de $v_n$ à $u_n$, on résout l'équation qui définit $v_n$ en fonction de $u_n$, en veillant à la validité de chaque inversion (dénominateurs non nuls, signes pour une racine)."
+      ]
+    }
+  ]
+}

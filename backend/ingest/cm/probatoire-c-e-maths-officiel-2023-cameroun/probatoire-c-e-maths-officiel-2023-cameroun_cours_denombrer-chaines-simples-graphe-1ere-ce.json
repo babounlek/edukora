@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-denombrer-chaines-simples-graphe-1ere-ce",
+  "meta": {
+    "titre": "Dénombrer les chaînes simples entre deux sommets d'un graphe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Graphes - Chaînes et chemins",
+    "duree_estimee_min": 25,
+    "tags": [
+      "chaîne dans un graphe",
+      "graphe non orienté",
+      "exploration systématique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-2-4",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de façons différentes existe-t-il de transmettre une information d'un village à un autre, en passant par des intermédiaires, sans jamais repasser deux fois par le même village ? Répondre à cette question demande une méthode d'exploration systématique, sans quoi on risque d'en oublier ou d'en compter deux fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire de base des graphes (sommet, arête, voisin)",
+        "Modélisation d'une situation par un graphe non orienté"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Exploration systématique des chaînes simples",
+      "contenu_markdown": "Une chaîne (ou chemin) entre deux sommets $X$ et $Y$ d'un graphe est une suite de sommets consécutivement reliés par une arête, commençant en $X$ et finissant en $Y$. Une chaîne est dite simple lorsqu'elle ne passe pas deux fois par le même sommet. Pour dénombrer toutes les chaînes simples entre $X$ et $Y$, on explore systématiquement, depuis $X$, tous les voisins non encore visités, en poursuivant récursivement la recherche jusqu'à atteindre $Y$ (on enregistre alors la chaîne trouvée) ou une impasse (aucun voisin non visité ne reste, sans avoir atteint $Y$ : cette branche s'arrête sans donner de chaîne).",
+      "formule_principale": "\\text{chaîne simple}:\\ X=s_0,s_1,\\dots,s_k=Y,\\ \\{s_i,s_{i+1}\\}\\in A,\\ s_i\\text{ tous distincts}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le graphe d'adjacence $B$ est adjacent a $\\{E,N,M\\}$, $E$ est adjacent a $\\{B,M,T\\}$, $M$ est adjacent a $\\{B,E,N,T\\}$, $N$ est adjacent a $\\{B,M,T\\}$, $T$ est adjacent a $\\{E,M,N\\}$, dénombrer toutes les chaînes simples de $B$ à $N$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher la chaîne directe",
+          "justification": "B et N sont-ils reliés directement ?",
+          "resultat_markdown": "Oui : $B\\to N$"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher les chaînes à un intermédiaire",
+          "justification": "Un sommet voisin à la fois de B et de N convient",
+          "resultat_markdown": "$M$ est voisin des deux : $B\\to M\\to N$"
+        },
+        {
+          "numero": 3,
+          "action": "Explorer systématiquement les branches restantes (B→E→... et B→M→...)",
+          "justification": "On poursuit chaque branche non encore épuisée sans repasser par un sommet déjà visité, jusqu'à atteindre N ou une impasse",
+          "resultat_markdown": "$B\\to E\\to M\\to N$, $B\\to E\\to T\\to N$, $B\\to M\\to T\\to N$, $B\\to E\\to M\\to T\\to N$, $B\\to E\\to T\\to M\\to N$, $B\\to M\\to E\\to T\\to N$"
+        }
+      ],
+      "conclusion_markdown": "On dénombre en tout $8$ chaînes simples de $B$ à $N$, en combinant la chaîne directe, la chaîne à un intermédiaire et les six chaînes à deux ou trois intermédiaires obtenues par exploration systématique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la chaîne directe (l'arête reliant immédiatement les deux sommets recherchés) parce qu'elle semble « trop simple » pour être comptée.",
+          "pourquoi_faux": "Une chaîne directe est une chaîne comme une autre (de longueur 1) : elle doit figurer dans le décompte si l'arête existe.",
+          "correction_markdown": "Commence toujours ta recherche par vérifier l'existence d'une arête directe entre les deux sommets."
+        },
+        {
+          "erreur_markdown": "Explorer une branche sans retirer de la liste des voisins disponibles les sommets déjà visités sur ce chemin.",
+          "pourquoi_faux": "Une chaîne SIMPLE ne repasse jamais par un même sommet ; ignorer cette règle produit des chaînes invalides ou fait tourner la recherche indéfiniment.",
+          "correction_markdown": "Tiens à jour, pour chaque branche explorée, la liste des sommets déjà utilisés, et ne considère jamais un voisin qui y figure déjà."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le graphe triangle $\\{P,Q\\},\\{Q,R\\},\\{R,P\\}$, dénombrer les chaînes simples de $P$ à $R$.",
+          "solution_markdown": "Deux chaînes : $P\\to R$ (directe) et $P\\to Q\\to R$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un graphe complet à 4 sommets $A,B,C,D$ (toutes les paires sont reliées), dénombrer les chaînes simples de $A$ à $B$.",
+          "solution_markdown": "Chaîne directe $A\\to B$ ; chaînes à un intermédiaire $A\\to C\\to B$ et $A\\to D\\to B$ ; chaînes à deux intermédiaires $A\\to C\\to D\\to B$ et $A\\to D\\to C\\to B$. Total : $5$ chaînes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le graphe d'adjacence $A$ est adjacent a $\\{B,C\\}$, $B$ est adjacent a $\\{A,C,D\\}$, $C$ est adjacent a $\\{A,B,D\\}$, $D$ est adjacent a $\\{B,C\\}$, dénombrer toutes les chaînes simples de $A$ à $D$.",
+          "solution_markdown": "$A$ n'est pas relié directement à $D$. Chaînes à un intermédiaire : $A\\to B\\to D$, $A\\to C\\to D$. Chaînes à deux intermédiaires : $A\\to B\\to C\\to D$, $A\\to C\\to B\\to D$. Total : $4$ chaînes simples."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une chaîne simple entre deux sommets ne repasse jamais par un même sommet : c'est la règle qui structure toute la recherche.",
+        "Commence toujours par vérifier l'existence d'une chaîne directe (une seule arête) avant d'explorer les chaînes plus longues.",
+        "Explore méthodiquement, sommet voisin par sommet voisin, en tenant à jour la liste des sommets déjà utilisés sur chaque branche : c'est la seule façon de ne rien oublier ni de rien compter deux fois.",
+        "Au Probatoire, ce type de question teste la rigueur de la méthode bien plus que la difficulté du calcul : une présentation organisée (par nombre croissant d'intermédiaires) convainc le correcteur qu'aucune chaîne n'a été oubliée."
+      ]
+    }
+  ]
+}

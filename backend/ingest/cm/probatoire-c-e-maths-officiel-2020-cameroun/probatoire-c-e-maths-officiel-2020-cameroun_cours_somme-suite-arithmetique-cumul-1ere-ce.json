@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-somme-suite-arithmetique-cumul-1ere-ce",
+  "meta": {
+    "titre": "Somme des termes d'une suite arithmétique de versements croissants",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Somme d'une suite arithmétique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "somme d'une suite arithmétique",
+      "versements croissants",
+      "cumul"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "5",
+    "rappel_id": "r-5-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand chaque versement mensuel est lui-même plus élevé que le précédent d'un montant fixe, le total accumulé après plusieurs mois n'est plus un simple produit : c'est la somme de tous les termes d'une suite arithmétique, calculable en une seule formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Terme général d'une suite arithmétique",
+        "Formule de la somme des n premiers termes d'une suite arithmétique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Somme = nombre de termes × moyenne du premier et du dernier",
+      "contenu_markdown": "Pour une suite arithmétique $(A_k)$ de premier terme $A_0$ et de raison $d$, la somme des $n+1$ premiers termes ($A_0$ à $A_n$) vaut $S=(n+1)\\times\\dfrac{A_0+A_n}{2}$, où $A_n=A_0+nd$ est le dernier terme de la somme. Cette formule s'interprète comme : (nombre de termes) fois (moyenne arithmétique du premier et du dernier terme).",
+      "formule_principale": "S=(n+1)\\times\\dfrac{A_0+A_n}{2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un versement mensuel commence à 80 000 FCFA et augmente de 8 000 FCFA chaque mois. Calculer le total cumulé après 20 versements (mois 0 à 19).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier premier terme et raison",
+          "justification": "Énoncé du problème",
+          "resultat_markdown": "$A_0=80\\,000$, $d=8\\,000$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le dernier terme",
+          "justification": "A_19 = A_0 + 19d",
+          "resultat_markdown": "$A_{19}=80\\,000+19\\times8\\,000=232\\,000$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de la somme",
+          "justification": "20 termes, moyenne du premier et du dernier",
+          "resultat_markdown": "$S=20\\times\\dfrac{80\\,000+232\\,000}{2}=20\\times156\\,000$"
+        }
+      ],
+      "conclusion_markdown": "$S=3\\,120\\,000$ FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le DERNIER terme de la suite avec la SOMME totale de tous les termes.",
+          "pourquoi_faux": "Le dernier versement (ici 232 000 FCFA) n'est que le montant reçu le dernier mois, alors que la question porte sur le total CUMULÉ de tous les versements depuis le début.",
+          "correction_markdown": "Relis toujours attentivement si la question porte sur un terme particulier de la suite ou sur la somme de plusieurs termes."
+        },
+        {
+          "erreur_markdown": "Se tromper sur le nombre de termes à sommer (compter $n$ termes au lieu de $n+1$, ou l'inverse).",
+          "pourquoi_faux": "Si les indices vont de 0 à $n$ inclus, il y a exactement $n+1$ termes (et non $n$) : oublier le terme d'indice 0 est une erreur fréquente de comptage.",
+          "correction_markdown": "Compte explicitement : « du terme d'indice 0 au terme d'indice n, cela fait n+1 termes », avant d'appliquer la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la somme des versements $A_0=1\\,000$, $d=200$, pour $k=0$ à $k=9$ (10 versements).",
+          "solution_markdown": "$A_9=1\\,000+9\\times200=2\\,800$. $S=10\\times\\dfrac{1\\,000+2\\,800}{2}=10\\times1\\,900=19\\,000$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un artisan facture 5 000 FCFA le premier mois, avec une hausse de 500 FCFA par mois. Quel est son revenu cumulé sur une année complète (12 mois, k=0 à k=11) ?",
+          "solution_markdown": "$A_{11}=5\\,000+11\\times500=10\\,500$. $S=12\\times\\dfrac{5\\,000+10\\,500}{2}=12\\times7\\,750=93\\,000$ FCFA."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Retrouver la formule $S=(n+1)\\dfrac{A_0+A_n}{2}$ en additionnant la somme « à l'endroit » (de $A_0$ à $A_n$) et « à l'envers » (de $A_n$ à $A_0$), terme à terme.",
+          "solution_markdown": "En notant $S=A_0+A_1+\\dots+A_n$, on a aussi $S=A_n+A_{n-1}+\\dots+A_0$ (même somme, ordre inversé). En additionnant les deux écritures terme à terme : chaque paire $(A_k, A_{n-k})$ a pour somme $A_0+A_n$ (car $A_k+A_{n-k}=(A_0+kd)+(A_0+(n-k)d)=2A_0+nd=A_0+A_n$), et il y a $n+1$ telles paires. Donc $2S=(n+1)(A_0+A_n)$, soit $S=(n+1)\\dfrac{A_0+A_n}{2}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La somme des n+1 premiers termes d'une suite arithmétique vaut (nombre de termes) × (moyenne du premier et du dernier terme).",
+        "Calcule toujours d'abord le dernier terme (A_n = A_0 + nd) avant d'appliquer la formule de la somme.",
+        "Ne confonds jamais le dernier terme d'une suite avec la somme cumulée de tous ses termes : ce sont deux questions différentes.",
+        "Compte avec précision le nombre de termes sommés : de l'indice 0 à l'indice n, cela fait n+1 termes, pas n."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-denombrement-combinaisons-deux-groupes-contraintes-1ere-ce",
+  "meta": {
+    "titre": "Dénombrer des tirages sous contrainte de deux groupes disjoints",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dénombrement - Combinaisons avec contraintes",
+    "duree_estimee_min": 22,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "contrainte de tirage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-4",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Compter le nombre de groupes possibles devient plus délicat dès qu'une contrainte impose un minimum de représentants de chaque catégorie. La méthode reste simple : lister toutes les répartitions compatibles, calculer chacune séparément, puis additionner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'un nombre de combinaisons $\\binom{n}{p}$",
+        "Principe additif pour des cas disjoints",
+        "Principe multiplicatif pour des choix indépendants"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lister les répartitions, puis additionner",
+      "contenu_markdown": "Pour choisir $k$ éléments parmi deux groupes disjoints A (taille $|A|$) et B (taille $|B|$) avec au moins $p$ éléments de A et au moins $q$ éléments de B, on liste tous les couples $(a,b)$ avec $a+b=k$, $a\\geq p$, $b\\geq q$ ; pour chacun, le nombre de tirages est $\\binom{|A|}{a}\\times\\binom{|B|}{b}$ (principe multiplicatif, les deux choix étant indépendants) ; puis on additionne les résultats de chaque répartition (principe additif, les cas étant deux à deux disjoints).",
+      "formule_principale": "\\sum_{\\substack{a+b=k\\\\ a\\geq p,\\ b\\geq q}} \\binom{|A|}{a}\\binom{|B|}{b}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une classe compte 38 élèves ayant moins de 9 heures d'absence et 22 élèves en ayant au moins 9. On forme un groupe de 5 élèves avec au moins 2 de chaque catégorie. Combien de groupes sont possibles ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les répartitions possibles",
+          "justification": "a+b=5, a≥2, b≥2 donne a∈{2,3}",
+          "resultat_markdown": "(a,b) = (2,3) ou (3,2)"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le cas (2,3)",
+          "justification": "C(38,2) × C(22,3)",
+          "resultat_markdown": "$703\\times1540=1\\,082\\,620$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le cas (3,2)",
+          "justification": "C(38,3) × C(22,2)",
+          "resultat_markdown": "$8436\\times231=1\\,948\\,716$"
+        },
+        {
+          "numero": 4,
+          "action": "Additionner",
+          "justification": "Cas disjoints",
+          "resultat_markdown": "$1\\,082\\,620+1\\,948\\,716=3\\,031\\,336$"
+        }
+      ],
+      "conclusion_markdown": "Il existe 3 031 336 groupes possibles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier une répartition compatible avec la contrainte (par exemple ne traiter que (2,3) et pas (3,2)).",
+          "pourquoi_faux": "Toutes les répartitions $(a,b)$ vérifiant $a+b=k$, $a\\geq p$, $b\\geq q$ sont des cas RÉELLEMENT différents et doivent toutes être comptées, sinon on sous-estime le résultat.",
+          "correction_markdown": "Liste systématiquement toutes les valeurs possibles de $a$ (et déduis $b=k-a$) avant de commencer le moindre calcul de combinaisons."
+        },
+        {
+          "erreur_markdown": "Multiplier les deux résultats de répartitions différentes au lieu de les additionner.",
+          "pourquoi_faux": "Les répartitions (2,3) et (3,2) sont des façons DIFFÉRENTES et EXCLUSIVES de former le groupe : un groupe donné correspond à une seule des deux répartitions, jamais aux deux à la fois.",
+          "correction_markdown": "Additionne toujours les résultats des différentes répartitions (principe additif de cas disjoints), ne les multiplie jamais entre eux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une urne contient 5 boules rouges et 4 boules noires. On tire 3 boules simultanément. Combien de tirages contiennent au moins 1 boule de chaque couleur ?",
+          "solution_markdown": "Répartitions possibles : (1,2) et (2,1). $\\binom51\\binom42+\\binom52\\binom41=5\\times6+10\\times4=30+40=70$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un club compte 10 filles et 8 garçons. On forme une équipe de 4 personnes avec au moins 2 filles. Combien d'équipes sont possibles ?",
+          "solution_markdown": "Répartitions (filles,garçons) : (2,2),(3,1),(4,0). $\\binom{10}2\\binom82+\\binom{10}3\\binom81+\\binom{10}4\\binom80=45\\times28+120\\times8+210\\times1=1260+960+210=2430$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exemple résolu (38 et 22 élèves), mais pour un groupe de 6 élèves avec au moins 2 de chaque catégorie. Lister les répartitions à considérer (sans nécessairement calculer les combinaisons).",
+          "solution_markdown": "$a+b=6$, $a\\geq2$, $b\\geq2$ donne $a\\in\\{2,3,4\\}$, donc les répartitions à considérer sont $(2,4)$, $(3,3)$ et $(4,2)$ : trois cas au lieu de deux, car augmenter la taille du groupe élargit l'éventail des répartitions compatibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une contrainte « au moins p d'un côté et au moins q de l'autre » se traite en énumérant d'abord toutes les répartitions (a,b) compatibles.",
+        "Chaque répartition se calcule par un produit de combinaisons (principe multiplicatif).",
+        "Les différentes répartitions s'additionnent ensuite entre elles (principe additif, cas disjoints).",
+        "Plus le groupe à former est grand par rapport aux contraintes minimales, plus il existe de répartitions à considérer : prends toujours le temps de toutes les lister avant de calculer."
+      ]
+    }
+  ]
+}

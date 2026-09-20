@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-limites-fonction-rationnelle-division-1ere-ce",
+  "meta": {
+    "titre": "Calculer les limites d'une fonction rationnelle par factorisation du terme dominant",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Limites",
+    "duree_estimee_min": 20,
+    "tags": [
+      "limites",
+      "fonction rationnelle",
+      "forme indéterminée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "3",
+    "rappel_id": "r-3-1a",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer directement $\\lim_{x\\to+\\infty}\\dfrac{x^2-4}{1-x}$ donne une forme indéterminée $\\dfrac{\\infty}{\\infty}$ : impossible de conclure sans transformer l'écriture. Factoriser par le terme de plus haut degré, au numérateur comme au dénominateur, lève systématiquement ce type d'indétermination."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites usuelles de $\\dfrac1x$, $\\dfrac1{x^2}$ en l'infini",
+        "Règle des signes d'un quotient"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser par le terme de plus haut degré",
+      "contenu_markdown": "Pour une fonction rationnelle $\\dfrac{P(x)}{Q(x)}$, la limite en $+\\infty$ ou en $-\\infty$ s'obtient en mettant en facteur, séparément au numérateur et au dénominateur, le terme de plus haut degré ; les termes restants (de la forme $\\dfrac{k}{x^n}$) tendent alors vers 0, ce qui permet de conclure directement. Au voisinage d'un réel $a$ où le dénominateur s'annule sans que le numérateur ne s'annule, la limite est infinie ; son signe s'obtient en étudiant le signe du quotient de part et d'autre de $a$.",
+      "formule_principale": "\\dfrac{P(x)}{Q(x)} \\underset{x\\to\\pm\\infty}{\\sim} \\dfrac{\\text{terme dominant de } P}{\\text{terme dominant de } Q}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}f(x)$, $\\displaystyle\\lim_{x\\to-\\infty}f(x)$, $\\displaystyle\\lim_{x\\to1^-}f(x)$ et $\\displaystyle\\lim_{x\\to1^+}f(x)$ pour $f(x)=\\dfrac{x^2-4}{1-x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Factoriser par le terme de plus haut degré au numérateur et au dénominateur",
+          "justification": "Numérateur de degré 2, dénominateur de degré 1",
+          "resultat_markdown": "$f(x)=\\dfrac{x^2\\left(1-\\dfrac4{x^2}\\right)}{x\\left(\\dfrac1x-1\\right)}=x\\times\\dfrac{1-\\dfrac4{x^2}}{\\dfrac1x-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Passer à la limite dans le facteur restant",
+          "justification": "$\\dfrac4{x^2}\\to0$ et $\\dfrac1x\\to0$ quand $x\\to\\pm\\infty$",
+          "resultat_markdown": "Le facteur tend vers $\\dfrac{1-0}{0-1}=-1$, donc $f(x)\\underset{\\pm\\infty}{\\sim}-x$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure les limites en +infini et -infini",
+          "justification": "$\\lim(-x)$ en $+\\infty$ vaut $-\\infty$, en $-\\infty$ vaut $+\\infty$",
+          "resultat_markdown": "$\\lim_{x\\to+\\infty}f(x)=-\\infty$ ; $\\lim_{x\\to-\\infty}f(x)=+\\infty$"
+        },
+        {
+          "numero": 4,
+          "action": "Etudier les limites en 1 par le signe du quotient",
+          "justification": "Numérateur en 1 vaut $-3\\neq0$ ; dénominateur $1-x$ change de signe autour de 1",
+          "resultat_markdown": "$\\lim_{x\\to1^-}f(x)=-\\infty$ (num. négatif / dénom. $\\to0^+$) ; $\\lim_{x\\to1^+}f(x)=+\\infty$ (num. négatif / dénom. $\\to0^-$)"
+        }
+      ],
+      "conclusion_markdown": "Les quatre limites sont $-\\infty$ (en $+\\infty$), $+\\infty$ (en $-\\infty$), $-\\infty$ (à gauche de 1) et $+\\infty$ (à droite de 1)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure directement que la limite en +∞ d'une forme ∞/∞ vaut 1, en simplifiant \"à l'œil\" sans factoriser.",
+          "pourquoi_faux": "Une forme ∞/∞ est une forme indéterminée : aucune conclusion n'est possible sans transformation préalable de l'écriture (factorisation, développement, etc.).",
+          "correction_markdown": "Ne conclus jamais directement sur une forme indéterminée ; factorise systématiquement par le terme de plus haut degré avant de repasser à la limite."
+        },
+        {
+          "erreur_markdown": "Confondre le sens de x→1⁻ et x→1⁺ dans l'étude du signe du dénominateur.",
+          "pourquoi_faux": "x→1⁻ signifie x légèrement inférieur à 1 (donc 1-x légèrement positif ici), et x→1⁺ signifie x légèrement supérieur à 1 (donc 1-x légèrement négatif) : inverser les deux change le signe de la limite infinie obtenue.",
+          "correction_markdown": "Teste une valeur numérique proche (ex. x=0,99 pour 1⁻, x=1,01 pour 1⁺) pour vérifier le signe du dénominateur avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{2x+1}{x-3}$.",
+          "solution_markdown": "En factorisant par x au numérateur et au dénominateur : $\\dfrac{2x+1}{x-3}=\\dfrac{x(2+\\frac1x)}{x(1-\\frac3x)}\\to\\dfrac{2}{1}=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to-\\infty}\\dfrac{3x^2-x}{2x^2+5}$.",
+          "solution_markdown": "En factorisant par $x^2$ au numérateur et au dénominateur : $\\dfrac{x^2(3-\\frac1x)}{x^2(2+\\frac5{x^2})}\\to\\dfrac{3}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $\\displaystyle\\lim_{x\\to2^+}\\dfrac{x-5}{x^2-4x+4}$ (indication : $x^2-4x+4=(x-2)^2$).",
+          "solution_markdown": "Le dénominateur $(x-2)^2$ est toujours positif et tend vers 0 quand $x\\to2$ ; le numérateur en 2 vaut $2-5=-3\\neq0$. Un quotient (négatif)/(positif tendant vers 0) tend vers $-\\infty$, à droite comme à gauche de 2 : $\\lim_{x\\to2^+}\\dfrac{x-5}{(x-2)^2}=-\\infty$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une forme ∞/∞ ne se conclut jamais directement : factorise toujours par le terme de plus haut degré au numérateur et au dénominateur.",
+        "Les termes en 1/x, 1/x² tendent vers 0 à l'infini : c'est ce qui permet de simplifier après factorisation.",
+        "Au voisinage d'un point où le dénominateur s'annule (numérateur non nul), la limite est infinie ; son signe se détermine en étudiant le signe du quotient de chaque côté du point.",
+        "Distingue toujours x→a⁻ (valeurs inférieures à a) et x→a⁺ (valeurs supérieures à a) : le signe du dénominateur peut changer entre les deux."
+      ]
+    }
+  ]
+}

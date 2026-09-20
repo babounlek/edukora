@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-montrer-quune-suite-est-arithmetique-1ere-ce",
+  "meta": {
+    "titre": "Montrer qu'une suite est arithmétique en calculant v_{n+1} - v_n",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Suite arithmétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suite arithmétique",
+      "raison",
+      "changement de suite auxiliaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB3a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une suite $(u_n)$ définie par récurrence résiste à une étude directe, introduire une suite auxiliaire $(v_n)$ bien choisie et montrer qu'elle est arithmétique (ou géométrique) est souvent la clé qui débloque tout l'exercice."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une suite arithmétique de raison $r$ : $v_{n+1}-v_n=r$ pour tout $n$, constante indépendante de $n$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode pour prouver le caractère arithmétique",
+      "contenu_markdown": "Pour montrer qu'une suite auxiliaire $v_n=h(u_n)$ (où $h$ est une fonction donnée, par exemple $h(x)=\\frac{1}{x-1}$) est arithmétique, on calcule $v_{n+1}-v_n$ en remplaçant $u_{n+1}$ par son expression en fonction de $u_n$ (donnée par la relation de récurrence de $(u_n)$), puis on simplifie algébriquement jusqu'à obtenir une constante ne dépendant plus de $n$ ni de $u_n$. Cette constante est la raison $r$ cherchée.",
+      "formule_principale": "v_{n+1}-v_n=r \\ (\\text{constante}) \\ \\Longrightarrow \\ (v_n) \\text{ arithmétique de raison } r"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$u_{n+1}=\\dfrac{2u_n-1}{u_n}$ et $v_n=\\dfrac{1}{u_n-1}$. Montrer que $(v_n)$ est arithmétique de raison 1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer u_{n+1}-1",
+          "justification": "utiliser la relation de récurrence",
+          "resultat_markdown": "$u_{n+1}-1=\\dfrac{2u_n-1}{u_n}-1=\\dfrac{u_n-1}{u_n}$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer v_{n+1}",
+          "justification": "v_{n+1}=1/(u_{n+1}-1)",
+          "resultat_markdown": "$v_{n+1}=\\dfrac{u_n}{u_n-1}=\\dfrac{(u_n-1)+1}{u_n-1}=1+\\dfrac{1}{u_n-1}=1+v_n$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer v_{n+1}-v_n",
+          "justification": "isoler la constante",
+          "resultat_markdown": "$v_{n+1}-v_n=1$"
+        }
+      ],
+      "conclusion_markdown": "$v_{n+1}-v_n=1$ pour tout $n$, indépendant de $n$ : $(v_n)$ est arithmétique de raison 1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter après avoir exprimé $v_{n+1}$ sans calculer explicitement $v_{n+1}-v_n$ ni vérifier que le résultat ne dépend plus de $n$.",
+          "pourquoi_faux": "Le caractère arithmétique exige une différence CONSTANTE ; une expression de $v_{n+1}$ en fonction de $v_n$ ne suffit pas si l'on ne vérifie pas explicitement que $v_{n+1}-v_n$ est numérique et fixe.",
+          "correction_markdown": "Toujours conclure en écrivant explicitement l'égalité $v_{n+1}-v_n=r$ avec $r$ un nombre, jamais une expression contenant encore $n$ ou $v_n$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$v_n=3n+2$. Montrer que $(v_n)$ est arithmétique et donner sa raison.",
+          "solution_markdown": "$v_{n+1}-v_n=3(n+1)+2-(3n+2)=3$ : arithmétique de raison 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$u_{n+1}=u_n+\\dfrac{1}{n+1}$, $v_n=u_n$. La suite $(u_n)$ est-elle arithmétique ?",
+          "solution_markdown": "$u_{n+1}-u_n=\\dfrac{1}{n+1}$, qui dépend de $n$ : ce n'est pas une constante, donc $(u_n)$ n'est pas arithmétique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$u_{n+1}=\\dfrac{u_n}{2-u_n}$, $v_n=\\dfrac{1}{u_n}$. Montrer que $(v_n)$ est arithmétique.",
+          "solution_markdown": "$v_{n+1}=\\dfrac{1}{u_{n+1}}=\\dfrac{2-u_n}{u_n}=\\dfrac{2}{u_n}-1=2v_n-1$. Ce n'est pas directement de la forme $v_{n+1}=v_n+r$ ; en réexaminant, $v_{n+1}-v_n=2v_n-1-v_n=v_n-1$, qui dépend de $n$ via $v_n$ : la suite $\\left(\\frac1{u_n}\\right)$ n'est donc pas arithmétique avec ce choix, ce qui illustre qu'il faut vérifier le calcul jusqu'au bout et ne pas présumer qu'un changement de variable rend automatiquement la suite arithmétique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver qu'une suite auxiliaire $(v_n)$ est arithmétique, on calcule $v_{n+1}-v_n$ à partir de la relation de récurrence et on vérifie que le résultat est une constante indépendante de $n$."
+      ]
+    }
+  ]
+}

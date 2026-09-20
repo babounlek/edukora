@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-nombre-de-combinaisons-choisir-p-parmi-n-1ere-ce",
+  "meta": {
+    "titre": "Nombre de combinaisons : choisir p éléments parmi n",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 15,
+    "tags": [
+      "dénombrement",
+      "combinaison"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2022-cameroun-r-5-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de comités de 6 personnes peut-on former à partir de 10 candidats ? La réponse n'est ni $10\\times9\\times\\cdots$ (cela compterait les ordres différents comme des comités différents), ni une simple division : c'est le nombre de COMBINAISONS, l'outil de dénombrement à utiliser dès que l'ordre à l'intérieur d'un groupe n'a pas d'importance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la factorielle n! = n×(n-1)×...×2×1",
+        "Savoir distinguer une situation où l'ordre compte (arrangement) d'une situation où il ne compte pas (combinaison)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule des combinaisons",
+      "contenu_markdown": "Le nombre de façons de choisir $p$ éléments parmi $n$ (avec $p\\le n$), SANS tenir compte de l'ordre et sans répétition, est :\n$$\\binom{n}{p}=C_n^p=\\frac{n!}{p!\\,(n-p)!}=\\frac{n(n-1)\\cdots(n-p+1)}{p!}$$\n\n**Reconnaître une situation de combinaison.** Dès que l'énoncé parle de « groupe », « comité », « délégation », « équipe », ou d'un tirage SIMULTANÉ (plusieurs éléments pris d'un coup, sans ordre), c'est une combinaison. Si au contraire l'ordre importe (un classement, une file, un mot de passe), il s'agit d'un arrangement $A_n^p$, une notion différente.\n\n**Propriété utile.** $C_n^p=C_n^{n-p}$ (symétrie) : choisir $p$ éléments à prendre revient à choisir $n-p$ éléments à laisser de côté, ce qui permet souvent d'alléger le calcul.",
+      "formule_principale": "C_n^p=\\dfrac{n!}{p!\\,(n-p)!}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une entreprise doit former tous les groupes possibles de 6 responsables parmi 10 candidats, pour un tirage au sort. Combien de groupes distincts peut-on former ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître la situation comme une combinaison",
+          "justification": "un groupe de 6 responsables ne dépend pas de l'ordre dans lequel on les énumère",
+          "resultat_markdown": "il faut calculer $C_{10}^6$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule pratique (produit décroissant)",
+          "justification": "on utilise la symétrie C(10,6)=C(10,4) pour alléger le calcul",
+          "resultat_markdown": "$C_{10}^6=C_{10}^4=\\dfrac{10\\times9\\times8\\times7}{4\\times3\\times2\\times1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numérateur et dénominateur",
+          "justification": "produit direct",
+          "resultat_markdown": "$\\dfrac{5\\,040}{24}$"
+        },
+        {
+          "numero": 4,
+          "action": "Effectuer la division",
+          "justification": "5040÷24",
+          "resultat_markdown": "$210$"
+        }
+      ],
+      "conclusion_markdown": "Il existe exactement 210 groupes distincts de 6 responsables parmi les 10 candidats."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser un arrangement (n×(n-1)×...) au lieu d'une combinaison",
+          "pourquoi_faux": "Un arrangement compte les ordres différents comme des résultats différents ; ici, un « groupe » de 6 responsables reste le même groupe quel que soit l'ordre dans lequel on cite ses membres, donc l'ordre ne doit pas être compté plusieurs fois.",
+          "correction_markdown": "Demande-toi toujours : « si je change l'ordre des éléments choisis, ai-je un résultat différent ? » Si la réponse est non, c'est une combinaison, il faut diviser par p! pour éliminer les réordonnancements."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par p! après avoir écrit le produit décroissant au numérateur",
+          "pourquoi_faux": "Le produit n(n-1)...(n-p+1) seul compte les arrangements (avec ordre) ; diviser par p! élimine les p! réordonnancements possibles de chaque groupe, ne laissant que les groupes réellement distincts.",
+          "correction_markdown": "Vérifie systématiquement que ta formule finale contient bien un dénominateur p! (ou p!(n-p)! sous la forme factorielle complète)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $C_7^2$ (nombre de façons de choisir 2 éléments parmi 7).",
+          "solution_markdown": "$C_7^2=\\dfrac{7\\times6}{2\\times1}=\\dfrac{42}{2}=21$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe de 25 élèves doit désigner une délégation de 3 élèves pour représenter la classe. Combien de délégations différentes sont possibles ?",
+          "solution_markdown": "L'ordre n'importe pas dans une délégation : $C_{25}^3=\\dfrac{25\\times24\\times23}{3\\times2\\times1}=\\dfrac{13\\,800}{6}=2\\,300$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un jury de 12 personnes doit être réduit à 4 personnes pour une sous-commission, ce sous-groupe devant lui-même être scindé en 2 personnes pour la présidence collégiale et 2 personnes pour le secrétariat (les deux rôles ne sont pas interchangeables). Combien de configurations totales sont possibles ?",
+          "solution_markdown": "On choisit d'abord les 4 personnes de la sous-commission parmi 12 : $C_{12}^4=\\dfrac{12\\times11\\times10\\times9}{4\\times3\\times2\\times1}=495$. Parmi ces 4 personnes, on choisit ensuite les 2 pour la présidence (rôle distinct du secrétariat, donc un sous-choix de type combinaison à l'intérieur des 4) : $C_4^2=6$ (les 2 restantes forment automatiquement le secrétariat). Par principe multiplicatif (les deux choix sont indépendants) : $495\\times6=2\\,970$ configurations possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "C(n,p) = n!/(p!(n-p)!) compte les groupes de p éléments choisis parmi n, SANS tenir compte de l'ordre.",
+        "Mot-clé pour reconnaître une combinaison : groupe, comité, délégation, tirage simultané.",
+        "La propriété de symétrie C(n,p)=C(n,n-p) permet souvent d'alléger le calcul en choisissant le plus petit des deux exposants.",
+        "Ne confonds jamais combinaison (sans ordre) et arrangement (avec ordre) : la division par p! est ce qui fait toute la différence.",
+        "Le dénombrement de groupes intervient très souvent dans les situations-problèmes du Probatoire liées à la gestion (tirage au sort, répartition de postes, formation de comités)."
+      ]
+    }
+  ]
+}

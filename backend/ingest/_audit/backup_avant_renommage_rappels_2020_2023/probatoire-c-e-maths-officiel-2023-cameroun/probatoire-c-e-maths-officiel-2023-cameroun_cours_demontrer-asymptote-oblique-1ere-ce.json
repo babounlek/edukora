@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-demontrer-asymptote-oblique-1ere-ce",
+  "meta": {
+    "titre": "Démontrer qu'une droite est asymptote oblique à une courbe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Asymptotes",
+    "duree_estimee_min": 15,
+    "tags": [
+      "asymptote oblique",
+      "limite d'une différence"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-I3a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la fraction rationnelle décomposée en partie entière et fraction résiduelle, démontrer l'existence de l'asymptote oblique se réduit à une seule limite à calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposition d'une fraction rationnelle en partie entière et fraction résiduelle",
+        "Limite d'une fonction en l'infini"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La limite de l'écart doit être nulle",
+      "contenu_markdown": "Pour démontrer qu'une droite $(D):y=ax+b$ est asymptote oblique à la courbe $(C)$ d'une fonction $f$, il suffit de montrer que $\\lim\\limits_{x\\to+\\infty}[f(x)-(ax+b)]=0$ et/ou $\\lim\\limits_{x\\to-\\infty}[f(x)-(ax+b)]=0$ : l'écart entre la courbe et la droite tend alors vers zéro, ce qui signifie que la courbe se rapproche indéfiniment de la droite sans jamais forcément se confondre avec elle.",
+      "formule_principale": "\\lim_{x\\to\\pm\\infty}[f(x)-(ax+b)]=0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $f(x)=3x-2-\\dfrac1{x-1}$, démontrer que la droite $(D):y=3x-2$ est asymptote oblique à la courbe de $f$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la différence f(x) - (ax+b)",
+          "justification": "Ici a=3, b=-2",
+          "resultat_markdown": "$f(x)-(3x-2)=-\\dfrac1{x-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite en +infini",
+          "justification": "$\\dfrac1{x-1}\\to0$ quand $x\\to+\\infty$",
+          "resultat_markdown": "$\\lim\\limits_{x\\to+\\infty}\\left[-\\dfrac1{x-1}\\right]=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite en -infini et conclure",
+          "justification": "Le même raisonnement s'applique",
+          "resultat_markdown": "$\\lim\\limits_{x\\to-\\infty}\\left[-\\dfrac1{x-1}\\right]=0$"
+        }
+      ],
+      "conclusion_markdown": "Les deux limites valent 0 : la droite $(D):y=3x-2$ est bien asymptote oblique à la courbe de $f$ en $+\\infty$ et en $-\\infty$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $\\lim f(x)$ au lieu de $\\lim[f(x)-(ax+b)]$.",
+          "pourquoi_faux": "Pour une asymptote oblique, $f(x)$ tend elle-même vers l'infini : c'est l'écart avec la droite qui doit tendre vers 0, pas $f(x)$ seul.",
+          "correction_markdown": "Écris toujours explicitement la différence f(x)-(ax+b) avant de calculer une limite."
+        },
+        {
+          "erreur_markdown": "Ne vérifier la limite que d'un seul côté alors que l'énoncé demande les deux directions.",
+          "pourquoi_faux": "Une droite peut être asymptote seulement en +∞ ou seulement en -∞ selon la fonction ; il faut vérifier chaque direction demandée séparément.",
+          "correction_markdown": "Traite systématiquement +∞ et -∞ comme deux calculs de limite distincts, sauf si le domaine de définition exclut l'un des deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que $f(x)=x+3+\\dfrac2{x-1}$, démontrer que $(D):y=x+3$ est asymptote oblique à la courbe de f.",
+          "solution_markdown": "$f(x)-(x+3)=\\dfrac2{x-1}$, et $\\lim\\limits_{x\\to\\pm\\infty}\\dfrac2{x-1}=0$ : $(D)$ est bien asymptote oblique en $+\\infty$ et en $-\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{2x^2-x+1}{x-1}$. Après avoir décomposé f, démontrer que $(D):y=2x+1$ est asymptote oblique à sa courbe.",
+          "solution_markdown": "Division : $2x^2-x+1=(x-1)(2x+1)+2$ (car $(x-1)(2x+1)=2x^2-x-1$, et $1-(-1)=2$), donc $f(x)=2x+1+\\dfrac2{x-1}$. $f(x)-(2x+1)=\\dfrac2{x-1}\\to0$ quand $x\\to\\pm\\infty$ : $(D)$ est bien asymptote oblique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x)=x+\\dfrac1x$ définie sur $\\mathbb R^*$. Démontrer que $(D):y=x$ est asymptote oblique à la fois en $+\\infty$ et en $-\\infty$, bien que $\\dfrac1x$ change de signe entre les deux directions.",
+          "solution_markdown": "$f(x)-x=\\dfrac1x$. Quand $x\\to+\\infty$, $\\dfrac1x\\to0^+$ ; quand $x\\to-\\infty$, $\\dfrac1x\\to0^-$. Dans les deux cas la limite est 0, donc $(D):y=x$ est asymptote oblique en $+\\infty$ et en $-\\infty$, bien que la courbe reste au-dessus de $(D)$ pour $x>0$ et en dessous pour $x<0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Asymptote oblique $\\iff \\lim\\limits_{x\\to\\pm\\infty}[f(x)-(ax+b)]=0$, jamais $\\lim f(x)$ seul.",
+        "Traiter séparément +∞ et -∞ quand le domaine de définition le permet.",
+        "La partie entière obtenue par division euclidienne fournit directement l'équation de la droite candidate."
+      ]
+    }
+  ]
+}

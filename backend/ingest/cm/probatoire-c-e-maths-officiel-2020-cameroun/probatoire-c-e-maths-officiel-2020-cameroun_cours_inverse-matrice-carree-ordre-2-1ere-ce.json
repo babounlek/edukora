@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-inverse-matrice-carree-ordre-2-1ere-ce",
+  "meta": {
+    "titre": "Inverser une matrice carrée d'ordre 2",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Matrices inversibles",
+    "duree_estimee_min": 18,
+    "tags": [
+      "matrice inverse",
+      "déterminant",
+      "matrice 2x2"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-I2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Inverser une matrice, c'est trouver l'opération qui « défait » exactement ce qu'elle fait. Pour une matrice d'ordre 2, une formule directe permet de l'obtenir en quelques lignes, sans jamais résoudre de système."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'un déterminant d'ordre 2",
+        "Produit de deux matrices d'ordre 2"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule de l'inverse d'ordre 2",
+      "contenu_markdown": "Une matrice $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ est inversible si et seulement si $\\det M=ad-bc\\neq0$. Dans ce cas, $M^{-1}=\\dfrac{1}{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$ : on échange les deux termes diagonaux, on change le signe des deux autres, puis on divise par le déterminant.",
+      "formule_principale": "M^{-1}=\\dfrac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $A=\\begin{pmatrix}-5&4\\\\3&-1\\end{pmatrix}$ est inversible et calculer $A^{-1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le déterminant",
+          "justification": "det = ad-bc avec a=-5,b=4,c=3,d=-1",
+          "resultat_markdown": "$\\det A=(-5)(-1)-4\\times3=5-12=-7$"
+        },
+        {
+          "numero": 2,
+          "action": "Conclure sur l'inversibilité",
+          "justification": "det non nul",
+          "resultat_markdown": "$\\det A=-7\\neq0$ donc $A$ est inversible"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule",
+          "justification": "échanger a et d, changer le signe de b et c, diviser par -7",
+          "resultat_markdown": "$A^{-1}=\\dfrac{1}{-7}\\begin{pmatrix}-1&-4\\\\-3&-5\\end{pmatrix}=\\begin{pmatrix}\\frac17&\\frac47\\\\\\frac37&\\frac57\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "$A^{-1}=\\begin{pmatrix}\\frac17&\\frac47\\\\\\frac37&\\frac57\\end{pmatrix}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de changer le signe de $b$ et $c$ dans la formule.",
+          "pourquoi_faux": "Seuls les termes diagonaux $a$ et $d$ sont échangés tels quels ; les termes $b$ et $c$ doivent changer de signe, sinon le produit $M\\times M^{-1}$ ne redonne pas l'identité.",
+          "correction_markdown": "Mémorise la formule comme un bloc entier $\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$, jamais terme par terme séparément."
+        },
+        {
+          "erreur_markdown": "Diviser seulement un des quatre coefficients par le déterminant.",
+          "pourquoi_faux": "Le facteur $\\frac{1}{\\det M}$ multiplie TOUTE la matrice, chacun de ses quatre coefficients.",
+          "correction_markdown": "Distribue systématiquement la division par le déterminant sur les quatre coefficients avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'inverse de $M=\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}$.",
+          "solution_markdown": "$\\det M=2\\times1-1\\times1=1\\neq0$. $M^{-1}=\\dfrac11\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}=\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour quelles valeurs de $m$ la matrice $\\begin{pmatrix}m&2\\\\1&m\\end{pmatrix}$ est-elle inversible ?",
+          "solution_markdown": "$\\det=m^2-2$. Elle est inversible si et seulement si $m^2\\neq2$, c'est-à-dire $m\\neq\\sqrt2$ et $m\\neq-\\sqrt2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sachant que $A^{-1}=\\begin{pmatrix}\\frac17&\\frac47\\\\\\frac37&\\frac57\\end{pmatrix}$, retrouver $A$ sans redémarrer le calcul depuis la formule de départ.",
+          "solution_markdown": "L'inverse de l'inverse redonne la matrice de départ : $(A^{-1})^{-1}=A$. On applique la formule à $A^{-1}$ : $\\det(A^{-1})=\\frac17\\times\\frac57-\\frac47\\times\\frac37=\\frac{5-12}{49}=-\\frac{7}{49}=-\\frac17$. Puis $A=(A^{-1})^{-1}=\\dfrac{1}{-1/7}\\begin{pmatrix}\\frac57&-\\frac47\\\\-\\frac37&\\frac17\\end{pmatrix}=-7\\begin{pmatrix}\\frac57&-\\frac47\\\\-\\frac37&\\frac17\\end{pmatrix}=\\begin{pmatrix}-5&4\\\\3&-1\\end{pmatrix}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une matrice d'ordre 2 est inversible si et seulement si son déterminant $ad-bc$ est non nul.",
+        "La formule $M^{-1}=\\frac{1}{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$ s'applique directement, sans résoudre de système.",
+        "Vérifie toujours ton résultat en recalculant au moins un coefficient de $M\\times M^{-1}$ : tu dois retomber sur la matrice identité.",
+        "Cette compétence revient à chaque exercice du Probatoire sur les endomorphismes du plan : maîtrise-la comme un automatisme."
+      ]
+    }
+  ]
+}

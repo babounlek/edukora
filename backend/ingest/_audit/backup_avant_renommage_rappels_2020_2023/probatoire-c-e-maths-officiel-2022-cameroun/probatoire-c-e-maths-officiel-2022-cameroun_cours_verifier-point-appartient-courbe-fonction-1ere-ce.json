@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-verifier-point-appartient-courbe-fonction-1ere-ce",
+  "meta": {
+    "titre": "Vérifier qu'un point appartient à la courbe d'une fonction",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - courbe représentative",
+    "duree_estimee_min": 10,
+    "tags": [
+      "fonction polynôme",
+      "courbe représentative",
+      "image d'un réel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-1a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Montrer qu'un point précis se trouve sur la courbe d'une fonction, c'est l'un des exercices les plus simples de l'analyse, mais aussi l'un des plus fréquemment mal rédigés : il ne s'agit pas de deviner ou de tracer, mais d'un unique calcul, mené jusqu'au bout, qui tranche la question sans ambiguïté."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer l'image d'un nombre par une fonction polynôme",
+        "Savoir manipuler des fractions et les mettre au même dénominateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère d'appartenance",
+      "contenu_markdown": "Un point de coordonnées $(x_0\\,;\\,y_0)$ appartient à la courbe représentative d'une fonction $f$ si et seulement si $f(x_0)=y_0$. Pour le vérifier, il suffit donc de calculer $f(x_0)$ et de comparer le résultat obtenu à $y_0$ : si les deux coïncident, le point appartient à la courbe ; sinon, il n'y appartient pas.",
+      "formule_principale": "(x_0;y_0)\\in \\mathcal C_f \\iff f(x_0)=y_0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que la courbe de $f(x)=\\dfrac13x^3+\\dfrac32x^2-4x-\\dfrac{31}{6}$ passe par le point $(-1\\,;\\,0)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Remplacer x par -1 dans f",
+          "justification": "on veut vérifier f(-1)=0",
+          "resultat_markdown": "$f(-1)=\\dfrac13(-1)^3+\\dfrac32(-1)^2-4(-1)-\\dfrac{31}{6}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer chaque terme",
+          "justification": "puissances puis produits",
+          "resultat_markdown": "$-\\dfrac13+\\dfrac32+4-\\dfrac{31}{6}$"
+        },
+        {
+          "numero": 3,
+          "action": "Mettre au même dénominateur 6 et additionner",
+          "justification": "-1/3=-2/6, 3/2=9/6, 4=24/6",
+          "resultat_markdown": "$\\dfrac{-2+9+24-31}{6}=\\dfrac{0}{6}=0$"
+        }
+      ],
+      "conclusion_markdown": "f(-1)=0, donc le point (-1;0) appartient bien à la courbe de f."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'ordre : vérifier f(y0)=x0 au lieu de f(x0)=y0",
+          "pourquoi_faux": "Un point (x0;y0) de la courbe signifie que y0 est l'IMAGE de x0, pas l'inverse : c'est x0 qu'on substitue dans f, jamais y0.",
+          "correction_markdown": "Repère toujours quelle coordonnée est l'abscisse (à substituer) et laquelle est l'ordonnée (à comparer au résultat)."
+        },
+        {
+          "erreur_markdown": "S'arrêter à un calcul partiel ou arrondi qui semble « proche de 0 »",
+          "pourquoi_faux": "L'appartenance à la courbe exige une égalité EXACTE, pas une approximation : un résultat de 0,001 ne prouve rien tant que le calcul exact n'est pas mené à son terme.",
+          "correction_markdown": "Termine toujours le calcul en fractions exactes plutôt qu'en valeurs décimales approchées, surtout quand le résultat attendu est une valeur simple comme 0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le point $(2\\,;\\,5)$ appartient-il à la courbe de $g(x)=x^2+1$ ?",
+          "solution_markdown": "$g(2)=2^2+1=4+1=5$. Comme $g(2)=5$, le point (2;5) appartient bien à la courbe de g."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le point $(-2\\,;\\,3)$ appartient-il à la courbe de $h(x)=x^2-2x-3$ ?",
+          "solution_markdown": "$h(-2)=(-2)^2-2\\times(-2)-3=4+4-3=5$. Comme $h(-2)=5\\neq3$, le point (-2;3) n'appartient PAS à la courbe de h."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer le réel $m$ pour que le point $(1\\,;\\,m)$ appartienne à la courbe de $k(x)=2x^3-x^2+m x$ (m apparaît aussi dans l'expression de k).",
+          "solution_markdown": "On veut $k(1)=m$ : $k(1)=2(1)^3-(1)^2+m(1)=2-1+m=1+m$. L'équation devient $1+m=m$, soit $1=0$, ce qui est impossible. Il n'existe donc AUCUNE valeur de $m$ qui convienne : l'énoncé montre qu'il faut parfois conclure à une impossibilité plutôt que de forcer un résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un point (x0;y0) est sur la courbe de f si et seulement si f(x0)=y0 : un seul calcul suffit.",
+        "Substitue toujours l'ABSCISSE dans la fonction, jamais l'ordonnée.",
+        "Mène le calcul jusqu'à une valeur exacte (fraction), sans arrondir en cours de route.",
+        "Ce calcul sert souvent de point de départ à une question suivante (nombre de solutions, factorisation), donc une valeur fausse ici fausse toute la suite de l'exercice.",
+        "Au Probatoire, cette vérification ouvre très souvent un exercice d'étude de fonction polynôme : elle fournit une racine déjà connue, utile pour la suite."
+      ]
+    }
+  ]
+}

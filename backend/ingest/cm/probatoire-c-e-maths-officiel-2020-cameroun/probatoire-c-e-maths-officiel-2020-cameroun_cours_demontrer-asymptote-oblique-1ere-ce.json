@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-demontrer-asymptote-oblique-1ere-ce",
+  "meta": {
+    "titre": "Démontrer qu'une droite est asymptote oblique à une courbe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - Asymptote oblique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "asymptote oblique",
+      "limite d'une différence"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-III2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une courbe peut « ressembler » à une droite sans jamais réellement s'en approcher : seule une preuve par le calcul d'une limite permet d'affirmer avec certitude qu'une droite est asymptote à une courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de limites d'une fonction rationnelle",
+        "Écriture d'une fonction sous la forme partie affine + reste"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Montrer que f(x) − (ax+b) tend vers 0",
+      "contenu_markdown": "Une droite d'équation $y=ax+b$ est asymptote à la courbe de $f$ en $+\\infty$ (respectivement en $-\\infty$) si et seulement si $\\displaystyle\\lim_{x\\to+\\infty}\\big(f(x)-(ax+b)\\big)=0$ (respectivement en $-\\infty$). Cette limite nulle mesure l'écart vertical entre la courbe et la droite, qui doit devenir négligeable.",
+      "formule_principale": "\\lim_{x\\to\\pm\\infty}\\big(f(x)-(ax+b)\\big)=0 \\iff y=ax+b \\text{ est asymptote}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $(D):y=x+2$ est asymptote à la courbe de $g(x)=x+2+\\dfrac{4}{x+1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer g(x) - (x+2)",
+          "justification": "Isoler l'écart entre la courbe et la droite",
+          "resultat_markdown": "$g(x)-(x+2)=\\dfrac{4}{x+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite de cet écart",
+          "justification": "4/(x+1) → 0 en ±∞",
+          "resultat_markdown": "$\\lim_{\\pm\\infty}\\dfrac{4}{x+1}=0$"
+        }
+      ],
+      "conclusion_markdown": "La limite nulle confirme que (D):y=x+2 est asymptote à la courbe de g, en +∞ comme en -∞."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer qu'une droite est asymptote seulement parce que la fonction « ressemble » à une expression affine pour x grand, sans calculer la limite de la différence.",
+          "pourquoi_faux": "Une ressemblance visuelle ou intuitive ne constitue jamais une preuve : deux fonctions peuvent sembler proches sans que leur écart tende réellement vers 0 (voir le piège classique des fonctions log-exponentielles).",
+          "correction_markdown": "Calcule toujours explicitement $f(x)-(ax+b)$ puis sa limite, quelle que soit l'évidence apparente du résultat."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la limite dans LES DEUX sens (+∞ et -∞) quand la fonction est définie des deux côtés.",
+          "pourquoi_faux": "Une droite peut être asymptote seulement d'un côté (branche parabolique de l'autre) : il faut donc étudier séparément chaque branche infinie du domaine.",
+          "correction_markdown": "Traite systématiquement +∞ et -∞ comme deux questions séparées, sauf si le domaine de définition ne permet qu'un seul des deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Montrer que $y=x$ est asymptote à la courbe de $f(x)=x+\\dfrac{1}{x}$ (pour $x\\neq0$).",
+          "solution_markdown": "$f(x)-x=\\dfrac1x$, qui tend vers 0 en $+\\infty$ et en $-\\infty$ : $y=x$ est bien asymptote des deux côtés."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que $y=2x-1$ est asymptote à la courbe de $h(x)=\\dfrac{2x^2-x-3}{x+1}$ en +∞.",
+          "solution_markdown": "Division euclidienne : $2x^2-x-3=(x+1)(2x-3)+0$, donc $h(x)=2x-3$ EXACTEMENT (pas de reste) : $h(x)-(2x-1)=-2$, qui ne tend PAS vers 0. La droite $y=2x-1$ n'est donc PAS asymptote (c'est $y=2x-3$, la courbe étant en réalité une droite privée d'un point, qui conviendrait, mais aucune vraie branche infinie n'existe ici puisque $h$ est affine)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La courbe de $k(x)=x+\\sqrt{x}$ (pour $x>0$) admet-elle $y=x$ comme asymptote en $+\\infty$ ?",
+          "solution_markdown": "$k(x)-x=\\sqrt x$, qui tend vers $+\\infty$ (pas vers 0) quand $x\\to+\\infty$ : $y=x$ n'est PAS asymptote à cette courbe, malgré la ressemblance de l'écriture. C'est un exemple classique où l'intuition trompe : il existe bien une branche parabolique, pas une asymptote oblique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une droite y=ax+b est asymptote à une courbe si et seulement si f(x)-(ax+b) tend vers 0 (jamais par simple ressemblance de formule).",
+        "Traite séparément +∞ et -∞ : une asymptote peut n'exister que d'un seul côté.",
+        "Si la limite de l'écart n'est pas nulle (finie non nulle, ou infinie), la droite proposée n'est PAS asymptote : il faut chercher une autre droite ou conclure à une branche parabolique.",
+        "Cette démonstration suit presque toujours le calcul des limites, puisqu'elle réutilise la même écriture de la fonction (partie affine + reste)."
+      ]
+    }
+  ]
+}

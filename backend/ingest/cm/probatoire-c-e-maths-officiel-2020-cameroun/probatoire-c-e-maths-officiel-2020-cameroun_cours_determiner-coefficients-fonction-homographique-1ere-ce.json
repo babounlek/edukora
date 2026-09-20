@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-determiner-coefficients-fonction-homographique-1ere-ce",
+  "meta": {
+    "titre": "Déterminer les coefficients d'une fonction à partir de conditions imposées",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - Détermination de coefficients",
+    "duree_estimee_min": 18,
+    "tags": [
+      "coefficients inconnus",
+      "système d'équations",
+      "tangente horizontale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-II",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une fonction dépend de plusieurs paramètres inconnus, chaque information géométrique fournie par l'énoncé (un point de passage, une tangente horizontale...) devient une équation. Il suffit ensuite de résoudre le système obtenu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul d'une dérivée",
+        "Résolution d'un système de trois équations à trois inconnues par substitution"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire chaque condition en équation",
+      "contenu_markdown": "« La courbe passe par $(x_0;y_0)$ » se traduit par $f(x_0)=y_0$. « La tangente au point d'abscisse $x_0$ est parallèle à l'axe des abscisses » se traduit par $f'(x_0)=0$. « La tangente au point d'abscisse $x_0$ est parallèle à une droite de coefficient directeur $m$ » se traduit par $f'(x_0)=m$.",
+      "formule_principale": "f(x_0)=y_0 \\ ;\\quad f'(x_0)=0 \\text{ (tangente horizontale)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f(x)=ax+b+\\dfrac{c}{x+1}$ passe par $A(0;6)$ et $B(-2;-4)$, et admet en $x=-3$ une tangente horizontale. Déterminer $a,b,c$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire f(0)=6",
+          "justification": "Passage par A",
+          "resultat_markdown": "$b+c=6$"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire f(-2)=-4",
+          "justification": "Passage par B",
+          "resultat_markdown": "$-2a+b-c=-4$"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire f'(-3)=0",
+          "justification": "Tangente horizontale en x=-3",
+          "resultat_markdown": "$a-\\frac{c}{4}=0$, soit $c=4a$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le système par substitution",
+          "justification": "Remplacer c puis b en fonction de a",
+          "resultat_markdown": "$a=1,\\ c=4,\\ b=2$"
+        }
+      ],
+      "conclusion_markdown": "$a=1,\\ b=2,\\ c=4$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre « tangente parallèle à l'axe des abscisses » avec « la courbe coupe l'axe des abscisses ».",
+          "pourquoi_faux": "Une tangente horizontale signifie que la DÉRIVÉE s'annule en ce point ($f'(x_0)=0$), ce qui n'a rien à voir avec le fait que $f(x_0)$ vaille 0.",
+          "correction_markdown": "Retiens : tangente parallèle à $(Ox)$ ⟺ dérivée nulle en ce point, jamais la valeur de la fonction elle-même."
+        },
+        {
+          "erreur_markdown": "Résoudre les trois équations dans le désordre, en substituant une variable qui dépend encore de deux autres inconnues.",
+          "pourquoi_faux": "La substitution est plus efficace en partant de l'équation la plus simple (souvent celle de la dérivée, qui ne relie que deux inconnues), pour réduire progressivement le nombre de variables.",
+          "correction_markdown": "Repère l'équation la plus simple du système (souvent la moins chargée en inconnues) et commence par elle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $a$ et $b$ pour que $f(x)=ax+b$ passe par $(0;3)$ et $(2;7)$.",
+          "solution_markdown": "$f(0)=b=3$. $f(2)=2a+3=7 \\Rightarrow a=2$. Donc $a=2,\\ b=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $a$ et $b$ pour que $f(x)=ax^2+b$ admette une tangente horizontale en $x=0$ et passe par $(1;5)$.",
+          "solution_markdown": "$f'(x)=2ax$, donc $f'(0)=0$ est automatiquement vérifié quel que soit $a$ (cette condition n'apporte rien de nouveau ici). $f(1)=a+b=5$. Une seule équation pour deux inconnues : il manque une condition pour déterminer $a$ et $b$ de façon unique (le problème est sous-déterminé, contrairement à l'exemple résolu où trois conditions donnaient exactement trois équations)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer $a,b,c$ pour que $f(x)=ax+b+\\dfrac{c}{x-2}$ passe par $(0;1)$, par $(3;4)$, et admette une tangente horizontale en $x=4$.",
+          "solution_markdown": "$f'(x)=a-\\dfrac{c}{(x-2)^2}$. $f(0)=b-\\frac{c}{2}=1$. $f(3)=3a+b+c=4$. $f'(4)=a-\\frac{c}{4}=0 \\Rightarrow c=4a$. En reportant : $b-2a=1 \\Rightarrow b=1+2a$ ; puis $3a+(1+2a)+4a=4 \\Rightarrow 9a+1=4 \\Rightarrow a=\\frac13$. Donc $c=\\frac43$, $b=1+\\frac23=\\frac53$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque condition géométrique (point de passage, tangente horizontale ou de pente donnée) devient une équation en les coefficients inconnus.",
+        "f(x0) = y0 traduit un point de passage ; f'(x0) = m traduit une tangente de coefficient directeur m (m=0 pour une tangente horizontale).",
+        "Résous le système en commençant par l'équation la plus simple, pour réduire progressivement le nombre d'inconnues.",
+        "Vérifie toujours ta solution en réinjectant les valeurs trouvées dans CHACUNE des conditions de départ."
+      ]
+    }
+  ]
+}

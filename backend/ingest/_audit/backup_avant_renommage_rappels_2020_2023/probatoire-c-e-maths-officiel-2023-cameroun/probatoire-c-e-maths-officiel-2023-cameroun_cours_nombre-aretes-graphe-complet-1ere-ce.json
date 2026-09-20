@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-nombre-aretes-graphe-complet-1ere-ce",
+  "meta": {
+    "titre": "Nombre d'arêtes d'un graphe complet à n sommets",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Graphes - Dénombrement",
+    "duree_estimee_min": 15,
+    "tags": [
+      "graphe complet",
+      "dénombrement",
+      "combinaison"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-5",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Si chaque personne d'un groupe doit serrer la main de toutes les autres exactement une fois, combien de poignées de main seront échangées au total ? Cette question, en apparence anecdotique, est exactement celle du nombre d'arêtes d'un graphe complet, et revient très régulièrement dans les exercices de dénombrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire de base des graphes (sommet, arête, degré)",
+        "Notion de combinaison $\\dbinom np$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule du nombre d'arêtes d'un graphe complet",
+      "contenu_markdown": "Un graphe complet à $n$ sommets est un graphe où chaque sommet est relié à tous les autres. Le nombre total d'arêtes est alors $\\dbinom n2=\\dfrac{n(n-1)}2$ : ce nombre correspond exactement au nombre de façons de choisir une paire de sommets distincts parmi les $n$ sommets, puisque chaque paire donne lieu à exactement une arête.",
+      "formule_principale": "\\text{Nombre d'arêtes}=\\dbinom n2=\\dfrac{n(n-1)}2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Cinq villages veulent désormais coopérer chacun avec les quatre autres. Combien de coopérations (arêtes) cela représente-t-il au total ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître un graphe complet",
+          "justification": "Chaque village coopère avec tous les autres, sans exception",
+          "resultat_markdown": "Graphe complet à $n=5$ sommets"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du nombre d'arêtes",
+          "justification": "Le nombre d'arêtes d'un graphe complet à n sommets est n(n-1)/2",
+          "resultat_markdown": "$\\dbinom52=\\dfrac{5\\times4}2=10$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la somme des degrés",
+          "justification": "Chaque sommet a degré n-1 = 4, donc la somme des degrés vaut 5×4=20",
+          "resultat_markdown": "Nombre d'arêtes $=\\dfrac{20}2=10$, ce qui confirme le résultat"
+        }
+      ],
+      "conclusion_markdown": "Le réseau devenu complet comporte $10$ coopérations (arêtes) au total."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre directement $n(n-1)$ sans diviser par $2$.",
+          "pourquoi_faux": "Le produit $n(n-1)$ compte chaque paire deux fois (une fois dans chaque « sens »), puisque la relation entre deux sommets est symétrique dans un graphe non orienté.",
+          "correction_markdown": "N'oublie jamais la division par $2$ : c'est elle qui transforme un comptage « orienté » en un comptage de paires non ordonnées."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre d'arêtes d'un graphe complet avec le degré d'un sommet.",
+          "pourquoi_faux": "Le degré d'un sommet dans un graphe complet à $n$ sommets vaut $n-1$ (il est relié à tous les autres), ce qui est différent du nombre total d'arêtes du graphe entier.",
+          "correction_markdown": "Le degré est une propriété d'UN sommet ; le nombre d'arêtes est une propriété du graphe ENTIER."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Six équipes participent à un tournoi où chaque équipe affronte toutes les autres exactement une fois. Combien de matchs seront joués au total ?",
+          "solution_markdown": "$\\dbinom62=\\dfrac{6\\times5}2=15$ matchs."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un groupe de personnes échange en tout $21$ poignées de main, chaque personne serrant la main de toutes les autres exactement une fois. Combien de personnes compte le groupe ?",
+          "solution_markdown": "On résout $\\dfrac{n(n-1)}2=21$, soit $n(n-1)=42=7\\times6$ : $n=7$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un réseau de $n$ villages est presque complet : chaque village coopère avec tous les autres, sauf deux villages particuliers qui, eux, ne coopèrent pas ensemble. Exprimer, en fonction de $n$, le nombre d'arêtes de ce graphe.",
+          "solution_markdown": "Le graphe complet à $n$ sommets compte $\\dfrac{n(n-1)}2$ arêtes ; en retirant la seule arête manquante (celle entre les deux villages qui ne coopèrent pas), il reste $\\dfrac{n(n-1)}2-1$ arêtes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un graphe complet à $n$ sommets relie chaque sommet à tous les autres, sans exception.",
+        "Son nombre d'arêtes vaut $\\dbinom n2=\\dfrac{n(n-1)}2$, jamais $n(n-1)$ tout court : la division par $2$ évite de compter chaque paire deux fois.",
+        "Ce résultat se retrouve aussi en divisant par deux la somme des degrés, chaque sommet ayant alors degré $n-1$.",
+        "Au Probatoire, ce calcul apparaît souvent comme question de clôture d'un exercice sur les graphes, en variante « et si le réseau devenait complet ? »."
+      ]
+    }
+  ]
+}

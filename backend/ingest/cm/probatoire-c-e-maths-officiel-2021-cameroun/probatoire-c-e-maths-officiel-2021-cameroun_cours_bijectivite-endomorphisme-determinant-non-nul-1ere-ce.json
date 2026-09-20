@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-bijectivite-endomorphisme-determinant-non-nul-1ere-ce",
+  "meta": {
+    "titre": "Montrer qu'un endomorphisme du plan est bijectif à l'aide du déterminant de sa matrice",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes bijectifs",
+    "duree_estimee_min": 15,
+    "tags": [
+      "algèbre linéaire",
+      "endomorphisme bijectif",
+      "déterminant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "1",
+    "rappel_id": "r-II3",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un endomorphisme du plan est-il bijectif ? Plutôt que de chercher à démontrer directement l'injectivité et la surjectivité, un unique nombre calculé à partir de sa matrice - le déterminant - répond à la question en une ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire la matrice d'un endomorphisme dans une base donnée",
+        "Calcul du déterminant d'une matrice carrée d'ordre 2"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère du déterminant non nul pour la bijectivité",
+      "contenu_markdown": "Un endomorphisme $f$ d'un espace vectoriel de dimension finie est bijectif si et seulement si le déterminant de sa matrice, exprimée dans n'importe quelle base, est non nul. Cette valeur du déterminant ne dépend pas de la base choisie pour représenter $f$ : on peut donc effectuer ce test dans la base la plus pratique disponible, sans avoir besoin de revenir à la base canonique.",
+      "formule_principale": "f \\text{ bijectif} \\iff \\det(A) \\neq 0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La matrice de $f$ dans la base $(\\vec u\\,;\\vec v)$ est $A=\\begin{pmatrix}2&-2\\\\1&3\\end{pmatrix}$. Montrer que $f$ est bijectif.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le déterminant de A",
+          "justification": "Pour $A=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$, $\\det A=ad-bc$",
+          "resultat_markdown": "$\\det A=2\\times3-(-2)\\times1=6+2=8$"
+        },
+        {
+          "numero": 2,
+          "action": "Conclure à partir du signe du déterminant",
+          "justification": "$8\\neq0$, donc le critère de bijectivité est vérifié",
+          "resultat_markdown": "$f$ est bijectif"
+        }
+      ],
+      "conclusion_markdown": "Comme $\\det A=8\\neq0$, l'endomorphisme $f$ est bijectif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer la matrice de f dans la base canonique (i, j) avant de tester sa bijectivité, en pensant que le résultat obtenu dans une autre base n'est pas valable.",
+          "pourquoi_faux": "Le déterminant d'un endomorphisme est un invariant : il a la même valeur dans toute base. Refaire le calcul dans une autre base est un travail inutile.",
+          "correction_markdown": "Utilise directement la matrice déjà disponible, quelle que soit la base dans laquelle elle est exprimée, pour tester la bijectivité."
+        },
+        {
+          "erreur_markdown": "Confondre le critère avec celui d'une simple non-nullité de la matrice (matrice non nulle mais déterminant nul).",
+          "pourquoi_faux": "Une matrice non nulle peut très bien avoir un déterminant nul (ex. deux colonnes proportionnelles) : l'endomorphisme correspondant n'est alors pas bijectif, même si sa matrice n'est pas la matrice nulle.",
+          "correction_markdown": "Calcule toujours explicitement le déterminant ; ne te contente jamais de vérifier que la matrice « a l'air » non nulle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La matrice de $g$ dans une base donnée est $M=\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$. $g$ est-il bijectif ?",
+          "solution_markdown": "$\\det M=1\\times4-2\\times3=4-6=-2\\neq0$ : $g$ est bijectif."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La matrice de $h$ est $N=\\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$. $h$ est-il bijectif ?",
+          "solution_markdown": "$\\det N=2\\times2-4\\times1=4-4=0$ : $h$ n'est pas bijectif (ses deux colonnes sont proportionnelles)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour quelles valeurs du réel $m$ l'endomorphisme de matrice $\\begin{pmatrix}m&1\\\\1&m\\end{pmatrix}$ est-il bijectif ?",
+          "solution_markdown": "$\\det=m^2-1$. L'endomorphisme est bijectif si et seulement si $m^2-1\\neq0$, c'est-à-dire $m\\neq1$ et $m\\neq-1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un endomorphisme du plan est bijectif si et seulement si le déterminant de sa matrice est non nul.",
+        "Ce déterminant ne dépend pas de la base dans laquelle la matrice est exprimée : inutile de revenir à une base particulière pour ce test.",
+        "Un déterminant nul signale des colonnes proportionnelles (vecteurs colinéaires) et donc un endomorphisme non bijectif.",
+        "Ce critère est la première chose à vérifier avant de chercher la matrice de la bijection réciproque."
+      ]
+    }
+  ]
+}

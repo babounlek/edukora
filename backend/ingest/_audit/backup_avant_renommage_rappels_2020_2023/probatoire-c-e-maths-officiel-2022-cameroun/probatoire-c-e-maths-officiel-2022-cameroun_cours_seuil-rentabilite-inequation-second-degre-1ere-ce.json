@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-seuil-rentabilite-inequation-second-degre-1ere-ce",
+  "meta": {
+    "titre": "Trouver un seuil de production rentable via une inéquation du second degré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - applications économiques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "fonction polynôme",
+      "inéquation du second degré",
+      "coût et bénéfice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "5",
+    "rappel_id": "r-5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une entreprise connaît son coût de production et son prix de vente, une seule question compte pour sa survie : à partir de combien d'unités produites commence-t-elle à gagner de l'argent ? La réponse se cache dans une inéquation du second degré, exactement les mêmes outils qu'une équation classique, mais avec une conclusion en INTERVALLE plutôt qu'en valeurs isolées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le discriminant et les racines d'un trinôme du second degré",
+        "Connaître le signe d'un trinôme du second degré selon la position par rapport à ses racines",
+        "Savoir traduire un problème concret (recette, coût, bénéfice) en expression algébrique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la situation économique à l'inéquation",
+      "contenu_markdown": "Le bénéfice est la différence entre la recette et le coût : $B(x)=R(x)-C(x)$. Réaliser un bénéfice (positif, strict) revient à résoudre l'inéquation $B(x)>0$.\n\n**Résolution d'un trinôme du second degré $ax^2+bx+c$** (après avoir ramené l'inéquation à cette forme) : on calcule le discriminant $\\Delta=b^2-4ac$. Si $\\Delta>0$, le trinôme admet deux racines $x_1<x_2$, et son signe est celui de $a$ à l'EXTÉRIEUR des racines, et l'opposé du signe de $a$ ENTRE les racines.\n\n**Retour au contexte.** Une fois l'ensemble solution obtenu sous forme d'intervalle, il faut encore l'interpréter dans le contexte du problème : $x$ représente souvent une quantité entière (nombre d'articles), ce qui impose de chercher le plus petit (ou plus grand) ENTIER de l'intervalle, et de vérifier la cohérence avec d'éventuelles contraintes supplémentaires (capacité maximale, quantité positive).",
+      "formule_principale": "B(x)=R(x)-C(x)>0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le coût de production de $x$ articles est $C(x)=x^2+202\\,500$ FCFA, le prix de vente unitaire est $1\\,500$ FCFA. Trouver le nombre minimum d'articles à produire pour réaliser un bénéfice.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer le bénéfice",
+          "justification": "B(x) = R(x) - C(x), avec R(x)=1500x",
+          "resultat_markdown": "$B(x)=1\\,500x-x^2-202\\,500=-x^2+1\\,500x-202\\,500$"
+        },
+        {
+          "numero": 2,
+          "action": "Poser l'inéquation B(x)>0 et la ramener à un coefficient dominant positif",
+          "justification": "on multiplie par -1, ce qui inverse le sens de l'inégalité",
+          "resultat_markdown": "$x^2-1\\,500x+202\\,500<0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le discriminant et les racines",
+          "justification": "Δ=b²-4ac avec a=1,b=-1500,c=202500",
+          "resultat_markdown": "$\\Delta=1\\,440\\,000=1\\,200^2$ ; $x_1=150$, $x_2=1\\,350$"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer le signe et l'intervalle solution",
+          "justification": "a=1>0, donc négatif entre les racines",
+          "resultat_markdown": "$x\\in\\,]150;1\\,350[$"
+        },
+        {
+          "numero": 5,
+          "action": "Interpréter en nombre entier d'articles",
+          "justification": "150 exclu (borne stricte), premier entier après 150 est 151",
+          "resultat_markdown": "minimum : $151$ articles"
+        }
+      ],
+      "conclusion_markdown": "La PME doit produire au moins 151 articles pour espérer un bénéfice strictement positif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Retenir la borne exacte de l'intervalle (150) comme réponse finale",
+          "pourquoi_faux": "À x=150 exactement, le bénéfice est nul (c'est le seuil de rentabilité), pas positif : l'inégalité stricte B(x)>0 exclut cette valeur.",
+          "correction_markdown": "Distingue toujours le seuil de rentabilité (bénéfice nul, borne de l'intervalle) du premier entier qui donne un bénéfice réellement positif."
+        },
+        {
+          "erreur_markdown": "Oublier d'inverser le sens de l'inégalité en multipliant par -1",
+          "pourquoi_faux": "Multiplier ou diviser une inégalité par un nombre négatif inverse son sens : oublier cette règle mène à un intervalle solution complètement faux (l'extérieur des racines au lieu de l'intérieur, ou l'inverse).",
+          "correction_markdown": "Vérifie toujours le signe du coefficient par lequel tu multiplies, et rappelle-toi la règle : facteur négatif ⟹ le sens de l'inégalité change."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre l'inéquation $x^2-5x+6<0$.",
+          "solution_markdown": "Discriminant : $\\Delta=25-24=1$. Racines : $x_1=2$, $x_2=3$. Coefficient dominant positif : négatif entre les racines. $S=]2;3[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une entreprise a un coût $C(x)=2x^2+1000$ et un prix de vente unitaire de $300$ FCFA. Trouver le nombre minimum d'unités à produire pour un bénéfice strictement positif.",
+          "solution_markdown": "$B(x)=300x-2x^2-1000$. On veut $B(x)>0$, soit $2x^2-300x+1000<0$, soit $x^2-150x+500<0$. $\\Delta=150^2-4\\times500=22\\,500-2\\,000=20\\,500$. $\\sqrt{20500}\\approx143{,}18$. Racines $\\approx\\frac{150-143{,}18}{2}\\approx3{,}41$ et $\\approx\\frac{150+143{,}18}{2}\\approx146{,}59$. Le bénéfice est positif pour x entier compris entre 4 et 146 inclus ; le minimum est donc 4 unités."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exemple résolu (C(x)=x²+202500, prix 1500 FCFA) et déterminer si un bénéfice d'au moins 100 000 FCFA est atteignable sachant que la capacité de production est limitée à 1300 unités.",
+          "solution_markdown": "On veut $B(x)\\ge100\\,000$ : $-x^2+1500x-202500\\ge100\\,000 \\iff x^2-1500x+302\\,500\\le0$. $\\Delta=1500^2-4\\times302\\,500=2\\,250\\,000-1\\,210\\,000=1\\,040\\,000$. $\\sqrt{1\\,040\\,000}\\approx1019{,}80$. Racines $\\approx\\frac{1500-1019{,}80}{2}\\approx240{,}1$ et $\\approx\\frac{1500+1019{,}80}{2}\\approx1259{,}9$. L'intervalle $[240{,}1;1259{,}9]$ est entièrement compatible avec la capacité maximale de 1300 unités : un bénéfice d'au moins 100 000 FCFA est donc atteignable, par exemple en produisant 241 unités jusqu'à 1259 unités."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le bénéfice B(x) = Recette(x) - Coût(x) ; un bénéfice strict s'obtient en résolvant B(x) > 0.",
+        "Ramène toujours l'inéquation à un trinôme de coefficient dominant positif avant d'étudier son signe (attention au changement de sens en multipliant par -1).",
+        "Un trinôme est négatif ENTRE ses racines, positif à l'EXTÉRIEUR, si son coefficient dominant est positif.",
+        "N'oublie jamais de repasser du résultat mathématique (intervalle) au contexte concret (nombre entier d'articles, contraintes de capacité).",
+        "Ce type de problème (rentabilité, seuil de production) est un classique des situations-problèmes du Probatoire, dans la partie « évaluation des compétences »."
+      ]
+    }
+  ]
+}

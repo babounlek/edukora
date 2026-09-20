@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-extremum-relatif-signe-derivee-1ere-d",
+  "meta": {
+    "titre": "Extremum relatif et changement de signe de la dérivée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Optimisation d'une fonction du second degré",
+    "duree_estimee_min": 20,
+    "tags": [
+      "extremum",
+      "forme canonique",
+      "optimisation",
+      "fonction du second degré"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "5",
+    "rappel_id": "r-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver le maximum ou le minimum d'une grandeur modélisée par une fonction du second degré (chiffre d'affaires, trajectoire, coût) revient toujours au même calcul, qu'on le fasse par la dérivée ou par la forme canonique : les deux méthodes se recoupent et se vérifient mutuellement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée d'une fonction polynôme du second degré",
+        "Mise sous forme canonique d'un trinôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux méthodes convergentes : dérivée et forme canonique",
+      "contenu_markdown": "Pour déterminer l'extremum d'une fonction polynôme du second degré $c(t)=\\alpha t^2+\\beta t+\\gamma$ avec $\\alpha\\neq0$, on peut soit étudier le signe de sa dérivée $c'(t)=2\\alpha t+\\beta$ (qui s'annule et change de signe en $t_0=-\\dfrac\\beta{2\\alpha}$), soit mettre $c(t)$ sous forme canonique $c(t)=\\alpha(t-t_0)^2+c(t_0)$ ; l'extremum vaut alors $c(t_0)$, un maximum si $\\alpha<0$, un minimum si $\\alpha>0$.",
+      "formule_principale": "t_0=-\\dfrac\\beta{2\\alpha},\\quad \\text{extremum}=c(t_0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'extremum de $c(t)=-2t^2+8t+3$, en vérifiant le résultat par les deux méthodes.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Méthode de la dérivée : calculer c'(t) et l'annuler",
+          "justification": "$c'(t)=-4t+8$",
+          "resultat_markdown": "$c'(t)=0 \\iff -4t+8=0 \\iff t_0=2$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer c(t0) et conclure sur la nature de l'extremum",
+          "justification": "$\\alpha=-2<0$, donc c'est un maximum",
+          "resultat_markdown": "$c(2)=-2\\times4+8\\times2+3=-8+16+3=11$, maximum"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la forme canonique",
+          "justification": "$c(t)=-2(t^2-4t)+3=-2[(t-2)^2-4]+3=-2(t-2)^2+8+3=-2(t-2)^2+11$",
+          "resultat_markdown": "La forme canonique confirme un maximum de 11 atteint en $t_0=2$"
+        }
+      ],
+      "conclusion_markdown": "$c$ admet un maximum de $11$ atteint en $t=2$, confirmé par les deux méthodes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un coefficient $\\alpha$ positif donne un maximum (inversion de la règle de signe).",
+          "pourquoi_faux": "Une parabole d'équation $\\alpha t^2+\\dots$ est tournée vers le haut si $\\alpha>0$ (donc un minimum) et vers le bas si $\\alpha<0$ (donc un maximum) : c'est l'inverse de l'intuition pour certains élèves.",
+          "correction_markdown": "Retiens : $\\alpha>0 \\Rightarrow$ minimum, $\\alpha<0 \\Rightarrow$ maximum, et vérifie systématiquement avec la forme canonique en cas de doute."
+        },
+        {
+          "erreur_markdown": "Annuler c'(t) mais oublier de calculer c(t0), en donnant seulement la valeur de t0 comme réponse à l'extremum.",
+          "pourquoi_faux": "L'extremum demandé est en général la VALEUR de la fonction (par exemple un chiffre d'affaires maximal), pas seulement l'abscisse où elle est atteinte.",
+          "correction_markdown": "Calcule toujours c(t0) après avoir trouvé t0, et présente les deux informations (où et combien)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'extremum de $c(t)=t^2-6t+5$.",
+          "solution_markdown": "$c'(t)=2t-6=0 \\iff t_0=3$. $c(3)=9-18+5=-4$. Comme $\\alpha=1>0$, c'est un minimum de $-4$ atteint en $t=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer l'extremum de $c(t)=-3t^2+12t-7$.",
+          "solution_markdown": "$c'(t)=-6t+12=0 \\iff t_0=2$. $c(2)=-12+24-7=5$. Comme $\\alpha=-3<0$, c'est un maximum de $5$ atteint en $t=2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le chiffre d'affaires (en millions de F) d'une entreprise est modélisé par $R(t)=-0{,}5t^2+6t+10$ pour $t\\in[0,10]$ (t en années). Déterminer l'année où le chiffre d'affaires est maximal et sa valeur, en vérifiant par les deux méthodes.",
+          "solution_markdown": "Méthode de la dérivée : $R'(t)=-t+6=0 \\iff t_0=6$ ; comme $\\alpha=-0{,}5<0$, c'est un maximum. $R(6)=-0{,}5\\times36+36+10=-18+36+10=28$. Méthode de la forme canonique : $R(t)=-0{,}5(t^2-12t)+10=-0{,}5[(t-6)^2-36]+10=-0{,}5(t-6)^2+18+10=-0{,}5(t-6)^2+28$, ce qui confirme un maximum de $28$ atteint en $t=6$. Le chiffre d'affaires maximal est donc de $28$ millions de F, atteint la sixième année."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$t_0=-\\dfrac\\beta{2\\alpha}$ localise l'extremum ; $c(t_0)$ en donne la valeur.",
+        "$\\alpha>0$ : minimum ; $\\alpha<0$ : maximum : ne jamais inverser cette règle.",
+        "La forme canonique et l'étude de la dérivée doivent donner exactement le même résultat : les utiliser toutes les deux est la meilleure vérification renforcée."
+      ]
+    }
+  ]
+}

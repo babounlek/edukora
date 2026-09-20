@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-tableau-variation-signe-derivee-1ere-ce",
+  "meta": {
+    "titre": "Dresser le tableau de variation d'une fonction à partir du signe de sa dérivée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Sens de variation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "sens de variation",
+      "signe de la dérivée",
+      "tableau de variations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "3",
+    "rappel_id": "r-3-3b",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le signe de la dérivée est la seule information nécessaire pour savoir si une fonction monte ou descend : positif, la fonction croît ; négatif, elle décroît. Encore faut-il déterminer ce signe avec rigueur, notamment quand le numérateur est un trinôme du second degré."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de la dérivée d'une fonction",
+        "Signe d'un trinôme du second degré selon son discriminant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le lien entre signe de f' et sens de variation de f",
+      "contenu_markdown": "Sur un intervalle où $f$ est dérivable, si $f'(x)>0$ pour tout $x$ de cet intervalle, alors $f$ est strictement croissante sur cet intervalle ; si $f'(x)<0$, $f$ est strictement décroissante. Quand le domaine de $f$ est une réunion de plusieurs intervalles disjoints (à cause d'une valeur interdite), le sens de variation s'énonce séparément sur chacun de ces intervalles, jamais sur leur réunion globale.",
+      "formule_principale": "f'(x)>0 \\Rightarrow f \\text{ croissante} \\quad;\\quad f'(x)<0 \\Rightarrow f \\text{ décroissante}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $f'(x)=\\dfrac{-(x^2-2x+4)}{(1-x)^2}$ pour $x\\neq1$, déterminer le sens de variation de $f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Etudier le signe du dénominateur",
+          "justification": "$(1-x)^2$ est un carré",
+          "resultat_markdown": "$(1-x)^2>0$ pour tout $x\\neq1$"
+        },
+        {
+          "numero": 2,
+          "action": "Etudier le signe du numérateur via le discriminant du trinôme",
+          "justification": "$x^2-2x+4$ a pour discriminant $\\Delta'=(-2)^2-4\\times1\\times4=-12<0$",
+          "resultat_markdown": "$\\Delta<0$ et coefficient dominant $1>0$ : $x^2-2x+4>0$ pour tout $x$ réel, donc $-(x^2-2x+4)<0$ pour tout $x$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le signe de f' puis le sens de variation",
+          "justification": "Numérateur toujours négatif, dénominateur toujours positif",
+          "resultat_markdown": "$f'(x)<0$ pour tout $x\\neq1$ : $f$ est strictement décroissante sur $]-\\infty;1[$ et strictement décroissante sur $]1;+\\infty[$"
+        }
+      ],
+      "conclusion_markdown": "f est strictement décroissante sur chacun des deux intervalles de son domaine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire \"f est décroissante sur ℝ\\{1}\" comme si c'était un seul intervalle continu.",
+          "pourquoi_faux": "ℝ\\{1} est la réunion de deux intervalles disjoints ]-∞;1[ et ]1;+∞[ ; le sens de variation, même identique sur les deux, doit être énoncé séparément sur chacun, car rien ne garantit une continuité (ni un ordre) entre les deux morceaux.",
+          "correction_markdown": "Énonce toujours le sens de variation intervalle par intervalle quand le domaine comporte une valeur interdite."
+        },
+        {
+          "erreur_markdown": "Oublier d'étudier le signe du discriminant du trinôme au numérateur, et tenter de le factoriser alors qu'il ne l'est pas dans ℝ.",
+          "pourquoi_faux": "Un trinôme de discriminant strictement négatif ne se factorise pas en produit de facteurs réels du premier degré ; chercher à le faire est une perte de temps, et le bon réflexe est d'utiliser directement le signe du discriminant.",
+          "correction_markdown": "Calcule systématiquement le discriminant d'un trinôme avant de chercher à le factoriser ; si Δ<0, conclus directement sur son signe constant (celui du coefficient dominant), sans tenter de factorisation réelle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$f'(x)=2x-4$. Déterminer le sens de variation de f sur ℝ.",
+          "solution_markdown": "$f'(x)>0 \\iff x>2$ et $f'(x)<0 \\iff x<2$ : f est décroissante sur $]-\\infty;2]$ et croissante sur $[2;+\\infty[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$f'(x)=\\dfrac{x^2-1}{(x+2)^2}$ pour $x\\neq-2$. Étudier le signe de f' et en déduire le sens de variation de f.",
+          "solution_markdown": "Le dénominateur est toujours positif. Le numérateur $x^2-1=(x-1)(x+1)$ est positif à l'extérieur de $[-1;1]$ et négatif à l'intérieur. Donc f est croissante sur $]-\\infty;-2[$ et sur $]-2;-1]$, décroissante sur $[-1;1]$, croissante sur $[1;+\\infty[$ (en respectant la valeur interdite -2 qui sépare deux intervalles)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$f'(x)=\\dfrac{-(x^2+1)}{x^2}$ pour $x\\neq0$. Montrer que le signe de f' ne dépend d'aucun paramètre et donner le sens de variation de f sur chacun des deux intervalles de son domaine.",
+          "solution_markdown": "$x^2+1>0$ pour tout x réel (somme d'un carré et de 1) et $x^2>0$ pour $x\\neq0$ : donc $-(x^2+1)<0$ et le quotient $f'(x)$ est toujours strictement négatif, quel que soit x non nul. f est donc strictement décroissante sur $]-\\infty;0[$ et strictement décroissante sur $]0;+\\infty[$, sans qu'aucune valeur de x ne change cette conclusion."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "f'(x)>0 signifie f strictement croissante ; f'(x)<0 signifie f strictement décroissante, sur l'intervalle considéré.",
+        "Un trinôme au numérateur : calcule son discriminant. Δ<0 signifie un signe constant (celui du coefficient dominant) sur tout ℝ, sans qu'il faille chercher à le factoriser.",
+        "Un dénominateur mis au carré est toujours positif (sauf annulation), ce qui simplifie l'étude de signe globale au signe du seul numérateur.",
+        "Quand le domaine comporte une valeur interdite, énonce le sens de variation séparément sur chacun des intervalles qui composent ce domaine."
+      ]
+    }
+  ]
+}

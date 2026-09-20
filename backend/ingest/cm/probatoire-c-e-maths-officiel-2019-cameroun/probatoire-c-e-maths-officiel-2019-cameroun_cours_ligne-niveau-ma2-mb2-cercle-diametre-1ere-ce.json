@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-ligne-niveau-ma2-mb2-cercle-diametre-1ere-ce",
+  "meta": {
+    "titre": "Déterminer l'ensemble des points M tels que MA² + MB² = k",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie analytique - Lieux géométriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "lieu géométrique",
+      "ligne de niveau",
+      "cercle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "r1a2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La question « quel est l'ensemble des points M tels que MA²+MB²=k ? » revient systématiquement à un cercle centré au milieu de [AB] : la clé est de faire apparaître ce milieu par une identité vectorielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles vectorielle et notion de milieu d'un segment",
+        "Équation cartésienne d'un cercle $(x-a)^2+(y-b)^2=r^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Réduction au milieu de [AB]",
+      "contenu_markdown": "Soit $I$ le milieu de $[AB]$. En écrivant $\\overrightarrow{MA}=\\overrightarrow{MI}+\\overrightarrow{IA}$ et $\\overrightarrow{MB}=\\overrightarrow{MI}+\\overrightarrow{IB}$ avec $\\overrightarrow{IA}=-\\overrightarrow{IB}$, on obtient $MA^2+MB^2=2MI^2+\\frac12AB^2$. L'ensemble $\\{M : MA^2+MB^2=k\\}$ est donc le cercle de centre $I$ et de rayon $\\sqrt{\\frac{k-AB^2/2}{2}}$ si cette quantité est positive (réduit à $\\{I\\}$ si elle est nulle, vide si négative).",
+      "formule_principale": "MA^2+MB^2=2MI^2+\\dfrac12AB^2 \\ (I \\text{ milieu de } [AB])"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'ensemble des points $M$ tels que $MA^2+MB^2=10$, avec $AB=2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la formule de réduction au milieu I",
+          "justification": "MA²+MB²=2MI²+AB²/2",
+          "resultat_markdown": "$10=2MI^2+\\frac{4}{2}=2MI^2+2$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler MI²",
+          "justification": "résoudre l'équation",
+          "resultat_markdown": "$MI^2=4$, donc $MI=2$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble cherché est le cercle de centre $I$ (milieu de [AB]) et de rayon 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le terme constant $\\frac12AB^2$ et écrire directement $MA^2+MB^2=2MI^2$.",
+          "pourquoi_faux": "Ce terme provient du produit scalaire $2\\overrightarrow{MI}\\cdot(\\overrightarrow{IA}+\\overrightarrow{IB})$ qui s'annule, mais aussi des termes $IA^2+IB^2=\\frac12AB^2$ qui restent après développement complet.",
+          "correction_markdown": "Toujours développer complètement $MA^2=\\overrightarrow{MA}^2=(\\overrightarrow{MI}+\\overrightarrow{IA})^2$ terme par terme avant de conclure, sans sauter les termes constants."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$AB=4$. Quel est le rayon du lieu des points M tels que $MA^2+MB^2=16$ ?",
+          "solution_markdown": "$16=2MI^2+\\frac{16}{2}=2MI^2+8\\Rightarrow MI^2=4\\Rightarrow MI=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$AB=6$. L'ensemble des points M tels que $MA^2+MB^2=18$ est-il un cercle, un point, ou l'ensemble vide ?",
+          "solution_markdown": "$18=2MI^2+\\frac{36}{2}=2MI^2+18\\Rightarrow MI^2=0$ : l'ensemble est réduit au point $I$ (milieu de [AB])."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$AB=8$. Montrer que l'ensemble des points M tels que $MA^2+MB^2=20$ est vide.",
+          "solution_markdown": "$20=2MI^2+\\frac{64}{2}=2MI^2+32\\Rightarrow MI^2=-6$, impossible car un carré est positif : l'ensemble est vide."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$MA^2+MB^2=k$ se ramène toujours, via le milieu $I$ de $[AB]$, à $MI^2=\\frac{k}{2}-\\frac{AB^2}{4}$ : cercle de centre $I$ si positif, point $I$ si nul, ensemble vide si négatif."
+      ]
+    }
+  ]
+}

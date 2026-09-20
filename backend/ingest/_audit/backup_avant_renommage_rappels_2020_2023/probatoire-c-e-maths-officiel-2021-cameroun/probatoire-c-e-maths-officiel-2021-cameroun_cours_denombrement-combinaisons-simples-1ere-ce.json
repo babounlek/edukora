@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-denombrement-combinaisons-simples-1ere-ce",
+  "meta": {
+    "titre": "Dénombrer un choix simultané par combinaisons",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dénombrement - Combinaisons",
+    "duree_estimee_min": 15,
+    "tags": [
+      "combinaisons",
+      "dénombrement",
+      "tirage simultané"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "2",
+    "rappel_id": "r-2-2a",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Choisir 3 délégués parmi 20 élèves, ou 6 numéros parmi 49 au loto : dans les deux cas, l'ordre du choix n'a aucune importance et l'on ne peut pas choisir deux fois la même personne ou le même numéro. Le nombre de combinaisons répond exactement à cette question : « de combien de façons puis-je choisir un groupe, sans ordre, sans répétition ? »"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de factorielle $n!=n\\times(n-1)\\times\\cdots\\times1$",
+        "Différence entre un arrangement (avec ordre) et une combinaison (sans ordre)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le nombre de combinaisons de p éléments parmi n",
+      "contenu_markdown": "Le nombre de façons de choisir simultanément $p$ éléments parmi $n$ éléments distincts, sans tenir compte de l'ordre du choix et sans pouvoir choisir deux fois le même élément, est noté $C_n^p$ (ou $\\binom np$) et vaut $C_n^p=\\dfrac{n!}{p!\\,(n-p)!}$. En pratique, on simplifie souvent ce calcul en écrivant seulement les $p$ premiers facteurs décroissants à partir de $n$ au numérateur : $C_n^p=\\dfrac{n\\times(n-1)\\times\\cdots\\times(n-p+1)}{p!}$.",
+      "formule_principale": "C_n^p=\\dfrac{n!}{p!\\,(n-p)!}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On choisit simultanément 3 élèves parmi 20 pour représenter une classe. Combien de choix sont possibles ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître un dénombrement par combinaisons",
+          "justification": "Le choix est simultané (pas d'ordre entre les 3 élèves désignés) et sans répétition (un même élève n'est choisi qu'une fois)",
+          "resultat_markdown": "Le nombre de choix est $C_{20}^3$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule en écrivant les 3 premiers facteurs décroissants à partir de 20",
+          "justification": "$C_n^p=\\dfrac{n\\times(n-1)\\times\\cdots\\times(n-p+1)}{p!}$ avec $n=20$, $p=3$",
+          "resultat_markdown": "$C_{20}^3=\\dfrac{20\\times19\\times18}{3\\times2\\times1}=\\dfrac{6840}{6}$"
+        },
+        {
+          "numero": 3,
+          "action": "Effectuer la division",
+          "justification": "Calcul numérique final",
+          "resultat_markdown": "$C_{20}^3=1140$"
+        }
+      ],
+      "conclusion_markdown": "Il y a 1140 façons de choisir simultanément 3 élèves parmi 20."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la formule des arrangements $A_n^p=\\dfrac{n!}{(n-p)!}$ au lieu de celle des combinaisons.",
+          "pourquoi_faux": "Un arrangement tient compte de l'ordre (choisir A puis B est différent de choisir B puis A), ce qui n'est pas le cas ici : désigner un groupe de délégués ne distingue pas qui a été « choisi en premier ».",
+          "correction_markdown": "Demande-toi toujours si l'ordre du choix compte : sans ordre, c'est une combinaison, et il faut diviser par $p!$ en plus."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par $p!$ et donner directement $n\\times(n-1)\\times\\cdots\\times(n-p+1)$ comme réponse finale.",
+          "pourquoi_faux": "Ce produit compte chaque groupe de $p$ éléments $p!$ fois (une fois par ordre possible de les citer) : sans cette division, le résultat est $p!$ fois trop grand.",
+          "correction_markdown": "La division par $p!$ est ce qui « efface » l'ordre : ne l'omets jamais dans un dénombrement par combinaisons."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $C_8^2$.",
+          "solution_markdown": "$C_8^2=\\dfrac{8\\times7}{2\\times1}=\\dfrac{56}{2}=28$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une urne contient 12 jetons numérotés. On en tire simultanément 4. Combien de tirages sont possibles ?",
+          "solution_markdown": "Tirage simultané, sans ordre ni répétition : $C_{12}^4=\\dfrac{12\\times11\\times10\\times9}{4\\times3\\times2\\times1}=\\dfrac{11\\,880}{24}=495$ tirages possibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une équipe de 5 joueurs doit être formée à partir de 8 filles et 7 garçons, en comptant exactement 2 filles. Combien d'équipes sont possibles ?",
+          "solution_markdown": "On choisit 2 filles parmi 8 ET 3 garçons parmi 7 (pour compléter à 5 joueurs) : les deux choix sont indépendants, donc on multiplie les combinaisons. $C_8^2\\times C_7^3=\\dfrac{8\\times7}{2}\\times\\dfrac{7\\times6\\times5}{6}=28\\times35=980$ équipes possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un choix simultané, sans ordre et sans répétition, se dénombre par des combinaisons $C_n^p$.",
+        "La formule est $C_n^p=\\dfrac{n!}{p!(n-p)!}$, ou de façon équivalente le produit des p premiers facteurs décroissants à partir de n, divisé par p!.",
+        "Ne jamais confondre avec un arrangement : dès que l'ordre importe (classement, tiercé, mots de passe), il faut $A_n^p$ et non $C_n^p$.",
+        "Quand un choix combine plusieurs catégories indépendantes (ex. des filles ET des garçons), on multiplie les combinaisons de chaque catégorie.",
+        "Ce dénombrement de base intervient dans presque tous les exercices de probabilités du Probatoire : le maîtriser conditionne la suite du calcul."
+      ]
+    }
+  ]
+}

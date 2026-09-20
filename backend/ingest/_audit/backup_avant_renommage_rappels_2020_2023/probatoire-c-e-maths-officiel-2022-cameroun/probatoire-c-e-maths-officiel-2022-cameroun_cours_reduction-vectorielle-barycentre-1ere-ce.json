@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-reduction-vectorielle-barycentre-1ere-ce",
+  "meta": {
+    "titre": "Réduire une somme pondérée de vecteurs via le barycentre",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Barycentre",
+    "duree_estimee_min": 20,
+    "tags": [
+      "barycentre",
+      "réduction vectorielle",
+      "relation de Chasles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-1b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une somme comme $\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}$, qui semble dépendre à la fois de $M$ et des trois points $A$, $B$, $C$, se réduit en réalité toujours à un UNIQUE vecteur, proportionnel à $\\overrightarrow{MG}$ où $G$ est un point fixe bien précis : le barycentre du système pondéré. C'est l'un des outils les plus puissants de la géométrie vectorielle du plan."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition du barycentre d'un système de points pondérés",
+        "Savoir utiliser la relation de Chasles",
+        "Savoir que MA = -AM (changement de sens d'un vecteur)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le théorème de réduction",
+      "contenu_markdown": "Soit $G$ le barycentre du système $\\{(A_1;a_1),\\dots,(A_n;a_n)\\}$, de somme des coefficients $k=a_1+\\cdots+a_n\\neq0$. Alors, pour TOUT point $M$ du plan (ou de l'espace) :\n$$a_1\\overrightarrow{MA_1}+a_2\\overrightarrow{MA_2}+\\cdots+a_n\\overrightarrow{MA_n}=k\\,\\overrightarrow{MG}$$\n\n**Méthode.** Pour réduire une somme pondérée de vecteurs partant tous du même point $M$ : 1) identifier les coefficients $a_i$ affectés à chaque point ; 2) vérifier que leur somme $k$ est non nulle (sinon le barycentre n'existe pas, et on obtient un vecteur constant, indépendant de $M$) ; 3) remplacer la somme par $k\\,\\overrightarrow{MG}$, où $G$ est le barycentre de coefficients $a_i$.\n\n**Attention au sens des vecteurs.** Si l'énoncé donne des vecteurs comme $\\overrightarrow{AM}$ (partant du point fixe vers $M$) plutôt que $\\overrightarrow{MA}$ (partant de $M$ vers le point fixe), il faut d'abord les convertir : $\\overrightarrow{AM}=-\\overrightarrow{MA}$.",
+      "formule_principale": "a_1\\overrightarrow{MA_1}+\\cdots+a_n\\overrightarrow{MA_n}=k\\,\\overrightarrow{MG},\\ k=\\textstyle\\sum a_i"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$D$ est le barycentre de $\\{(A;1);(B;-1);(C;1)\\}$. Montrer que, pour l'application $h$ définie par $\\overrightarrow{AM}-\\overrightarrow{BM}+\\overrightarrow{CM}=\\overrightarrow{MM'}$, on a $\\overrightarrow{DM'}=2\\overrightarrow{DM}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les vecteurs dans le sens MA, MB, MC",
+          "justification": "AM = -MA, BM = -MB, CM = -MC",
+          "resultat_markdown": "$\\overrightarrow{AM}-\\overrightarrow{BM}+\\overrightarrow{CM}=-(\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC})$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le théorème de réduction à MA-MB+MC",
+          "justification": "D est barycentre de (A,1),(B,-1),(C,1), somme des coefficients k=1",
+          "resultat_markdown": "$\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}=1\\cdot\\overrightarrow{MD}=\\overrightarrow{MD}$"
+        },
+        {
+          "numero": 3,
+          "action": "Combiner les deux résultats",
+          "justification": "report du résultat de l'étape 2 dans celui de l'étape 1",
+          "resultat_markdown": "$\\overrightarrow{MM'}=-\\overrightarrow{MD}$"
+        },
+        {
+          "numero": 4,
+          "action": "Passer à la relation entre D, M et M' par Chasles",
+          "justification": "MM' = MD + DM', donc DM' = MM' - MD",
+          "resultat_markdown": "$\\overrightarrow{DM'}=-\\overrightarrow{MD}-\\overrightarrow{MD}=-2\\overrightarrow{MD}=2\\overrightarrow{DM}$"
+        }
+      ],
+      "conclusion_markdown": "Pour tout point M, $\\overrightarrow{DM'}=2\\overrightarrow{DM}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer le théorème de réduction directement sur AM, BM, CM sans vérifier le sens des vecteurs",
+          "pourquoi_faux": "Le théorème de réduction s'énonce avec des vecteurs partant de M (MA, MB, MC), pas l'inverse : appliquer la formule sans convertir inverse le signe du résultat final.",
+          "correction_markdown": "Vérifie toujours le sens de chaque vecteur (part-il de M ou arrive-t-il à M ?) avant d'appliquer la formule de réduction."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la somme des coefficients est non nulle",
+          "pourquoi_faux": "Si la somme des coefficients est nulle, le barycentre n'existe pas : la somme pondérée de vecteurs est alors un vecteur CONSTANT (indépendant de M), pas un multiple de MG.",
+          "correction_markdown": "Calcule toujours la somme des coefficients en premier : si elle est nulle, utilise plutôt le résultat du vecteur constant associé (utile par exemple pour montrer qu'une application est une translation)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$I$ est le milieu de $[AB]$. Réduire $\\overrightarrow{MA}+\\overrightarrow{MB}$ pour tout point $M$.",
+          "solution_markdown": "$I$ est le barycentre de $(A;1),(B;1)$, de somme des coefficients $k=2$. D'après le théorème de réduction : $\\overrightarrow{MA}+\\overrightarrow{MB}=2\\overrightarrow{MI}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$G$ est le barycentre de $(A;2),(B;1),(C;1)$. Réduire $2\\overrightarrow{MA}+\\overrightarrow{MB}+\\overrightarrow{MC}$ pour tout point $M$.",
+          "solution_markdown": "La somme des coefficients est $k=2+1+1=4\\neq0$. D'après le théorème de réduction : $2\\overrightarrow{MA}+\\overrightarrow{MB}+\\overrightarrow{MC}=4\\overrightarrow{MG}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $\\Omega$ le barycentre de $(A;3),(B;-1)$. Montrer que, si $M'$ est défini par $3\\overrightarrow{AM}-\\overrightarrow{BM}=\\overrightarrow{MM'}$, alors $M'$ décrit une application dont on précisera la relation avec $\\Omega$.",
+          "solution_markdown": "On convertit : $3\\overrightarrow{AM}-\\overrightarrow{BM}=-(3\\overrightarrow{MA}-\\overrightarrow{MB})$. Le système $(A;3),(B;-1)$ a pour somme $k=3-1=2\\neq0$, de barycentre $\\Omega$ : $3\\overrightarrow{MA}-\\overrightarrow{MB}=2\\overrightarrow{M\\Omega}$. Donc $\\overrightarrow{MM'}=-2\\overrightarrow{M\\Omega}$. Par Chasles, $\\overrightarrow{\\Omega M'}=\\overrightarrow{MM'}-\\overrightarrow{M\\Omega}=-2\\overrightarrow{M\\Omega}-\\overrightarrow{M\\Omega}=-3\\overrightarrow{M\\Omega}=3\\overrightarrow{\\Omega M}$. L'application est donc l'homothétie de centre $\\Omega$ et de rapport $3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème de réduction transforme une somme pondérée a1·MA1+...+an·MAn en k·MG, où G est le barycentre et k la somme des coefficients (si k≠0).",
+        "Vérifie toujours le sens des vecteurs (partant de M ou non) avant d'appliquer la formule : convertis avec MA=-AM si nécessaire.",
+        "Si la somme des coefficients est nulle, la somme de vecteurs est un vecteur constant, indépendant de M (utile pour montrer une translation).",
+        "Combine ensuite ce résultat avec la relation de Chasles pour faire apparaître la relation demandée entre les points fixes du problème.",
+        "Ce théorème est l'outil central de tout exercice de Première C/E qui définit une application ou un lieu géométrique à partir d'une combinaison de vecteurs."
+      ]
+    }
+  ]
+}

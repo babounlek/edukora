@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-ligne-niveau-ma2-mb2-cercle-diametre-1ere-ce",
+  "meta": {
+    "titre": "Ligne de niveau AM² + BM² = k et relation de la médiane",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie analytique - Lignes de niveau",
+    "duree_estimee_min": 22,
+    "tags": [
+      "relation de la médiane",
+      "ligne de niveau",
+      "équation de cercle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-I1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une équation du type $AM^2+BM^2=k$, avec $A$ et $B$ deux points fixes, semble a priori difficile à interpréter géométriquement. Une seule identité, la relation de la médiane, la transforme instantanément en équation de cercle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Distance entre deux points dans un repère orthonormé : $AB^2=(x_B-x_A)^2+(y_B-y_A)^2$",
+        "Coordonnées du milieu d'un segment"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Relation de la médiane",
+      "contenu_markdown": "Pour tout point $M$ du plan et $I$ milieu de $[AB]$ : $AM^2+BM^2=2IM^2+\\dfrac12AB^2$. Ainsi l'ensemble des points $M$ vérifiant $AM^2+BM^2=k$ (une constante donnée) équivaut à $IM^2=\\dfrac12\\left(k-\\dfrac12AB^2\\right)$. Si le membre de droite est strictement positif, cet ensemble est le cercle de centre $I$ et de rayon $r=\\sqrt{\\dfrac12\\left(k-\\dfrac12AB^2\\right)}$ ; s'il est nul, l'ensemble est réduit au point $I$ seul ; s'il est négatif, l'ensemble est vide.",
+      "formule_principale": "AM^2+BM^2=2IM^2+\\dfrac12AB^2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$A(0;6)$ et $B(-2;-4)$. Déterminer l'ensemble $(\\Gamma)$ des points $M$ tels que $AM^2+BM^2=102$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le milieu I de [AB]",
+          "justification": "coordonnées du milieu",
+          "resultat_markdown": "$I=\\left(\\dfrac{0-2}2;\\dfrac{6-4}2\\right)=(-1;1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer AB²",
+          "justification": "distance entre A et B",
+          "resultat_markdown": "$AB^2=(-2-0)^2+(-4-6)^2=4+100=104$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la relation de la médiane",
+          "justification": "AM²+BM²=102 devient une équation en IM²",
+          "resultat_markdown": "$102=2IM^2+\\dfrac{104}2=2IM^2+52\\Rightarrow IM^2=\\dfrac{102-52}2=25$"
+        }
+      ],
+      "conclusion_markdown": "$(\\Gamma)$ est le cercle de centre $I(-1;1)$ et de rayon $\\sqrt{25}=5$, d'équation $(x+1)^2+(y-1)^2=25$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le facteur $\\frac12$ devant $AB^2$ dans la relation de la médiane.",
+          "pourquoi_faux": "La relation exacte est $AM^2+BM^2=2IM^2+\\frac12AB^2$, pas $2IM^2+AB^2$ ; omettre ce facteur décale le rayon obtenu.",
+          "correction_markdown": "Mémorise la relation de la médiane comme un bloc complet, avec son facteur $\\frac12$, plutôt que de la reconstruire de mémoire à chaque fois."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier le signe de $IM^2$ avant de conclure à un cercle.",
+          "pourquoi_faux": "Si $\\frac12\\left(k-\\frac12AB^2\\right)$ est négatif, il n'existe aucun point M solution : l'ensemble n'est pas un cercle mais l'ensemble vide.",
+          "correction_markdown": "Calcule toujours numériquement $IM^2$ avant de conclure sur la nature de l'ensemble (cercle, point, ou ensemble vide)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A(1;0)$, $B(-1;0)$. Déterminer l'ensemble des points M tels que $AM^2+BM^2=10$.",
+          "solution_markdown": "$I=(0;0)$, $AB^2=4$. $IM^2=\\dfrac12(10-2)=4$ : cercle de centre O et de rayon 2."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$A(2;3)$, $B(4;3)$. Pour quelle valeur de $k$ l'ensemble des points M tels que $AM^2+BM^2=k$ est-il réduit au seul point I ?",
+          "solution_markdown": "$I=(3;3)$, $AB^2=4$. L'ensemble est réduit à I quand $IM^2=0$, soit $\\frac12(k-2)=0$, donc $k=2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$A$ et $B$ sont deux points fixes avec $AB=6$. Montrer que l'ensemble des points M tels que $AM^2+BM^2=k$ est vide pour $k<18$.",
+          "solution_markdown": "$AB^2=36$. $IM^2=\\dfrac12\\left(k-\\dfrac{36}2\\right)=\\dfrac12(k-18)$. Pour que l'ensemble soit non vide, il faut $IM^2\\geq0$, donc $k\\geq18$ : pour $k<18$, $IM^2<0$ est impossible pour un carré de distance réel, donc aucun point M ne convient, l'ensemble est vide."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation de la médiane $AM^2+BM^2=2IM^2+\\frac12AB^2$ (I milieu de [AB]) transforme toute équation $AM^2+BM^2=k$ en équation de cercle centré en I.",
+        "Calcule toujours I et $AB^2$ en premier, puis isole $IM^2$, et vérifie son signe avant de conclure à un cercle, un point, ou un ensemble vide."
+      ]
+    }
+  ]
+}

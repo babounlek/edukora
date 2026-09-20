@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-cercles-tangents-distance-des-centres-1ere-ce",
+  "meta": {
+    "titre": "Reconnaître deux cercles tangents grâce à la distance de leurs centres",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie analytique - Cercles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "cercles tangents",
+      "cercle",
+      "tangente à un cercle",
+      "distance entre deux points",
+      "rayon"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2011-cameroun",
+    "epreuve_titre": "Mathématiques Probatoire C et E 2011",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-maths-2011-cameroun-ex1-q2d-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux cercles dessinés sur une même figure semblent parfois « se toucher », mais l'œil ne prouve rien : un trait épais suffit à cacher un léger écart. Pour affirmer que deux cercles sont tangents, il faut un critère chiffré. Il tient en une comparaison : la distance entre les centres d'un côté, les rayons de l'autre. Ce cours te donne ce critère, et t'apprend à en tirer le point de contact."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer la distance entre deux points dans un repère orthonormé",
+        "Déterminer le centre et le rayon d'un cercle donné par son équation cartésienne",
+        "Coordonnées d'un vecteur et colinéarité"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Distance des centres et somme ou différence des rayons",
+      "contenu_markdown": "Soit $\\mathcal{C}(O\\,;R)$ et $\\mathcal{C}'(O'\\,;R')$ deux cercles avec $R\\geq R'>0$, et $d=OO'$.\n\n- **Tangents extérieurement** si et seulement si $d=R+R'$ : ils n'ont qu'un point commun et chacun est hors de l'autre.\n- **Tangents intérieurement** si et seulement si $d=R-R'$ avec $R>R'$ : le petit cercle est à l'intérieur du grand, et ils se touchent en un seul point.\n- Si $R-R'<d<R+R'$, les cercles sont sécants en deux points. Si $d>R+R'$ ou $d<R-R'$, ils n'ont aucun point commun.\n\nDans les deux cas de tangence, le point de contact $T$ est **aligné avec $O$ et $O'$**, et la tangente commune en $T$ est perpendiculaire à $(OO')$. Pour une tangence extérieure, $T$ est sur le segment $[OO']$ et $\\overrightarrow{OT}=\\dfrac{R}{d}\\,\\overrightarrow{OO'}$.",
+      "formule_principale": "d=R+R' \\text{ (tangents extérieurement)} \\qquad d=|R-R'| \\text{ (tangents intérieurement)}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère orthonormé, $\\mathcal{C}$ a pour centre $O(1\\,;2)$ et pour rayon $3$ ; $\\mathcal{C}'$ a pour centre $O'(7\\,;10)$ et pour rayon $7$. Montrer que ces cercles sont tangents et déterminer leur point de contact.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance des centres",
+          "justification": "C'est la quantité à comparer aux rayons",
+          "resultat_markdown": "$OO'=\\sqrt{(7-1)^2+(10-2)^2}=\\sqrt{36+64}=10$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme et la différence des rayons",
+          "justification": "Les deux valeurs possibles d'une tangence",
+          "resultat_markdown": "$R+R'=3+7=10$ et $|R-R'|=4$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer",
+          "justification": "$d=10$ est égal à $R+R'$ et différent de $|R-R'|$",
+          "resultat_markdown": "Les cercles sont tangents **extérieurement**."
+        },
+        {
+          "numero": 4,
+          "action": "Placer le point de contact sur $[OO']$",
+          "justification": "En tangence extérieure, $T$ est à la distance $R=3$ de $O$ sur le segment $[OO']$, donc $\\overrightarrow{OT}=\\frac{3}{10}\\overrightarrow{OO'}$",
+          "resultat_markdown": "$\\overrightarrow{OO'}=(6\\,;8)$, donc $\\overrightarrow{OT}=(1{,}8\\,;2{,}4)$ et $T(2{,}8\\,;4{,}4)$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier avec le second rayon",
+          "justification": "Le contrôle évite de garder une erreur de calcul",
+          "resultat_markdown": "$O'T=\\sqrt{4{,}2^2+5{,}6^2}=\\sqrt{17{,}64+31{,}36}=\\sqrt{49}=7=R'$ ✓"
+        }
+      ],
+      "conclusion_markdown": "Les cercles $\\mathcal{C}$ et $\\mathcal{C}'$ sont tangents extérieurement au point $T(2{,}8\\,;4{,}4)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tester seulement $d=R+R'$ et conclure « non tangents » si l'égalité est fausse.",
+          "pourquoi_faux": "Il existe une seconde tangence, intérieure, où $d=|R-R'|$ : dans ce cas la somme des rayons est strictement plus grande que $d$. Ne tester qu'un cas passe à côté de la moitié des configurations.",
+          "correction_markdown": "Calculer toujours $d$, $R+R'$ et $|R-R'|$, puis comparer $d$ aux deux."
+        },
+        {
+          "erreur_markdown": "Écrire $d=R-R'$ sans valeur absolue et sans savoir quel rayon est le plus grand.",
+          "pourquoi_faux": "La distance est positive. Si $R<R'$, l'expression $R-R'$ est négative et ne peut jamais être égale à $d$. L'égalité correcte est $d=|R-R'|$.",
+          "correction_markdown": "Ranger d'abord les rayons ($R\\geq R'$), ou écrire $d=|R-R'|$."
+        },
+        {
+          "erreur_markdown": "Croire que $d=R-R'$ avec $R=R'$ donne deux cercles tangents.",
+          "pourquoi_faux": "Si $R=R'$ et $d=0$, les centres sont confondus : les deux cercles sont **identiques**, pas tangents.",
+          "correction_markdown": "Vérifier que $d>0$ avant de parler de tangence intérieure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux cercles ont pour centres $O(0\\,;0)$ et $O'(5\\,;0)$ et pour rayons $2$ et $3$. Sont-ils tangents ? Si oui, donner le point de contact.",
+          "solution_markdown": "$OO'=5=2+3$ : tangents extérieurement. Le point de contact est sur $[OO']$ à la distance $2$ de $O$ : $T(2\\,;0)$. Contrôle : $O'T=3$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $\\mathcal{C}:x^2+y^2-4x+2y-4=0$ et $\\mathcal{C}':(x-5)^2+(y-3)^2=4$. Montrer que ces cercles sont tangents et déterminer le point de contact.",
+          "solution_markdown": "$x^2+y^2-4x+2y-4=0\\iff(x-2)^2+(y+1)^2=9$ : centre $O(2\\,;-1)$ et rayon $3$. $\\mathcal{C}'$ a pour centre $O'(5\\,;3)$ et pour rayon $2$. $OO'=\\sqrt{9+16}=5=3+2$ : tangence extérieure. $\\overrightarrow{OO'}=(3\\,;4)$ et $\\overrightarrow{OT}=\\frac35\\overrightarrow{OO'}=(1{,}8\\,;2{,}4)$, donc $T(3{,}8\\,;1{,}4)$. Contrôle : $O'T=\\sqrt{1{,}2^2+1{,}6^2}=2$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le cercle $\\mathcal{C}$ a pour centre $O(0\\,;0)$ et pour rayon $3$. Pour quelles valeurs de $k$ le cercle $\\mathcal{C}_k$ de centre $A_k(k\\,;0)$ et de rayon $1$ est-il tangent à $\\mathcal{C}$ ? Pour $k=4$, donner l'équation de la tangente commune.",
+          "solution_markdown": "$OA_k=|k|$. Tangence extérieure : $|k|=3+1=4$. Tangence intérieure : $|k|=3-1=2$. Donc $k\\in\\{-4\\,;-2\\,;2\\,;4\\}$. Pour $k=4$ : tangence extérieure, le point de contact est sur $[OA_4]$ à la distance $3$ de $O$ : $T(3\\,;0)$. La tangente commune est perpendiculaire à $(OA_4)$, l'axe des abscisses : c'est la droite d'équation $x=3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux cercles sont tangents si et seulement si la distance des centres vaut $R+R'$ (extérieurement) ou $|R-R'|$ (intérieurement).",
+        "Compare toujours $d$ aux **deux** valeurs, sinon tu oublies un cas.",
+        "Le point de contact est toujours sur la droite $(OO')$ ; pour une tangence extérieure il est sur le segment, à la distance $R$ de $O$.",
+        "La tangente commune au point de contact est perpendiculaire à $(OO')$.",
+        "Au Probatoire C et E, ce critère apparaît dans les exercices de géométrie analytique sur les cercles et les transformations (homothétie, symétrie centrale) : on te demande souvent de justifier une tangence ou de tracer une tangente commune."
+      ]
+    }
+  ]
+}

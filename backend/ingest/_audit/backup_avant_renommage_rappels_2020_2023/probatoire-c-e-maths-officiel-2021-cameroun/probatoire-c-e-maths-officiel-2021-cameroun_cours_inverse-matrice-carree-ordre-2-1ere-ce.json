@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-inverse-matrice-carree-ordre-2-1ere-ce",
+  "meta": {
+    "titre": "Inverser une matrice carrée d'ordre 2",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Matrice inverse",
+    "duree_estimee_min": 20,
+    "tags": [
+      "algèbre linéaire",
+      "matrice inverse",
+      "bijection réciproque"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "1",
+    "rappel_id": "r-II4",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois qu'un endomorphisme est reconnu bijectif, sa bijection réciproque existe - mais comment écrire concrètement sa matrice ? Pour une matrice d'ordre 2, une formule directe évite d'avoir à résoudre un système."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déterminant d'une matrice carrée d'ordre 2",
+        "Critère de bijectivité par le déterminant non nul",
+        "Matrice identité et produit matriciel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de l'inverse d'une matrice d'ordre 2",
+      "contenu_markdown": "Si $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ vérifie $\\det M=ad-bc\\neq0$, alors $M$ est inversible et son inverse est $M^{-1}=\\dfrac{1}{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$ : on échange les deux termes de la diagonale principale, on change le signe des deux autres termes, puis on divise chaque coefficient par le déterminant. Quand $M$ est la matrice d'un endomorphisme bijectif $f$ dans une base donnée, $M^{-1}$ est exactement la matrice de la bijection réciproque $f^{-1}$ dans cette même base.",
+      "formule_principale": "M^{-1}=\\dfrac{1}{\\det M}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f$ est bijectif, de matrice $A=\\begin{pmatrix}2&-2\\\\1&3\\end{pmatrix}$ (déterminant 8) dans la base $(\\vec u\\,;\\vec v)$. Déterminer la matrice $A_1$ de $f^{-1}$ dans cette base.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier a, b, c, d et appliquer la formule",
+          "justification": "$a=2$, $b=-2$, $c=1$, $d=3$, $\\det A=8$",
+          "resultat_markdown": "$A_1=\\dfrac18\\begin{pmatrix}3&2\\\\-1&2\\end{pmatrix}$"
+        },
+        {
+          "numero": 2,
+          "action": "Détailler chaque coefficient",
+          "justification": "On divise chaque terme par 8",
+          "resultat_markdown": "$A_1=\\begin{pmatrix}\\dfrac38&\\dfrac14\\\\[4pt]-\\dfrac18&\\dfrac14\\end{pmatrix}$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par le produit A x A1",
+          "justification": "Si $A_1$ est bien l'inverse, $A\\times A_1=I$",
+          "resultat_markdown": "Coefficient (1,1) : $2\\times\\dfrac38+(-2)\\times\\left(-\\dfrac18\\right)=\\dfrac68+\\dfrac28=1$ ; coefficient (1,2) : $2\\times\\dfrac14+(-2)\\times\\dfrac14=0$ - conforme à la matrice identité"
+        }
+      ],
+      "conclusion_markdown": "$A_1=\\dfrac18\\begin{pmatrix}3&2\\\\-1&2\\end{pmatrix}$ est la matrice de $f^{-1}$ dans la base $(\\vec u\\,;\\vec v)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Échanger a et d mais oublier de changer le signe de b et c, ou inversement.",
+          "pourquoi_faux": "La formule demande les DEUX opérations simultanément : échanger la diagonale principale ET changer le signe de l'autre diagonale ; oublier l'une des deux donne une matrice fausse.",
+          "correction_markdown": "Applique la formule terme à terme, sans en sauter une étape : diagonale principale échangée, autre diagonale changée de signe, le tout divisé par le déterminant."
+        },
+        {
+          "erreur_markdown": "Utiliser cette formule pour une matrice d'ordre 3 ou plus.",
+          "pourquoi_faux": "Cette formule directe est spécifique aux matrices carrées d'ordre 2 ; une matrice d'ordre supérieur nécessite une méthode différente (cofacteurs, pivot de Gauss...).",
+          "correction_markdown": "Vérifie toujours que la matrice à inverser est bien d'ordre 2 avant d'utiliser cette formule raccourcie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Inverser $M=\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$.",
+          "solution_markdown": "$\\det M=1\\times4-2\\times3=-2$. $M^{-1}=\\dfrac{1}{-2}\\begin{pmatrix}4&-2\\\\-3&1\\end{pmatrix}=\\begin{pmatrix}-2&1\\\\[2pt]\\dfrac32&-\\dfrac12\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Inverser $N=\\begin{pmatrix}3&1\\\\5&2\\end{pmatrix}$ et vérifier le résultat par un produit.",
+          "solution_markdown": "$\\det N=3\\times2-1\\times5=1$. $N^{-1}=\\begin{pmatrix}2&-1\\\\-5&3\\end{pmatrix}$. Vérification : $N\\times N^{-1}$, coefficient (1,1) : $3\\times2+1\\times(-5)=6-5=1$ ; coefficient (1,2) : $3\\times(-1)+1\\times3=-3+3=0$, conforme à l'identité."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$P=\\begin{pmatrix}m&1\\\\2&1\\end{pmatrix}$. Pour quelles valeurs de m cette matrice est-elle inversible, et donner alors son inverse en fonction de m.",
+          "solution_markdown": "$\\det P=m\\times1-1\\times2=m-2$. $P$ est inversible si et seulement si $m\\neq2$. Dans ce cas, $P^{-1}=\\dfrac{1}{m-2}\\begin{pmatrix}1&-1\\\\-2&m\\end{pmatrix}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour M = (a b ; c d) de déterminant non nul, M⁻¹ = (1/detM)×(d -b ; -c a) : échange de la diagonale principale, changement de signe de l'autre diagonale, division par le déterminant.",
+        "La matrice de f⁻¹ dans une base donnée est exactement l'inverse de la matrice de f dans cette même base.",
+        "Cette formule directe ne vaut que pour les matrices carrées d'ordre 2.",
+        "Vérifie systématiquement au moins un coefficient du produit M×M⁻¹ : il doit reconstituer la matrice identité."
+      ]
+    }
+  ]
+}

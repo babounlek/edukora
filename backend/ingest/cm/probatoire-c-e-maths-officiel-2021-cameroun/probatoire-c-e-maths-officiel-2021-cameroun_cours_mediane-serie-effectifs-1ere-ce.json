@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-mediane-serie-effectifs-1ere-ce",
+  "meta": {
+    "titre": "Déterminer la médiane d'une série statistique à effectifs",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Statistiques - Paramètres de position",
+    "duree_estimee_min": 20,
+    "tags": [
+      "statistiques",
+      "médiane",
+      "interpolation linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "2",
+    "rappel_id": "r-2-3b",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La médiane partage une série statistique en deux moitiés égales. Pour une série groupée en classes, elle ne coïncide en général avec aucune des valeurs observées : on doit l'estimer par interpolation linéaire à l'intérieur de la classe qui la contient."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul des fréquences cumulées croissantes (FCC)",
+        "Proportionnalité et résolution d'une équation du premier degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule d'interpolation linéaire dans la classe médiane",
+      "contenu_markdown": "La classe médiane est la première classe $[e_i\\,;e_{i+1}[$ où la fréquence cumulée croissante dépasse 50 %. En supposant les valeurs réparties uniformément à l'intérieur de cette classe (hypothèse d'interpolation linéaire), la médiane vaut $Me=e_i+\\dfrac{50-\\text{FCC}(e_i)}{f_i}\\times(e_{i+1}-e_i)$, où $f_i$ est la fréquence (en %) de la classe médiane et $\\text{FCC}(e_i)$ la fréquence cumulée déjà atteinte à sa borne inférieure.",
+      "formule_principale": "Me=e_i+\\dfrac{50-\\text{FCC}(e_i)}{f_i}\\times(e_{i+1}-e_i)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec les FCC 0, 20, 30, 60, 85, 100 aux bornes 0, 2, 3, 5, 7, 9, déterminer la médiane de la série.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la classe médiane",
+          "justification": "On cherche la première classe où la FCC dépasse 50 %",
+          "resultat_markdown": "FCC passe de 30 (borne 3) à 60 (borne 5) : la classe médiane est $[3;5[$, de fréquence $f=30$ %"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule d'interpolation linéaire",
+          "justification": "$e_i=3$, $\\text{FCC}(e_i)=30$, $f_i=30$, $e_{i+1}-e_i=2$",
+          "resultat_markdown": "$Me=3+\\dfrac{50-30}{30}\\times2=3+\\dfrac{20}{30}\\times2=3+\\dfrac43$"
+        },
+        {
+          "numero": 3,
+          "action": "Réduire au même dénominateur",
+          "justification": "$3=\\dfrac93$",
+          "resultat_markdown": "$Me=\\dfrac{9+4}{3}=\\dfrac{13}{3}\\approx4{,}33$"
+        }
+      ],
+      "conclusion_markdown": "La médiane de la série vaut $\\dfrac{13}{3}\\approx4{,}33$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir comme classe médiane celle où la FCC est la plus proche de 50 %, sans vérifier qu'elle la dépasse pour la première fois.",
+          "pourquoi_faux": "La règle est stricte : la classe médiane est la PREMIÈRE classe où la FCC franchit ou atteint 50 %, pas celle dont la FCC en est numériquement la plus proche.",
+          "correction_markdown": "Parcours le tableau des FCC dans l'ordre croissant et arrête-toi à la première valeur qui atteint ou dépasse 50 %."
+        },
+        {
+          "erreur_markdown": "Utiliser la fréquence cumulée de la borne SUPÉRIEURE de la classe médiane au numérateur, au lieu de celle de la borne inférieure.",
+          "pourquoi_faux": "La formule d'interpolation compare l'écart entre 50 % et la FCC déjà atteinte AVANT d'entrer dans la classe médiane (à sa borne inférieure), pas après.",
+          "correction_markdown": "Utilise toujours FCC(borne inférieure de la classe médiane) dans la formule, jamais celle de la borne supérieure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "FCC : 0, 40, 100 aux bornes 0, 10, 20. Déterminer la médiane.",
+          "solution_markdown": "FCC dépasse 50 % dans la classe [10;20[ (FCC passe de 40 à 100), de fréquence 60 %. $Me=10+\\dfrac{50-40}{60}\\times10=10+\\dfrac{10}{60}\\times10=10+\\dfrac{100}{60}=10+\\dfrac53\\approx11{,}67$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "FCC : 0, 15, 45, 80, 100 aux bornes 0, 5, 10, 15, 20. Déterminer la médiane.",
+          "solution_markdown": "FCC dépasse 50 % dans la classe [10;15[ (FCC passe de 45 à 80), fréquence 35 %. $Me=10+\\dfrac{50-45}{35}\\times5=10+\\dfrac{25}{35}=10+\\dfrac57\\approx10{,}71$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série a pour FCC : 0, 50, 100 aux bornes 0, 8, 16 (la FCC atteint EXACTEMENT 50 % à la fin de la première classe). Que devient la formule d'interpolation dans ce cas, et quelle est la médiane ?",
+          "solution_markdown": "La classe médiane est encore, par convention, la première classe où la FCC atteint ou dépasse 50 %, soit $[0;8[$, avec FCC(0)=0 et fréquence 50 %. La formule donne $Me=0+\\dfrac{50-0}{50}\\times8=1\\times8=8$ : la médiane coïncide exactement avec la borne supérieure de la première classe, ce qui est cohérent puisque la FCC y atteint pile 50 %."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe médiane est la première classe où la FCC atteint ou dépasse 50 %.",
+        "La médiane s'obtient par interpolation linéaire : Me = eᵢ + [(50 - FCC(eᵢ))/fᵢ] × (eᵢ₊₁ - eᵢ).",
+        "Utilise toujours la FCC de la borne INFÉRIEURE de la classe médiane dans cette formule.",
+        "Une lecture graphique sur le polygone des FCC (abscisse du point d'ordonnée 50 %) permet de vérifier ce calcul."
+      ]
+    }
+  ]
+}

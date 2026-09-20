@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-distance-point-droite-plan-1ere-ce",
+  "meta": {
+    "titre": "Distance d'un point à une droite dans le plan",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie analytique - Distances",
+    "duree_estimee_min": 20,
+    "tags": [
+      "distance point-droite",
+      "formule de la distance",
+      "position relative"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Savoir si un point est proche ou loin d'une droite, ou comparer cette distance à un rayon de cercle pour en déduire une position relative, sont des questions récurrentes en géométrie analytique. Une formule directe, sans avoir besoin de construire le projeté orthogonal, permet de répondre immédiatement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation cartésienne d'une droite",
+        "Calcul de racine carrée et de valeur absolue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de la distance point-droite",
+      "contenu_markdown": "La distance d'un point $M_0(x_0,y_0)$ à une droite $(D)$ d'équation $ax+by+c=0$ est donnée par $d(M_0,(D))=\\dfrac{|ax_0+by_0+c|}{\\sqrt{a^2+b^2}}$. Le numérateur s'obtient en substituant les coordonnées du point dans le membre de gauche de l'équation (en valeur absolue), et le dénominateur est la norme du vecteur normal $(a,b)$ de la droite.",
+      "formule_principale": "d(M_0,(D))=\\dfrac{|ax_0+by_0+c|}{\\sqrt{a^2+b^2}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la distance du point $A(3,-3)$ à la droite $(D):3x+4y-7=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients a, b, c",
+          "justification": "L'équation est déjà sous forme ax+by+c=0",
+          "resultat_markdown": "$a=3,\\ b=4,\\ c=-7$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le numérateur",
+          "justification": "On substitue les coordonnées de A dans ax+by+c",
+          "resultat_markdown": "$|3\\times3+4\\times(-3)-7|=|9-12-7|=|-10|=10$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le dénominateur et conclure",
+          "justification": "Le dénominateur est la norme du vecteur normal (a,b)",
+          "resultat_markdown": "$\\sqrt{3^2+4^2}=\\sqrt{25}=5$, donc $d(A,(D))=\\dfrac{10}5=2$"
+        }
+      ],
+      "conclusion_markdown": "Le point $A$ est situé à une distance de $2$ de la droite $(D)$ ; cette valeur peut ensuite être comparée à un rayon de cercle pour en déduire une position relative (sécante, tangente, extérieure)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la valeur absolue au numérateur.",
+          "pourquoi_faux": "Une distance est toujours positive, alors que $ax_0+by_0+c$ peut être négatif selon la position du point par rapport à la droite.",
+          "correction_markdown": "Encadre systématiquement le numérateur par des barres de valeur absolue avant de calculer."
+        },
+        {
+          "erreur_markdown": "Utiliser une équation de droite non réduite à la forme $ax+by+c=0$ (par exemple garder $y=mx+p$ sans la transformer).",
+          "pourquoi_faux": "La formule s'applique uniquement à la forme $ax+by+c=0$ ; appliquée directement à $y=mx+p$, elle donnerait un résultat faux.",
+          "correction_markdown": "Transforme toujours l'équation de la droite sous la forme $ax+by+c=0$ avant d'identifier $a$, $b$, $c$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la distance du point $O(0,0)$ à la droite $(D):3x-4y+10=0$.",
+          "solution_markdown": "$d=\\dfrac{|3\\times0-4\\times0+10|}{\\sqrt{9+16}}=\\dfrac{10}5=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la distance du point $A(1,2)$ à la droite $(D):y=2x-1$ (la mettre d'abord sous forme $ax+by+c=0$).",
+          "solution_markdown": "$(D):2x-y-1=0$. $d=\\dfrac{|2\\times1-2-1|}{\\sqrt{4+1}}=\\dfrac{|-1|}{\\sqrt5}=\\dfrac1{\\sqrt5}=\\dfrac{\\sqrt5}5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cercle de centre $\\Omega(1,1)$ est tangent à la droite $(D):3x+4y+c=0$. Sachant que le rayon du cercle vaut $3$, déterminer les deux valeurs possibles de $c$.",
+          "solution_markdown": "Tangence signifie $d(\\Omega,(D))=R$, soit $\\dfrac{|3\\times1+4\\times1+c|}{\\sqrt{9+16}}=3$, soit $|7+c|=15$. Donc $7+c=15$ (soit $c=8$) ou $7+c=-15$ (soit $c=-22$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La distance d'un point $(x_0,y_0)$ à une droite $ax+by+c=0$ vaut $\\dfrac{|ax_0+by_0+c|}{\\sqrt{a^2+b^2}}$ : à connaître par cœur.",
+        "L'équation de la droite doit impérativement être sous la forme $ax+by+c=0$ avant d'identifier $a$, $b$, $c$.",
+        "Cette distance sert très souvent à déterminer la position relative d'une droite et d'un cercle, en la comparant au rayon du cercle.",
+        "Au Probatoire, cette formule est un outil de calcul rapide qui évite de construire géométriquement le projeté orthogonal du point sur la droite."
+      ]
+    }
+  ]
+}

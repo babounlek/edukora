@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-extremum-d-un-trinome-du-second-degre-sommet-parabole-1ere",
+  "meta": {
+    "titre": "Trouver le maximum ou le minimum d'un trinôme du second degré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Second degré - Optimisation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "extremum d'un trinôme",
+      "trinôme",
+      "forme canonique",
+      "sommet d'une parabole",
+      "maximum"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2023-officiel-cameroun",
+    "epreuve_titre": "Mathématiques Probatoire A 2023",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-2023-officiel-cameroun-ex3-q1a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un chiffre d'affaires qui monte puis redescend, un bénéfice qui dépend de la quantité produite, l'aire d'un enclos dont on fait varier un côté : dans tous ces problèmes, une quantité est donnée par un trinôme du second degré et on cherche sa **valeur la plus grande ou la plus petite**. Ce cours t'apprend à la trouver sans étudier de fonction : la position du sommet de la parabole donne tout."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Forme canonique d'un trinôme du second degré",
+        "Signe du coefficient $a$ et allure de la parabole",
+        "Dérivée d'une fonction polynôme du second degré (facultatif)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le sommet de la parabole",
+      "contenu_markdown": "Soit $f(x)=ax^2+bx+c$ avec $a\\neq0$. Sa forme canonique est\n$$f(x)=a\\left(x+\\dfrac{b}{2a}\\right)^2-\\dfrac{\\Delta}{4a}\\qquad(\\Delta=b^2-4ac).$$\nLa parabole a pour sommet le point $S\\left(-\\dfrac{b}{2a}\\,;\\,f\\left(-\\dfrac{b}{2a}\\right)\\right)$, avec $f\\left(-\\dfrac{b}{2a}\\right)=-\\dfrac{\\Delta}{4a}$.\n\n- Si $a>0$ : $f$ admet un **minimum**, atteint en $x_S=-\\dfrac{b}{2a}$.\n- Si $a<0$ : $f$ admet un **maximum**, atteint en $x_S=-\\dfrac{b}{2a}$.\n\nIl faut distinguer **où** l'extremum est atteint ($x_S$) et **sa valeur** ($f(x_S)$) : les sujets demandent souvent l'un, souvent les deux.\n\n**Autre méthode.** $f'(x)=2ax+b$ s'annule en $x_S$ et change de signe : on retrouve le même résultat, plus lentement.\n\n**Variable entière.** Si $x$ représente un rang (année, nombre d'objets), l'extremum doit être cherché parmi les entiers : on compare les valeurs aux deux entiers qui encadrent $x_S$.",
+      "formule_principale": "x_S=-\\dfrac{b}{2a}\\qquad f(x_S)=-\\dfrac{\\Delta}{4a}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le chiffre d'affaires d'une usine, en millions de francs, à l'année de rang $n$ est donné par $C(n)=-3n^2+20n+50$, où $n$ est un entier naturel. Déterminer le rang de l'année où le chiffre d'affaires est maximal, puis ce maximum.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le signe de $a$",
+          "justification": "Il décide entre maximum et minimum",
+          "resultat_markdown": "$a=-3<0$ : la parabole est tournée vers le bas, $C$ admet un maximum."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'abscisse du sommet",
+          "justification": "$x_S=-\\frac{b}{2a}$ avec $a=-3$ et $b=20$",
+          "resultat_markdown": "$x_S=-\\dfrac{20}{-6}=\\dfrac{10}{3}\\approx3{,}33$"
+        },
+        {
+          "numero": 3,
+          "action": "Tenir compte que $n$ est entier",
+          "justification": "Le maximum réel est atteint en $\\frac{10}{3}$, qui n'est pas un entier : on compare les deux entiers voisins, $3$ et $4$",
+          "resultat_markdown": "$C(3)=-27+60+50=83$ et $C(4)=-48+80+50=82$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur le rang",
+          "justification": "$83>82$, et la parabole est décroissante après $x_S$ : les rangs suivants donnent des valeurs encore plus faibles",
+          "resultat_markdown": "Le maximum est atteint pour $n=3$."
+        }
+      ],
+      "conclusion_markdown": "Le chiffre d'affaires est maximal à l'année de rang $3$, et vaut alors $83$ millions de francs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $x_S=\\dfrac{b}{2a}$, en oubliant le signe moins.",
+          "pourquoi_faux": "Le signe moins vient de la forme canonique $a\\left(x+\\frac{b}{2a}\\right)^2$ : le sommet est en $x=-\\frac{b}{2a}$. Avec $f(x)=x^2-6x+5$, $\\frac{b}{2a}=-3$ donnerait un sommet en $-3$ au lieu de $3$.",
+          "correction_markdown": "Recopier $x_S=-\\dfrac{b}{2a}$ avant de remplacer, et vérifier que $f'(x_S)=0$."
+        },
+        {
+          "erreur_markdown": "Donner $x_S$ quand l'énoncé demande la valeur du maximum (ou l'inverse).",
+          "pourquoi_faux": "$x_S$ est la valeur de la variable pour laquelle l'extremum est atteint ; le maximum, lui, est la valeur de $f$ en ce point. Ce sont deux nombres différents.",
+          "correction_markdown": "Nommer explicitement les deux : « atteint pour $x=\\ldots$ » puis « et vaut $\\ldots$ »."
+        },
+        {
+          "erreur_markdown": "Prendre $n=\\text{arrondi}(x_S)$ sans vérifier quand la variable est entière.",
+          "pourquoi_faux": "L'arrondi de $x_S$ n'est pas toujours le bon entier : l'entier optimal est celui des deux voisins qui donne la plus grande valeur (pour un maximum), et la différence peut se jouer sur une seule unité.",
+          "correction_markdown": "Calculer $f$ pour les deux entiers qui encadrent $x_S$ et comparer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer le minimum de $f(x)=x^2-6x+5$ et la valeur en laquelle il est atteint.",
+          "solution_markdown": "$a=1>0$ : minimum. $x_S=-\\dfrac{-6}{2}=3$. $f(3)=9-18+5=-4$. Le minimum est $-4$, atteint pour $x=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un enclos rectangulaire a un périmètre de $40$ m. On note $x$ l'une de ses dimensions. Exprimer son aire en fonction de $x$ et déterminer ses dimensions pour que l'aire soit maximale.",
+          "solution_markdown": "L'autre dimension vaut $20-x$, donc $A(x)=x(20-x)=-x^2+20x$ pour $x\\in[0\\,;20]$. $a=-1<0$ : maximum en $x_S=-\\dfrac{20}{-2}=10$, et $A(10)=100$. Les dimensions sont $10$ m par $10$ m (un carré), pour une aire maximale de $100$ m²."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour tout réel $m$, on pose $f_m(x)=x^2-2mx+m+6$. Exprimer en fonction de $m$ le minimum $g(m)$ de $f_m$, puis déterminer la valeur de $m$ pour laquelle ce minimum est le plus grand possible.",
+          "solution_markdown": "$a=1>0$, $x_S=-\\dfrac{-2m}{2}=m$. $g(m)=f_m(m)=m^2-2m^2+m+6=-m^2+m+6$. $g$ est elle-même un trinôme avec $a=-1<0$ : elle admet un maximum en $m=-\\dfrac{1}{2\\times(-1)}=\\dfrac12$, de valeur $g\\left(\\dfrac12\\right)=-\\dfrac14+\\dfrac12+6=\\dfrac{25}{4}$. Le minimum de $f_m$ est donc le plus grand possible pour $m=\\dfrac12$, et il vaut alors $\\dfrac{25}{4}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un trinôme $ax^2+bx+c$, le signe de $a$ dit si l'extremum est un maximum ($a<0$) ou un minimum ($a>0$).",
+        "Il est atteint en $x_S=-\\dfrac{b}{2a}$ et vaut $f(x_S)$ : deux résultats à ne pas confondre.",
+        "Quand la variable est un entier, compare $f$ aux deux entiers voisins de $x_S$.",
+        "Le sommet donne l'extremum sans étudier de fonction ni de dérivée, ce qui fait gagner du temps en épreuve.",
+        "Au Probatoire, on l'utilise dans les problèmes d'optimisation (bénéfice, chiffre d'affaires, aire maximale) et pour étudier le signe d'un trinôme."
+      ]
+    }
+  ]
+}

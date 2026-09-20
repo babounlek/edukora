@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-base-vecteurs-propres-matrice-diagonale-terminale-c",
+  "meta": {
+    "titre": "Écrire la matrice d'un endomorphisme dans une base de vecteurs propres",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Diagonalisation",
+    "duree_estimee_min": 22,
+    "tags": [
+      "vecteurs propres",
+      "matrice diagonale",
+      "changement de base"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II3c",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La matrice d'un endomorphisme dépend entièrement de la base choisie pour l'écrire : dans une base ordinaire elle peut contenir quatre coefficients quelconques, mais dans une base formée de vecteurs propres, elle devient diagonale, donc immédiate à lire et à utiliser (puissances, composition, résolution de systèmes)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'un vecteur propre et d'une valeur propre : $f(\\vec v)=\\lambda\\vec v$ avec $\\vec v\\neq\\vec 0$",
+        "Écrire la matrice d'un endomorphisme en plaçant les images des vecteurs de base en colonnes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Matrice diagonale dans une base de vecteurs propres",
+      "contenu_markdown": "Si $\\mathcal B'=(\\vec e_1,\\vec e_2)$ est une base formée de deux vecteurs propres de $f$, associés respectivement aux valeurs propres $\\lambda_1$ et $\\lambda_2$ (c'est-à-dire $f(\\vec e_1)=\\lambda_1\\vec e_1$ et $f(\\vec e_2)=\\lambda_2\\vec e_2$), alors la matrice de $f$ dans $\\mathcal B'$ est diagonale, de coefficients diagonaux exactement $\\lambda_1$ et $\\lambda_2$ : $\\mathrm{Mat}_{\\mathcal B'}(f)=\\begin{pmatrix}\\lambda_1&0\\\\0&\\lambda_2\\end{pmatrix}$. En effet, les coordonnées de $f(\\vec e_1)=\\lambda_1\\vec e_1+0\\vec e_2$ dans $\\mathcal B'$ sont $(\\lambda_1,0)$, et celles de $f(\\vec e_2)=0\\vec e_1+\\lambda_2\\vec e_2$ sont $(0,\\lambda_2)$ : ce sont précisément les deux colonnes de la matrice.",
+      "formule_principale": "\\mathrm{Mat}_{\\mathcal B'}(f)=\\begin{pmatrix}\\lambda_1&0\\\\0&\\lambda_2\\end{pmatrix}\\ \\text{si}\\ f(\\vec e_1)=\\lambda_1\\vec e_1,\\ f(\\vec e_2)=\\lambda_2\\vec e_2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$g$ est l'endomorphisme du plan de matrice $M=\\begin{pmatrix}-6&4\\\\3&-2\\end{pmatrix}$ dans $(\\vec\\imath,\\vec\\jmath)$. On admet que $\\vec e_1$ engendre $\\ker g$ (donc $g(\\vec e_1)=\\vec 0$) et que $g(\\vec e_2)=-8\\vec e_2$ pour $\\vec e_2=2\\vec\\imath-\\vec\\jmath$. Écrire la matrice de $g$ dans la base $\\mathcal B'=(\\vec e_1,\\vec e_2)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer g(e1) dans la base B'",
+          "justification": "e1 est vecteur propre pour la valeur propre 0 (car il engendre le noyau)",
+          "resultat_markdown": "$g(\\vec e_1)=\\vec 0=0\\vec e_1+0\\vec e_2$, coordonnées $(0,0)$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer g(e2) dans la base B'",
+          "justification": "e2 est vecteur propre pour la valeur propre -8",
+          "resultat_markdown": "$g(\\vec e_2)=-8\\vec e_2=0\\vec e_1+(-8)\\vec e_2$, coordonnées $(0,-8)$"
+        },
+        {
+          "numero": 3,
+          "action": "Placer ces coordonnées en colonnes",
+          "justification": "convention de la matrice d'un endomorphisme dans une base",
+          "resultat_markdown": "$C=\\begin{pmatrix}0&0\\\\0&-8\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "La matrice de $g$ dans $\\mathcal B'=(\\vec e_1,\\vec e_2)$ est $C=\\begin{pmatrix}0&0\\\\0&-8\\end{pmatrix}$, diagonale de coefficients les deux valeurs propres $0$ et $-8$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'il faut refaire tout le calcul matriciel (changement de base par $P^{-1}MP$) alors que les images des vecteurs de $\\mathcal B'$ dans $\\mathcal B'$ sont déjà connues.",
+          "pourquoi_faux": "Dès qu'on connaît $f(\\vec e_1)$ et $f(\\vec e_2)$ exprimés directement dans la base $\\mathcal B'$ elle-même (et non dans l'ancienne base), il suffit de les placer en colonnes : refaire le produit matriciel $P^{-1}MP$ est inutilement long et source d'erreurs de calcul.",
+          "correction_markdown": "Vérifie toujours dans quelle base les coordonnées de $f(\\vec e_1)$ et $f(\\vec e_2)$ sont exprimées avant de choisir la méthode : si c'est déjà dans $\\mathcal B'$, la matrice s'écrit directement."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre des valeurs propres sur la diagonale par rapport à l'ordre des vecteurs dans la base annoncée.",
+          "pourquoi_faux": "La valeur propre associée à $\\vec e_1$ doit occuper la première colonne (donc la position (1,1) sur la diagonale), celle associée à $\\vec e_2$ la seconde (position (2,2)) : les échanger revient à décrire un endomorphisme différent.",
+          "correction_markdown": "Relis toujours l'ordre exact des vecteurs dans la base annoncée par l'énoncé avant d'écrire la matrice diagonale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$h$ est un endomorphisme du plan et $(\\vec u,\\vec v)$ une base telle que $h(\\vec u)=3\\vec u$ et $h(\\vec v)=-2\\vec v$. Donner la matrice de $h$ dans $(\\vec u,\\vec v)$.",
+          "solution_markdown": "$\\vec u$ et $\\vec v$ sont vecteurs propres pour les valeurs propres $3$ et $-2$, donc $\\mathrm{Mat}(h)=\\begin{pmatrix}3&0\\\\0&-2\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$f$ est un endomorphisme et $(\\vec e_1,\\vec e_2)$ une base propre avec $f(\\vec e_1)=5\\vec e_1$ et $f(\\vec e_2)=\\vec 0$. Donner la matrice de $f$ dans cette base, puis en déduire directement $f(3\\vec e_1-2\\vec e_2)$.",
+          "solution_markdown": "$\\mathrm{Mat}(f)=\\begin{pmatrix}5&0\\\\0&0\\end{pmatrix}$. $f(3\\vec e_1-2\\vec e_2)=3f(\\vec e_1)-2f(\\vec e_2)=15\\vec e_1-\\vec 0=15\\vec e_1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$g$ a pour matrice $C=\\begin{pmatrix}0&0\\\\0&-8\\end{pmatrix}$ dans une base propre $(\\vec e_1,\\vec e_2)$. Justifier, sans aucun calcul matriciel supplémentaire, que $g\\circ g$ (composée de $g$ par elle-même) a pour matrice $\\begin{pmatrix}0&0\\\\0&64\\end{pmatrix}$ dans cette même base.",
+          "solution_markdown": "Dans une base propre, une matrice diagonale se compose terme à terme sur sa diagonale : $g(g(\\vec e_1))=g(\\vec 0)=\\vec 0=0\\vec e_1$, et $g(g(\\vec e_2))=g(-8\\vec e_2)=-8\\times g(\\vec e_2)=-8\\times(-8\\vec e_2)=64\\vec e_2$. La matrice de $g\\circ g$ dans $(\\vec e_1,\\vec e_2)$ a donc pour coefficients diagonaux $0^2=0$ et $(-8)^2=64$, soit $\\begin{pmatrix}0&0\\\\0&64\\end{pmatrix}$ : élever une matrice diagonale au carré revient à élever chaque coefficient diagonal au carré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans une base formée de vecteurs propres, la matrice d'un endomorphisme est diagonale, de coefficients exactement les valeurs propres associées, dans le même ordre que les vecteurs de la base.",
+        "Il suffit de connaître les images des vecteurs de la base propre EXPRIMÉES DANS CETTE MÊME BASE pour écrire directement la matrice : aucun changement de base par produit matriciel n'est nécessaire dans ce cas.",
+        "Une matrice diagonale simplifie énormément les calculs ultérieurs (puissances, composées, inverse) : élever au carré, par exemple, revient à élever chaque coefficient diagonal au carré."
+      ]
+    }
+  ]
+}

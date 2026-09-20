@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-decomposition-fraction-rationnelle-1ere-ce",
+  "meta": {
+    "titre": "Décomposer une fraction rationnelle en partie entière et fraction résiduelle",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Fonctions rationnelles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "division euclidienne de polynômes",
+      "fraction rationnelle",
+      "asymptote oblique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-ex4-r-I2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand le numérateur d'une fraction rationnelle a un degré supérieur au dénominateur, une division polynomiale fait apparaître une partie entière (souvent une droite) et un reste : c'est cette partie entière qui donnera l'asymptote oblique de la courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Division euclidienne de deux polynômes",
+        "Degré d'un polynôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Division euclidienne du numérateur par le dénominateur",
+      "contenu_markdown": "Pour une fonction rationnelle $f=\\dfrac uv$ où $\\deg u=\\deg v+1$, on effectue la division euclidienne de $u$ par $v$ : si $u=qv+r$ avec $\\deg r<\\deg v$, alors $f(x)=q(x)+\\dfrac{r(x)}{v(x)}$, où $q$ est un polynôme du premier degré qui donnera l'asymptote oblique $y=q(x)$ de la courbe de $f$.",
+      "formule_principale": "u=qv+r \\implies f(x)=q(x)+\\dfrac{r(x)}{v(x)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décomposer $f(x)=\\dfrac{3x^2-5x+1}{x-1}$ sous la forme $q(x)+\\dfrac{r}{x-1}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Diviser le terme de plus haut degré",
+          "justification": "$3x^2\\div x=3x$, on multiplie $3x\\times(x-1)=3x^2-3x$",
+          "resultat_markdown": "$3x^2-5x+1-(3x^2-3x)=-2x+1$"
+        },
+        {
+          "numero": 2,
+          "action": "Continuer la division avec le reste partiel",
+          "justification": "$-2x\\div x=-2$, on multiplie $-2\\times(x-1)=-2x+2$",
+          "resultat_markdown": "$-2x+1-(-2x+2)=-1$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure la décomposition",
+          "justification": "Le reste -1 est bien de degré strictement inférieur à celui de x-1",
+          "resultat_markdown": "$3x^2-5x+1=(x-1)(3x-2)-1$, donc $f(x)=3x-2-\\dfrac1{x-1}$"
+        }
+      ],
+      "conclusion_markdown": "$f(x)=3x-2-\\dfrac1{x-1}$ : la partie entière $q(x)=3x-2$ sera l'asymptote oblique de la courbe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrêter la division avant que le reste soit de degré strictement inférieur au diviseur.",
+          "pourquoi_faux": "Si le reste a encore le même degré que le diviseur (ou un degré supérieur), la division n'est pas terminée et la décomposition est fausse.",
+          "correction_markdown": "Vérifie systématiquement le degré du reste obtenu à chaque étape avant de conclure."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe en reportant le produit soustrait (oublier de changer le signe de chaque terme).",
+          "pourquoi_faux": "La division polynomiale consiste à soustraire le produit obtenu : une erreur de signe se propage à tout le reste du calcul.",
+          "correction_markdown": "Écris explicitement la soustraction terme à terme avant de simplifier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décomposer $f(x)=\\dfrac{2x^2+3x-1}{x+1}$.",
+          "solution_markdown": "$2x^2+3x-1=(x+1)(2x+1)-2$ car $(x+1)(2x+1)=2x^2+3x+1$, et $-1-1=-2$. Donc $f(x)=2x+1-\\dfrac2{x+1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décomposer $f(x)=\\dfrac{x^2+1}{x+2}$.",
+          "solution_markdown": "$x^2+1=(x+2)(x-2)+5$ car $(x+2)(x-2)=x^2-4$, et $1-(-4)=5$. Donc $f(x)=x-2+\\dfrac5{x+2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décomposer $f(x)=\\dfrac{2x^2-x-5}{2x-3}$ (le quotient obtenu à la première étape est encore du même degré que le diviseur : il faut poursuivre la division).",
+          "solution_markdown": "Étape 1 : $2x^2\\div2x=x$, $x(2x-3)=2x^2-3x$, reste partiel $=(2x^2-x-5)-(2x^2-3x)=2x-5$. Ce reste est encore de degré 1, égal au degré du diviseur : on continue. Étape 2 : $2x\\div2x=1$, $1\\times(2x-3)=2x-3$, reste $=(2x-5)-(2x-3)=-2$. Au final $q(x)=x+1$ et le reste est $-2$ : $f(x)=x+1-\\dfrac2{2x-3}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$u=qv+r$ avec $\\deg r<\\deg v$ : la division doit toujours être poursuivie jusqu'à cette condition.",
+        "$f(x)=q(x)+\\dfrac{r(x)}{v(x)}$ où $q$ est la partie entière et $\\dfrac{r(x)}{v(x)}$ la partie fractionnaire résiduelle.",
+        "La partie entière $q(x)$ est exactement l'équation de l'asymptote oblique de la courbe de f."
+      ]
+    }
+  ]
+}

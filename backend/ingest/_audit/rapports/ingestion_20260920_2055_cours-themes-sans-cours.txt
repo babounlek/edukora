@@ -1,0 +1,728 @@
+=== Ingestion de cm/cours-themes-sans-cours-2026-09-20 (périmètre du tunnel : depuis 2026-09-20T19:54:54+00:00) ===
+
+---
+
+## Prérequis
+
+- [Calculer la distance entre deux points dans un repère orthonormé](COURS_REF:calculer-la-distance-entre-deux-points-dans-un-repere-orthonorme)
+- [Déterminer le centre et le rayon d''un cercle donné par son équation cartésienne](COURS_REF:determiner-le-centre-et-le-rayon-dun-cercle-donne-par-son-equation-cartesienne)
+- Coordonnées d''un vecteur et colinéarité
+
+---
+
+## Distance des centres et somme ou différence des rayons
+
+Soit $\mathcal{C}(O\,;R)$ et $\mathcal{C}''(O''\,;R'')$ deux cercles avec $R\geq R''>0$, et $d=OO''$.
+
+- **Tangents extérieurement** si et seulement si $d=R+R''$ : ils n''ont qu''un point commun et chacun est hors de l''autre.
+- **Tangents intérieurement** si et seulement si $d=R-R''$ avec $R>R''$ : le petit cercle est à l''intérieur du grand, et ils se touchent en un seul point.
+- Si $R-R''<d<R+R''$, les cercles sont sécants en deux points. Si $d>R+R''$ ou $d<R-R''$, ils n''ont aucun point commun.
+
+Dans les deux cas de tangence, le point de contact $T$ est **aligné avec $O$ et $O''$**, et la tangente commune en $T$ est perpendiculaire à $(OO'')$. Pour une tangence extérieure, $T$ est sur le segment $[OO'']$ et $\overrightarrow{OT}=\dfrac{R}{d}\,\overrightarrow{OO''}$.
+
+$$d=R+R'' \text{ (tangents extérieurement)} \qquad d=|R-R''| \text{ (tangents intérieurement)}$$
+
+---
+
+## Exemple résolu
+
+Dans un repère orthonormé, $\mathcal{C}$ a pour centre $O(1\,;2)$ et pour rayon $3$ ; $\mathcal{C}''$ a pour centre $O''(7\,;10)$ et pour rayon $7$. Montrer que ces cercles sont tangents et déterminer leur point de contact.
+
+**Étape 1 - Calculer la distance des centres**
+
+C''est la quantité à comparer aux rayons
+
+$OO''=\sqrt{(7-1)^2+(10-2)^2}=\sqrt{36+64}=10$
+
+**Étape 2 - Calculer la somme et la différence des rayons**
+
+Les deux valeurs possibles d''une tangence
+
+$R+R''=3+7=10$ et $|R-R''|=4$
+
+**Étape 3 - Comparer**
+
+$d=10$ est égal à $R+R''$ et différent de $|R-R''|$
+
+Les cercles sont tangents **extérieurement**.
+
+**Étape 4 - Placer le point de contact sur $[OO'']$**
+
+En tangence extérieure, $T$ est à la distance $R=3$ de $O$ sur le segment $[OO'']$, donc $\overrightarrow{OT}=\frac{3}{10}\overrightarrow{OO''}$
+
+$\overrightarrow{OO''}=(6\,;8)$, donc $\overrightarrow{OT}=(1{,}8\,;2{,}4)$ et $T(2{,}8\,;4{,}4)$
+
+**Étape 5 - Vérifier avec le second rayon**
+
+Le contrôle évite de garder une erreur de calcul
+
+$O''T=\sqrt{4{,}2^2+5{,}6^2}=\sqrt{17{,}64+31{,}36}=\sqrt{49}=7=R''$ ✓
+
+Les cercles $\mathcal{C}$ et $\mathcal{C}''$ sont tangents extérieurement au point $T(2{,}8\,;4{,}4)$.
+
+---
+
+## Erreurs classiques
+
+### Erreur
+
+Tester seulement $d=R+R''$ et conclure « non tangents » si l''égalité est fausse.
+
+### Pourquoi c''est faux
+
+Il existe une seconde tangence, intérieure, où $d=|R-R''|$ : dans ce cas la somme des rayons est strictement plus grande que $d$. Ne tester qu''un cas passe à côté de la moitié des configurations.
+
+### Correction
+
+Calculer toujours $d$, $R+R''$ et $|R-R''|$, puis comparer $d$ aux deux.
+
+### Erreur
+
+Écrire $d=R-R''$ sans valeur absolue et sans savoir quel rayon est le plus grand.
+
+### Pourquoi c''est faux
+
+La distance est positive. Si $R<R''$, l''expression $R-R''$ est négative et ne peut jamais être égale à $d$. L''égalité correcte est $d=|R-R''|$.
+
+### Correction
+
+Ranger d''abord les rayons ($R\geq R''$), ou écrire $d=|R-R''|$.
+
+### Erreur
+
+Croire que $d=R-R''$ avec $R=R''$ donne deux cercles tangents.
+
+### Pourquoi c''est faux
+
+Si $R=R''$ et $d=0$, les centres sont confondus : les deux cercles sont **identiques**, pas tangents.
+
+### Correction
+
+Vérifier que $d>0$ avant de parler de tangence intérieure.
+
+---
+
+## Exercices d''application
+
+### Exercice 1 (facile)
+
+Deux cercles ont pour centres $O(0\,;0)$ et $O''(5\,;0)$ et pour rayons $2$ et $3$. Sont-ils tangents ? Si oui, donner le point de contact.
+
+### Solution
+
+$OO''=5=2+3$ : tangents extérieurement. Le point de contact est sur $[OO'']$ à la distance $2$ de $O$ : $T(2\,;0)$. Contrôle : $O''T=3$ ✓.
+
+### Exercice 2 (moyen)
+
+Soit $\mathcal{C}:x^2+y^2-4x+2y-4=0$ et $\mathcal{C}'':(x-5)^2+(y-3)^2=4$. Montrer que ces cercles sont tangents et déterminer le point de contact.
+
+### Solution
+
+$x^2+y^2-4x+2y-4=0\iff(x-2)^2+(y+1)^2=9$ : centre $O(2\,;-1)$ et rayon $3$. $\mathcal{C}''$ a pour centre $O''(5\,;3)$ et pour rayon $2$. $OO''=\sqrt{9+16}=5=3+2$ : tangence extérieure. $\overrightarrow{OO''}=(3\,;4)$ et $\overrightarrow{OT}=\frac35\overrightarrow{OO''}=(1{,}8\,;2{,}4)$, donc $T(3{,}8\,;1{,}4)$. Contrôle : $O''T=\sqrt{1{,}2^2+1{,}6^2}=2$ ✓.
+
+### Exercice 3 (approfondissement)
+
+Le cercle $\mathcal{C}$ a pour centre $O(0\,;0)$ et pour rayon $3$. Pour quelles valeurs de $k$ le cercle $\mathcal{C}_k$ de centre $A_k(k\,;0)$ et de rayon $1$ est-il tangent à $\mathcal{C}$ ? Pour $k=4$, donner l''équation de la tangente commune.
+
+### Solution
+
+$OA_k=|k|$. Tangence extérieure : $|k|=3+1=4$. Tangence intérieure : $|k|=3-1=2$. Donc $k\in\{-4\,;-2\,;2\,;4\}$. Pour $k=4$ : tangence extérieure, le point de contact est sur $[OA_4]$ à la distance $3$ de $O$ : $T(3\,;0)$. La tangente commune est perpendiculaire à $(OA_4)$, l''axe des abscisses : c''est la droite d''équation $x=3$.
+
+---
+
+## Ce qu''il faut retenir
+
+- Deux cercles sont tangents si et seulement si la distance des centres vaut $R+R''$ (extérieurement) ou $|R-R''|$ (intérieurement).
+- Compare toujours $d$ aux **deux** valeurs, sinon tu oublies un cas.
+- Le point de contact est toujours sur la droite $(OO'')$ ; pour une tangence extérieure il est sur le segment, à la distance $R$ de $O$.
+- La tangente commune au point de contact est perpendiculaire à $(OO'')$.
+- Au Probatoire C et E, ce critère apparaît dans les exercices de géométrie analytique sur les cercles et les transformations (homothétie, symétrie centrale) : on te demande souvent de justifier une tangence ou de tracer une tangente commune.', "updated_at" = '2026-09-20T19:55:56.136651+00:00'::timestamptz WHERE "catalog_cours"."id" = 8758; args=("Deux cercles dessinés sur une même figure semblent parfois « se toucher », mais l'œil ne prouve rien : un trait épais suffit à cacher un léger écart. Pour affirmer que deux cercles sont tangents, il faut un critère chiffré. Il tient en une comparaison : la distance entre les centres d'un côté, les rayons de l'autre. Ce cours te donne ce critère, et t'apprend à en tirer le point de contact.\n\n---\n\n## Prérequis\n\n- [Calculer la distance entre deux points dans un repère orthonormé](COURS_REF:calculer-la-distance-entre-deux-points-dans-un-repere-orthonorme)\n- [Déterminer le centre et le rayon d'un cercle donné par son équation cartésienne](COURS_REF:determiner-le-centre-et-le-rayon-dun-cercle-donne-par-son-equation-cartesienne)\n- Coordonnées d'un vecteur et colinéarité\n\n---\n\n## Distance des centres et somme ou différence des rayons\n\nSoit $\\mathcal{C}(O\\,;R)$ et $\\mathcal{C}'(O'\\,;R')$ deux cercles avec $R\\geq R'>0$, et $d=OO'$.\n\n- **Tangents extérieurement** si et seulement si $d=R+R'$ : ils n'ont qu'un point commun et chacun est hors de l'autre.\n- **Tangents intérieurement** si et seulement si $d=R-R'$ avec $R>R'$ : le petit cercle est à l'intérieur du grand, et ils se touchent en un seul point.\n- Si $R-R'<d<R+R'$, les cercles sont sécants en deux points. Si $d>R+R'$ ou $d<R-R'$, ils n'ont aucun point commun.\n\nDans les deux cas de tangence, le point de contact $T$ est **aligné avec $O$ et $O'$**, et la tangente commune en $T$ est perpendiculaire à $(OO')$. Pour une tangence extérieure, $T$ est sur le segment $[OO']$ et $\\overrightarrow{OT}=\\dfrac{R}{d}\\,\\overrightarrow{OO'}$.\n\n$$d=R+R' \\text{ (tangents extérieurement)} \\qquad d=|R-R'| \\text{ (tangents intérieurement)}$$\n\n---\n\n## Exemple résolu\n\nDans un repère orthonormé, $\\mathcal{C}$ a pour centre $O(1\\,;2)$ et pour rayon $3$ ; $\\mathcal{C}'$ a pour centre $O'(7\\,;10)$ et pour rayon $7$. Montrer que ces cercles sont tangents et déterminer leur point de contact.\n\n**Étape 1 - Calculer la distance des centres**\n\nC'est la quantité à comparer aux rayons\n\n$OO'=\\sqrt{(7-1)^2+(10-2)^2}=\\sqrt{36+64}=10$\n\n**Étape 2 - Calculer la somme et la différence des rayons**\n\nLes deux valeurs possibles d'une tangence\n\n$R+R'=3+7=10$ et $|R-R'|=4$\n\n**Étape 3 - Comparer**\n\n$d=10$ est égal à $R+R'$ et différent de $|R-R'|$\n\nLes cercles sont tangents **extérieurement**.\n\n**Étape 4 - Placer le point de contact sur $[OO']$**\n\nEn tangence extérieure, $T$ est à la distance $R=3$ de $O$ sur le segment $[OO']$, donc $\\overrightarrow{OT}=\\frac{3}{10}\\overrightarrow{OO'}$\n\n$\\overrightarrow{OO'}=(6\\,;8)$, donc $\\overrightarrow{OT}=(1{,}8\\,;2{,}4)$ et $T(2{,}8\\,;4{,}4)$\n\n**Étape 5 - Vérifier avec le second rayon**\n\nLe contrôle évite de garder une erreur de calcul\n\n$O'T=\\sqrt{4{,}2^2+5{,}6^2}=\\sqrt{17{,}64+31{,}36}=\\sqrt{49}=7=R'$ ✓\n\nLes cercles $\\mathcal{C}$ et $\\mathcal{C}'$ sont tangents extérieurement au point $T(2{,}8\\,;4{,}4)$.\n\n---\n\n## Erreurs classiques\n\n### Erreur\n\nTester seulement $d=R+R'$ et conclure « non tangents » si l'égalité est fausse.\n\n### Pourquoi c'est faux\n\nIl existe une seconde tangence, intérieure, où $d=|R-R'|$ : dans ce cas la somme des rayons est strictement plus grande que $d$. Ne tester qu'un cas passe à côté de la moitié des configurations.\n\n### Correction\n\nCalculer toujours $d$, $R+R'$ et $|R-R'|$, puis comparer $d$ aux deux.\n\n### Erreur\n\nÉcrire $d=R-R'$ sans valeur absolue et sans savoir quel rayon est le plus grand.\n\n### Pourquoi c'est faux\n\nLa distance est positive. Si $R<R'$, l'expression $R-R'$ est négative et ne peut jamais être égale à $d$. L'égalité correcte est $d=|R-R'|$.\n\n### Correction\n\nRanger d'abord les rayons ($R\\geq R'$), ou écrire $d=|R-R'|$.\n\n### Erreur\n\nCroire que $d=R-R'$ avec $R=R'$ donne deux cercles tangents.\n\n### Pourquoi c'est faux\n\nSi $R=R'$ et $d=0$, les centres sont confondus : les deux cercles sont **identiques**, pas tangents.\n\n### Correction\n\nVérifier que $d>0$ avant de parler de tangence intérieure.\n\n---\n\n## Exercices d'application\n\n### Exercice 1 (facile)\n\nDeux cercles ont pour centres $O(0\\,;0)$ et $O'(5\\,;0)$ et pour rayons $2$ et $3$. Sont-ils tangents ? Si oui, donner le point de contact.\n\n### Solution\n\n$OO'=5=2+3$ : tangents extérieurement. Le point de contact est sur $[OO']$ à la distance $2$ de $O$ : $T(2\\,;0)$. Contrôle : $O'T=3$ ✓.\n\n### Exercice 2 (moyen)\n\nSoit $\\mathcal{C}:x^2+y^2-4x+2y-4=0$ et $\\mathcal{C}':(x-5)^2+(y-3)^2=4$. Montrer que ces cercles sont tangents et déterminer le point de contact.\n\n### Solution\n\n$x^2+y^2-4x+2y-4=0\\iff(x-2)^2+(y+1)^2=9$ : centre $O(2\\,;-1)$ et rayon $3$. $\\mathcal{C}'$ a pour centre $O'(5\\,;3)$ et pour rayon $2$. $OO'=\\sqrt{9+16}=5=3+2$ : tangence extérieure. $\\overrightarrow{OO'}=(3\\,;4)$ et $\\overrightarrow{OT}=\\frac35\\overrightarrow{OO'}=(1{,}8\\,;2{,}4)$, donc $T(3{,}8\\,;1{,}4)$. Contrôle : $O'T=\\sqrt{1{,}2^2+1{,}6^2}=2$ ✓.\n\n### Exercice 3 (approfondissement)\n\nLe cercle $\\mathcal{C}$ a pour centre $O(0\\,;0)$ et pour rayon $3$. Pour quelles valeurs de $k$ le cercle $\\mathcal{C}_k$ de centre $A_k(k\\,;0)$ et de rayon $1$ est-il tangent à $\\mathcal{C}$ ? Pour $k=4$, donner l'équation de la tangente commune.\n\n### Solution\n\n$OA_k=|k|$. Tangence extérieure : $|k|=3+1=4$. Tangence intérieure : $|k|=3-1=2$. Donc $k\\in\\{-4\\,;-2\\,;2\\,;4\\}$. Pour $k=4$ : tangence extérieure, le point de contact est sur $[OA_4]$ à la distance $3$ de $O$ : $T(3\\,;0)$. La tangente commune est perpendiculaire à $(OA_4)$, l'axe des abscisses : c'est la droite d'équation $x=3$.\n\n---\n\n## Ce qu'il faut retenir\n\n- Deux cercles sont tangents si et seulement si la distance des centres vaut $R+R'$ (extérieurement) ou $|R-R'|$ (intérieurement).\n- Compare toujours $d$ aux **deux** valeurs, sinon tu oublies un cas.\n- Le point de contact est toujours sur la droite $(OO')$ ; pour une tangence extérieure il est sur le segment, à la distance $R$ de $O$.\n- La tangente commune au point de contact est perpendiculaire à $(OO')$.\n- Au Probatoire C et E, ce critère apparaît dans les exercices de géométrie analytique sur les cercles et les transformations (homothétie, symétrie centrale) : on te demande souvent de justifier une tangence ou de tracer une tangente commune.", datetime.datetime(2026, 9, 20, 19, 55, 56, 136651, tzinfo=datetime.timezone.utc), 8758); alias=default
+
+---
+
+## Prérequis
+
+- Effectif, effectif cumulé croissant et décroissant
+- Somme et différence de nombres entiers
+- Résolution d''une équation du premier degré (pour les cas avec inconnue)
+
+---
+
+## Les deux relations qui lient les cases du tableau
+
+Pour une série groupée en classes $C_1,\dots,C_k$ d''effectifs $n_1,\dots,n_k$ et d''effectif total $N$ :
+
+- **Effectif cumulé croissant** (ECC) de la classe $i$ : $\mathrm{ECC}_i=n_1+\dots+n_i$. Donc $\mathrm{ECC}_1=n_1$ et $\mathrm{ECC}_i=\mathrm{ECC}_{i-1}+n_i$.
+- **Retrouver un effectif** : $n_i=\mathrm{ECC}_i-\mathrm{ECC}_{i-1}$.
+- **Total** : $N=n_1+\dots+n_k=\mathrm{ECC}_k$ (dernière case de la colonne des ECC).
+- **Effectif cumulé décroissant** (ECD) : $\mathrm{ECD}_i=n_i+\dots+n_k$, avec $\mathrm{ECD}_1=N$ et $n_i=\mathrm{ECD}_i-\mathrm{ECD}_{i+1}$.
+
+**Méthode.** Parcourir le tableau colonne par colonne en cherchant à chaque fois une case dont **toutes les autres cases de la relation sont connues** ; s''il reste une inconnue littérale $x$, écrire la somme des effectifs et l''égaler à $N$ pour trouver $x$. Une fois le tableau complet, vérifie que la dernière ECC vaut $N$.
+
+$$\mathrm{ECC}_i=\mathrm{ECC}_{i-1}+n_i \qquad n_i=\mathrm{ECC}_i-\mathrm{ECC}_{i-1} \qquad N=\mathrm{ECC}_k$$
+
+---
+
+## Exemple résolu
+
+Le tableau suivant, relatif aux notes d''une classe, est incomplet. Le compléter.
+
+| Classe | $[10;20[$ | $[20;30[$ | $[30;40[$ | $[40;50[$ | $[50;60[$ |
+|---|---|---|---|---|---|
+| Effectif | $4$ | | $12$ | | $6$ |
+| ECC | | $13$ | | $34$ | |
+
+**Étape 1 - Trouver la première ECC**
+
+$\mathrm{ECC}_1=n_1$ car il n''y a pas de classe avant
+
+$\mathrm{ECC}_1=4$
+
+**Étape 2 - Trouver l''effectif de la 2e classe**
+
+$n_2=\mathrm{ECC}_2-\mathrm{ECC}_1$
+
+$n_2=13-4=9$
+
+**Étape 3 - Trouver l''ECC de la 3e classe**
+
+$\mathrm{ECC}_3=\mathrm{ECC}_2+n_3$
+
+$\mathrm{ECC}_3=13+12=25$
+
+**Étape 4 - Trouver l''effectif de la 4e classe**
+
+$n_4=\mathrm{ECC}_4-\mathrm{ECC}_3$
+
+$n_4=34-25=9$
+
+**Étape 5 - Trouver la dernière ECC**
+
+$\mathrm{ECC}_5=\mathrm{ECC}_4+n_5$
+
+$\mathrm{ECC}_5=34+6=40$
+
+**Étape 6 - Contrôler avec le total**
+
+La somme des effectifs doit égaler la dernière ECC
+
+$4+9+12+9+6=40=\mathrm{ECC}_5$ ✓
+
+Effectifs : $4\,;9\,;12\,;9\,;6$ ; ECC : $4\,;13\,;25\,;34\,;40$ ; effectif total $N=40$.
+
+---
+
+## Erreurs classiques
+
+### Erreur
+
+Confondre l''effectif cumulé et l''effectif : recopier $13$ comme effectif de la deuxième classe.
+
+### Pourquoi c''est faux
+
+$13$ est l''effectif de toutes les classes jusqu''à la deuxième incluse, pas celui de la deuxième seule. Il faut retrancher l''ECC précédente pour l''isoler.
+
+### Correction
+
+Pour passer de l''ECC à l''effectif, toujours soustraire l''ECC de la ligne au-dessus.
+
+### Erreur
+
+Additionner les ECC pour trouver le total.
+
+### Pourquoi c''est faux
+
+Les ECC sont déjà des sommes : les additionner compte plusieurs fois les mêmes individus. Le total est la **dernière** ECC, ou la somme des effectifs.
+
+### Correction
+
+Total $=$ dernière ECC $=$ somme des effectifs, jamais somme des ECC.
+
+### Erreur
+
+Ne pas contrôler que la dernière ECC est égale à la somme des effectifs.
+
+### Pourquoi c''est faux
+
+Une erreur sur une case en cache une autre : le total contrôle tout le tableau d''un coup. C''est le seul garde-fou avant de calculer moyenne ou médiane.
+
+### Correction
+
+Terminer chaque tableau par la vérification $\sum n_i=\mathrm{ECC}_k=N$.
+
+---
+
+## Exercices d''application
+
+### Exercice 1 (facile)
+
+Un tableau a quatre classes. On connaît $n_1=3$, $n_2=5$, $\mathrm{ECC}_3=15$ et $n_4=7$. Compléter les effectifs et les ECC.
+
+### Solution
+
+$\mathrm{ECC}_1=3$ ; $\mathrm{ECC}_2=3+5=8$ ; $n_3=15-8=7$ ; $\mathrm{ECC}_4=15+7=22$. Effectifs : $3\,;5\,;7\,;7$ ; ECC : $3\,;8\,;15\,;22$. Contrôle : $3+5+7+7=22$ ✓.
+
+### Exercice 2 (moyen)
+
+Une série de $45$ notes est répartie en cinq classes de même amplitude $[0;10[,\dots,[40;50[$. Les effectifs sont $6$, $x$, $2x$, $10$ et $8$. Déterminer $x$, compléter les ECC puis donner la classe médiane.
+
+### Solution
+
+$6+x+2x+10+8=45\iff3x+24=45\iff x=7$. Effectifs : $6\,;7\,;14\,;10\,;8$ ; ECC : $6\,;13\,;27\,;37\,;45$. $\frac{N}{2}=22{,}5$ : la première ECC supérieure ou égale à $22{,}5$ est $27$, donc la classe médiane est $[20;30[$.
+
+### Exercice 3 (approfondissement)
+
+Une série de $60$ valeurs est répartie en cinq classes. On connaît : $n_1=8$, $n_2=18$, $\mathrm{ECD}_4=20$ (effectif cumulé décroissant, c''est-à-dire des classes $4$ et $5$) et $\mathrm{ECD}_5=8$. Retrouver tous les effectifs, tous les ECC et la classe médiane.
+
+### Solution
+
+$n_5=\mathrm{ECD}_5=8$ ; $n_4=\mathrm{ECD}_4-\mathrm{ECD}_5=20-8=12$ ; $n_3=60-8-18-20=14$. Effectifs : $8\,;18\,;14\,;12\,;8$. ECC : $8\,;26\,;40\,;52\,;60$. Contrôle : $\mathrm{ECC}_5=60=N$ ✓. $\frac N2=30$ : première ECC $\geq30$ est $40$, donc la classe médiane est la troisième.
+
+---
+
+## Ce qu''il faut retenir
+
+- Un effectif cumulé se construit par addition : $\mathrm{ECC}_i=\mathrm{ECC}_{i-1}+n_i$ ; un effectif se retrouve par soustraction.
+- Le total est la dernière ECC, pas la somme des ECC.
+- S''il reste une inconnue littérale, écris que la somme des effectifs vaut le total.
+- Contrôle toujours à la fin : somme des effectifs $=$ dernière ECC.
+- Au Probatoire, « recopier et compléter le tableau » ouvre souvent un exercice de statistique dont la moyenne, la médiane et le polygone dépendent de cette étape.', "updated_at" = '2026-09-20T19:55:56.195682+00:00'::timestamptz WHERE "catalog_cours"."id" = 8759; args=("Dans beaucoup d'épreuves, le tableau statistique est donné à moitié rempli : quelques effectifs, quelques effectifs cumulés, et la première question est « recopier et compléter le tableau ». Tout le reste (moyenne, médiane, polygone) dépend de cette étape. Une seule erreur dans une case se propage dans tous les calculs suivants. La bonne nouvelle : les cases sont liées entre elles par deux relations simples qui permettent de tout retrouver.\n\n---\n\n## Prérequis\n\n- Effectif, effectif cumulé croissant et décroissant\n- Somme et différence de nombres entiers\n- Résolution d'une équation du premier degré (pour les cas avec inconnue)\n\n---\n\n## Les deux relations qui lient les cases du tableau\n\nPour une série groupée en classes $C_1,\\dots,C_k$ d'effectifs $n_1,\\dots,n_k$ et d'effectif total $N$ :\n\n- **Effectif cumulé croissant** (ECC) de la classe $i$ : $\\mathrm{ECC}_i=n_1+\\dots+n_i$. Donc $\\mathrm{ECC}_1=n_1$ et $\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i$.\n- **Retrouver un effectif** : $n_i=\\mathrm{ECC}_i-\\mathrm{ECC}_{i-1}$.\n- **Total** : $N=n_1+\\dots+n_k=\\mathrm{ECC}_k$ (dernière case de la colonne des ECC).\n- **Effectif cumulé décroissant** (ECD) : $\\mathrm{ECD}_i=n_i+\\dots+n_k$, avec $\\mathrm{ECD}_1=N$ et $n_i=\\mathrm{ECD}_i-\\mathrm{ECD}_{i+1}$.\n\n**Méthode.** Parcourir le tableau colonne par colonne en cherchant à chaque fois une case dont **toutes les autres cases de la relation sont connues** ; s'il reste une inconnue littérale $x$, écrire la somme des effectifs et l'égaler à $N$ pour trouver $x$. Une fois le tableau complet, vérifie que la dernière ECC vaut $N$.\n\n$$\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i \\qquad n_i=\\mathrm{ECC}_i-\\mathrm{ECC}_{i-1} \\qquad N=\\mathrm{ECC}_k$$\n\n---\n\n## Exemple résolu\n\nLe tableau suivant, relatif aux notes d'une classe, est incomplet. Le compléter.\n\n| Classe | $[10;20[$ | $[20;30[$ | $[30;40[$ | $[40;50[$ | $[50;60[$ |\n|---|---|---|---|---|---|\n| Effectif | $4$ | | $12$ | | $6$ |\n| ECC | | $13$ | | $34$ | |\n\n**Étape 1 - Trouver la première ECC**\n\n$\\mathrm{ECC}_1=n_1$ car il n'y a pas de classe avant\n\n$\\mathrm{ECC}_1=4$\n\n**Étape 2 - Trouver l'effectif de la 2e classe**\n\n$n_2=\\mathrm{ECC}_2-\\mathrm{ECC}_1$\n\n$n_2=13-4=9$\n\n**Étape 3 - Trouver l'ECC de la 3e classe**\n\n$\\mathrm{ECC}_3=\\mathrm{ECC}_2+n_3$\n\n$\\mathrm{ECC}_3=13+12=25$\n\n**Étape 4 - Trouver l'effectif de la 4e classe**\n\n$n_4=\\mathrm{ECC}_4-\\mathrm{ECC}_3$\n\n$n_4=34-25=9$\n\n**Étape 5 - Trouver la dernière ECC**\n\n$\\mathrm{ECC}_5=\\mathrm{ECC}_4+n_5$\n\n$\\mathrm{ECC}_5=34+6=40$\n\n**Étape 6 - Contrôler avec le total**\n\nLa somme des effectifs doit égaler la dernière ECC\n\n$4+9+12+9+6=40=\\mathrm{ECC}_5$ ✓\n\nEffectifs : $4\\,;9\\,;12\\,;9\\,;6$ ; ECC : $4\\,;13\\,;25\\,;34\\,;40$ ; effectif total $N=40$.\n\n---\n\n## Erreurs classiques\n\n### Erreur\n\nConfondre l'effectif cumulé et l'effectif : recopier $13$ comme effectif de la deuxième classe.\n\n### Pourquoi c'est faux\n\n$13$ est l'effectif de toutes les classes jusqu'à la deuxième incluse, pas celui de la deuxième seule. Il faut retrancher l'ECC précédente pour l'isoler.\n\n### Correction\n\nPour passer de l'ECC à l'effectif, toujours soustraire l'ECC de la ligne au-dessus.\n\n### Erreur\n\nAdditionner les ECC pour trouver le total.\n\n### Pourquoi c'est faux\n\nLes ECC sont déjà des sommes : les additionner compte plusieurs fois les mêmes individus. Le total est la **dernière** ECC, ou la somme des effectifs.\n\n### Correction\n\nTotal $=$ dernière ECC $=$ somme des effectifs, jamais somme des ECC.\n\n### Erreur\n\nNe pas contrôler que la dernière ECC est égale à la somme des effectifs.\n\n### Pourquoi c'est faux\n\nUne erreur sur une case en cache une autre : le total contrôle tout le tableau d'un coup. C'est le seul garde-fou avant de calculer moyenne ou médiane.\n\n### Correction\n\nTerminer chaque tableau par la vérification $\\sum n_i=\\mathrm{ECC}_k=N$.\n\n---\n\n## Exercices d'application\n\n### Exercice 1 (facile)\n\nUn tableau a quatre classes. On connaît $n_1=3$, $n_2=5$, $\\mathrm{ECC}_3=15$ et $n_4=7$. Compléter les effectifs et les ECC.\n\n### Solution\n\n$\\mathrm{ECC}_1=3$ ; $\\mathrm{ECC}_2=3+5=8$ ; $n_3=15-8=7$ ; $\\mathrm{ECC}_4=15+7=22$. Effectifs : $3\\,;5\\,;7\\,;7$ ; ECC : $3\\,;8\\,;15\\,;22$. Contrôle : $3+5+7+7=22$ ✓.\n\n### Exercice 2 (moyen)\n\nUne série de $45$ notes est répartie en cinq classes de même amplitude $[0;10[,\\dots,[40;50[$. Les effectifs sont $6$, $x$, $2x$, $10$ et $8$. Déterminer $x$, compléter les ECC puis donner la classe médiane.\n\n### Solution\n\n$6+x+2x+10+8=45\\iff3x+24=45\\iff x=7$. Effectifs : $6\\,;7\\,;14\\,;10\\,;8$ ; ECC : $6\\,;13\\,;27\\,;37\\,;45$. $\\frac{N}{2}=22{,}5$ : la première ECC supérieure ou égale à $22{,}5$ est $27$, donc la classe médiane est $[20;30[$.\n\n### Exercice 3 (approfondissement)\n\nUne série de $60$ valeurs est répartie en cinq classes. On connaît : $n_1=8$, $n_2=18$, $\\mathrm{ECD}_4=20$ (effectif cumulé décroissant, c'est-à-dire des classes $4$ et $5$) et $\\mathrm{ECD}_5=8$. Retrouver tous les effectifs, tous les ECC et la classe médiane.\n\n### Solution\n\n$n_5=\\mathrm{ECD}_5=8$ ; $n_4=\\mathrm{ECD}_4-\\mathrm{ECD}_5=20-8=12$ ; $n_3=60-8-18-20=14$. Effectifs : $8\\,;18\\,;14\\,;12\\,;8$. ECC : $8\\,;26\\,;40\\,;52\\,;60$. Contrôle : $\\mathrm{ECC}_5=60=N$ ✓. $\\frac N2=30$ : première ECC $\\geq30$ est $40$, donc la classe médiane est la troisième.\n\n---\n\n## Ce qu'il faut retenir\n\n- Un effectif cumulé se construit par addition : $\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i$ ; un effectif se retrouve par soustraction.\n- Le total est la dernière ECC, pas la somme des ECC.\n- S'il reste une inconnue littérale, écris que la somme des effectifs vaut le total.\n- Contrôle toujours à la fin : somme des effectifs $=$ dernière ECC.\n- Au Probatoire, « recopier et compléter le tableau » ouvre souvent un exercice de statistique dont la moyenne, la médiane et le polygone dépendent de cette étape.", datetime.datetime(2026, 9, 20, 19, 55, 56, 195682, tzinfo=datetime.timezone.utc), 8759); alias=default
+
+---
+
+## Prérequis
+
+- Forme canonique d''un trinôme du second degré
+- Signe du coefficient $a$ et allure de la parabole
+- Dérivée d''une fonction polynôme du second degré (facultatif)
+
+---
+
+## Le sommet de la parabole
+
+Soit $f(x)=ax^2+bx+c$ avec $a\neq0$. Sa forme canonique est
+$$f(x)=a\left(x+\dfrac{b}{2a}\right)^2-\dfrac{\Delta}{4a}\qquad(\Delta=b^2-4ac).$$
+La parabole a pour sommet le point $S\left(-\dfrac{b}{2a}\,;\,f\left(-\dfrac{b}{2a}\right)\right)$, avec $f\left(-\dfrac{b}{2a}\right)=-\dfrac{\Delta}{4a}$.
+
+- Si $a>0$ : $f$ admet un **minimum**, atteint en $x_S=-\dfrac{b}{2a}$.
+- Si $a<0$ : $f$ admet un **maximum**, atteint en $x_S=-\dfrac{b}{2a}$.
+
+Il faut distinguer **où** l''extremum est atteint ($x_S$) et **sa valeur** ($f(x_S)$) : les sujets demandent souvent l''un, souvent les deux.
+
+**Autre méthode.** $f''(x)=2ax+b$ s''annule en $x_S$ et change de signe : on retrouve le même résultat, plus lentement.
+
+**Variable entière.** Si $x$ représente un rang (année, nombre d''objets), l''extremum doit être cherché parmi les entiers : on compare les valeurs aux deux entiers qui encadrent $x_S$.
+
+$$x_S=-\dfrac{b}{2a}\qquad f(x_S)=-\dfrac{\Delta}{4a}$$
+
+---
+
+## Exemple résolu
+
+Le chiffre d''affaires d''une usine, en millions de francs, à l''année de rang $n$ est donné par $C(n)=-3n^2+20n+50$, où $n$ est un entier naturel. Déterminer le rang de l''année où le chiffre d''affaires est maximal, puis ce maximum.
+
+**Étape 1 - Identifier le signe de $a$**
+
+Il décide entre maximum et minimum
+
+$a=-3<0$ : la parabole est tournée vers le bas, $C$ admet un maximum.
+
+**Étape 2 - Calculer l''abscisse du sommet**
+
+$x_S=-\frac{b}{2a}$ avec $a=-3$ et $b=20$
+
+$x_S=-\dfrac{20}{-6}=\dfrac{10}{3}\approx3{,}33$
+
+**Étape 3 - Tenir compte que $n$ est entier**
+
+Le maximum réel est atteint en $\frac{10}{3}$, qui n''est pas un entier : on compare les deux entiers voisins, $3$ et $4$
+
+$C(3)=-27+60+50=83$ et $C(4)=-48+80+50=82$
+
+**Étape 4 - Conclure sur le rang**
+
+$83>82$, et la parabole est décroissante après $x_S$ : les rangs suivants donnent des valeurs encore plus faibles
+
+Le maximum est atteint pour $n=3$.
+
+Le chiffre d''affaires est maximal à l''année de rang $3$, et vaut alors $83$ millions de francs.
+
+---
+
+## Erreurs classiques
+
+### Erreur
+
+Écrire $x_S=\dfrac{b}{2a}$, en oubliant le signe moins.
+
+### Pourquoi c''est faux
+
+Le signe moins vient de la forme canonique $a\left(x+\frac{b}{2a}\right)^2$ : le sommet est en $x=-\frac{b}{2a}$. Avec $f(x)=x^2-6x+5$, $\frac{b}{2a}=-3$ donnerait un sommet en $-3$ au lieu de $3$.
+
+### Correction
+
+Recopier $x_S=-\dfrac{b}{2a}$ avant de remplacer, et vérifier que $f''(x_S)=0$.
+
+### Erreur
+
+Donner $x_S$ quand l''énoncé demande la valeur du maximum (ou l''inverse).
+
+### Pourquoi c''est faux
+
+$x_S$ est la valeur de la variable pour laquelle l''extremum est atteint ; le maximum, lui, est la valeur de $f$ en ce point. Ce sont deux nombres différents.
+
+### Correction
+
+Nommer explicitement les deux : « atteint pour $x=\ldots$ » puis « et vaut $\ldots$ ».
+
+### Erreur
+
+Prendre $n=\text{arrondi}(x_S)$ sans vérifier quand la variable est entière.
+
+### Pourquoi c''est faux
+
+L''arrondi de $x_S$ n''est pas toujours le bon entier : l''entier optimal est celui des deux voisins qui donne la plus grande valeur (pour un maximum), et la différence peut se jouer sur une seule unité.
+
+### Correction
+
+Calculer $f$ pour les deux entiers qui encadrent $x_S$ et comparer.
+
+---
+
+## Exercices d''application
+
+### Exercice 1 (facile)
+
+Déterminer le minimum de $f(x)=x^2-6x+5$ et la valeur en laquelle il est atteint.
+
+### Solution
+
+$a=1>0$ : minimum. $x_S=-\dfrac{-6}{2}=3$. $f(3)=9-18+5=-4$. Le minimum est $-4$, atteint pour $x=3$.
+
+### Exercice 2 (moyen)
+
+Un enclos rectangulaire a un périmètre de $40$ m. On note $x$ l''une de ses dimensions. Exprimer son aire en fonction de $x$ et déterminer ses dimensions pour que l''aire soit maximale.
+
+### Solution
+
+L''autre dimension vaut $20-x$, donc $A(x)=x(20-x)=-x^2+20x$ pour $x\in[0\,;20]$. $a=-1<0$ : maximum en $x_S=-\dfrac{20}{-2}=10$, et $A(10)=100$. Les dimensions sont $10$ m par $10$ m (un carré), pour une aire maximale de $100$ m².
+
+### Exercice 3 (approfondissement)
+
+Pour tout réel $m$, on pose $f_m(x)=x^2-2mx+m+6$. Exprimer en fonction de $m$ le minimum $g(m)$ de $f_m$, puis déterminer la valeur de $m$ pour laquelle ce minimum est le plus grand possible.
+
+### Solution
+
+$a=1>0$, $x_S=-\dfrac{-2m}{2}=m$. $g(m)=f_m(m)=m^2-2m^2+m+6=-m^2+m+6$. $g$ est elle-même un trinôme avec $a=-1<0$ : elle admet un maximum en $m=-\dfrac{1}{2\times(-1)}=\dfrac12$, de valeur $g\left(\dfrac12\right)=-\dfrac14+\dfrac12+6=\dfrac{25}{4}$. Le minimum de $f_m$ est donc le plus grand possible pour $m=\dfrac12$, et il vaut alors $\dfrac{25}{4}$.
+
+---
+
+## Ce qu''il faut retenir
+
+- Pour un trinôme $ax^2+bx+c$, le signe de $a$ dit si l''extremum est un maximum ($a<0$) ou un minimum ($a>0$).
+- Il est atteint en $x_S=-\dfrac{b}{2a}$ et vaut $f(x_S)$ : deux résultats à ne pas confondre.
+- Quand la variable est un entier, compare $f$ aux deux entiers voisins de $x_S$.
+- Le sommet donne l''extremum sans étudier de fonction ni de dérivée, ce qui fait gagner du temps en épreuve.
+- Au Probatoire, on l''utilise dans les problèmes d''optimisation (bénéfice, chiffre d''affaires, aire maximale) et pour étudier le signe d''un trinôme.', "updated_at" = '2026-09-20T19:55:56.256532+00:00'::timestamptz WHERE "catalog_cours"."id" = 8760; args=("Un chiffre d'affaires qui monte puis redescend, un bénéfice qui dépend de la quantité produite, l'aire d'un enclos dont on fait varier un côté : dans tous ces problèmes, une quantité est donnée par un trinôme du second degré et on cherche sa **valeur la plus grande ou la plus petite**. Ce cours t'apprend à la trouver sans étudier de fonction : la position du sommet de la parabole donne tout.\n\n---\n\n## Prérequis\n\n- Forme canonique d'un trinôme du second degré\n- Signe du coefficient $a$ et allure de la parabole\n- Dérivée d'une fonction polynôme du second degré (facultatif)\n\n---\n\n## Le sommet de la parabole\n\nSoit $f(x)=ax^2+bx+c$ avec $a\\neq0$. Sa forme canonique est\n$$f(x)=a\\left(x+\\dfrac{b}{2a}\\right)^2-\\dfrac{\\Delta}{4a}\\qquad(\\Delta=b^2-4ac).$$\nLa parabole a pour sommet le point $S\\left(-\\dfrac{b}{2a}\\,;\\,f\\left(-\\dfrac{b}{2a}\\right)\\right)$, avec $f\\left(-\\dfrac{b}{2a}\\right)=-\\dfrac{\\Delta}{4a}$.\n\n- Si $a>0$ : $f$ admet un **minimum**, atteint en $x_S=-\\dfrac{b}{2a}$.\n- Si $a<0$ : $f$ admet un **maximum**, atteint en $x_S=-\\dfrac{b}{2a}$.\n\nIl faut distinguer **où** l'extremum est atteint ($x_S$) et **sa valeur** ($f(x_S)$) : les sujets demandent souvent l'un, souvent les deux.\n\n**Autre méthode.** $f'(x)=2ax+b$ s'annule en $x_S$ et change de signe : on retrouve le même résultat, plus lentement.\n\n**Variable entière.** Si $x$ représente un rang (année, nombre d'objets), l'extremum doit être cherché parmi les entiers : on compare les valeurs aux deux entiers qui encadrent $x_S$.\n\n$$x_S=-\\dfrac{b}{2a}\\qquad f(x_S)=-\\dfrac{\\Delta}{4a}$$\n\n---\n\n## Exemple résolu\n\nLe chiffre d'affaires d'une usine, en millions de francs, à l'année de rang $n$ est donné par $C(n)=-3n^2+20n+50$, où $n$ est un entier naturel. Déterminer le rang de l'année où le chiffre d'affaires est maximal, puis ce maximum.\n\n**Étape 1 - Identifier le signe de $a$**\n\nIl décide entre maximum et minimum\n\n$a=-3<0$ : la parabole est tournée vers le bas, $C$ admet un maximum.\n\n**Étape 2 - Calculer l'abscisse du sommet**\n\n$x_S=-\\frac{b}{2a}$ avec $a=-3$ et $b=20$\n\n$x_S=-\\dfrac{20}{-6}=\\dfrac{10}{3}\\approx3{,}33$\n\n**Étape 3 - Tenir compte que $n$ est entier**\n\nLe maximum réel est atteint en $\\frac{10}{3}$, qui n'est pas un entier : on compare les deux entiers voisins, $3$ et $4$\n\n$C(3)=-27+60+50=83$ et $C(4)=-48+80+50=82$\n\n**Étape 4 - Conclure sur le rang**\n\n$83>82$, et la parabole est décroissante après $x_S$ : les rangs suivants donnent des valeurs encore plus faibles\n\nLe maximum est atteint pour $n=3$.\n\nLe chiffre d'affaires est maximal à l'année de rang $3$, et vaut alors $83$ millions de francs.\n\n---\n\n## Erreurs classiques\n\n### Erreur\n\nÉcrire $x_S=\\dfrac{b}{2a}$, en oubliant le signe moins.\n\n### Pourquoi c'est faux\n\nLe signe moins vient de la forme canonique $a\\left(x+\\frac{b}{2a}\\right)^2$ : le sommet est en $x=-\\frac{b}{2a}$. Avec $f(x)=x^2-6x+5$, $\\frac{b}{2a}=-3$ donnerait un sommet en $-3$ au lieu de $3$.\n\n### Correction\n\nRecopier $x_S=-\\dfrac{b}{2a}$ avant de remplacer, et vérifier que $f'(x_S)=0$.\n\n### Erreur\n\nDonner $x_S$ quand l'énoncé demande la valeur du maximum (ou l'inverse).\n\n### Pourquoi c'est faux\n\n$x_S$ est la valeur de la variable pour laquelle l'extremum est atteint ; le maximum, lui, est la valeur de $f$ en ce point. Ce sont deux nombres différents.\n\n### Correction\n\nNommer explicitement les deux : « atteint pour $x=\\ldots$ » puis « et vaut $\\ldots$ ».\n\n### Erreur\n\nPrendre $n=\\text{arrondi}(x_S)$ sans vérifier quand la variable est entière.\n\n### Pourquoi c'est faux\n\nL'arrondi de $x_S$ n'est pas toujours le bon entier : l'entier optimal est celui des deux voisins qui donne la plus grande valeur (pour un maximum), et la différence peut se jouer sur une seule unité.\n\n### Correction\n\nCalculer $f$ pour les deux entiers qui encadrent $x_S$ et comparer.\n\n---\n\n## Exercices d'application\n\n### Exercice 1 (facile)\n\nDéterminer le minimum de $f(x)=x^2-6x+5$ et la valeur en laquelle il est atteint.\n\n### Solution\n\n$a=1>0$ : minimum. $x_S=-\\dfrac{-6}{2}=3$. $f(3)=9-18+5=-4$. Le minimum est $-4$, atteint pour $x=3$.\n\n### Exercice 2 (moyen)\n\nUn enclos rectangulaire a un périmètre de $40$ m. On note $x$ l'une de ses dimensions. Exprimer son aire en fonction de $x$ et déterminer ses dimensions pour que l'aire soit maximale.\n\n### Solution\n\nL'autre dimension vaut $20-x$, donc $A(x)=x(20-x)=-x^2+20x$ pour $x\\in[0\\,;20]$. $a=-1<0$ : maximum en $x_S=-\\dfrac{20}{-2}=10$, et $A(10)=100$. Les dimensions sont $10$ m par $10$ m (un carré), pour une aire maximale de $100$ m².\n\n### Exercice 3 (approfondissement)\n\nPour tout réel $m$, on pose $f_m(x)=x^2-2mx+m+6$. Exprimer en fonction de $m$ le minimum $g(m)$ de $f_m$, puis déterminer la valeur de $m$ pour laquelle ce minimum est le plus grand possible.\n\n### Solution\n\n$a=1>0$, $x_S=-\\dfrac{-2m}{2}=m$. $g(m)=f_m(m)=m^2-2m^2+m+6=-m^2+m+6$. $g$ est elle-même un trinôme avec $a=-1<0$ : elle admet un maximum en $m=-\\dfrac{1}{2\\times(-1)}=\\dfrac12$, de valeur $g\\left(\\dfrac12\\right)=-\\dfrac14+\\dfrac12+6=\\dfrac{25}{4}$. Le minimum de $f_m$ est donc le plus grand possible pour $m=\\dfrac12$, et il vaut alors $\\dfrac{25}{4}$.\n\n---\n\n## Ce qu'il faut retenir\n\n- Pour un trinôme $ax^2+bx+c$, le signe de $a$ dit si l'extremum est un maximum ($a<0$) ou un minimum ($a>0$).\n- Il est atteint en $x_S=-\\dfrac{b}{2a}$ et vaut $f(x_S)$ : deux résultats à ne pas confondre.\n- Quand la variable est un entier, compare $f$ aux deux entiers voisins de $x_S$.\n- Le sommet donne l'extremum sans étudier de fonction ni de dérivée, ce qui fait gagner du temps en épreuve.\n- Au Probatoire, on l'utilise dans les problèmes d'optimisation (bénéfice, chiffre d'affaires, aire maximale) et pour étudier le signe d'un trinôme.", datetime.datetime(2026, 9, 20, 19, 55, 56, 256532, tzinfo=datetime.timezone.utc), 8760); alias=default
+
+---
+
+## Prérequis
+
+- [Déterminer le centre et le rayon d''un cercle donné par son équation cartésienne](COURS_REF:determiner-le-centre-et-le-rayon-dun-cercle-donne-par-son-equation-cartesienne)
+- [Distance d''un point à une droite dans le plan](COURS_REF:distance-dun-point-a-une-droite-dans-le-plan)
+- Équation cartésienne d''une droite
+
+---
+
+## Comparer la distance du centre au rayon
+
+Soit $\mathcal{C}(\Omega\,;R)$ un cercle et $(D):ax+by+c=0$ une droite. On pose
+$$h=d(\Omega,(D))=\dfrac{|ax_\Omega+by_\Omega+c|}{\sqrt{a^2+b^2}}.$$
+
+- Si $h>R$ : la droite est **extérieure** au cercle, aucun point commun.
+- Si $h=R$ : la droite est **tangente** au cercle, un seul point commun (le pied $H$ de la perpendiculaire menée de $\Omega$ à $(D)$).
+- Si $h<R$ : la droite est **sécante** au cercle, deux points communs, symétriques par rapport à $H$, à la distance $\sqrt{R^2-h^2}$ de $H$.
+
+**Deuxième méthode.** On remplace $y$ (ou $x$) tiré de l''équation de la droite dans l''équation du cercle. On obtient une équation du second degré dont le discriminant $\Delta$ donne le nombre de points communs : $\Delta<0$ aucun, $\Delta=0$ un, $\Delta>0$ deux. Choisis la distance quand seule la position t''est demandée ; choisis le discriminant quand il faut aussi les coordonnées des points d''intersection.
+
+$$h=\dfrac{|ax_\Omega+by_\Omega+c|}{\sqrt{a^2+b^2}} \quad\text{comparé à } R$$
+
+---
+
+## Exemple résolu
+
+Dans un repère orthonormé, on considère le cercle $\mathcal{C}:x^2+y^2-2x+4y-4=0$ et la droite $(D):3x+4y-4=0$. Étudier la position de $(D)$ par rapport à $\mathcal{C}$.
+
+**Étape 1 - Mettre l''équation du cercle sous forme canonique**
+
+Pour lire le centre et le rayon
+
+$(x-1)^2+(y+2)^2=1+4+4=9$ : centre $\Omega(1\,;-2)$ et rayon $R=3$
+
+**Étape 2 - Calculer la distance de $\Omega$ à $(D)$**
+
+On applique la formule avec $a=3$, $b=4$, $c=-4$
+
+$h=\dfrac{|3\times1+4\times(-2)-4|}{\sqrt{9+16}}=\dfrac{|-9|}{5}=\dfrac95$
+
+**Étape 3 - Comparer à $R$**
+
+$\frac95=1{,}8$ et $R=3$
+
+$h<R$
+
+**Étape 4 - Déterminer la longueur de la corde**
+
+Le triangle rectangle formé par $\Omega$, $H$ et un point d''intersection donne $\frac{\text{corde}}{2}=\sqrt{R^2-h^2}$
+
+$\sqrt{9-\frac{81}{25}}=\sqrt{\frac{144}{25}}=\frac{12}{5}$, donc la corde mesure $\frac{24}{5}$
+
+$h<R$ : la droite $(D)$ est sécante au cercle $\mathcal{C}$, en deux points distants de $\frac{24}{5}$.
+
+---
+
+## Erreurs classiques
+
+### Erreur
+
+Utiliser l''équation développée du cercle pour lire un rayon, par exemple prendre $R=-4$ ou $R=4$ dans $x^2+y^2-2x+4y-4=0$.
+
+### Pourquoi c''est faux
+
+Le second membre de l''équation développée n''est pas $R^2$ : il faut passer par la forme canonique. Ici $R^2=1+4+4=9$, jamais $4$.
+
+### Correction
+
+Compléter les carrés : $x^2-2x=(x-1)^2-1$ et $y^2+4y=(y+2)^2-4$, puis lire $R^2$.
+
+### Erreur
+
+Oublier la valeur absolue au numérateur de la distance, ou le radical au dénominateur.
+
+### Pourquoi c''est faux
+
+Une distance est positive : sans valeur absolue on peut obtenir $h<0$ et conclure à tort à une sécante. Sans le radical, on divise par $a^2+b^2$ au lieu de $\sqrt{a^2+b^2}$ et $h$ est faux.
+
+### Correction
+
+Recopier la formule complète avant de substituer.
+
+### Erreur
+
+Comparer $h$ à $R^2$ ou $h^2$ à $R$.
+
+### Pourquoi c''est faux
+
+On compare des grandeurs de même nature : $h$ avec $R$, ou $h^2$ avec $R^2$. Mélanger les deux fausse la conclusion dès que $R$ ou $h$ n''est pas proche de $1$.
+
+### Correction
+
+Comparer $h$ et $R$, ou bien $h^2$ et $R^2$, jamais un mélange.
+
+---
+
+## Exercices d''application
+
+### Exercice 1 (facile)
+
+Le cercle $\mathcal{C}$ a pour centre $O(0\,;0)$ et pour rayon $5$. Quelle est la position de $(D_1):3x+4y-25=0$ ? Et celle de $(D_2):x+y-10=0$ ?
+
+### Solution
+
+Pour $(D_1)$ : $h=\dfrac{|-25|}{5}=5=R$, la droite est tangente. Pour $(D_2)$ : $h=\dfrac{10}{\sqrt2}=5\sqrt2\approx7{,}07>5$, la droite est extérieure.
+
+### Exercice 2 (moyen)
+
+Soit $\mathcal{C}:x^2+y^2-6x-2y+5=0$. (a) Étudier la position de $(D):x-2y+2=0$. (b) Pour quelles valeurs de $m$ la droite $(D_m):x-2y+m=0$ est-elle tangente à $\mathcal{C}$ ?
+
+### Solution
+
+$x^2+y^2-6x-2y+5=0\iff(x-3)^2+(y-1)^2=5$ : centre $(3\,;1)$, rayon $\sqrt5$. (a) $h=\dfrac{|3-2+2|}{\sqrt5}=\dfrac{3}{\sqrt5}\approx1{,}34<\sqrt5\approx2{,}24$ : sécante. (b) Tangence : $h=\sqrt5$, soit $\dfrac{|1+m|}{\sqrt5}=\sqrt5\iff|1+m|=5\iff m=4$ ou $m=-6$.
+
+### Exercice 3 (approfondissement)
+
+Discuter, selon la valeur du réel $m$, le nombre de points communs de la droite $(D_m):y=x+m$ et du cercle $\mathcal{C}:x^2+y^2=8$.
+
+### Solution
+
+$(D_m):x-y+m=0$. Le centre est $O(0\,;0)$ et le rayon $R=2\sqrt2$. $h=\dfrac{|m|}{\sqrt2}$. $h<R\iff|m|<4$ : deux points. $h=R\iff|m|=4$ : un point (tangente). $h>R\iff|m|>4$ : aucun point. Contrôle par le discriminant : en remplaçant $y$, on obtient $2x^2+2mx+m^2-8=0$ de discriminant $\Delta=64-4m^2$, positif si et seulement si $|m|<4$ ✓.
+
+---
+
+## Ce qu''il faut retenir
+
+- Pour la position d''une droite et d''un cercle, calcule la distance $h$ du centre à la droite et compare-la à $R$.
+- $h>R$ : extérieure ; $h=R$ : tangente ; $h<R$ : sécante.
+- Lis toujours $R$ sur la forme canonique du cercle, jamais sur l''équation développée.
+- Si tu dois trouver les points communs, passe plutôt par le discriminant du système.
+- Au Probatoire C et E, cette question conclut souvent un exercice de géométrie analytique : après avoir trouvé centre, rayon et distance, on te demande « en déduire la position de la droite par rapport au cercle ».', "updated_at" = '2026-09-20T19:55:56.330131+00:00'::timestamptz WHERE "catalog_cours"."id" = 8761; args=("Une droite peut couper un cercle en deux points, le frôler en un seul, ou passer complètement à côté. Décider lequel des trois cas se présente en résolvant un système est possible, mais lourd. Il existe un raccourci : il suffit de mesurer à quelle distance du centre passe la droite et de comparer cette distance au rayon. Un seul calcul, une seule comparaison.\n\n---\n\n## Prérequis\n\n- [Déterminer le centre et le rayon d'un cercle donné par son équation cartésienne](COURS_REF:determiner-le-centre-et-le-rayon-dun-cercle-donne-par-son-equation-cartesienne)\n- [Distance d'un point à une droite dans le plan](COURS_REF:distance-dun-point-a-une-droite-dans-le-plan)\n- Équation cartésienne d'une droite\n\n---\n\n## Comparer la distance du centre au rayon\n\nSoit $\\mathcal{C}(\\Omega\\,;R)$ un cercle et $(D):ax+by+c=0$ une droite. On pose\n$$h=d(\\Omega,(D))=\\dfrac{|ax_\\Omega+by_\\Omega+c|}{\\sqrt{a^2+b^2}}.$$\n\n- Si $h>R$ : la droite est **extérieure** au cercle, aucun point commun.\n- Si $h=R$ : la droite est **tangente** au cercle, un seul point commun (le pied $H$ de la perpendiculaire menée de $\\Omega$ à $(D)$).\n- Si $h<R$ : la droite est **sécante** au cercle, deux points communs, symétriques par rapport à $H$, à la distance $\\sqrt{R^2-h^2}$ de $H$.\n\n**Deuxième méthode.** On remplace $y$ (ou $x$) tiré de l'équation de la droite dans l'équation du cercle. On obtient une équation du second degré dont le discriminant $\\Delta$ donne le nombre de points communs : $\\Delta<0$ aucun, $\\Delta=0$ un, $\\Delta>0$ deux. Choisis la distance quand seule la position t'est demandée ; choisis le discriminant quand il faut aussi les coordonnées des points d'intersection.\n\n$$h=\\dfrac{|ax_\\Omega+by_\\Omega+c|}{\\sqrt{a^2+b^2}} \\quad\\text{comparé à } R$$\n\n---\n\n## Exemple résolu\n\nDans un repère orthonormé, on considère le cercle $\\mathcal{C}:x^2+y^2-2x+4y-4=0$ et la droite $(D):3x+4y-4=0$. Étudier la position de $(D)$ par rapport à $\\mathcal{C}$.\n\n**Étape 1 - Mettre l'équation du cercle sous forme canonique**\n\nPour lire le centre et le rayon\n\n$(x-1)^2+(y+2)^2=1+4+4=9$ : centre $\\Omega(1\\,;-2)$ et rayon $R=3$\n\n**Étape 2 - Calculer la distance de $\\Omega$ à $(D)$**\n\nOn applique la formule avec $a=3$, $b=4$, $c=-4$\n\n$h=\\dfrac{|3\\times1+4\\times(-2)-4|}{\\sqrt{9+16}}=\\dfrac{|-9|}{5}=\\dfrac95$\n\n**Étape 3 - Comparer à $R$**\n\n$\\frac95=1{,}8$ et $R=3$\n\n$h<R$\n\n**Étape 4 - Déterminer la longueur de la corde**\n\nLe triangle rectangle formé par $\\Omega$, $H$ et un point d'intersection donne $\\frac{\\text{corde}}{2}=\\sqrt{R^2-h^2}$\n\n$\\sqrt{9-\\frac{81}{25}}=\\sqrt{\\frac{144}{25}}=\\frac{12}{5}$, donc la corde mesure $\\frac{24}{5}$\n\n$h<R$ : la droite $(D)$ est sécante au cercle $\\mathcal{C}$, en deux points distants de $\\frac{24}{5}$.\n\n---\n\n## Erreurs classiques\n\n### Erreur\n\nUtiliser l'équation développée du cercle pour lire un rayon, par exemple prendre $R=-4$ ou $R=4$ dans $x^2+y^2-2x+4y-4=0$.\n\n### Pourquoi c'est faux\n\nLe second membre de l'équation développée n'est pas $R^2$ : il faut passer par la forme canonique. Ici $R^2=1+4+4=9$, jamais $4$.\n\n### Correction\n\nCompléter les carrés : $x^2-2x=(x-1)^2-1$ et $y^2+4y=(y+2)^2-4$, puis lire $R^2$.\n\n### Erreur\n\nOublier la valeur absolue au numérateur de la distance, ou le radical au dénominateur.\n\n### Pourquoi c'est faux\n\nUne distance est positive : sans valeur absolue on peut obtenir $h<0$ et conclure à tort à une sécante. Sans le radical, on divise par $a^2+b^2$ au lieu de $\\sqrt{a^2+b^2}$ et $h$ est faux.\n\n### Correction\n\nRecopier la formule complète avant de substituer.\n\n### Erreur\n\nComparer $h$ à $R^2$ ou $h^2$ à $R$.\n\n### Pourquoi c'est faux\n\nOn compare des grandeurs de même nature : $h$ avec $R$, ou $h^2$ avec $R^2$. Mélanger les deux fausse la conclusion dès que $R$ ou $h$ n'est pas proche de $1$.\n\n### Correction\n\nComparer $h$ et $R$, ou bien $h^2$ et $R^2$, jamais un mélange.\n\n---\n\n## Exercices d'application\n\n### Exercice 1 (facile)\n\nLe cercle $\\mathcal{C}$ a pour centre $O(0\\,;0)$ et pour rayon $5$. Quelle est la position de $(D_1):3x+4y-25=0$ ? Et celle de $(D_2):x+y-10=0$ ?\n\n### Solution\n\nPour $(D_1)$ : $h=\\dfrac{|-25|}{5}=5=R$, la droite est tangente. Pour $(D_2)$ : $h=\\dfrac{10}{\\sqrt2}=5\\sqrt2\\approx7{,}07>5$, la droite est extérieure.\n\n### Exercice 2 (moyen)\n\nSoit $\\mathcal{C}:x^2+y^2-6x-2y+5=0$. (a) Étudier la position de $(D):x-2y+2=0$. (b) Pour quelles valeurs de $m$ la droite $(D_m):x-2y+m=0$ est-elle tangente à $\\mathcal{C}$ ?\n\n### Solution\n\n$x^2+y^2-6x-2y+5=0\\iff(x-3)^2+(y-1)^2=5$ : centre $(3\\,;1)$, rayon $\\sqrt5$. (a) $h=\\dfrac{|3-2+2|}{\\sqrt5}=\\dfrac{3}{\\sqrt5}\\approx1{,}34<\\sqrt5\\approx2{,}24$ : sécante. (b) Tangence : $h=\\sqrt5$, soit $\\dfrac{|1+m|}{\\sqrt5}=\\sqrt5\\iff|1+m|=5\\iff m=4$ ou $m=-6$.\n\n### Exercice 3 (approfondissement)\n\nDiscuter, selon la valeur du réel $m$, le nombre de points communs de la droite $(D_m):y=x+m$ et du cercle $\\mathcal{C}:x^2+y^2=8$.\n\n### Solution\n\n$(D_m):x-y+m=0$. Le centre est $O(0\\,;0)$ et le rayon $R=2\\sqrt2$. $h=\\dfrac{|m|}{\\sqrt2}$. $h<R\\iff|m|<4$ : deux points. $h=R\\iff|m|=4$ : un point (tangente). $h>R\\iff|m|>4$ : aucun point. Contrôle par le discriminant : en remplaçant $y$, on obtient $2x^2+2mx+m^2-8=0$ de discriminant $\\Delta=64-4m^2$, positif si et seulement si $|m|<4$ ✓.\n\n---\n\n## Ce qu'il faut retenir\n\n- Pour la position d'une droite et d'un cercle, calcule la distance $h$ du centre à la droite et compare-la à $R$.\n- $h>R$ : extérieure ; $h=R$ : tangente ; $h<R$ : sécante.\n- Lis toujours $R$ sur la forme canonique du cercle, jamais sur l'équation développée.\n- Si tu dois trouver les points communs, passe plutôt par le discriminant du système.\n- Au Probatoire C et E, cette question conclut souvent un exercice de géométrie analytique : après avoir trouvé centre, rayon et distance, on te demande « en déduire la position de la droite par rapport au cercle ».", datetime.datetime(2026, 9, 20, 19, 55, 56, 330131, tzinfo=datetime.timezone.utc), 8761); alias=default
+
+---
+
+## Prérequis
+
+- Racine carrée et carrés parfaits
+- Sinus, cosinus et tangente d''un angle aigu
+- Aire d''un triangle
+
+---
+
+## Quatre outils pour le triangle rectangle
+
+Soit $ABC$ un triangle rectangle en $A$, d''hypoténuse $[BC]$, et $H$ le pied de la hauteur issue de $A$.
+
+1. **Pythagore** : $BC^2=AB^2+AC^2$. **Réciproque** : si $BC^2=AB^2+AC^2$, le triangle est rectangle en $A$. On l''utilise pour **démontrer** un angle droit.
+2. **Trigonométrie** : $\cos\widehat B=\dfrac{AB}{BC}$, $\sin\widehat B=\dfrac{AC}{BC}$, $\tan\widehat B=\dfrac{AC}{AB}$ (côté adjacent, côté opposé, hypoténuse).
+3. **Hauteur** : $AH\times BC=AB\times AC$ (deux expressions de l''aire), $AB^2=BH\times BC$, $AC^2=CH\times BC$ et $AH^2=BH\times HC$.
+4. **Médiane** : le milieu $M$ de $[BC]$ est le centre du cercle circonscrit, donc $AM=\dfrac{BC}{2}$.
+
+**Comment choisir.** Deux côtés connus et un côté cherché : Pythagore. Un angle et un côté : trigonométrie. Une hauteur ou des segments de l''hypoténuse : les relations de la hauteur. Un angle droit à prouver : réciproque de Pythagore.
+
+$$BC^2=AB^2+AC^2 \qquad AH\times BC=AB\times AC$$
+
+---
+
+## Exemple résolu
+
+$ABC$ est un triangle rectangle en $A$ avec $AB=6$ et $AC=8$. $H$ est le pied de la hauteur issue de $A$. Calculer $BC$, $\cos\widehat B$, l''aire du triangle, $AH$, $BH$ et $HC$.
+
+**Étape 1 - Calculer l''hypoténuse**
+
+Deux côtés de l''angle droit sont connus : Pythagore
+
+$BC^2=36+64=100$, donc $BC=10$
+
+**Étape 2 - Calculer le cosinus**
+
+Côté adjacent à $\widehat B$ sur hypoténuse
+
+$\cos\widehat B=\dfrac{AB}{BC}=\dfrac{6}{10}=0{,}6$
+
+**Étape 3 - Calculer l''aire**
+
+Les deux côtés de l''angle droit sont base et hauteur
+
+$\mathcal{A}=\dfrac{6\times8}{2}=24$
+
+**Étape 4 - Calculer $AH$ avec la double expression de l''aire**
+
+$\frac{BC\times AH}{2}=24$
+
+$AH=\dfrac{48}{10}=4{,}8$
+
+**Étape 5 - Calculer $BH$ et $HC$**
+
+$AB^2=BH\times BC$ et $AC^2=CH\times BC$
+
+$BH=\dfrac{36}{10}=3{,}6$ et $HC=\dfrac{64}{10}=6{,}4$
+
+**Étape 6 - Contrôler**
+
+$BH+HC$ doit valoir $BC$ et $AH^2$ doit valoir $BH\times HC$
+
+$3{,}6+6{,}4=10$ ✓ et $4{,}8^2=23{,}04=3{,}6\times6{,}4$ ✓
+
+$BC=10$, $\cos\widehat B=0{,}6$, aire $=24$, $AH=4{,}8$, $BH=3{,}6$ et $HC=6{,}4$.
+
+---
+
+## Erreurs classiques
+
+### Erreur
+
+Appliquer Pythagore avec un côté de l''angle droit comme hypoténuse : écrire $AB^2=AC^2+BC^2$.
+
+### Pourquoi c''est faux
+
+L''hypoténuse est le côté opposé à l''angle droit, c''est toujours le plus long. Placer un autre côté dans le membre de gauche donne une longueur négative ou absurde.
+
+### Correction
+
+Repérer l''angle droit, en déduire l''hypoténuse, puis écrire : hypoténuse² = somme des deux autres carrés.
+
+### Erreur
+
+Utiliser la trigonométrie avec le mauvais côté : prendre $AC$ comme côté adjacent à $\widehat B$.
+
+### Pourquoi c''est faux
+
+L''adjacent et l''opposé dépendent de l''angle considéré. Pour $\widehat B$, $AB$ est adjacent et $AC$ opposé ; pour $\widehat C$, c''est l''inverse.
+
+### Correction
+
+Nommer l''angle, puis marquer les trois côtés (adjacent, opposé, hypoténuse) avant d''écrire le rapport.
+
+### Erreur
+
+Conclure qu''un triangle est rectangle à partir du théorème direct de Pythagore.
+
+### Pourquoi c''est faux
+
+Le théorème direct part d''un angle droit connu ; il ne sert pas à le prouver. Pour démontrer un angle droit, il faut la réciproque, en comparant le carré du plus grand côté à la somme des deux autres carrés.
+
+### Correction
+
+Pour prouver un angle droit : calculer séparément $BC^2$ et $AB^2+AC^2$ puis conclure par la réciproque.
+
+---
+
+## Exercices d''application
+
+### Exercice 1 (facile)
+
+Le triangle $ABC$ a pour côtés $AB=5$, $AC=12$ et $BC=13$. Est-il rectangle ? Si oui, en quel sommet ?
+
+### Solution
+
+Le plus grand côté est $[BC]$. $BC^2=169$ et $AB^2+AC^2=25+144=169$. D''après la réciproque de Pythagore, le triangle est rectangle en $A$.
+
+### Exercice 2 (moyen)
+
+$ABC$ est rectangle en $A$ avec $BC=13$ et $AB=5$. Calculer $AC$, $\sin\widehat C$ et la hauteur $AH$.
+
+### Solution
+
+$AC^2=169-25=144$, donc $AC=12$. $\sin\widehat C=\dfrac{AB}{BC}=\dfrac{5}{13}$. $AH=\dfrac{AB\times AC}{BC}=\dfrac{60}{13}\approx4{,}62$.
+
+### Exercice 3 (approfondissement)
+
+$ABC$ est rectangle en $A$ et $H$ est le pied de la hauteur issue de $A$. On donne $BH=9$ et $HC=16$. Calculer $AH$, $AB$, $AC$ puis vérifier avec Pythagore.
+
+### Solution
+
+$BC=BH+HC=25$. $AH^2=BH\times HC=144$, donc $AH=12$. $AB^2=BH\times BC=9\times25=225$, donc $AB=15$. $AC^2=HC\times BC=16\times25=400$, donc $AC=20$. Contrôle : $AB^2+AC^2=225+400=625=BC^2$ ✓ et $AH\times BC=300=AB\times AC$ ✓.
+
+---
+
+## Ce qu''il faut retenir
+
+- Dans un triangle rectangle, repère d''abord l''angle droit : il désigne l''hypoténuse, le côté le plus long.
+- Pythagore donne une longueur, la trigonométrie relie un angle à une longueur, les relations de la hauteur relient $AH$, $BH$, $HC$ à l''hypoténuse.
+- Pour **démontrer** qu''un angle est droit, utilise la réciproque de Pythagore, jamais le théorème direct.
+- Contrôle toujours le résultat : $BH+HC=BC$ et $AH^2=BH\times HC$.
+- Au Probatoire, un triangle rectangle est souvent caché dans un problème plus grand (polygone régulier, distance dans un repère, échelle) : sa détection est la moitié du travail.', "updated_at" = '2026-09-20T19:55:56.383689+00:00'::timestamptz WHERE "catalog_cours"."id" = 8762; args=("Le triangle rectangle est la figure de base de toute la géométrie de calcul : un polygone régulier se découpe en triangles rectangles, un problème d'échelle se ramène à un triangle rectangle, une distance dans un repère aussi. Comme il a un angle droit, chaque longueur, chaque angle et chaque aire se calcule avec quelques outils très simples. Ce cours les rassemble et t'apprend à choisir le bon.\n\n---\n\n## Prérequis\n\n- Racine carrée et carrés parfaits\n- Sinus, cosinus et tangente d'un angle aigu\n- Aire d'un triangle\n\n---\n\n## Quatre outils pour le triangle rectangle\n\nSoit $ABC$ un triangle rectangle en $A$, d'hypoténuse $[BC]$, et $H$ le pied de la hauteur issue de $A$.\n\n1. **Pythagore** : $BC^2=AB^2+AC^2$. **Réciproque** : si $BC^2=AB^2+AC^2$, le triangle est rectangle en $A$. On l'utilise pour **démontrer** un angle droit.\n2. **Trigonométrie** : $\\cos\\widehat B=\\dfrac{AB}{BC}$, $\\sin\\widehat B=\\dfrac{AC}{BC}$, $\\tan\\widehat B=\\dfrac{AC}{AB}$ (côté adjacent, côté opposé, hypoténuse).\n3. **Hauteur** : $AH\\times BC=AB\\times AC$ (deux expressions de l'aire), $AB^2=BH\\times BC$, $AC^2=CH\\times BC$ et $AH^2=BH\\times HC$.\n4. **Médiane** : le milieu $M$ de $[BC]$ est le centre du cercle circonscrit, donc $AM=\\dfrac{BC}{2}$.\n\n**Comment choisir.** Deux côtés connus et un côté cherché : Pythagore. Un angle et un côté : trigonométrie. Une hauteur ou des segments de l'hypoténuse : les relations de la hauteur. Un angle droit à prouver : réciproque de Pythagore.\n\n$$BC^2=AB^2+AC^2 \\qquad AH\\times BC=AB\\times AC$$\n\n---\n\n## Exemple résolu\n\n$ABC$ est un triangle rectangle en $A$ avec $AB=6$ et $AC=8$. $H$ est le pied de la hauteur issue de $A$. Calculer $BC$, $\\cos\\widehat B$, l'aire du triangle, $AH$, $BH$ et $HC$.\n\n**Étape 1 - Calculer l'hypoténuse**\n\nDeux côtés de l'angle droit sont connus : Pythagore\n\n$BC^2=36+64=100$, donc $BC=10$\n\n**Étape 2 - Calculer le cosinus**\n\nCôté adjacent à $\\widehat B$ sur hypoténuse\n\n$\\cos\\widehat B=\\dfrac{AB}{BC}=\\dfrac{6}{10}=0{,}6$\n\n**Étape 3 - Calculer l'aire**\n\nLes deux côtés de l'angle droit sont base et hauteur\n\n$\\mathcal{A}=\\dfrac{6\\times8}{2}=24$\n\n**Étape 4 - Calculer $AH$ avec la double expression de l'aire**\n\n$\\frac{BC\\times AH}{2}=24$\n\n$AH=\\dfrac{48}{10}=4{,}8$\n\n**Étape 5 - Calculer $BH$ et $HC$**\n\n$AB^2=BH\\times BC$ et $AC^2=CH\\times BC$\n\n$BH=\\dfrac{36}{10}=3{,}6$ et $HC=\\dfrac{64}{10}=6{,}4$\n\n**Étape 6 - Contrôler**\n\n$BH+HC$ doit valoir $BC$ et $AH^2$ doit valoir $BH\\times HC$\n\n$3{,}6+6{,}4=10$ ✓ et $4{,}8^2=23{,}04=3{,}6\\times6{,}4$ ✓\n\n$BC=10$, $\\cos\\widehat B=0{,}6$, aire $=24$, $AH=4{,}8$, $BH=3{,}6$ et $HC=6{,}4$.\n\n---\n\n## Erreurs classiques\n\n### Erreur\n\nAppliquer Pythagore avec un côté de l'angle droit comme hypoténuse : écrire $AB^2=AC^2+BC^2$.\n\n### Pourquoi c'est faux\n\nL'hypoténuse est le côté opposé à l'angle droit, c'est toujours le plus long. Placer un autre côté dans le membre de gauche donne une longueur négative ou absurde.\n\n### Correction\n\nRepérer l'angle droit, en déduire l'hypoténuse, puis écrire : hypoténuse² = somme des deux autres carrés.\n\n### Erreur\n\nUtiliser la trigonométrie avec le mauvais côté : prendre $AC$ comme côté adjacent à $\\widehat B$.\n\n### Pourquoi c'est faux\n\nL'adjacent et l'opposé dépendent de l'angle considéré. Pour $\\widehat B$, $AB$ est adjacent et $AC$ opposé ; pour $\\widehat C$, c'est l'inverse.\n\n### Correction\n\nNommer l'angle, puis marquer les trois côtés (adjacent, opposé, hypoténuse) avant d'écrire le rapport.\n\n### Erreur\n\nConclure qu'un triangle est rectangle à partir du théorème direct de Pythagore.\n\n### Pourquoi c'est faux\n\nLe théorème direct part d'un angle droit connu ; il ne sert pas à le prouver. Pour démontrer un angle droit, il faut la réciproque, en comparant le carré du plus grand côté à la somme des deux autres carrés.\n\n### Correction\n\nPour prouver un angle droit : calculer séparément $BC^2$ et $AB^2+AC^2$ puis conclure par la réciproque.\n\n---\n\n## Exercices d'application\n\n### Exercice 1 (facile)\n\nLe triangle $ABC$ a pour côtés $AB=5$, $AC=12$ et $BC=13$. Est-il rectangle ? Si oui, en quel sommet ?\n\n### Solution\n\nLe plus grand côté est $[BC]$. $BC^2=169$ et $AB^2+AC^2=25+144=169$. D'après la réciproque de Pythagore, le triangle est rectangle en $A$.\n\n### Exercice 2 (moyen)\n\n$ABC$ est rectangle en $A$ avec $BC=13$ et $AB=5$. Calculer $AC$, $\\sin\\widehat C$ et la hauteur $AH$.\n\n### Solution\n\n$AC^2=169-25=144$, donc $AC=12$. $\\sin\\widehat C=\\dfrac{AB}{BC}=\\dfrac{5}{13}$. $AH=\\dfrac{AB\\times AC}{BC}=\\dfrac{60}{13}\\approx4{,}62$.\n\n### Exercice 3 (approfondissement)\n\n$ABC$ est rectangle en $A$ et $H$ est le pied de la hauteur issue de $A$. On donne $BH=9$ et $HC=16$. Calculer $AH$, $AB$, $AC$ puis vérifier avec Pythagore.\n\n### Solution\n\n$BC=BH+HC=25$. $AH^2=BH\\times HC=144$, donc $AH=12$. $AB^2=BH\\times BC=9\\times25=225$, donc $AB=15$. $AC^2=HC\\times BC=16\\times25=400$, donc $AC=20$. Contrôle : $AB^2+AC^2=225+400=625=BC^2$ ✓ et $AH\\times BC=300=AB\\times AC$ ✓.\n\n---\n\n## Ce qu'il faut retenir\n\n- Dans un triangle rectangle, repère d'abord l'angle droit : il désigne l'hypoténuse, le côté le plus long.\n- Pythagore donne une longueur, la trigonométrie relie un angle à une longueur, les relations de la hauteur relient $AH$, $BH$, $HC$ à l'hypoténuse.\n- Pour **démontrer** qu'un angle est droit, utilise la réciproque de Pythagore, jamais le théorème direct.\n- Contrôle toujours le résultat : $BH+HC=BC$ et $AH^2=BH\\times HC$.\n- Au Probatoire, un triangle rectangle est souvent caché dans un problème plus grand (polygone régulier, distance dans un repère, échelle) : sa détection est la moitié du travail.", datetime.datetime(2026, 9, 20, 19, 55, 56, 383689, tzinfo=datetime.timezone.utc), 8762); alias=default
+5 objet(s) créé(s).
+Génération des PDF de sujet manquants...
+Aucune leçon à traiter.
+
+=== Portes base (structure, thèmes, couverture) ===
+Périmètre : contenu modifié depuis 2026-09-20 19:54 - 0 Lesson, 0 Exercise, 0 Question, 5 Cours, 0 CompetenceItem
+[ALERTE] (tags) 2 thème(s) partagé(s) entre plusieurs matières (risque de collision de sens) - ex. 'tableau statistique', 'trigonométrie'
+[INFO] (couverture) 22 thème(s) touché(s) par ce round
+[INFO] (couverture) 12 thème(s) sans quiz VALIDE - ex. 'cercles tangents', "distance d'un point à une droite", "extremum d'un trinôme", 'géométrie du triangle rectangle', 'maximum', 'position relative droite-cercle', 'rayon', "sommet d'une parabole", 'tableau à données manquantes', 'tangente à un cercle'
+Dump de rendu : 5 enregistrement(s) -> /app/ingest/_audit/rendu_tunnel.json
+Portes base OK (le rendu KaTeX reste à valider : scripts/tunnel_validation.sh).
+
+=== Porte rendu (vrai moteur remark/rehype-katex) ===
+
+ RUN  v4.1.10 D:/edukora/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  20:56:00
+   Duration  1.18s (transform 55ms, setup 173ms, import 349ms, tests 477ms, environment 0ms)
+
+
+TUNNEL VALIDÉ.

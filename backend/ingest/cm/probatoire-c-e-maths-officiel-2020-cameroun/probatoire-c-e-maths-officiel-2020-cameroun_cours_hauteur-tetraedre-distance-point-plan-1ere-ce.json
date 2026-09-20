@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-hauteur-tetraedre-distance-point-plan-1ere-ce",
+  "meta": {
+    "titre": "Hauteur d'un tétraèdre via l'intersection d'une perpendiculaire au plan opposé",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace - Tétraèdre",
+    "duree_estimee_min": 15,
+    "tags": [
+      "hauteur d'un tétraèdre",
+      "distance point-plan",
+      "intersection droite-plan"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "4",
+    "rappel_id": "r-4-6",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La hauteur d'un tétraèdre issue d'un sommet est la distance la plus courte entre ce sommet et le plan de la face opposée. Quand on dispose déjà d'une droite orthogonale à ce plan passant par le sommet, il suffit de trouver où cette droite perce le plan pour obtenir directement cette distance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Intersection d'une droite (paramétrique) et d'un plan (cartésien)",
+        "Distance entre deux points de l'espace"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La hauteur est la distance au point d'intersection",
+      "contenu_markdown": "Si une droite passant par un sommet $S$ d'un tétraèdre est orthogonale au plan de la face opposée, et si $P$ est le point d'intersection de cette droite avec ce plan, alors la hauteur issue de $S$ est exactement la distance $SP$ : on substitue les coordonnées paramétriques de la droite dans l'équation du plan pour trouver le paramètre du point $P$, puis on calcule $SP$ par la formule de distance.",
+      "formule_principale": "h=SP=\\sqrt{(x_P-x_S)^2+(y_P-y_S)^2+(z_P-z_S)^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La droite $(IJ):\\begin{cases}x=t\\\\y=\\frac12\\\\z=t\\end{cases}$ est orthogonale au plan $(EHC):x+z-1=0$. Déterminer la hauteur du tétraèdre $IEHC$ issue de $I\\left(0;\\frac12;0\\right)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Substituer dans l'équation du plan",
+          "justification": "Trouver le paramètre du point d'intersection P",
+          "resultat_markdown": "$t+t-1=0 \\Rightarrow t=\\frac12$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire les coordonnées de P",
+          "justification": "Remplacer t=1/2 dans la représentation paramétrique",
+          "resultat_markdown": "$P\\left(\\frac12;\\frac12;\\frac12\\right)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la distance IP",
+          "justification": "Formule de distance dans l'espace",
+          "resultat_markdown": "$IP=\\sqrt{\\frac14+0+\\frac14}=\\sqrt{\\frac12}=\\frac{\\sqrt2}{2}$"
+        }
+      ],
+      "conclusion_markdown": "La hauteur du tétraèdre IEHC issue de I vaut $\\frac{\\sqrt2}{2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la distance entre I et un point quelconque du plan (EHC), pas nécessairement le pied de la perpendiculaire P.",
+          "pourquoi_faux": "La hauteur est la plus COURTE distance entre le sommet et le plan : seule la distance au pied de la perpendiculaire (le point P obtenu par intersection avec la droite orthogonale) donne cette valeur minimale.",
+          "correction_markdown": "N'utilise jamais un point du plan choisi au hasard : calcule toujours le point d'intersection exact de la perpendiculaire avec le plan."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la droite utilisée est réellement orthogonale au plan avant d'appliquer cette méthode.",
+          "pourquoi_faux": "Si la droite n'est pas orthogonale au plan, le point d'intersection trouvé n'est pas le pied de la hauteur, et la distance calculée ne serait pas la hauteur réelle.",
+          "correction_markdown": "Vérifie (ou récupère d'une question précédente) que l'orthogonalité droite-plan est bien établie avant de calculer la hauteur de cette façon."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une droite orthogonale à un plan (P):x=2 passe par A(0;1;1) avec pour représentation x=t, y=1, z=1. Trouver le point d'intersection avec (P) et la distance de A à (P).",
+          "solution_markdown": "$t=2$ donne le point d'intersection $(2;1;1)$. Distance $=\\sqrt{(2-0)^2+0+0}=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une droite de représentation $x=1+t,y=t,z=2t$ est orthogonale au plan $(Q):x+y+2z=6$. Calculer la distance du point de départ $(1;0;0)$ au plan.",
+          "solution_markdown": "$(1+t)+t+2(2t)=6 \\Rightarrow 1+6t=6 \\Rightarrow t=\\frac56$. Point d'intersection : $\\left(\\frac{11}6;\\frac56;\\frac53\\right)$. Distance $=\\sqrt{\\left(\\frac56\\right)^2+\\left(\\frac56\\right)^2+\\left(\\frac53\\right)^2}=\\sqrt{\\frac{25}{36}+\\frac{25}{36}+\\frac{25}{9}}=\\sqrt{\\frac{25+25+100}{36}}=\\sqrt{\\frac{150}{36}}=\\frac{5\\sqrt6}{6}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi cette méthode (intersection avec une perpendiculaire déjà connue) est plus rapide, dans ce contexte, que la formule générale de distance point-plan $d=\\dfrac{|ax_0+by_0+cz_0-d|}{\\sqrt{a^2+b^2+c^2}}$.",
+          "solution_markdown": "Les deux méthodes donnent le même résultat, mais ici la droite orthogonale et son intersection avec le plan (le point P) ont déjà été calculées dans les questions précédentes de l'exercice : réutiliser ce travail déjà fait évite de retenir et d'appliquer une formule supplémentaire. La formule générale reste utile quand aucune perpendiculaire n'a déjà été construite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La hauteur d'un tétraèdre issue d'un sommet est la distance de ce sommet au plan de la face opposée.",
+        "Si une droite orthogonale au plan et passant par le sommet est déjà connue, il suffit de trouver son point d'intersection avec le plan (substitution dans l'équation cartésienne) puis de calculer la distance correspondante.",
+        "Ne confonds jamais un point quelconque du plan avec le pied de la hauteur : seul ce dernier donne la distance minimale recherchée."
+      ]
+    }
+  ]
+}

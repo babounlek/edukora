@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-aire-polygone-coordonnees-sommets-1ere-ce",
+  "meta": {
+    "titre": "Calculer l'aire d'un polygone à partir des coordonnées de ses sommets",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie plane - Aires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "aire d'un polygone",
+      "coordonnées",
+      "formule des aires",
+      "trapèze"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "1",
+    "rappel_id": "r-I3b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer l'aire d'un rectangle ou d'un triangle est immédiat quand on connaît ses dimensions. Mais que faire d'un quadrilatère quelconque, dont on ne connaît que les coordonnées des sommets ? Deux stratégies existent : découper la figure en formes simples (trapèze, triangles), ou appliquer une formule générale qui fonctionne pour n'importe quel polygone, quelle que soit sa forme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Coordonnées d'un point dans un repère orthonormé",
+        "Aire d'un trapèze et d'un triangle",
+        "Calcul avec des radicaux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule des aires (méthode du lacet)",
+      "contenu_markdown": "L'aire d'un polygone dont on connaît les coordonnées des sommets $(x_1,y_1),\\dots,(x_n,y_n)$, donnés dans l'ordre où l'on parcourt le polygone, s'obtient par la formule $\\mathcal A=\\dfrac12\\left|\\sum_{i=1}^n(x_iy_{i+1}-x_{i+1}y_i)\\right|$, les indices étant pris cycliquement (le sommet suivant le dernier est le premier). Quand deux sommets consécutifs partagent la même abscisse ou la même ordonnée, il est souvent plus rapide de reconnaître directement une figure usuelle (trapèze, rectangle, triangle) et d'utiliser sa formule d'aire habituelle.",
+      "formule_principale": "\\mathcal A=\\dfrac12\\left|\\sum_{i=1}^n(x_iy_{i+1}-x_{i+1}y_i)\\right|"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer l'aire du quadrilatère $ABCD$ avec $A\\left(-\\dfrac{\\sqrt2}2,-\\dfrac{\\sqrt2}2\\right)$, $B\\left(\\dfrac{\\sqrt2}2,-\\dfrac{\\sqrt2}2\\right)$, $C\\left(\\dfrac{\\sqrt3}2,\\dfrac12\\right)$, $D\\left(-\\dfrac{\\sqrt3}2,\\dfrac12\\right)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer que ABCD est un trapèze",
+          "justification": "A et B ont la même ordonnée (AB horizontale), C et D ont la même ordonnée (DC horizontale) : les côtés (AB) et (DC) sont donc parallèles",
+          "resultat_markdown": "$AB=\\sqrt2$ (base 1), $DC=\\sqrt3$ (base 2), $h=\\dfrac12-\\left(-\\dfrac{\\sqrt2}2\\right)=\\dfrac{1+\\sqrt2}2$ (hauteur)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de l'aire d'un trapèze",
+          "justification": "Aire = (somme des bases) × hauteur / 2",
+          "resultat_markdown": "$\\mathcal A=\\dfrac{(\\sqrt2+\\sqrt3)\\times\\frac{1+\\sqrt2}2}2=\\dfrac{(\\sqrt2+\\sqrt3)(1+\\sqrt2)}4$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer le produit au numérateur",
+          "justification": "(√2+√3)(1+√2) = √2 + 2 + √3 + √6",
+          "resultat_markdown": "$\\mathcal A=\\dfrac{2+\\sqrt2+\\sqrt3+\\sqrt6}4$"
+        }
+      ],
+      "conclusion_markdown": "L'aire du quadrilatère $ABCD$ vaut $\\dfrac{2+\\sqrt2+\\sqrt3+\\sqrt6}4\\approx1{,}90$ unité d'aire ; ce résultat peut être recoupé par la formule générale des aires par coordonnées, qui donne exactement le même nombre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la formule du trapèze sans avoir vérifié que deux côtés sont réellement parallèles.",
+          "pourquoi_faux": "Si les sommets ne partagent pas une même abscisse ou ordonnée, le quadrilatère n'est pas nécessairement un trapèze, et la formule ne s'applique pas.",
+          "correction_markdown": "Vérifie toujours l'égalité de deux coordonnées avant d'utiliser un raccourci géométrique ; sinon, utilise la formule générale des aires par coordonnées."
+        },
+        {
+          "erreur_markdown": "Oublier la valeur absolue dans la formule des aires par coordonnées.",
+          "pourquoi_faux": "Selon le sens de parcours des sommets (horaire ou anti-horaire), la somme $\\sum(x_iy_{i+1}-x_{i+1}y_i)$ peut être négative ; une aire est toujours positive.",
+          "correction_markdown": "N'oublie jamais la valeur absolue $|\\cdot|$ autour de la somme avant de multiplier par $\\dfrac12$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'aire du triangle de sommets $A(0,0)$, $B(4,0)$, $C(0,3)$.",
+          "solution_markdown": "$(AB)$ est horizontale de longueur $4$, la hauteur issue de $C$ vaut $3$ : $\\mathcal A=\\dfrac{4\\times3}2=6$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer l'aire du trapèze de sommets $A(0,0)$, $B(6,0)$, $C(4,3)$, $D(1,3)$.",
+          "solution_markdown": "$AB=6$, $DC=4-1=3$, hauteur $h=3$ : $\\mathcal A=\\dfrac{(6+3)\\times3}2=\\dfrac{27}2=13{,}5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer, par la formule générale des aires par coordonnées, l'aire du quadrilatère $PQRS$ avec $P(1,1)$, $Q(4,2)$, $R(3,5)$, $S(0,4)$, puis vérifier ce résultat en découpant $PQRS$ en deux triangles $PQR$ et $PRS$.",
+          "solution_markdown": "Formule des aires : $x_Py_Q-x_Qy_P=1\\times2-4\\times1=-2$ ; $x_Qy_R-x_Ry_Q=4\\times5-3\\times2=14$ ; $x_Ry_S-x_Sy_R=3\\times4-0\\times5=12$ ; $x_Sy_P-x_Py_S=0\\times1-1\\times4=-4$. Somme $=-2+14+12-4=20$, donc $\\mathcal A=\\dfrac{20}2=10$. Par découpage : aire de $PQR$ (coordonnées $(1,1),(4,2),(3,5)$) $=\\dfrac12|1(2-5)+4(5-1)+3(1-2)|=\\dfrac12|-3+16-3|=5$ ; aire de $PRS$ (coordonnées $(1,1),(3,5),(0,4)$) $=\\dfrac12|1(5-4)+3(4-1)+0(1-5)|=\\dfrac12|1+9|=5$. Total $5+5=10$, ce qui confirme le résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux méthodes permettent de calculer l'aire d'un polygone connu par les coordonnées de ses sommets : reconnaître une figure usuelle (trapèze, triangle) quand c'est possible, ou appliquer la formule générale des aires par coordonnées.",
+        "La formule générale s'écrit $\\mathcal A=\\dfrac12\\left|\\sum(x_iy_{i+1}-x_{i+1}y_i)\\right|$, en parcourant les sommets dans l'ordre et en revenant au premier à la fin.",
+        "Deux sommets consécutifs de même ordonnée (ou même abscisse) signalent presque toujours un raccourci possible par une figure usuelle.",
+        "Recouper systématiquement un résultat obtenu par une méthode avec l'autre méthode : c'est la meilleure garantie contre une erreur de signe ou de calcul."
+      ]
+    }
+  ]
+}

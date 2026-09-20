@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-droite-orthogonale-plan-produits-scalaires-nuls-1ere-ce",
+  "meta": {
+    "titre": "Montrer qu'une droite est orthogonale à un plan via deux produits scalaires nuls",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace - Orthogonalité droite-plan",
+    "duree_estimee_min": 12,
+    "tags": [
+      "orthogonalité",
+      "droite et plan",
+      "vecteur normal"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "4",
+    "rappel_id": "r-4-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Prouver qu'une droite est perpendiculaire à un plan entier semble demander une infinité de vérifications (une pour chaque direction du plan). Un théorème ramène cette infinité à seulement deux tests, à condition de bien choisir les deux vecteurs du plan."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Produit scalaire de deux vecteurs à partir de leurs coordonnées",
+        "Colinéarité de deux vecteurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux produits scalaires nuls suffisent",
+      "contenu_markdown": "Une droite de vecteur directeur $\\vec n$ est orthogonale à un plan si et seulement si $\\vec n$ est orthogonal à deux vecteurs non colinéaires de ce plan. Il n'est pas nécessaire de tester tous les vecteurs du plan : dès que deux vecteurs non colinéaires sont orthogonaux à $\\vec n$, tout vecteur du plan (combinaison linéaire de ces deux-là) l'est automatiquement aussi.",
+      "formule_principale": "\\vec n\\cdot\\vec u=0 \\text{ et } \\vec n\\cdot\\vec v=0,\\ \\vec u,\\vec v \\text{ non colinéaires} \\implies \\vec n \\perp \\text{plan}(\\vec u,\\vec v)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $\\overrightarrow{IJ}\\cdot\\overrightarrow{HC}=0$ et $\\overrightarrow{IJ}\\cdot\\overrightarrow{EC}=0$, avec $\\overrightarrow{HC}$ et $\\overrightarrow{EC}$ non colinéaires, montrer que $(IJ)$ est orthogonale au plan $(EHC)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier la non-colinéarité de HC et EC",
+          "justification": "HC(1;0;-1), EC(1;1;-1) : pas de facteur commun",
+          "resultat_markdown": "$(\\overrightarrow{HC},\\overrightarrow{EC})$ est une base du plan (EHC)"
+        },
+        {
+          "numero": 2,
+          "action": "Constater les deux produits scalaires nuls",
+          "justification": "Donnés par le calcul précédent",
+          "resultat_markdown": "$\\overrightarrow{IJ}\\cdot\\overrightarrow{HC}=0$ et $\\overrightarrow{IJ}\\cdot\\overrightarrow{EC}=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le théorème",
+          "justification": "Orthogonal à deux vecteurs non colinéaires du plan",
+          "resultat_markdown": "$\\overrightarrow{IJ}$ orthogonal à tout le plan (EHC)"
+        }
+      ],
+      "conclusion_markdown": "La droite (IJ) est orthogonale au plan (EHC)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tester l'orthogonalité avec deux vecteurs du plan qui sont en réalité colinéaires.",
+          "pourquoi_faux": "Si les deux vecteurs testés sont colinéaires, ils ne représentent qu'UNE seule direction du plan : l'orthogonalité à cette unique direction ne suffit pas à conclure à l'orthogonalité au plan tout entier.",
+          "correction_markdown": "Vérifie toujours que les deux vecteurs choisis dans le plan ne sont pas colinéaires avant d'utiliser le théorème."
+        },
+        {
+          "erreur_markdown": "Conclure à l'orthogonalité droite-plan à partir d'un seul produit scalaire nul.",
+          "pourquoi_faux": "Un seul produit scalaire nul montre seulement que la droite est orthogonale à UNE direction du plan, pas au plan entier (qui est un espace à deux dimensions).",
+          "correction_markdown": "Il faut toujours DEUX produits scalaires nuls, avec des vecteurs non colinéaires, jamais un seul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$\\vec n(1;1;1)$, $\\vec u(1;-1;0)$, $\\vec v(1;0;-1)$. Vérifier que $\\vec n$ est orthogonal au plan engendré par $\\vec u$ et $\\vec v$.",
+          "solution_markdown": "$\\vec n\\cdot\\vec u=1-1+0=0$. $\\vec n\\cdot\\vec v=1+0-1=0$. $\\vec u,\\vec v$ non colinéaires. Donc $\\vec n$ est orthogonal au plan."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un plan est engendré par $\\vec u(2;1;0)$ et $\\vec v(0;1;2)$. Le vecteur $\\vec n(1;-2;1)$ est-il orthogonal à ce plan ?",
+          "solution_markdown": "$\\vec n\\cdot\\vec u=2-2+0=0$. $\\vec n\\cdot\\vec v=0-2+2=0$. Les deux produits sont nuls et $\\vec u,\\vec v$ non colinéaires : oui, $\\vec n$ est orthogonal au plan."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi, si $\\vec n\\cdot\\vec u=0$ et $\\vec n\\cdot\\vec v=0$, alors $\\vec n$ est automatiquement orthogonal à $\\vec w=2\\vec u-3\\vec v$, sans nouveau calcul de produit scalaire.",
+          "solution_markdown": "Le produit scalaire est linéaire par rapport à chacun de ses arguments : $\\vec n\\cdot\\vec w=\\vec n\\cdot(2\\vec u-3\\vec v)=2(\\vec n\\cdot\\vec u)-3(\\vec n\\cdot\\vec v)=2\\times0-3\\times0=0$. C'est précisément cette linéarité qui explique pourquoi deux tests suffisent pour tout le plan : chaque vecteur du plan est une combinaison linéaire de $\\vec u$ et $\\vec v$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une droite est orthogonale à un plan dès que son vecteur directeur est orthogonal à DEUX vecteurs non colinéaires de ce plan.",
+        "Vérifie toujours la non-colinéarité des deux vecteurs du plan choisis : sans elle, deux produits scalaires nuls ne suffisent pas.",
+        "Cette orthogonalité droite-plan permet ensuite d'écrire directement l'équation cartésienne du plan (le vecteur directeur de la droite en devient le vecteur normal)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-deriver-fonction-rationnelle-quotient-factoriser-signe-terminale-d",
+  "meta": {
+    "titre": "Dériver une fonction rationnelle et factoriser le numérateur pour préparer l'étude de signe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Dérivation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dérivation",
+      "fonction rationnelle",
+      "dérivée d'un quotient"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "3",
+    "rappel_id": "r-3-3a",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dériver un quotient de polynômes ne pose pas de difficulté de formule - mais le développement du numérateur qui suit est l'étape où la plupart des erreurs de signe se glissent. Une rédaction méthodique, terme par terme, l'évite complètement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivées des fonctions polynômes",
+        "Formule de la dérivée d'un quotient",
+        "Factorisation d'un trinôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de dérivation d'un quotient",
+      "contenu_markdown": "Pour une fonction $f=\\dfrac uv$ où $u$ et $v$ sont dérivables et $v$ ne s'annule pas, la dérivée de $f$ est $f'=\\dfrac{u'v-uv'}{v^2}$. Après avoir identifié $u$, $v$, $u'$, $v'$, on développe entièrement le numérateur $u'v-uv'$ terme à terme, on réduit les termes semblables, puis on factorise le résultat si possible pour préparer une étude de signe ultérieure.",
+      "formule_principale": "f'=\\dfrac{u'v-uv'}{v^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que la dérivée de $f(x)=\\dfrac{x^2-4}{1-x}$ est $f'(x)=\\dfrac{-(x^2-2x+4)}{(1-x)^2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier u, v, u', v'",
+          "justification": "$f=\\dfrac uv$ avec $u(x)=x^2-4$, $v(x)=1-x$",
+          "resultat_markdown": "$u'(x)=2x$ ; $v'(x)=-1$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule et développer le numérateur",
+          "justification": "$f'=\\dfrac{u'v-uv'}{v^2}$",
+          "resultat_markdown": "Numérateur : $2x(1-x)-(x^2-4)\\times(-1)=2x-2x^2+x^2-4=-x^2+2x-4$"
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser le numérateur par -1",
+          "justification": "Mise en évidence du signe pour l'étude de signe à venir",
+          "resultat_markdown": "$-x^2+2x-4=-(x^2-2x+4)$"
+        }
+      ],
+      "conclusion_markdown": "$f'(x)=\\dfrac{-(x^2-2x+4)}{(1-x)^2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $-u\\times v'=-(x^2-4)\\times(-1)$ et obtenir $-(x^2-4)$ au lieu de $+(x^2-4)$, en perdant un signe moins.",
+          "pourquoi_faux": "Deux signes moins successifs se compensent : $-(x^2-4)\\times(-1)=+(x^2-4)$. En oublier un fausse tout le développement.",
+          "correction_markdown": "Traite chaque signe séparément, sans les regrouper mentalement : écris explicitement chaque facteur avec son signe avant de multiplier."
+        },
+        {
+          "erreur_markdown": "Oublier d'élever v au carré au dénominateur, écrivant f'=(u'v-uv')/v au lieu de /v².",
+          "pourquoi_faux": "La formule de dérivation d'un quotient impose un dénominateur au carré ; l'omettre change la valeur numérique de la dérivée à tout point.",
+          "correction_markdown": "Mémorise la formule complète avec le carré au dénominateur, et vérifie-la avant chaque application."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dériver $f(x)=\\dfrac{x+1}{x-2}$.",
+          "solution_markdown": "$u=x+1$, $v=x-2$, $u'=1$, $v'=1$. $f'(x)=\\dfrac{1\\times(x-2)-(x+1)\\times1}{(x-2)^2}=\\dfrac{x-2-x-1}{(x-2)^2}=\\dfrac{-3}{(x-2)^2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dériver $g(x)=\\dfrac{x^2+1}{x-1}$ et factoriser le numérateur si possible.",
+          "solution_markdown": "$u=x^2+1$, $v=x-1$, $u'=2x$, $v'=1$. $g'(x)=\\dfrac{2x(x-1)-(x^2+1)}{(x-1)^2}=\\dfrac{2x^2-2x-x^2-1}{(x-1)^2}=\\dfrac{x^2-2x-1}{(x-1)^2}$ (discriminant $4+4=8>0$, factorisable en racines irrationnelles $1\\pm\\sqrt2$, mais l'expression $x^2-2x-1$ reste la forme la plus simple à utiliser pour l'étude de signe)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dériver $h(x)=\\dfrac{2x^2-3x+1}{2-x}$, développer et factoriser complètement le numérateur.",
+          "solution_markdown": "$u=2x^2-3x+1$, $v=2-x$, $u'=4x-3$, $v'=-1$. $h'(x)=\\dfrac{(4x-3)(2-x)-(2x^2-3x+1)\\times(-1)}{(2-x)^2}$. Développement : $(4x-3)(2-x)=8x-4x^2-6+3x=-4x^2+11x-6$ ; $-(2x^2-3x+1)\\times(-1)=2x^2-3x+1$. Somme : $-4x^2+11x-6+2x^2-3x+1=-2x^2+8x-5$. Le numérateur factorisé par -1 donne $-(2x^2-8x+5)$, avec $\\Delta=64-40=24$ (non factorisable simplement) : $h'(x)=\\dfrac{-(2x^2-8x+5)}{(2-x)^2}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Applique la formule f'=(u'v-uv')/v² en identifiant clairement u, v, u', v' avant tout calcul.",
+        "Développe le numérateur terme à terme, sans regrouper les signes mentalement : c'est là que se glissent la plupart des erreurs.",
+        "Factorise le résultat obtenu (souvent par -1, ou par un facteur commun) pour préparer l'étude de signe qui suit généralement cette question.",
+        "N'oublie jamais le carré au dénominateur : il garantit que le signe de f' ne dépend que du numérateur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-mediane-serie-effectifs-1ere-ce",
+  "meta": {
+    "titre": "Déterminer la médiane d'une série statistique à effectifs",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Statistiques - Médiane",
+    "duree_estimee_min": 20,
+    "tags": [
+      "médiane",
+      "interpolation linéaire",
+      "classe médiane"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La médiane partage la population en deux groupes de même taille. Pour une série groupée en classes, on ne peut pas la lire directement : il faut d'abord repérer la classe qui la contient, puis l'estimer par interpolation linéaire à l'intérieur de cette classe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Effectifs cumulés croissants (ECC)",
+        "Résolution d'une équation du premier degré (pour l'interpolation)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Classe médiane puis interpolation linéaire",
+      "contenu_markdown": "Pour un effectif total $N$, la classe médiane est la première classe dont l'ECC atteint ou dépasse $\\dfrac N2$. Si cette classe est $[a;b[$, d'amplitude $b-a$, d'effectif $n$, et si $\\mathrm{ECC}_{préc}$ désigne l'ECC de la classe précédente, la médiane s'obtient par interpolation linéaire : $M_e=a+\\dfrac{\\frac N2-\\mathrm{ECC}_{préc}}{n}\\times(b-a)$.",
+      "formule_principale": "M_e=a+\\dfrac{\\frac N2-\\mathrm{ECC}_{préc}}{n}\\times(b-a)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série d'effectif total $N=60$ a pour classes et ECC : $[0;3[\\to18$, $[3;6[\\to26$, $[6;9[\\to38$ (effectif 12), $[9;12[\\to58$, $[12;15[\\to60$. Déterminer la médiane.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la classe médiane",
+          "justification": "chercher où l'ECC dépasse N/2 = 30 pour la première fois",
+          "resultat_markdown": "$\\mathrm{ECC}([3;6[)=26<30$ et $\\mathrm{ECC}([6;9[)=38\\geq30$ : la classe médiane est $[6;9[$"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les éléments de l'interpolation",
+          "justification": "borne inférieure 6, amplitude 3, effectif 12, ECC précédent 26",
+          "resultat_markdown": "$a=6$, $b-a=3$, $n=12$, $\\mathrm{ECC}_{préc}=26$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule d'interpolation",
+          "justification": "M_e = a + (N/2 - ECC_préc)/n × (b-a)",
+          "resultat_markdown": "$M_e=6+\\dfrac{30-26}{12}\\times3=6+\\dfrac{4}{12}\\times3=6+1=7$"
+        }
+      ],
+      "conclusion_markdown": "$M_e=7$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le centre de la classe médiane comme valeur de la médiane, sans interpolation.",
+          "pourquoi_faux": "Le centre de classe suppose que $N/2$ tombe exactement au milieu de la classe médiane, ce qui n'est vrai que par coïncidence ; l'interpolation linéaire tient compte de la position réelle de $N/2$ à l'intérieur de la classe.",
+          "correction_markdown": "Applique toujours la formule d'interpolation complète, même quand le résultat semble « rond » ou proche du centre de classe."
+        },
+        {
+          "erreur_markdown": "Utiliser $N$ au lieu de $N/2$ dans la recherche de la classe médiane, ou dans la formule d'interpolation.",
+          "pourquoi_faux": "La médiane est définie par rapport à la MOITIÉ de l'effectif total, pas par rapport à l'effectif total lui-même ; une confusion ici décale entièrement le repérage de la classe médiane.",
+          "correction_markdown": "Calcule systématiquement N/2 en tout premier, avant même de regarder le tableau des ECC."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série d'effectif total 40 a pour ECC $10, 25, 40$ sur 3 classes $[0;5[,[5;10[,[10;15[$. Repérer la classe médiane.",
+          "solution_markdown": "$N/2=20$. $\\mathrm{ECC}([0;5[)=10<20$, $\\mathrm{ECC}([5;10[)=25\\geq20$ : la classe médiane est $[5;10[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la série précédente (classe médiane $[5;10[$, effectif de cette classe $25-10=15$), calculer la médiane par interpolation.",
+          "solution_markdown": "$M_e=5+\\dfrac{20-10}{15}\\times5=5+\\dfrac{10}{15}\\times5=5+\\dfrac{10}{3}\\approx8{,}33$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si N/2 tombe exactement sur l'ECC de fin d'une classe (c'est-à-dire N/2 = ECC de cette classe), la formule d'interpolation donne directement la borne supérieure de cette classe.",
+          "solution_markdown": "Si $N/2=\\mathrm{ECC}(\\text{classe }[a;b[)$, alors dans la formule $M_e=a+\\dfrac{N/2-\\mathrm{ECC}_{préc}}{n}\\times(b-a)$, le numérateur $N/2-\\mathrm{ECC}_{préc}$ est exactement égal à l'effectif $n$ de la classe (puisque $\\mathrm{ECC}=\\mathrm{ECC}_{préc}+n$), donc le rapport $\\dfrac{n}{n}=1$, et $M_e=a+1\\times(b-a)=b$ : la médiane tombe exactement sur la borne supérieure de la classe, ce qui est cohérent puisque c'est précisément là que l'effectif cumulé atteint N/2."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Repère toujours la classe médiane en comparant les ECC à N/2, jamais à N.",
+        "La médiane s'obtient ensuite par interpolation linéaire à l'intérieur de la classe médiane : $M_e=a+\\frac{N/2-\\mathrm{ECC}_{préc}}{n}(b-a)$.",
+        "Médiane et moyenne d'une même série groupée peuvent coïncider par coïncidence, mais rien ne le garantit en général."
+      ]
+    }
+  ]
+}

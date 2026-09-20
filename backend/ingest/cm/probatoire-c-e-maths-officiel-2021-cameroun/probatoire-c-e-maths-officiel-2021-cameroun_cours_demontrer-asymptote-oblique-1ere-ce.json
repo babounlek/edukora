@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-demontrer-asymptote-oblique-1ere-ce",
+  "meta": {
+    "titre": "Démontrer qu'une droite est asymptote oblique à une courbe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Asymptotes obliques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "asymptote oblique",
+      "limites"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "3",
+    "rappel_id": "r-3-2b",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une courbe peut se rapprocher indéfiniment d'une droite ni verticale ni horizontale : c'est une asymptote oblique. La démonstration se ramène toujours à un seul calcul de limite, celui de l'écart entre la fonction et la droite candidate."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de limites en +∞ et -∞",
+        "Décomposition d'une fonction rationnelle sous la forme ax+b+c/q(x)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère de l'asymptote oblique par la limite de l'écart",
+      "contenu_markdown": "Une droite d'équation $y=ax+b$ est asymptote oblique à la courbe représentative de $f$ en $+\\infty$ (respectivement en $-\\infty$) si et seulement si $\\displaystyle\\lim_{x\\to+\\infty}\\big(f(x)-(ax+b)\\big)=0$ (respectivement en $-\\infty$). Quand $f$ est déjà écrite sous la forme $f(x)=ax+b+\\dfrac{c}{q(x)}$ avec $q(x)\\to\\pm\\infty$, cette différence $f(x)-(ax+b)$ se réduit immédiatement à $\\dfrac{c}{q(x)}$, dont la limite est 0.",
+      "formule_principale": "\\lim_{x\\to\\pm\\infty}\\big(f(x)-(ax+b)\\big)=0 \\iff y=ax+b \\text{ est asymptote oblique}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $f(x)=-x-1+\\dfrac{-3}{1-x}$ pour $x\\neq1$, montrer que $(T): y=-x-1$ est asymptote à la courbe de $f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer f(x) - (-x-1)",
+          "justification": "On soustrait l'expression de la droite candidate à celle de f(x)",
+          "resultat_markdown": "$f(x)-(-x-1)=\\dfrac{-3}{1-x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite de cet écart en +infini et -infini",
+          "justification": "$1-x\\to\\mp\\infty$ quand $x\\to\\pm\\infty$, donc $\\dfrac{-3}{1-x}\\to0$",
+          "resultat_markdown": "$\\lim_{x\\to+\\infty}\\big(f(x)-(-x-1)\\big)=0$ et $\\lim_{x\\to-\\infty}\\big(f(x)-(-x-1)\\big)=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure par le critère de l'asymptote oblique",
+          "justification": "Les deux limites étant nulles, le critère est vérifié dans les deux directions",
+          "resultat_markdown": "$(T): y=-x-1$ est asymptote à $(C)$ en $+\\infty$ et en $-\\infty$"
+        }
+      ],
+      "conclusion_markdown": "$(T): y=-x-1$ est bien asymptote à la courbe de $f$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer f(x) - ax - b au lieu de f(x) - (ax+b), en oubliant une parenthèse et se trompant de signe sur b.",
+          "pourquoi_faux": "Sans la parenthèse, une erreur de signe sur b se glisse facilement si l'expression de f(x) contient elle-même des signes négatifs.",
+          "correction_markdown": "Écris toujours la différence avec la parenthèse explicite : f(x) - (ax+b), puis développe avec attention."
+        },
+        {
+          "erreur_markdown": "Conclure à une asymptote oblique sans avoir vérifié que la limite de l'écart est bien 0 (par exemple en s'arrêtant à \"l'écart devient petit\").",
+          "pourquoi_faux": "Le critère exige une limite EXACTEMENT nulle, pas seulement \"petite\" ou \"qui semble tendre vers 0\" : un calcul rigoureux de limite est indispensable.",
+          "correction_markdown": "Mène le calcul de limite jusqu'au bout, avec les règles usuelles (quotient dont le dénominateur tend vers l'infini), pour obtenir explicitement 0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$g(x)=x+2+\\dfrac{1}{x}$. Montrer que $y=x+2$ est asymptote oblique à la courbe de g.",
+          "solution_markdown": "$g(x)-(x+2)=\\dfrac1x$, dont la limite en $+\\infty$ et en $-\\infty$ est 0 : $y=x+2$ est bien asymptote oblique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$h(x)=\\dfrac{2x^2-x+1}{x}$. Écrire h sous la forme $ax+b+\\dfrac{c}{x}$ puis en déduire une asymptote oblique.",
+          "solution_markdown": "$h(x)=\\dfrac{2x^2}{x}-\\dfrac{x}{x}+\\dfrac1x=2x-1+\\dfrac1x$. Donc $h(x)-(2x-1)=\\dfrac1x\\to0$ en $\\pm\\infty$ : $y=2x-1$ est asymptote oblique à la courbe de h."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$k(x)=\\dfrac{x^2+1}{x-1}$. Déterminer par identification une écriture $ax+b+\\dfrac{c}{x-1}$, puis démontrer l'existence d'une asymptote oblique.",
+          "solution_markdown": "$(ax+b)(x-1)+c=ax^2+(b-a)x+(c-b)$. Identification avec $x^2+0x+1$ : $a=1$ ; $b-a=0\\Rightarrow b=1$ ; $c-b=1\\Rightarrow c=2$. Donc $k(x)=x+1+\\dfrac{2}{x-1}$, et $k(x)-(x+1)=\\dfrac{2}{x-1}\\to0$ en $\\pm\\infty$ : $y=x+1$ est asymptote oblique à la courbe de k."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une droite y=ax+b est asymptote oblique si et seulement si f(x)-(ax+b) tend vers 0 en +∞ ou en -∞.",
+        "Écris toujours la différence avec des parenthèses explicites pour éviter une erreur de signe sur b.",
+        "Quand f est déjà décomposée sous la forme ax+b+c/q(x), la différence se réduit immédiatement à c/q(x).",
+        "Une asymptote oblique peut exister d'un seul côté (+∞ ou -∞) sans exister de l'autre : vérifie les deux limites séparément si l'énoncé le demande."
+      ]
+    }
+  ]
+}

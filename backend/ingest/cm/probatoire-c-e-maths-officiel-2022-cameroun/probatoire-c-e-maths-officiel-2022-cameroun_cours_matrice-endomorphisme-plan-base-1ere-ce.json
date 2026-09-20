@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-matrice-endomorphisme-plan-base-1ere-ce",
+  "meta": {
+    "titre": "Matrice d'un endomorphisme dans une base",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire du plan",
+    "duree_estimee_min": 20,
+    "tags": [
+      "endomorphisme",
+      "matrice",
+      "base du plan",
+      "algèbre linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2022-cameroun-r-3-2b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un endomorphisme du plan (une application linéaire du plan dans lui-même) peut sembler abstrait défini uniquement par des formules sur les images des vecteurs de base. La matrice associée transforme cette définition abstraite en un tableau de nombres qu'on manipule ensuite par le calcul matriciel pur : c'est le pont entre la géométrie vectorielle et l'algèbre des tableaux de nombres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une base (i, j) du plan permet d'écrire tout vecteur de façon unique sous la forme x·i + y·j",
+        "Connaître la définition d'une application linéaire (endomorphisme) : f(u+v)=f(u)+f(v) et f(λu)=λf(u)",
+        "Savoir lire les coordonnées d'un vecteur dans une base donnée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction de la matrice d'un endomorphisme",
+      "contenu_markdown": "Soit $(i,j)$ une base du plan et $f$ un endomorphisme du plan. La **matrice de $f$ dans la base $(i,j)$** est le tableau $2\\times 2$ dont :\n\n- la **première colonne** contient les coordonnées de $f(i)$ dans la base $(i,j)$ ;\n- la **deuxième colonne** contient les coordonnées de $f(j)$ dans la base $(i,j)$.\n\nAutrement dit, si $f(i)=a\\,i+c\\,j$ et $f(j)=b\\,i+d\\,j$, alors la matrice de $f$ dans $(i,j)$ est :\n\n$$M=\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$$\n\n**Méthode.** 1) Calculer l'image $f(i)$ du premier vecteur de base et l'exprimer dans $(i,j)$. 2) Faire de même pour $f(j)$. 3) Ranger les coordonnées obtenues en colonnes, dans l'ordre $f(i)$ puis $f(j)$.",
+      "formule_principale": "M=\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\text{ avec } f(i)=ai+cj,\\ f(j)=bi+dj"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $(i,j)$ une base du plan et $f$ l'endomorphisme défini par $f(i)=2i+j$ et $f(j)=m\\,i+3j$, où $m$ est un paramètre réel. Donner la matrice $E$ de $f$ dans la base $(i,j)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coordonnées de f(i) dans (i,j)",
+          "justification": "f(i) = 2i + 1j, donc ses coordonnées sont (2 ; 1)",
+          "resultat_markdown": "Première colonne de $E$ : $\\begin{pmatrix}2\\\\1\\end{pmatrix}$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les coordonnées de f(j) dans (i,j)",
+          "justification": "f(j) = m·i + 3j, donc ses coordonnées sont (m ; 3)",
+          "resultat_markdown": "Deuxième colonne de $E$ : $\\begin{pmatrix}m\\\\3\\end{pmatrix}$"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la matrice en rangeant les deux colonnes obtenues",
+          "justification": "par définition, la matrice de f dans (i,j) juxtapose les colonnes images de i puis de j",
+          "resultat_markdown": "$E=\\begin{pmatrix}2 & m\\\\1 & 3\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "La matrice $E=\\begin{pmatrix}2 & m\\\\1 & 3\\end{pmatrix}$ résume entièrement l'endomorphisme $f$ dans la base $(i,j)$ : pour tout vecteur de coordonnées $(x;y)$, ses coordonnées image $(x';y')$ s'obtiennent par le produit matriciel $\\begin{pmatrix}x'\\\\y'\\end{pmatrix}=E\\begin{pmatrix}x\\\\y\\end{pmatrix}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ranger les coordonnées de f(i) et f(j) en lignes au lieu de colonnes",
+          "pourquoi_faux": "La convention universelle place les coordonnées de l'image du k-ième vecteur de base dans la k-ième COLONNE, pas la k-ième ligne : inverser lignes et colonnes donne la matrice transposée, qui ne représente pas le même endomorphisme.",
+          "correction_markdown": "Retiens l'ordre : colonne 1 = coordonnées de f(i), colonne 2 = coordonnées de f(j)."
+        },
+        {
+          "erreur_markdown": "Confondre les coordonnées d'un vecteur dans la base (i,j) avec ses coefficients dans une combinaison linéaire écrite dans un autre ordre",
+          "pourquoi_faux": "Si f(j) = m·i + 3·j, le coefficient de i (ici m) est la première coordonnée et le coefficient de j (ici 3) est la seconde, car la base est ordonnée (i, j) et pas (j, i).",
+          "correction_markdown": "Écris toujours l'image d'un vecteur de base dans l'ordre a·i + b·j avant d'en déduire les coordonnées (a;b)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $(i,j)$ une base du plan et $g$ l'endomorphisme défini par $g(i)=i+2j$ et $g(j)=-j$. Donner la matrice de $g$ dans $(i,j)$.",
+          "solution_markdown": "Coordonnées de $g(i)$ : $(1;2)$. Coordonnées de $g(j)$ : $(0;-1)$. Matrice : $\\begin{pmatrix}1 & 0\\\\2 & -1\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h$ l'endomorphisme de matrice $\\begin{pmatrix}3 & -1\\\\0 & 2\\end{pmatrix}$ dans la base $(i,j)$. Donner les expressions de $h(i)$ et $h(j)$ en fonction de $i$ et $j$, puis calculer les coordonnées de $h(u)$ où $u=2i-j$.",
+          "solution_markdown": "Par lecture des colonnes : $h(i)=3i+0j=3i$ et $h(j)=-i+2j$. Pour $u=2i-j$ : par linéarité, $h(u)=2h(i)-h(j)=2(3i)-(-i+2j)=6i+i-2j=7i-2j$. Donc $h(u)$ a pour coordonnées $(7;-2)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f$ l'endomorphisme de matrice $\\begin{pmatrix}1 & 2\\\\3 & 4\\end{pmatrix}$ dans $(i,j)$. Sans passer par le calcul du déterminant, montre directement que $f(i)$ et $f(j)$ ne sont pas colinéaires, et explique pourquoi ce fait est équivalent à dire que $f$ transforme la base $(i,j)$ en une nouvelle base du plan.",
+          "solution_markdown": "$f(i)=i+3j$ et $f(j)=2i+4j$. Ils seraient colinéaires s'il existait $\\lambda$ tel que $f(j)=\\lambda f(i)$, c'est-à-dire $2i+4j=\\lambda i+3\\lambda j$, soit $\\lambda=2$ (par la coordonnée sur i) ET $3\\lambda=4$ (par la coordonnée sur j), donc $\\lambda=\\frac43$. Ces deux valeurs de $\\lambda$ sont incompatibles ($2\\ne\\frac43$), donc $f(i)$ et $f(j)$ ne sont pas colinéaires. Deux vecteurs non colinéaires du plan forment automatiquement une base du plan (car ils sont non nuls et non alignés) : $(f(i),f(j))$ est donc bien une nouvelle base, ce qui signifie que $f$ est un automorphisme (bijectif)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La matrice d'un endomorphisme f dans une base (i,j) range en colonnes les coordonnées de f(i) puis de f(j) dans cette même base.",
+        "Lire une colonne de la matrice donne directement l'image du vecteur de base correspondant, sans calcul supplémentaire.",
+        "La linéarité de f permet de calculer l'image de n'importe quel vecteur à partir des seules images de i et j.",
+        "Cette matrice est l'outil qui permettra ensuite de caractériser si f est un automorphisme (via son déterminant), et de composer ou d'inverser des endomorphismes par simple calcul matriciel."
+      ]
+    }
+  ]
+}

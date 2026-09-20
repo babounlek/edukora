@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-demontrer-quune-application-est-un-endomorphisme-verification-de-la-linearite-probamaths2025",
+  "meta": {
+    "titre": "Démontrer qu'une application est un endomorphisme (vérification de la linéarité)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Applications linéaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "endomorphisme",
+      "linéarité",
+      "espace vectoriel",
+      "application linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2025-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2025",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2025-cameroun-ex1-q1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une formule qui « a l'air linéaire » ne l'est pas toujours : la seule façon fiable de trancher est de dérouler la définition sur des vecteurs et un scalaire quelconques, jamais sur un exemple particulier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'espace vectoriel et de combinaison linéaire",
+        "Écriture d'un vecteur en coordonnées dans une base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux conditions de linéarité",
+      "contenu_markdown": "Une application $f$ d'un espace vectoriel $E$ dans lui-même est un endomorphisme de $E$ si et seulement si elle est **linéaire**, c'est-à-dire si pour tous vecteurs $\\vec u,\\vec v$ de $E$ et tout réel $\\lambda$ : $f(\\vec u+\\vec v)=f(\\vec u)+f(\\vec v)$ (additivité) et $f(\\lambda\\vec u)=\\lambda f(\\vec u)$ (homogénéité). Ces deux conditions peuvent être regroupées en une seule : $f(\\lambda\\vec u+\\mu\\vec v)=\\lambda f(\\vec u)+\\mu f(\\vec v)$ pour tous réels $\\lambda,\\mu$.",
+      "formule_principale": "f(\\lambda\\vec u+\\mu\\vec v)=\\lambda f(\\vec u)+\\mu f(\\vec v)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$E$ est rapporté à la base $(\\vec i,\\vec j)$. Montrer que $g(x\\vec i+y\\vec j)=(2x-y)\\vec i+(x+3y)\\vec j$ est un endomorphisme de $E$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser deux vecteurs génériques et un scalaire générique",
+          "justification": "La linéarité doit être vraie pour TOUS les vecteurs et TOUS les scalaires, pas pour un exemple particulier",
+          "resultat_markdown": "$\\vec u=x_1\\vec i+y_1\\vec j$, $\\vec v=x_2\\vec i+y_2\\vec j$, $\\lambda\\in\\mathbb R$."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier l'additivité",
+          "justification": "Développer g(u+v) d'un côté et g(u)+g(v) de l'autre, puis comparer",
+          "resultat_markdown": "$g(\\vec u+\\vec v)=(2(x_1+x_2)-(y_1+y_2))\\vec i+((x_1+x_2)+3(y_1+y_2))\\vec j=g(\\vec u)+g(\\vec v)$."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier l'homogénéité",
+          "justification": "Développer g(λu) et comparer à λg(u)",
+          "resultat_markdown": "$g(\\lambda\\vec u)=(2\\lambda x_1-\\lambda y_1)\\vec i+(\\lambda x_1+3\\lambda y_1)\\vec j=\\lambda g(\\vec u)$."
+        }
+      ],
+      "conclusion_markdown": "Les deux conditions étant vérifiées pour des vecteurs et un scalaire quelconques, $g$ est linéaire, donc un endomorphisme de $E$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Vérifier la linéarité uniquement sur un exemple numérique (par exemple $\\vec u=\\vec i$, $\\vec v=\\vec j$).",
+          "pourquoi_faux": "Un exemple particulier, même s'il fonctionne, ne prouve rien pour tous les autres vecteurs : la démonstration doit porter sur des coordonnées quelconques.",
+          "correction_markdown": "Toujours poser des coordonnées génériques ($x_1,y_1,x_2,y_2,\\lambda$) avant de développer."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que l'image d'un vecteur de $E$ reste bien dans $E$.",
+          "pourquoi_faux": "Un endomorphisme va de $E$ dans $E$ ; si la formule fait sortir de $E$ (rare pour un plan vectoriel donné en coordonnées, mais possible dans d'autres contextes), ce n'est pas un endomorphisme.",
+          "correction_markdown": "Vérifier que l'image reste une combinaison des vecteurs de la base de $E$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Montrer que $h(x\\vec i+y\\vec j)=y\\vec i+x\\vec j$ est un endomorphisme de $E$.",
+          "solution_markdown": "Pour $\\vec u=x_1\\vec i+y_1\\vec j,\\vec v=x_2\\vec i+y_2\\vec j,\\lambda\\in\\mathbb R$ : $h(\\vec u+\\vec v)=(y_1+y_2)\\vec i+(x_1+x_2)\\vec j=h(\\vec u)+h(\\vec v)$ et $h(\\lambda\\vec u)=\\lambda y_1\\vec i+\\lambda x_1\\vec j=\\lambda h(\\vec u)$. **$h$ est un endomorphisme.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que $k(x\\vec i+y\\vec j)=(x+1)\\vec i+y\\vec j$ n'est PAS un endomorphisme de $E$.",
+          "solution_markdown": "Testons l'homogénéité avec $\\lambda=0$ : $k(0\\cdot\\vec u)=k(\\vec 0)=1\\cdot\\vec i+0\\cdot\\vec j=\\vec i\\neq\\vec 0$. Or tout endomorphisme vérifie $f(\\vec 0)=\\vec 0$. **$k$ n'est pas un endomorphisme** (le « +1 » rend l'application affine, mais pas linéaire)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que $m(x\\vec i+y\\vec j)=x^2\\vec i+y\\vec j$ n'est pas un endomorphisme de $E$.",
+          "solution_markdown": "Testons l'additivité avec $\\vec u=\\vec i$ ($x_1=1,y_1=0$) et $\\vec v=\\vec i$ ($x_2=1,y_2=0$) : $m(\\vec u+\\vec v)=m(2\\vec i)=4\\vec i$, mais $m(\\vec u)+m(\\vec v)=\\vec i+\\vec i=2\\vec i$. Comme $4\\vec i\\neq2\\vec i$, l'additivité échoue : **$m$ n'est pas un endomorphisme** (le terme $x^2$ n'est pas linéaire en $x$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour montrer qu'une application est un endomorphisme, vérifier l'additivité $f(\\vec u+\\vec v)=f(\\vec u)+f(\\vec v)$ ET l'homogénéité $f(\\lambda\\vec u)=\\lambda f(\\vec u)$, sur des vecteurs et un scalaire quelconques.",
+        "Pour montrer qu'une application n'est PAS un endomorphisme, un seul contre-exemple suffit (souvent le plus simple : $f(\\vec 0)\\neq\\vec 0$ disqualifie immédiatement)."
+      ]
+    }
+  ]
+}

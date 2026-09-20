@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-droite-intersection-de-deux-plans-1ere-ce",
+  "meta": {
+    "titre": "Déterminer un point et un vecteur directeur de la droite d'intersection de deux plans",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace - plans",
+    "duree_estimee_min": 22,
+    "tags": [
+      "géométrie dans l'espace",
+      "intersection de deux plans",
+      "produit vectoriel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "4",
+    "rappel_id": "r-4-2b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux plans non parallèles de l'espace se coupent toujours selon une droite. Décrire complètement cette droite demande deux informations : sa direction (un vecteur directeur) et un point par lequel elle passe. Deux méthodes indépendantes permettent de les obtenir, et les combiner offre une vérification rigoureuse du résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer un produit vectoriel de deux vecteurs de l'espace",
+        "Savoir résoudre un système de deux équations à trois inconnues en introduisant un paramètre",
+        "Connaître la notion de vecteur normal à un plan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Direction par produit vectoriel, point par résolution paramétrée",
+      "contenu_markdown": "Soient $(P)$ et $(Q)$ deux plans non parallèles, de vecteurs normaux respectifs $\\vec n$ et $\\vec n'$. Leur intersection est une droite $(\\Delta)$.\n\n**Vecteur directeur.** Un vecteur directeur de $(\\Delta)$ est orthogonal à la fois à $\\vec n$ et à $\\vec n'$ (puisque $(\\Delta)$ est incluse dans les deux plans) : c'est exactement la définition du produit vectoriel $\\vec u=\\vec n\\wedge\\vec n'$, qui est automatiquement orthogonal aux deux vecteurs de départ.\n\n**Point de la droite.** On résout simultanément les deux équations cartésiennes en introduisant un paramètre (par exemple en posant $z=t$), ce qui exprime $x$ et $y$ en fonction de $t$ ; une valeur particulière de $t$ (souvent $t=0$) donne un point explicite.\n\n**Vérification croisée.** La résolution paramétrée redonne, en éliminant $t$, le même vecteur directeur que le produit vectoriel : les deux méthodes se contrôlent mutuellement.",
+      "formule_principale": "\\vec u = \\vec n \\wedge \\vec n' \\text{ dirige la droite } (P)\\cap(Q)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner un point et un vecteur directeur de la droite commune à $(P): 2x-y+z=0$ et $(Q): x+y-z+2=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le vecteur directeur par produit vectoriel",
+          "justification": "u = n ∧ n' avec n=(2,-1,1), n'=(1,1,-1)",
+          "resultat_markdown": "$\\vec u=((-1)(-1)-1\\times1;\\ 1\\times1-2(-1);\\ 2\\times1-(-1)\\times1)=(0;3;3)$, simplifié en $(0;1;1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Poser z=t et résoudre le système en x, y",
+          "justification": "élimination par substitution des deux équations",
+          "resultat_markdown": "de (P) : $y=2x+t$ ; report dans (Q) : $3x+2=0$, donc $x=-\\frac23$ (constant, indépendant de t)"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer y en fonction de t puis choisir t=0",
+          "justification": "y = 2x+t = -4/3+t, on prend t=0",
+          "resultat_markdown": "point $\\left(-\\frac23;-\\frac43;0\\right)$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le point dans les deux équations",
+          "justification": "contrôle final",
+          "resultat_markdown": "(P) : $2(-\\frac23)-(-\\frac43)+0=0$ ✓ ; (Q) : $-\\frac23-\\frac43+2=0$ ✓"
+        }
+      ],
+      "conclusion_markdown": "La droite commune passe par $\\left(-\\frac23;-\\frac43;0\\right)$ et est dirigée par $(0;1;1)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un plan quelconque comme x=0 donne toujours un point de la droite",
+          "pourquoi_faux": "Si le vecteur directeur de la droite a une composante nulle sur une variable (ici x est constant sur toute la droite, x=-2/3), fixer cette variable à une autre valeur (comme 0) rend le système incompatible : il n'y a alors AUCUN point de la droite avec cette coordonnée.",
+          "correction_markdown": "Avant de fixer arbitrairement une coordonnée à une valeur pratique, vérifie via le vecteur directeur si cette coordonnée est effectivement libre (composante non nulle) ou au contraire fixée sur toute la droite."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier le point trouvé dans les deux équations de plans",
+          "pourquoi_faux": "Une erreur de calcul lors de la résolution paramétrée est facile à commettre et resterait invisible sans ce contrôle final, qui ne coûte que deux substitutions.",
+          "correction_markdown": "Vérifie systématiquement le point obtenu en le substituant dans (P) ET dans (Q) : les deux doivent donner 0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner un vecteur directeur de la droite d'intersection de $(P_1): x+y+z=0$ et $(P_2): x-y+z=0$ (leurs vecteurs normaux sont (1,1,1) et (1,-1,1)).",
+          "solution_markdown": "$\\vec u=\\vec n_1\\wedge\\vec n_2=(1\\times1-1\\times(-1);\\ 1\\times1-1\\times1;\\ 1\\times(-1)-1\\times1)=(1+1;\\ 1-1;\\ -1-1)=(2;0;-2)$, simplifiable en $(1;0;-1)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trouver un point de la droite d'intersection de $(P_1): x+y+z=0$ et $(P_2): x-y+z=0$.",
+          "solution_markdown": "On pose $z=t$. $(P_1)$ : $x+y=-t$. $(P_2)$ : $x-y=-t$. En additionnant : $2x=-2t$, donc $x=-t$. En soustrayant : $2y=0$, donc $y=0$. Avec $t=0$ : le point $(0;0;0)$ (l'origine) est sur les deux plans, ce qui se vérifie immédiatement dans les deux équations."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Vérifier, par élimination directe du paramètre, que le résultat de l'exercice 2 (point (0;0;0), avec x=-t, y=0, z=t) redonne bien le vecteur directeur (1;0;-1) trouvé par produit vectoriel à l'exercice 1.",
+          "solution_markdown": "Les points de la droite s'écrivent $(x;y;z)=(-t;0;t)=t\\times(-1;0;1)$. Le vecteur $(-1;0;1)$ est bien colinéaire à $(1;0;-1)$ trouvé par produit vectoriel (il en est l'opposé, ce qui reste un vecteur directeur valable de la même droite) : les deux méthodes convergent, confirmant le résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'intersection de deux plans non parallèles est une droite, décrite par un point et un vecteur directeur.",
+        "Le vecteur directeur s'obtient directement par produit vectoriel des deux vecteurs normaux : u = n ∧ n'.",
+        "Un point s'obtient en résolvant le système des deux équations avec un paramètre (poser z=t, par exemple).",
+        "Toujours vérifier le point trouvé dans les DEUX équations de plans avant de conclure.",
+        "Croiser les deux méthodes (produit vectoriel et résolution paramétrée) permet de détecter toute erreur de signe, une vérification renforcée particulièrement utile sur ce type de calcul."
+      ]
+    }
+  ]
+}

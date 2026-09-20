@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-position-relative-droite-cercle-distance-au-centre-1ere-ce",
+  "meta": {
+    "titre": "Déterminer la position d'une droite par rapport à un cercle",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie analytique - Droites et cercles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "position relative droite-cercle",
+      "cercle",
+      "distance d'un point à une droite",
+      "tangente à un cercle",
+      "équation cartésienne d'un cercle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2018-cameroun",
+    "epreuve_titre": "Mathématiques Probatoire C et E 2018",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-2018-cameroun-pb-b4eii-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une droite peut couper un cercle en deux points, le frôler en un seul, ou passer complètement à côté. Décider lequel des trois cas se présente en résolvant un système est possible, mais lourd. Il existe un raccourci : il suffit de mesurer à quelle distance du centre passe la droite et de comparer cette distance au rayon. Un seul calcul, une seule comparaison."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déterminer le centre et le rayon d'un cercle donné par son équation cartésienne",
+        "Distance d'un point à une droite dans le plan",
+        "Équation cartésienne d'une droite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer la distance du centre au rayon",
+      "contenu_markdown": "Soit $\\mathcal{C}(\\Omega\\,;R)$ un cercle et $(D):ax+by+c=0$ une droite. On pose\n$$h=d(\\Omega,(D))=\\dfrac{|ax_\\Omega+by_\\Omega+c|}{\\sqrt{a^2+b^2}}.$$\n\n- Si $h>R$ : la droite est **extérieure** au cercle, aucun point commun.\n- Si $h=R$ : la droite est **tangente** au cercle, un seul point commun (le pied $H$ de la perpendiculaire menée de $\\Omega$ à $(D)$).\n- Si $h<R$ : la droite est **sécante** au cercle, deux points communs, symétriques par rapport à $H$, à la distance $\\sqrt{R^2-h^2}$ de $H$.\n\n**Deuxième méthode.** On remplace $y$ (ou $x$) tiré de l'équation de la droite dans l'équation du cercle. On obtient une équation du second degré dont le discriminant $\\Delta$ donne le nombre de points communs : $\\Delta<0$ aucun, $\\Delta=0$ un, $\\Delta>0$ deux. Choisis la distance quand seule la position t'est demandée ; choisis le discriminant quand il faut aussi les coordonnées des points d'intersection.",
+      "formule_principale": "h=\\dfrac{|ax_\\Omega+by_\\Omega+c|}{\\sqrt{a^2+b^2}} \\quad\\text{comparé à } R",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère orthonormé, on considère le cercle $\\mathcal{C}:x^2+y^2-2x+4y-4=0$ et la droite $(D):3x+4y-4=0$. Étudier la position de $(D)$ par rapport à $\\mathcal{C}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Mettre l'équation du cercle sous forme canonique",
+          "justification": "Pour lire le centre et le rayon",
+          "resultat_markdown": "$(x-1)^2+(y+2)^2=1+4+4=9$ : centre $\\Omega(1\\,;-2)$ et rayon $R=3$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la distance de $\\Omega$ à $(D)$",
+          "justification": "On applique la formule avec $a=3$, $b=4$, $c=-4$",
+          "resultat_markdown": "$h=\\dfrac{|3\\times1+4\\times(-2)-4|}{\\sqrt{9+16}}=\\dfrac{|-9|}{5}=\\dfrac95$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer à $R$",
+          "justification": "$\\frac95=1{,}8$ et $R=3$",
+          "resultat_markdown": "$h<R$"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer la longueur de la corde",
+          "justification": "Le triangle rectangle formé par $\\Omega$, $H$ et un point d'intersection donne $\\frac{\\text{corde}}{2}=\\sqrt{R^2-h^2}$",
+          "resultat_markdown": "$\\sqrt{9-\\frac{81}{25}}=\\sqrt{\\frac{144}{25}}=\\frac{12}{5}$, donc la corde mesure $\\frac{24}{5}$"
+        }
+      ],
+      "conclusion_markdown": "$h<R$ : la droite $(D)$ est sécante au cercle $\\mathcal{C}$, en deux points distants de $\\frac{24}{5}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l'équation développée du cercle pour lire un rayon, par exemple prendre $R=-4$ ou $R=4$ dans $x^2+y^2-2x+4y-4=0$.",
+          "pourquoi_faux": "Le second membre de l'équation développée n'est pas $R^2$ : il faut passer par la forme canonique. Ici $R^2=1+4+4=9$, jamais $4$.",
+          "correction_markdown": "Compléter les carrés : $x^2-2x=(x-1)^2-1$ et $y^2+4y=(y+2)^2-4$, puis lire $R^2$."
+        },
+        {
+          "erreur_markdown": "Oublier la valeur absolue au numérateur de la distance, ou le radical au dénominateur.",
+          "pourquoi_faux": "Une distance est positive : sans valeur absolue on peut obtenir $h<0$ et conclure à tort à une sécante. Sans le radical, on divise par $a^2+b^2$ au lieu de $\\sqrt{a^2+b^2}$ et $h$ est faux.",
+          "correction_markdown": "Recopier la formule complète avant de substituer."
+        },
+        {
+          "erreur_markdown": "Comparer $h$ à $R^2$ ou $h^2$ à $R$.",
+          "pourquoi_faux": "On compare des grandeurs de même nature : $h$ avec $R$, ou $h^2$ avec $R^2$. Mélanger les deux fausse la conclusion dès que $R$ ou $h$ n'est pas proche de $1$.",
+          "correction_markdown": "Comparer $h$ et $R$, ou bien $h^2$ et $R^2$, jamais un mélange."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le cercle $\\mathcal{C}$ a pour centre $O(0\\,;0)$ et pour rayon $5$. Quelle est la position de $(D_1):3x+4y-25=0$ ? Et celle de $(D_2):x+y-10=0$ ?",
+          "solution_markdown": "Pour $(D_1)$ : $h=\\dfrac{|-25|}{5}=5=R$, la droite est tangente. Pour $(D_2)$ : $h=\\dfrac{10}{\\sqrt2}=5\\sqrt2\\approx7{,}07>5$, la droite est extérieure."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $\\mathcal{C}:x^2+y^2-6x-2y+5=0$. (a) Étudier la position de $(D):x-2y+2=0$. (b) Pour quelles valeurs de $m$ la droite $(D_m):x-2y+m=0$ est-elle tangente à $\\mathcal{C}$ ?",
+          "solution_markdown": "$x^2+y^2-6x-2y+5=0\\iff(x-3)^2+(y-1)^2=5$ : centre $(3\\,;1)$, rayon $\\sqrt5$. (a) $h=\\dfrac{|3-2+2|}{\\sqrt5}=\\dfrac{3}{\\sqrt5}\\approx1{,}34<\\sqrt5\\approx2{,}24$ : sécante. (b) Tangence : $h=\\sqrt5$, soit $\\dfrac{|1+m|}{\\sqrt5}=\\sqrt5\\iff|1+m|=5\\iff m=4$ ou $m=-6$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Discuter, selon la valeur du réel $m$, le nombre de points communs de la droite $(D_m):y=x+m$ et du cercle $\\mathcal{C}:x^2+y^2=8$.",
+          "solution_markdown": "$(D_m):x-y+m=0$. Le centre est $O(0\\,;0)$ et le rayon $R=2\\sqrt2$. $h=\\dfrac{|m|}{\\sqrt2}$. $h<R\\iff|m|<4$ : deux points. $h=R\\iff|m|=4$ : un point (tangente). $h>R\\iff|m|>4$ : aucun point. Contrôle par le discriminant : en remplaçant $y$, on obtient $2x^2+2mx+m^2-8=0$ de discriminant $\\Delta=64-4m^2$, positif si et seulement si $|m|<4$ ✓."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour la position d'une droite et d'un cercle, calcule la distance $h$ du centre à la droite et compare-la à $R$.",
+        "$h>R$ : extérieure ; $h=R$ : tangente ; $h<R$ : sécante.",
+        "Lis toujours $R$ sur la forme canonique du cercle, jamais sur l'équation développée.",
+        "Si tu dois trouver les points communs, passe plutôt par le discriminant du système.",
+        "Au Probatoire C et E, cette question conclut souvent un exercice de géométrie analytique : après avoir trouvé centre, rayon et distance, on te demande « en déduire la position de la droite par rapport au cercle »."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-noyau-endomorphisme-plan-1ere-ce",
+  "meta": {
+    "titre": "Déterminer le noyau d'un endomorphisme du plan",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Noyau",
+    "duree_estimee_min": 20,
+    "tags": [
+      "noyau",
+      "système linéaire homogène",
+      "droite vectorielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le noyau d'un endomorphisme regroupe tous les vecteurs qu'il « écrase » sur le vecteur nul. Dans le plan, cet ensemble n'a que trois formes possibles : le vecteur nul seul, une droite, ou le plan entier ; un simple système linéaire suffit à trancher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'un système de deux équations linéaires à deux inconnues",
+        "Notion de vecteur directeur d'une droite vectorielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre M(x,y) = (0,0)",
+      "contenu_markdown": "Le noyau d'un endomorphisme de matrice $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ est l'ensemble des vecteurs $(x,y)$ solutions du système $\\begin{cases}ax+by=0\\\\cx+dy=0\\end{cases}$. Si les deux équations sont proportionnelles (ce qui équivaut à $\\det M=0$), une seule condition subsiste et le noyau est une droite vectorielle, dirigée par n'importe quel vecteur non nul vérifiant cette condition.",
+      "formule_principale": "\\ker f=\\{(x,y)\\,:\\,M\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\end{pmatrix}\\}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$g$ a pour matrice $M=\\begin{pmatrix}-6&4\\\\3&-2\\end{pmatrix}$ dans $(\\vec\\imath,\\vec\\jmath)$. Déterminer $\\ker g$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le système",
+          "justification": "Traduire M(x,y)=(0,0)",
+          "resultat_markdown": "$\\begin{cases}-6x+4y=0\\\\3x-2y=0\\end{cases}$"
+        },
+        {
+          "numero": 2,
+          "action": "Constater la proportionnalité",
+          "justification": "La 1ʳᵉ équation divisée par -2 redonne la 2ᵉ",
+          "resultat_markdown": "Une seule condition subsiste : $3x-2y=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir un vecteur directeur",
+          "justification": "Prendre x=-2 donne y=-3",
+          "resultat_markdown": "$\\vec e_1=-2\\vec\\imath-3\\vec\\jmath$"
+        }
+      ],
+      "conclusion_markdown": "$\\ker g$ est la droite vectorielle dirigée par $\\vec e_1=-2\\vec\\imath-3\\vec\\jmath$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure directement que $\\ker f=\\{\\vec 0\\}$ sans vérifier si les deux équations du système sont proportionnelles.",
+          "pourquoi_faux": "Si le déterminant de la matrice est nul, les deux équations sont automatiquement proportionnelles et le système a une infinité de solutions (une droite), pas seulement $(0,0)$.",
+          "correction_markdown": "Calcule toujours le déterminant en premier : $\\det\\neq0$ donne $\\ker f=\\{\\vec 0\\}$, $\\det=0$ donne une droite (ou le plan entier si $M$ est la matrice nulle)."
+        },
+        {
+          "erreur_markdown": "Donner un vecteur directeur qui ne vérifie pas réellement l'équation du noyau.",
+          "pourquoi_faux": "N'importe quel vecteur ne convient pas : il doit satisfaire l'équation obtenue, sous peine de ne pas appartenir au noyau.",
+          "correction_markdown": "Vérifie systématiquement ton vecteur directeur en le substituant dans l'équation retenue."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer le noyau de l'endomorphisme de matrice $\\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$.",
+          "solution_markdown": "Système : $2x+4y=0$ et $x+2y=0$ (proportionnelles). Donc $x=-2y$ : noyau dirigé par $\\vec v=-2\\vec\\imath+\\vec\\jmath$ (en prenant $y=1$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que l'endomorphisme de matrice $\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$ a pour noyau $\\{\\vec0\\}$ seulement.",
+          "solution_markdown": "$\\det=1\\times4-2\\times3=4-6=-2\\neq0$, donc le système $x+2y=0,\\ 3x+4y=0$ n'a que la solution triviale $(0,0)$ : $\\ker=\\{\\vec 0\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un endomorphisme $h$ a pour matrice $\\begin{pmatrix}m&2\\\\4&m\\end{pmatrix}$. Pour quelle(s) valeur(s) de $m$ le noyau de $h$ est-il une droite (et non réduit à $\\{\\vec0\\}$) ?",
+          "solution_markdown": "Il faut $\\det=m^2-8=0$, soit $m=2\\sqrt2$ ou $m=-2\\sqrt2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le noyau se calcule en résolvant M(x,y)=(0,0) : c'est toujours un système linéaire homogène.",
+        "Déterminant non nul ⟹ noyau réduit à {0} ; déterminant nul ⟹ noyau au moins une droite.",
+        "Un vecteur directeur du noyau doit toujours être vérifié par substitution avant d'être annoncé comme réponse.",
+        "Cette étape prépare presque toujours la suivante : la recherche de l'image de l'endomorphisme."
+      ]
+    }
+  ]
+}

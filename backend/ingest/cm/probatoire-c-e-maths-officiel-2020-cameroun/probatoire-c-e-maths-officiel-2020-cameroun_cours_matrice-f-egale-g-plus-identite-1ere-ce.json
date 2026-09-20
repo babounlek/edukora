@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-matrice-f-egale-g-plus-identite-1ere-ce",
+  "meta": {
+    "titre": "Relier les matrices de f et de g = f − id dans une même base",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Relations entre matrices",
+    "duree_estimee_min": 15,
+    "tags": [
+      "matrice identité",
+      "changement de base",
+      "endomorphisme f-id"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II3d",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un endomorphisme $g$ est défini à partir d'un autre par une relation simple comme $g=f-\\mathrm{id}$, il est inutile de refaire tout le travail pour $f$ dans une nouvelle base : la matrice de $f$ s'obtient directement à partir de celle de $g$, sans nouveau calcul de A l'image des vecteurs de base."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Matrice de l'identité dans une base quelconque",
+        "Linéarité d'un endomorphisme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mat(f) = Mat(g) + I, dans n'importe quelle base",
+      "contenu_markdown": "Si $g=f-\\mathrm{id}_E$ (c'est-à-dire $g(\\vec u)=f(\\vec u)-\\vec u$ pour tout $\\vec u$), alors dans n'importe quelle base, $\\mathrm{Mat}(g)=\\mathrm{Mat}(f)-I$, donc $\\mathrm{Mat}(f)=\\mathrm{Mat}(g)+I$. La matrice de l'identité est toujours $I$ (la matrice identité), quelle que soit la base choisie.",
+      "formule_principale": "g=f-\\mathrm{id}_E \\implies \\mathrm{Mat}_{\\mathcal B}(f)=\\mathrm{Mat}_{\\mathcal B}(g)+I \\text{ (pour toute base } \\mathcal B\\text{)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que la matrice de $g$ dans une base $\\mathcal B'=(\\vec e_1,\\vec e_2)$ est $C=\\begin{pmatrix}0&0\\\\0&-8\\end{pmatrix}$, et que $g=f-\\mathrm{id}$, déterminer la matrice $A'$ de $f$ dans $\\mathcal B'$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la relation entre les matrices",
+          "justification": "g = f - id donne Mat(f) = Mat(g) + I",
+          "resultat_markdown": "$A'=C+I$"
+        },
+        {
+          "numero": 2,
+          "action": "Additionner terme à terme",
+          "justification": "I est la matrice identité 2x2",
+          "resultat_markdown": "$A'=\\begin{pmatrix}0&0\\\\0&-8\\end{pmatrix}+\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}=\\begin{pmatrix}1&0\\\\0&-7\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "$A'=\\begin{pmatrix}1&0\\\\0&-7\\end{pmatrix}$, sans avoir eu besoin de recalculer $f(\\vec e_1)$ et $f(\\vec e_2)$ depuis la formule de départ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer $f(\\vec e_1)$ et $f(\\vec e_2)$ depuis la formule de $f$ dans l'ancienne base, en oubliant le raccourci $\\mathrm{Mat}(f)=\\mathrm{Mat}(g)+I$.",
+          "pourquoi_faux": "Ce n'est pas une erreur de calcul à proprement parler, mais une perte de temps évitable : la relation entre matrices est valable directement dans la NOUVELLE base, sans passer par les coordonnées d'origine.",
+          "correction_markdown": "Dès que l'énoncé donne (ou fait calculer) $g=f-\\mathrm{id}$, retiens que la relation entre matrices reste vraie dans n'importe quelle base."
+        },
+        {
+          "erreur_markdown": "Ajouter $I$ seulement à un des deux coefficients diagonaux.",
+          "pourquoi_faux": "La matrice identité a des 1 sur TOUTE la diagonale (deux coefficients pour une matrice 2×2), pas un seul.",
+          "correction_markdown": "Ajoute 1 à CHAQUE coefficient diagonal de la matrice de $g$, jamais à un seul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Si $\\mathrm{Mat}(g)=\\begin{pmatrix}2&0\\\\0&5\\end{pmatrix}$ et $g=f-\\mathrm{id}$, donner $\\mathrm{Mat}(f)$.",
+          "solution_markdown": "$\\mathrm{Mat}(f)=\\begin{pmatrix}2&0\\\\0&5\\end{pmatrix}+\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}=\\begin{pmatrix}3&0\\\\0&6\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Si $h=2f-\\mathrm{id}$ et $\\mathrm{Mat}(f)=\\begin{pmatrix}1&2\\\\0&3\\end{pmatrix}$, donner $\\mathrm{Mat}(h)$.",
+          "solution_markdown": "$\\mathrm{Mat}(h)=2\\,\\mathrm{Mat}(f)-I=\\begin{pmatrix}2&4\\\\0&6\\end{pmatrix}-\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}=\\begin{pmatrix}1&4\\\\0&5\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si $\\vec v$ est vecteur propre de $f$ pour la valeur propre $\\lambda$, montrer directement (sans matrices) que $\\vec v$ est vecteur propre de $g=f-\\mathrm{id}$ pour la valeur propre $\\lambda-1$.",
+          "solution_markdown": "$g(\\vec v)=f(\\vec v)-\\vec v=\\lambda\\vec v-\\vec v=(\\lambda-1)\\vec v$ : $\\vec v$ est bien vecteur propre de $g$ pour la valeur propre $\\lambda-1$. C'est la version « vecteur par vecteur » de la relation entre matrices : chaque valeur propre de $f$ diminue de 1 pour donner la valeur propre correspondante de $g$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si g = f − id, alors Mat(g) = Mat(f) − I dans n'importe quelle base : cette relation ne dépend pas du choix de la base.",
+        "On en déduit Mat(f) = Mat(g) + I, un raccourci qui évite de refaire le calcul des images des vecteurs de base.",
+        "Chaque valeur propre de f est celle de g augmentée de 1 (et réciproquement, celle de g est celle de f diminuée de 1).",
+        "Ce type de relation (f et f − k·id, ou f et 2f, etc.) revient souvent : reconnaître la relation évite un travail redondant."
+      ]
+    }
+  ]
+}

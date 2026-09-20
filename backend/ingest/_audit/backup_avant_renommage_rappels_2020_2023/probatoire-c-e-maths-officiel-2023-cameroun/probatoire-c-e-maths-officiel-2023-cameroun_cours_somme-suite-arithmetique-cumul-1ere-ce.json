@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-somme-suite-arithmetique-cumul-1ere-ce",
+  "meta": {
+    "titre": "Somme des termes d'une suite arithmétique de versements croissants",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "suite arithmétique",
+      "terme général",
+      "somme des termes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "1",
+    "rappel_id": "r-II",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner les termes d'une suite arithmétique (versements croissants, cumul de recettes, distances parcourues chaque jour) revient très souvent dans les problèmes concrets. Une formule directe évite d'additionner terme après terme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une suite arithmétique et de sa raison",
+        "Calcul du terme général $U_n=U_0+nr$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La somme des termes d'une suite arithmétique",
+      "contenu_markdown": "Pour une suite arithmétique $(U_n)$ de premier terme $U_0$ et de raison $r$, le terme général est $U_n=U_0+nr$. La somme des $(n+1)$ premiers termes $S_n=U_0+U_1+\\cdots+U_n$ vaut $S_n=\\dfrac{(n+1)(U_0+U_n)}2$, c'est-à-dire (nombre de termes) $\\times$ (moyenne du premier et du dernier terme).",
+      "formule_principale": "S_n=\\dfrac{(n+1)(U_0+U_n)}2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une suite arithmétique a pour premier terme $U_0=5$ et pour raison $r=4$. Calculer $S_8=U_0+U_1+\\cdots+U_8$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le dernier terme de la somme",
+          "justification": "U_n=U_0+nr avec n=8",
+          "resultat_markdown": "$U_8=5+8\\times4=5+32=37$"
+        },
+        {
+          "numero": 2,
+          "action": "Compter le nombre de termes",
+          "justification": "La somme va de U_0 à U_8, soit 9 termes",
+          "resultat_markdown": "9 termes"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de la somme",
+          "justification": "$S_n=\\dfrac{(n+1)(U_0+U_n)}2$",
+          "resultat_markdown": "$S_8=\\dfrac{9\\times(5+37)}2=\\dfrac{9\\times42}2=\\dfrac{378}2=189$"
+        }
+      ],
+      "conclusion_markdown": "$S_8=189$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter $n$ termes au lieu de $(n+1)$ termes dans la somme $U_0+U_1+\\cdots+U_n$.",
+          "pourquoi_faux": "La somme des indices 0 à n contient exactement (n+1) termes, pas n : oublier le terme d'indice 0 fausse tout le calcul.",
+          "correction_markdown": "Compte toujours explicitement les indices concernés avant d'appliquer la formule."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe sur la raison quand $r<0$ et obtenir un dernier terme incohérent.",
+          "pourquoi_faux": "Une raison négative fait décroître la suite : il faut garder le signe de r dans tout le calcul de U_n.",
+          "correction_markdown": "Remplace r par sa valeur avec son signe, sans jamais l'omettre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une suite arithmétique a pour premier terme $U_0=2$ et pour raison $r=3$. Calculer $S_5$.",
+          "solution_markdown": "$U_5=2+5\\times3=17$. $S_5=\\dfrac{6\\times(2+17)}2=\\dfrac{6\\times19}2=57$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une suite arithmétique de raison $r=4$ vérifie $U_3=11$. Calculer $U_0$, $U_{10}$, puis $S_{10}$.",
+          "solution_markdown": "$U_0=U_3-3r=11-12=-1$. $U_{10}=U_0+10r=-1+40=39$. $S_{10}=\\dfrac{11\\times(U_0+U_{10})}2=\\dfrac{11\\times38}2=11\\times19=209$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un puisatier facture 6000 F le premier mètre creusé, puis augmente le tarif de 500 F à chaque mètre supplémentaire (tarif arithmétique). Calculer le coût total pour un puits de 20 mètres de profondeur.",
+          "solution_markdown": "On pose $U_0=6000$ (coût du 1er mètre) et $r=500$. Le coût du 20e mètre correspond à $U_{19}=U_0+19r=6000+9500=15500$. Le coût total est la somme des 20 premiers termes $U_0,\\dots,U_{19}$ : $S_{19}=\\dfrac{20\\times(U_0+U_{19})}2=\\dfrac{20\\times21500}2=10\\times21500=215000$. Le puits coûte $215\\,000$ F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$U_n=U_0+nr$ donne le terme général ; $S_n=\\dfrac{(n+1)(U_0+U_n)}2$ donne la somme des $(n+1)$ premiers termes.",
+        "Toujours compter précisément le nombre de termes concernés avant d'appliquer la formule de la somme.",
+        "Cette formule modélise naturellement les situations à évolution régulière : versements croissants, tarifs dégressifs/progressifs, cumuls journaliers."
+      ]
+    }
+  ]
+}

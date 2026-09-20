@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-diagramme-de-venn-trois-ensembles-terminale-c-e",
+  "meta": {
+    "titre": "Résoudre un problème à trois ensembles avec un diagramme de Venn",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dénombrement - Diagramme de Venn",
+    "duree_estimee_min": 25,
+    "tags": [
+      "diagramme de Venn",
+      "trois ensembles",
+      "dénombrement",
+      "inclusion-exclusion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2021-cameroun-r-2-1",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une classe où certains élèves étudient l'anglais, d'autres l'allemand, d'autres l'espagnol - et où plusieurs étudient deux ou trois de ces langues à la fois - ne se dénombre pas en additionnant simplement les effectifs donnés : les élèves comptés dans plusieurs catégories seraient comptés plusieurs fois. Le diagramme de Venn à trois ensembles, découpé en sept zones disjointes, résout ce problème une fois pour toutes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notions d'union, d'intersection et de complémentaire d'ensembles",
+        "Lecture d'un diagramme de Venn à deux ensembles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les sept zones disjointes d'un diagramme à trois ensembles",
+      "contenu_markdown": "Pour trois ensembles $A$, $B$, $C$ qui se chevauchent, on découpe la population totale en sept zones disjointes : les trois zones « appartient à un seul ensemble » (A seul, B seul, C seul), les trois zones « appartient à exactement deux ensembles » (A∩B seulement, A∩C seulement, B∩C seulement), et la zone centrale « appartient aux trois » (A∩B∩C). Les effectifs donnés pour $A\\cap B$, $A\\cap C$, $B\\cap C$ comptent toujours en plus les éléments de $A\\cap B\\cap C$ : pour obtenir l'effectif de la zone « exactement deux », il faut donc retrancher l'effectif de la zone centrale. L'effectif total de la population (si chaque élément appartient à au moins un ensemble) est la somme des sept zones.",
+      "formule_principale": "n(A\\cup B\\cup C)=n(A)+n(B)+n(C)-n(A\\cap B)-n(A\\cap C)-n(B\\cap C)+n(A\\cap B\\cap C)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une classe, chaque élève étudie au moins l'anglais (A), l'allemand (G) ou l'espagnol (E). On sait $n(A\\cap G\\cap E)=5$, $n(A\\cap G)=6$, $n(A\\cap E)=8$, $n(G\\cap E)=9$, $n(A\\text{ seul})=20$, $n(G)=15$, $n(E)=18$. Déterminer l'effectif total de la classe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les zones \"exactement deux\" en retranchant la zone centrale",
+          "justification": "Les effectifs donnés pour deux langues comptent aussi les trilingues (5 élèves)",
+          "resultat_markdown": "$n(A\\cap G\\text{ seult})=6-5=1$ ; $n(A\\cap E\\text{ seult})=8-5=3$ ; $n(G\\cap E\\text{ seult})=9-5=4$"
+        },
+        {
+          "numero": 2,
+          "action": "Retrouver l'effectif \"allemand seul\" à partir de n(G)",
+          "justification": "$n(G)$ se décompose en G seul + les deux zones \"exactement deux\" contenant G + la zone centrale",
+          "resultat_markdown": "$15=n(G\\text{ seul})+1+4+5 \\Rightarrow n(G\\text{ seul})=5$"
+        },
+        {
+          "numero": 3,
+          "action": "Retrouver l'effectif \"espagnol seul\" à partir de n(E)",
+          "justification": "Même décomposition pour E",
+          "resultat_markdown": "$18=n(E\\text{ seul})+3+4+5 \\Rightarrow n(E\\text{ seul})=6$"
+        },
+        {
+          "numero": 4,
+          "action": "Sommer les sept zones",
+          "justification": "Chaque élève appartenant à au moins un ensemble, l'effectif total est la somme des sept zones disjointes",
+          "resultat_markdown": "$n=20+5+6+1+3+4+5=44$"
+        }
+      ],
+      "conclusion_markdown": "L'effectif de la classe est de 44 élèves."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement n(A seul), n(G), n(E), n(A∩G), n(A∩E), n(G∩E) sans retrancher la zone centrale.",
+          "pourquoi_faux": "Les effectifs n(A∩G), n(A∩E), n(G∩E) contiennent chacun les élèves trilingues : les additionner tels quels revient à compter ces élèves plusieurs fois en trop.",
+          "correction_markdown": "Retranche systématiquement l'effectif de la zone centrale (A∩G∩C) des effectifs \"deux ensembles\" donnés, avant toute sommation."
+        },
+        {
+          "erreur_markdown": "Utiliser directement la formule d'inclusion-exclusion avec n(A) au lieu de n(A seul), sans savoir lequel des deux est réellement donné par l'énoncé.",
+          "pourquoi_faux": "n(A) désigne TOUS les élèves étudiant l'anglais (y compris ceux qui étudient aussi une autre langue), tandis que n(A seul) ne désigne que ceux qui étudient UNIQUEMENT l'anglais : mélanger les deux fausse tout le calcul.",
+          "correction_markdown": "Relis bien l'énoncé pour savoir si chaque effectif donné concerne l'ensemble entier ou seulement sa zone \"exclusive\" ; reconstruis le diagramme zone par zone plutôt que d'appliquer une formule sans vérifier ses hypothèses."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un groupe, 10 personnes pratiquent le football, 8 le basketball, et 3 pratiquent les deux. Chaque personne pratique au moins un des deux sports. Combien de personnes au total ?",
+          "solution_markdown": "$n(F\\cup B)=n(F)+n(B)-n(F\\cap B)=10+8-3=15$ personnes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur 50 clients d'un magasin, 25 achètent du pain, 20 achètent du lait, 15 achètent des œufs, 10 achètent pain et lait, 8 achètent pain et œufs, 6 achètent lait et œufs, et 3 achètent les trois. Combien de clients n'achètent aucun de ces trois produits ?",
+          "solution_markdown": "$n(P\\cup L\\cup O)=25+20+15-10-8-6+3=39$. Le nombre de clients n'achetant aucun des trois produits est $50-39=11$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une école, tout élève pratique au moins un sport parmi natation (N), athlétisme (At) et basketball (B). On sait : n(N∩At∩B)=4, n(N∩At)=10, n(N∩B)=12, n(At∩B)=9, n(N seul)=18, n(At)=25, n(B)=30. Déterminer l'effectif total de l'école.",
+          "solution_markdown": "Zones \"exactement deux\" : n(N∩At seult)=10-4=6 ; n(N∩B seult)=12-4=8 ; n(At∩B seult)=9-4=5. n(At seul) : 25=n(At seul)+6+5+4 ⟹ n(At seul)=10. n(B seul) : 30=n(B seul)+8+5+4 ⟹ n(B seul)=13. Total : 18+10+13+6+8+5+4=64 élèves."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décompose toujours un problème à trois ensembles en sept zones disjointes : trois \"seul\", trois \"exactement deux\", une \"les trois\".",
+        "Les effectifs donnés pour deux ensembles à la fois comptent aussi la zone centrale : retranche-la avant de sommer.",
+        "L'effectif total (si chaque élément appartient à au moins un ensemble) est la somme des sept zones, jamais une simple addition des effectifs bruts donnés par l'énoncé.",
+        "La formule d'inclusion-exclusion n(A∪B∪C)=n(A)+n(B)+n(C)-n(A∩B)-n(A∩C)-n(B∩C)+n(A∩B∩C) est la version condensée de cette même décomposition en zones."
+      ]
+    }
+  ]
+}

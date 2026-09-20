@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-mode-mediane-moyenne-serie-groupee-premiere-a",
+  "meta": {
+    "titre": "Calculer la moyenne d'une série statistique groupée en classes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Statistiques - Moyenne",
+    "duree_estimee_min": 18,
+    "tags": [
+      "moyenne pondérée",
+      "centre de classe",
+      "série groupée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "r-2-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand les données ne sont connues que par classes (et non individuellement), on ne peut plus faire une moyenne exacte : on approxime chaque classe par son centre, ce qui donne une moyenne pondérée très proche de la réalité et facile à calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le centre (milieu) d'un intervalle",
+        "Moyenne pondérée d'une liste de valeurs par des coefficients"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne pondérée par les centres de classe",
+      "contenu_markdown": "Pour une série groupée en classes d'effectifs $n_1,\\dots,n_p$ et de centres $x_1,\\dots,x_p$, la moyenne est $\\bar x=\\dfrac{\\sum_i n_ix_i}{N}$ où $N=\\sum_i n_i$ est l'effectif total. Le centre d'une classe $[a;b[$ est $\\dfrac{a+b}{2}$.",
+      "formule_principale": "\\bar x=\\dfrac{\\sum_i n_ix_i}{N}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série groupée en 5 classes d'amplitude 3 débutant à 0 a pour effectifs $18,8,12,20,2$ (effectif total $N=60$). Calculer la moyenne, arrondie à l'unité supérieure.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les centres des 5 classes",
+          "justification": "centre = demi-somme des bornes, amplitude 3",
+          "resultat_markdown": "$x_1=1{,}5,\\ x_2=4{,}5,\\ x_3=7{,}5,\\ x_4=10{,}5,\\ x_5=13{,}5$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la somme pondérée",
+          "justification": "chaque centre multiplié par l'effectif de sa classe",
+          "resultat_markdown": "$18\\times1{,}5+8\\times4{,}5+12\\times7{,}5+20\\times10{,}5+2\\times13{,}5=27+36+90+210+27=390$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser par l'effectif total puis arrondir",
+          "justification": "N=60, arrondi à l'unité supérieure demandé",
+          "resultat_markdown": "$\\bar x=\\dfrac{390}{60}=6{,}5$, arrondi à l'unité supérieure donne $7$"
+        }
+      ],
+      "conclusion_markdown": "$\\bar x\\approx7$ (arrondi à l'unité supérieure)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la borne inférieure ou supérieure de chaque classe au lieu de son centre.",
+          "pourquoi_faux": "Approximer une classe par une seule de ses bornes surestime ou sous-estime systématiquement la moyenne ; seul le centre donne une approximation équilibrée de la répartition supposée uniforme à l'intérieur de la classe.",
+          "correction_markdown": "Calcule toujours le centre comme demi-somme des deux bornes avant de pondérer."
+        },
+        {
+          "erreur_markdown": "Confondre « arrondir à l'unité supérieure » avec un arrondi classique au plus proche.",
+          "pourquoi_faux": "Un arrondi classique de 6,5 pourrait donner 6 ou 7 selon la convention ; « à l'unité supérieure » impose de toujours monter au nombre entier suivant, même si la partie décimale est faible.",
+          "correction_markdown": "Relis systématiquement la consigne d'arrondi de l'énoncé avant de conclure : « supérieure », « inférieure » et « la plus proche » ne donnent pas le même résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série a 2 classes : $[0;10[$ d'effectif 4, et $[10;20[$ d'effectif 6. Calculer la moyenne.",
+          "solution_markdown": "Centres 5 et 15. $\\bar x=\\dfrac{4\\times5+6\\times15}{10}=\\dfrac{20+90}{10}=11$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série a 3 classes de centres 2, 6, 10 et d'effectifs respectifs 5, $x$, 15, pour un effectif total de 30 et une moyenne de 7. Déterminer $x$.",
+          "solution_markdown": "$5+x+15=30\\Rightarrow x=10$. Vérification : $\\bar x=\\dfrac{5\\times2+10\\times6+15\\times10}{30}=\\dfrac{10+60+150}{30}=\\dfrac{220}{30}\\approx7{,}33$ ; ceci confirme $x=10$ comme la seule valeur compatible avec l'effectif total 30 (la moyenne exacte, non arrondie, vaut alors environ 7,33)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sans recalculer la somme pondérée complète, justifier pourquoi une moyenne de série groupée en classes de 6,5 se rapproche nécessairement de la médiane lorsque les effectifs sont globalement répartis de façon assez symétrique autour du centre.",
+          "solution_markdown": "La moyenne pondère chaque centre de classe par son poids relatif dans la population, tandis que la médiane repère le point qui partage l'effectif total en deux moitiés égales : si la répartition des effectifs est approximativement symétrique autour d'une valeur centrale, cette valeur joue à la fois le rôle de centre de gravité (moyenne) et de point de partage en deux (médiane), d'où leur proximité ; en revanche, une répartition très dissymétrique (effectifs concentrés d'un côté) peut écarter fortement les deux valeurs, la moyenne étant alors davantage sensible aux classes extrêmes que la médiane."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La moyenne d'une série groupée en classes s'obtient en remplaçant chaque classe par son centre, puis en faisant la moyenne pondérée par les effectifs : $\\bar x=\\frac{\\sum n_ix_i}{N}$.",
+        "Le centre d'une classe $[a;b[$ est toujours $\\frac{a+b}{2}$.",
+        "Applique la consigne d'arrondi de l'énoncé à la lettre : « supérieure », « inférieure » et « au plus proche » donnent des résultats différents."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-limites-fonction-rationnelle-division-1ere-ce",
+  "meta": {
+    "titre": "Calculer les limites d'une fonction rationnelle par division euclidienne",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - Limites de fonctions rationnelles",
+    "duree_estimee_min": 18,
+    "tags": [
+      "limites",
+      "division euclidienne",
+      "fonction rationnelle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-III1i",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une fraction dont le numérateur est de degré supérieur au dénominateur, calculer directement la limite en l'infini donne une forme indéterminée du type $\\infty/\\infty$. Réécrire la fraction par division euclidienne fait disparaître cette indétermination d'un coup."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Division euclidienne de deux polynômes",
+        "Limites usuelles de $\\dfrac1x$ en $\\pm\\infty$ et au voisinage de 0"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Diviser pour isoler la partie qui tend vers 0",
+      "contenu_markdown": "Pour une fraction $\\dfrac{P(x)}{Q(x)}$ avec $\\deg P>\\deg Q$, on effectue la division euclidienne $P(x)=Q(x)\\times S(x)+R(x)$ avec $\\deg R<\\deg Q$, ce qui donne $\\dfrac{P(x)}{Q(x)}=S(x)+\\dfrac{R(x)}{Q(x)}$. Le terme $\\dfrac{R(x)}{Q(x)}$ tend vers 0 en $\\pm\\infty$ (numérateur de degré strictement inférieur), donc la limite en $\\pm\\infty$ de la fraction est celle de $S(x)$ seul. Au voisinage d'une valeur interdite $a$ (racine de $Q$), on étudie directement le signe de $Q(x)$ de part et d'autre de $a$.",
+      "formule_principale": "\\dfrac{P(x)}{Q(x)}=S(x)+\\dfrac{R(x)}{Q(x)},\\quad \\dfrac{R(x)}{Q(x)}\\xrightarrow[x\\to\\pm\\infty]{}0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer les limites de $g(x)=\\dfrac{x^2+3x+6}{x+1}$ en $-\\infty$, $+\\infty$, $-1^-$ et $-1^+$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Effectuer la division euclidienne",
+          "justification": "x²+3x+6 = (x+1)(x+2)+4",
+          "resultat_markdown": "$g(x)=x+2+\\dfrac{4}{x+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Limites en ±∞",
+          "justification": "4/(x+1) → 0, donc g(x) suit x+2",
+          "resultat_markdown": "$\\lim_{-\\infty}g=-\\infty$, $\\lim_{+\\infty}g=+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Limites en -1",
+          "justification": "x+1 change de signe en -1",
+          "resultat_markdown": "$\\lim_{-1^-}g=-\\infty$ (car x+1→0⁻), $\\lim_{-1^+}g=+\\infty$ (car x+1→0⁺)"
+        }
+      ],
+      "conclusion_markdown": "Les quatre limites s'obtiennent directement depuis l'écriture $g(x)=x+2+\\frac{4}{x+1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer de calculer $\\lim_{x\\to+\\infty}\\dfrac{x^2+3x+6}{x+1}$ en simplifiant « à l'œil » par $x$, sans division rigoureuse.",
+          "pourquoi_faux": "Une simplification approximative peut faire perdre le terme constant qui influence le comportement de la fonction ; seule la division euclidienne, menée jusqu'au bout, donne l'écriture exacte.",
+          "correction_markdown": "Effectue toujours la division euclidienne complète (avec vérification du reste), plutôt qu'une simplification intuitive."
+        },
+        {
+          "erreur_markdown": "Confondre le signe de $x+1$ à gauche et à droite de $-1$.",
+          "pourquoi_faux": "À gauche de $-1$ (valeurs inférieures à $-1$), $x+1$ est négatif ; à droite (valeurs supérieures à $-1$), $x+1$ est positif : inverser les deux fait basculer $+\\infty$ en $-\\infty$ et réciproquement.",
+          "correction_markdown": "Teste une valeur numérique proche de $-1$ de chaque côté (par exemple $-1{,}1$ et $-0{,}9$) pour vérifier le signe si un doute persiste."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $\\lim_{x\\to+\\infty}\\dfrac{2x^2+1}{x-3}$.",
+          "solution_markdown": "Division : $2x^2+1=(x-3)(2x+6)+19$, donc $f(x)=2x+6+\\frac{19}{x-3}\\to+\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer les limites de $h(x)=\\dfrac{x^2-1}{x+2}$ en $-2^-$ et $-2^+$.",
+          "solution_markdown": "$x^2-1=(x+2)(x-2)+3$, donc $h(x)=x-2+\\frac{3}{x+2}$. En $-2^-$, $x+2\\to0^-$ donc $h\\to-\\infty$ ; en $-2^+$, $x+2\\to0^+$ donc $h\\to+\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sans effectuer la division complète, justifier pourquoi $\\dfrac{x^3+1}{x^2+1}$ tend vers $+\\infty$ quand $x\\to+\\infty$, en comparant seulement les degrés.",
+          "solution_markdown": "Le numérateur est de degré 3, le dénominateur de degré 2 : leur quotient se comporte, à l'infini, comme $x^{3-2}=x$, qui tend vers $+\\infty$. Comparer les degrés donne directement l'ordre de grandeur du quotient à l'infini, sans division complète ; mais seule la division donne la valeur EXACTE de la limite quand le résultat n'est pas simplement ±∞ (par exemple pour une asymptote oblique précise)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Numérateur de degré strictement supérieur au dénominateur : la division euclidienne réécrit la fraction comme polynôme + reste/dénominateur.",
+        "Le terme reste/dénominateur tend toujours vers 0 en ±∞ : la limite en l'infini est celle du polynôme seul.",
+        "Aux points interdits, étudie séparément le signe du dénominateur de chaque côté pour déterminer si la limite est +∞ ou -∞.",
+        "Cette réécriture sert deux fois : pour les limites, et ensuite pour identifier l'asymptote oblique."
+      ]
+    }
+  ]
+}

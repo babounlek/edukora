@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-completer-un-tableau-statistique-effectifs-cumules-croissants-manquants",
+  "meta": {
+    "titre": "Compléter un tableau statistique dont certaines valeurs sont manquantes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques - Séries groupées",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableau à données manquantes",
+      "effectifs cumulés",
+      "effectifs cumulés croissants",
+      "tableau statistique",
+      "série statistique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2025-officiel-cameroun",
+    "epreuve_titre": "Mathématiques Probatoire A 2025",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2025-officiel-cameroun-ex2-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans beaucoup d'épreuves, le tableau statistique est donné à moitié rempli : quelques effectifs, quelques effectifs cumulés, et la première question est « recopier et compléter le tableau ». Tout le reste (moyenne, médiane, polygone) dépend de cette étape. Une seule erreur dans une case se propage dans tous les calculs suivants. La bonne nouvelle : les cases sont liées entre elles par deux relations simples qui permettent de tout retrouver."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Effectif, effectif cumulé croissant et décroissant",
+        "Somme et différence de nombres entiers",
+        "Résolution d'une équation du premier degré (pour les cas avec inconnue)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux relations qui lient les cases du tableau",
+      "contenu_markdown": "Pour une série groupée en classes $C_1,\\dots,C_k$ d'effectifs $n_1,\\dots,n_k$ et d'effectif total $N$ :\n\n- **Effectif cumulé croissant** (ECC) de la classe $i$ : $\\mathrm{ECC}_i=n_1+\\dots+n_i$. Donc $\\mathrm{ECC}_1=n_1$ et $\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i$.\n- **Retrouver un effectif** : $n_i=\\mathrm{ECC}_i-\\mathrm{ECC}_{i-1}$.\n- **Total** : $N=n_1+\\dots+n_k=\\mathrm{ECC}_k$ (dernière case de la colonne des ECC).\n- **Effectif cumulé décroissant** (ECD) : $\\mathrm{ECD}_i=n_i+\\dots+n_k$, avec $\\mathrm{ECD}_1=N$ et $n_i=\\mathrm{ECD}_i-\\mathrm{ECD}_{i+1}$.\n\n**Méthode.** Parcourir le tableau colonne par colonne en cherchant à chaque fois une case dont **toutes les autres cases de la relation sont connues** ; s'il reste une inconnue littérale $x$, écrire la somme des effectifs et l'égaler à $N$ pour trouver $x$. Une fois le tableau complet, vérifie que la dernière ECC vaut $N$.",
+      "formule_principale": "\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i \\qquad n_i=\\mathrm{ECC}_i-\\mathrm{ECC}_{i-1} \\qquad N=\\mathrm{ECC}_k",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le tableau suivant, relatif aux notes d'une classe, est incomplet. Le compléter.\n\n| Classe | $[10;20[$ | $[20;30[$ | $[30;40[$ | $[40;50[$ | $[50;60[$ |\n|---|---|---|---|---|---|\n| Effectif | $4$ | | $12$ | | $6$ |\n| ECC | | $13$ | | $34$ | |",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Trouver la première ECC",
+          "justification": "$\\mathrm{ECC}_1=n_1$ car il n'y a pas de classe avant",
+          "resultat_markdown": "$\\mathrm{ECC}_1=4$"
+        },
+        {
+          "numero": 2,
+          "action": "Trouver l'effectif de la 2e classe",
+          "justification": "$n_2=\\mathrm{ECC}_2-\\mathrm{ECC}_1$",
+          "resultat_markdown": "$n_2=13-4=9$"
+        },
+        {
+          "numero": 3,
+          "action": "Trouver l'ECC de la 3e classe",
+          "justification": "$\\mathrm{ECC}_3=\\mathrm{ECC}_2+n_3$",
+          "resultat_markdown": "$\\mathrm{ECC}_3=13+12=25$"
+        },
+        {
+          "numero": 4,
+          "action": "Trouver l'effectif de la 4e classe",
+          "justification": "$n_4=\\mathrm{ECC}_4-\\mathrm{ECC}_3$",
+          "resultat_markdown": "$n_4=34-25=9$"
+        },
+        {
+          "numero": 5,
+          "action": "Trouver la dernière ECC",
+          "justification": "$\\mathrm{ECC}_5=\\mathrm{ECC}_4+n_5$",
+          "resultat_markdown": "$\\mathrm{ECC}_5=34+6=40$"
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler avec le total",
+          "justification": "La somme des effectifs doit égaler la dernière ECC",
+          "resultat_markdown": "$4+9+12+9+6=40=\\mathrm{ECC}_5$ ✓"
+        }
+      ],
+      "conclusion_markdown": "Effectifs : $4\\,;9\\,;12\\,;9\\,;6$ ; ECC : $4\\,;13\\,;25\\,;34\\,;40$ ; effectif total $N=40$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'effectif cumulé et l'effectif : recopier $13$ comme effectif de la deuxième classe.",
+          "pourquoi_faux": "$13$ est l'effectif de toutes les classes jusqu'à la deuxième incluse, pas celui de la deuxième seule. Il faut retrancher l'ECC précédente pour l'isoler.",
+          "correction_markdown": "Pour passer de l'ECC à l'effectif, toujours soustraire l'ECC de la ligne au-dessus."
+        },
+        {
+          "erreur_markdown": "Additionner les ECC pour trouver le total.",
+          "pourquoi_faux": "Les ECC sont déjà des sommes : les additionner compte plusieurs fois les mêmes individus. Le total est la **dernière** ECC, ou la somme des effectifs.",
+          "correction_markdown": "Total $=$ dernière ECC $=$ somme des effectifs, jamais somme des ECC."
+        },
+        {
+          "erreur_markdown": "Ne pas contrôler que la dernière ECC est égale à la somme des effectifs.",
+          "pourquoi_faux": "Une erreur sur une case en cache une autre : le total contrôle tout le tableau d'un coup. C'est le seul garde-fou avant de calculer moyenne ou médiane.",
+          "correction_markdown": "Terminer chaque tableau par la vérification $\\sum n_i=\\mathrm{ECC}_k=N$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un tableau a quatre classes. On connaît $n_1=3$, $n_2=5$, $\\mathrm{ECC}_3=15$ et $n_4=7$. Compléter les effectifs et les ECC.",
+          "solution_markdown": "$\\mathrm{ECC}_1=3$ ; $\\mathrm{ECC}_2=3+5=8$ ; $n_3=15-8=7$ ; $\\mathrm{ECC}_4=15+7=22$. Effectifs : $3\\,;5\\,;7\\,;7$ ; ECC : $3\\,;8\\,;15\\,;22$. Contrôle : $3+5+7+7=22$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de $45$ notes est répartie en cinq classes de même amplitude $[0;10[,\\dots,[40;50[$. Les effectifs sont $6$, $x$, $2x$, $10$ et $8$. Déterminer $x$, compléter les ECC puis donner la classe médiane.",
+          "solution_markdown": "$6+x+2x+10+8=45\\iff3x+24=45\\iff x=7$. Effectifs : $6\\,;7\\,;14\\,;10\\,;8$ ; ECC : $6\\,;13\\,;27\\,;37\\,;45$. $\\frac{N}{2}=22{,}5$ : la première ECC supérieure ou égale à $22{,}5$ est $27$, donc la classe médiane est $[20;30[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de $60$ valeurs est répartie en cinq classes. On connaît : $n_1=8$, $n_2=18$, $\\mathrm{ECD}_4=20$ (effectif cumulé décroissant, c'est-à-dire des classes $4$ et $5$) et $\\mathrm{ECD}_5=8$. Retrouver tous les effectifs, tous les ECC et la classe médiane.",
+          "solution_markdown": "$n_5=\\mathrm{ECD}_5=8$ ; $n_4=\\mathrm{ECD}_4-\\mathrm{ECD}_5=20-8=12$ ; $n_3=60-8-18-20=14$. Effectifs : $8\\,;18\\,;14\\,;12\\,;8$. ECC : $8\\,;26\\,;40\\,;52\\,;60$. Contrôle : $\\mathrm{ECC}_5=60=N$ ✓. $\\frac N2=30$ : première ECC $\\geq30$ est $40$, donc la classe médiane est la troisième."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un effectif cumulé se construit par addition : $\\mathrm{ECC}_i=\\mathrm{ECC}_{i-1}+n_i$ ; un effectif se retrouve par soustraction.",
+        "Le total est la dernière ECC, pas la somme des ECC.",
+        "S'il reste une inconnue littérale, écris que la somme des effectifs vaut le total.",
+        "Contrôle toujours à la fin : somme des effectifs $=$ dernière ECC.",
+        "Au Probatoire, « recopier et compléter le tableau » ouvre souvent un exercice de statistique dont la moyenne, la médiane et le polygone dépendent de cette étape."
+      ]
+    }
+  ]
+}

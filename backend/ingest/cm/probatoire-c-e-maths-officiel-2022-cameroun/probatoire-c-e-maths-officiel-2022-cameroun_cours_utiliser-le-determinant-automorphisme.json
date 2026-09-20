@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-utiliser-le-determinant-pour-caracteriser-un-automorphisme-du-plan-terminale-c",
+  "meta": {
+    "titre": "Utiliser le déterminant pour caractériser un automorphisme du plan",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire du plan",
+    "duree_estimee_min": 18,
+    "tags": [
+      "déterminant",
+      "automorphisme",
+      "endomorphisme",
+      "algèbre linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2022-cameroun-r-3-2c",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour savoir si un endomorphisme du plan est bijectif (un automorphisme), il n'est pas nécessaire de résoudre un système ou de chercher un antécédent à la main : un seul nombre calculé directement à partir de la matrice, le déterminant, tranche la question en une ligne de calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire la matrice d'un endomorphisme du plan dans une base donnée",
+        "Connaître la définition d'un automorphisme : un endomorphisme bijectif",
+        "Savoir résoudre une équation du premier degré à un paramètre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminant et caractère bijectif",
+      "contenu_markdown": "Soit $f$ un endomorphisme du plan de matrice $M=\\begin{pmatrix}a & b\\\\c & d\\end{pmatrix}$ dans une base donnée. Le **déterminant** de $M$ (ou de $f$) est le nombre :\n\n$$\\det(M)=ad-bc$$\n\n**Théorème.** $f$ est un automorphisme du plan (c'est-à-dire bijectif) si et seulement si $\\det(M)\\ne 0$. Autrement dit :\n\n$$f \\text{ n'est PAS un automorphisme} \\iff \\det(M)=0$$\n\n**Méthode pour déterminer un paramètre.** 1) Écrire la matrice de $f$ en fonction du paramètre. 2) Calculer son déterminant, qui devient une expression algébrique du paramètre. 3) Résoudre l'équation (ou l'inéquation) obtenue en annulant (ou en étudiant le signe de) ce déterminant.",
+      "formule_principale": "f \\text{ automorphisme} \\iff \\det(M)=ad-bc\\ne 0"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'endomorphisme $f$ du plan a pour matrice $E=\\begin{pmatrix}2 & m\\\\1 & 3\\end{pmatrix}$ dans une base $(i,j)$, où $m$ est un paramètre réel. Déterminer la valeur de $m$ pour laquelle $f$ n'est PAS un automorphisme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le déterminant de E en fonction de m",
+          "justification": "det(E) = (2)(3) - (m)(1) pour une matrice 2x2 (a d - b c)",
+          "resultat_markdown": "$\\det(E)=2\\times 3-m\\times 1=6-m$"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire la condition « f n'est pas un automorphisme »",
+          "justification": "f n'est pas un automorphisme équivaut exactement à det(E) = 0",
+          "resultat_markdown": "$6-m=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'équation obtenue",
+          "justification": "isoler m",
+          "resultat_markdown": "$m=6$"
+        }
+      ],
+      "conclusion_markdown": "Pour $m=6$, $\\det(E)=0$ : $f$ n'est alors pas un automorphisme du plan (elle n'est pas bijective). Pour toute autre valeur de $m$, $\\det(E)\\ne 0$ et $f$ est un automorphisme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le déterminant comme ac - bd au lieu de ad - bc",
+          "pourquoi_faux": "La formule du déterminant d'une matrice 2×2 croise les coefficients de la DIAGONALE PRINCIPALE (a et d, en haut-gauche et bas-droite) moins le produit de la diagonale secondaire (b et c) : inverser cet ordre donne un résultat faux, parfois même de signe opposé.",
+          "correction_markdown": "Mémorise la disposition : pour $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$, $\\det = ad-bc$ (diagonale descendante moins diagonale montante)."
+        },
+        {
+          "erreur_markdown": "Conclure que det(M)=0 signifie que f est \"presque\" un automorphisme, ou chercher une valeur approchée",
+          "pourquoi_faux": "Le caractère bijectif est une propriété du tout ou rien : det(M)=0 signifie que f n'est JAMAIS bijective pour cette valeur exacte du paramètre, aucune valeur approchée n'est pertinente ici.",
+          "correction_markdown": "Traite l'équation det(M)=0 comme une égalité exacte à résoudre, jamais comme une approximation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "L'endomorphisme $g$ a pour matrice $\\begin{pmatrix}1 & 2\\\\3 & 4\\end{pmatrix}$. Calculer son déterminant et dire si $g$ est un automorphisme.",
+          "solution_markdown": "$\\det=1\\times4-2\\times3=4-6=-2\\ne 0$. Donc $g$ est un automorphisme du plan."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'endomorphisme $h$ a pour matrice $\\begin{pmatrix}m & 4\\\\2 & m\\end{pmatrix}$, où $m$ est un réel. Déterminer les valeurs de $m$ pour lesquelles $h$ n'est pas un automorphisme.",
+          "solution_markdown": "$\\det=m\\times m-4\\times2=m^2-8$. $h$ n'est pas un automorphisme $\\iff m^2-8=0 \\iff m^2=8 \\iff m=2\\sqrt2$ ou $m=-2\\sqrt2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'endomorphisme $k$ a pour matrice $\\begin{pmatrix}m+1 & 3\\\\2 & m-1\\end{pmatrix}$. Déterminer les valeurs de $m$ pour lesquelles $k$ EST un automorphisme (et non l'inverse).",
+          "solution_markdown": "$\\det=(m+1)(m-1)-3\\times2=m^2-1-6=m^2-7$. $k$ est un automorphisme $\\iff \\det\\ne0 \\iff m^2\\ne7 \\iff m\\ne\\sqrt7$ et $m\\ne-\\sqrt7$. Donc $k$ est un automorphisme pour tout réel $m$ sauf ces deux valeurs particulières $\\pm\\sqrt7$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le déterminant d'une matrice 2×2 se calcule par la formule ad - bc (diagonale principale moins diagonale secondaire).",
+        "f est un automorphisme du plan si et seulement si det(f) ≠ 0 ; f n'est pas un automorphisme si et seulement si det(f) = 0.",
+        "Pour trouver un paramètre qui empêche f d'être bijective, il suffit de résoudre l'équation det(f) = 0.",
+        "Cette caractérisation évite tout calcul de système ou de recherche d'antécédent : un seul nombre calculé à partir des coefficients de la matrice tranche la question du caractère bijectif."
+      ]
+    }
+  ]
+}

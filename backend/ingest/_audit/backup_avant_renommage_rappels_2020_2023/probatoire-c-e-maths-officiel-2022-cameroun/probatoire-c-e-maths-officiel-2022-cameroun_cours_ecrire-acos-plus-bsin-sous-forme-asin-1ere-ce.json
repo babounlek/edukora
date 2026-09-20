@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-ecrire-acos-plus-bsin-sous-forme-asin-1ere-ce",
+  "meta": {
+    "titre": "Écrire a cosθ + b sinθ sous la forme A sin(θ+φ)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Trigonométrie - linéarisation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "trigonométrie",
+      "somme de sinusoïdes",
+      "identification de coefficients"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2022-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "r-1-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une expression comme $\\sqrt3\\cos(2t)-\\sin(2t)$ combine deux sinusoïdes de même fréquence : on peut toujours la ramener à une SEULE sinusoïde $A\\sin(\\theta+\\varphi)$, plus facile à étudier (amplitude, maximum, minimum, zéros). C'est un outil essentiel en physique (oscillations, ondes) autant qu'en mathématiques pures."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la formule d'addition sin(a+b) = sin a cos b + cos a sin b",
+        "Connaître le cercle trigonométrique et les angles remarquables",
+        "Savoir identifier deux écritures polynomiales égales terme à terme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode par identification",
+      "contenu_markdown": "Pour écrire $a\\cos\\theta+b\\sin\\theta$ sous la forme $A\\sin(\\theta+\\varphi)$ avec $A>0$ :\n\n1. Développer $A\\sin(\\theta+\\varphi)=A\\cos\\varphi\\sin\\theta+A\\sin\\varphi\\cos\\theta$.\n2. Identifier terme à terme avec $a\\cos\\theta+b\\sin\\theta$ : $A\\sin\\varphi=a$ et $A\\cos\\varphi=b$.\n3. Calculer $A=\\sqrt{a^2+b^2}$ en élevant au carré et en additionnant (grâce à $\\cos^2\\varphi+\\sin^2\\varphi=1$).\n4. En déduire $\\cos\\varphi$ et $\\sin\\varphi$, puis identifier $\\varphi$ parmi les angles remarquables en respectant le signe de chacun (quadrant).\n\n**Variante.** On peut tout aussi bien viser la forme $A\\cos(\\theta-\\varphi)$ : la méthode est identique, seule la formule d'addition de départ change (celle de $\\cos(\\theta-\\varphi)$).",
+      "formule_principale": "a\\cos\\theta+b\\sin\\theta=A\\sin(\\theta+\\varphi),\\ A=\\sqrt{a^2+b^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer $A>0$ et $\\varphi$ tels que $\\sqrt3\\cos(2t)-\\sin(2t)=A\\sin(2t+\\varphi)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer le second membre",
+          "justification": "formule d'addition sin(a+b), avec a=2t, b=φ",
+          "resultat_markdown": "$A\\sin(2t+\\varphi)=(A\\cos\\varphi)\\sin(2t)+(A\\sin\\varphi)\\cos(2t)$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les coefficients",
+          "justification": "le premier membre est -1·sin(2t)+√3·cos(2t)",
+          "resultat_markdown": "$A\\cos\\varphi=-1$ et $A\\sin\\varphi=\\sqrt3$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer A",
+          "justification": "on élève au carré et on additionne, avec cos²φ+sin²φ=1",
+          "resultat_markdown": "$A^2=(-1)^2+(\\sqrt3)^2=4$, donc $A=2$ (car A>0)"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier φ",
+          "justification": "cosφ=-1/2 et sinφ=√3/2 correspondent à l'angle 2π/3",
+          "resultat_markdown": "$\\varphi=\\dfrac{2\\pi}{3}$"
+        }
+      ],
+      "conclusion_markdown": "$\\sqrt3\\cos(2t)-\\sin(2t)=2\\sin\\left(2t+\\dfrac{2\\pi}{3}\\right)$ pour tout réel $t$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre A négatif ou ne pas vérifier le signe de A",
+          "pourquoi_faux": "A est défini comme une amplitude, donc conventionnellement positif ; A=√(a²+b²) est toujours positif ou nul par construction (racine carrée).",
+          "correction_markdown": "Calcule toujours A comme la racine carrée positive de a²+b² : le signe est déjà correct par construction, ne le modifie jamais après coup."
+        },
+        {
+          "erreur_markdown": "Choisir φ en ne regardant que cos φ (ou que sin φ), sans tenir compte des deux signes ensemble",
+          "pourquoi_faux": "Un seul des deux (cos φ ou sin φ) ne détermine φ qu'à un symétrique près (par exemple cos φ = -1/2 est vrai pour φ=2π/3 ET φ=-2π/3) ; il faut les deux signes pour lever l'ambiguïté.",
+          "correction_markdown": "Détermine toujours le quadrant à partir du COUPLE (signe de cos φ, signe de sin φ) avant de choisir la valeur remarquable de φ."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire $\\cos\\theta+\\sin\\theta$ sous la forme $A\\sin(\\theta+\\varphi)$ avec $A>0$.",
+          "solution_markdown": "$A\\cos\\varphi=1$ et $A\\sin\\varphi=1$, donc $A^2=1^2+1^2=2$, $A=\\sqrt2$. Alors $\\cos\\varphi=\\sin\\varphi=\\dfrac{1}{\\sqrt2}=\\dfrac{\\sqrt2}{2}$, donc $\\varphi=\\dfrac{\\pi}{4}$. Résultat : $\\cos\\theta+\\sin\\theta=\\sqrt2\\sin\\left(\\theta+\\dfrac{\\pi}{4}\\right)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire $-\\sqrt3\\sin\\theta+\\cos\\theta$ sous la forme $A\\sin(\\theta+\\varphi)$ avec $A>0$.",
+          "solution_markdown": "L'expression est $1\\cdot\\cos\\theta+(-\\sqrt3)\\sin\\theta$, donc $A\\sin\\varphi=-\\sqrt3$ et $A\\cos\\varphi=1$. $A^2=(-\\sqrt3)^2+1^2=4$, $A=2$. $\\cos\\varphi=\\dfrac12$, $\\sin\\varphi=-\\dfrac{\\sqrt3}{2}$ : quatrième quadrant, $\\varphi=-\\dfrac{\\pi}{3}$. Résultat : $-\\sqrt3\\sin\\theta+\\cos\\theta=2\\sin\\left(\\theta-\\dfrac{\\pi}{3}\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En utilisant l'écriture $\\sqrt3\\cos(2t)-\\sin(2t)=2\\sin\\left(2t+\\dfrac{2\\pi}{3}\\right)$, résoudre dans $\\mathbb R$ l'équation $\\sqrt3\\cos(2t)-\\sin(2t)=1$.",
+          "solution_markdown": "L'équation devient $2\\sin\\left(2t+\\dfrac{2\\pi}{3}\\right)=1$, soit $\\sin\\left(2t+\\dfrac{2\\pi}{3}\\right)=\\dfrac12=\\sin\\left(\\dfrac{\\pi}{6}\\right)$. On utilise l'équivalence $\\sin(u)=\\sin(v)\\iff u=v+2k\\pi$ ou $u=\\pi-v+2k\\pi$ : $2t+\\dfrac{2\\pi}{3}=\\dfrac{\\pi}{6}+2k\\pi$ donne $t=-\\dfrac{\\pi}{4}+k\\pi$ ; $2t+\\dfrac{2\\pi}{3}=\\dfrac{5\\pi}{6}+2k\\pi$ donne $t=\\dfrac{\\pi}{12}+k\\pi$. $S=\\left\\{-\\dfrac{\\pi}{4}+k\\pi\\ ;\\ \\dfrac{\\pi}{12}+k\\pi,\\ k\\in\\mathbb Z\\right\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "a cosθ + b sinθ se réécrit toujours A sin(θ+φ), avec A = √(a²+b²) > 0.",
+        "La méthode : développer A sin(θ+φ), identifier terme à terme, calculer A puis φ.",
+        "φ se détermine par le COUPLE (cos φ, sin φ), jamais par un seul des deux signes isolément.",
+        "Une fois l'écriture obtenue, l'expression devient une simple équation ou étude de sinus, beaucoup plus simple à traiter.",
+        "Ce type de question précède très souvent une résolution d'équation ou une recherche d'extremum en trigonométrie, au Probatoire comme au Baccalauréat."
+      ]
+    }
+  ]
+}

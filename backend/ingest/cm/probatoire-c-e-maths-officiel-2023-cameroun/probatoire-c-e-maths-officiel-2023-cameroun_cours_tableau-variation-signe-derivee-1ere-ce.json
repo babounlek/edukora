@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-tableau-variation-signe-derivee-1ere-ce",
+  "meta": {
+    "titre": "Signe de la dérivée et sens de variation",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Analyse - Étude de fonctions",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dérivée d'un quotient",
+      "signe de la dérivée",
+      "tableau de variation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-I1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Étudier le sens de variation d'une fonction rationnelle exige de dériver un quotient, puis d'étudier le signe du résultat : deux étapes indépendantes, chacune source d'erreurs si elle n'est pas isolée clairement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Formule de la dérivée d'un quotient $\\left(\\dfrac uv\\right)'=\\dfrac{u'v-uv'}{v^2}$",
+        "Signe d'un trinôme du second degré à l'aide du discriminant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dériver un quotient puis étudier le signe du numérateur",
+      "contenu_markdown": "Pour étudier les variations d'une fonction rationnelle $f=\\dfrac uv$, on calcule sa dérivée par la formule $f'=\\dfrac{u'v-uv'}{v^2}$, puis on étudie le signe de $f'$ : le dénominateur $v^2$ étant toujours strictement positif (sauf là où $f$ n'est pas définie), ce signe est celui du numérateur $u'v-uv'$ seul. Le sens de variation de $f$ est ensuite donné par le signe de $f'$ sur chaque intervalle du domaine de définition : $f$ est croissante là où $f'>0$, décroissante là où $f'<0$.",
+      "formule_principale": "f'=\\dfrac{u'v-uv'}{v^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier le signe de la dérivée de $f(x)=\\dfrac{x^2+1}{x-1}$ sur $\\mathbb R\\setminus\\{1\\}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier u, v et calculer u', v'",
+          "justification": "$u=x^2+1,\\ v=x-1$",
+          "resultat_markdown": "$u'=2x,\\ v'=1$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du quotient",
+          "justification": "$f'=\\dfrac{u'v-uv'}{v^2}$",
+          "resultat_markdown": "$f'(x)=\\dfrac{2x(x-1)-(x^2+1)\\times1}{(x-1)^2}=\\dfrac{2x^2-2x-x^2-1}{(x-1)^2}=\\dfrac{x^2-2x-1}{(x-1)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe du numérateur",
+          "justification": "Le dénominateur est toujours positif, seul le numérateur compte",
+          "resultat_markdown": "$\\Delta=4+4=8>0$, racines $x=1\\pm\\sqrt2$. Le numérateur $x^2-2x-1$ est positif à l'extérieur des racines, négatif entre elles."
+        }
+      ],
+      "conclusion_markdown": "$f'(x)<0$ sur $]1-\\sqrt2,1+\\sqrt2[\\setminus\\{1\\}$, et $f'(x)>0$ ailleurs : $f$ est croissante sur $]-\\infty,1-\\sqrt2]$, décroissante sur $[1-\\sqrt2,1[$ et sur $]1,1+\\sqrt2]$, croissante sur $[1+\\sqrt2,+\\infty[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe moins dans $u'v-uv'$ et écrire $u'v+uv'$.",
+          "pourquoi_faux": "La formule du quotient comporte une soustraction, pas une addition ; l'inverser change complètement le signe de f'.",
+          "correction_markdown": "Réécris la formule complète avant chaque application, sans jamais la réciter de mémoire approximativement."
+        },
+        {
+          "erreur_markdown": "Étudier le signe du dénominateur au lieu du seul numérateur.",
+          "pourquoi_faux": "$v^2$ est toujours positif sur le domaine de définition ; seul le numérateur détermine le signe de f'.",
+          "correction_markdown": "Concentre l'étude de signe uniquement sur le numérateur, en rappelant simplement que le dénominateur est positif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de $f(x)=\\dfrac{2x-1}{x+3}$ et en déduire son sens de variation.",
+          "solution_markdown": "$f'(x)=\\dfrac{2(x+3)-(2x-1)}{(x+3)^2}=\\dfrac{2x+6-2x+1}{(x+3)^2}=\\dfrac7{(x+3)^2}>0$ : $f$ est strictement croissante sur chaque intervalle de son domaine."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la dérivée de $f(x)=\\dfrac{x^2}{x-2}$ et étudier son signe.",
+          "solution_markdown": "$f'(x)=\\dfrac{2x(x-2)-x^2}{(x-2)^2}=\\dfrac{2x^2-4x-x^2}{(x-2)^2}=\\dfrac{x^2-4x}{(x-2)^2}=\\dfrac{x(x-4)}{(x-2)^2}$. Le numérateur $x(x-4)$ est positif hors de $[0,4]$, négatif sur $]0,4[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Étudier complètement les variations de $f(x)=\\dfrac{x^2-3x+2}{x-3}$ sur son domaine de définition.",
+          "solution_markdown": "$u=x^2-3x+2,\\ v=x-3$, donc $u'=2x-3,\\ v'=1$. $f'(x)=\\dfrac{(2x-3)(x-3)-(x^2-3x+2)}{(x-3)^2}=\\dfrac{2x^2-9x+9-x^2+3x-2}{(x-3)^2}=\\dfrac{x^2-6x+7}{(x-3)^2}$. $\\Delta=36-28=8>0$, racines $x=3\\pm\\sqrt2$. Le numérateur est positif à l'extérieur de ces racines, négatif entre elles : $f$ est croissante sur $]-\\infty,3-\\sqrt2]$, décroissante sur $[3-\\sqrt2,3[$ et $]3,3+\\sqrt2]$, croissante sur $[3+\\sqrt2,+\\infty[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$f'=\\dfrac{u'v-uv'}{v^2}$ : ne jamais inverser le signe moins.",
+        "Le dénominateur au carré étant toujours positif, seul le signe du numérateur détermine le sens de variation.",
+        "Un numérateur du second degré s'étudie avec le discriminant, exactement comme pour une équation."
+      ]
+    }
+  ]
+}

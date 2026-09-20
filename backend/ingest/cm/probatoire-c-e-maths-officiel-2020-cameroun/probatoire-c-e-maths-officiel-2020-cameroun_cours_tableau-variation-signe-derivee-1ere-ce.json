@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-tableau-variation-signe-derivee-1ere-ce",
+  "meta": {
+    "titre": "Signe de la dérivée et sens de variation",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Fonctions - Variations",
+    "duree_estimee_min": 22,
+    "tags": [
+      "dérivée",
+      "sens de variation",
+      "tableau de variation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "r-3-III3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le signe de la dérivée est l'outil universel pour décrire la croissance ou la décroissance d'une fonction sur un intervalle : il transforme une question qualitative (« la fonction monte-t-elle ou descend-t-elle ? ») en un simple calcul de signe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de dérivées usuelles, y compris $\\left(\\frac1u\\right)'=-\\frac{u'}{u^2}$",
+        "Signe d'un trinôme du second degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Signe de f' et sens de variation",
+      "contenu_markdown": "Sur un intervalle où $f$ est dérivable, si $f'>0$ alors $f$ est strictement croissante ; si $f'<0$ alors $f$ est strictement décroissante ; si $f'=0$ en un point isolé (changement de signe autour), ce point est un extremum local. Pour une fonction rationnelle écrite $u/v^2$ ou dont la dérivée se ramène à une fraction de dénominateur toujours positif, le signe de $f'$ est simplement celui du numérateur.",
+      "formule_principale": "f'>0\\Leftrightarrow f \\text{ croissante} \\quad;\\quad f'<0\\Leftrightarrow f \\text{ décroissante}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$g(x)=x+2+\\dfrac{4}{x+1}$ sur $\\mathbb R\\setminus\\{-1\\}$. Étudier le signe de $g'$ et en déduire le tableau de variation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver terme à terme",
+          "justification": "(1/(x+1))' = -1/(x+1)²",
+          "resultat_markdown": "$g'(x)=1-\\dfrac{4}{(x+1)^2}=\\dfrac{(x+1)^2-4}{(x+1)^2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Factoriser le numérateur (différence de carrés)",
+          "justification": "(x+1)²-2² = (x+1-2)(x+1+2)",
+          "resultat_markdown": "$(x+1)^2-4=(x-1)(x+3)$, donc $g'(x)=\\dfrac{(x-1)(x+3)}{(x+1)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe du numérateur (dénominateur toujours positif)",
+          "justification": "trinôme de racines -3 et 1, positif à l'extérieur des racines",
+          "resultat_markdown": "$g'>0$ sur $\\left]-\\infty;-3\\right[\\cup\\left]1;+\\infty\\right[$, $g'<0$ sur $\\left]-3;-1\\right[\\cup\\left]-1;1\\right[$"
+        }
+      ],
+      "conclusion_markdown": "$g$ est croissante sur $\\left]-\\infty;-3\\right]$ et $\\left[1;+\\infty\\right[$, décroissante sur $\\left[-3;-1\\right[$ et $\\left]-1;1\\right]$, avec un maximum local en $x=-3$ et un minimum local en $x=1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'exclure la valeur interdite (ici $x=-1$) du tableau de variation, comme si la fonction y était définie.",
+          "pourquoi_faux": "En $x=-1$, la fonction n'est pas définie (division par zéro) : le tableau de variation doit marquer une double barre ou une discontinuité à cet endroit, jamais une valeur de $g$ ou de $g'$.",
+          "correction_markdown": "Repère systématiquement le domaine de définition avant de dresser le tableau, et marque toute valeur interdite par une double barre."
+        },
+        {
+          "erreur_markdown": "Confondre le signe du dénominateur avec celui du numérateur lors de la factorisation d'une différence de carrés.",
+          "pourquoi_faux": "Le dénominateur $(x+1)^2$ est un carré, donc toujours positif (nul seulement en $x=-1$, valeur exclue) ; seul le numérateur peut changer de signe, c'est lui qu'il faut étudier.",
+          "correction_markdown": "Avant de conclure sur le signe de $g'$, vérifie explicitement que le dénominateur ne change jamais de signe sur le domaine étudié."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$f'(x)=(x-2)(x+1)$. Donner le sens de variation de $f$.",
+          "solution_markdown": "Racines $-1$ et $2$, positif à l'extérieur : $f$ croissante sur $\\left]-\\infty;-1\\right]$ et $\\left[2;+\\infty\\right[$, décroissante sur $\\left[-1;2\\right]$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$h(x)=x+\\dfrac1x$ sur $\\mathbb R^*$. Calculer $h'$, la factoriser, et étudier son signe.",
+          "solution_markdown": "$h'(x)=1-\\dfrac1{x^2}=\\dfrac{x^2-1}{x^2}=\\dfrac{(x-1)(x+1)}{x^2}$. Le dénominateur $x^2>0$ pour $x\\neq0$. $h'>0$ sur $\\left]-\\infty;-1\\right[\\cup\\left]1;+\\infty\\right[$, $h'<0$ sur $\\left]-1;0\\right[\\cup\\left]0;1\\right[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Justifier pourquoi une fonction dont la dérivée s'écrit toujours sous la forme $\\dfrac{N(x)}{D(x)^2}$ avec $D(x)\\neq0$ ne peut jamais changer de sens de variation exactement en une valeur qui annule $D$.",
+          "solution_markdown": "Le dénominateur $D(x)^2$ est un carré, donc strictement positif partout où $D(x)\\neq0$ ; le signe de la dérivée y dépend donc uniquement du numérateur $N(x)$. En une valeur $a$ qui annule $D$, la fonction elle-même (et sa dérivée) n'est de toute façon pas définie : il ne peut donc pas y avoir de changement de sens de variation \"en\" ce point au sens usuel, mais tout au plus une discontinuité du domaine (souvent associée, comme ici, à une asymptote verticale) séparant deux branches de la courbe étudiées indépendamment."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "f' > 0 signifie f strictement croissante ; f' < 0 signifie f strictement décroissante.",
+        "Pour une fraction dont le dénominateur est un carré (donc toujours positif là où il est défini), le signe de la dérivée se lit directement sur le numérateur.",
+        "N'oublie jamais d'exclure les valeurs interdites du domaine de définition, en les marquant par une double barre dans le tableau de variation."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-base-plan-determinant-non-nul-1ere-ce",
+  "meta": {
+    "titre": "Montrer que deux vecteurs forment une base d'un plan vectoriel",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Bases et déterminants",
+    "duree_estimee_min": 15,
+    "tags": [
+      "algèbre linéaire",
+      "base",
+      "déterminant",
+      "vecteurs colinéaires"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "1",
+    "rappel_id": "r-II1",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux vecteurs quelconques d'un plan forment-ils toujours une base ? Non : s'ils sont colinéaires (l'un est un multiple de l'autre), ils ne peuvent engendrer que des vecteurs alignés avec eux, jamais tout le plan. Le déterminant est l'outil qui tranche immédiatement cette question, sans avoir à tracer de figure."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Coordonnées d'un vecteur dans une base donnée",
+        "Notion de vecteurs colinéaires"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère du déterminant non nul",
+      "contenu_markdown": "Un plan vectoriel $E$ est un espace de dimension 2 : toute famille de deux vecteurs non colinéaires de $E$ en est automatiquement une base (elle est à la fois libre et génératrice, car son cardinal égale la dimension de l'espace). Pour deux vecteurs $\\vec u(x_1\\,;y_1)$ et $\\vec v(x_2\\,;y_2)$ exprimés dans une base connue, ils sont colinéaires si et seulement si leur déterminant $\\det(\\vec u,\\vec v)=x_1y_2-x_2y_1$ est nul. Donc $(\\vec u\\,;\\vec v)$ est une base de $E$ si et seulement si $\\det(\\vec u,\\vec v)\\neq0$.",
+      "formule_principale": "\\det(\\vec u,\\vec v)=x_1y_2-x_2y_1 \\neq 0 \\iff (\\vec u;\\vec v) \\text{ est une base}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un plan vectoriel $E$ muni d'une base $(\\vec\\imath;\\vec\\jmath)$, on pose $\\vec u=\\vec\\imath-\\vec\\jmath$ et $\\vec v=\\vec\\imath+\\vec\\jmath$. Montrer que $(\\vec u\\,;\\vec v)$ est une base de $E$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les coordonnées de u et v dans la base (i, j)",
+          "justification": "$\\vec u=1\\vec\\imath-1\\vec\\jmath$ et $\\vec v=1\\vec\\imath+1\\vec\\jmath$",
+          "resultat_markdown": "$\\vec u(1\\,;-1)$ et $\\vec v(1\\,;1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le déterminant de u et v",
+          "justification": "$\\det(\\vec u,\\vec v)=x_1y_2-x_2y_1$ avec $(x_1,y_1)=(1,-1)$ et $(x_2,y_2)=(1,1)$",
+          "resultat_markdown": "$\\det(\\vec u,\\vec v)=1\\times1-1\\times(-1)=1+1=2$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure à partir du signe du déterminant",
+          "justification": "$2\\neq0$, donc u et v ne sont pas colinéaires",
+          "resultat_markdown": "$(\\vec u\\,;\\vec v)$ est une base de $E$, car $E$ est de dimension 2"
+        }
+      ],
+      "conclusion_markdown": "$(\\vec u\\,;\\vec v)$ est bien une base de $E$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que deux vecteurs non nuls forment automatiquement une base, sans calculer le déterminant.",
+          "pourquoi_faux": "Deux vecteurs non nuls peuvent être colinéaires (ex. u=(2;4) et v=(1;2)) : ils ne forment alors pas une base, car ils n'engendrent qu'une droite, pas tout le plan.",
+          "correction_markdown": "Calcule systématiquement le déterminant, même quand les vecteurs semblent visuellement différents."
+        },
+        {
+          "erreur_markdown": "Se tromper dans la formule du déterminant, par exemple en calculant $x_1x_2-y_1y_2$ au lieu de $x_1y_2-x_2y_1$.",
+          "pourquoi_faux": "Ce n'est pas la formule du déterminant d'ordre 2 ; elle ne détecte pas correctement la colinéarité.",
+          "correction_markdown": "Retiens le déterminant comme un produit en croix : (première coordonnée du premier vecteur) × (seconde coordonnée du second) moins (seconde coordonnée du premier) × (première coordonnée du second)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les vecteurs $\\vec u(2\\,;1)$ et $\\vec v(1\\,;3)$ forment-ils une base du plan ?",
+          "solution_markdown": "$\\det(\\vec u,\\vec v)=2\\times3-1\\times1=6-1=5\\neq0$ : $(\\vec u\\,;\\vec v)$ est une base du plan."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les vecteurs $\\vec u(3\\,;6)$ et $\\vec v(1\\,;2)$ forment-ils une base du plan ?",
+          "solution_markdown": "$\\det(\\vec u,\\vec v)=3\\times2-1\\times6=6-6=0$ : les vecteurs sont colinéaires ($\\vec u=3\\vec v$), donc $(\\vec u\\,;\\vec v)$ n'est pas une base du plan."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour quelle(s) valeur(s) du réel $m$ les vecteurs $\\vec u(m\\,;1)$ et $\\vec v(4\\,;m)$ ne forment-ils pas une base du plan ?",
+          "solution_markdown": "$(\\vec u\\,;\\vec v)$ n'est pas une base si et seulement si $\\det(\\vec u,\\vec v)=0$, soit $m\\times m-4\\times1=0$, c'est-à-dire $m^2=4$, donc $m=2$ ou $m=-2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un plan vectoriel, deux vecteurs forment une base si et seulement s'ils ne sont pas colinéaires.",
+        "Le test se fait par le calcul du déterminant : det(u,v) = x₁y₂ - x₂y₁, non nul si et seulement si la famille est une base.",
+        "Ce critère dispense de toute vérification géométrique ou visuelle : un simple calcul numérique suffit.",
+        "Un déterminant nul signale des vecteurs colinéaires, incapables d'engendrer tout le plan."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-noyau-endomorphisme-plan-1ere-ce",
+  "meta": {
+    "titre": "Déterminer le noyau d'un endomorphisme du plan",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes du plan",
+    "duree_estimee_min": 20,
+    "tags": [
+      "noyau",
+      "système linéaire homogène",
+      "vecteur directeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "r-II3a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un endomorphisme n'est pas un automorphisme, son noyau (l'ensemble des vecteurs envoyés sur le vecteur nul) devient une droite vectorielle qu'on détermine en résolvant un simple système linéaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déterminant nul caractérisant l'absence d'automorphisme",
+        "Résolution d'un système linéaire à deux inconnues"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre le système homogène associé",
+      "contenu_markdown": "Pour déterminer le noyau d'un endomorphisme du plan de matrice $M=\\begin{pmatrix}p&q\\\\r&s\\end{pmatrix}$, on résout le système linéaire homogène $M\\begin{pmatrix}u\\\\v\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\end{pmatrix}$, soit $\\begin{cases}pu+qv=0\\\\ru+sv=0\\end{cases}$. Si les deux équations obtenues sont proportionnelles (ce qui correspond à un déterminant nul), l'ensemble des solutions est une droite vectorielle, dont on donne un vecteur directeur non nul.",
+      "formule_principale": "\\ker g=\\{(u,v)\\ :\\ pu+qv=0\\}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le noyau de l'endomorphisme de matrice $M=\\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le système homogène",
+          "justification": "$M\\begin{pmatrix}u\\\\v\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\end{pmatrix}$",
+          "resultat_markdown": "$\\begin{cases}2u+4v=0\\\\u+2v=0\\end{cases}$"
+        },
+        {
+          "numero": 2,
+          "action": "Constater que les deux équations sont proportionnelles",
+          "justification": "La première équation est le double de la seconde",
+          "resultat_markdown": "Les deux équations sont équivalentes à $u+2v=0$, soit $u=-2v$."
+        },
+        {
+          "numero": 3,
+          "action": "Donner un vecteur directeur du noyau",
+          "justification": "On choisit une valeur non nulle de v",
+          "resultat_markdown": "Pour $v=1$, $u=-2$ : le vecteur $(-2,1)$ dirige le noyau."
+        }
+      ],
+      "conclusion_markdown": "$\\ker g=\\text{Vect}((-2,1))$, une droite vectorielle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne vérifier qu'une seule des deux équations et ignorer l'autre.",
+          "pourquoi_faux": "Il faut vérifier que les deux équations sont bien proportionnelles (ou résoudre le système complet) : sinon on risque de valider un vecteur qui ne vérifie qu'une des deux conditions.",
+          "correction_markdown": "Vérifie toujours que le vecteur directeur trouvé satisfait bien les deux équations du système."
+        },
+        {
+          "erreur_markdown": "Conclure que le noyau est réduit au vecteur nul alors que le déterminant de la matrice est nul.",
+          "pourquoi_faux": "Un déterminant nul signifie justement que le noyau contient des vecteurs non nuls (c'est une droite, pas seulement l'origine).",
+          "correction_markdown": "Un déterminant nul doit systématiquement mener à chercher un vecteur directeur non nul du noyau, pas à conclure qu'il est trivial."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer le noyau de l'endomorphisme de matrice $M=\\begin{pmatrix}3&6\\\\1&2\\end{pmatrix}$.",
+          "solution_markdown": "Système : $3u+6v=0$ et $u+2v=0$ : les deux équations sont proportionnelles, équivalentes à $u=-2v$. Pour $v=1$, $u=-2$ : $\\ker g=\\text{Vect}((-2,1))$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer le noyau de l'endomorphisme de matrice $M=\\begin{pmatrix}1&-1\\\\-2&2\\end{pmatrix}$.",
+          "solution_markdown": "Système : $u-v=0$ et $-2u+2v=0$ (équivalente à la première). D'où $u=v$. Pour $v=1$, $u=1$ : $\\ker g=\\text{Vect}((1,1))$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'endomorphisme $g_a$ a pour matrice $M(a)=\\begin{pmatrix}a&1\\\\1&a\\end{pmatrix}$. Déterminer le noyau de $g_a$ dans chacun des cas $a=1$ et $a=-1$ (les deux valeurs pour lesquelles $g_a$ n'est pas un automorphisme).",
+          "solution_markdown": "Pour $a=1$ : $M(1)=\\begin{pmatrix}1&1\\\\1&1\\end{pmatrix}$, système $u+v=0$ (les deux équations sont identiques). D'où $\\ker g_1=\\text{Vect}((1,-1))$. Pour $a=-1$ : $M(-1)=\\begin{pmatrix}-1&1\\\\1&-1\\end{pmatrix}$, système $-u+v=0$ soit $v=u$. D'où $\\ker g_{-1}=\\text{Vect}((1,1))$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le noyau se calcule en résolvant le système homogène associé à la matrice de l'endomorphisme.",
+        "Un déterminant nul garantit que les deux équations du système sont proportionnelles, donnant une droite vectorielle comme noyau.",
+        "Toujours exprimer le résultat sous la forme Vect(vecteur directeur), pas seulement une relation entre u et v."
+      ]
+    }
+  ]
+}

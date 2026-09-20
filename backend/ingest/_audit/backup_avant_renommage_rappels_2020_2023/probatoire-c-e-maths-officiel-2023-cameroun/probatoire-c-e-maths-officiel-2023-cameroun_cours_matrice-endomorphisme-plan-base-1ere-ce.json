@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-matrice-endomorphisme-plan-base-1ere-ce",
+  "meta": {
+    "titre": "Écrire la matrice d'un endomorphisme du plan dans une base donnée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes du plan",
+    "duree_estimee_min": 20,
+    "tags": [
+      "matrice d'un endomorphisme",
+      "base du plan",
+      "application linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "r-II1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La matrice d'un endomorphisme résume en un seul tableau tout ce qu'il fait au plan : il suffit de connaître les images des deux vecteurs de base pour la construire, et ensuite calculer l'image de n'importe quel vecteur par un simple produit matriciel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'endomorphisme (application linéaire du plan dans lui-même)",
+        "Coordonnées d'un vecteur dans une base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les colonnes sont les images des vecteurs de base",
+      "contenu_markdown": "La matrice d'un endomorphisme $g$ dans une base $(\\vec\\imath,\\vec\\jmath)$ a pour colonnes les coordonnées de $g(\\vec\\imath)$ et $g(\\vec\\jmath)$ exprimées dans cette même base : la première colonne est l'image du premier vecteur de base, la seconde colonne est l'image du second.",
+      "formule_principale": "M=\\begin{pmatrix}\\text{coord. de }g(\\vec\\imath)&\\text{coord. de }g(\\vec\\jmath)\\end{pmatrix}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un endomorphisme $g$ du plan vérifie $g(\\vec\\imath)=2\\vec\\imath-\\vec\\jmath$ et $g(\\vec\\jmath)=\\vec\\imath+3\\vec\\jmath$. Écrire la matrice $M$ de $g$ dans la base $(\\vec\\imath,\\vec\\jmath)$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Extraire les coordonnées de g(i)",
+          "justification": "$g(\\vec\\imath)=2\\vec\\imath-\\vec\\jmath$ a pour coordonnées (2,-1)",
+          "resultat_markdown": "Première colonne : $\\begin{pmatrix}2\\\\-1\\end{pmatrix}$"
+        },
+        {
+          "numero": 2,
+          "action": "Extraire les coordonnées de g(j)",
+          "justification": "$g(\\vec\\jmath)=\\vec\\imath+3\\vec\\jmath$ a pour coordonnées (1,3)",
+          "resultat_markdown": "Deuxième colonne : $\\begin{pmatrix}1\\\\3\\end{pmatrix}$"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la matrice",
+          "justification": "On place les deux colonnes côte à côte",
+          "resultat_markdown": "$M=\\begin{pmatrix}2&1\\\\-1&3\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "$M=\\begin{pmatrix}2&1\\\\-1&3\\end{pmatrix}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer les coordonnées de $g(\\vec\\imath)$ et $g(\\vec\\jmath)$ en lignes plutôt qu'en colonnes.",
+          "pourquoi_faux": "La convention pour représenter un endomorphisme est toujours en colonnes ; inverser lignes et colonnes donne la transposée de la vraie matrice.",
+          "correction_markdown": "Rappelle-toi : chaque colonne = l'image d'un vecteur de base, dans l'ordre $(\\vec\\imath,\\vec\\jmath)$."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre des colonnes (mettre $g(\\vec\\jmath)$ en premier).",
+          "pourquoi_faux": "L'ordre des colonnes doit correspondre exactement à l'ordre des vecteurs de la base annoncée.",
+          "correction_markdown": "Vérifie toujours quel vecteur de base est cité en premier dans l'énoncé avant d'assembler la matrice."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un endomorphisme $h$ vérifie $h(\\vec\\imath)=\\vec\\imath-\\vec\\jmath$ et $h(\\vec\\jmath)=-\\vec\\imath+2\\vec\\jmath$. Écrire sa matrice.",
+          "solution_markdown": "$M=\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un endomorphisme $g$ vérifie $g(\\vec\\imath+\\vec\\jmath)=3\\vec\\imath+\\vec\\jmath$ et $g(\\vec\\imath-\\vec\\jmath)=\\vec\\imath-3\\vec\\jmath$. En déduire $g(\\vec\\imath)$, $g(\\vec\\jmath)$, puis la matrice de $g$.",
+          "solution_markdown": "Par linéarité, $g(\\vec\\imath)+g(\\vec\\jmath)=3\\vec\\imath+\\vec\\jmath$ et $g(\\vec\\imath)-g(\\vec\\jmath)=\\vec\\imath-3\\vec\\jmath$. En additionnant : $2g(\\vec\\imath)=4\\vec\\imath-2\\vec\\jmath$, donc $g(\\vec\\imath)=2\\vec\\imath-\\vec\\jmath$. En soustrayant : $2g(\\vec\\jmath)=2\\vec\\imath+4\\vec\\jmath$, donc $g(\\vec\\jmath)=\\vec\\imath+2\\vec\\jmath$. $M=\\begin{pmatrix}2&1\\\\-1&2\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un endomorphisme $g$ est défini par $g(x,y)=(2x-y,\\,x+y)$ pour tout vecteur de coordonnées $(x,y)$. Écrire sa matrice, puis calculer l'image du vecteur $(3,-2)$.",
+          "solution_markdown": "$g(\\vec\\imath)=g(1,0)=(2,1)$ et $g(\\vec\\jmath)=g(0,1)=(-1,1)$, donc $M=\\begin{pmatrix}2&-1\\\\1&1\\end{pmatrix}$. Image de $(3,-2)$ : $M\\begin{pmatrix}3\\\\-2\\end{pmatrix}=\\begin{pmatrix}2\\times3+(-1)\\times(-2)\\\\1\\times3+1\\times(-2)\\end{pmatrix}=\\begin{pmatrix}8\\\\1\\end{pmatrix}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Colonne 1 = coordonnées de $g(\\vec\\imath)$, colonne 2 = coordonnées de $g(\\vec\\jmath)$, dans cet ordre.",
+        "Quand l'énoncé donne les images de combinaisons de vecteurs de base, on retrouve g(i) et g(j) par addition/soustraction grâce à la linéarité.",
+        "Une fois la matrice connue, l'image de tout vecteur s'obtient par un simple produit matriciel."
+      ]
+    }
+  ]
+}

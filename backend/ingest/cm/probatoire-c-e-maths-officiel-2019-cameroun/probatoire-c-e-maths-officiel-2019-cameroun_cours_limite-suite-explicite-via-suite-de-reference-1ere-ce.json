@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-limite-suite-explicite-via-suite-de-reference-1ere-ce",
+  "meta": {
+    "titre": "Déterminer la limite d'une suite explicite en la comparant à une suite de référence",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Limites",
+    "duree_estimee_min": 25,
+    "tags": [
+      "limite de suite",
+      "suite de référence",
+      "quotient de termes de même ordre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB3d",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une expression explicite comme $\\dfrac{n+2}{n+1}$, il n'est pas nécessaire d'invoquer un théorème sophistiqué : une simple réécriture qui fait apparaître le terme dominant du numérateur et du dénominateur suffit à lire la limite directement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites de référence : $\\lim_{n\\to+\\infty}\\dfrac{1}{n}=0$ et plus généralement $\\lim_{n\\to+\\infty}\\dfrac{1}{n+a}=0$ pour tout réel $a$",
+        "Opérations sur les limites (somme, quotient)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Factoriser par le terme dominant",
+      "contenu_markdown": "Pour une suite du type $u_n=\\dfrac{an+b}{cn+d}$ (avec $c\\neq0$), on factorise le numérateur et le dénominateur par $n$ : $u_n=\\dfrac{n(a+\\frac{b}{n})}{n(c+\\frac{d}{n})}=\\dfrac{a+\\frac{b}{n}}{c+\\frac{d}{n}}$. Comme $\\frac{b}{n}\\to0$ et $\\frac{d}{n}\\to0$ quand $n\\to+\\infty$, on obtient directement $\\lim u_n=\\dfrac{a}{c}$ (rapport des coefficients dominants).",
+      "formule_principale": "\\lim_{n\\to+\\infty}\\dfrac{an+b}{cn+d}=\\dfrac{a}{c}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer $\\lim_{n\\to+\\infty}u_n$ avec $u_n=\\dfrac{n+2}{n+1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Factoriser numérateur et dénominateur par n",
+          "justification": "faire apparaître les termes en 1/n",
+          "resultat_markdown": "$u_n=\\dfrac{n(1+\\frac{2}{n})}{n(1+\\frac{1}{n})}=\\dfrac{1+\\frac{2}{n}}{1+\\frac{1}{n}}$"
+        },
+        {
+          "numero": 2,
+          "action": "Passer à la limite terme à terme",
+          "justification": "2/n→0 et 1/n→0 quand n→+∞",
+          "resultat_markdown": "$\\lim u_n=\\dfrac{1+0}{1+0}=1$"
+        }
+      ],
+      "conclusion_markdown": "$\\lim_{n\\to+\\infty}u_n=1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure hâtivement que la limite est \"l'infini sur l'infini\", donc indéterminée, sans factoriser par le terme dominant pour lever l'indétermination.",
+          "pourquoi_faux": "La forme $\\frac{\\infty}{\\infty}$ est indéterminée telle quelle, mais factoriser par $n$ transforme l'expression en un quotient de limites finies parfaitement déterminé.",
+          "correction_markdown": "Face à une forme indéterminée $\\frac{\\infty}{\\infty}$ pour une fraction rationnelle en $n$, toujours factoriser numérateur et dénominateur par leur terme de plus haut degré avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $\\lim_{n\\to+\\infty}\\dfrac{2n+1}{n+5}$.",
+          "solution_markdown": "En factorisant par n : $\\dfrac{2+\\frac1n}{1+\\frac5n}\\to\\dfrac{2}{1}=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $\\lim_{n\\to+\\infty}\\dfrac{3-n}{2n+4}$.",
+          "solution_markdown": "En factorisant par n : $\\dfrac{-1+\\frac3n}{2+\\frac4n}\\to\\dfrac{-1}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$v_n=n+1$ (arithmétique de raison 1) et $u_n=1+\\dfrac1{v_n}$. Déterminer $\\lim u_n$ sans repasser par la forme $\\frac{n+2}{n+1}$.",
+          "solution_markdown": "$v_n\\to+\\infty$ quand $n\\to+\\infty$, donc $\\dfrac{1}{v_n}\\to0$, donc $u_n=1+\\dfrac1{v_n}\\to1+0=1$ : même résultat obtenu directement via la suite auxiliaire, sans repasser par la forme explicite en $n$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La limite d'un quotient de deux expressions affines en $n$ s'obtient en factorisant par $n$ au numérateur et au dénominateur : le résultat est le rapport des coefficients de $n$."
+      ]
+    }
+  ]
+}

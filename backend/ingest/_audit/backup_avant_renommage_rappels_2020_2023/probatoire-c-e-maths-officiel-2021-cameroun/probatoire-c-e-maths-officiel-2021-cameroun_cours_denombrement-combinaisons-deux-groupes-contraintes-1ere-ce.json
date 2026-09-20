@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-denombrement-combinaisons-deux-groupes-contraintes-1ere-ce",
+  "meta": {
+    "titre": "Dénombrer des tirages sous contrainte de deux groupes disjoints",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Dénombrement - Combinaisons sous contrainte",
+    "duree_estimee_min": 20,
+    "tags": [
+      "combinaisons",
+      "dénombrement",
+      "événements incompatibles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "2",
+    "rappel_id": "r-2-2b",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Choisir 3 personnes de même sexe parmi un groupe mixte » n'est pas un seul dénombrement, mais deux cas qui s'excluent mutuellement : soit trois hommes, soit trois femmes. Reconnaître ces cas incompatibles, puis les additionner, est la clé de ce type de problème."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Nombre de combinaisons $C_n^p$",
+        "Distinction entre événements incompatibles (qui s'additionnent) et choix indépendants combinés (qui se multiplient)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décomposer en cas incompatibles avant de sommer",
+      "contenu_markdown": "Quand une population est partagée en deux groupes disjoints (par exemple filles et garçons) et qu'une contrainte impose que le tirage se fasse ENTIÈREMENT dans un seul de ces groupes (« que des filles » OU « que des garçons »), ces deux cas sont incompatibles : un tirage ne peut pas être à la fois entièrement dans le premier groupe et entièrement dans le second. On calcule séparément le nombre de combinaisons possibles dans chaque groupe, puis on ADDITIONNE ces deux résultats pour obtenir le nombre total de tirages satisfaisant la contrainte.",
+      "formule_principale": "\\text{nombre total}=C_{n_1}^{p}+C_{n_2}^{p}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Parmi 20 élèves (6 filles, 14 garçons), on choisit simultanément 3 élèves. Déterminer le nombre de choix ne contenant que des élèves de même sexe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux cas incompatibles",
+          "justification": "\"Même sexe\" signifie \"trois filles\" OU \"trois garçons\", deux événements qui ne peuvent pas se produire simultanément",
+          "resultat_markdown": "Cas 1 : 3 filles parmi 6 ; Cas 2 : 3 garçons parmi 14"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de choix pour chaque cas",
+          "justification": "Combinaisons dans chaque groupe pris séparément",
+          "resultat_markdown": "$C_6^3=\\dfrac{6\\times5\\times4}{3\\times2\\times1}=20$ ; $C_{14}^3=\\dfrac{14\\times13\\times12}{3\\times2\\times1}=364$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les deux cas",
+          "justification": "Les deux cas étant incompatibles, la réunion se dénombre par une somme",
+          "resultat_markdown": "$20+364=384$"
+        }
+      ],
+      "conclusion_markdown": "Il y a 384 choix possibles ne contenant que des élèves de même sexe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier $C_6^3\\times C_{14}^3$ au lieu de les additionner.",
+          "pourquoi_faux": "Un produit compterait les tirages combinant SIMULTANÉMENT un choix de 3 filles ET un choix de 3 garçons (soit 6 personnes au total), ce qui n'est pas la question posée ; ici on veut un OU exclusif entre deux cas disjoints.",
+          "correction_markdown": "Multiplie seulement quand les deux choix se combinent dans un seul tirage global (ex. 2 filles ET 3 garçons pour former un groupe de 5) ; additionne quand ce sont deux cas alternatifs qui s'excluent."
+        },
+        {
+          "erreur_markdown": "Oublier un des deux cas (par exemple ne compter que les groupes de filles).",
+          "pourquoi_faux": "\"Même sexe\" autorise aussi bien un groupe de trois garçons qu'un groupe de trois filles : les deux cas doivent être comptés puis additionnés.",
+          "correction_markdown": "Relis l'énoncé pour identifier TOUS les cas couverts par la contrainte avant de calculer quoi que ce soit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un groupe compte 4 filles et 5 garçons. On choisit 2 personnes. Combien de choix de même sexe sont possibles ?",
+          "solution_markdown": "$C_4^2+C_5^2=6+10=16$ choix possibles."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une urne contient 7 boules rouges et 5 boules bleues. On tire simultanément 3 boules. Combien de tirages sont unicolores (une seule couleur) ?",
+          "solution_markdown": "$C_7^3+C_5^3=35+10=45$ tirages unicolores."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un jury de 4 personnes doit être choisi parmi 6 femmes et 8 hommes. Combien de jurys sont composés d'un seul sexe (soit 4 femmes, soit 4 hommes) ? Comparer ce résultat au nombre total de jurys possibles.",
+          "solution_markdown": "Jurys unisexes : $C_6^4+C_8^4=15+70=85$. Total de jurys possibles (sans contrainte) : $C_{14}^4=1001$. Les jurys unisexes ne représentent donc qu'une petite proportion ($85/1001\\approx8{,}5\\,\\%$) de tous les jurys possibles, ce qui illustre que la contrainte \"même sexe\" est restrictive."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une contrainte \"tout dans un seul groupe, parmi plusieurs groupes disjoints\" se traduit par des cas incompatibles.",
+        "On calcule le nombre de combinaisons dans chaque groupe séparément, puis on ADDITIONNE ces résultats.",
+        "Ne jamais multiplier dans ce cas : la multiplication sert à combiner des choix simultanés dans un seul tirage, pas des cas alternatifs exclusifs.",
+        "Vérifier toujours qu'aucun cas prévu par la contrainte n'a été oublié avant de sommer."
+      ]
+    }
+  ]
+}

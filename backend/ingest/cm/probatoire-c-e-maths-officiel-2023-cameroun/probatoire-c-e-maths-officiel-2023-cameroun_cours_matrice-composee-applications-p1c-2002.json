@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-matrice-composee-applications-p1c-2002",
+  "meta": {
+    "titre": "Matrice d'une composée d'applications linéaires",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes du plan",
+    "duree_estimee_min": 20,
+    "tags": [
+      "composition d'applications linéaires",
+      "produit matriciel",
+      "matrice carrée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2023-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2023",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-officiel-2023-cameroun-r-II3b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Composer deux applications linéaires revient exactement à multiplier leurs matrices : c'est ce qui rend le calcul matriciel si pratique pour étudier des transformations successives du plan."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Matrice d'un endomorphisme dans une base",
+        "Produit de deux matrices $2\\times2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La matrice d'une composée est le produit des matrices",
+      "contenu_markdown": "La matrice de la composée $g\\circ g$ d'un endomorphisme avec lui-même est le produit matriciel $M\\times M=M^2$, où $M$ est la matrice de $g$ ; ce produit se calcule ligne par colonne, comme un produit matriciel ordinaire. Plus généralement, la matrice de $g\\circ h$ est le produit $M_g\\times M_h$ (dans cet ordre, car la composition n'est pas commutative en général).",
+      "formule_principale": "M_{g\\circ g}=M^2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'endomorphisme $g$ a pour matrice $M=\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}$. Calculer la matrice de $g\\circ g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le produit M x M",
+          "justification": "$M_{g\\circ g}=M^2=M\\times M$",
+          "resultat_markdown": "$M^2=\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}\\times\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer chaque coefficient ligne par colonne",
+          "justification": "Chaque coefficient est le produit scalaire d'une ligne de la première matrice par une colonne de la seconde",
+          "resultat_markdown": "Coefficient (1,1) : $1\\times1+2\\times0=1$. Coefficient (1,2) : $1\\times2+2\\times1=4$. Coefficient (2,1) : $0\\times1+1\\times0=0$. Coefficient (2,2) : $0\\times2+1\\times1=1$."
+        },
+        {
+          "numero": 3,
+          "action": "Assembler le résultat",
+          "justification": "On place les quatre coefficients calculés",
+          "resultat_markdown": "$M^2=\\begin{pmatrix}1&4\\\\0&1\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "La matrice de $g\\circ g$ est $\\begin{pmatrix}1&4\\\\0&1\\end{pmatrix}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier les matrices coefficient par coefficient (comme une multiplication terme à terme) au lieu de faire un vrai produit matriciel.",
+          "pourquoi_faux": "Le produit matriciel combine une ligne entière de la première matrice avec une colonne entière de la seconde ; ce n'est jamais un simple produit terme à terme.",
+          "correction_markdown": "Applique systématiquement la règle ligne par colonne, en écrivant chaque somme de deux produits."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre du produit pour $g\\circ h$ (calculer $M_h\\times M_g$ au lieu de $M_g\\times M_h$) quand les deux endomorphismes sont différents.",
+          "pourquoi_faux": "Le produit matriciel n'est pas commutatif en général : l'ordre de composition doit être respecté.",
+          "correction_markdown": "Pour $g\\circ h$, place toujours $M_g$ à gauche et $M_h$ à droite dans le produit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "L'endomorphisme $g$ a pour matrice $M=\\begin{pmatrix}2&0\\\\1&3\\end{pmatrix}$. Calculer $M^2$.",
+          "solution_markdown": "$M^2=\\begin{pmatrix}2\\times2+0\\times1&2\\times0+0\\times3\\\\1\\times2+3\\times1&1\\times0+3\\times3\\end{pmatrix}=\\begin{pmatrix}4&0\\\\5&9\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $M_g=\\begin{pmatrix}1&1\\\\0&1\\end{pmatrix}$ et $M_h=\\begin{pmatrix}2&0\\\\1&1\\end{pmatrix}$. Calculer la matrice de $g\\circ h$.",
+          "solution_markdown": "$M_g\\times M_h=\\begin{pmatrix}1\\times2+1\\times1&1\\times0+1\\times1\\\\0\\times2+1\\times1&0\\times0+1\\times1\\end{pmatrix}=\\begin{pmatrix}3&1\\\\1&1\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'endomorphisme $g$ a pour matrice $M=\\begin{pmatrix}1&-1\\\\1&-1\\end{pmatrix}$. Calculer $M^2$ et en déduire une relation entre $\\text{Im}(g)$ et $\\ker(g)$.",
+          "solution_markdown": "$M^2=\\begin{pmatrix}1\\times1+(-1)\\times1&1\\times(-1)+(-1)\\times(-1)\\\\1\\times1+(-1)\\times1&1\\times(-1)+(-1)\\times(-1)\\end{pmatrix}=\\begin{pmatrix}0&0\\\\0&0\\end{pmatrix}$. Comme $g\\circ g$ est l'application nulle, l'image de tout vecteur par $g$ est envoyée sur le vecteur nul par une seconde application de $g$ : cela signifie que $\\text{Im}(g)\\subseteq\\ker(g)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$M_{g\\circ g}=M^2$, calculé par un vrai produit matriciel ligne par colonne, jamais terme à terme.",
+        "Plus généralement $M_{g\\circ h}=M_g\\times M_h$ : l'ordre des matrices doit respecter l'ordre de composition.",
+        "Un carré de matrice nul ($M^2=0$) traduit une inclusion $\\text{Im}(g)\\subseteq\\ker(g)$."
+      ]
+    }
+  ]
+}

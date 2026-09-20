@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-etude-signe-expression-homographique-recurrence-1ere-ce",
+  "meta": {
+    "titre": "Étudier le signe d'une expression homographique liée à une suite récurrente",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Signe et récurrence",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suite homographique",
+      "signe",
+      "fonction associée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB1a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $u_{n+1}=g(u_n)$ où $g$ est homographique se comprend d'abord par l'étude de la fonction $g$ elle-même : son signe et ses variations gouvernent tout le comportement de la suite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Fonction homographique $g(x)=\\dfrac{ax+b}{cx+d}$ et son domaine de définition",
+        "Résolution d'une inéquation quotient par tableau de signes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Signe d'une expression homographique",
+      "contenu_markdown": "Pour étudier le signe de $g(x)=\\dfrac{ax+b}{cx+d}$, on étudie séparément le signe du numérateur $ax+b$ et celui du dénominateur $cx+d$, puis on applique la règle des signes d'un quotient dans un tableau récapitulatif. Ce signe, une fois établi sur l'intervalle pertinent, permet ensuite d'étudier le signe de $u_n-\\ell$ pour tout $n$ par récurrence, où $\\ell$ est une valeur particulière (souvent la limite candidate de la suite).",
+      "formule_principale": "\\text{signe}\\left(\\dfrac{ax+b}{cx+d}\\right) = \\text{signe}(ax+b)\\times\\text{signe}(cx+d)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier le signe de $g(x)-1=\\dfrac{2x-1}{x}-1=\\dfrac{x-1}{x}$ pour $x>0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire au même dénominateur",
+          "justification": "combiner les deux termes",
+          "resultat_markdown": "$\\dfrac{2x-1-x}{x}=\\dfrac{x-1}{x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe pour x>0",
+          "justification": "dénominateur x>0 toujours positif sur ce domaine",
+          "resultat_markdown": "signe de $g(x)-1$ = signe de $(x-1)$"
+        }
+      ],
+      "conclusion_markdown": "Pour $x>0$ : $g(x)-1<0$ si $0<x<1$, $g(x)-1=0$ si $x=1$, $g(x)-1>0$ si $x>1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier les deux membres d'une inégalité par une expression contenant $x$ (comme le dénominateur) sans connaître son signe.",
+          "pourquoi_faux": "Multiplier par une quantité négative inverse le sens de l'inégalité ; agir sans connaître son signe peut inverser la conclusion à tort.",
+          "correction_markdown": "Toujours ramener l'étude à un quotient réduit au même dénominateur et étudier séparément le signe du numérateur et du dénominateur, jamais multiplier en croix sans précaution de signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Étudier le signe de $\\dfrac{x-2}{x+1}$ sur $]-1,+\\infty[$.",
+          "solution_markdown": "Dénominateur toujours positif sur cet intervalle ; le signe suit celui de $(x-2)$ : négatif sur $]-1,2[$, nul en $x=2$, positif sur $]2,+\\infty[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Montrer que $\\dfrac{3x-1}{x}-2=\\dfrac{x-1}{x}$ pour $x\\neq0$.",
+          "solution_markdown": "$\\dfrac{3x-1}{x}-2=\\dfrac{3x-1-2x}{x}=\\dfrac{x-1}{x}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$u_{n+1}=g(u_n)$ avec $g(x)-1=\\dfrac{x-1}{x}$ pour $x>0$. Sachant $u_0>1$, montrer par récurrence que $u_n>1$ pour tout $n$.",
+          "solution_markdown": "Initialisation : $u_0>1$ par hypothèse. Hérédité : si $u_n>1>0$, alors d'après le signe étudié, $g(u_n)-1>0$ donc $u_{n+1}=g(u_n)>1$. Par récurrence, $u_n>1$ pour tout $n$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le signe d'une expression homographique s'obtient en combinant les signes séparés du numérateur et du dénominateur réduits au même dénominateur ; ce signe pilote ensuite, par récurrence, celui de $u_n-\\ell$."
+      ]
+    }
+  ]
+}

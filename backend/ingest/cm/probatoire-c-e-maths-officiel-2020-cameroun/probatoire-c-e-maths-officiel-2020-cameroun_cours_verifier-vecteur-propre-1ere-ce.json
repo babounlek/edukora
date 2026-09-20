@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-verifier-vecteur-propre-1ere-ce",
+  "meta": {
+    "titre": "Vérifier qu'un vecteur est vecteur propre d'un endomorphisme",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Vecteurs propres",
+    "duree_estimee_min": 12,
+    "tags": [
+      "vecteur propre",
+      "valeur propre",
+      "calcul matriciel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2020-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "r-II3b",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un vecteur propre est un vecteur dont l'image, par un endomorphisme donné, reste sur sa propre droite : il ne fait que s'allonger, se raccourcir, ou changer de sens. Vérifier qu'un vecteur proposé est bien vecteur propre ne demande qu'un calcul direct."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Produit d'une matrice par un vecteur colonne",
+        "Définition d'un vecteur propre et d'une valeur propre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer M·v et comparer à λv",
+      "contenu_markdown": "Pour vérifier qu'un vecteur $\\vec v$ est vecteur propre d'un endomorphisme de matrice $M$, associé à une valeur propre $\\lambda$, on calcule l'image $M\\vec v$ et on la compare à $\\lambda\\vec v$ : l'égalité des deux confirme le résultat.",
+      "formule_principale": "M\\vec v=\\lambda\\vec v \\iff \\vec v \\text{ est vecteur propre pour la valeur propre } \\lambda"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que $\\vec e_2=2\\vec\\imath-\\vec\\jmath$ vérifie $g(\\vec e_2)=-8\\vec e_2$, sachant que $g$ a pour matrice $\\begin{pmatrix}-6&4\\\\3&-2\\end{pmatrix}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer M·v",
+          "justification": "Produit matrice-vecteur",
+          "resultat_markdown": "$\\begin{pmatrix}-6&4\\\\3&-2\\end{pmatrix}\\begin{pmatrix}2\\\\-1\\end{pmatrix}=\\begin{pmatrix}-16\\\\8\\end{pmatrix}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer -8v",
+          "justification": "Multiplier chaque coordonnée par -8",
+          "resultat_markdown": "$-8\\begin{pmatrix}2\\\\-1\\end{pmatrix}=\\begin{pmatrix}-16\\\\8\\end{pmatrix}$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer",
+          "justification": "Les deux résultats sont identiques",
+          "resultat_markdown": "$g(\\vec e_2)=-8\\vec e_2$"
+        }
+      ],
+      "conclusion_markdown": "Le calcul confirme $g(\\vec e_2)=-8\\vec e_2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier $\\vec v$ par $\\lambda$ AVANT d'avoir calculé $M\\vec v$, et comparer un résultat approximatif.",
+          "pourquoi_faux": "Les deux calculs ($M\\vec v$ et $\\lambda\\vec v$) doivent être menés intégralement et séparément jusqu'au bout, puis comparés terme à terme, sans raccourci.",
+          "correction_markdown": "Calcule d'abord $M\\vec v$ complètement, puis $\\lambda\\vec v$ complètement, et compare seulement à la fin."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Vérifier que $\\vec v(1;1)$ est vecteur propre de matrice $\\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}$ pour la valeur propre 4.",
+          "solution_markdown": "$\\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}\\begin{pmatrix}1\\\\1\\end{pmatrix}=\\begin{pmatrix}4\\\\4\\end{pmatrix}=4\\begin{pmatrix}1\\\\1\\end{pmatrix}$ : confirmé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le vecteur $\\vec v(1;-1)$ est-il vecteur propre de $\\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}$ ?",
+          "solution_markdown": "$\\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}\\begin{pmatrix}1\\\\-1\\end{pmatrix}=\\begin{pmatrix}2\\\\-2\\end{pmatrix}=2\\begin{pmatrix}1\\\\-1\\end{pmatrix}$ : oui, vecteur propre pour la valeur propre 2."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un endomorphisme $h$ vérifie $h(\\vec v)=3\\vec v$ pour un vecteur $\\vec v\\neq\\vec0$. Que peut-on dire de $h(2\\vec v)$ et de $h(\\vec v+\\vec v)$ ? Cela remet-il en cause le fait que $\\vec v$ est vecteur propre pour une seule valeur propre ?",
+          "solution_markdown": "Par linéarité, $h(2\\vec v)=2h(\\vec v)=6\\vec v=3(2\\vec v)$ : le vecteur $2\\vec v$ est AUSSI vecteur propre, pour la MÊME valeur propre 3 (comme tout vecteur non nul de la droite dirigée par $\\vec v$). Cela ne contredit pas l'unicité de la valeur propre associée à $\\vec v$ : c'est la droite entière qui partage la même valeur propre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Vérifier qu'un vecteur est vecteur propre revient à comparer M·v et λv, calculés séparément puis mis côte à côte.",
+        "Toute la droite dirigée par un vecteur propre partage la même valeur propre.",
+        "Cette vérification est l'étape clé avant d'écrire une matrice diagonale dans une base de vecteurs propres."
+      ]
+    }
+  ]
+}

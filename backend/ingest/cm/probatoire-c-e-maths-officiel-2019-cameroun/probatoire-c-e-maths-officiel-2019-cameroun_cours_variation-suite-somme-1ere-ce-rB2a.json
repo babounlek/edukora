@@ -1,0 +1,104 @@
+{
+  "cours_id": "cours-variation-suite-somme-1ere-ce",
+  "meta": {
+    "titre": "Calculer la différence de deux termes consécutifs d'une suite récurrente",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites - Sens de variation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suite récurrente",
+      "sens de variation",
+      "différence de termes consécutifs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2019-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2019",
+    "exercice_numero": "4",
+    "rappel_id": "rB2a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour une suite définie par récurrence, étudier le sens de variation revient toujours à examiner le signe de la différence $u_{n+1}-u_n$ : positif, la suite croît ; négatif, elle décroît."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition du sens de variation d'une suite via le signe de $u_{n+1}-u_n$",
+        "Manipulation algébrique d'une expression de récurrence pour former cette différence"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer et interpréter u_{n+1} - u_n",
+      "contenu_markdown": "Pour une suite $(u_n)$ définie par $u_{n+1}=g(u_n)$, on calcule $u_{n+1}-u_n=g(u_n)-u_n$ en réduisant au même dénominateur si nécessaire, puis on étudie son signe (souvent à l'aide d'une propriété de signe déjà établie sur $u_n$, comme $u_n>1$). Si $u_{n+1}-u_n$ garde un signe constant pour tout $n$, la suite est monotone (croissante si positif, décroissante si négatif).",
+      "formule_principale": "u_{n+1}-u_n>0 \\Rightarrow (u_n) \\text{ croissante} \\quad;\\quad u_{n+1}-u_n<0 \\Rightarrow (u_n) \\text{ décroissante}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$u_{n+1}=\\dfrac{2u_n-1}{u_n}$, avec $u_n>1$ pour tout $n$ (déjà établi). Étudier le signe de $u_{n+1}-u_n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire au même dénominateur",
+          "justification": "combiner u_{n+1} et u_n",
+          "resultat_markdown": "$u_{n+1}-u_n=\\dfrac{2u_n-1}{u_n}-u_n=\\dfrac{2u_n-1-u_n^2}{u_n}=\\dfrac{-(u_n^2-2u_n+1)}{u_n}=\\dfrac{-(u_n-1)^2}{u_n}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe",
+          "justification": "carré toujours positif, u_n>1>0",
+          "resultat_markdown": "$-(u_n-1)^2\\leq0$ et $u_n>0$, donc $u_{n+1}-u_n\\leq0$"
+        }
+      ],
+      "conclusion_markdown": "$u_{n+1}-u_n\\leq0$ pour tout $n$ (nul seulement si $u_n=1$, impossible ici car $u_n>1$) : la suite $(u_n)$ est strictement décroissante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter à une expression de $u_{n+1}-u_n$ non factorisée, sans reconnaître un carré parfait qui permettrait de conclure immédiatement sur le signe.",
+          "pourquoi_faux": "Une expression du type $-u_n^2+2u_n-1$ ne révèle pas son signe directement, alors que sa forme factorisée $-(u_n-1)^2$ le rend évident (toujours négatif ou nul).",
+          "correction_markdown": "Toujours essayer de factoriser l'expression de $u_{n+1}-u_n$ (identité remarquable, mise en évidence) avant de conclure sur son signe par un tableau ou une étude au cas par cas inutilement compliquée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$u_{n+1}=u_n+3$. Quel est le signe de $u_{n+1}-u_n$ et le sens de variation de la suite ?",
+          "solution_markdown": "$u_{n+1}-u_n=3>0$ : la suite est strictement croissante."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$u_{n+1}=\\sqrt{u_n}$, avec $0<u_n<1$ pour tout $n$. Étudier le signe de $u_{n+1}-u_n$.",
+          "solution_markdown": "Pour $0<u_n<1$, $\\sqrt{u_n}>u_n$ (élever au carré un nombre entre 0 et 1 le diminue), donc $u_{n+1}-u_n=\\sqrt{u_n}-u_n>0$ : la suite est croissante."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si $u_{n+1}-u_n=\\dfrac{-(u_n-1)^2}{u_n}$ avec $u_n>1$, la suite ne peut jamais devenir constante.",
+          "solution_markdown": "$u_{n+1}-u_n=0$ exigerait $(u_n-1)^2=0$ donc $u_n=1$, exclu par l'hypothèse $u_n>1$ ; la différence est donc strictement négative à chaque rang, jamais nulle : la suite est strictement décroissante à tout rang, jamais stationnaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le sens de variation d'une suite récurrente s'établit en étudiant le signe de $u_{n+1}-u_n$, souvent factorisable en une expression dont le signe est immédiat (carré, produit de facteurs de signe connu)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-matrice-endomorphisme-plan-base-1ere-ce",
+  "meta": {
+    "titre": "Écrire la matrice d'un endomorphisme du plan dans une base donnée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Algèbre linéaire - Endomorphismes et matrices",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algèbre linéaire",
+      "endomorphisme",
+      "matrice",
+      "changement de base"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-officiel-2021-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2021",
+    "correction_id": null,
+    "exercice_numero": "1",
+    "rappel_id": "r-II2",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une même application linéaire s'écrit avec des matrices différentes selon la base choisie pour l'exprimer. Savoir reconstruire cette matrice dans une base qui n'est pas celle de départ - en particulier quand les images des vecteurs sont d'abord connues dans une AUTRE base - est une compétence clé de l'algèbre linéaire du Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposition d'un vecteur dans une base",
+        "Notion d'endomorphisme (application linéaire d'un espace vectoriel dans lui-même)",
+        "Résolution d'un système linéaire simple (par combinaison de deux équations)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire la matrice colonne par colonne",
+      "contenu_markdown": "La matrice d'un endomorphisme $f$ dans une base $(\\vec e_1\\,;\\vec e_2)$ a pour colonnes les coordonnées de $f(\\vec e_1)$ et de $f(\\vec e_2)$, exprimées dans CETTE MÊME base : la première colonne contient les coordonnées de l'image du premier vecteur de base, la seconde colonne celles de l'image du second. Si les images $f(\\vec e_1)$ et $f(\\vec e_2)$ sont initialement données dans une autre base, il faut d'abord les réexprimer dans la base $(\\vec e_1\\,;\\vec e_2)$ avant de pouvoir écrire la matrice.",
+      "formule_principale": "A=\\begin{pmatrix}\\text{coord. de } f(\\vec e_1) \\text{ dans } (\\vec e_1;\\vec e_2) & \\text{coord. de } f(\\vec e_2) \\text{ dans } (\\vec e_1;\\vec e_2)\\end{pmatrix}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $\\vec u=\\vec\\imath-\\vec\\jmath$, $\\vec v=\\vec\\imath+\\vec\\jmath$, $f(\\vec u)=3\\vec\\imath-\\vec\\jmath$ et $f(\\vec v)=\\vec\\imath+5\\vec\\jmath$, déterminer la matrice $A$ de $f$ dans la base $(\\vec u\\,;\\vec v)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer i et j en fonction de u et v",
+          "justification": "En additionnant et soustrayant $\\vec u=\\vec\\imath-\\vec\\jmath$ et $\\vec v=\\vec\\imath+\\vec\\jmath$ : $\\vec u+\\vec v=2\\vec\\imath$ et $\\vec v-\\vec u=2\\vec\\jmath$",
+          "resultat_markdown": "$\\vec\\imath=\\dfrac{\\vec u+\\vec v}{2}$ et $\\vec\\jmath=\\dfrac{\\vec v-\\vec u}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Réexprimer f(u) dans la base (u, v)",
+          "justification": "On remplace i et j par leurs expressions en u et v dans $f(\\vec u)=3\\vec\\imath-\\vec\\jmath$",
+          "resultat_markdown": "$f(\\vec u)=3\\times\\dfrac{\\vec u+\\vec v}{2}-\\dfrac{\\vec v-\\vec u}{2}=\\dfrac{4\\vec u+2\\vec v}{2}=2\\vec u+\\vec v$"
+        },
+        {
+          "numero": 3,
+          "action": "Réexprimer f(v) dans la base (u, v)",
+          "justification": "Même substitution dans $f(\\vec v)=\\vec\\imath+5\\vec\\jmath$",
+          "resultat_markdown": "$f(\\vec v)=\\dfrac{\\vec u+\\vec v}{2}+5\\times\\dfrac{\\vec v-\\vec u}{2}=\\dfrac{-4\\vec u+6\\vec v}{2}=-2\\vec u+3\\vec v$"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la matrice en colonnes",
+          "justification": "Colonne 1 = coordonnées de f(u), colonne 2 = coordonnées de f(v), dans la base (u, v)",
+          "resultat_markdown": "$A=\\begin{pmatrix}2&-2\\\\1&3\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "$A=\\begin{pmatrix}2&-2\\\\1&3\\end{pmatrix}$ est la matrice de $f$ dans la base $(\\vec u\\,;\\vec v)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire directement la matrice à partir des coordonnées de f(u) et f(v) dans la base (i, j), sans les réexprimer dans (u, v).",
+          "pourquoi_faux": "Cela donnerait la matrice de f entre deux bases différentes, pas la matrice de f dans la seule base (u, v) : les colonnes doivent être exprimées dans la MÊME base que celle utilisée pour u et v eux-mêmes.",
+          "correction_markdown": "Réexprime toujours f(e₁) et f(e₂) dans la base de destination avant d'écrire la matrice, sauf si cette base de destination est déjà celle où les images sont données."
+        },
+        {
+          "erreur_markdown": "Inverser les deux colonnes de la matrice.",
+          "pourquoi_faux": "Par convention, la première colonne correspond au premier vecteur de la base, la seconde colonne au second : les inverser change complètement le sens de la matrice.",
+          "correction_markdown": "Vérifie l'ordre des vecteurs de la base annoncée dans l'énoncé : la matrice doit respecter cet ordre colonne par colonne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un endomorphisme $g$ vérifie $g(\\vec e_1)=2\\vec e_1-\\vec e_2$ et $g(\\vec e_2)=\\vec e_1+3\\vec e_2$ (images déjà exprimées dans la base $(\\vec e_1\\,;\\vec e_2)$). Donner la matrice de $g$ dans cette base.",
+          "solution_markdown": "Les images étant déjà exprimées dans la bonne base, il suffit de lire les coordonnées en colonnes : $M=\\begin{pmatrix}2&1\\\\-1&3\\end{pmatrix}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec $\\vec u=2\\vec\\imath+\\vec\\jmath$ et $\\vec v=\\vec\\imath+\\vec\\jmath$, et $h(\\vec u)=\\vec\\imath$, $h(\\vec v)=\\vec\\jmath$, déterminer la matrice de $h$ dans la base $(\\vec u\\,;\\vec v)$.",
+          "solution_markdown": "De $\\vec u=2\\vec\\imath+\\vec\\jmath$ et $\\vec v=\\vec\\imath+\\vec\\jmath$, on tire $\\vec u-\\vec v=\\vec\\imath$, donc $\\vec\\imath=\\vec u-\\vec v$ ; puis $\\vec\\jmath=\\vec v-\\vec\\imath=\\vec v-(\\vec u-\\vec v)=2\\vec v-\\vec u$. Donc $h(\\vec u)=\\vec\\imath=\\vec u-\\vec v$ et $h(\\vec v)=\\vec\\jmath=-\\vec u+2\\vec v$. La matrice est $\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exemple résolu (f(u)=3i-j, f(v)=i+5j) et vérifier le résultat en calculant f(u+v) de deux façons différentes : directement dans (i,j), puis à partir de la matrice A dans (u,v).",
+          "solution_markdown": "Directement : $f(\\vec u+\\vec v)=f(\\vec u)+f(\\vec v)=(3\\vec\\imath-\\vec\\jmath)+(\\vec\\imath+5\\vec\\jmath)=4\\vec\\imath+4\\vec\\jmath$. Via la matrice : $\\vec u+\\vec v$ a pour coordonnées $(1;1)$ dans la base $(u,v)$, donc $f(\\vec u+\\vec v)=1\\times(2\\vec u+\\vec v)+1\\times(-2\\vec u+3\\vec v)=0\\vec u+4\\vec v=4\\vec v=4(\\vec\\imath+\\vec\\jmath)=4\\vec\\imath+4\\vec\\jmath$. Les deux méthodes donnent le même résultat, ce qui valide la matrice A."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La matrice d'un endomorphisme dans une base a pour colonnes les images des vecteurs de cette base, réexprimées DANS CETTE MÊME base.",
+        "Si les images sont données dans une autre base, il faut d'abord réexprimer les vecteurs de base de départ (ici i et j) en fonction de la nouvelle base (ici u et v), en général par un système de deux équations.",
+        "Respecte l'ordre des vecteurs de base annoncé : première colonne = premier vecteur, seconde colonne = second vecteur.",
+        "Une bonne vérification consiste à recalculer l'image d'un vecteur simple (comme u+v) par les deux méthodes et à comparer les résultats."
+      ]
+    }
+  ]
+}
