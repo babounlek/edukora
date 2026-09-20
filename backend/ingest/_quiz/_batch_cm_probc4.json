@@ -1,0 +1,217 @@
+[
+  {
+    "competence": "raison",
+    "tag_id": 1636,
+    "pays": "cm",
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 7830,
+        "enonce_markdown": "2.a. Donner, pour tout entier $n$ tel que $2\\leqslant n\\leqslant10$, la relation liant $p_n$ et $p_{n-1}$.",
+        "corrige_markdown": "### Rappel de méthode\nLa relation $\\dfrac{p_{i+1}-p_i}{p_i}=0{,}1$, valable pour $1\\leqslant i<10$ (donc $i=1,2,\\ldots,9$), se réécrit $p_{i+1}=1{,}1\\,p_i$. En posant $n=i+1$ (donc $n$ parcourt $2,3,\\ldots,10$ quand $i$ parcourt $1,2,\\ldots,9$), cette même relation devient $p_n=1{,}1\\,p_{n-1}$.\n\n**Pour tout entier $n$ tel que $2\\leqslant n\\leqslant10$ : $p_n=1{,}1\\,p_{n-1}$.**\n\nCette relation signifie que la suite $(p_n)_{1\\leqslant n\\leqslant10}$ est une suite géométrique de raison $q=1{,}1$ et de premier terme $p_1=20$."
+      },
+      {
+        "exercise_id": 8271,
+        "enonce_markdown": "b) Démontrer que la suite $(V_n)$ est une suite géométrique dont on précisera le premier terme et la raison. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'une suite est géométrique, on calcule $V_{n+1}$ **en fonction de $V_n$** et l'on montre que le rapport est une constante. La méthode est toujours la même : partir de la définition de $V_{n+1}$, y substituer l'expression de $U_{n+1}$, puis réduire numérateur et dénominateur au même dénominateur pour faire apparaître $V_n$.\n\n**Point de départ.**\n\n$$V_{n+1} = \\frac{U_{n+1} - 3}{U_{n+1} + 1} \\qquad \\text{avec} \\qquad U_{n+1} = \\frac{5U_n+3}{U_n+3}$$\n\n**Transformation du numérateur.**\n\n$$U_{n+1} - 3 = \\frac{5U_n+3}{U_n+3} - 3 = \\frac{5U_n + 3 - 3(U_n+3)}{U_n+3} = \\frac{5U_n + 3 - 3U_n - 9}{U_n+3} = \\frac{2U_n - 6}{U_n+3} = \\frac{2(U_n-3)}{U_n+3}$$\n\n**Transformation du dénominateur.**\n\n$$U_{n+1} + 1 = \\frac{5U_n+3}{U_n+3} + 1 = \\frac{5U_n + 3 + U_n + 3}{U_n+3} = \\frac{6U_n + 6}{U_n+3} = \\frac{6(U_n+1)}{U_n+3}$$\n\n**Quotient des deux.**\n\n$$V_{n+1} = \\frac{\\dfrac{2(U_n-3)}{U_n+3}}{\\dfrac{6(U_n+1)}{U_n+3}} = \\frac{2(U_n-3)}{6(U_n+1)} = \\frac{1}{3} \\times \\frac{U_n-3}{U_n+1} = \\frac{1}{3}\\,V_n$$\n\n**Conclusion.**\n\nPour tout entier naturel $n$, $V_{n+1} = \\dfrac{1}{3}V_n$ : la suite $(V_n)$ est donc **géométrique de raison** $q = \\dfrac{1}{3}$.\n\n**Premier terme.**\n\n$$V_0 = \\frac{U_0-3}{U_0+1} = \\frac{1-3}{1+1} = \\frac{-2}{2} = -1$$\n\n$$\\boxed{\\;(V_n) \\text{ géométrique de premier terme } V_0 = -1 \\text{ et de raison } q = \\frac{1}{3}\\;}$$\n\n**Contrôle.** $V_1$ devrait valoir $-\\frac{1}{3}$. Or $V_1 = \\dfrac{U_1-3}{U_1+1} = \\dfrac{2-3}{2+1} = -\\dfrac{1}{3}$. Le calcul est confirmé.\n\n### Piège à éviter\nLe facteur $\\dfrac{1}{U_n+3}$ apparaît au numérateur **et** au dénominateur : il se simplifie. Beaucoup de copies le conservent et n'arrivent pas à faire apparaître $V_n$. Traite le numérateur et le dénominateur séparément avant de former le quotient.\n\n### Conseil\nNe calcule jamais le premier terme avant d'avoir établi la raison : c'est la démonstration qui rapporte l'essentiel du point. Et vérifie toujours ton résultat sur $V_1$, comme ci-dessus."
+      },
+      {
+        "exercise_id": 8288,
+        "enonce_markdown": "7. On considère la suite géométrique $\\left(V_{n}\\right)_{n\\in\\mathbb{N}}$ de terme général $V_{n}=\\sqrt{3}\\,(1{,}01)^{n}$. On pose $S_{n}=\\displaystyle\\sum_{k=0}^{n}V_{k}$ ; alors $S_{n}$ est égale à :\n\n*(Le sujet imprime « $(0{,}01)$ » dans les propositions b) et c) ; il s'agit d'une coquille pour « $(1{,}01)$ », la raison de la suite. La proposition c) est reproduite ci-dessous avec la raison rétablie, faute de quoi aucune des quatre propositions ne serait exacte.)*",
+        "corrige_markdown": "### Rappel de méthode\nLa somme des termes consécutifs d'une suite géométrique de raison $q\\neq 1$ vaut\n\n$$\\text{somme}=\\text{premier terme}\\times\\frac{1-q^{\\text{nombre de termes}}}{1-q}$$\n\nLe point qui fait perdre le plus de points est le **nombre de termes** : une somme allant de l'indice $0$ à l'indice $n$ en compte $n+1$, et non $n$.\n\n**Étape 1 - identifier la suite.**\n\n$V_{n}=\\sqrt{3}\\,(1{,}01)^{n}$ est géométrique de premier terme $V_{0}=\\sqrt{3}\\,(1{,}01)^{0}=\\sqrt{3}$ et de raison $q=1{,}01$.\n\n**Étape 2 - compter les termes.**\n\nLa somme $S_{n}=V_{0}+V_{1}+\\ldots+V_{n}$ comporte $n+1$ termes, puisque les indices vont de $0$ à $n$ inclus.\n\n**Étape 3 - appliquer la formule.**\n\n$$S_{n}=\\sqrt{3}\\times\\frac{1-(1{,}01)^{n+1}}{1-1{,}01}$$\n\n**Étape 4 - simplifier le dénominateur.**\n\n$$1-1{,}01=-0{,}01$$\n\n$$S_{n}=\\frac{\\sqrt{3}\\left(1-(1{,}01)^{n+1}\\right)}{-0{,}01}=\\frac{-\\sqrt{3}\\left(1-(1{,}01)^{n+1}\\right)}{0{,}01}$$\n\nOn peut aussi présenter le résultat sans signe moins, en changeant l'ordre dans la parenthèse :\n\n$$S_{n}=\\frac{\\sqrt{3}\\left((1{,}01)^{n+1}-1\\right)}{0{,}01}$$\n\n**La réponse est c).**\n\n**Étape 5 - contrôler sur un cas simple.**\n\nPour $n=0$, la somme se réduit à $V_{0}=\\sqrt{3}$. La formule donne\n\n$$\\frac{\\sqrt{3}\\left((1{,}01)^{1}-1\\right)}{0{,}01}=\\frac{\\sqrt{3}\\times 0{,}01}{0{,}01}=\\sqrt{3}$$\n\nCohérent. La proposition d), qui porte l'exposant $n$ au lieu de $n+1$, donnerait $\\dfrac{\\sqrt{3}\\times 0}{0{,}01}=0$ : elle est donc fausse.\n\n### Piège à éviter\nLa proposition d) est la bonne formule appliquée avec $n$ termes au lieu de $n+1$ : c'est la somme $V_{0}+\\ldots+V_{n-1}$, à laquelle il manque le dernier terme. Compte systématiquement les termes avant d'appliquer la formule : de l'indice $p$ à l'indice $n$, il y en a $n-p+1$.\n\n### Conseil\nLe test $n=0$ effectué à l'étape 5 départage instantanément c) et d), qui ne diffèrent que par l'exposant. Sur toute question de somme géométrique en QCM, substitue la plus petite valeur possible de $n$ : la somme se réduit à un seul terme, et une seule proposition le redonne."
+      },
+      {
+        "exercise_id": 8301,
+        "enonce_markdown": "2. On définit la suite $\\left(W_{n}\\right)$ par $W_{n}=U_{n}-0{,}5$.\n\na) Démontrer que $\\left(W_{n}\\right)$ est une suite géométrique dont on précisera la raison et le premier terme. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'une suite est géométrique, on exprime $W_{n+1}$ en fonction de $W_{n}$ et l'on fait apparaître un facteur constant : $W_{n+1}=q\\,W_{n}$. La technique consiste à remplacer $U_{n+1}$ par sa définition, puis à factoriser de façon à reconstituer $W_{n}$.\n\n**Étape 1 - écrire $W_{n+1}$.**\n\n$$W_{n+1}=U_{n+1}-0{,}5$$\n\n**Étape 2 - remplacer $U_{n+1}$ par sa définition.**\n\n$$W_{n+1}=\\left(0{,}5\\,U_{n}+0{,}25\\right)-0{,}5=0{,}5\\,U_{n}-0{,}25$$\n\n**Étape 3 - factoriser par $0{,}5$.**\n\n$$0{,}5\\,U_{n}-0{,}25=0{,}5\\left(U_{n}-0{,}5\\right)$$\n\ncar $0{,}5\\times 0{,}5=0{,}25$.\n\n**Étape 4 - reconnaître $W_{n}$.**\n\n$$W_{n+1}=0{,}5\\left(U_{n}-0{,}5\\right)=0{,}5\\,W_{n}$$\n\n**Étape 5 - conclure.**\n\nPour tout entier naturel $n$, $W_{n+1}=0{,}5\\,W_{n}$ : la suite $\\left(W_{n}\\right)$ est **géométrique de raison $q=0{,}5$**.\n\nSon premier terme vaut\n\n$$W_{0}=U_{0}-0{,}5=1-0{,}5=0{,}5$$\n\n**Étape 6 - contrôler.**\n\n$$W_{1}=U_{1}-0{,}5=0{,}75-0{,}5=0{,}25=0{,}5\\times W_{0}$$\n\n$$W_{2}=U_{2}-0{,}5=0{,}625-0{,}5=0{,}125=0{,}5\\times W_{1}$$\n\nChaque terme est bien la moitié du précédent.\n\n### Piège à éviter\nNe te contente pas de vérifier la relation sur les premiers termes : un calcul sur $W_{0}$, $W_{1}$ et $W_{2}$ ne démontre rien pour tout $n$. La démonstration exige le calcul **littéral** de $W_{n+1}$ en fonction de $W_{n}$, valable pour tout entier naturel.\n\n### Conseil\nLe nombre $0{,}5$ retranché n'est pas choisi au hasard : c'est la solution de $\\ell=0{,}5\\ell+0{,}25$, c'est-à-dire le point fixe de la relation de récurrence. Retiens ce principe, il vaut pour toute suite arithmético-géométrique $U_{n+1}=aU_{n}+b$ : la suite auxiliaire à considérer est $W_{n}=U_{n}-\\ell$ où $\\ell=\\dfrac{b}{1-a}$."
+      }
+    ]
+  },
+  {
+    "competence": "terme général",
+    "tag_id": 1614,
+    "pays": "cm",
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 7830,
+        "enonce_markdown": "2.b. En déduire une relation simple liant $p_n$ et $p_1$, puis calculer la valeur exacte de $p_{10}$.",
+        "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de premier terme $p_1$ et de raison $q$ est $p_n=p_1\\times q^{n-1}$, obtenu en composant $(n-1)$ fois la relation $p_n=q\\,p_{n-1}$ à partir de $p_1$.\n\nD'après la question 2.a, $(p_n)$ est géométrique de raison $q=1{,}1$ et de premier terme $p_1=20$, donc :\n\n$$p_n=p_1\\times1{,}1^{\\,n-1}=20\\times1{,}1^{\\,n-1}$$\n\n**Calcul de $p_{10}$** (on prend $n=10$) :\n\n$$p_{10}=20\\times1{,}1^{9}$$\n\nCalcul de $1{,}1^9$ par élévations successives au carré :\n$$1{,}1^2=1{,}21\\ ;\\quad 1{,}1^4=(1{,}21)^2=1{,}4641\\ ;\\quad 1{,}1^8=(1{,}4641)^2=2{,}14358881$$\n$$1{,}1^9=1{,}1^8\\times1{,}1=2{,}14358881\\times1{,}1=2{,}357947691$$\n\n$$p_{10}=20\\times2{,}357947691=47{,}15895382$$\n\n**$p_{10}=20\\times1{,}1^9=47{,}15895382$ (milliers d'unités), soit environ $47{,}16$ milliers d'unités.**"
+      },
+      {
+        "exercise_id": 8271,
+        "enonce_markdown": "c) Calculer $V_n$ puis $U_n$ en fonction de $n$. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour une suite géométrique, $V_n = V_0 \\times q^n$. Pour revenir ensuite à $U_n$, on **inverse la relation** $V_n = \\dfrac{U_n-3}{U_n+1}$ : on multiplie en croix, on regroupe les termes en $U_n$ d'un côté, puis on factorise.\n\n**Expression de $V_n$.**\n\nLa suite $(V_n)$ est géométrique de premier terme $V_0 = -1$ et de raison $q = \\dfrac{1}{3}$, donc :\n\n$$V_n = V_0 \\times q^n = -\\left(\\frac{1}{3}\\right)^n$$\n\n**Expression de $U_n$ : inversion de la relation.**\n\nPartons de $V_n = \\dfrac{U_n-3}{U_n+1}$ et multiplions en croix :\n\n$$V_n(U_n+1) = U_n - 3$$\n$$V_n U_n + V_n = U_n - 3$$\n\nRegroupons les termes contenant $U_n$ à gauche :\n\n$$V_n U_n - U_n = -3 - V_n$$\n$$U_n(V_n - 1) = -(3 + V_n)$$\n$$U_n = \\frac{-(3+V_n)}{V_n-1} = \\frac{3+V_n}{1-V_n}$$\n\n**Substitution.**\n\n$$U_n = \\frac{3 - \\left(\\dfrac{1}{3}\\right)^n}{1 + \\left(\\dfrac{1}{3}\\right)^n}$$\n\n$$\\boxed{\\;V_n = -\\left(\\frac{1}{3}\\right)^n \\qquad ; \\qquad U_n = \\frac{3 - \\left(\\frac{1}{3}\\right)^n}{1 + \\left(\\frac{1}{3}\\right)^n}\\;}$$\n\n**Vérifications sur les premiers termes.**\n\n| $n$ | $U_n$ calculé | Valeur attendue |\n|---|---|---|\n| $0$ | $\\dfrac{3-1}{1+1} = 1$ | $U_0 = 1$ ✔ |\n| $1$ | $\\dfrac{3-\\frac13}{1+\\frac13} = \\dfrac{8/3}{4/3} = 2$ | $U_1 = 2$ ✔ |\n| $2$ | $\\dfrac{3-\\frac19}{1+\\frac19} = \\dfrac{26/9}{10/9} = \\dfrac{13}{5}$ | $U_2 = 2{,}6$ ✔ |\n\n**Interprétation.** Comme $\\left(\\frac{1}{3}\\right)^n \\to 0$, on lit immédiatement que $U_n \\to 3$. La suite converge vers $3$, ce que les premiers termes laissaient déjà pressentir.\n\n### Piège à éviter\nAttention au signe : $V_0 = -1$, donc $V_n = -\\left(\\frac{1}{3}\\right)^n$ et **non** $\\left(\\frac{1}{3}\\right)^n$. Ce signe se propage dans toute l'expression de $U_n$ et le contrôle sur $U_0$ le révèle immédiatement.\n\n### Conseil\nAprès toute inversion de relation, teste ton expression sur $n = 0$ : tu dois retrouver la valeur initiale donnée par l'énoncé. C'est trente secondes de calcul pour une garantie complète."
+      },
+      {
+        "exercise_id": 8275,
+        "enonce_markdown": "3. En déduire les expressions de $V_n$ et $U_n$ en fonction de $n$. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour une suite géométrique dont le premier terme est d'indice $p$, le terme général s'écrit $V_n = V_p \\times q^{\\,n-p}$. Ici $p = 1$, donc l'exposant est $n-1$. On revient ensuite à $U_n$ par la relation $U_n = n\\,V_n$.\n\n**Expression de $V_n$.**\n\nLa suite $(V_n)$ est géométrique de premier terme $V_1 = \\dfrac13$, de raison $q = \\dfrac13$, et l'indice de départ est $1$ :\n\n$$V_n = V_1 \\times q^{\\,n-1} = \\frac{1}{3} \\times \\left(\\frac{1}{3}\\right)^{n-1} = \\left(\\frac{1}{3}\\right)^{n}$$\n\n$$\\boxed{\\;V_n = \\left(\\frac{1}{3}\\right)^n = \\frac{1}{3^n}\\;}$$\n\nLe premier terme étant lui-même égal à la raison, l'exposant se simplifie agréablement.\n\n**Expression de $U_n$.**\n\nPar définition, $V_n = \\dfrac{U_n}{n}$, donc $U_n = n\\,V_n$ :\n\n$$\\boxed{\\;U_n = \\frac{n}{3^n}\\;}$$\n\n**Vérifications sur les valeurs de la question 1.**\n\n| $n$ | $\\dfrac{n}{3^n}$ | Valeur trouvée en Q1 |\n|---|---|---|\n| $1$ | $\\dfrac{1}{3}$ | $\\dfrac13$ ✔ |\n| $2$ | $\\dfrac{2}{9}$ | $\\dfrac29$ ✔ |\n| $3$ | $\\dfrac{3}{27} = \\dfrac19$ | $\\dfrac19$ ✔ |\n| $4$ | $\\dfrac{4}{81}$ | $\\dfrac{4}{81}$ ✔ |\n\nLes quatre valeurs concordent.\n\n### Piège à éviter\nL'exposant est $n-1$ et non $n$, parce que la suite démarre au rang $1$. Écrire $V_n = \\frac13 \\times \\left(\\frac13\\right)^n$ donnerait $V_1 = \\frac19$, en contradiction avec le calcul direct $V_1 = \\frac13$.\n\n### Conseil\nRetiens la formule sous forme générale : $V_n = V_p \\times q^{\\,n-p}$ où $p$ est l'indice du premier terme. Elle vaut quel que soit le point de départ, et t'évite d'avoir à réfléchir à chaque fois."
+      },
+      {
+        "exercise_id": 8279,
+        "enonce_markdown": "b) Calculer $V_n$ et $U_n$ en fonction de $n$. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de premier terme $V_0$ et de raison $q$ est $V_n = V_0 q^{\\,n}$. Le retour à $U_n$ est ici immédiat, puisque la relation $V_n = U_n - 1$ s'inverse en $U_n = V_n + 1$.\n\n**Expression de $V_n$.**\n\n$$V_n = V_0 \\times q^{\\,n} = 3 \\times \\left(\\frac13\\right)^n$$\n\nOn peut aussi l'écrire de façon plus compacte :\n\n$$V_n = 3 \\times \\frac{1}{3^n} = \\frac{3}{3^n} = \\frac{1}{3^{\\,n-1}}$$\n\n**Expression de $U_n$.**\n\n$$U_n = V_n + 1$$\n\n$$\\boxed{\\;V_n = 3\\left(\\frac13\\right)^n = \\frac{1}{3^{\\,n-1}} \\qquad ; \\qquad U_n = 1 + 3\\left(\\frac13\\right)^n = 1 + \\frac{1}{3^{\\,n-1}}\\;}$$\n\n**Vérifications.**\n\n| $n$ | $U_n$ par la formule | Valeur calculée en Q1 |\n|---|---|---|\n| $0$ | $1 + 3 = 4$ | $4$ ✔ |\n| $1$ | $1 + 1 = 2$ | $2$ ✔ |\n| $2$ | $1 + \\frac13 = \\frac43$ | $\\frac43$ ✔ |\n| $3$ | $1 + \\frac19 = \\frac{10}{9}$ | $\\frac{10}{9}$ ✔ |\n\n**Limite de la suite.**\n\nComme $0 < \\dfrac13 < 1$, on a $\\left(\\dfrac13\\right)^n \\to 0$, donc :\n\n$$\\lim_{n\\to+\\infty} U_n = 1$$\n\nCe résultat confirme la lecture graphique de la question 1 : l'escalier convergeait bien vers le point fixe $(1\\,;\\,1)$.\n\n### Piège à éviter\nN'oublie pas d'ajouter $1$ pour revenir de $V_n$ à $U_n$. Répondre $U_n = 3\\left(\\frac13\\right)^n$ est une erreur fréquente qui donnerait $U_0 = 3$ au lieu de $4$ : le contrôle sur $n=0$ la détecte immédiatement.\n\n### Conseil\nÉcris ton résultat sous les deux formes, $3\\left(\\frac13\\right)^n$ et $\\frac{1}{3^{n-1}}$. La première rend la raison visible, la seconde est plus commode pour les calculs numériques."
+      }
+    ]
+  },
+  {
+    "competence": "suite récurrente",
+    "tag_id": 2347,
+    "pays": "cm",
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 8271,
+        "enonce_markdown": "3. La suite $(U_n)$ est définie par $\\begin{cases} U_0 = 1 \\\\ U_{n+1} = \\dfrac{5U_n+3}{U_n+3} \\end{cases}$ et la suite $(V_n)$ par $V_n = \\dfrac{U_n-3}{U_n+1}$.\n\n*(On admettra que les suites $(U_n)$ et $(V_n)$ sont bien définies.)*\n\na) Calculer $U_1$ et $U_2$. *(0,5 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne suite définie par récurrence se calcule **de proche en proche** : on remplace $U_n$ par la valeur connue dans la relation, sans chercher d'expression générale. Remarquons au passage que $U_{n+1} = f(U_n)$, où $f$ est la fonction de la première partie : la suite est engendrée par cette fonction.\n\n**Calcul de $U_1$.**\n\n$$U_1 = \\frac{5U_0 + 3}{U_0 + 3} = \\frac{5 \\times 1 + 3}{1 + 3} = \\frac{8}{4} = 2$$\n\n**Calcul de $U_2$.**\n\n$$U_2 = \\frac{5U_1 + 3}{U_1 + 3} = \\frac{5 \\times 2 + 3}{2 + 3} = \\frac{13}{5} = 2{,}6$$\n\n$$\\boxed{\\;U_1 = 2 \\qquad ; \\qquad U_2 = \\frac{13}{5} = 2{,}6\\;}$$\n\n**Une remarque utile pour la suite.** On observe que $U_{n+1} = f(U_n)$ avec la fonction $f$ étudiée aux questions 1 et 2. La suite est donc obtenue en itérant $f$ à partir de $U_0 = 1$. Les premiers termes $1\\,;\\,2\\,;\\,2{,}6$ croissent en se rapprochant de $3$, ce que confirmera le calcul de $U_n$ à la question 3c.\n\n### Piège à éviter\nPour calculer $U_2$, il faut utiliser $U_1$ et non $U_0$. L'erreur consiste à réinjecter la valeur initiale à chaque étape : la relation lie **deux termes consécutifs**, pas un terme et le premier.\n\n### Conseil\nGarde tes résultats en **fractions** ($\\frac{13}{5}$ plutôt que $2{,}6$). Les valeurs décimales approchées s'accumulent en erreurs dès qu'on itère, et le correcteur attend la valeur exacte."
+      },
+      {
+        "exercise_id": 8275,
+        "enonce_markdown": "1. Calculer $U_2$, $U_3$ et $U_4$. *(0,75 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nOn applique la relation de récurrence **pas à pas**, en remplaçant $n$ par sa valeur à chaque étape. Il faut prendre garde à ce que la suite commence ici à l'indice $1$ et non à l'indice $0$ : le calcul de $U_2$ se fait donc avec $n = 1$.\n\n**Calcul de $U_2$** (on prend $n = 1$) :\n\n$$U_2 = \\frac{1+1}{3 \\times 1}\\,U_1 = \\frac{2}{3} \\times \\frac{1}{3} = \\frac{2}{9}$$\n\n**Calcul de $U_3$** (on prend $n = 2$) :\n\n$$U_3 = \\frac{2+1}{3 \\times 2}\\,U_2 = \\frac{3}{6} \\times \\frac{2}{9} = \\frac{1}{2} \\times \\frac{2}{9} = \\frac{1}{9}$$\n\n**Calcul de $U_4$** (on prend $n = 3$) :\n\n$$U_4 = \\frac{3+1}{3 \\times 3}\\,U_3 = \\frac{4}{9} \\times \\frac{1}{9} = \\frac{4}{81}$$\n\n$$\\boxed{\\;U_2 = \\frac{2}{9} \\qquad ; \\qquad U_3 = \\frac{1}{9} \\qquad ; \\qquad U_4 = \\frac{4}{81}\\;}$$\n\n**Une observation qui annonce la suite.** Écrivons ces valeurs en faisant apparaître l'indice :\n\n| $n$ | $U_n$ | $\\dfrac{U_n}{n}$ |\n|---|---|---|\n| $1$ | $\\dfrac13$ | $\\dfrac13$ |\n| $2$ | $\\dfrac29$ | $\\dfrac19$ |\n| $3$ | $\\dfrac39$ soit $\\dfrac19$ | $\\dfrac{1}{27}$ |\n| $4$ | $\\dfrac{4}{81}$ | $\\dfrac{1}{81}$ |\n\nLa dernière colonne, qui est précisément $V_n$, donne $\\frac13, \\frac19, \\frac1{27}, \\frac1{81}$ : les puissances successives de $\\frac13$. C'est ce que la question 2 va demander de démontrer.\n\n### Piège à éviter\nLe coefficient $\\dfrac{n+1}{3n}$ **change à chaque rang** : ce n'est pas une suite géométrique. Utiliser toujours le même facteur, par exemple celui obtenu pour $n=1$, est l'erreur la plus fréquente.\n\n### Conseil\nÉcris à chaque étape la valeur de $n$ que tu utilises. Ici la suite démarre à l'indice $1$, ce qui décale tout d'un cran par rapport aux habitudes."
+      },
+      {
+        "exercise_id": 8279,
+        "enonce_markdown": "1. Représenter graphiquement les quatre premiers termes de $(U_n)$. *(1,25 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour représenter graphiquement une suite définie par $U_{n+1} = f(U_n)$, on trace la droite $(D)$ d'équation $y = f(x)$ et la droite $(\\Delta)$ d'équation $y = x$, puis on construit les termes **en escalier** : partant de $U_0$ sur l'axe des abscisses, on monte verticalement jusqu'à $(D)$ pour obtenir $U_1$ en ordonnée, puis on se déplace horizontalement jusqu'à $(\\Delta)$ pour reporter cette valeur en abscisse, et l'on recommence.\n\n**Étape 1 - calculer les quatre premiers termes.**\n\n$$U_0 = 4$$\n$$U_1 = \\frac13 \\times 4 + \\frac23 = \\frac{4}{3} + \\frac23 = \\frac{6}{3} = 2$$\n$$U_2 = \\frac13 \\times 2 + \\frac23 = \\frac23 + \\frac23 = \\frac43$$\n$$U_3 = \\frac13 \\times \\frac43 + \\frac23 = \\frac49 + \\frac69 = \\frac{10}{9}$$\n\n| $n$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|\n| $U_n$ | $4$ | $2$ | $\\dfrac43 \\approx 1{,}33$ | $\\dfrac{10}{9} \\approx 1{,}11$ |\n\n**Étape 2 - tracer les deux droites.**\n\n- La droite $(D)$ d'équation $y = \\dfrac13 x + \\dfrac23$ : elle passe par $(1\\,;\\,1)$ et par $(4\\,;\\,2)$.\n- La première bissectrice $(\\Delta)$ d'équation $y = x$.\n\nElles se coupent au point $(1\\,;\\,1)$, car $\\dfrac13 x + \\dfrac23 = x$ équivaut à $x = 1$. Ce point est le **point fixe** de la fonction, vers lequel la suite va converger.\n\n**Étape 3 - construire les termes en escalier.**\n\n1. Placer $U_0 = 4$ sur l'axe des abscisses.\n2. Monter verticalement jusqu'à $(D)$ : l'ordonnée obtenue est $U_1 = 2$.\n3. Se déplacer horizontalement jusqu'à $(\\Delta)$ : on reporte ainsi $2$ sur l'axe des abscisses.\n4. Monter verticalement jusqu'à $(D)$ : on lit $U_2 = \\dfrac43$.\n5. Répéter pour obtenir $U_3 = \\dfrac{10}{9}$.\n\n**Étape 4 - interpréter la figure.**\n\nLe coefficient directeur de $(D)$ vaut $\\dfrac13$, compris strictement entre $0$ et $1$. La construction dessine donc un **escalier descendant** régulier, dont les marches se resserrent, et les points se rapprochent visiblement du point d'intersection $(1\\,;\\,1)$.\n\nLa lecture graphique suggère ainsi que la suite est **décroissante** et **converge vers $1$** - ce que les questions suivantes vont établir par le calcul, puisque $U_n = 1 + 3\\left(\\frac13\\right)^n \\to 1$.\n\n### Piège à éviter\nN'oublie pas de tracer la droite $y = x$. Sans elle, il est impossible de reporter une ordonnée en abscisse, et la construction en escalier ne peut pas s'enchaîner. C'est l'erreur qui bloque le plus souvent les candidats sur ce type de question.\n\n### Conseil\nCalcule les termes **avant** de dessiner. Tu disposes ainsi des valeurs exactes pour contrôler ta construction : si le graphique donne $U_2 \\approx 1{,}3$, il est cohérent avec $\\frac43$.\n\n![Construction en escalier des quatre premiers termes de (U_n)](/media/figures/cm/ex46696b_fig1.webp)\n"
+      },
+      {
+        "exercise_id": 8293,
+        "enonce_markdown": "4. $\\left(u_{n}\\right)$ est la suite définie par $u_{0}=0$ et $u_{n+1}=\\dfrac{u_{n}+1}{u_{n}+2}$ pour tout entier naturel $n$.\n\na) Calculer $u_{1}$, $u_{2}$ et $u_{3}$. *(0,75 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne suite définie par récurrence se calcule de proche en proche : chaque terme s'obtient en appliquant la relation au terme précédent. Ici la relation s'écrit $u_{n+1}=f\\left(u_{n}\\right)$ avec la fonction $f$ étudiée dans la partie A, ce qui permet de réutiliser les calculs déjà faits.\n\n**Étape 1 - calculer $u_{1}$.**\n\n$$u_{1}=\\frac{u_{0}+1}{u_{0}+2}=\\frac{0+1}{0+2}=\\frac{1}{2}$$\n\n**Étape 2 - calculer $u_{2}$.**\n\n$$u_{2}=\\frac{u_{1}+1}{u_{1}+2}=\\frac{\\dfrac{1}{2}+1}{\\dfrac{1}{2}+2}=\\frac{\\dfrac{3}{2}}{\\dfrac{5}{2}}$$\n\nDiviser deux fractions de même dénominateur revient à diviser leurs numérateurs :\n\n$$u_{2}=\\frac{3}{5}$$\n\n**Étape 3 - calculer $u_{3}$.**\n\n$$u_{3}=\\frac{u_{2}+1}{u_{2}+2}=\\frac{\\dfrac{3}{5}+1}{\\dfrac{3}{5}+2}=\\frac{\\dfrac{3}{5}+\\dfrac{5}{5}}{\\dfrac{3}{5}+\\dfrac{10}{5}}=\\frac{\\dfrac{8}{5}}{\\dfrac{13}{5}}=\\frac{8}{13}$$\n\n**Résultats.**\n\n$$u_{1}=\\frac{1}{2}=0{,}5\\qquad;\\qquad u_{2}=\\frac{3}{5}=0{,}6\\qquad;\\qquad u_{3}=\\frac{8}{13}\\approx 0{,}615$$\n\n**Étape 4 - observer.**\n\nLes valeurs $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ augmentent, en se resserrant. Elles semblent s'approcher de $0{,}618$, valeur approchée du point fixe $\\dfrac{-1+\\sqrt{5}}{2}$ trouvé à la question 2.a).\n\n### Conseil\nNe convertis pas en décimaux pendant le calcul : garde les fractions jusqu'au bout, elles restent exactes et les divisions de fractions de même dénominateur se simplifient d'elles-mêmes. Les valeurs décimales ne servent qu'à la fin, pour observer la tendance."
+      }
+    ]
+  },
+  {
+    "competence": "calcul de termes",
+    "tag_id": 3436,
+    "pays": "cm",
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 7830,
+        "enonce_markdown": "1. Calculer $p_2$ et $p_3$.",
+        "corrige_markdown": "### Rappel de méthode\nSi le taux d'accroissement relatif d'une suite est constant et vaut $t$, la relation $\\dfrac{p_{i+1}-p_i}{p_i}=t$ se réécrit $p_{i+1}-p_i=t\\,p_i$, soit $p_{i+1}=(1+t)p_i$ : chaque terme s'obtient en multipliant le précédent par le même facteur $1+t$.\n\nIci $t=0{,}1$, donc $p_{i+1}=1{,}1\\,p_i$.\n\n$$p_2=1{,}1\\times p_1=1{,}1\\times20=22$$\n$$p_3=1{,}1\\times p_2=1{,}1\\times22=24{,}2$$\n\n**$p_2=22$ et $p_3=24{,}2$ (milliers d'unités).**"
+      },
+      {
+        "exercise_id": 8271,
+        "enonce_markdown": "3. La suite $(U_n)$ est définie par $\\begin{cases} U_0 = 1 \\\\ U_{n+1} = \\dfrac{5U_n+3}{U_n+3} \\end{cases}$ et la suite $(V_n)$ par $V_n = \\dfrac{U_n-3}{U_n+1}$.\n\n*(On admettra que les suites $(U_n)$ et $(V_n)$ sont bien définies.)*\n\na) Calculer $U_1$ et $U_2$. *(0,5 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne suite définie par récurrence se calcule **de proche en proche** : on remplace $U_n$ par la valeur connue dans la relation, sans chercher d'expression générale. Remarquons au passage que $U_{n+1} = f(U_n)$, où $f$ est la fonction de la première partie : la suite est engendrée par cette fonction.\n\n**Calcul de $U_1$.**\n\n$$U_1 = \\frac{5U_0 + 3}{U_0 + 3} = \\frac{5 \\times 1 + 3}{1 + 3} = \\frac{8}{4} = 2$$\n\n**Calcul de $U_2$.**\n\n$$U_2 = \\frac{5U_1 + 3}{U_1 + 3} = \\frac{5 \\times 2 + 3}{2 + 3} = \\frac{13}{5} = 2{,}6$$\n\n$$\\boxed{\\;U_1 = 2 \\qquad ; \\qquad U_2 = \\frac{13}{5} = 2{,}6\\;}$$\n\n**Une remarque utile pour la suite.** On observe que $U_{n+1} = f(U_n)$ avec la fonction $f$ étudiée aux questions 1 et 2. La suite est donc obtenue en itérant $f$ à partir de $U_0 = 1$. Les premiers termes $1\\,;\\,2\\,;\\,2{,}6$ croissent en se rapprochant de $3$, ce que confirmera le calcul de $U_n$ à la question 3c.\n\n### Piège à éviter\nPour calculer $U_2$, il faut utiliser $U_1$ et non $U_0$. L'erreur consiste à réinjecter la valeur initiale à chaque étape : la relation lie **deux termes consécutifs**, pas un terme et le premier.\n\n### Conseil\nGarde tes résultats en **fractions** ($\\frac{13}{5}$ plutôt que $2{,}6$). Les valeurs décimales approchées s'accumulent en erreurs dès qu'on itère, et le correcteur attend la valeur exacte."
+      },
+      {
+        "exercise_id": 8275,
+        "enonce_markdown": "1. Calculer $U_2$, $U_3$ et $U_4$. *(0,75 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nOn applique la relation de récurrence **pas à pas**, en remplaçant $n$ par sa valeur à chaque étape. Il faut prendre garde à ce que la suite commence ici à l'indice $1$ et non à l'indice $0$ : le calcul de $U_2$ se fait donc avec $n = 1$.\n\n**Calcul de $U_2$** (on prend $n = 1$) :\n\n$$U_2 = \\frac{1+1}{3 \\times 1}\\,U_1 = \\frac{2}{3} \\times \\frac{1}{3} = \\frac{2}{9}$$\n\n**Calcul de $U_3$** (on prend $n = 2$) :\n\n$$U_3 = \\frac{2+1}{3 \\times 2}\\,U_2 = \\frac{3}{6} \\times \\frac{2}{9} = \\frac{1}{2} \\times \\frac{2}{9} = \\frac{1}{9}$$\n\n**Calcul de $U_4$** (on prend $n = 3$) :\n\n$$U_4 = \\frac{3+1}{3 \\times 3}\\,U_3 = \\frac{4}{9} \\times \\frac{1}{9} = \\frac{4}{81}$$\n\n$$\\boxed{\\;U_2 = \\frac{2}{9} \\qquad ; \\qquad U_3 = \\frac{1}{9} \\qquad ; \\qquad U_4 = \\frac{4}{81}\\;}$$\n\n**Une observation qui annonce la suite.** Écrivons ces valeurs en faisant apparaître l'indice :\n\n| $n$ | $U_n$ | $\\dfrac{U_n}{n}$ |\n|---|---|---|\n| $1$ | $\\dfrac13$ | $\\dfrac13$ |\n| $2$ | $\\dfrac29$ | $\\dfrac19$ |\n| $3$ | $\\dfrac39$ soit $\\dfrac19$ | $\\dfrac{1}{27}$ |\n| $4$ | $\\dfrac{4}{81}$ | $\\dfrac{1}{81}$ |\n\nLa dernière colonne, qui est précisément $V_n$, donne $\\frac13, \\frac19, \\frac1{27}, \\frac1{81}$ : les puissances successives de $\\frac13$. C'est ce que la question 2 va demander de démontrer.\n\n### Piège à éviter\nLe coefficient $\\dfrac{n+1}{3n}$ **change à chaque rang** : ce n'est pas une suite géométrique. Utiliser toujours le même facteur, par exemple celui obtenu pour $n=1$, est l'erreur la plus fréquente.\n\n### Conseil\nÉcris à chaque étape la valeur de $n$ que tu utilises. Ici la suite démarre à l'indice $1$, ce qui décale tout d'un cran par rapport aux habitudes."
+      },
+      {
+        "exercise_id": 8293,
+        "enonce_markdown": "4. $\\left(u_{n}\\right)$ est la suite définie par $u_{0}=0$ et $u_{n+1}=\\dfrac{u_{n}+1}{u_{n}+2}$ pour tout entier naturel $n$.\n\na) Calculer $u_{1}$, $u_{2}$ et $u_{3}$. *(0,75 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne suite définie par récurrence se calcule de proche en proche : chaque terme s'obtient en appliquant la relation au terme précédent. Ici la relation s'écrit $u_{n+1}=f\\left(u_{n}\\right)$ avec la fonction $f$ étudiée dans la partie A, ce qui permet de réutiliser les calculs déjà faits.\n\n**Étape 1 - calculer $u_{1}$.**\n\n$$u_{1}=\\frac{u_{0}+1}{u_{0}+2}=\\frac{0+1}{0+2}=\\frac{1}{2}$$\n\n**Étape 2 - calculer $u_{2}$.**\n\n$$u_{2}=\\frac{u_{1}+1}{u_{1}+2}=\\frac{\\dfrac{1}{2}+1}{\\dfrac{1}{2}+2}=\\frac{\\dfrac{3}{2}}{\\dfrac{5}{2}}$$\n\nDiviser deux fractions de même dénominateur revient à diviser leurs numérateurs :\n\n$$u_{2}=\\frac{3}{5}$$\n\n**Étape 3 - calculer $u_{3}$.**\n\n$$u_{3}=\\frac{u_{2}+1}{u_{2}+2}=\\frac{\\dfrac{3}{5}+1}{\\dfrac{3}{5}+2}=\\frac{\\dfrac{3}{5}+\\dfrac{5}{5}}{\\dfrac{3}{5}+\\dfrac{10}{5}}=\\frac{\\dfrac{8}{5}}{\\dfrac{13}{5}}=\\frac{8}{13}$$\n\n**Résultats.**\n\n$$u_{1}=\\frac{1}{2}=0{,}5\\qquad;\\qquad u_{2}=\\frac{3}{5}=0{,}6\\qquad;\\qquad u_{3}=\\frac{8}{13}\\approx 0{,}615$$\n\n**Étape 4 - observer.**\n\nLes valeurs $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ augmentent, en se resserrant. Elles semblent s'approcher de $0{,}618$, valeur approchée du point fixe $\\dfrac{-1+\\sqrt{5}}{2}$ trouvé à la question 2.a).\n\n### Conseil\nNe convertis pas en décimaux pendant le calcul : garde les fractions jusqu'au bout, elles restent exactes et les divisions de fractions de même dénominateur se simplifient d'elles-mêmes. Les valeurs décimales ne servent qu'à la fin, pour observer la tendance."
+      }
+    ]
+  },
+  {
+    "competence": "convergence",
+    "tag_id": 2389,
+    "pays": "cm",
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 8271,
+        "enonce_markdown": "4. On pose $S_n = V_0 + V_1 + \\dots + V_n$. Calculer $S_n$ en fonction de $n$. *(0,5 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nLa somme des termes consécutifs d'une suite géométrique de raison $q \\neq 1$ vaut : $S = (\\text{premier terme}) \\times \\dfrac{1-q^{\\text{nombre de termes}}}{1-q}$. Il faut donc compter soigneusement le nombre de termes : de $V_0$ à $V_n$, il y en a $n+1$ et non $n$.\n\n**Identification des données.**\n\n| Élément | Valeur |\n|---|---|\n| Premier terme | $V_0 = -1$ |\n| Raison | $q = \\dfrac{1}{3}$ |\n| Nombre de termes de $V_0$ à $V_n$ | $n+1$ |\n\n**Application de la formule.**\n\n$$S_n = V_0 \\times \\frac{1 - q^{\\,n+1}}{1-q} = -1 \\times \\frac{1 - \\left(\\frac{1}{3}\\right)^{n+1}}{1 - \\frac{1}{3}}$$\n\nLe dénominateur vaut $1 - \\dfrac{1}{3} = \\dfrac{2}{3}$, donc :\n\n$$S_n = -\\frac{1 - \\left(\\frac{1}{3}\\right)^{n+1}}{\\frac{2}{3}} = -\\frac{3}{2}\\left[1 - \\left(\\frac{1}{3}\\right)^{n+1}\\right]$$\n\n$$\\boxed{\\;S_n = -\\frac{3}{2}\\left[1 - \\left(\\frac{1}{3}\\right)^{n+1}\\right] = \\frac{3}{2}\\left(\\frac{1}{3}\\right)^{n+1} - \\frac{3}{2}\\;}$$\n\n**Vérifications.**\n\n| $n$ | $S_n$ par la formule | Somme directe |\n|---|---|---|\n| $0$ | $-\\dfrac{3}{2}\\left(1-\\dfrac13\\right) = -1$ | $V_0 = -1$ ✔ |\n| $1$ | $-\\dfrac{3}{2}\\left(1-\\dfrac19\\right) = -\\dfrac{4}{3}$ | $-1 - \\dfrac13 = -\\dfrac43$ ✔ |\n\n**Interprétation.** Comme $\\left(\\frac13\\right)^{n+1} \\to 0$, la somme $S_n$ tend vers $-\\dfrac{3}{2}$ : la série converge.\n\n### Piège à éviter\nL'erreur la plus fréquente est d'écrire $q^n$ au lieu de $q^{n+1}$. La somme $V_0 + \\dots + V_n$ comporte $n+1$ termes, car on part de l'indice $0$. Un contrôle sur $n=0$ suffit à trancher : la formule doit alors redonner $V_0$ seul.\n\n### Conseil\nRetiens la formule sous une forme qui ne prête pas à confusion : $S = a_{\\text{premier}} \\times \\dfrac{1 - q^{\\text{nb de termes}}}{1-q}$. Compte le nombre de termes plutôt que de mémoriser un exposant."
+      },
+      {
+        "exercise_id": 8279,
+        "enonce_markdown": "1. Représenter graphiquement les quatre premiers termes de $(U_n)$. *(1,25 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour représenter graphiquement une suite définie par $U_{n+1} = f(U_n)$, on trace la droite $(D)$ d'équation $y = f(x)$ et la droite $(\\Delta)$ d'équation $y = x$, puis on construit les termes **en escalier** : partant de $U_0$ sur l'axe des abscisses, on monte verticalement jusqu'à $(D)$ pour obtenir $U_1$ en ordonnée, puis on se déplace horizontalement jusqu'à $(\\Delta)$ pour reporter cette valeur en abscisse, et l'on recommence.\n\n**Étape 1 - calculer les quatre premiers termes.**\n\n$$U_0 = 4$$\n$$U_1 = \\frac13 \\times 4 + \\frac23 = \\frac{4}{3} + \\frac23 = \\frac{6}{3} = 2$$\n$$U_2 = \\frac13 \\times 2 + \\frac23 = \\frac23 + \\frac23 = \\frac43$$\n$$U_3 = \\frac13 \\times \\frac43 + \\frac23 = \\frac49 + \\frac69 = \\frac{10}{9}$$\n\n| $n$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|\n| $U_n$ | $4$ | $2$ | $\\dfrac43 \\approx 1{,}33$ | $\\dfrac{10}{9} \\approx 1{,}11$ |\n\n**Étape 2 - tracer les deux droites.**\n\n- La droite $(D)$ d'équation $y = \\dfrac13 x + \\dfrac23$ : elle passe par $(1\\,;\\,1)$ et par $(4\\,;\\,2)$.\n- La première bissectrice $(\\Delta)$ d'équation $y = x$.\n\nElles se coupent au point $(1\\,;\\,1)$, car $\\dfrac13 x + \\dfrac23 = x$ équivaut à $x = 1$. Ce point est le **point fixe** de la fonction, vers lequel la suite va converger.\n\n**Étape 3 - construire les termes en escalier.**\n\n1. Placer $U_0 = 4$ sur l'axe des abscisses.\n2. Monter verticalement jusqu'à $(D)$ : l'ordonnée obtenue est $U_1 = 2$.\n3. Se déplacer horizontalement jusqu'à $(\\Delta)$ : on reporte ainsi $2$ sur l'axe des abscisses.\n4. Monter verticalement jusqu'à $(D)$ : on lit $U_2 = \\dfrac43$.\n5. Répéter pour obtenir $U_3 = \\dfrac{10}{9}$.\n\n**Étape 4 - interpréter la figure.**\n\nLe coefficient directeur de $(D)$ vaut $\\dfrac13$, compris strictement entre $0$ et $1$. La construction dessine donc un **escalier descendant** régulier, dont les marches se resserrent, et les points se rapprochent visiblement du point d'intersection $(1\\,;\\,1)$.\n\nLa lecture graphique suggère ainsi que la suite est **décroissante** et **converge vers $1$** - ce que les questions suivantes vont établir par le calcul, puisque $U_n = 1 + 3\\left(\\frac13\\right)^n \\to 1$.\n\n### Piège à éviter\nN'oublie pas de tracer la droite $y = x$. Sans elle, il est impossible de reporter une ordonnée en abscisse, et la construction en escalier ne peut pas s'enchaîner. C'est l'erreur qui bloque le plus souvent les candidats sur ce type de question.\n\n### Conseil\nCalcule les termes **avant** de dessiner. Tu disposes ainsi des valeurs exactes pour contrôler ta construction : si le graphique donne $U_2 \\approx 1{,}3$, il est cohérent avec $\\frac43$.\n\n![Construction en escalier des quatre premiers termes de (U_n)](/media/figures/cm/ex46696b_fig1.webp)\n"
+      },
+      {
+        "exercise_id": 8293,
+        "enonce_markdown": "c) En déduire une conjecture sur le sens de variation et la convergence de la suite $\\left(u_{n}\\right)$. *(0,5 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne conjecture se lit sur la figure et se formule en deux temps : le sens de variation, donné par la façon dont l'escalier progresse, et la limite éventuelle, donnée par le point vers lequel il s'accumule. Ce point ne peut être qu'un point fixe de $f$, c'est-à-dire une intersection de la courbe avec la droite $y=x$.\n\n**Étape 1 - lire le sens de variation.**\n\nL'escalier construit à la question précédente progresse **vers la droite** : chaque terme est placé plus loin que le précédent sur l'axe des abscisses. Les valeurs calculées le confirment :\n\n$$0<0{,}5<0{,}6<0{,}615<0{,}618$$\n\n**Conjecture 1 : la suite $\\left(u_{n}\\right)$ est croissante.**\n\n**Étape 2 - lire la convergence.**\n\nLes marches de l'escalier se resserrent très rapidement, et les points s'accumulent autour de l'abscisse du point d'intersection $M_{2}$ de $\\left(\\mathcal{C}_{f}\\right)$ et de $\\Delta$.\n\n**Conjecture 2 : la suite $\\left(u_{n}\\right)$ converge vers**\n\n$$\\ell=\\frac{-1+\\sqrt{5}}{2}\\approx 0{,}618$$\n\n**Étape 3 - justifier le choix de ce point fixe plutôt que de l'autre.**\n\nL'équation $f(x)=x$ a deux solutions, $\\dfrac{-1-\\sqrt{5}}{2}\\approx-1{,}618$ et $\\dfrac{-1+\\sqrt{5}}{2}\\approx 0{,}618$. Comme la suite démarre en $u_{0}=0$ et croît, elle ne peut pas s'approcher de la première, qui est négative : c'est bien vers la seconde qu'elle converge.\n\n**Étape 4 - contrôler la cohérence.**\n\nSi la suite converge vers un réel $\\ell$, alors en passant à la limite dans $u_{n+1}=f\\left(u_{n}\\right)$, la continuité de $f$ sur $\\left]-2\\,;\\,+\\infty\\right[$ donne $\\ell=f(\\ell)$ : la limite est nécessairement un point fixe. La conjecture est donc compatible avec ce que l'on sait de la suite.\n\n### Piège à éviter\nLe mot « conjecture » signifie que la lecture graphique **suggère** un résultat sans le démontrer. N'écris pas « la suite est croissante » comme une certitude établie : formule bien « on conjecture que ». Une démonstration exigerait une récurrence, que l'énoncé ne demande pas ici.\n\n### Conseil\nRetiens le principe : la limite d'une suite $u_{n+1}=f\\left(u_{n}\\right)$, si elle existe et si $f$ est continue, est toujours un point fixe de $f$. C'est pour cela que la question 2.a) faisait chercher les intersections avec $y=x$ : elle préparait celle-ci depuis le début."
+      },
+      {
+        "exercise_id": 8338,
+        "enonce_markdown": "c) Calculer la limite de la suite $\\left(U_{n}\\right)$.",
+        "corrige_markdown": "### Rappel de méthode\nUne fois le terme général explicité, la limite se lit directement en identifiant les termes qui tendent vers $0$ et ceux qui restent constants. La limite de référence utile ici est $\\displaystyle\\lim_{n\\to+\\infty}\\frac{1}{n+1}=0$.\n\n**Étape 1 - repartir de l'expression explicite.**\n\n$$U_{n}=2-\\frac{1}{n+1}$$\n\n**Étape 2 - passer à la limite.**\n\nQuand $n$ tend vers $+\\infty$, le dénominateur $n+1$ tend vers $+\\infty$, donc\n\n$$\\lim_{n\\to+\\infty}\\frac{1}{n+1}=0$$\n\nPar différence :\n\n$$\\boxed{\\lim_{n\\to+\\infty}U_{n}=2}$$\n\n**La suite $\\left(U_{n}\\right)$ converge vers $2$.**\n\n**Étape 3 - contrôler par les valeurs.**\n\n$$U_{0}=1\\quad;\\quad U_{1}=1{,}5\\quad;\\quad U_{2}\\approx 1{,}67\\quad;\\quad U_{9}=2-\\frac{1}{10}=1{,}9\\quad;\\quad U_{99}=2-\\frac{1}{100}=1{,}99$$\n\nLes termes s'approchent bien de $2$, en restant strictement inférieurs.\n\n**Étape 4 - interpréter.**\n\nLa limite $2$ n'est pas un hasard : c'est le **point fixe** de la fonction $x\\mapsto\\dfrac{x-4}{x-3}$ qui définit la récurrence. En effet\n\n$$\\frac{x-4}{x-3}=x\\iff x-4=x^{2}-3x\\iff x^{2}-4x+4=0\\iff(x-2)^{2}=0\\iff x=2$$\n\nSi la suite converge, sa limite est nécessairement ce point fixe, ce que le calcul confirme. C'est d'ailleurs ce qui justifie le choix de la suite auxiliaire $V_{n}=\\dfrac{1}{U_{n}-2}$.\n\n**Étape 5 - préciser le sens de variation.**\n\n$U_{n}=2-\\dfrac{1}{n+1}$ : quand $n$ augmente, $\\dfrac{1}{n+1}$ diminue, donc $U_{n}$ augmente. La suite est **croissante** et majorée par $2$, ce qui est cohérent avec sa convergence vers $2$.\n\n### Conseil\nLe calcul du point fixe, mené à l'étape 4, est un contrôle décisif que l'on peut faire **avant** toute la partie B : il annonce la limite et explique pourquoi l'énoncé propose précisément $V_{n}=\\dfrac{1}{U_{n}-2}$. Le fait que $2$ soit racine **double** est d'ailleurs la raison pour laquelle la suite auxiliaire est arithmétique, et non géométrique."
+      }
+    ]
+  }
+]
