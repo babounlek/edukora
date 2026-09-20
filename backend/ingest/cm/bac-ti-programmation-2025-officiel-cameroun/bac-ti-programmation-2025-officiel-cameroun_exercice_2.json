@@ -1,0 +1,283 @@
+{
+  "epreuve_source": "bac-ti-programmation-2025-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2025,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 2,
+  "introduction_markdown": "Partie II : Programmation procédurale en C (10 points)",
+  "points": "10",
+  "groupes": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\nUn enseignant de mathématiques de votre établissement, passionné de la programmation C, a produit le code partiel suivant afin d'automatiser la gestion des notes de ses élèves de terminale. Il a utilisé l'éditeur de code Notepad++ accompagné du compilateur Gcc, pour produire et tester son code. Malheureusement, celui-ci présente plusieurs erreurs qui l'empêchent de fonctionner. Il se rapproche donc de vous afin que vous l'aidiez à corriger son code et à le terminer.\n\n```c\n1.  #include<stdio.h>\n2.  #include<stdlib.h>\n3.  #include<string.h>\n4.  #define taille 5\n5.  typedef struct Eleve{\n6.  char matricule[6];\n7.  char nom[10];\n8.  float moyenne ;\n9.  } Eleve;\n10. float moyennegenerale( Eleve tab[taille]){\n11. float moyennegenerale = 0;\n12. int i;\n13. for(i=0;i<taille; i++){\n14. moyennegenerale+=(tab[i].moyenne/taille);\n15. }\n16. Return 0;\n17. }\n18. void rechercheEleve( Eleve tab[taille],float note){\n19. int trouve=0, i ;\n20. for(i=0;i<taille; i++){\n21. if(tab[i].moyenne==note){\n22. trouve=1;\n23. break;\n24. }\n25. }\n26. if(trouve=1){\n27. printf(\"l'eleve %d a la moyenne recherchee\", i+1);\n28. }else{\n29. printf(\"aucun eleve n'a la moyenne recherchee\");\n30. }\n31. }\n32. int main(){\n33. Eleve terminale[taille], tmp;\n34. int i , j, min;\n35. for(i=0;i<taille;i++){\n36. printf(\"Entrez les informations de l'eleve %d\",i+1);\n37. printf(\"\\n Matricule: \");\n38. scanf(\"%t\",terminale[i].matricule);\n39. printf(\"\\n Nom:\");\n40. scanf(\"%s\",terminale[i].nom);\n41. do{\n42. printf(\"\\n Moyenne:\");\n43. scanf(\"%f\",&terminale[i].moyenne);\n44. }while(terminale[i].moyenne<0 || terminale[i].moyenne>20);\n45. }\n46. for(i=0,i<taille,i++){\n47. min=i;\n48. for(j=i+1;j<taille;j++){\n49. if(terminale[j].moyenne<terminale[min].moyenne){\n50. min=j;\n51. }\n52. }\n53. if(min!=i){\n54. tmp=terminale[i];\n55. terminale[i]=terminale[min];\n56. terminale[min]= terminale[i];\n57. }\n58. }\n59. printf(\" \\n\",moyennegenerale(terminale));\n60.\n61.\n62.\n63. return 0;\n64. }\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Nommer la catégorie de logiciel, regroupant l'éditeur de code, le compilateur et le débogueur, permettant de faciliter le processus de programmation procédurale et donner deux (02) exemples pour le langage C. (0,75pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn logiciel qui regroupe en un seul environnement l'éditeur de code, le compilateur (ou l'interpréteur) et le débogueur, afin de faciliter l'écriture, la compilation et la mise au point d'un programme, est appelé **IDE** (Integrated Development Environment, Environnement de Développement Intégré).\n\n**Corrigé.** La catégorie de logiciel décrite est l'**IDE (Environnement de Développement Intégré)**. Deux exemples d'IDE pour le langage C : **Code::Blocks** et **Dev-C++** (on peut également citer Visual Studio, CLion ou Eclipse CDT). À noter que le couple Notepad++ / Gcc utilisé par l'enseignant dans l'énoncé n'est pas à proprement parler un IDE unique, mais l'association d'un simple éditeur de texte (Notepad++, sans débogueur intégré) et d'un compilateur en ligne de commande (Gcc) : c'est justement ce que la question invite à nommer, par opposition à un IDE complet.\n\n**Piège à éviter.** Ne pas confondre l'IDE (qui regroupe plusieurs outils) avec le compilateur seul (qui ne fait que traduire le code source) ou l'éditeur de code seul (qui ne fait qu'écrire et afficher le texte du programme).",
+      "themes": [
+        "IDE",
+        "outils de développement",
+        "définitions"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q1",
+          "competence": "Identifier la catégorie de logiciel IDE",
+          "contenu_markdown": "Un logiciel qui regroupe en un seul environnement l'éditeur de code, le compilateur (ou l'interpréteur) et le débogueur, afin de faciliter l'écriture, la compilation et la mise au point d'un programme, est appelé **IDE**",
+          "cours_genere": true,
+          "cours_id": "cours-citer-des-environnements-de-developpement-integres-ide-pour-compiler-un-programme-en-langage-c-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Identifier dans ce programme : 2.1. Deux (02) bibliothèques qui ne sont pas nécessaires. 2.2. Un (01) opérateur logique. 2.3. Une (01) instruction d'arrêt d'itération. 2.4. Deux (02) variables locales. (6x0,25pt = 1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn fichier d'en-tête (bibliothèque) n'est nécessaire que si le programme utilise réellement au moins une fonction ou une macro qu'il déclare ; un opérateur logique (`&&`, `||`, `!`) combine des conditions booléennes ; une instruction d'arrêt d'itération (`break`) interrompt immédiatement la boucle qui la contient ; une variable locale est déclarée à l'intérieur d'un bloc de fonction et n'existe que le temps de l'exécution de ce bloc.\n\n**Corrigé.**\n\n**2.1. Deux bibliothèques non nécessaires :** `stdlib.h` (ligne 2) et `string.h` (ligne 3). Le programme n'utilise aucune fonction de `stdlib.h` (pas de `malloc`, `atoi`, `exit`...) ni aucune fonction de `string.h` (pas de `strcpy`, `strcmp`, `strlen`...) : seules les fonctions de `stdio.h` (`printf`, `scanf`) sont réellement employées.\n\n**2.2. Un opérateur logique :** `||` (OU logique), utilisé ligne 44 dans `terminale[i].moyenne<0 || terminale[i].moyenne>20`.\n\n**2.3. Une instruction d'arrêt d'itération :** `break;`, ligne 23, qui interrompt immédiatement la boucle `for` de la ligne 20 dès qu'un élève correspondant est trouvé.\n\n**2.4. Deux variables locales :** `i` (ligne 12, locale à la fonction `moyennegenerale`) et `trouve` (ligne 19, locale à la fonction `rechercheEleve`) : toutes deux sont déclarées à l'intérieur d'un corps de fonction et cessent d'exister à la fin de l'exécution de cette fonction (on aurait pu également citer `i, j, min` de la ligne 34, locales à `main()`).",
+      "themes": [
+        "bibliothèques standard",
+        "opérateurs logiques",
+        "instructions de rupture",
+        "portée des variables"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q2",
+          "competence": "Repérer bibliothèques, opérateurs, instructions de rupture et variables locales",
+          "contenu_markdown": "Un fichier d'en-tête (bibliothèque) n'est nécessaire que si le programme utilise réellement au moins une fonction ou une macro qu'il déclare ; un opérateur logique (`&&`, `||`, `!`) combine des conditions booléennes ; une instruction d'arrêt d'itération (`break`) interrompt immédiatement la boucle qui la contient ; une variable locale est déclarée à l'intérieur d'un bloc de fonction et n'existe que le temps de l'exécution de ce bloc.",
+          "cours_genere": true,
+          "cours_id": "cours-elements-syntaxiques-de-base-du-langage-c-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "3.1",
+      "enonce_markdown": "Nommer l'outil de l'IDE, qui permet de détecter et afficher les erreurs. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nDans une chaîne de développement C, c'est le **compilateur** qui lit le code source avant toute exécution, vérifie sa conformité à la grammaire du langage, et signale chaque erreur rencontrée (ligne et nature de l'erreur).\n\n**Corrigé.** L'outil qui détecte et affiche les erreurs est le **compilateur** (ici **Gcc**, explicitement cité dans l'énoncé comme le compilateur utilisé par l'enseignant).",
+      "themes": [
+        "compilateur",
+        "détection d'erreurs"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q3-1",
+          "competence": "Identifier l'outil de détection des erreurs",
+          "contenu_markdown": "Dans une chaîne de développement C, c'est le **compilateur** qui lit le code source avant toute exécution, vérifie sa conformité à la grammaire du langage, et signale chaque erreur rencontrée (ligne et nature de l'erreur).",
+          "cours_genere": true,
+          "cours_id": "cours-le-compilateur-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "3.2",
+      "enonce_markdown": "En compilant ce programme, six (06) erreurs vous sont signalées au niveau des lignes 16, 26, 38, 46, 56 et 59. Réécrire ces lignes de code en corrigeant les différentes erreurs qu'elles contiennent. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nChaque ligne signalée doit être analysée indépendamment : identifier d'abord si l'erreur est une erreur de **syntaxe** (mot-clé mal écrit, ponctuation invalide, spécificateur de format incorrect) ou une erreur de **logique** (opérateur d'affectation à la place d'un opérateur de comparaison, instruction qui ne fait pas ce qu'elle devrait), puis corriger en respectant l'intention du programme.\n\n**Corrigé, ligne par ligne :**\n\n**Ligne 16** (originale : `Return 0;`) : le mot-clé `return` s'écrit en minuscules en C (`Return` avec un `R` majuscule provoque une erreur de compilation). De plus, la fonction `moyennegenerale()` est censée **renvoyer** la moyenne générale calculée par la boucle précédente (variable locale `moyennegenerale`), et non la constante `0` qui viderait le calcul de tout intérêt.\n\n```c\n16. return moyennegenerale;\n```\n\n**Ligne 26** (originale : `if(trouve=1){`) : `=` est l'opérateur d'**affectation** (il place la valeur `1` dans `trouve` et vaut toujours vrai), alors qu'une condition doit utiliser l'opérateur de **comparaison** `==`.\n\n```c\n26. if(trouve==1){\n```\n\n**Ligne 38** (originale : `scanf(\"%t\",terminale[i].matricule);`) : `%t` n'est pas un spécificateur de format valide en C. `matricule` étant un tableau de caractères (`char matricule[6];`, ligne 6), le spécificateur correct pour lire une chaîne de caractères est `%s`.\n\n```c\n38. scanf(\"%s\",terminale[i].matricule);\n```\n\n**Ligne 46** (originale : `for(i=0,i<taille,i++){`) : les trois clauses d'un `for` (initialisation, condition, incrément) doivent être séparées par des **points-virgules** `;`, jamais par des virgules.\n\n```c\n46. for(i=0;i<taille;i++){\n```\n\n**Ligne 56** (originale : `terminale[min]= terminale[i];`) : cette ligne intervient dans un échange (permutation) de deux éléments du tableau. La ligne 54 sauvegarde déjà l'ancienne valeur de `terminale[i]` dans `tmp`, puis la ligne 55 écrase `terminale[i]` avec `terminale[min]`. Réécrire ensuite `terminale[min] = terminale[i];` ne fait que recopier sur `terminale[min]` la valeur qui vient d'y être copiée (celle de `terminale[min]` lui-même) : la valeur originale de `terminale[i]`, censée terminer l'échange, est perdue. Il faut affecter à `terminale[min]` la valeur sauvegardée dans `tmp`.\n\n```c\n56. terminale[min] = tmp;\n```\n\n**Ligne 59** (originale : `printf(\" \\n\",moyennegenerale(terminale));`) : la chaîne de format de `printf` ne contient aucun spécificateur (`%...`) pour afficher la valeur flottante renvoyée par `moyennegenerale(terminale)` ; celle-ci est donc calculée mais jamais affichée. Il faut ajouter un spécificateur `%f` (ou `%.2f` pour deux décimales) correspondant au type `float` renvoyé par la fonction.\n\n```c\n59. printf(\"%.2f \\n\",moyennegenerale(terminale));\n```\n\n**Piège à éviter.** Corriger uniquement la syntaxe sans vérifier que l'instruction réalise toujours l'intention du programme (cas des lignes 16 et 56, qui compilaient presque correctement mais produisaient un résultat faux ou une perte de données).",
+      "themes": [
+        "erreurs de syntaxe C",
+        "erreurs de logique",
+        "débogage"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q3-2",
+          "competence": "Distinguer erreur de syntaxe et erreur de logique",
+          "contenu_markdown": "Chaque ligne signalée doit être analysée indépendamment : identifier d'abord si l'erreur est une erreur de **syntaxe**",
+          "cours_genere": true,
+          "cours_id": "cours-corriger-des-erreurs-de-syntaxe-et-de-logique-courantes-en-c-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Expliquer sur votre feuille de composition le bloc de code allant de la ligne 41 à la ligne 44. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle `do { ... } while(condition);` exécute d'abord le bloc d'instructions **au moins une fois**, puis réévalue la condition après chaque exécution : tant que la condition reste vraie, le bloc est répété.\n\n**Corrigé.** Le bloc des lignes 41 à 44 est une boucle **do...while** de saisie contrôlée :\n\n```c\n41. do{\n42. printf(\"\\n Moyenne:\");\n43. scanf(\"%f\",&terminale[i].moyenne);\n44. }while(terminale[i].moyenne<0 || terminale[i].moyenne>20);\n```\n\nLe programme demande à l'utilisateur de saisir la moyenne de l'élève courant (ligne 43), puis vérifie (ligne 44) si cette moyenne est **hors de l'intervalle [0, 20]** (inférieure à 0 OU supérieure à 20). Si c'est le cas, la boucle recommence : l'invite de saisie (ligne 42) est de nouveau affichée et une nouvelle valeur est demandée. La boucle ne se termine que lorsque l'utilisateur saisit une moyenne valide, comprise entre 0 et 20 inclus. L'usage d'un `do...while` plutôt que d'un `while` classique est justifié ici : il faut nécessairement demander la moyenne **au moins une fois** avant de pouvoir tester sa validité.\n\n**Piège à éviter.** Ne pas confondre la condition de **poursuite** de la boucle (`while(...)`, vraie tant que la moyenne est invalide) avec une condition d'**arrêt** : ici la boucle continue tant que la valeur est incorrecte, et s'arrête dès qu'elle devient correcte.",
+      "themes": [
+        "boucle do-while",
+        "saisie contrôlée",
+        "validation de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q4",
+          "competence": "Lire une boucle do-while de saisie contrôlée",
+          "contenu_markdown": "Une boucle `do { ... } while(condition);` exécute d'abord le bloc d'instructions **au moins une fois**, puis réévalue la condition après chaque exécution : tant que la condition reste vraie, le bloc est répété.",
+          "cours_genere": true,
+          "cours_id": "cours-simulation-boucle-do-while-en-c-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Le tableau ci-dessous correspond aux différentes valeurs saisies par l'utilisateur. Représenter le tableau obtenu après exécution du bloc de code allant de la ligne 46 à la ligne 58.\n\n| Indice | 0 | 1 | 2 |\n|---|---|---|---|\n| Matricule | TE1 | TE2 | TE3 |\n| Nom | Eleve1 | Eleve2 | Eleve3 |\n| Moyenne | 8.50 | 13 | 4 |\n\n(0,75pt)",
+      "corrige_markdown": "### Rappel de méthode\nLes lignes 46 à 58 (une fois la ligne 46 corrigée en `for(i=0;i<taille;i++){`) mettent en œuvre un **tri par sélection par minimum** : à chaque tour `i`, on cherche l'indice `min` de l'élément de plus petite moyenne parmi les éléments restants (indices `i` à `taille-1`), puis on l'échange avec l'élément d'indice `i` (l'échange corrigé, ligne 56, étant `terminale[min] = tmp;`). Le tableau est ainsi rangé par **moyenne croissante**.\n\n**Corrigé.** En appliquant le tri par sélection par minimum aux trois élèves fournis par l'énoncé (Eleve1 : 8,50 ; Eleve2 : 13 ; Eleve3 : 4), le tableau obtenu, rangé par moyenne croissante, est :\n\n| Indice | 0 | 1 | 2 |\n|---|---|---|---|\n| Matricule | TE3 | TE1 | TE2 |\n| Nom | Eleve3 | Eleve1 | Eleve2 |\n| Moyenne | 4 | 8.50 | 13 |\n\n**Piège à éviter.** Ne pas trier par ordre **décroissant** ni se tromper de critère : l'algorithme compare les `moyenne` avec l'opérateur `<` (ligne 49, `if(terminale[j].moyenne<terminale[min].moyenne)`), ce qui recherche systématiquement le **minimum**, donc un tri **croissant**.",
+      "themes": [
+        "tri par sélection",
+        "trace d'exécution",
+        "tableau de structures"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q5",
+          "competence": "Tracer l'exécution d'un tri par sélection par minimum",
+          "contenu_markdown": "Les lignes 46 à 58 (une fois la ligne 46 corrigée en `for(i=0;i<taille;i++){`) mettent en œuvre un **tri par sélection par minimum** : à chaque tour `i`, on cherche l'indice `min` de l'élément de plus petite moyenne parmi les éléments restants (indices `i` à `taille-1`), puis on l'échange avec l'élément d'indice `i` (l'échange corrigé, ligne 56, étant `terminale[min] = tmp;`). Le tableau est ainsi rangé par **moyenne croissante**.",
+          "cours_genere": true,
+          "cours_id": "cours-algorithme-du-tri-par-selection-en-langage-c-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Réécrire le bloc de code allant de la ligne 20 à la ligne 25 en utilisant la boucle while(). (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle `for(init; condition; increment){ corps }` se transforme en boucle `while` en plaçant l'**initialisation** avant la boucle, la **condition** dans le `while(...)`, et l'**incrément** à la toute fin du corps de la boucle (y compris après un éventuel `break`, puisque l'incrément n'est de toute façon plus atteint si le `break` est déclenché).\n\n**Corrigé.** Bloc original (lignes 20 à 25) :\n\n```c\n20. for(i=0;i<taille; i++){\n21. if(tab[i].moyenne==note){\n22. trouve=1;\n23. break;\n24. }\n25. }\n```\n\nRéécriture équivalente avec `while()` :\n\n```c\ni=0;\nwhile(i<taille){\n    if(tab[i].moyenne==note){\n        trouve=1;\n        break;\n    }\n    i++;\n}\n```\n\n**Piège à éviter.** Oublier de déplacer l'incrément `i++` à l'intérieur du corps de la boucle `while` : sans lui, la boucle ne progresserait jamais et tournerait indéfiniment si aucun élève ne correspond à `note`.",
+      "themes": [
+        "boucle for",
+        "boucle while",
+        "équivalence de boucles"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q6",
+          "competence": "Transformer une boucle for en boucle while",
+          "contenu_markdown": "Une boucle `for(init; condition; increment){ corps }` se transforme en boucle `while` en plaçant l'**initialisation** avant la boucle",
+          "cours_genere": true,
+          "cours_id": "cours-transformer-une-boucle-for-en-boucle-while-en-langage-c-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "7.1",
+      "enonce_markdown": "Ligne 60 : Afficher le nom et la moyenne de l'élève ayant la plus grande moyenne. (0,75pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe tableau `terminale` est déjà trié par moyenne **croissante** au moment de la ligne 60 (le tri des lignes 46 à 58 s'exécute avant). L'élève ayant la plus grande moyenne se trouve donc au **dernier indice** du tableau, `terminale[taille-1]`.\n\n**Corrigé.**\n\n```c\n60. printf(\"Nom : %s, Moyenne : %.2f\\n\", terminale[taille-1].nom, terminale[taille-1].moyenne);\n```\n\n**Piège à éviter.** Chercher à reparcourir tout le tableau avec une boucle pour retrouver le maximum serait inutilement compliqué et source d'erreur : puisque le tableau est déjà trié, le maximum est directement accessible au dernier indice.",
+      "themes": [
+        "tableau trié",
+        "accès par indice",
+        "printf"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q7-1",
+          "competence": "Exploiter un tableau déjà trié pour accéder à un extremum",
+          "contenu_markdown": "Le tableau `terminale` est déjà trié par moyenne **croissante** au moment de la ligne 60",
+          "cours_genere": true,
+          "cours_id": "cours-manipulation-d-un-tableau-de-structures-trie-en-c-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "7.2",
+      "enonce_markdown": "Ligne 61 : Afficher le premier élève dont la moyenne correspond à la partie entière de la moyenne générale de la classe. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `rechercheEleve(Eleve tab[taille], float note)` (lignes 18 à 31, une fois la ligne 26 corrigée) parcourt déjà le tableau du premier au dernier indice et affiche un message dès qu'elle trouve, grâce au `break` de la ligne 23, le **premier** élève dont la moyenne est égale à `note`. Réutiliser cette fonction évite de réécrire une recherche. La **partie entière** d'un flottant en C s'obtient par une conversion (cast) explicite vers `int` : `(int) valeur`.\n\n**Corrigé.**\n\n```c\n61. rechercheEleve(terminale, (int) moyennegenerale(terminale));\n```\n\nLe cast `(int) moyennegenerale(terminale)` tronque la moyenne générale à sa partie entière (par exemple 12,80 devient 12), puis cette valeur entière est reconvertie implicitement en `float` lors du passage au paramètre `note` de `rechercheEleve` (déclaré `float note`), ce qui ne change pas sa valeur (12 devient 12.0).\n\n**Piège à éviter.** Utiliser directement `moyennegenerale(terminale)` sans cast afficherait l'élève dont la moyenne égale exactement la moyenne générale (avec ses décimales), et non celui dont la moyenne correspond à sa **partie entière**, ce qui ne répond pas à la question posée.",
+      "themes": [
+        "fonction de recherche",
+        "cast",
+        "partie entière"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q7-2",
+          "competence": "Réutiliser une fonction de recherche avec une valeur convertie",
+          "contenu_markdown": "La fonction `rechercheEleve(Eleve tab[taille], float note)` (lignes 18 à 31, une fois la ligne 26 corrigée) parcourt déjà le tableau du premier au dernier indice",
+          "cours_genere": true,
+          "cours_id": "cours-manipulation-d-un-tableau-de-structures-trie-en-c-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "7.3",
+      "enonce_markdown": "Ligne 62 : Afficher le nombre d'élève ayant une moyenne comprise entre 10 et 12. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nCompter, dans un tableau, les éléments vérifiant une condition impose de **parcourir tout le tableau** avec une boucle et d'incrémenter un **compteur** initialisé à 0 chaque fois que la condition est vérifiée, avant d'afficher ce compteur une fois le parcours terminé.\n\n**Corrigé.** Le programme ne déclare pas de variable disponible pour servir de compteur à cet endroit ; il faut donc en introduire une (`compteur`), en plus de réutiliser l'indice `i` déjà déclaré à la ligne 34 :\n\n```c\n62. int compteur = 0;\nfor(i=0; i<taille; i++){\n    if(terminale[i].moyenne>=10 && terminale[i].moyenne<=12){\n        compteur++;\n    }\n}\nprintf(\"Nombre d'eleves ayant une moyenne entre 10 et 12 : %d\\n\", compteur);\n```\n\n**Piège à éviter.** Utiliser une condition stricte (`>10 && <12`) exclurait à tort les élèves ayant exactement 10 ou 12 de moyenne : l'énoncé demande une moyenne **comprise entre** 10 et 12, donc les bornes incluses (`>=10 && <=12`).",
+      "themes": [
+        "comptage conditionnel",
+        "parcours de tableau",
+        "compteur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex2-q7-3",
+          "competence": "Compter les éléments d'un tableau vérifiant une condition",
+          "contenu_markdown": "Compter, dans un tableau, les éléments vérifiant une condition impose de **parcourir tout le tableau** avec une boucle et d'incrémenter un **compteur**",
+          "cours_genere": true,
+          "cours_id": "cours-manipulation-d-un-tableau-de-structures-trie-en-c-bacprog2025"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "structure",
+    "tableau",
+    "tri par sélection",
+    "boucle do-while",
+    "boucle for",
+    "boucle while",
+    "erreurs de compilation",
+    "compteur",
+    "recherche dans un tableau",
+    "cast"
+  ],
+  "incertitudes": [
+    "Question 5 (trace d'exécution) : le tableau `terminale` est déclaré de taille 5 (`#define taille 5`), mais l'énoncé ne fournit les valeurs saisies que pour 3 élèves (indices 0, 1, 2 : Eleve1, Eleve2, Eleve3). Les données des deux élèves manquants (indices 3 et 4) ne sont pas fournies dans le sujet source. Le corrigé présente le résultat du tri appliqué aux trois élèves effectivement donnés, la méthode restant identique pour un tableau complet de 5 éléments.",
+    "Question 7.3 (ligne 62) : contrairement aux lignes 60 et 61 qui peuvent chacune s'écrire en une seule instruction, compter les élèves dont la moyenne est comprise entre 10 et 12 nécessite structurellement une boucle et une variable compteur, donc plusieurs lignes de code à l'emplacement de la ligne 62 du programme final."
+  ],
+  "statut": "brouillon"
+}

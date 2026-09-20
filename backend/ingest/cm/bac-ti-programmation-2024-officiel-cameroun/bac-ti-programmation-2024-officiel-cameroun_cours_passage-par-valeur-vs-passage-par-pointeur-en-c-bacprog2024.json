@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-passage-par-valeur-vs-passage-par-pointeur-en-c-bacprog2024",
+  "meta": {
+    "titre": "Passage par valeur vs passage par pointeur en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - fonctions et pointeurs",
+    "duree_estimee_min": 15,
+    "tags": [
+      "passage par valeur",
+      "passage par pointeur",
+      "echange de variables"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2024-ex2-q8",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ecrire une procedure d'echange (swap) est l'exercice classique pour comprendre la difference entre passage par valeur et passage par pointeur en C."
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux modes de passage",
+      "contenu_markdown": "En **passage par valeur** (`void permuter(complexe Z, complexe Y)`), les parametres `Z` et `Y` sont des **copies locales** des arguments passes lors de l'appel : toute modification de `Z` ou `Y` a l'interieur de la fonction reste locale et ne modifie PAS les variables de l'appelant.\n\nEn **passage par pointeur** (`void permuter(complexe *Z, complexe *Y)`), on transmet **l'adresse** des variables (`permuter(&a, &b)`), ce qui permet, via l'operateur de dereferencement `*`, de modifier directement les variables de l'appelant."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire une procedure permuter() qui echange deux nombres complexes dans un tableau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ecrire la version par valeur (respectant l'en-tete imposee)",
+          "justification": "L'enonce impose void permuter(complexe Z, complexe Y).",
+          "resultat_markdown": "complexe tmp=Z; Z=Y; Y=tmp; -- echange uniquement les copies locales."
+        },
+        {
+          "numero": 2,
+          "action": "Ecrire la version par pointeur, reellement effective sur le tableau",
+          "justification": "Pour modifier z[tmp] et z[taille] dans main(), il faut leur adresse.",
+          "resultat_markdown": "void permuter(complexe *Z, complexe *Y){ complexe tmp=*Z; *Z=*Y; *Y=tmp; } appelee par permuter(&z[tmp], &z[taille]);"
+        }
+      ],
+      "conclusion_markdown": "Une procedure d'echange qui doit modifier reellement les variables de l'appelant DOIT recevoir des pointeurs ; le passage par valeur ne peut jamais produire cet effet, quelle que soit l'implementation du corps."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'une procedure d'echange fonctionne correctement des lors que le corps 'a l'air juste' (tmp=Z; Z=Y; Y=tmp;), sans verifier le mode de passage des parametres.",
+          "pourquoi_faux": "Le corps peut etre syntaxiquement correct tout en etant totalement inefficace si les parametres sont recus par valeur : l'echange reste local a la fonction.",
+          "correction_markdown": "Verifier systematiquement si les parametres d'une procedure cense modifier des variables de l'appelant sont bien des pointeurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Passage par valeur = copie locale, aucun effet sur l'appelant.",
+        "Passage par pointeur (adresse + dereferencement *) = modification reelle des variables de l'appelant."
+      ]
+    }
+  ]
+}

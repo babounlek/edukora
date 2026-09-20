@@ -1,0 +1,86 @@
+{
+  "cours_id": "cours-elaborer-un-diagramme-de-classes-a-partir-dun-texte-si2024",
+  "meta": {
+    "titre": "Elaborer un diagramme de classes UML a partir d'un texte decrivant un processus",
+    "matiere": "Systemes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modelisation statique UML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "UML",
+      "diagramme de classes",
+      "modelisation statique",
+      "cardinalites"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2024 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-si2024-ex2-q2-3a",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Construire un diagramme de classes a partir d'un texte revient a transformer une description en langage naturel en une structure d'objets relies."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la notation UML d'une classe (nom, attributs, methodes) et d'une association (nom, cardinalites)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Methode d'elaboration",
+      "contenu_markdown": "1. **Identifier les classes candidates** : reperer les noms communs importants du texte (acteurs, documents, evenements recurrents) qui possedent des caracteristiques propres.\n2. **Attribuer les attributs demandes** a chaque classe (se limiter au nombre impose par l'enonce s'il est precise).\n3. **Relier les classes par des associations nommees**, en reprenant les verbes d'action du texte (soumet, traite, propose, inscrit...) comme noms d'association.\n4. **Determiner les cardinalites** de chaque association a partir des regles de gestion explicites ou implicites du texte (un employe peut-il soumettre plusieurs demandes ? une demande concerne-t-elle un seul employe ?)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Elaborer le diagramme des classes du processus de formation des employes d'une entreprise (deux attributs par classe).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les classes candidates a partir du texte",
+          "justification": "Chaque acteur et document cite dans le texte est une classe candidate.",
+          "resultat_markdown": "Employe, DemandeFormation, ResponsableFormation, Formation, SessionFormation, OrganismeFormation, Facture, Appreciation."
+        },
+        {
+          "numero": 2,
+          "action": "Relier les classes par des associations nommees et cardinalisees",
+          "justification": "Chaque phrase du texte decrivant une action entre deux acteurs/documents devient une association.",
+          "resultat_markdown": "Employe (1) soumet (0..*) DemandeFormation ; DemandeFormation (0..*) traitee par (1) ResponsableFormation ; etc."
+        }
+      ],
+      "conclusion_markdown": "Un diagramme de classes fidele au texte ne contient aucune classe ni association qui ne soit justifiee par une phrase de l'enonce."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inventer des classes ou des attributs non mentionnes dans le texte pour 'completer' le diagramme.",
+          "pourquoi_faux": "Le diagramme doit rester une modelisation fidele du texte fourni, pas une extension libre du candidat.",
+          "correction_markdown": "Ne retenir que les classes, attributs et associations directement justifiables par une phrase de l'enonce."
+        },
+        {
+          "erreur_markdown": "Oublier de nommer les associations.",
+          "pourquoi_faux": "Une association sans nom perd son sens metier et rend le diagramme illisible pour un tiers.",
+          "correction_markdown": "Toujours nommer l'association par le verbe d'action qui relie les deux classes dans le texte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Classes = noms importants du texte ; associations = verbes d'action reliant ces noms.",
+        "Les cardinalites se deduisent des regles de gestion explicites ou implicites du texte."
+      ]
+    }
+  ]
+}

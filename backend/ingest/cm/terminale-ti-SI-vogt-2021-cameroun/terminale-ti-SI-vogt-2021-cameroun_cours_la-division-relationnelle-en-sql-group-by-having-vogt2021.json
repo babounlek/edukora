@@ -1,0 +1,87 @@
+{
+  "cours_id": "cours-la-division-relationnelle-en-sql-group-by-having-vogt2021",
+  "meta": {
+    "titre": "La division relationnelle en SQL (GROUP BY / HAVING COUNT)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "SQL - Requetes avancees",
+    "duree_estimee_min": 15,
+    "tags": [
+      "division relationnelle",
+      "GROUP BY",
+      "HAVING",
+      "SQL avance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-SI-vogt-2021-cameroun",
+    "epreuve_titre": "Controle (Situation 06) - Systeme d'Information - Terminale TI - College Mgr F.X. VOGT 2021",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-vogt2021-ex4-q7",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines questions ne demandent pas « trouver les lignes qui verifient une condition », mais « trouver les elements associes a TOUS les elements d'un autre ensemble » : c'est la division relationnelle, l'une des requetes SQL les plus delicates a construire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Clause GROUP BY et fonctions d'agregation (COUNT)",
+        "Clause HAVING pour filtrer sur un agregat",
+        "Sous-requetes SQL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire une division relationnelle",
+      "contenu_markdown": "Une **division relationnelle** repond a une question du type : « quels X sont associes a TOUS les Y d'un ensemble donne ? » (ex. quels employes travaillent sur TOUS les projets, quels clients ont commande TOUS les produits d'une categorie). La technique la plus lisible en SQL repose sur `GROUP BY` + `HAVING COUNT(...)` : on regroupe les lignes de la table d'association par la cle de X (`GROUP BY x_id`), on compte le nombre de Y distincts associes a chaque X (`COUNT(DISTINCT y_id)`), puis on ne garde, avec `HAVING`, que les groupes dont ce compte est **egal** au nombre total de Y attendus (obtenu par une sous-requete `(SELECT COUNT(*) FROM Y)` ou une valeur connue). L'egalite est essentielle : un simple filtre sur les lignes (`WHERE`) ne peut jamais exprimer une condition portant sur un ensemble complet, puisque `WHERE` s'applique ligne par ligne avant tout regroupement."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Table Travaille(idEmploye, idProjet). Ecrire la requete SQL donnant les employes qui travaillent sur TOUS les projets existants.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Regrouper par employe et compter ses projets distincts",
+          "justification": "GROUP BY isole chaque employe, COUNT(DISTINCT idProjet) donne le nombre de projets sur lesquels il travaille",
+          "resultat_markdown": "SELECT idEmploye, COUNT(DISTINCT idProjet) AS nbProjets\\nFROM Travaille\\nGROUP BY idEmploye"
+        },
+        {
+          "numero": 2,
+          "action": "Filtrer les groupes dont le compte egale le nombre total de projets",
+          "justification": "HAVING filtre sur un resultat d'agregation, contrairement a WHERE qui s'applique avant le regroupement",
+          "resultat_markdown": "SELECT idEmploye\\nFROM Travaille\\nGROUP BY idEmploye\\nHAVING COUNT(DISTINCT idProjet) = (SELECT COUNT(*) FROM Projet)"
+        }
+      ],
+      "conclusion_markdown": "La division relationnelle combine toujours un regroupement, un comptage distinct, et une comparaison HAVING avec le cardinal total de l'ensemble a couvrir entierement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser WHERE au lieu de HAVING pour filtrer sur un COUNT",
+          "pourquoi_faux": "WHERE s'applique ligne par ligne avant tout regroupement : il ne peut pas evaluer un agregat comme COUNT(...), qui n'existe qu'apres le GROUP BY. Seul HAVING peut filtrer sur le resultat d'une agregation."
+        },
+        {
+          "erreur_markdown": "Oublier DISTINCT dans COUNT(DISTINCT idProjet) quand la table peut contenir des doublons",
+          "pourquoi_faux": "Sans DISTINCT, une meme association comptee plusieurs fois fausserait le compte et pourrait faire echouer, a tort, la comparaison avec le nombre total attendu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une division relationnelle cherche les X associes a TOUS les Y d'un ensemble.",
+        "Technique : GROUP BY sur X, COUNT(DISTINCT y) comme mesure, HAVING COUNT(...) = (nombre total de Y) comme filtre.",
+        "WHERE ne peut jamais exprimer une condition sur un ensemble complet ; seul HAVING le peut, apres regroupement."
+      ]
+    }
+  ]
+}

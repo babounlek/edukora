@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-role-de-mysqli-fetch-assoc-bacprog2025",
+  "meta": {
+    "titre": "Le role de la fonction mysqli_fetch_assoc()",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP/MySQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "mysqli",
+      "base de donnees"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b8",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Apres avoir execute une requete SQL en PHP, il faut recuperer les lignes du resultat une par une : c'est le role de mysqli_fetch_assoc()."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Execution d'une requete avec mysqli_query()",
+        "Notion de tableau associatif en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "mysqli_fetch_assoc()",
+      "contenu_markdown": "`mysqli_fetch_assoc($resultat)` extrait la **ligne suivante** d'un resultat de requete SQL (obtenu via `mysqli_query()`) et la retourne sous la forme d'un **tableau associatif**, dont les cles sont les noms des colonnes de la table et les valeurs les donnees de la ligne courante. Appelee a nouveau, elle avance automatiquement a la ligne suivante ; elle retourne `NULL` lorsqu'il n'y a plus de ligne a lire, ce qui permet de l'utiliser comme condition d'arret d'une boucle `while`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "`$ligne = mysqli_fetch_assoc($resultat);`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appeler la fonction sur le resultat de la requete",
+          "justification": "Elle lit une ligne a la fois",
+          "resultat_markdown": "$ligne contient un tableau associatif, ex. ['nom'=>'Dupont', 'points'=>8]."
+        }
+      ],
+      "conclusion_markdown": "Chaque cle du tableau correspond exactement au nom d'une colonne de la table interrogee."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que mysqli_fetch_assoc() renvoie toutes les lignes d'un coup",
+          "pourquoi_faux": "Elle ne renvoie qu'une seule ligne a chaque appel ; il faut une boucle pour parcourir l'ensemble du resultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "mysqli_fetch_assoc() renvoie la ligne suivante d'un resultat sous forme de tableau associatif.",
+        "Elle renvoie NULL quand il n'y a plus de ligne, ce qui sert de condition d'arret dans une boucle while."
+      ]
+    }
+  ]
+}

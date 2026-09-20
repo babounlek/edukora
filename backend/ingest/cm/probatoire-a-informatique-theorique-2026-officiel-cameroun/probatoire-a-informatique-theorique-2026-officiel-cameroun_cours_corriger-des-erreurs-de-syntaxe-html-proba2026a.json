@@ -1,0 +1,78 @@
+{
+  "cours_id": "cours-corriger-des-erreurs-de-syntaxe-html-proba2026a",
+  "meta": {
+    "titre": "Corriger des erreurs de syntaxe HTML classiques",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "HTML - Debogage",
+    "duree_estimee_min": 15,
+    "tags": [
+      "HTML",
+      "erreurs de syntaxe",
+      "debogage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-informatique-theorique-2026-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Epreuve theorique d'informatique 2026",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-proba2026a-ex1-q1-3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un code HTML qui ne s'affiche pas correctement contient souvent une erreur de syntaxe facile a corriger une fois qu'on sait ou regarder."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "[[cours-identifier-le-langage-html-et-un-editeur-de-code-proba2026a]] Balises HTML de base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois familles d'erreurs de syntaxe HTML",
+      "contenu_markdown": "Trois erreurs reviennent frequemment dans du code HTML : une balise mal **orthographiee** (ex. `</haed>` au lieu de `</head>`), un attribut place sur la mauvaise balise (les attributs comme `align` ou `src` ne peuvent figurer que sur la balise **ouvrante**, jamais sur la balise fermante), et une balise **ouverte mais jamais refermee** (ce qui perturbe la structure de tout le reste du document)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Corriger <p>texte <b>gras</p align=\"center\">.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Deplacer l'attribut align sur la balise ouvrante",
+          "justification": "Un attribut ne peut figurer que sur la balise ouvrante",
+          "resultat_markdown": "<p align=\"center\">texte <b>gras</p>"
+        },
+        {
+          "numero": 2,
+          "action": "Fermer la balise b restee ouverte",
+          "justification": "Toute balise ouverte doit etre refermee",
+          "resultat_markdown": "<p align=\"center\">texte <b>gras</b></p>"
+        }
+      ],
+      "conclusion_markdown": "Deux corrections independantes (attribut mal place, balise non fermee) peuvent coexister sur une seule et meme ligne de code."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne corriger qu'une seule erreur par ligne alors que plusieurs erreurs distinctes peuvent s'y trouver",
+          "pourquoi_faux": "Une ligne de code HTML peut cumuler plusieurs erreurs independantes (ex. attribut mal place ET balise non fermee) qu'il faut toutes identifier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois erreurs HTML classiques : balise mal orthographiee, attribut place sur la balise fermante au lieu de l'ouvrante, balise ouverte jamais refermee."
+      ]
+    }
+  ]
+}

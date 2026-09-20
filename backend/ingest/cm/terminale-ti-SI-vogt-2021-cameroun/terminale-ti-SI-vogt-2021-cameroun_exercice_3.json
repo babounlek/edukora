@@ -1,0 +1,71 @@
+{
+  "epreuve_source": "terminale-ti-SI-vogt-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "etablissement",
+  "etablissement": "College Mgr. Francois Xavier VOGT (Departement Informatique) - Controle, Situation 06",
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "introduction_markdown": "PARTIE I - Exercice 3 : Diagramme de classes (4 points)",
+  "points": "4",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "terminale-ti-SI-vogt-2021-cameroun_exercice_3_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Diagramme de classes - TTI-BANK Innov",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 3**\n\nTTI-BANK Innov est un organisme qui est chargé de récolter des cotisations et de les redistribuer sous forme d'aides à la réalisation de projets innovants.\n\nCet organisme gère au niveau régional des organisations (entreprises ou associations) ainsi que les salariés des entreprises et les sociétaires des associations. N'importe lequel des membres peut initier un projet et demander des aides.\n\nPour chaque projet déposé, on mémorise le demandeur, l'intitulé du projet, sa description, le montant de l'investissement prévu, le montant de l'aide demandé et le montant accordé.\n\nOn distingue les personnes morales (Entreprise, association) et les personnes physiques (Salarié, Sociétaire). Pour gérer ces personnes, il faut connaître pour tous le nom et l'adresse. Pour les personnes physiques (salarié ou sociétaire) on souhaite connaître en plus le prénom, la date de naissance et la situation familiale. Les personnes physiques sont identifiées par leur numéro de sécurité sociale. Pour les salariés, on souhaite mémoriser leur statut dans l'entreprise ainsi que leur date d'embauche.\n\nPour les entreprises, on stocke leur numéro, et pour les associations, la date de création et l'objet de l'activité. Pour chaque association, on souhaite connaître son président (qui est un membre de ses sociétaires). Toutes les personnes morales sont identifiées par leur numéro ; on mémorise également pour ces organismes, le code fiscal.\n\nLes cotisations sont perçues auprès des personnes morales (entreprises ou associations) et on mémorise les cotisations versées pour chaque année.\n\nEnfin, on souhaite gérer l'appartenance des personnes physiques à l'organisme qui les emploie (entreprises) ou dont ils sont sociétaires (associations).",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Réalisez un diagramme de classes illustrant cet énoncé tout en faisant ressortir les attributs et une méthode pertinente par classe. (4pts)",
+      "corrige_markdown": "### Rappel de méthode\nConstruire un diagramme de classes à partir d'un texte consiste à repérer les noms communs du texte pour en faire des classes, les caractéristiques propres à chacun pour en faire des attributs, les phrases de type « on distingue X et Y » pour en faire des relations d'héritage (généralisation/spécialisation), et les phrases reliant deux classes pour en faire des associations avec leurs cardinalités.\n\n**Corrigé.**\n\n![fig-1](terminale-ti-SI-vogt-2021-cameroun_exercice_3_fig_1.png)\n\n**Classes et héritage.** Le texte distingue dès le départ deux grandes catégories de personnes, physiques et morales, partageant deux attributs communs (nom, adresse) : ces deux attributs sont donc factorisés dans une classe mère abstraite **Personne**, dont **PersonnePhysique** et **PersonneMorale** héritent. Le texte précise ensuite une seconde spécialisation de chaque côté : **PersonnePhysique** se décline en **Salarie** (attributs propres : statut, dateEmbauche) et **Societaire** (aucun attribut propre supplémentaire) ; **PersonneMorale** se décline en **Entreprise** et **Association** (attributs propres : dateCreation, objetActivite).\n\n**Attributs et identifiants.** PersonnePhysique porte le prenom, la dateNaissance, la situationFamiliale et son identifiant, numSecuriteSociale. PersonneMorale porte son identifiant, numero, et le codeFiscal.\n\n**Méthodes pertinentes.** Une méthode par classe a été retenue : afficherIdentite() pour Personne, calculerAge() pour PersonnePhysique, calculerAnciennete() pour Salarie, devenirPresident() pour Societaire, calculerTotalCotisations() pour PersonneMorale, listerSalaries() pour Entreprise, designerPresident() pour Association, calculerTauxFinancement() pour Projet et enregistrerVersement() pour Cotisation.\n\n**Associations.** Le texte décrit quatre liens entre classes : « n'importe lequel des membres peut initier un projet » donne l'association **Personne (1) -- initie -- (0..*) Projet** ; « on mémorise les cotisations versées [par les personnes morales] pour chaque année » donne **PersonneMorale (1) -- verse -- (0..*) Cotisation** ; « l'organisme qui les emploie » donne **Entreprise (1) -- emploie -- (0..*) Salarie** ; et « dont ils sont sociétaires » donne **Association (1) -- regroupe -- (0..*) Societaire**, ce dernier lien portant également le rôle particulier de président (un Societaire spécifique parmi ceux d'une Association).\n\n**Piège à éviter.** Ne pas dupliquer nom et adresse dans PersonnePhysique et PersonneMorale : dès qu'un attribut est commun à toutes les spécialisations d'une hiérarchie, il doit être remonté dans la classe mère, ici Personne, pour éviter la redondance.",
+      "themes": [
+        "diagramme de classes",
+        "UML",
+        "héritage",
+        "associations"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex3-q1",
+          "competence": "Construire un diagramme de classes à partir d'un texte",
+          "contenu_markdown": "Construire un diagramme de classes à partir d'un texte consiste à repérer les noms communs du texte pour en faire des classes, les caractéristiques propres à chacun pour en faire des attributs, les phrases de type « on distingue X et Y » pour en faire des relations d'héritage (généralisation/spécialisation), et les phrases reliant deux classes pour en faire des associations avec leurs cardinalités.",
+          "cours_genere": true,
+          "cours_id": "cours-elaborer-un-diagramme-de-classes-a-partir-dun-texte-si2024-vogt2021-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "diagramme de classes",
+    "héritage UML",
+    "association",
+    "cardinalités"
+  ],
+  "incertitudes": [
+    "Le diagramme de classes proposé est une modélisation raisonnable parmi plusieurs solutions valables (le choix des méthodes pertinentes par classe, en particulier, relève d'une interprétation ouverte de l'énoncé) ; le corrigé officiel de l'établissement pourrait retenir d'autres noms de méthodes ou une structuration légèrement différente des associations."
+  ],
+  "statut": "brouillon"
+}

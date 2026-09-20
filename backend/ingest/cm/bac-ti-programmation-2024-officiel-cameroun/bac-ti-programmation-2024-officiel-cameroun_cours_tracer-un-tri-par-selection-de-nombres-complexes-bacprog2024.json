@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-tracer-un-tri-par-selection-de-nombres-complexes-bacprog2024",
+  "meta": {
+    "titre": "Tracer l'execution d'un tri par selection sur un tableau de nombres complexes",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - algorithmes de tri",
+    "duree_estimee_min": 18,
+    "tags": [
+      "tri par selection",
+      "module d'un complexe",
+      "trace d'execution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2024-ex2-q9",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tracer un algorithme de tri a la main est la meilleure facon de verifier qu'on en comprend vraiment la logique, au-dela de sa simple lecture."
+    },
+    {
+      "type": "regle",
+      "titre": "Methode de trace d'un tri par selection (variante 'placer le max en fin')",
+      "contenu_markdown": "1. Calculer, une bonne fois pour toutes, le critere de tri (ici le module) de chaque element.\n2. A chaque tour de boucle, parcourir la portion `[0, taille]` du tableau pour trouver l'indice `tmp` de l'element ayant le plus grand critere.\n3. Si `tmp` differe de `taille`, echanger les elements aux positions `tmp` et `taille`.\n4. Diminuer `taille` de 1 et recommencer, jusqu'a `taille == 0`.\n5. A la fin, le tableau est trie par ordre **croissant** du critere (les plus grands elements ayant ete places, tour apres tour, en fin de tableau)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Tracer un tri par selection sur un petit tableau de nombres complexes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le module de chaque element",
+          "justification": "Le critere de tri est le module, il faut le connaitre pour tous les elements avant de commencer.",
+          "resultat_markdown": "module(a+bi) = sqrt(a^2+b^2) pour chaque element du tableau."
+        },
+        {
+          "numero": 2,
+          "action": "Derouler le while en notant tmp, les comparaisons et l'etat du tableau a chaque tour",
+          "justification": "Une trace rigoureuse note explicitement chaque comparaison, pas seulement le resultat final.",
+          "resultat_markdown": "Tableau tmp/i/comparaison/action a chaque valeur de taille, jusqu'a taille=0."
+        }
+      ],
+      "conclusion_markdown": "Une trace bien menee retrouve exactement le tableau trie par ordre croissant du critere choisi, ici le module."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de mettre a jour tmp a chaque fois qu'un module strictement plus grand est trouve dans la boucle for interne.",
+          "pourquoi_faux": "Sans mise a jour de tmp, l'indice du maximum reel de la portion n'est pas correctement determine et l'echange final est faux.",
+          "correction_markdown": "A chaque i, comparer module(z[tmp]) et module(z[i]) et mettre a jour tmp des que ce dernier est strictement superieur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A chaque tour : trouver l'indice du max dans [0,taille], l'echanger en position taille, puis decrementer taille.",
+        "Le tableau final est trie par ordre croissant du critere (ici le module)."
+      ]
+    }
+  ]
+}

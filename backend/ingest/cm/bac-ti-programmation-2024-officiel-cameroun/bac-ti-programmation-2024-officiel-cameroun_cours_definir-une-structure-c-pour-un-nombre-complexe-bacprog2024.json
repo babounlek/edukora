@@ -1,0 +1,73 @@
+{
+  "cours_id": "cours-definir-une-structure-c-pour-un-nombre-complexe-bacprog2024",
+  "meta": {
+    "titre": "Definir une structure C pour representer un nombre complexe",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - structures",
+    "duree_estimee_min": 12,
+    "tags": [
+      "struct",
+      "typedef",
+      "nombre complexe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2024-ex2-q7",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un nombre complexe combine naturellement deux valeurs reelles (partie reelle, partie imaginaire) : c'est un cas d'usage typique de la structure en C."
+    },
+    {
+      "type": "regle",
+      "titre": "Declaration",
+      "contenu_markdown": "`struct complexe { float reel; float imaginaire; };` declare une structure a deux membres flottants. `typedef struct complexe complexe;` permet ensuite d'utiliser `complexe` directement comme nom de type, sans repeter `struct`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Definir la structure complexe (partie reelle et partie imaginaire, toutes deux reelles).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Declarer les deux membres flottants",
+          "justification": "L'enonce impose des parties reelle et imaginaire representees par des nombres reels.",
+          "resultat_markdown": "struct complexe { float reel; float imaginaire; };"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter le typedef pour simplifier l'usage",
+          "justification": "Le programme utilise complexe z[5]; directement, sans struct devant.",
+          "resultat_markdown": "typedef struct complexe complexe;"
+        }
+      ],
+      "conclusion_markdown": "Sans ce typedef, il faudrait ecrire struct complexe z[5]; a chaque declaration dans le programme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Declarer reel et imaginaire en int au lieu de float.",
+          "pourquoi_faux": "L'enonce precise explicitement que les deux parties sont des nombres reels, donc de type flottant (float ou double).",
+          "correction_markdown": "Toujours utiliser float ou double pour des grandeurs explicitement decrites comme reelles dans l'enonce."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "struct complexe { float reel; float imaginaire; }; + typedef pour un usage direct du nom complexe."
+      ]
+    }
+  ]
+}

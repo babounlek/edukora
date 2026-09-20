@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-definir-et-representer-une-classe-uml-si2025",
+  "meta": {
+    "titre": "Définir et représenter une classe en notation UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation statique UML - la classe",
+    "duree_estimee_min": 15,
+    "tags": [
+      "classe",
+      "objet",
+      "UML",
+      "notation UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-si2025-ex2-q2.1-1",
+    "rappels_lies": [
+      "rdm-si2025-ex2-q2.2a-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute la modélisation statique en UML repose sur une seule brique : la classe. La maîtriser, c'est déjà savoir lire la moitié d'un diagramme de classes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de système d'information et de donnée",
+        "Vocabulaire de base de la programmation orientée objet (facultatif mais utile)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La classe et sa notation UML",
+      "contenu_markdown": "Une classe modélise un ensemble d'objets qui partagent la même structure (attributs) et le même comportement (méthodes). En UML, elle se représente par un rectangle divisé en trois compartiments empilés : le nom de la classe, centré et en gras, la liste de ses attributs (nom : type), la liste de ses méthodes (nom() : type de retour). Un objet est une instance de la classe : il porte les mêmes compartiments d'attributs, mais chaque attribut y reçoit une valeur précise, et son nom s'écrit souligné, sous la forme `nomObjet : NomClasse`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter la classe Colis, qui modélise un colis expédié par un client de MAKWAMBA EXPRESS.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nom de la classe",
+          "justification": "Le nom d'une classe est toujours un nom commun singulier, écrit avec une majuscule initiale.",
+          "resultat_markdown": "Colis"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les attributs à partir des données citées dans l'énoncé",
+          "justification": "Chaque donnée décrivant un colis (référence, poids, destination, montant, accusé de réception) devient un attribut typé.",
+          "resultat_markdown": "reference : String, poidsKg : Reel, destination : String, montant : Reel, avecAccuseReception : Booleen"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la méthode qui exprime le comportement propre à la classe",
+          "justification": "Le montant dépend du poids et de la destination : ce calcul est une responsabilité de la classe Colis elle-même.",
+          "resultat_markdown": "calculerMontant() : Reel"
+        }
+      ],
+      "conclusion_markdown": "Le rectangle à trois compartiments (Colis / ses cinq attributs / sa méthode) constitue la représentation UML complète de la classe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner un nom de classe au pluriel ou sous forme de phrase (« LesColis », « EnregistrerUnColis »).",
+          "pourquoi_faux": "Le nom d'une classe désigne un concept, pas une collection ni une action : le pluriel et les verbes sont réservés respectivement aux attributs multivalués et aux méthodes.",
+          "correction_markdown": "Toujours nommer une classe par un nom commun singulier : Colis, Client, Vehicule."
+        },
+        {
+          "erreur_markdown": "Oublier de typer les attributs (« poids » sans préciser Reel ou Entier).",
+          "pourquoi_faux": "Un attribut non typé est incomplet en UML : le type conditionne les opérations possibles et la taille de stockage prévue lors du passage au schéma relationnel.",
+          "correction_markdown": "Systématiser la forme `nomAttribut : Type` pour chaque attribut, même quand le type paraît évident."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Représenter la classe Client d'un système de vente en ligne, sachant qu'un client possède un identifiant, un nom, une adresse email, et peut passer une commande.",
+          "solution_markdown": "Classe Client : attributs idClient : String, nom : String, email : String ; méthode passerCommande() : void."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Représenter la classe Livre d'une bibliothèque (référence ISBN, titre, auteur, disponible ou non) et sa méthode qui indique si l'ouvrage peut être emprunté.",
+          "solution_markdown": "Classe Livre : attributs isbn : String, titre : String, auteur : String, disponible : Booleen ; méthode peutEtreEmprunte() : Booleen, qui renvoie la valeur de l'attribut disponible."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un objet livre1 est une instance de la classe Livre définie ci-dessus, avec isbn = \"978-2-1234\", titre = \"Le Petit Prince\", auteur = \"Saint-Exupéry\", disponible = vrai. Écrire sa représentation UML sous forme d'objet.",
+          "solution_markdown": "livre1 : Livre, avec isbn = \"978-2-1234\", titre = \"Le Petit Prince\", auteur = \"Saint-Exupéry\", disponible = vrai. Le nom de l'objet est souligné dans sa représentation graphique, suivi de deux-points et du nom de sa classe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une classe se représente par un rectangle à trois compartiments : nom, attributs, méthodes.",
+        "Le nom d'une classe est toujours un nom commun singulier.",
+        "Chaque attribut se type systématiquement (String, Reel, Entier, Booleen...).",
+        "Un objet est une instance de sa classe : mêmes compartiments, mais valeurs précises et nom souligné.",
+        "Au BAC TI, cette compétence est le point de départ de toute question « Élaborer le diagramme de classes »."
+      ]
+    }
+  ]
+}

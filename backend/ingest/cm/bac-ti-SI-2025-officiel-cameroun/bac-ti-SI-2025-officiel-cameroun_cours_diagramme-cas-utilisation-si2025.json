@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-diagramme-cas-utilisation-si2025",
+  "meta": {
+    "titre": "Élaborer un diagramme de cas d'utilisation UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation fonctionnelle UML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "diagramme de cas d'utilisation",
+      "UML",
+      "acteur",
+      "modélisation fonctionnelle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-si2025-ex3-q3.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le diagramme de cas d'utilisation répond à une seule question : que peut faire chaque utilisateur du système ? Bien construit, il tient sur une page et sert de contrat entre le client et l'équipe qui développe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'acteur en UML",
+        "Notion de système d'information"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction en trois temps",
+      "contenu_markdown": "Un diagramme de cas d'utilisation se construit en trois temps : (1) **identifier les acteurs**, c'est-à-dire ceux qui interagissent avec le système ; (2) **identifier les cas d'utilisation**, c'est-à-dire ce que fait le système pour chacun d'eux (un verbe à l'infinitif et un complément : « Enregistrer le colis ») ; (3) **relier** chaque acteur aux cas d'utilisation auxquels il participe par un trait simple. Les cas d'utilisation sont inscrits dans un rectangle qui représente la frontière du système ; les acteurs restent à l'extérieur."
+    },
+    {
+      "type": "regle",
+      "titre": "Relations entre cas d'utilisation",
+      "contenu_markdown": "La relation `<<include>>` indique qu'un cas d'utilisation en **appelle obligatoirement** un autre (comportement commun réutilisé). La relation `<<extend>>` indique qu'un cas d'utilisation peut **optionnellement** être enrichi par un autre, sous condition. Elles se représentent par une flèche pointillée accompagnée du mot-clé."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une société d'expédition de colis : le client dépose un colis, l'agent du service Client l'enregistre, le chef de la logistique l'achemine, et le service des douanes doit donner son accord pour les colis à destination de l'étranger. Construire le diagramme de cas d'utilisation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les acteurs",
+          "justification": "Ce sont les entités extérieures qui échangent de l'information avec le système.",
+          "resultat_markdown": "Client, agent du service Client, chef du service logistique, service des douanes."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les cas d'utilisation",
+          "justification": "Un cas d'utilisation est une fonctionnalité offerte par le système à un acteur.",
+          "resultat_markdown": "Déposer un colis, Enregistrer le colis, Transmettre le colis à la logistique, Demander l'accord des douanes, Enregistrer le bordereau."
+        },
+        {
+          "numero": 3,
+          "action": "Relier et préciser les relations",
+          "justification": "L'accord douanier n'est demandé que pour l'étranger : c'est une étape imposée quand elle a lieu, donc un `<<include>>` depuis « Transmettre le colis à la logistique ».",
+          "resultat_markdown": "Chaque acteur est relié à ses cas d'utilisation ; « Transmettre le colis » inclut « Demander l'accord des douanes »."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme final montre, sans détailler l'ordre des échanges, qui peut faire quoi avec le système."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Nommer un cas d'utilisation avec un nom (« Colis ») plutôt qu'avec une action.",
+          "pourquoi_faux": "Un cas d'utilisation décrit une fonctionnalité, donc un verbe d'action.",
+          "correction_markdown": "Écrire « Enregistrer le colis », « Calculer le montant »."
+        },
+        {
+          "erreur_markdown": "Placer un acteur à l'intérieur de la frontière du système.",
+          "pourquoi_faux": "L'acteur est extérieur au système : il interagit avec lui sans en faire partie.",
+          "correction_markdown": "Dessiner les acteurs hors du rectangle, les cas d'utilisation à l'intérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les trois étapes de construction d'un diagramme de cas d'utilisation.",
+          "solution_markdown": "Identifier les acteurs, identifier les cas d'utilisation, relier les acteurs aux cas d'utilisation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour une bibliothèque, proposer deux acteurs et trois cas d'utilisation.",
+          "solution_markdown": "Acteurs : adhérent, bibliothécaire. Cas : Emprunter un livre, Retourner un livre, Inscrire un adhérent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quand utiliser `<<include>>` plutôt que `<<extend>>` ?",
+          "solution_markdown": "`<<include>>` quand le cas inclus est toujours exécuté avec le cas de base ; `<<extend>>` quand il n'est exécuté que sous condition."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois temps : acteurs, cas d'utilisation, liaisons.",
+        "Cas d'utilisation = verbe d'action, placé dans la frontière du système.",
+        "Acteurs = extérieurs au système.",
+        "`<<include>>` = obligatoire ; `<<extend>>` = optionnel."
+      ]
+    }
+  ]
+}

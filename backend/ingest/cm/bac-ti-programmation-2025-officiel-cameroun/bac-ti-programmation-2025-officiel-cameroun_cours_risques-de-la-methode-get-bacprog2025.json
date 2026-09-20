@@ -1,0 +1,77 @@
+{
+  "cours_id": "cours-risques-de-la-methode-get-bacprog2025",
+  "meta": {
+    "titre": "Le risque de confidentialite de la methode GET, et comparaison avec POST",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - HTML/PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "GET",
+      "POST",
+      "securite",
+      "confidentialite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b4-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La methode GET transmet les donnees d'un formulaire de maniere visible, ce qui pose un probleme des que ces donnees sont sensibles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'URL",
+        "Methodes HTTP GET et POST"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Risque de GET et comparaison avec POST",
+      "contenu_markdown": "Avec la methode **GET**, les donnees du formulaire sont ajoutees en clair dans l'**URL** de la requete (apres un `?`), ce qui les rend visibles dans la barre d'adresse du navigateur, dans l'historique de navigation et dans les journaux (logs) du serveur : c'est un risque de **confidentialite** majeur des que des donnees sensibles (mot de passe, informations personnelles) sont transmises. La methode **POST** transmet les donnees dans le corps de la requete HTTP, invisibles dans l'URL, ce qui est plus adapte aux donnees sensibles ou volumineuses."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Comparer GET et POST.",
+      "epreuve_source": false,
+      "etapes": [],
+      "conclusion_markdown": ""
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que POST rend les donnees totalement inaccessibles ou chiffrees",
+          "pourquoi_faux": "POST cache seulement les donnees de l'URL visible ; sans HTTPS, elles restent lisibles en clair par quiconque intercepte le trafic reseau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "enonce_markdown": "Tableau comparatif GET / POST",
+          "reponse_attendue_markdown": "| Critere | GET | POST |\n|---|---|---|\n| Visibilite des donnees | Visibles dans l'URL | Invisibles dans l'URL (corps de la requete) |\n| Volume de donnees | Limite (taille d'URL) | Beaucoup plus important |\n| Confidentialite | Faible | Meilleure (mais non chiffree sans HTTPS) |\n| Mise en favori/partage de l'URL avec les donnees | Possible | Impossible |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "GET expose les donnees dans l'URL : a eviter pour des informations sensibles.",
+        "POST transmet les donnees dans le corps de la requete, invisibles dans l'URL."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "cours_id": "cours-verifier-lexistence-dun-utilisateur-avec-une-requete-sql-bacprog2024",
+  "meta": {
+    "titre": "Verifier l'existence d'un utilisateur en base avec une requete SQL",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP/SQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "authentification",
+      "mysqli_num_rows"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2024-ex1-b6",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Authentifier un utilisateur revient, cote base de donnees, a verifier qu'un enregistrement correspond exactement au couple identifiant/mot de passe saisi."
+    },
+    {
+      "type": "regle",
+      "titre": "Methode",
+      "contenu_markdown": "1. Construire une requete `SELECT * FROM table WHERE colonne_login='...' AND colonne_password='...'` en y injectant les valeurs saisies.\n2. Executer la requete avec `mysqli_query($connexion, $requete)`.\n3. Tester le nombre de lignes renvoyees avec `mysqli_num_rows($resultat)` : s'il est superieur a 0, un utilisateur correspondant existe (authentification reussie), sinon non."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire le code PHP verifiant l'existence d'un utilisateur a partir de son login et de son mot de passe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Construire la requete SELECT filtrant sur login et password",
+          "justification": "Seul un enregistrement dont les deux colonnes correspondent doit etre trouve.",
+          "resultat_markdown": "SELECT * FROM USERS WHERE login='$login' AND password='$pwd'"
+        },
+        {
+          "numero": 2,
+          "action": "Executer la requete et tester le nombre de resultats",
+          "justification": "mysqli_num_rows() indique combien de lignes correspondent au filtre.",
+          "resultat_markdown": "if (mysqli_num_rows($resultat) > 0) { /* utilisateur trouve */ }"
+        }
+      ],
+      "conclusion_markdown": "Ce motif SELECT + mysqli_num_rows() est le schema de base de toute authentification simple par identifiant/mot de passe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Filtrer uniquement sur le login, sans verifier le mot de passe.",
+          "pourquoi_faux": "N'importe qui connaissant un login existant serait alors authentifie sans connaitre le mot de passe.",
+          "correction_markdown": "Toujours filtrer sur la conjonction (AND) du login ET du mot de passe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT ... WHERE login=... AND password=... puis mysqli_num_rows() > 0 confirme l'existence de l'utilisateur."
+      ]
+    }
+  ]
+}

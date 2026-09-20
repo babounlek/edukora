@@ -1,0 +1,75 @@
+{
+  "cours_id": "cours-identifier-la-methode-denvoi-dun-formulaire-bacprog2025",
+  "meta": {
+    "titre": "Identifier la methode d'envoi (GET/POST) d'un formulaire HTML",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - HTML/PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "HTML",
+      "formulaire",
+      "GET",
+      "POST"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La methode d'envoi d'un formulaire se lit directement dans l'attribut `method` de la balise `<form>`."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Syntaxe de la balise <form>",
+        "Notion de requete HTTP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire l'attribut method",
+      "contenu_markdown": "La balise `<form method=\"get\" action=\"...\">` (ou `method=\"post\"`) indique explicitement la methode HTTP utilisee pour transmettre les donnees saisies vers le script de traitement designe par `action`. En l'absence de cet attribut, la methode par defaut est GET."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "`<form method=\"get\" action=\"traiter.php\">`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reperer l'attribut method",
+          "justification": "C'est cet attribut, et lui seul, qui fixe la methode d'envoi",
+          "resultat_markdown": "method=\"get\""
+        }
+      ],
+      "conclusion_markdown": "La methode utilisee est GET."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Deduire la methode a partir du nom du script PHP recepteur",
+          "pourquoi_faux": "Le nom du fichier PHP ne dit rien sur la methode ; seul l'attribut method du formulaire, ou la maniere dont le PHP recupere les donnees ($_GET ou $_POST), permet de le determiner avec certitude."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La methode d'un formulaire se lit dans l'attribut method de la balise <form>.",
+        "Sans cet attribut, la methode par defaut est GET."
+      ]
+    }
+  ]
+}

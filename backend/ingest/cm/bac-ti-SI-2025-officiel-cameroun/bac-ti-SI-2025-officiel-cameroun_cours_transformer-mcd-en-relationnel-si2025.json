@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-transformer-mcd-en-relationnel-si2025",
+  "meta": {
+    "titre": "Transformer un MCD en modèle relationnel (schéma relationnel)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "MERISE - du modèle conceptuel au modèle logique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "MCD",
+      "schéma relationnel",
+      "modèle relationnel",
+      "cardinalités",
+      "MERISE"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-si2025-ex4-q4.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le MCD parle le langage du métier ; le schéma relationnel parle celui de la base de données. Les cardinalités de chaque association indiquent, sans ambiguïté, comment passer de l'un à l'autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un MCD : entités, associations, cardinalités",
+        "Notion de clé primaire et de clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux règles de transformation",
+      "contenu_markdown": "Une association du MCD se transforme différemment selon ses cardinalités maximales. Si l'une des deux cardinalités maximales vaut 1 (association dite « 1,n »), la clé primaire de l'entité du côté « n » migre comme clé étrangère dans la table de l'entité du côté « 1 ». Si les deux cardinalités maximales valent « n » (association dite « n,n » ou plusieurs-plusieurs), aucune migration n'est possible : l'association devient elle-même une table indépendante, dont la clé primaire est la concaténation des clés primaires des deux entités reliées, et qui reçoit en plus les attributs propres à l'association s'il y en a."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Transformer en schéma relationnel l'association POSSEDE (1,n)-(1,n) entre PROPRIETAIRE et VEHICULE du MCD du parc automobile.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les cardinalités maximales des deux côtés de l'association",
+          "justification": "C'est la cardinalité maximale, et elle seule, qui détermine la règle de transformation à appliquer.",
+          "resultat_markdown": "Côté PROPRIETAIRE : (1,n). Côté VEHICULE : (1,n). Les deux cardinalités maximales valent n."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire qu'aucune migration de clé n'est possible",
+          "justification": "Migrer la clé de VEHICULE vers PROPRIETAIRE, ou l'inverse, ne permettrait de représenter qu'un seul véhicule par propriétaire, ce qui contredit la copropriété autorisée par l'énoncé (contrainte C2).",
+          "resultat_markdown": "L'association POSSEDE doit devenir une table indépendante."
+        },
+        {
+          "numero": 3,
+          "action": "Construire la table d'association",
+          "justification": "Sa clé primaire doit garantir qu'un couple (propriétaire, véhicule) donné n'apparaît qu'une seule fois.",
+          "resultat_markdown": "POSSEDE (#Immatriculation, #Identifiant), où Immatriculation référence VEHICULE et Identifiant référence PROPRIETAIRE."
+        }
+      ],
+      "conclusion_markdown": "La table POSSEDE porte, à elle seule, toute l'information de copropriété que ni la table VEHICULE ni la table PROPRIETAIRE ne pourraient représenter isolément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la migration de clé même quand les deux cardinalités maximales valent n.",
+          "pourquoi_faux": "Migrer une clé suppose qu'une entité ne participe qu'une seule fois à l'association côté « 1 » ; avec deux cardinalités n,n, aucune des deux tables ne peut accueillir une clé étrangère simple sans perdre des informations.",
+          "correction_markdown": "Vérifier systématiquement les deux cardinalités maximales avant de choisir la règle : la migration de clé n'est valide que si l'une d'elles vaut exactement 1."
+        },
+        {
+          "erreur_markdown": "Oublier de reporter les attributs propres à une association n,n dans la table qui en résulte.",
+          "pourquoi_faux": "Une association n,n peut porter ses propres attributs, une date, une quantité, qui n'appartiennent ni à l'une ni à l'autre des entités reliées ; les omettre fait perdre cette information au passage au relationnel.",
+          "correction_markdown": "Relire le MCD pour vérifier si l'association elle-même porte des attributs avant de finaliser la table résultante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Transformer en relationnel l'association APPARTIENT (1,1) côté VEHICULE - (1,n) côté MODELE.",
+          "solution_markdown": "La cardinalité maximale côté VEHICULE vaut 1 : la clé primaire de MODELE migre comme clé étrangère dans VEHICULE. VEHICULE (Immatriculation, Type, Couleur, DateVehicule, #IdModele) ; MODELE (IdModele, LibeleModele, Carburant)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une association ETUDIE relie ETUDIANT (1,n) et COURS (0,n), et porte un attribut NoteObtenue. Transformer cette association en schéma relationnel.",
+          "solution_markdown": "Les deux cardinalités maximales valent n : l'association devient une table indépendante, qui reçoit en plus l'attribut porté par l'association. ETUDIE (#NumEtudiant, #CodeCours, NoteObtenue)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une association COMMANDE relie CLIENT (0,n) et PRODUIT (0,n) via une entité associative qui porte une quantité et une date de commande ; par ailleurs, chaque commande est traitée par un seul EMPLOYE (1,1) parmi plusieurs (0,n) commandes possibles. Proposer le schéma relationnel complet.",
+          "solution_markdown": "CLIENT (IdClient, ...) ; PRODUIT (IdProduit, ...) ; EMPLOYE (IdEmploye, ...). L'association n,n CLIENT-PRODUIT devient une table COMMANDE (#IdClient, #IdProduit, Quantite, DateCommande). L'association EMPLOYE-COMMANDE, de cardinalité (1,1) côté COMMANDE et (0,n) côté EMPLOYE, se traduit par la migration de la clé de EMPLOYE dans la table COMMANDE : COMMANDE (#IdClient, #IdProduit, Quantite, DateCommande, #IdEmploye)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association MCD dont une cardinalité maximale vaut 1 se traduit par une migration de clé étrangère côté « 1 ».",
+        "Une association dont les deux cardinalités maximales valent n devient une table indépendante.",
+        "La clé primaire d'une table d'association n,n est la concaténation des clés primaires des entités reliées.",
+        "Les attributs propres à une association n,n suivent l'association dans sa table résultante.",
+        "Toujours lire les deux cardinalités maximales avant de choisir la règle : une seule suffit à orienter tout le schéma."
+      ]
+    }
+  ]
+}

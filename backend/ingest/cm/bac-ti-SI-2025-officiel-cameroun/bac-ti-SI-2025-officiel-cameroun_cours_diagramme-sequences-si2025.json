@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-diagramme-sequences-si2025",
+  "meta": {
+    "titre": "Élaborer un diagramme de séquences UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation dynamique UML",
+    "duree_estimee_min": 18,
+    "tags": [
+      "diagramme de séquences",
+      "UML",
+      "modélisation dynamique",
+      "scénario"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-si2025-ex3-q3.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le diagramme de séquences raconte une histoire : qui envoie quel message à qui, et dans quel ordre. Pour l'élaborer, il faut d'abord connaître le scénario, puis le mettre en scène sur des lignes de vie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'acteur et d'objet",
+        "Rôle du diagramme de séquences en UML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Éléments du diagramme",
+      "contenu_markdown": "Chaque **participant** (acteur ou objet du système) est représenté par un rectangle en haut d'une **ligne de vie** verticale en pointillé. Les **messages d'appel** se tracent en trait plein avec une flèche pleine ; les **messages de retour** en trait pointillé. L'ordre vertical, de haut en bas, traduit l'**ordre chronologique** du scénario."
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode d'élaboration",
+      "contenu_markdown": "1) Choisir le **scénario principal** demandé. 2) Lister les participants. 3) Écrire, dans l'ordre, chaque message échangé (demande, réponse). 4) **Numéroter** les messages et distinguer appels et retours. On n'invente pas d'étapes : on suit ce que décrit l'énoncé."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Scénario principal : un client se présente au comptoir pour expédier un colis ; l'agent saisit les références, le système confirme la saisie, calcule le montant, l'agent délivre le reçu puis transmet le colis à la logistique. Élaborer le diagramme de séquences.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les participants",
+          "justification": "Ce sont ceux qui échangent des messages dans le scénario.",
+          "resultat_markdown": "Client, Agent, Système, Service logistique."
+        },
+        {
+          "numero": 2,
+          "action": "Ordonner les messages",
+          "justification": "Chaque message est une action ou une réponse, dans l'ordre du déroulement.",
+          "resultat_markdown": "1. Demande d'expédition (client → agent) ; 2. Saisie des références (agent → système) ; 3. Accusé de saisie (retour) ; 4. Calcul du montant ; 5. Montant (retour) ; 6. Reçu (agent → client) ; 7. Transmission (agent → logistique)."
+        },
+        {
+          "numero": 3,
+          "action": "Distinguer appels et retours",
+          "justification": "Un retour renvoie une information sans déclencher de nouvelle action.",
+          "resultat_markdown": "Messages 3 et 5 en pointillé, les autres en trait plein."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme numéroté permet au correcteur de suivre le scénario sans ambiguïté."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne pas numéroter les messages.",
+          "pourquoi_faux": "Le correcteur ne peut plus vérifier l'ordre, et une étape manquante passe inaperçue.",
+          "correction_markdown": "Numéroter chaque message dans l'ordre chronologique."
+        },
+        {
+          "erreur_markdown": "Utiliser un trait plein pour un message de retour.",
+          "pourquoi_faux": "La convention UML réserve le pointillé aux retours.",
+          "correction_markdown": "Retours en pointillé, appels en trait plein."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Comment se lit l'ordre chronologique dans un diagramme de séquences ?",
+          "solution_markdown": "De haut en bas le long des lignes de vie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la différence entre message d'appel et message de retour.",
+          "solution_markdown": "Appel : trait plein, flèche pleine, déclenche une action ; retour : trait pointillé, renvoie un résultat."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Élaborer les messages d'un scénario « un adhérent emprunte un livre » (adhérent, bibliothécaire, système).",
+          "solution_markdown": "1. Demande de prêt ; 2. Vérification de l'adhésion ; 3. Adhésion valide (retour) ; 4. Enregistrement du prêt ; 5. Confirmation (retour) ; 6. Remise du livre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Participants sur des lignes de vie verticales.",
+        "Appels en trait plein, retours en pointillé.",
+        "L'ordre vertical est l'ordre chronologique.",
+        "Toujours numéroter les messages."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-diagramme-classes-a-partir-texte-si2025",
+  "meta": {
+    "titre": "Élaborer un diagramme de classes UML à partir d'un texte décrivant un processus",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation statique UML",
+    "duree_estimee_min": 18,
+    "tags": [
+      "diagramme de classes",
+      "UML",
+      "modélisation statique",
+      "association"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-si2025-ex2-q2.2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un énoncé de quelques lignes contient déjà, caché, tout le diagramme de classes : il suffit de savoir quels mots regarder. Les noms donnent les classes, les verbes donnent les associations, les compléments donnent les attributs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de classe, d'attribut et de méthode en UML",
+        "Notion de cardinalité (multiplicité)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lecture du texte",
+      "contenu_markdown": "Élaborer un diagramme de classes à partir d'un texte consiste à : repérer les **noms communs** pour en tirer les **classes candidates** ; repérer les **verbes d'action** pour en tirer les **associations** et leurs **cardinalités** ; repérer les **compléments** (poids, référence, montant...) pour en tirer les **attributs**. On élimine ensuite les synonymes et les noms qui ne sont que des attributs."
+    },
+    {
+      "type": "regle",
+      "titre": "Représentation",
+      "contenu_markdown": "Une classe se dessine en un rectangle à trois compartiments (nom, attributs, méthodes). Une association est un trait entre deux classes, avec un **nom** ou un **rôle** et des **cardinalités** aux deux extrémités (0..1, 1, 0..*, 1..*). Une relation d'héritage relie une sous-classe à sa classe mère par une flèche à pointe triangulaire creuse."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "« Un client expédie un ou plusieurs colis. Un colis, léger ou lourd, est enregistré par un agent ; il porte une référence, un poids et un montant. » Proposer les classes, les attributs et les associations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les classes candidates",
+          "justification": "Les noms communs du texte désignent les entités manipulées.",
+          "resultat_markdown": "Client, Colis, Agent ; le colis se spécialise en ColisLeger et ColisLourd."
+        },
+        {
+          "numero": 2,
+          "action": "Trouver les attributs",
+          "justification": "Les compléments d'un nom sont ses caractéristiques.",
+          "resultat_markdown": "Colis : référence, poids, montant."
+        },
+        {
+          "numero": 3,
+          "action": "Trouver les associations et cardinalités",
+          "justification": "Les verbes « expédie » et « enregistre » relient les classes ; « un ou plusieurs » donne 1..*.",
+          "resultat_markdown": "Client 1 —— 0..* Colis (expédier) ; Agent 1 —— 0..* Colis (enregistrer)."
+        }
+      ],
+      "conclusion_markdown": "Chaque élément du diagramme est justifié par un mot du texte ; rien n'est ajouté sans appui dans l'énoncé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Transformer chaque nom du texte en classe.",
+          "pourquoi_faux": "Certains noms (poids, référence) sont des attributs, pas des entités.",
+          "correction_markdown": "Ne garder comme classe que ce qui possède des attributs propres ou des relations."
+        },
+        {
+          "erreur_markdown": "Oublier les cardinalités.",
+          "pourquoi_faux": "Sans elles l'association est incomplète et perd des points au barème.",
+          "correction_markdown": "Toujours placer une cardinalité à chaque extrémité de l'association."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans « un élève passe plusieurs examens », donner les classes et la cardinalité.",
+          "solution_markdown": "Classes Élève et Examen ; Élève 1 —— 0..* Examen."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi « poids » n'est-il pas une classe dans l'exemple du colis ?",
+          "solution_markdown": "C'est une caractéristique du colis, donc un attribut."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un texte parle de véhicules « légers » et « lourds ». Comment le représenter ?",
+          "solution_markdown": "Une classe mère Véhicule et deux sous-classes VéhiculeLéger et VéhiculeLourd reliées par la relation d'héritage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Noms → classes ; verbes → associations ; compléments → attributs.",
+        "Toujours indiquer nom/rôle et cardinalités des associations.",
+        "Un texte qui distingue deux catégories appelle souvent un héritage.",
+        "Lister les classes candidates au brouillon avant de tracer."
+      ]
+    }
+  ]
+}

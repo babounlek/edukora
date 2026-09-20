@@ -1,0 +1,65 @@
+{
+  "cours_id": "cours-role-de-mysqli-close-bacprog2025",
+  "meta": {
+    "titre": "Le role de la fonction mysqli_close()",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP/MySQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "mysqli",
+      "connexion base de donnees"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b11",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une connexion a une base de donnees consomme des ressources sur le serveur : il est de bonne pratique de la fermer explicitement une fois le traitement termine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Ouverture d'une connexion avec mysqli_connect()"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "mysqli_close()",
+      "contenu_markdown": "`mysqli_close($connexion)` ferme explicitement la connexion a la base de donnees ouverte precedemment par `mysqli_connect()`, liberant les ressources associees sur le serveur MySQL. Bien que PHP ferme automatiquement les connexions restantes a la fin du script, fermer une connexion explicitement des qu'elle n'est plus utile est une bonne pratique, en particulier lorsque le script continue a s'executer apres les traitements en base de donnees."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "`mysqli_close($connexion);`",
+      "epreuve_source": true,
+      "etapes": [],
+      "conclusion_markdown": "La connexion est liberee : plus aucune requete ne peut etre executee sur $connexion apres cet appel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appeler mysqli_close() avant d'avoir termine de lire tous les resultats d'une requete",
+          "pourquoi_faux": "Fermer la connexion trop tot rend inaccessibles les donnees qui n'ont pas encore ete lues avec mysqli_fetch_assoc()."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "mysqli_close() ferme explicitement une connexion a une base de donnees MySQL et libere les ressources associees."
+      ]
+    }
+  ]
+}

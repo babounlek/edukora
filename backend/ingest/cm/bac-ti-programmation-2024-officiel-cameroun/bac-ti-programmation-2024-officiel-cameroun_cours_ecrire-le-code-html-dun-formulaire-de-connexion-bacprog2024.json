@@ -1,0 +1,75 @@
+{
+  "cours_id": "cours-ecrire-le-code-html-dun-formulaire-de-connexion-bacprog2024",
+  "meta": {
+    "titre": "Ecrire le code HTML d'un formulaire de connexion",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - HTML",
+    "duree_estimee_min": 12,
+    "tags": [
+      "HTML",
+      "formulaire",
+      "input",
+      "form"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2024-ex1-a1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire de connexion est l'un des elements HTML les plus frequents d'une application web : il combine des champs de saisie et un bouton de soumission."
+    },
+    {
+      "type": "regle",
+      "titre": "Structure d'un formulaire HTML",
+      "contenu_markdown": "La balise `<form>` delimite un formulaire ; ses attributs cles sont `action` (URL/script destinataire des donnees) et `method` (`get` ou `post`). Chaque champ de saisie est une balise `<input>` dont le `type` determine son comportement (`text`, `password`, `submit`...), et dont les attributs `id` (utilise cote JavaScript) et `name` (utilise cote serveur, ex. `$_GET`) portent l'identifiant du champ, generalement impose par l'enonce."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire le code HTML d'un formulaire de connexion avec identifiants login/pwd.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir le formulaire avec action et method",
+          "justification": "action pointe vers le script de traitement, method fixe le mode de transmission impose (GET).",
+          "resultat_markdown": "<form action=\"connecter.php\" method=\"get\">"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter les champs avec les id/name imposes",
+          "justification": "Les scripts PHP et JS s'appuient sur ces identifiants pour recuperer/valider les valeurs.",
+          "resultat_markdown": "<input type=\"text\" id=\"login\" name=\"login\"> et <input type=\"password\" id=\"pwd\" name=\"pwd\">"
+        }
+      ],
+      "conclusion_markdown": "Le choix des attributs id/name n'est jamais laisse au hasard : il doit correspondre exactement a ce qu'attendent le script PHP ($_GET) et la fonction JavaScript de validation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser des noms de champs differents de ceux attendus par le PHP ou le JavaScript.",
+          "pourquoi_faux": "$_GET['login'] ne recupere rien si le champ HTML s'appelle name=\"nom_utilisateur\".",
+          "correction_markdown": "Toujours aligner les attributs name des champs HTML avec les cles utilisees dans $_GET/$_POST et dans le JavaScript."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "<form action=... method=...> encadre le formulaire.",
+        "Chaque <input> porte les id/name imposes par l'enonce, exploites ensuite en JS et en PHP."
+      ]
+    }
+  ]
+}

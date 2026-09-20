@@ -1,0 +1,80 @@
+{
+  "cours_id": "cours-role-de-parseint-et-confirm-en-javascript-bacprog2025",
+  "meta": {
+    "titre": "Le role de parseInt() et confirm() en JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - JavaScript",
+    "duree_estimee_min": 15,
+    "tags": [
+      "JavaScript",
+      "parseInt",
+      "confirm"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-i2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux fonctions JavaScript tres utilisees pour valider et faire confirmer une saisie : parseInt() et confirm()."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de fonction JavaScript",
+        "Types de donnees (chaine de caracteres, nombre)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "parseInt() et confirm()",
+      "contenu_markdown": "`parseInt(chaine)` convertit une chaine de caracteres en nombre entier ; c'est indispensable car la valeur recuperee d'un champ de formulaire (via `.value`) est toujours une chaine de caracteres, meme si elle 'ressemble' a un nombre. `confirm(message)` affiche une boite de dialogue avec un message et deux boutons (OK / Annuler) ; elle renvoie `true` si l'utilisateur clique sur OK, `false` sinon, ce qui permet de conditionner la suite du script a une confirmation explicite de l'utilisateur."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une ligne de script contient `var n = parseInt(document.form.note.value); if(confirm(\"Confirmer la note \"+n+\" ?\")){ ... }`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier parseInt",
+          "justification": "La valeur d'un champ est toujours du texte",
+          "resultat_markdown": "n devient un entier utilisable dans des calculs."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier confirm",
+          "justification": "Une boite de dialogue attend une reponse de l'utilisateur",
+          "resultat_markdown": "Le bloc suivant ne s'execute que si l'utilisateur clique sur OK."
+        }
+      ],
+      "conclusion_markdown": "Ensemble, ces deux fonctions transforment une saisie textuelle en donnee numerique exploitable, puis soumettent cette donnee a la validation explicite de l'utilisateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement `document.form.note.value` dans un calcul sans `parseInt()`",
+          "pourquoi_faux": "En JavaScript, l'operateur + sur des chaines de caracteres realise une concatenation de texte et non une addition numerique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "parseInt() convertit une chaine en entier.",
+        "confirm() renvoie true ou false selon le choix de l'utilisateur dans la boite de dialogue."
+      ]
+    }
+  ]
+}

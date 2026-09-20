@@ -1,0 +1,79 @@
+{
+  "cours_id": "cours-equipements-d-un-reseau-peer-to-peer-reseau2023",
+  "meta": {
+    "titre": "Reperer les equipements d'un segment de reseau peer-to-peer sur un schema",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Reseaux - Architecture",
+    "duree_estimee_min": 15,
+    "tags": [
+      "reseau",
+      "peer-to-peer",
+      "schema reseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-reseau-2023-officiel-cameroun",
+    "epreuve_titre": "BAC TI Reseaux, Internet et Securite informatique 2023",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-reseau2023-ex1-q3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un schema de reseau comportant plusieurs segments, il faut savoir reperer lequel correspond a une architecture peer-to-peer et lequel correspond a une architecture client-serveur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "[[cours-choisir-entre-architecture-poste-a-poste-et-architecture-client-serveur-reseau2023-dup]] Architecture client-serveur vs peer-to-peer"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reperer un segment peer-to-peer sur un schema",
+      "contenu_markdown": "Un segment de reseau en architecture peer-to-peer se reconnait a l'**absence de serveur dedie** : tous les ordinateurs representes sont de simples postes de travail (PC), eventuellement accompagnes de peripheriques partages (imprimante), relies par un equipement d'interconnexion local (switch ou hub). A l'inverse, la presence d'une machine explicitement designee comme *serveur* signale une architecture client-serveur."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un schema montre un segment avec 4 PC, une imprimante et un switch, et un autre segment avec un serveur et 4 PC.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher la presence d'un serveur dedie dans chaque segment",
+          "justification": "C'est le critere distinctif entre les deux architectures",
+          "resultat_markdown": "Le premier segment n'a pas de serveur ; le second en a un."
+        },
+        {
+          "numero": 2,
+          "action": "Lister les equipements du segment sans serveur",
+          "justification": "Ce segment est celui en architecture peer-to-peer",
+          "resultat_markdown": "4 PC, une imprimante partagee, et le switch qui les relie."
+        }
+      ],
+      "conclusion_markdown": "Le segment sans serveur dedie est le reseau peer-to-peer ; ses equipements sont uniquement les postes clients, leurs peripheriques partages, et l'equipement d'interconnexion local."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inclure un equipement d'interconnexion partage entre plusieurs segments (comme un routeur central) dans la liste des equipements d'un seul de ces segments",
+          "pourquoi_faux": "Un equipement qui relie plusieurs segments entre eux appartient a l'infrastructure commune, pas exclusivement a l'un des segments qu'il interconnecte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un segment peer-to-peer se reconnait a l'absence de serveur dedie.",
+        "Ses equipements propres sont les postes clients, leurs peripheriques partages et l'equipement d'interconnexion local, a l'exclusion des equipements partages avec d'autres segments."
+      ]
+    }
+  ]
+}

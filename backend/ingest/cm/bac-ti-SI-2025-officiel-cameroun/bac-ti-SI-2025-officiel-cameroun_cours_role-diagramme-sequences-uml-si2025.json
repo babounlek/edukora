@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-role-diagramme-sequences-uml-si2025",
+  "meta": {
+    "titre": "Rôle du diagramme de séquences en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation dynamique UML",
+    "duree_estimee_min": 12,
+    "tags": [
+      "diagramme de séquences",
+      "UML",
+      "modélisation dynamique",
+      "scénario"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-si2025-ex3-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un diagramme de classes montre la structure figée d'un système ; il ne dit rien de ce qui se passe quand un client entre en scène. C'est le rôle du diagramme de séquences de raconter cette histoire, message après message."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de classe, d'objet et d'acteur en UML",
+        "Notion de scénario ou de cas d'utilisation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce que modélise un diagramme de séquences",
+      "contenu_markdown": "Le diagramme de séquences représente, pour un scénario précis, la succession chronologique des messages échangés entre un acteur et les objets du système, ou entre objets du système entre eux. Chaque participant est représenté par une ligne de vie verticale ; le temps s'écoule de haut en bas. Un message d'appel (flèche pleine) déclenche une action chez le récepteur ; un message de retour (flèche pointillée) renvoie un résultat à l'émetteur. Ce diagramme complète le diagramme de cas d'utilisation : là où celui-ci répond à « quelles actions le système offre-t-il ? », le diagramme de séquences répond à « dans quel ordre et avec quels échanges ces actions se déroulent-elles concrètement ? »"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer à quoi sert un diagramme de séquences pour le scénario « un client dépose un colis au comptoir de MAKWAMBA EXPRESS ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que le diagramme de cas d'utilisation a déjà établi",
+          "justification": "Le cas d'utilisation « Enregistrer les références du colis » indique QUE cette action existe, sans préciser son déroulement.",
+          "resultat_markdown": "Le cas d'utilisation reste muet sur l'ordre exact des échanges et sur les objets internes sollicités."
+        },
+        {
+          "numero": 2,
+          "action": "Préciser ce qu'apporte en plus le diagramme de séquences",
+          "justification": "Le diagramme de séquences détaille, message par message, comment l'agent, le système et l'objet Colis interagissent pour réaliser ce cas d'utilisation.",
+          "resultat_markdown": "Il montre par exemple que l'agent saisit d'abord les références, reçoit un accusé de saisie, calcule ensuite le montant, puis délivre le reçu : un enchaînement que le seul cas d'utilisation ne représente pas."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme de séquences sert donc à vérifier et à documenter le déroulement réel d'un scénario, une fois que le diagramme de cas d'utilisation a listé les fonctionnalités attendues."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « il sert à représenter les classes du système » ou une réponse centrée sur la structure statique.",
+          "pourquoi_faux": "C'est la définition du diagramme de classes, pas du diagramme de séquences ; confondre les deux fait perdre la totalité des points de la question.",
+          "correction_markdown": "Associer systématiquement « diagramme de séquences » à trois mots clés : scénario, chronologie, messages."
+        },
+        {
+          "erreur_markdown": "Décrire le diagramme de séquences comme une simple liste d'actions, sans mentionner l'ordre temporel ni les échanges entre participants.",
+          "pourquoi_faux": "Une liste d'actions ne dit pas qui envoie quoi à qui, ni dans quel ordre : c'est précisément ce que le diagramme de séquences ajoute par rapport à une description textuelle.",
+          "correction_markdown": "Toujours mentionner explicitement les notions de ligne de vie, de message et d'ordre chronologique dans la réponse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En une phrase, donner le rôle du diagramme de séquences.",
+          "solution_markdown": "Il représente, pour un scénario donné, la chronologie des messages échangés entre les acteurs et les objets du système."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer pourquoi le diagramme de séquences est dit « diagramme de comportement » et non « diagramme de structure ».",
+          "solution_markdown": "Parce qu'il ne décrit pas ce que sont les classes du système, leurs attributs, leurs méthodes, leurs relations permanentes, mais ce qu'elles font dans le temps lors d'un scénario précis : c'est un comportement observé dans une chronologie, pas une structure figée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un diagramme de classes et un diagramme de séquences portent sur le même système de gestion de bibliothèque. Expliquer en quoi ils sont complémentaires plutôt que redondants.",
+          "solution_markdown": "Le diagramme de classes fixe le vocabulaire et la structure permanente du système (les classes Livre, Adherent, Emprunt, leurs attributs et leurs associations) : il répond à « de quoi le système est-il fait ? ». Le diagramme de séquences réutilise ces mêmes classes comme participants, mais pour raconter le déroulement précis d'un scénario (« un adhérent emprunte un livre ») : il répond à « comment le système se comporte-t-il dans ce cas précis ? ». Les deux sont nécessaires : l'un sans l'autre laisse soit la structure, soit le comportement, entièrement non spécifié."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le diagramme de séquences modélise la chronologie des messages échangés pour un scénario donné.",
+        "Trois mots clés à citer systématiquement : scénario, chronologie, messages.",
+        "Il est complémentaire du diagramme de cas d'utilisation (qui liste les fonctionnalités) et du diagramme de classes (qui fixe la structure).",
+        "Message d'appel = flèche pleine ; message de retour = flèche pointillée ; le temps s'écoule toujours de haut en bas.",
+        "Au BAC TI, cette question de cours précède presque toujours une question d'application « Élaborer le diagramme de séquences »."
+      ]
+    }
+  ]
+}

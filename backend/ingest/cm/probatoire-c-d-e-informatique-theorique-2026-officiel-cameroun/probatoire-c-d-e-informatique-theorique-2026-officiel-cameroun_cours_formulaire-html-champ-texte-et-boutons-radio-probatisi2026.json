@@ -1,0 +1,82 @@
+{
+  "cours_id": "cours-formulaire-html-champ-texte-et-boutons-radio-probatisi2026",
+  "meta": {
+    "titre": "Formulaire HTML : champ de texte et boutons radio",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "HTML - Formulaires",
+    "duree_estimee_min": 15,
+    "tags": [
+      "formulaire HTML",
+      "input radio",
+      "input text",
+      "boutons d'action"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-theorique-2026-officiel-cameroun",
+    "epreuve_titre": "Probatoire C/D - Epreuve theorique d'informatique 2026",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-probatisi2026-ex4-q3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire d'inscription classique combine plusieurs types de champs : une saisie de texte libre pour un nom, un choix exclusif entre options pour un genre, et des boutons pour valider ou annuler la saisie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de balise HTML",
+        "Notion de formulaire HTML (balise form)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "input text, input radio, boutons d'action",
+      "contenu_markdown": "Un formulaire s'encadre par la balise `<form>`. Un champ de saisie de texte court utilise `<input type=\"text\" name=\"...\">`. Un choix **exclusif** entre plusieurs options (comme un genre) utilise des boutons radio `<input type=\"radio\" name=\"...\" value=\"...\">` : tous les boutons radio d'un meme choix doivent partager le **meme** attribut `name`, ce qui indique au navigateur qu'un seul d'entre eux peut etre coche a la fois. Un bouton d'action libre (comme « Effacer ») utilise `<input type=\"button\" value=\"...\">`, tandis qu'un bouton de validation/envoi (comme « Valider ») utilise `<input type=\"submit\" value=\"...\">`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire un champ Nom et un choix Sexe (Masculin/Feminin) en HTML.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ecrire le champ de texte",
+          "justification": "Un nom est une saisie de texte libre",
+          "resultat_markdown": "Nom : <input type=\"text\" name=\"nom\">"
+        },
+        {
+          "numero": 2,
+          "action": "Ecrire les deux boutons radio avec le meme name",
+          "justification": "Le meme attribut name rend les deux options mutuellement exclusives",
+          "resultat_markdown": "<input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin <input type=\"radio\" name=\"sexe\" value=\"F\"> Feminin"
+        }
+      ],
+      "conclusion_markdown": "L'attribut name partage entre plusieurs boutons radio est ce qui les regroupe en un choix unique et exclusif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner un attribut name different a chaque bouton radio d'un meme choix",
+          "pourquoi_faux": "Sans le meme name, le navigateur traite chaque bouton radio comme un choix independant : l'utilisateur pourrait alors cocher les deux options a la fois, ce qui n'est pas le comportement attendu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "input type='text' pour un champ de texte libre.",
+        "input type='radio' avec un name commun pour un choix exclusif entre options.",
+        "input type='button' pour une action libre, input type='submit' pour valider/envoyer."
+      ]
+    }
+  ]
+}

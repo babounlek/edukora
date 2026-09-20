@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-visibilite-heritage-uml-si2025",
+  "meta": {
+    "titre": "Visibilité des attributs et méthodes et relation d'héritage en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation statique UML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "héritage",
+      "visibilité",
+      "UML",
+      "diagramme de classes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-si2025-ex2-q2.2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux détails de notation font gagner ou perdre des points au diagramme de classes : le signe devant chaque attribut, qui dit qui a le droit de le voir, et la flèche d'héritage, qui dit qui hérite de qui."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de classe, attribut et méthode",
+        "Représentation d'une classe en UML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Visibilité",
+      "contenu_markdown": "En UML, la **visibilité** d'un attribut ou d'une méthode se note par un symbole placé devant son nom : `+` **public** (accessible depuis toute classe), `-` **privé** (accessible seulement dans la classe), `#` **protégé** (accessible dans la classe et ses sous-classes). Par convention, les attributs sont privés et les méthodes publiques."
+    },
+    {
+      "type": "regle",
+      "titre": "Héritage (généralisation/spécialisation)",
+      "contenu_markdown": "Une relation d'**héritage** relie une **sous-classe** à sa **classe mère** par une flèche à **pointe triangulaire creuse orientée vers la classe mère**. La sous-classe hérite de tous les attributs et méthodes de la classe mère et peut les enrichir ou les redéfinir."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un colis peut être léger ou lourd selon son poids. Représenter la relation d'héritage entre Colis, ColisLeger et ColisLourd et donner la visibilité de l'attribut poids.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la classe mère",
+          "justification": "C'est la classe qui regroupe les caractéristiques communes.",
+          "resultat_markdown": "Colis, avec ses attributs communs (référence, poids)."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer l'héritage",
+          "justification": "La flèche part de chaque sous-classe et pointe vers la classe mère.",
+          "resultat_markdown": "ColisLeger → Colis et ColisLourd → Colis, pointes triangulaires vides."
+        },
+        {
+          "numero": 3,
+          "action": "Noter la visibilité",
+          "justification": "Un attribut est privé par convention.",
+          "resultat_markdown": "`- poids : float` ; `+ calculerMontant() : float`."
+        }
+      ],
+      "conclusion_markdown": "Les sous-classes héritent de poids et de calculerMontant() et peuvent redéfinir cette dernière selon leur barème."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Orienter la flèche d'héritage vers la sous-classe.",
+          "pourquoi_faux": "La pointe désigne toujours la classe mère.",
+          "correction_markdown": "Pointe triangulaire creuse vers la classe mère."
+        },
+        {
+          "erreur_markdown": "Confondre le triangle vide de l'héritage avec le losange de l'agrégation ou de la composition.",
+          "pourquoi_faux": "Ce sont deux notations différentes pour deux relations différentes.",
+          "correction_markdown": "Triangle vide = héritage ; losange = agrégation ou composition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le symbole d'un attribut privé et celui d'une méthode publique.",
+          "solution_markdown": "`-` pour privé, `+` pour public."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans quel sens se dirige la flèche d'héritage de Chat vers Animal ?",
+          "solution_markdown": "De Chat (sous-classe) vers Animal (classe mère)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que signifie le symbole `#` et à quoi sert-il dans une hiérarchie de classes ?",
+          "solution_markdown": "Il désigne la visibilité protégée : l'élément est accessible dans la classe et dans ses sous-classes, mais pas ailleurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "+ public, - privé, # protégé.",
+        "Héritage : flèche à triangle vide, de la sous-classe vers la classe mère.",
+        "Une sous-classe hérite des attributs et méthodes de sa classe mère.",
+        "Ne pas confondre héritage (triangle vide) et agrégation/composition (losange)."
+      ]
+    }
+  ]
+}

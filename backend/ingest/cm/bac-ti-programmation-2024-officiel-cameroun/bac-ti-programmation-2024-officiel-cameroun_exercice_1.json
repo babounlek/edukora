@@ -1,0 +1,264 @@
+{
+  "epreuve_source": "bac-ti-programmation-2024-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 1,
+  "introduction_markdown": "Partie I : Programmation web (10 points)",
+  "points": "10",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-programmation-2024-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "document",
+      "legende": "Formulaire de connexion (champs Nom d'utilisateur, Mot de passe et bouton Connexion)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\nLe formulaire de la Figure 1 ci-dessous représente l'interface de connexion des utilisateurs du service d'enseignement/apprentissage à distance EduNet. Pour se connecter au service, les utilisateurs doivent fournir un nom d'utilisateur et un mot de passe. `BD_USERS` et `USERS` sont respectivement la base de données et la table contenant les données des utilisateurs. Les attributs de la table `USERS` sont `id`, `login` et `password`. Dans le formulaire ci-dessous, les attributs `id` et `name` des champs « nom d'utilisateur » et « mot de passe » sont respectivement **login** et **pwd**. Il vous est demandé de concevoir cette page web en utilisant le HTML, le Javascript et le PHP. Le fichier de script PHP de connexion de l'utilisateur est **connecter.php**, sa méthode de récupération des données est **$_GET** et la fonction JavaScript de contrôle de la saisie du nom d'utilisateur et du mot de passe est **verifier()**.\n\n![fig-1](bac-ti-programmation-2024-officiel-cameroun_exercice_1_fig_1.png)\n\n*Figure 1 : Formulaire de connexion*\n\nÀ l'aide de vos connaissances et des informations ci-dessus, répondre aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "A.1",
+      "enonce_markdown": "**A. HTML et JavaScript** — Écrire le code HTML de ce formulaire. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nOn utilise la méthode **GET** puisque c'est la méthode de récupération imposée pour `connecter.php`, et on déclenche la vérification JavaScript à la soumission du formulaire :\n\nLe formulaire comporte deux champs de saisie (nom d'utilisateur et mot de passe, d'identifiants respectifs `login` et `pwd` comme précisé dans l'énoncé) et un bouton de soumission. On utilise la méthode **GET** puisque c'est la méthode de récupération imposée pour `connecter.php`, et on déclenche la vérification JavaScript à la soumission du formulaire :\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Connexion - EduNet</title>\n    <script src=\"verifier.js\"></script>\n</head>\n<body>\n    <form action=\"connecter.php\" method=\"get\" onsubmit=\"return verifier()\">\n        <label>Nom d'utilisateur</label>\n        <input type=\"text\" id=\"login\" name=\"login\">\n        <br>\n        <label>Mot de passe</label>\n        <input type=\"password\" id=\"pwd\" name=\"pwd\">\n        <br>\n        <input type=\"submit\" value=\"Connexion\">\n    </form>\n</body>\n</html>\n```",
+      "themes": [
+        "HTML",
+        "formulaire",
+        "programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-a1",
+          "competence": "Écrire le code HTML d'un formulaire de connexion",
+          "contenu_markdown": "On utilise la méthode **GET** puisque c'est la méthode de récupération imposée pour `connecter.php`, et on déclenche la vérification JavaScript à la soumission du formulaire :",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-le-code-html-dun-formulaire-de-connexion-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "A.2",
+      "enonce_markdown": "Donner le nom de l'événement de déclenchement de la vérification du remplissage des champs de saisie du formulaire. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nL'événement déclencheur est **`onsubmit`**, l'événement de soumission du formulaire : il se produit lorsque l'utilisateur valide le formulaire (ici en cliquant sur le bouton « Connexion »), et c'est à ce moment que la fonction `verifier()` est appelée pour contrôler le remplissage des champs avant l'envoi effectif des données vers `connecter.php`.\n\nL'événement déclencheur est **`onsubmit`**, l'événement de soumission du formulaire : il se produit lorsque l'utilisateur valide le formulaire (ici en cliquant sur le bouton « Connexion »), et c'est à ce moment que la fonction `verifier()` est appelée pour contrôler le remplissage des champs avant l'envoi effectif des données vers `connecter.php`.",
+      "themes": [
+        "JavaScript",
+        "événements",
+        "formulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-a2",
+          "competence": "Identifier l'événement JavaScript de soumission d'un formulaire",
+          "contenu_markdown": "L'événement déclencheur est **`onsubmit`**, l'événement de soumission du formulaire : il se produit lorsque l'utilisateur valide le formulaire (ici en cliquant sur le bouton « Connexion »), et c'est à ce moment que la fonction `verifier()` est appelée pour contrôler le remplissage des champs avant l'envoi effectif des données vers `connecter.php`.",
+          "cours_genere": true,
+          "cours_id": "cours-evenements-javascript-de-formulaire-onsubmit-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "A.3",
+      "enonce_markdown": "Écrire le code JavaScript de la fonction **verifier()** permettant de s'assurer que les champs ne sont pas vides. Au cas où un champ est vide, demander à l'utilisateur de renseigner ce champ à l'aide d'une boîte de dialogue. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe `return false` renvoyé par `verifier()` à l'attribut `onsubmit` du formulaire annule effectivement la soumission tant qu'un champ est vide.\n\nLa fonction récupère la valeur de chaque champ par son `id`, teste si elle est vide (chaîne vide `\"\"`), et affiche une boîte de dialogue (`alert()`) invitant l'utilisateur à la renseigner. Elle renvoie `false` pour bloquer la soumission tant qu'un champ est vide, et `true` sinon :\n\n```javascript\nfunction verifier() {\n    var login = document.getElementById(\"login\").value;\n    var pwd = document.getElementById(\"pwd\").value;\n\n    if (login === \"\") {\n        alert(\"Veuillez renseigner le nom d'utilisateur\");\n        return false;\n    }\n    if (pwd === \"\") {\n        alert(\"Veuillez renseigner le mot de passe\");\n        return false;\n    }\n    return true;\n}\n```\n\nLe `return false` renvoyé par `verifier()` à l'attribut `onsubmit` du formulaire annule effectivement la soumission tant qu'un champ est vide.",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire",
+        "boîte de dialogue"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-a3",
+          "competence": "Écrire une fonction JavaScript de validation de champs non vides",
+          "contenu_markdown": "Le `return false` renvoyé par `verifier()` à l'attribut `onsubmit` du formulaire annule effectivement la soumission tant qu'un champ est vide.",
+          "cours_genere": true,
+          "cours_id": "cours-validation-d-un-formulaire-avec-javascript-bacprog2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "B.1",
+      "enonce_markdown": "**B. Environnements intégrés de développement web et Programmation PHP** — Citer deux environnements intégrés de développement web pouvant être utilisés pour développer et héberger cette page web. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nDeux exemples d'environnements intégrés de développement web (regroupant serveur web, interpréteur PHP et SGBD) : **WampServer** et **XAMPP** (on peut également citer EasyPHP ou MAMP).\n\nDeux exemples d'environnements intégrés de développement web (regroupant serveur web, interpréteur PHP et SGBD) : **WampServer** et **XAMPP** (on peut également citer EasyPHP ou MAMP).",
+      "themes": [
+        "environnement de développement",
+        "WAMP",
+        "XAMPP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b1",
+          "competence": "Citer des exemples d'environnements intégrés de développement web",
+          "contenu_markdown": "Deux exemples d'environnements intégrés de développement web (regroupant serveur web, interpréteur PHP et SGBD) : **WampServer** et **XAMPP** (on peut également citer EasyPHP ou MAMP).",
+          "cours_genere": true,
+          "cours_id": "cours-environnements-integres-de-developpement-web-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "B.2",
+      "enonce_markdown": "Citer les trois composants essentiels d'un environnement intégré de développement web. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn environnement intégré de développement web tel que WampServer ou XAMPP regroupe trois composants essentiels :\n\nUn environnement intégré de développement web tel que WampServer ou XAMPP regroupe trois composants essentiels :\n\n1. **Un serveur web** (ex. Apache), chargé de recevoir les requêtes HTTP et de servir les pages.\n2. **Un interpréteur du langage de script serveur** (ex. PHP), chargé d'exécuter le code côté serveur.\n3. **Un système de gestion de base de données (SGBD)** (ex. MySQL/MariaDB), chargé de stocker et gérer les données de l'application.",
+      "themes": [
+        "environnement de développement",
+        "architecture web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b2",
+          "competence": "Citer les composants essentiels d'un environnement intégré de développement web",
+          "contenu_markdown": "Un environnement intégré de développement web tel que WampServer ou XAMPP regroupe trois composants essentiels :",
+          "cours_genere": true,
+          "cours_id": "cours-composants-dun-environnement-integre-de-developpement-web-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "B.3",
+      "enonce_markdown": "Écrire la portion de code PHP permettant de récupérer les valeurs saisies dans les champs nom d'utilisateur et mot de passe. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa méthode de récupération imposée est `$_GET`, et les champs portent les noms `login` et `pwd` :\n\nLa méthode de récupération imposée est `$_GET`, et les champs portent les noms `login` et `pwd` :\n\n```php\n<?php\n$login = $_GET['login'];\n$pwd = $_GET['pwd'];\n?>\n```",
+      "themes": [
+        "PHP",
+        "$_GET",
+        "récupération de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b3",
+          "competence": "Récupérer des données de formulaire en PHP avec $_GET",
+          "contenu_markdown": "La méthode de récupération imposée est `$_GET`, et les champs portent les noms `login` et `pwd` :",
+          "cours_genere": true,
+          "cours_id": "cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-bacprog2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "B.4",
+      "enonce_markdown": "Écrire la portion de code PHP de connexion au serveur en utilisant les paramètres suivants : adresse serveur : localhost ou 127.0.0.1, nom d'utilisateur : root et mot de passe : 1234. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");\n\n```php\n<?php\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");\n?>\n```",
+      "themes": [
+        "PHP",
+        "mysqli_connect",
+        "connexion serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b4",
+          "competence": "Se connecter à un serveur de base de données en PHP avec mysqli_connect",
+          "contenu_markdown": "$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");",
+          "cours_genere": true,
+          "cours_id": "cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-bacprog2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "B.5",
+      "enonce_markdown": "Écrire la portion de code PHP de sélection de la base de données BD_USERS. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\n(On peut également sélectionner directement la base dès la connexion en passant `\"BD_USERS\"` comme quatrième argument de `mysqli_connect()`.)\n\n```php\n<?php\nmysqli_select_db($connexion, \"BD_USERS\");\n?>\n```\n\n(On peut également sélectionner directement la base dès la connexion en passant `\"BD_USERS\"` comme quatrième argument de `mysqli_connect()`.)",
+      "themes": [
+        "PHP",
+        "mysqli_select_db",
+        "base de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b5",
+          "competence": "Sélectionner une base de données en PHP avec mysqli_select_db",
+          "contenu_markdown": "(On peut également sélectionner directement la base dès la connexion en passant `\"BD_USERS\"` comme quatrième argument de `mysqli_connect()`.)",
+          "cours_genere": true,
+          "cours_id": "cours-selectionner-une-base-de-donnees-avec-mysqli-select-db-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "B.6",
+      "enonce_markdown": "Écrire la portion de code PHP permettant de vérifier l'existence d'un utilisateur dans la base de données en utilisant le nom d'utilisateur et le mot de passe. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_num_rows($resultat) > 0` signifie qu'au moins un enregistrement de `USERS` correspond exactement au couple (login, mot de passe) saisi, donc que l'utilisateur existe et est authentifié.\n\nOn construit une requête SQL `SELECT` filtrant la table `USERS` sur les colonnes `login` et `password`, puis on teste si elle renvoie au moins une ligne :\n\n```php\n<?php\n$requete = \"SELECT * FROM USERS WHERE login='$login' AND password='$pwd'\";\n$resultat = mysqli_query($connexion, $requete);\n\nif (mysqli_num_rows($resultat) > 0) {\n    echo \"Connexion reussie\";\n} else {\n    echo \"Nom d'utilisateur ou mot de passe incorrect\";\n}\n?>\n```\n\n`mysqli_num_rows($resultat) > 0` signifie qu'au moins un enregistrement de `USERS` correspond exactement au couple (login, mot de passe) saisi, donc que l'utilisateur existe et est authentifié.",
+      "themes": [
+        "PHP",
+        "SQL",
+        "mysqli_query",
+        "authentification"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex1-b6",
+          "competence": "Vérifier l'existence d'un utilisateur en PHP à l'aide d'une requête SQL",
+          "contenu_markdown": "`mysqli_num_rows($resultat) > 0` signifie qu'au moins un enregistrement de `USERS` correspond exactement au couple (login, mot de passe) saisi, donc que l'utilisateur existe et est authentifié.",
+          "cours_genere": true,
+          "cours_id": "cours-verifier-lexistence-dun-utilisateur-avec-une-requete-sql-bacprog2024"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "HTML",
+    "JavaScript",
+    "PHP",
+    "formulaire",
+    "mysqli",
+    "authentification",
+    "WampServer",
+    "XAMPP"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

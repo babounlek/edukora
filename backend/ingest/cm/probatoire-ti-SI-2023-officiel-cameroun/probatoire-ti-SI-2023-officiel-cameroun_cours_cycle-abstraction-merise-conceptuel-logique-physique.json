@@ -1,0 +1,99 @@
+{
+  "cours_id": "cours-cycle-abstraction-merise-conceptuel-logique-physique-probatoire-ti-si-2023",
+  "meta": {
+    "titre": "Les trois niveaux d'abstraction de la methode MERISE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "MERISE - niveaux d'abstraction",
+    "duree_estimee_min": 15,
+    "tags": [
+      "MERISE",
+      "MCD",
+      "MLD",
+      "MPD",
+      "niveaux d'abstraction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Epreuve de systemes d'information au probatoire TI 2023",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-probati2023-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de dessiner le moindre schema, MERISE impose une regle de discipline : separer ce que le systeme d'information represente de la maniere dont il sera organise puis implante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un systeme d'information"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois niveaux d'abstraction MERISE",
+      "contenu_markdown": "MERISE decoupe la conception en trois niveaux independants, chacun repondant a une question differente :\n\n1. **Niveau conceptuel (le QUOI)** : le Modele Conceptuel des Donnees (MCD) decrit les donnees du systeme et leurs liens, sans aucun souci d'organisation ni de technique. Il reste valable quelle que soit l'entreprise qui l'utilise ou le SGBD choisi.\n2. **Niveau logique/organisationnel (le QUI, OU, QUAND)** : le Modele Logique des Donnees (MLD) traduit le MCD en tables et cles, en tenant compte des choix d'organisation (qui fait quoi, avec quel poste, a quel moment) sans encore choisir de SGBD precis.\n3. **Niveau physique (le COMMENT)** : le Modele Physique des Donnees (MPD) precise l'implementation reelle dans un SGBD determine (types de colonnes propres a ce SGBD, index, tablespace).\n\nCette separation permet de faire evoluer un niveau (par exemple changer de SGBD) sans devoir repenser les niveaux superieurs."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un etablissement scolaire veut informatiser la gestion de ses eleves. A quel niveau MERISE appartient chacune de ces taches : (a) lister les entites ELEVE et CLASSE et leur lien ; (b) decider que la table ELEVE sera geree par le secretariat sur un poste dedie ; (c) creer la table ELEVE dans MySQL avec des types VARCHAR et INT ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la tache (a)",
+          "justification": "Decrire les entites et leur lien, sans parler d'organisation ni de SGBD, releve du contenu meme du systeme d'information.",
+          "resultat_markdown": "(a) releve du **niveau conceptuel** (MCD)."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la tache (b)",
+          "justification": "Preciser qui gere la table et sur quel poste est une question d'organisation du travail, pas encore de technique.",
+          "resultat_markdown": "(b) releve du **niveau logique/organisationnel** (MLD)."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier la tache (c)",
+          "justification": "Choisir un SGBD precis et des types de colonnes specifiques a ce SGBD est une decision d'implementation technique.",
+          "resultat_markdown": "(c) releve du **niveau physique** (MPD)."
+        }
+      ],
+      "conclusion_markdown": "Chaque tache se classe selon la question a laquelle elle repond : QUOI (conceptuel), QUI/OU/QUAND (logique), COMMENT (physique)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre MCD et MLD en placant des noms de tables SQL (au pluriel, avec des cles etrangeres explicites) directement dans le schema conceptuel.",
+          "pourquoi_faux": "Le MCD ne connait ni tables, ni cles etrangeres : ce sont des notions du niveau logique, introduites seulement lors du passage MCD -> MLD."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A quel niveau d'abstraction appartient le choix du type de donnees VARCHAR(30) pour un champ Nom ?",
+          "solution_markdown": "Niveau physique (MPD) : VARCHAR est un type propre a un SGBD donne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le MCD decrit le QUOI, independamment de toute organisation ou technique.",
+        "Le MLD ajoute l'organisation (QUI, OU, QUAND) sans encore choisir de SGBD.",
+        "Le MPD est l'implementation reelle dans un SGBD precis (le COMMENT)."
+      ]
+    }
+  ]
+}

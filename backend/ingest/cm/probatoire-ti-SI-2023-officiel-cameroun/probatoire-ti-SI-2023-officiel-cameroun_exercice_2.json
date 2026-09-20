@@ -1,0 +1,211 @@
+{
+  "epreuve_source": "probatoire-ti-SI-2023-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "numero_exercice": 2,
+  "introduction_markdown": "Partie II : Modélisation et bases de données - Exercice 1 : Modélisation des systèmes d'information (10 pts)",
+  "points": "10",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-ti-SI-2023-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "Modèle conceptuel des données (MCD) de la gestion des accessoires de l'entreprise NDENDE",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\nPour l'informatisation de l'entreprise NDENDE, une étude a permis de retenir des règles de gestion suivantes :\n\n- Les accessoires représentent les composants et pièces informatiques. Ces accessoires sont caractérisés par un code, une désignation, un prix unitaire et une quantité.\n- Les accessoires sont classés par type et chaque type est caractérisé par un libellé et une quantité. Le libellé d'un type d'accessoires est unique.\n- Chaque type contient plusieurs accessoires et un accessoire est dans un et un seul type.\n- Les accessoires sont commandés par plusieurs clients à une date précise.\n- Un client est caractérisé par un nom, un prénom et une date de naissance. Plusieurs clients peuvent avoir le même nom mais jamais le même nom et Prenom. Il peut commander plusieurs accessoires.\n\nEn se basant sur les règles de gestion ci-dessus et sur vos connaissances sur la modélisation des systèmes d'information, répondre aux questions suivantes :",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Citer les trois niveaux du cycle d'abstraction de MERISE. (1.5 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour citer les niveaux d'une démarche de conception, les donner dans l'ordre, du plus abstrait au plus concret, avec pour chacun le modèle associé et la question à laquelle il répond.\n\nMERISE structure la conception d'un système d'information en trois niveaux d'abstraction indépendants : le niveau **conceptuel** (le *QUOI* : le Modèle Conceptuel des Données ou MCD, qui décrit les données et leurs liens sans se soucier de l'organisation ni de la technique) ; le niveau **logique/organisationnel** (le *QUI, OÙ, QUAND* : le Modèle Logique des Données ou MLD, qui traduit le MCD en tables tout en tenant compte des choix d'organisation) ; et le niveau **physique** (le *COMMENT* : le Modèle Physique des Données ou MPD, qui précise l'implémentation réelle dans un SGBD particulier).",
+      "themes": [
+        "MERISE",
+        "niveaux d'abstraction"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q1-1",
+          "competence": "Les trois niveaux d'abstraction MERISE",
+          "contenu_markdown": "Pour citer les niveaux d'une démarche de conception, les donner dans l'ordre, du plus abstrait au plus concret, avec pour chacun le modèle associé et la question à laquelle il répond.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "enonce_markdown": "Relever dans le texte les entités et leurs propriétés. (2.5 pts)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour relever les entités et leurs propriétés dans un texte, regrouper les informations qui décrivent un même objet du monde réel : chaque groupe forme une entité, dont les informations sont les propriétés ; ne pas créer d'entité pour une information qui décrit un objet déjà retenu.\n\nEn relevant dans le texte les groupes de propriétés rattachées à un même objet du monde réel, on identifie trois entités : **ACCESSOIRE** avec les propriétés Code, Designation, PrixUnitaire, Quantite ; **TYPE** avec les propriétés Libelle, Quantite ; et **CLIENT** avec les propriétés Nom, Prenom, DateNaissance.",
+      "themes": [
+        "MERISE",
+        "entités",
+        "propriétés"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q2-1",
+          "competence": "Repérer les entités et leurs propriétés dans un texte",
+          "contenu_markdown": "Pour relever les entités et leurs propriétés dans un texte, regrouper les informations qui décrivent un même objet du monde réel : chaque groupe forme une entité, dont les informations sont les propriétés ; ne pas créer d'entité pour une information qui décrit un objet déjà retenu.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "enonce_markdown": "Choisir en justifiant l'identifiant de chaque entité. (1.5 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour choisir l'identifiant d'une entité, retenir la propriété (ou le groupe de propriétés) dont la valeur est unique et non nulle pour chaque occurrence, en s'appuyant sur les règles de gestion du texte pour justifier ce choix.\n\nL'identifiant d'une entité est la propriété (ou la combinaison de propriétés) qui distingue sans ambiguïté chaque occurrence de l'entité. Pour **ACCESSOIRE**, l'identifiant est Code : un code est par nature attribué de façon unique à chaque accessoire. Pour **TYPE**, l'identifiant est Libelle, car le texte précise explicitement que « le libellé d'un type d'accessoires est unique ». Pour **CLIENT**, aucune propriété seule ne suffit puisque le texte indique que « plusieurs clients peuvent avoir le même nom » : l'identifiant est donc la combinaison Nom + Prenom, seule garantie unique d'après la règle de gestion « jamais le même Nom et Prenom ».",
+      "themes": [
+        "MERISE",
+        "identifiant"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q3-1",
+          "competence": "Choisir un identifiant d'entité à partir des règles de gestion",
+          "contenu_markdown": "Pour choisir l'identifiant d'une entité, retenir la propriété (ou le groupe de propriétés) dont la valeur est unique et non nulle pour chaque occurrence, en s'appuyant sur les règles de gestion du texte pour justifier ce choix.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "enonce_markdown": "Relever les relations entre les entités et leurs éventuelles propriétés. (1.5 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour relever les associations, repérer dans le texte les verbes qui relient deux entités ; une propriété appartient à l'association seulement si elle dépend à la fois des deux entités et ne peut pas être portée par l'une d'elles seule.\n\nDeux relations relient les entités. La relation **APPARTENIR** relie TYPE et ACCESSOIRE (un accessoire appartient à un type) : elle ne porte aucune propriété propre, puisque tout ce qui caractérise cette relation (quel accessoire, quel type) est déjà porté par les entités elles-mêmes. La relation **COMMANDER** relie CLIENT et ACCESSOIRE (un client commande des accessoires) : elle porte la propriété DateCommande, car la date à laquelle un client donne commande un accessoire donné n'appartient ni à CLIENT ni à ACCESSOIRE pris isolément, mais bien au fait qu'un client commande un accessoire à un instant précis.",
+      "themes": [
+        "MERISE",
+        "association"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q4-1",
+          "competence": "Repérer une association et ses propriétés propres",
+          "contenu_markdown": "Pour relever les associations, repérer dans le texte les verbes qui relient deux entités ; une propriété appartient à l'association seulement si elle dépend à la fois des deux entités et ne peut pas être portée par l'une d'elles seule.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "enonce_markdown": "Pour chaque relation, donner les cardinalités de chaque entité. (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour déterminer des cardinalités, se poser pour chaque entité la question : combien d'occurrences de l'autre entité peut-elle être reliée, au minimum et au maximum ? Répondre à l'aide des règles de gestion, sous la forme (min,max).\n\nPour la relation **APPARTENIR** : un type contient plusieurs accessoires ou aucun avant sa création mais peut en recevoir plusieurs par la suite, donc TYPE porte la cardinalité (1,n) ; un accessoire est toujours rangé dans un seul type, donc ACCESSOIRE porte la cardinalité (1,1). Pour la relation **COMMANDER** : un client peut n'avoir encore rien commandé ou avoir commandé plusieurs accessoires différents, donc CLIENT porte la cardinalité (0,n) ; un accessoire peut n'avoir jamais été commandé ou avoir été commandé par plusieurs clients, donc ACCESSOIRE porte également la cardinalité (0,n).",
+      "themes": [
+        "MERISE",
+        "cardinalités"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q5-1",
+          "competence": "Déterminer des cardinalités à partir des règles de gestion",
+          "contenu_markdown": "Pour déterminer des cardinalités, se poser pour chaque entité la question : combien d'occurrences de l'autre entité peut-elle être reliée, au minimum et au maximum ? Répondre à l'aide des règles de gestion, sous la forme (min,max).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "enonce_markdown": "Représenter le modèle conceptuel des données en respectant le formalisme de représentation des objets. (1.25 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour représenter un MCD, dessiner un rectangle par entité (nom, puis propriétés avec l'identifiant souligné), un ovale ou une ligne par association, relier chaque entité à ses associations et inscrire les cardinalités à l'extrémité de chaque lien.\n\nLe modèle conceptuel des données rassemble les trois entités, les deux relations et les cardinalités établies aux questions précédentes dans un schéma unique respectant le formalisme entité-association :\n\n![fig-1](probatoire-ti-SI-2023-officiel-cameroun_exercice_2_fig_1.png)",
+      "themes": [
+        "MERISE",
+        "MCD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q6-1",
+          "competence": "Construire un MCD complet à partir des entités, associations et cardinalités établies",
+          "contenu_markdown": "Pour représenter un MCD, dessiner un rectangle par entité (nom, puis propriétés avec l'identifiant souligné), un ovale ou une ligne par association, relier chaque entité à ses associations et inscrire les cardinalités à l'extrémité de chaque lien.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "enonce_markdown": "Dresser le dictionnaire des données suivant le canevas ci-dessous. (0.75 pt)",
+      "corrige_markdown": "### Rappel de méthode\n\nPour dresser un dictionnaire de données, lister toutes les propriétés du MCD une seule fois, puis renseigner pour chacune son code, sa désignation, son type (alphanumérique, numérique, date), sa taille et sa nature (simple ou calculée) en suivant le canevas donné.\n\nLe dictionnaire des données recense, pour chaque propriété du système, son code, son type, sa taille et sa nature (simple ou calculée) :\n\n| Code | Designation | Type | Taille | Nature |\n|---|---|---|---|---|\n| Code | Code accessoire | Alphanumérique | 10 | Simple |\n| Designation | Désignation accessoire | Alphanumérique | 50 | Simple |\n| PrixUnitaire | Prix unitaire | Numérique | 10 | Simple |\n| QuantiteStock | Quantité en stock | Numérique | 5 | Simple |\n| Libelle | Libellé du type | Alphanumérique | 30 | Simple |\n| Nom | Nom du client | Alphanumérique | 30 | Simple |\n| Prenom | Prénom du client | Alphanumérique | 30 | Simple |\n| DateNaissance | Date de naissance | Date | 8 | Simple |\n| DateCommande | Date de la commande | Date | 8 | Simple |\n\nLe canevas imprimé sur le sujet présente une répétition apparente de la colonne « Entité » : il s'agit très probablement d'une erreur de frappe du document source pour les colonnes usuelles Code / Désignation / Type / Taille / Nature reprises ci-dessus, qui sont celles enseignées pour ce canevas.",
+      "themes": [
+        "MERISE",
+        "dictionnaire des données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probati2023-ex2-q7-1",
+          "competence": "Dresser un dictionnaire des données",
+          "contenu_markdown": "Pour dresser un dictionnaire de données, lister toutes les propriétés du MCD une seule fois, puis renseigner pour chacune son code, sa désignation, son type (alphanumérique, numérique, date), sa taille et sa nature (simple ou calculée) en suivant le canevas donné.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MERISE",
+    "modèle conceptuel de données",
+    "MCD",
+    "entité",
+    "association",
+    "cardinalités",
+    "dictionnaire des données"
+  ],
+  "incertitudes": [
+    "Le canevas du dictionnaire des données imprimé sur le sujet source affiche deux colonnes intitulées identiquement « Entité », ce qui est manifestement une coquille de saisie du document ; le corrigé reprend le canevas standard Code/Désignation/Type/Taille/Nature enseigné pour cet exercice."
+  ],
+  "statut": "brouillon"
+}

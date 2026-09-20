@@ -1,0 +1,81 @@
+{
+  "cours_id": "cours-diagnostiquer-un-service-wamp-arrete-bacprog2025",
+  "meta": {
+    "titre": "Diagnostiquer un service WAMP arrete a partir de l'icone de l'application",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - Environnement de developpement",
+    "duree_estimee_min": 15,
+    "tags": [
+      "WAMP",
+      "Apache",
+      "MySQL",
+      "PHP",
+      "diagnostic"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-a3",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'icone de la barre des taches de WampServer change de couleur selon l'etat de ses trois services : vert (tout fonctionne), orange (au moins un service arrete), rouge (aucun service ne fonctionne)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "[[cours-pile-logicielle-dun-serveur-web-bacprog2025-dup]] Les trois composants d'un environnement WAMP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Interpreter l'icone orange de WampServer",
+      "contenu_markdown": "WampServer pilote trois services independants : Apache (serveur HTTP), MySQL (SGBD) et parfois un service de messagerie associe a PHP. Une icone **orange** signale qu'au moins un de ces services est demarre mais pas tous. Pour identifier lequel est arrete, on peut observer quelles fonctionnalites echouent : si la page d'accueil de WampServer elle-meme (servie par Apache) ne s'affiche pas dans le navigateur, c'est Apache qui est arrete, meme si MySQL fonctionne."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'icone WampServer est orange et la page localhost ne repond pas dans le navigateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Constater l'echec d'acces a la page d'accueil WampServer",
+          "justification": "Cette page est servie par Apache",
+          "resultat_markdown": "Apache ne repond pas."
+        },
+        {
+          "numero": 2,
+          "action": "En deduire le service arrete",
+          "justification": "Seul un service HTTP arrete empeche l'affichage de toute page, y compris celle de WampServer",
+          "resultat_markdown": "Le service Apache est arrete."
+        }
+      ],
+      "conclusion_markdown": "L'observation du symptome (aucune page ne s'affiche) permet de remonter au service en cause (Apache), sans avoir besoin d'ouvrir le detail des services dans le menu de WampServer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure systematiquement que c'est MySQL qui est arrete des qu'un formulaire PHP echoue",
+          "pourquoi_faux": "Un echec peut venir d'Apache (page inaccessible), de PHP (erreur d'interpretation) ou de MySQL (connexion refusee) : il faut observer precisement le symptome avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une icone orange signale qu'au moins un service WAMP est arrete.",
+        "Si aucune page, meme celle de WampServer, ne s'affiche, Apache est en cause."
+      ]
+    }
+  ]
+}

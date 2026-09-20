@@ -1,0 +1,441 @@
+{
+  "epreuve_source": "bac-ti-programmation-2025-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2025,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 1,
+  "introduction_markdown": "Partie I : Programmation web (10 points)",
+  "points": "10",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-programmation-2025-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "schema",
+      "legende": "Interface de saisie correspondant au code HTML (fieldset Évaluation : Matricule, Date, Faute, bouton soumettre)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\nUne ONG militant dans les droits de l'homme souhaite mettre sur pied une application web devant permettre de gérer l'assiduité et la discipline des élèves suivant certains critères bien déterminés. Cette application a pour but principal de mettre fin à tout type de châtiments corporels dans les établissements du secteur éducatif.\n\nPour ce faire, lors de l'enregistrement d'un élève, sa note en discipline est initialisée à 20 points et cette note sera diminuée par le surveillant général en cas de faute commise par l'élève :\n\n- 1 point si la faute est **Mineure** ;\n- 2 points si la faute est **Moyenne** ;\n- 3 points si la faute est **Grave** ;\n- 4 points si la faute est **Extrême**.\n\nLorsque cette note atteint un certain seuil, il a écopé de :\n\n- 3 jours d'exclusion si cette note est **égale à 11** ;\n- 8 jours d'exclusion si cette note est **comprise entre 7 et 10** ;\n- une exclusion définitive si cette note est **strictement inférieure à 7**.\n\nPour cela l'ONG contacte une entreprise de la place dans laquelle vous êtes employé pour la réalisation de ce projet. Votre responsable propose le code de la page web suivant, qui permet de réduire le nombre de points d'un élève en fonction de la gravité de la faute commise.\n\n```html\n1.  <html lang=\"en\">\n2.  <head>\n3.  <meta charset=\"UTF-8\">\n4.  <title>Document</title>\n5.  </head>\n6.  <body>\n7.  <form action=\"\" method =\"get\">\n8.  <fieldset>\n9.  <legend> <h2> Evaluation </h2></legend>\n10. <table>\n11. <tr>\n12. <td> <label for=\"matricule\"> Matricule:</label></td>\n13. <td><input type=\"text\" id=\"matricule\" name=\"matricule\"></td>\n14. </tr>\n15. <tr>\n16. <td> <label for=\"date\"> Date:</label></td>\n17. <td><input type=\"date\" id=\"date\" name=\"date\"></td>\n18. </tr>\n19. <tr>\n20. <td> <label for=\"faute\"> Faute:</label></td>\n21. <td>\n22. <select name=\"faute\" id=\"faute\" size=\"4\">\n23. <option value=\"1\">Mineur</option>\n24. <option value=\"2\">Moyen</option>\n25. <option value=\"3\">grave</option>\n26. <option value=\"4\">extrême</option>\n27. </select>\n28. </td>\n29. </tr>\n30. <tr>\n31. <td></td>\n32. <td ><center><input type=\"submit\" name = \"soumettre\" value=\" soumettre\" onclick=\"confirmer()\"></center> </td>\n33. </table>\n34. </fieldset>\n35. </form>\n36. </body>\n37. </html>\n38. <script laguage=\"JavaScript\">\n39. function confirmer(){\n40. faute=document.getElementById(\"faute\");\n41. matricule=document.getElementById(\"matricule\").value;\n42. point=parseInt(faute.options[faute.selectedIndex].value);\n43. confirm(\"Etes-vous sur de vouloir enlever \"+point+ \" a la note de l'eleve ayant pour matricule \"+matricule);\n44. }\n45. </script>\n```\n\nPour évaluer les compétences que vous avez acquises depuis votre arrivée dans l'entreprise, votre responsable vous pose quelques questions. En vous servant des informations ci-dessus et de vos connaissances en programmation web, répondre à ces questions :",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "**I. Programmation HTML et JAVASCRIPT (3pts)** — Représenter sur votre feuille de composition l'interface correspondant au code de la page web ci-dessus. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe code HTML définit un formulaire encadré (`<fieldset>`) intitulé « Évaluation », organisé en tableau (`<table>`) avec trois lignes de saisie\n\nLe code HTML définit un formulaire encadré (`<fieldset>`) intitulé « Évaluation », organisé en tableau (`<table>`) avec trois lignes de saisie (Matricule en texte libre, Date au format date, Faute via une liste déroulante à 4 options visibles simultanément grâce à `size=\"4\"`), suivies d'un bouton de soumission centré intitulé « soumettre » :\n\n![fig-1](bac-ti-programmation-2025-officiel-cameroun_exercice_1_fig_1.png)",
+      "themes": [
+        "HTML",
+        "formulaire",
+        "interface",
+        "select"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-i1",
+          "competence": "Représenter l'interface graphique correspondant à un code HTML donné",
+          "contenu_markdown": "Le code HTML définit un formulaire encadré (`<fieldset>`) intitulé « Évaluation », organisé en tableau (`<table>`) avec trois lignes de saisie",
+          "cours_genere": true,
+          "cours_id": "cours-representer-linterface-dun-formulaire-html-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "I.2.1",
+      "enonce_markdown": "Soit le code de la fonction JavaScript **confirmer()** ci-dessus : Expliquer le rôle des lignes 42 et 43. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nrécupère la valeur (l'attribut `value`) de l'option actuellement sélectionnée dans la liste déroulante `faute` (via son indice `selectedIndex`), et la convertit en entier avec `parseInt()`\n\n**Ligne 42** (`point=parseInt(faute.options[faute.selectedIndex].value);`) : récupère la valeur (l'attribut `value`) de l'option actuellement sélectionnée dans la liste déroulante `faute` (via son indice `selectedIndex`), et la convertit en entier avec `parseInt()` ; `point` contient ainsi le nombre de points à retirer, correspondant à la gravité de la faute choisie.\n\n**Ligne 43** (`confirm(\"Etes-vous sur de vouloir enlever \"+point+\" a la note de l'eleve ayant pour matricule \"+matricule);`) : affiche une boîte de dialogue de confirmation demandant à l'utilisateur de valider (OK) ou d'annuler (Annuler) le retrait de `point` points à la note de l'élève identifié par `matricule`, avant de poursuivre l'action.",
+      "themes": [
+        "JavaScript",
+        "parseInt",
+        "confirm",
+        "select"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-i2-1",
+          "competence": "Expliquer le rôle de parseInt() sur une liste déroulante et de confirm()",
+          "contenu_markdown": "récupère la valeur (l'attribut `value`) de l'option actuellement sélectionnée dans la liste déroulante `faute` (via son indice `selectedIndex`), et la convertit en entier avec `parseInt()`",
+          "cours_genere": true,
+          "cours_id": "cours-role-de-parseint-et-confirm-en-javascript-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "I.2.2",
+      "enonce_markdown": "Réécrire le code du script en insérant le bloc de code qui permet de vérifier que tous les champs sont renseignés par l'utilisateur, au cas contraire afficher à l'utilisateur dans une boîte de dialogue le message « Veuillez remplir tous les champs ». (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nOn récupère en plus la valeur du champ `date`, et on vérifie que `matricule` et `date` (les deux champs pouvant effectivement être vides, contrairement à la liste `faute` qui a toujours une option sélectionnée par défaut) ne sont pas des chaînes vides avant de poursuivre :\n\nOn récupère en plus la valeur du champ `date`, et on vérifie que `matricule` et `date` (les deux champs pouvant effectivement être vides, contrairement à la liste `faute` qui a toujours une option sélectionnée par défaut) ne sont pas des chaînes vides avant de poursuivre :\n\n```javascript\nfunction confirmer(){\n    faute=document.getElementById(\"faute\");\n    matricule=document.getElementById(\"matricule\").value;\n    date=document.getElementById(\"date\").value;\n\n    if (matricule === \"\" || date === \"\") {\n        alert(\"Veuillez remplir tous les champs\");\n        return false;\n    }\n\n    point=parseInt(faute.options[faute.selectedIndex].value);\n    confirm(\"Etes-vous sur de vouloir enlever \"+point+\" a la note de l'eleve ayant pour matricule \"+matricule);\n}\n```",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire",
+        "alert"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-i2-2",
+          "competence": "Insérer une vérification de champs non vides dans une fonction JavaScript existante",
+          "contenu_markdown": "On récupère en plus la valeur du champ `date`, et on vérifie que `matricule` et `date` (les deux champs pouvant effectivement être vides, contrairement à la liste `faute` qui a toujours une option sélectionnée par défaut) ne sont pas des chaînes vides avant de poursuivre :",
+          "cours_genere": true,
+          "cours_id": "cours-valider-des-champs-non-vides-en-javascript-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.A.1",
+      "enonce_markdown": "**II. Configuration d'un serveur Web et Programmation PHP (7pts)** — Votre responsable vous demande d'utiliser une base de données pour la gestion des notes disciplinaires des élèves et vous propose l'installation de l'environnement intégré de développement web WAMP. Après l'avoir installé, vous constatez que l'icône de WAMP a une couleur orange et vous n'arrivez pas à ouvrir la page d'accueil de WAMP. En survolant l'icône de WAMP on vous signale que deux (02) des services web sur les trois (03) que compte WAMP sont démarrés.\n\n**A.** Définir l'expression : **Service Web**. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn **service Web** est un programme qui s'exécute en arrière-plan sur un serveur et qui fournit, de manière continue, une fonctionnalité réseau donnée\n\nUn **service Web** est un programme qui s'exécute en arrière-plan sur un serveur et qui fournit, de manière continue, une fonctionnalité réseau donnée (traitement des requêtes HTTP, gestion d'une base de données, interprétation d'un langage de script...), accessible par d'autres logiciels ou par des clients via le réseau.",
+      "themes": [
+        "service web",
+        "définitions",
+        "WAMP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-a1",
+          "competence": "Définir la notion de service web",
+          "contenu_markdown": "Un **service Web** est un programme qui s'exécute en arrière-plan sur un serveur et qui fournit, de manière continue, une fonctionnalité réseau donnée",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-notion-de-service-web-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.A.2",
+      "enonce_markdown": "Citer et donner le rôle des différents services Web de WAMP. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nWAMP regroupe trois services web fonctionnant ensemble :\n\nWAMP regroupe trois services web fonctionnant ensemble :\n\n1. **Apache** (serveur HTTP) : reçoit les requêtes des navigateurs et renvoie les pages web demandées (statiques ou générées dynamiquement).\n2. **MySQL** (SGBD) : stocke, organise et restitue les données persistantes de l'application (ici, les notes de discipline des élèves).\n3. **PHP** (préprocesseur/interpréteur du langage serveur) : exécute le code PHP inclus dans les pages avant qu'Apache ne renvoie le résultat au navigateur.",
+      "themes": [
+        "WAMP",
+        "Apache",
+        "MySQL",
+        "PHP",
+        "architecture serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-a2",
+          "competence": "Citer et donner le rôle des trois services de WAMP",
+          "contenu_markdown": "WAMP regroupe trois services web fonctionnant ensemble :",
+          "cours_genere": true,
+          "cours_id": "cours-pile-logicielle-dun-serveur-web-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "II.A.3",
+      "enonce_markdown": "Déterminer le service web de WAMP qui est responsable de la couleur orange de l'icône de celui-ci. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nOn peut néanmoins le déduire du second symptôme décrit : l'impossibilité d'ouvrir la **page d'accueil de WAMP elle-même**. Cette page est servie par le serveur HTTP **Apache**\n\n**Incertitude** : l'énoncé indique seulement que 2 des 3 services sont démarrés, sans nommer explicitement lequel est arrêté. On peut néanmoins le déduire du second symptôme décrit : l'impossibilité d'ouvrir la **page d'accueil de WAMP elle-même**. Cette page est servie par le serveur HTTP **Apache** ; si Apache n'est pas démarré, aucune requête HTTP vers `localhost` ne peut aboutir, pas même vers la page d'accueil statique de WAMP. C'est donc l'arrêt du service **Apache** qui est responsable à la fois de la couleur orange de l'icône et de l'impossibilité d'accéder à la page d'accueil.",
+      "themes": [
+        "WAMP",
+        "diagnostic",
+        "Apache"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-a3",
+          "competence": "Diagnostiquer le service WAMP en panne à partir des symptômes décrits",
+          "contenu_markdown": "On peut néanmoins le déduire du second symptôme décrit : l'impossibilité d'ouvrir la **page d'accueil de WAMP elle-même**. Cette page est servie par le serveur HTTP **Apache**",
+          "cours_genere": true,
+          "cours_id": "cours-diagnostiquer-un-service-wamp-arrete-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.4.1",
+      "enonce_markdown": "**B.** Après avoir résolu le problème lié à l'environnement WAMP, votre responsable vous propose le code PHP suivant, afin de gérer l'interaction avec la base de données. Il vous informe que ce code est incomplet et que son exécution retourne des erreurs. Sachant que la base de données a pour nom « Discipline » et que la table permettant de gérer les points de discipline des élèves a pour nom « pointEleves » et comporte les champs `matricule`, `nomprenelev`, `classe`, `datemodif`, `points` :\n\n```php\n1.  <?php\n2.  // Bloc de code : recuperation des informations saisies par l'utilisateur\n3.  echo intval($faute);\n4.  echo \" $matricule\";\n5.  // Connexion a la base de donnees\n6.  $servername = \"localhost\";\n7.  $username = \"user1\";\n8.  $password = \"root\";\n9.  $dbname = \" Dicipline\";\n10. $conn = mysqli_connect($password, $username,  $dbname);\n11. if ($conn)\n12. { echo \"Connexion reussie\" ;} else{\n13. die(\"Erreur de connexion a la base de donnees \");\n14. }\n15. $req=\"update pointEleves SET points = points-\".intval($faute).\" where matricule = '\".$matricule.\"'\";\n16. mysqli_query($conn, $req) ;\n17. // requete de selection\n18. // execution de la requete\n19. echo '<table border=1>\n<tr> <th>Matricule</th> <th>Nom et Prenom</th> <th>Classe</th> <th>Date Modification </th>\n<th>Points Dicipline</th>\n</tr>';\n23. While(........){\n24. echo '<tr>' ;\n25. foreach($ligne as $key => $val){\n26. echo '<td>'. $val. '</td>';\n27. }\n28. echo '</tr>' ;\n29. }\n30. echo '</table>' ;\n31. mysqli_close($conn) ;\n32. ?>\n```\n\nPour l'envoi des informations du formulaire de la page web conçue : Identifier la méthode utilisée. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe formulaire est défini à la ligne 7 de la page HTML par `<form action=\"\" method =\"get\">` : la méthode utilisée pour l'envoi des informations est donc la méthode **GET**.\n\nLe formulaire est défini à la ligne 7 de la page HTML par `<form action=\"\" method =\"get\">` : la méthode utilisée pour l'envoi des informations est donc la méthode **GET**.",
+      "themes": [
+        "PHP",
+        "GET",
+        "formulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b4-1",
+          "competence": "Identifier la méthode d'envoi d'un formulaire HTML",
+          "contenu_markdown": "Le formulaire est défini à la ligne 7 de la page HTML par `<form action=\"\" method =\"get\">` : la méthode utilisée pour l'envoi des informations est donc la méthode **GET**.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-la-methode-denvoi-dun-formulaire-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.4.2",
+      "enonce_markdown": "Déterminer le risque de l'utilisation de cette méthode. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nAvec la méthode **GET**, les données saisies (ici le `matricule` de l'élève et le code de la `faute`) sont transmises **visiblement dans l'URL** de la requête.\n\nAvec la méthode **GET**, les données saisies (ici le `matricule` de l'élève et le code de la `faute`) sont transmises **visiblement dans l'URL** de la requête. Le risque est donc un **risque de confidentialité/sécurité** : ces informations, potentiellement sensibles (elles déclenchent une sanction disciplinaire), apparaissent en clair dans l'URL, restent dans l'historique du navigateur et dans les journaux (logs) du serveur, et peuvent être modifiées facilement par un utilisateur avant l'envoi.",
+      "themes": [
+        "GET",
+        "sécurité",
+        "confidentialité"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b4-2",
+          "competence": "Déterminer le risque lié à la méthode GET",
+          "contenu_markdown": "Avec la méthode **GET**, les données saisies (ici le `matricule` de l'élève et le code de la `faute`) sont transmises **visiblement dans l'URL** de la requête.",
+          "cours_genere": true,
+          "cours_id": "cours-risques-de-la-methode-get-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.4.3",
+      "enonce_markdown": "À l'aide d'un tableau, faire la comparaison avec la seconde méthode. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\n| Critère | GET | POST |\n\n| Critère | GET | POST |\n|---|---|---|\n| Visibilité des données | Visibles dans l'URL | Transmises dans le corps de la requête, non visibles dans l'URL |\n| Taille des données | Limitée (quelques Ko selon le navigateur/serveur) | Beaucoup plus grande (fichiers, formulaires volumineux) |\n| Sécurité/confidentialité | Faible (données exposées, historisées) | Meilleure (données non exposées dans l'URL) |\n| Mise en cache/historique | Peut être mise en cache et conservée dans l'historique | Non mise en cache par défaut |\n| Usage typique | Recherche, consultation, filtrage | Envoi de formulaires sensibles, upload de fichiers |",
+      "themes": [
+        "GET",
+        "POST",
+        "comparaison"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b4-3",
+          "competence": "Comparer les méthodes GET et POST",
+          "contenu_markdown": "| Critère | GET | POST |",
+          "cours_genere": true,
+          "cours_id": "cours-comparer-get-et-post-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.5",
+      "enonce_markdown": "Écrire le bloc de code PHP de la ligne 2 qui va permettre de récupérer les informations saisies par l'utilisateur. (0,75pt)",
+      "corrige_markdown": "### Rappel de méthode\nLes informations saisies par l'utilisateur transitent par `$_GET` (méthode GET du formulaire) ; on récupère le code de la faute et le matricule :\n\nLes informations saisies par l'utilisateur transitent par `$_GET` (méthode GET du formulaire) ; on récupère le code de la faute et le matricule :\n\n```php\n$faute = $_GET['faute'];\n$matricule = $_GET['matricule'];\n```",
+      "themes": [
+        "PHP",
+        "$_GET",
+        "récupération de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b5",
+          "competence": "Récupérer les données d'un formulaire GET en PHP",
+          "contenu_markdown": "Les informations saisies par l'utilisateur transitent par `$_GET` (méthode GET du formulaire) ; on récupère le code de la faute et le matricule :",
+          "cours_genere": true,
+          "cours_id": "cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.6",
+      "enonce_markdown": "Corriger les erreurs de la ligne 10. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nles arguments sont dans le mauvais ordre (le nom du serveur `$servername` est complètement omis) et ne correspondent pas à la signature `mysqli_connect(servername, username, password, dbname)`\n\nLa ligne 10 appelle `mysqli_connect($password, $username, $dbname);` : les arguments sont dans le mauvais ordre (le nom du serveur `$servername` est complètement omis) et ne correspondent pas à la signature `mysqli_connect(servername, username, password, dbname)`. La ligne corrigée est :\n\n```php\n$conn = mysqli_connect($servername, $username, $password, $dbname);\n```\n\n(Remarque annexe, hors périmètre strict de la ligne 10 : la ligne 9 contient également une coquille sur le nom de la base, `\" Dicipline\"` au lieu de `\"Discipline\"` (espace de tête et faute d'orthographe), qu'il conviendrait de corriger en `$dbname = \"Discipline\";` pour que la connexion cible réellement la bonne base.)",
+      "themes": [
+        "PHP",
+        "mysqli_connect",
+        "débogage"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b6",
+          "competence": "Corriger l'ordre des arguments de mysqli_connect",
+          "contenu_markdown": "les arguments sont dans le mauvais ordre (le nom du serveur `$servername` est complètement omis) et ne correspondent pas à la signature `mysqli_connect(servername, username, password, dbname)`",
+          "cours_genere": true,
+          "cours_id": "cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-bacprog2025-dup"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.7",
+      "enonce_markdown": "Écrire le bloc de code composé des lignes 17 et 18, qui permet d'une part de sélectionner tous les élèves ayant huit (08) jours d'exclusion et d'autre part d'exécuter cette requête. (2x0,5pt = 1pt)",
+      "corrige_markdown": "### Rappel de méthode\nD'après l'énoncé, une exclusion de 8 jours correspond à une note de discipline **comprise entre 7 et 10** :\n\nD'après l'énoncé, une exclusion de 8 jours correspond à une note de discipline **comprise entre 7 et 10** :\n\n```php\n$req2 = \"SELECT * FROM pointEleves WHERE points BETWEEN 7 AND 10\";\n$result = mysqli_query($conn, $req2);\n```\n\nOn utilise un nom de variable différent (`$req2`) de celui de la requête `UPDATE` de la ligne 15 (`$req`) pour ne pas l'écraser.",
+      "themes": [
+        "PHP",
+        "SQL",
+        "SELECT",
+        "BETWEEN"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b7",
+          "competence": "Écrire et exécuter une requête SELECT avec une condition d'intervalle",
+          "contenu_markdown": "D'après l'énoncé, une exclusion de 8 jours correspond à une note de discipline **comprise entre 7 et 10** :",
+          "cours_genere": true,
+          "cours_id": "cours-selectionner-des-lignes-par-intervalle-avec-between-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.8",
+      "enonce_markdown": "Donner le rôle de la fonction prédéfinie mysqli_fetch_assoc( ). (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_fetch_assoc($result)` extrait, à chaque appel, la **ligne suivante** d'un résultat de requête (`$result`) sous la forme d'un **tableau associatif**\n\n`mysqli_fetch_assoc($result)` extrait, à chaque appel, la **ligne suivante** d'un résultat de requête (`$result`) sous la forme d'un **tableau associatif**, dont les clés sont les noms des colonnes de la table et les valeurs les données correspondantes de la ligne ; elle renvoie `NULL` (ou `false`) lorsqu'il n'y a plus de ligne à lire.",
+      "themes": [
+        "PHP",
+        "mysqli_fetch_assoc",
+        "tableau associatif"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b8",
+          "competence": "Donner le rôle de mysqli_fetch_assoc",
+          "contenu_markdown": "`mysqli_fetch_assoc($result)` extrait, à chaque appel, la **ligne suivante** d'un résultat de requête (`$result`) sous la forme d'un **tableau associatif**",
+          "cours_genere": true,
+          "cours_id": "cours-role-de-mysqli-fetch-assoc-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.9",
+      "enonce_markdown": "Compléter l'instruction de la ligne 23 en utilisant la fonction prédéfinie mysqli_fetch_assoc( ). (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nÀ chaque tour, `$ligne` reçoit la ligne suivante du résultat (sous forme de tableau associatif) ; la boucle continue tant que `mysqli_fetch_assoc()` renvoie une ligne (valeur non nulle)\n\n```php\nwhile($ligne = mysqli_fetch_assoc($result)){\n```\n\nÀ chaque tour, `$ligne` reçoit la ligne suivante du résultat (sous forme de tableau associatif) ; la boucle continue tant que `mysqli_fetch_assoc()` renvoie une ligne (valeur non nulle), et s'arrête d'elle-même lorsque toutes les lignes ont été parcourues.",
+      "themes": [
+        "PHP",
+        "while",
+        "mysqli_fetch_assoc"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b9",
+          "competence": "Parcourir un résultat de requête avec while et mysqli_fetch_assoc",
+          "contenu_markdown": "À chaque tour, `$ligne` reçoit la ligne suivante du résultat (sous forme de tableau associatif) ; la boucle continue tant que `mysqli_fetch_assoc()` renvoie une ligne (valeur non nulle)",
+          "cours_genere": true,
+          "cours_id": "cours-role-de-mysqli-fetch-assoc-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.10",
+      "enonce_markdown": "Expliquer brièvement sur votre feuille de composition ce que fait le bloc de code allant de la ligne 19 à la ligne 30. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nCe bloc **construit et affiche un tableau HTML** présentant le résultat de la requête de sélection\n\nCe bloc **construit et affiche un tableau HTML** présentant le résultat de la requête de sélection : la ligne 19 ouvre la balise `<table>` et écrit la ligne d'en-tête (`<tr>` avec les intitulés des colonnes : Matricule, Nom et Prénom, Classe, Date Modification, Points Discipline). La boucle `while` (ligne 23) parcourt ensuite chaque ligne du résultat de la requête de sélection une à une (via `mysqli_fetch_assoc()`) ; pour chaque ligne, elle ouvre une balise `<tr>` (ligne 24), puis la boucle `foreach` (lignes 25-27) parcourt chaque colonne (`$key => $val`) de cette ligne et l'affiche dans une cellule `<td>`, avant de refermer la balise `<tr>` (ligne 28). La boucle se répète jusqu'à épuisement des lignes du résultat, puis la ligne 30 referme la balise `</table>`. Au final, ce bloc affiche un tableau HTML complet listant tous les élèves renvoyés par la requête de sélection, une ligne de tableau par élève.",
+      "themes": [
+        "PHP",
+        "boucle while",
+        "foreach",
+        "tableau HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b10",
+          "competence": "Expliquer un bloc PHP qui affiche un résultat de requête dans un tableau HTML",
+          "contenu_markdown": "Ce bloc **construit et affiche un tableau HTML** présentant le résultat de la requête de sélection",
+          "cours_genere": true,
+          "cours_id": "cours-afficher-un-resultat-sql-dans-un-tableau-html-en-php-bacprog2025"
+        }
+      ]
+    },
+    {
+      "numero": "II.B.11",
+      "enonce_markdown": "Donner le rôle de la ligne 31. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_close($conn);` **ferme la connexion** au serveur de base de données ouverte par `mysqli_connect()`, une fois toutes les opérations terminées\n\n`mysqli_close($conn);` **ferme la connexion** au serveur de base de données ouverte par `mysqli_connect()`, une fois toutes les opérations terminées, afin de libérer les ressources associées sur le serveur.",
+      "themes": [
+        "PHP",
+        "mysqli_close",
+        "gestion des ressources"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2025-ex1-ii-b11",
+          "competence": "Donner le rôle de mysqli_close",
+          "contenu_markdown": "`mysqli_close($conn);` **ferme la connexion** au serveur de base de données ouverte par `mysqli_connect()`, une fois toutes les opérations terminées",
+          "cours_genere": true,
+          "cours_id": "cours-role-de-mysqli-close-bacprog2025"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "HTML",
+    "JavaScript",
+    "PHP",
+    "WAMP",
+    "mysqli",
+    "GET",
+    "POST",
+    "formulaire",
+    "SQL"
+  ],
+  "incertitudes": [
+    "Question II.A.3 : l'énoncé indique que 2 des 3 services WAMP sont démarrés sans nommer explicitement le service arrêté. La réponse déduit qu'il s'agit d'Apache à partir du second symptôme (page d'accueil de WAMP inaccessible), mais ce point n'est pas explicitement confirmé par le sujet source."
+  ],
+  "statut": "brouillon"
+}

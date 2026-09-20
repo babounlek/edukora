@@ -1,0 +1,67 @@
+{
+  "cours_id": "cours-selectionner-une-base-de-donnees-avec-mysqli-select-db-bacprog2024",
+  "meta": {
+    "titre": "Selectionner une base de donnees en PHP avec mysqli_select_db",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP/MySQL",
+    "duree_estimee_min": 12,
+    "tags": [
+      "PHP",
+      "mysqli_select_db",
+      "base de donnees"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Epreuve de Programmation - 2024 - Cameroun",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2024-ex1-b5",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Se connecter a un serveur MySQL ne suffit pas : il faut ensuite indiquer sur quelle base de donnees, parmi celles du serveur, les requetes doivent s'executer."
+    },
+    {
+      "type": "regle",
+      "titre": "mysqli_select_db",
+      "contenu_markdown": "`mysqli_select_db($connexion, \"nom_base\")` selectionne la base de donnees a utiliser pour les requetes ulterieures sur la connexion `$connexion`. Alternative : passer directement le nom de la base en quatrieme argument de `mysqli_connect()`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire le code PHP de selection de la base de donnees BD_USERS.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appeler mysqli_select_db avec la connexion et le nom de la base",
+          "justification": "C'est la fonction dediee a cette operation.",
+          "resultat_markdown": "mysqli_select_db($connexion, \"BD_USERS\");"
+        }
+      ],
+      "conclusion_markdown": "Toute requete envoyee ensuite via $connexion s'executera sur BD_USERS."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de selectionner la base et lancer directement une requete SQL.",
+          "pourquoi_faux": "mysqli ne sait pas sur quelle base executer la requete si elle n'a pas ete precisee (par mysqli_select_db ou lors de la connexion).",
+          "correction_markdown": "Toujours selectionner la base (ou la preciser des la connexion) avant d'executer une requete."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "mysqli_select_db($connexion, \"nom_base\") fixe la base de donnees utilisee par les requetes suivantes."
+      ]
+    }
+  ]
+}

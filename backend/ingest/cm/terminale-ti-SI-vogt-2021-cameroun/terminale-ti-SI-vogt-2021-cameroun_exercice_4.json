@@ -1,0 +1,223 @@
+{
+  "epreuve_source": "terminale-ti-SI-vogt-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "etablissement",
+  "etablissement": "College Mgr. Francois Xavier VOGT (Departement Informatique) - Controle, Situation 06",
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": 4,
+  "numero_exercice": 4,
+  "introduction_markdown": "PARTIE II : Développement des bases de données (8 points)",
+  "points": "8",
+  "groupes": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 4**\n\nSoit le schéma relationnel suivant :\n\n- Departement (NomD, N_Dep, Directeur)\n- Employe (Matricule, Nom, Prenom, DateNaissance, Adresse, Salaire, #N_dep, superieur)\n- Projet (NomP, N_pro, Lieu, #N_Dep)\n- Travaille (#Matricule, #N_Proj, Heures)\n\nL'attribut superieur dans la relation Employe contient le matricule du supérieur direct de l'employé. Chaque employé appartient à un département et travaille sur zéro, un ou plusieurs projets. Chaque projet est rattaché à un département qui peut être différent de celui des employés travaillant sur ce projet.\n\nExprimer en SQL les requêtes suivantes :",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Date de naissance et l'adresse de BOMBO Marsien. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne condition de sélection sur plusieurs critères exacts (ici, un nom ET un prénom) se combine avec l'opérateur logique AND dans la clause WHERE.\n\n**Corrigé.**\n\n```sql\nSELECT DateNaissance, Adresse\nFROM Employe\nWHERE Nom = 'BOMBO' AND Prenom = 'Marsien';\n```",
+      "themes": [
+        "SQL",
+        "SELECT WHERE AND"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q1",
+          "competence": "Combiner plusieurs conditions avec AND",
+          "contenu_markdown": "Une condition de sélection sur plusieurs critères exacts (ici, un nom ET un prénom) se combine avec l'opérateur logique AND dans la clause WHERE.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-combinant-plusieurs-conditions-avec-and-select-where-and-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Nom et adresse des employés qui travaillent au département Recherche. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nDès que l'information demandée (ici le département) est stockée dans une autre table que celle du résultat attendu (Employe), il faut relier les deux tables par une jointure sur leur clé étrangère commune, avant de filtrer sur la colonne de la seconde table.\n\n**Corrigé.**\n\n```sql\nSELECT E.Nom, E.Adresse\nFROM Employe E\nJOIN Departement D ON E.N_dep = D.N_Dep\nWHERE D.NomD = 'Recherche';\n```",
+      "themes": [
+        "SQL",
+        "jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q2",
+          "competence": "Relier deux tables par une jointure",
+          "contenu_markdown": "Dès que l'information demandée (ici le département) est stockée dans une autre table que celle du résultat attendu (Employe), il faut relier les deux tables par une jointure sur leur clé étrangère commune, avant de filtrer sur la colonne de la seconde table.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Nom et Prénom des employés dont le supérieur est BOMBO Marsien. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nQuand une condition porte sur un attribut connu indirectement (ici, le matricule du supérieur, alors que l'on ne connaît que son nom), on utilise une sous-requête imbriquée dans la clause WHERE pour d'abord retrouver cette valeur.\n\n**Corrigé.**\n\n```sql\nSELECT Nom, Prenom\nFROM Employe\nWHERE superieur = (\n    SELECT Matricule FROM Employe WHERE Nom = 'BOMBO' AND Prenom = 'Marsien'\n);\n```",
+      "themes": [
+        "SQL",
+        "sous-requête"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q3",
+          "competence": "Utiliser une sous-requête pour une valeur connue indirectement",
+          "contenu_markdown": "Quand une condition porte sur un attribut connu indirectement (ici, le matricule du supérieur, alors que l'on ne connaît que son nom), on utilise une sous-requête imbriquée dans la clause WHERE pour d'abord retrouver cette valeur.",
+          "cours_genere": true,
+          "cours_id": "cours-les-sous-requetes-en-sql-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Nom des employés qui travaillent plus de 10 heures sur un projet à Dubai. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nRelier trois tables (Employe, Travaille, Projet) demande une jointure en chaîne : Employe-Travaille sur le matricule, puis Travaille-Projet sur le numéro de projet, avant d'appliquer les conditions de filtrage.\n\n**Corrigé.**\n\n```sql\nSELECT DISTINCT E.Nom\nFROM Employe E\nJOIN Travaille T ON E.Matricule = T.Matricule\nJOIN Projet P ON T.N_Proj = P.N_pro\nWHERE P.Lieu = 'Dubai' AND T.Heures > 10;\n```\n\n**Piège à éviter.** Le mot-clé `DISTINCT` est indispensable : un même employé pourrait travailler sur plusieurs projets à Dubai avec plus de 10 heures chacun, et apparaîtrait alors plusieurs fois dans le résultat sans lui.",
+      "themes": [
+        "SQL",
+        "jointure triple"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q4",
+          "competence": "Enchaîner deux jointures",
+          "contenu_markdown": "Relier trois tables (Employe, Travaille, Projet) demande une jointure en chaîne : Employe-Travaille sur le matricule, puis Travaille-Projet sur le numéro de projet, avant d'appliquer les conditions de filtrage.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Nom des projets sur lesquels travaille SALMA Minette. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe même principe de jointure en chaîne s'applique en sens inverse de la question 4 : on part cette fois de la table Projet pour retrouver, via Travaille et Employe, les projets liés à un employé précis.\n\n**Corrigé.**\n\n```sql\nSELECT P.NomP\nFROM Projet P\nJOIN Travaille T ON P.N_pro = T.N_Proj\nJOIN Employe E ON T.Matricule = E.Matricule\nWHERE E.Nom = 'SALMA' AND E.Prenom = 'Minette';\n```",
+      "themes": [
+        "SQL",
+        "jointure triple"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q5",
+          "competence": "Enchaîner des jointures dans l'autre sens",
+          "contenu_markdown": "Le même principe de jointure en chaîne s'applique en sens inverse de la question 4 : on part cette fois de la table Projet pour retrouver, via Travaille et Employe, les projets liés à un employé précis.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Nom et prénom des employés qui ne travaillent sur aucun projet. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nRechercher les éléments d'une table qui n'apparaissent PAS dans une autre s'exprime par une condition NOT IN portant sur une sous-requête qui liste les valeurs à exclure.\n\n**Corrigé.**\n\n```sql\nSELECT Nom, Prenom\nFROM Employe\nWHERE Matricule NOT IN (SELECT Matricule FROM Travaille);\n```",
+      "themes": [
+        "SQL",
+        "NOT IN",
+        "sous-requête"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q6",
+          "competence": "Exclure des valeurs avec NOT IN",
+          "contenu_markdown": "Rechercher les éléments d'une table qui n'apparaissent PAS dans une autre s'exprime par une condition NOT IN portant sur une sous-requête qui liste les valeurs à exclure.",
+          "cours_genere": true,
+          "cours_id": "cours-les-sous-requetes-en-sql-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Numéro des projets qui ont au moins un participant de chaque département. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne requête du type « qui est en relation avec TOUS les éléments d'un ensemble » (ici, tous les départements) est appelée division relationnelle : elle se traduit en SQL en regroupant (GROUP BY) sur l'élément à tester, puis en ne conservant (HAVING) que les groupes dont le compte d'éléments distincts associés égale le nombre total d'éléments de l'ensemble complet.\n\n**Corrigé.**\n\n```sql\nSELECT T.N_Proj\nFROM Travaille T\nJOIN Employe E ON T.Matricule = E.Matricule\nGROUP BY T.N_Proj\nHAVING COUNT(DISTINCT E.N_dep) = (SELECT COUNT(*) FROM Departement);\n```\n\n**Piège à éviter.** Utiliser `COUNT(DISTINCT E.N_dep)` et non `COUNT(E.N_dep)` : si plusieurs employés du même département travaillent sur le même projet, un simple COUNT compterait ce département plusieurs fois et fausserait la comparaison avec le nombre total de départements.",
+      "themes": [
+        "SQL",
+        "division relationnelle",
+        "GROUP BY HAVING"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q7",
+          "competence": "Écrire une division relationnelle en SQL",
+          "contenu_markdown": "Une requête du type « qui est en relation avec TOUS les éléments d'un ensemble » (ici, tous les départements) est appelée division relationnelle : elle se traduit en SQL en regroupant (GROUP BY) sur l'élément à tester, puis en ne conservant (HAVING) que les groupes dont le compte d'éléments distincts associés égale le nombre total d'éléments de l'ensemble complet.",
+          "cours_genere": true,
+          "cours_id": "cours-la-division-relationnelle-en-sql-group-by-having-vogt2021"
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Nom des employés qui ne travaillent pas sur un projet à Douala. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nComme à la question 6, exclure un ensemble de matricules s'exprime avec NOT IN ; ici, cet ensemble de matricules à exclure est lui-même le résultat d'une jointure (Travaille-Projet) filtrée sur le lieu.\n\n**Corrigé.**\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE Matricule NOT IN (\n    SELECT T.Matricule\n    FROM Travaille T\n    JOIN Projet P ON T.N_Proj = P.N_pro\n    WHERE P.Lieu = 'Douala'\n);\n```\n\n**Piège à éviter.** Un employé qui travaille sur plusieurs projets, dont un seul à Douala, doit bien être exclu du résultat : la sous-requête NOT IN fonctionne correctement ici car elle liste tous les matricules ayant travaillé sur AU MOINS un projet à Douala, quel que soit le nombre total de projets de cet employé.",
+      "themes": [
+        "SQL",
+        "NOT IN",
+        "sous-requête avec jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex4-q8",
+          "competence": "Exclure des valeurs issues d'une sous-requête jointe",
+          "contenu_markdown": "Comme à la question 6, exclure un ensemble de matricules s'exprime avec NOT IN ; ici, cet ensemble de matricules à exclure est lui-même le résultat d'une jointure (Travaille-Projet) filtrée sur le lieu.",
+          "cours_genere": true,
+          "cours_id": "cours-les-sous-requetes-en-sql-vogt2021-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "SELECT",
+    "jointure",
+    "sous-requête",
+    "NOT IN",
+    "GROUP BY HAVING",
+    "division relationnelle"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

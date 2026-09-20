@@ -1,0 +1,80 @@
+{
+  "cours_id": "cours-corriger-des-erreurs-de-syntaxe-et-de-logique-courantes-en-c-bacprog2025",
+  "meta": {
+    "titre": "Corriger des erreurs de syntaxe et de logique courantes en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation C - Debogage",
+    "duree_estimee_min": 15,
+    "tags": [
+      "langage C",
+      "erreurs de syntaxe",
+      "erreurs de logique",
+      "debogage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2025-ex2-q3-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme C qui ne compile pas ou qui produit un resultat faux contient generalement un petit nombre d'erreurs typiques, faciles a reconnaitre une fois qu'on les a rencontrees."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Syntaxe de base du C (mots-cles, structures de controle, specificateurs de format)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Categories d'erreurs classiques en C",
+      "contenu_markdown": "On distingue deux grandes categories d'erreurs. Les **erreurs de syntaxe**, detectees par le compilateur avant toute execution : mot-cle mal orthographie (`Return` au lieu de `return`, sensible a la casse en C), separateur incorrect dans un `for` (virgules au lieu de points-virgules), specificateur de format `scanf`/`printf` invalide ou absent pour le type manipule. Les **erreurs de logique**, qui compilent souvent sans probleme mais produisent un resultat faux : confusion entre l'operateur d'affectation `=` et l'operateur de comparaison `==` dans une condition, ou une instruction qui ecrase une valeur avant de l'utiliser (perte de donnees dans un echange mal ecrit, par exemple)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme contient `if(x=5)` au lieu de `if(x==5)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Constater que le programme compile sans erreur",
+          "justification": "= est une expression valide en C, le compilateur ne la signale pas comme fautive",
+          "resultat_markdown": "Aucune erreur de compilation n'apparait."
+        },
+        {
+          "numero": 2,
+          "action": "Observer que la condition est toujours vraie (car x vaut alors 5, une valeur non nulle)",
+          "justification": "= affecte 5 a x et l'expression entiere prend la valeur de x, donc 5, evaluee comme vraie",
+          "resultat_markdown": "Le bloc if s'execute systematiquement, quelle que soit la valeur initiale de x."
+        }
+      ],
+      "conclusion_markdown": "C'est une erreur de logique : elle ne provoque aucun message du compilateur mais fausse completement le comportement du programme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un programme qui compile sans message d'erreur est necessairement correct",
+          "pourquoi_faux": "Le compilateur ne detecte que les violations de la grammaire du langage, jamais les erreurs de logique comme = a la place de ==, qui restent syntaxiquement valides."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les erreurs de syntaxe sont signalees par le compilateur avant execution.",
+        "Les erreurs de logique compilent souvent sans probleme mais faussent le resultat ; elles se detectent en relisant attentivement l'intention du code."
+      ]
+    }
+  ]
+}

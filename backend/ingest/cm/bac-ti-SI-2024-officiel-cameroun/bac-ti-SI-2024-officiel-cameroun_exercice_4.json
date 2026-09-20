@@ -1,0 +1,219 @@
+{
+  "epreuve_source": "bac-ti-SI-2024-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Systemes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "2h",
+  "coefficient": 3,
+  "numero_exercice": 4,
+  "introduction_markdown": "Partie II : Développement des bases de données (8 points)",
+  "points": "8",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-SI-2024-officiel-cameroun_exercice_4_fig_1.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "Modèle conceptuel de données (MCD) du processus de réservation de plats : CLIENT (1,n) - RESERVE - (1,1) PLATS",
+      "indispensable": true,
+      "lisibilite": "partielle",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 4**\n\nLe gérant de l'entreprise de construction souhaite également informatiser la gestion des réservations de plats du restaurant d'entreprise réservé à ses employés. L'étude conceptuelle a abouti au modèle conceptuel de données (MCD) suivant, où un client peut réserver plusieurs plats, mais chaque plat enregistré n'est réservé que par un seul client :\n\n![fig-1](bac-ti-SI-2024-officiel-cameroun_exercice_4_fig_1.png)\n\nLa direction de l'entreprise vous sollicite afin de bénéficier de votre accompagnement dans ce projet. En vous servant de vos connaissances, répondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "4.1",
+      "enonce_markdown": "Décrire l'environnement informatique d'implantation d'une base de données. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nL'implantation d'une base de données repose sur un environnement informatique composé des éléments suivants :\n\nL'implantation d'une base de données repose sur un environnement informatique composé des éléments suivants :\n\n- **Le matériel (hardware)** : un ordinateur ou un serveur doté d'une capacité de stockage (disque dur/SSD) et d'une mémoire vive (RAM) suffisantes pour supporter le volume de données et le nombre d'utilisateurs attendus.\n- **Le système d'exploitation** : la plateforme logicielle de base (Windows, Linux, etc.) sur laquelle s'installe le système de gestion de base de données.\n- **Le système de gestion de base de données (SGBD)** : le logiciel chargé de créer, stocker, manipuler et sécuriser les données (ex. MySQL, PostgreSQL).\n- **Un outil client/interface d'administration** : logiciel ou interface (ex. phpMyAdmin, MySQL Workbench, ligne de commande) permettant de dialoguer avec le SGBD pour écrire et exécuter les requêtes.\n- **Le réseau** : indispensable dès lors que la base de données doit être accessible par plusieurs postes (architecture client-serveur).",
+      "themes": [
+        "base de données",
+        "environnement d'implantation",
+        "SGBD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-1",
+          "competence": "Décrire l'environnement informatique nécessaire à l'implantation d'une base de données",
+          "contenu_markdown": "L'implantation d'une base de données repose sur un environnement informatique composé des éléments suivants :",
+          "cours_genere": true,
+          "cours_id": "cours-environnement-informatique-dimplantation-dune-base-de-donnees-si2024"
+        }
+      ]
+    },
+    {
+      "numero": "4.2",
+      "enonce_markdown": "Citer deux exemples de SGBD. (0,5pt x 2 = 1pt)",
+      "corrige_markdown": "### Rappel de méthode\nDeux exemples de systèmes de gestion de base de données (SGBD) : **MySQL** et **PostgreSQL** (on peut également citer Oracle Database, Microsoft SQL Server ou Microsoft Access).\n\nDeux exemples de systèmes de gestion de base de données (SGBD) : **MySQL** et **PostgreSQL** (on peut également citer Oracle Database, Microsoft SQL Server ou Microsoft Access).",
+      "themes": [
+        "SGBD",
+        "exemples"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-2",
+          "competence": "Citer des exemples de SGBD",
+          "contenu_markdown": "Deux exemples de systèmes de gestion de base de données (SGBD) : **MySQL** et **PostgreSQL** (on peut également citer Oracle Database, Microsoft SQL Server ou Microsoft Access).",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-un-logiciel-sgbd-pour-creer-une-base-de-donnees-si2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.3",
+      "enonce_markdown": "Transformer le MCD ci-dessus en schéma relationnel. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\n**Règle de transformation** : lorsqu'une des deux entités participant à une association binaire a une cardinalité maximale égale à 1 (ici `PLATS`, cardinalité (1,1)) et l'autre une cardinalité maximale égale à n (ici `CLIENT`, cardinalité (1,n)), la clé étrangère est placée du côté de l'entité dont la cardinalité maximale vaut 1 (`PLATS`), et elle référence la clé primaire de l'entité dont la cardinalité maximale vaut n (`CLIENT`).\n\nLe MCD comporte une association binaire **RESERVE** entre `CLIENT` (cardinalité maximale n) et `PLATS` (cardinalité maximale 1). **Règle de transformation** : lorsqu'une des deux entités participant à une association binaire a une cardinalité maximale égale à 1 (ici `PLATS`, cardinalité (1,1)) et l'autre une cardinalité maximale égale à n (ici `CLIENT`, cardinalité (1,n)), la clé étrangère est placée du côté de l'entité dont la cardinalité maximale vaut 1 (`PLATS`), et elle référence la clé primaire de l'entité dont la cardinalité maximale vaut n (`CLIENT`). L'association ne génère donc pas de table indépendante.\n\nLe schéma relationnel obtenu est :\n\n```\nCLIENT (IDclient, NOM, TELEPHONE)\nPLATS (IDPLATS, NOMPLAT, DESCRIPTIONPLAT, PRIX, #IDclient)\n```\n\noù `IDclient` et `IDPLATS` (soulignés) sont les clés primaires respectives de `CLIENT` et `PLATS`, et `#IDclient` dans la table `PLATS` est la clé étrangère qui référence `IDclient` de `CLIENT`.",
+      "themes": [
+        "MCD",
+        "MLD",
+        "schéma relationnel",
+        "clé étrangère"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-3",
+          "competence": "Transformer une association binaire de type (1,n)/(1,1) d'un MCD en schéma relationnel",
+          "contenu_markdown": "**Règle de transformation** : lorsqu'une des deux entités participant à une association binaire a une cardinalité maximale égale à 1 (ici `PLATS`, cardinalité (1,1)) et l'autre une cardinalité maximale égale à n (ici `CLIENT`, cardinalité (1,n)), la clé étrangère est placée du côté de l'entité dont la cardinalité maximale vaut 1 (`PLATS`), et elle référence la clé primaire de l'entité dont la cardinalité maximale vaut n (`CLIENT`).",
+          "cours_genere": true,
+          "cours_id": "cours-passer-du-mcd-au-mld-pour-une-association-de-type-1-n-si2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.4a",
+      "enonce_markdown": "Écrire la requête SQL permettant de créer la base de données nommée **resto_db**. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nCREATE DATABASE resto_db;\n\n```sql\nCREATE DATABASE resto_db;\n```",
+      "themes": [
+        "SQL",
+        "CREATE DATABASE",
+        "LDD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-4a",
+          "competence": "Écrire une requête SQL de création de base de données",
+          "contenu_markdown": "CREATE DATABASE resto_db;",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-base-de-donnees-create-database-si2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.4b",
+      "enonce_markdown": "Écrire la requête SQL permettant de créer la table client. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\n`IDclient` est déclaré clé primaire (`PRIMARY KEY`) car il identifie chaque client de manière unique ; `NOM` est contraint `NOT NULL` car un client doit nécessairement avoir un nom renseigné.\n\nEn reprenant le schéma relationnel établi à la question 4.3, `CLIENT (IDclient, NOM, TELEPHONE)` :\n\n```sql\nCREATE TABLE client (\n    IDclient    VARCHAR(10) PRIMARY KEY,\n    NOM         VARCHAR(50) NOT NULL,\n    TELEPHONE   VARCHAR(20)\n);\n```\n\n`IDclient` est déclaré clé primaire (`PRIMARY KEY`) car il identifie chaque client de manière unique ; `NOM` est contraint `NOT NULL` car un client doit nécessairement avoir un nom renseigné.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "LDD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-4b",
+          "competence": "Écrire une requête SQL de création de table à partir d'un schéma relationnel",
+          "contenu_markdown": "`IDclient` est déclaré clé primaire (`PRIMARY KEY`) car il identifie chaque client de manière unique ; `NOM` est contraint `NOT NULL` car un client doit nécessairement avoir un nom renseigné.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-si2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.4c",
+      "enonce_markdown": "Écrire la requête SQL permettant d'ajouter le plat suivant dans la base de données : \"NDOLE CREVETTE\", \"LEGUMES TROPICALES\", \"3500\". (Les identifiants sont considérés être automatiques). (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\n`IDPLATS` n'est pas précisé dans la requête : il est généré automatiquement par le SGBD (colonne auto-incrémentée), conformément à l'énoncé.\n\nEn reprenant le schéma relationnel `PLATS (IDPLATS, NOMPLAT, DESCRIPTIONPLAT, PRIX, #IDclient)`, avec `NOMPLAT` = \"NDOLE CREVETTE\", `DESCRIPTIONPLAT` = \"LEGUMES TROPICALES\" et `PRIX` = 3500, et sachant que les identifiants (donc `IDPLATS`) sont automatiques :\n\n```sql\nINSERT INTO plats (nomplat, descriptionplat, prix)\nVALUES ('NDOLE CREVETTE', 'LEGUMES TROPICALES', 3500);\n```\n\n`IDPLATS` n'est pas précisé dans la requête : il est généré automatiquement par le SGBD (colonne auto-incrémentée), conformément à l'énoncé.",
+      "themes": [
+        "SQL",
+        "INSERT INTO",
+        "LMD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-4c",
+          "competence": "Écrire une requête SQL d'insertion de données dans une table",
+          "contenu_markdown": "`IDPLATS` n'est pas précisé dans la requête : il est généré automatiquement par le SGBD (colonne auto-incrémentée), conformément à l'énoncé.",
+          "cours_genere": true,
+          "cours_id": "cours-insert-into-si2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "4.4d",
+      "enonce_markdown": "Faire une remise de 5% sur les plats commandés par le client dont l'IDclient est \"CL0436\". (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne remise de 5% revient à multiplier le prix actuel par (1 - 0,05) = 0,95. La condition porte sur la clé étrangère `IDclient` de la table `PLATS`, puisque c'est elle qui rattache chaque plat au client qui l'a commandé :\n\nUne remise de 5% revient à multiplier le prix actuel par (1 - 0,05) = 0,95. La condition porte sur la clé étrangère `IDclient` de la table `PLATS`, puisque c'est elle qui rattache chaque plat au client qui l'a commandé :\n\n```sql\nUPDATE plats\nSET prix = prix * 0.95\nWHERE IDclient = 'CL0436';\n```",
+      "themes": [
+        "SQL",
+        "UPDATE",
+        "LMD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-si2024-ex4-q4-4d",
+          "competence": "Écrire une requête SQL de mise à jour conditionnelle d'une donnée",
+          "contenu_markdown": "Une remise de 5% revient à multiplier le prix actuel par (1 - 0,05) = 0,95. La condition porte sur la clé étrangère `IDclient` de la table `PLATS`, puisque c'est elle qui rattache chaque plat au client qui l'a commandé :",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-mise-a-jour-d-une-donnee-update-si2024-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "base de données",
+    "SGBD",
+    "MCD",
+    "schéma relationnel",
+    "SQL",
+    "CREATE DATABASE",
+    "CREATE TABLE",
+    "INSERT INTO",
+    "UPDATE"
+  ],
+  "incertitudes": [
+    "Question 4.4.c : l'énoncé demande d'ajouter un plat sans préciser le client associé, alors que le MCD (question 4.3) impose une cardinalité (1,1) de PLATS vers CLIENT via l'association RESERVE, ce qui rend la clé étrangère IDclient obligatoire (NOT NULL) dans la table PLATS telle que modélisée. La requête INSERT proposée ne renseigne donc pas IDclient, ce qui échouerait en pratique sur une table respectant strictement cette contrainte. Ce corrigé suit fidèlement l'énoncé tel que rédigé ; en situation réelle d'implantation, il faudrait soit rendre IDclient facultatif dans PLATS (ce qui contredirait le MCD fourni), soit préciser un client par défaut lors de l'insertion."
+  ],
+  "statut": "brouillon"
+}

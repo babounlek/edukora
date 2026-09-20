@@ -1,0 +1,114 @@
+{
+  "epreuve_source": "terminale-ti-SI-vogt-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "etablissement",
+  "etablissement": "College Mgr. Francois Xavier VOGT (Departement Informatique) - Controle, Situation 06",
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": 4,
+  "numero_exercice": 2,
+  "introduction_markdown": "PARTIE I - Exercice 2 : Diagrammes de cas d'utilisation et de séquence (6 points)",
+  "points": "6",
+  "groupes": null,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "terminale-ti-SI-vogt-2021-cameroun_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Diagramme de cas d'utilisation - réservation de voyage",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "terminale-ti-SI-vogt-2021-cameroun_exercice_2_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Diagramme de séquence - annuler une réservation",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\nUn client peut effectuer une réservation de voyage auprès d'une compagnie aérienne, en téléphonant à un opérateur. Lorsqu'un client veut effectuer une réservation, il doit donner son nom, son prénom, son adresse, un numéro de téléphone ainsi que le nombre de personnes qui l'accompagnent. Sur la base de cette demande de réservation, l'opérateur doit vérifier les disponibilités. Si la demande peut être satisfaite une réservation est créée. La réservation est caractérisée par un numéro de réservation et une date de début de voyage. L'opérateur communique le numéro de cette réservation au client. Si la demande ne peut pas être satisfaite une réservation en attente est créée. 8 jours avant la date de début de voyage, l'opérateur doit vérifier de nouveau les disponibilités, si de nouveau la réservation en attente ne peut pas être satisfaite, elle est annulée, sinon elle est satisfaite et la réservation est créée.\n\nLe système de l'agence est relié à un système distant qui gère les disponibilités. Le client a la possibilité d'annuler une réservation effectuée en fournissant à l'opérateur le numéro de réservation. L'opérateur annulera la réservation en conséquence et communiquera cette annulation au système distant pour se mettre à jour.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Donner le diagramme de cas d'utilisation correspondant à cette description. (4pts)",
+      "corrige_markdown": "### Rappel de méthode\nUn diagramme de cas d'utilisation identifie les acteurs (qui interagit avec le système) et les cas d'utilisation (les fonctionnalités offertes par le système, vues de l'extérieur), puis relie chaque acteur aux cas d'utilisation qu'il déclenche ; les relations <<include>> et <<extend>> permettent de factoriser un comportement commun ou d'ajouter un comportement optionnel.\n\n**Corrigé.**\n\nActeurs identifiés :\n- **Client** : demande une réservation, demande une annulation.\n- **Opérateur** : traite les demandes du client, vérifie les disponibilités, crée ou annule les réservations.\n- **Système de gestion des disponibilités** (acteur secondaire, système distant) : consulté pour vérifier les disponibilités, mis à jour lors d'une annulation.\n\n![fig-1](terminale-ti-SI-vogt-2021-cameroun_exercice_2_fig_1.png)\n\nCas d'utilisation principaux et relations :\n- « Effectuer une réservation » <<include>> « Vérifier les disponibilités » (toute demande de réservation exige cette vérification).\n- « Créer une réservation » et « Créer une réservation en attente » <<extend>> « Vérifier les disponibilités » (l'un ou l'autre des deux cas s'ajoute selon le résultat de la vérification : demande satisfaite ou non).\n- « Confirmer la réservation en attente (J-8) » : nouvelle vérification 8 jours avant le départ.\n- « Annuler une réservation » <<include>> « Mettre à jour le système distant » (toute annulation doit être répercutée sur le système distant).\n\n**Piège à éviter.** Le client ne manipule jamais directement le système informatique (il passe toujours par l'opérateur, au téléphone) : il reste néanmoins un acteur du système, car il déclenche indirectement les cas d'utilisation en formulant sa demande à l'opérateur ; plusieurs modélisations valables existent selon que l'on choisit de relier le client directement aux cas d'utilisation ou seulement à travers l'opérateur.",
+      "themes": [
+        "diagramme de cas d'utilisation",
+        "UML",
+        "include",
+        "extend"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex2-q1-def",
+          "competence": "Définir un cas d'utilisation",
+          "contenu_markdown": "Un diagramme de cas d'utilisation identifie les acteurs (qui interagit avec le système) et les cas d'utilisation (les fonctionnalités offertes par le système, vues de l'extérieur), puis relie chaque acteur aux cas d'utilisation qu'il déclenche ; les relations <<include>> et <<extend>> permettent de factoriser un comportement commun ou d'ajouter un comportement optionnel.",
+          "cours_genere": true,
+          "cours_id": "cours-cas-dutilisation-et-message-uml-si2024-vogt2021-dup"
+        },
+        {
+          "id": "rdm-vogt2021-ex2-q1-methode",
+          "competence": "Utiliser les relations include et extend",
+          "contenu_markdown": "Un diagramme de cas d'utilisation identifie les acteurs (qui interagit avec le système) et les cas d'utilisation (les fonctionnalités offertes par le système, vues de l'extérieur), puis relie chaque acteur aux cas d'utilisation qu'il déclenche ; les relations <<include>> et <<extend>> permettent de factoriser un comportement commun ou d'ajouter un comportement optionnel.",
+          "cours_genere": true,
+          "cours_id": "cours-elaborer-un-diagramme-de-cas-dutilisation-si2024-vogt2021-dup"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Proposez un diagramme de séquence illustrant le cas d'utilisation « Annuler une réservation » par le client. (2pts)",
+      "corrige_markdown": "### Rappel de méthode\nUn diagramme de séquence représente, pour un cas d'utilisation donné, la chronologie des messages échangés entre les acteurs et les objets du système (lignes de vie verticales), avec une barre d'activation qui matérialise la durée pendant laquelle chaque objet traite une action ; un message synchrone (flèche pleine) attend une réponse, représentée par une flèche en pointillés.\n\n**Corrigé.**\n\n![fig-2](terminale-ti-SI-vogt-2021-cameroun_exercice_2_fig_2.png)\n\nSéquence des messages pour « Annuler une réservation » :\n\n1. Client -> Operateur : demanderAnnulation(numReservation)\n2. Operateur -> SystemeAgence : annulerReservation(numReservation)\n3. SystemeAgence -> SystemeAgence (message réflexif) : rechercherReservation(numReservation)\n4. SystemeAgence -> SystemeAgence (message réflexif) : changerStatut(\"Annulee\")\n5. SystemeAgence -> SystemeDistant : majDisponibilites(numReservation)\n6. SystemeDistant --> SystemeAgence : ok() (message de retour)\n7. SystemeAgence --> Operateur : confirmationAnnulation() (message de retour)\n8. Operateur -> Client : confirmerAnnulation()",
+      "themes": [
+        "diagramme de séquence",
+        "UML",
+        "message synchrone"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-vogt2021-ex2-q2",
+          "competence": "Construire un diagramme de séquence",
+          "contenu_markdown": "Un diagramme de séquence représente, pour un cas d'utilisation donné, la chronologie des messages échangés entre les acteurs et les objets du système (lignes de vie verticales), avec une barre d'activation qui matérialise la durée pendant laquelle chaque objet traite une action",
+          "cours_genere": true,
+          "cours_id": "cours-elaborer-un-diagramme-de-sequences-si2024-vogt2021-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "diagramme de cas d'utilisation",
+    "diagramme de séquence",
+    "UML",
+    "acteur",
+    "message"
+  ],
+  "incertitudes": [
+    "Question 1 : le texte de l'exercice inclut, après la description du cas de réservation de voyage, un paragraphe visiblement étranger au sujet (« Pour passer une commande, l'utilisateur saisit la quantite d'article a commander... »), qui semble provenir d'un autre exercice collé par erreur dans le sujet source. Ce paragraphe n'a pas été intégré au diagramme de cas d'utilisation, qui porte exclusivement sur le scénario de réservation de voyage décrit par ailleurs.",
+    "Le diagramme de cas d'utilisation proposé est une modélisation parmi plusieurs solutions valables : l'énoncé ne précise pas explicitement si le Client doit être relié directement aux cas d'utilisation ou seulement via l'Opérateur, ni le détail exact des relations <<include>>/<<extend>> attendues par le corrigé officiel de l'établissement."
+  ],
+  "statut": "brouillon"
+}

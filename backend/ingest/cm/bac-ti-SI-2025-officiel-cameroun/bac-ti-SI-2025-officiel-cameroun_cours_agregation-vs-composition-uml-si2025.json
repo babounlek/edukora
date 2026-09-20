@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-agregation-vs-composition-uml-si2025",
+  "meta": {
+    "titre": "Distinguer une relation d'agrégation d'une relation de composition en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation statique UML - relations entre classes",
+    "duree_estimee_min": 15,
+    "tags": [
+      "agrégation",
+      "composition",
+      "UML",
+      "relations entre classes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-si2025-ex2-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux losanges, une seule question à se poser : est-ce que la partie survit si on détruit le tout ? La réponse trie automatiquement agrégation et composition."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de classe et d'association en UML",
+        "Relation d'héritage (pour ne pas la confondre avec l'agrégation/composition)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère du cycle de vie",
+      "contenu_markdown": "L'agrégation et la composition modélisent toutes deux une relation tout-partie entre deux classes, mais elles diffèrent par la force du lien qui unit la partie au tout. Dans une agrégation, la partie a une existence autonome : elle peut être créée avant le tout, en être détachée, ou appartenir à plusieurs touts à la fois. Elle se note par un losange vide du côté de la classe qui joue le rôle du tout. Dans une composition, la partie n'a pas d'existence propre en dehors du tout : elle est créée et détruite avec lui, et n'appartient qu'à un seul tout à la fois. Elle se note par un losange plein, toujours du côté du tout."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une équipe de MAKWAMBA EXPRESS regroupe plusieurs agents du service Client ; un bordereau contient plusieurs lignes de colis à acheminer. Qualifier chacune de ces deux relations.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer le critère du cycle de vie à Équipe/Agent",
+          "justification": "Un agent peut être muté vers une autre équipe, ou exister avant que l'équipe ne soit constituée : il n'est pas indissociable de l'équipe.",
+          "resultat_markdown": "Relation Équipe-Agent : agrégation (losange vide côté Équipe)."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le même critère à Bordereau/LigneDeColis",
+          "justification": "Une ligne de bordereau n'a aucun sens hors du bordereau qui la porte ; elle est créée avec lui et supprimée avec lui.",
+          "resultat_markdown": "Relation Bordereau-LigneDeColis : composition (losange plein côté Bordereau)."
+        }
+      ],
+      "conclusion_markdown": "Le même test, appliqué deux fois, donne deux réponses opposées : c'est bien le cycle de vie de la partie qui décide, jamais l'intuition sur l'importance de la relation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir composition dès que la relation « semble forte » ou importante pour le fonctionnement du système.",
+          "pourquoi_faux": "L'intensité perçue de la relation n'est pas le critère UML : seule compte l'autonomie d'existence de la partie vis-à-vis du tout.",
+          "correction_markdown": "Toujours reformuler la relation en test explicite : « Est-ce que [la partie] peut exister sans [le tout] ? » Si oui, agrégation ; si non, composition."
+        },
+        {
+          "erreur_markdown": "Inverser le côté du losange, en le plaçant du côté de la partie plutôt que du tout.",
+          "pourquoi_faux": "Le losange, vide ou plein, désigne toujours la classe qui joue le rôle du tout ; le placer côté partie inverse le sens de lecture de la relation.",
+          "correction_markdown": "Se demander en premier « qui est le tout ? » avant de tracer le losange, et le poser systématiquement à cette extrémité de l'association."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une voiture est composée de roues. Qualifier la relation Voiture-Roue et justifier.",
+          "solution_markdown": "Composition : dans ce contexte de gestion de parc, une roue montée est comptée comme partie indissociable du véhicule tant qu'elle reste montée, et n'a de sens que rattachée à une voiture précise. Losange plein côté Voiture."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un département universitaire regroupe plusieurs enseignants. Qualifier la relation Département-Enseignant et justifier.",
+          "solution_markdown": "Agrégation : un enseignant existe indépendamment du département, il peut être recruté avant son affectation ou muté vers un autre département, et son cycle de vie ne dépend pas de celui du département. Losange vide côté Département."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un dossier médical contient plusieurs comptes rendus de consultation, et un compte rendu de consultation référence un médecin. Identifier laquelle des deux relations (Dossier-CompteRendu, CompteRendu-Medecin) est une composition et laquelle n'est ni une agrégation ni une composition, puis justifier.",
+          "solution_markdown": "Dossier-CompteRendu est une composition : un compte rendu n'existe et n'a de sens que rattaché à un dossier précis, il est créé et supprimé avec lui. CompteRendu-Medecin n'est ni une agrégation ni une composition : c'est une association simple, car le médecin n'est pas une partie du compte rendu, il existe totalement indépendamment de celui-ci et le compte rendu se contente de le référencer."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Agrégation et composition modélisent toutes deux une relation tout-partie, mais avec une force différente.",
+        "Le test décisif : la partie survit-elle à la destruction du tout ? Oui = agrégation, non = composition.",
+        "Losange vide = agrégation, losange plein = composition, toujours côté tout.",
+        "Ne pas confondre avec l'héritage (triangle vide), qui modélise une relation « est-un », pas « contient ».",
+        "Une relation sans dépendance d'existence dans un sens ni dans l'autre n'est ni une agrégation ni une composition : c'est une simple association."
+      ]
+    }
+  ]
+}

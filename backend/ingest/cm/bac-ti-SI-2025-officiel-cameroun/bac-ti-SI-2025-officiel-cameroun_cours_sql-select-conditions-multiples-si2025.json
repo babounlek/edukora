@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-sql-select-conditions-multiples-si2025",
+  "meta": {
+    "titre": "Écrire une requête SQL de sélection avec conditions multiples (SELECT... WHERE... AND...)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "SQL - langage de manipulation de données (LMD)",
+    "duree_estimee_min": 18,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "jointure",
+      "requête"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-si2025-ex4-q4.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une requête SQL bien construite se lit presque comme une phrase : montre-moi ces colonnes, dans cette table, en croisant éventuellement une autre table, pour les lignes qui vérifient toutes ces conditions à la fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une table (colonnes, clé primaire, clé étrangère)",
+        "Notion de clause SELECT ... FROM ... WHERE"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SELECT avec jointure et conditions multiples",
+      "contenu_markdown": "Une requête de sélection portant sur des critères répartis dans deux tables liées par une clé étrangère s'écrit en trois blocs. Le bloc SELECT liste les colonnes à afficher. Le bloc FROM ... JOIN ... ON rapproche les deux tables en égalant la clé étrangère de l'une à la clé primaire de l'autre. Le bloc WHERE pose les conditions à vérifier ; quand toutes les conditions doivent être vraies simultanément, elles se relient par l'opérateur AND. Chaque colonne se préfixe par l'alias de sa table dès qu'une jointure est en jeu, pour lever toute ambiguïté sur son origine."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête SQL qui retourne tous les véhicules de couleur BLANCHE, de modèle BERLINE, roulant au DIESEL.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer dans quelle(s) table(s) se trouve chaque critère",
+          "justification": "Le SELECT ne peut filtrer que sur des colonnes réellement présentes dans les tables interrogées.",
+          "resultat_markdown": "Couleur est un attribut de VEHICULE ; LibeleModele et Carburant sont des attributs de MODELE."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la jointure entre les deux tables",
+          "justification": "Les critères étant répartis sur deux tables, il faut les rapprocher par leur clé étrangère commune IdModele avant de pouvoir les filtrer ensemble.",
+          "resultat_markdown": "FROM VEHICULE V JOIN MODELE M ON V.IdModele = M.IdModele"
+        },
+        {
+          "numero": 3,
+          "action": "Poser les trois conditions reliées par AND",
+          "justification": "Le véhicule recherché doit vérifier les trois critères en même temps, pas l'un ou l'autre.",
+          "resultat_markdown": "WHERE V.Couleur = 'BLANCHE' AND M.LibeleModele = 'BERLINE' AND M.Carburant = 'DIESEL'"
+        }
+      ],
+      "conclusion_markdown": "La requête complète (SELECT, jointure, trois conditions liées par AND) retourne exactement, et seulement, les véhicules qui satisfont simultanément les trois critères demandés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser OR à la place de AND entre les conditions.",
+          "pourquoi_faux": "OR retournerait tout véhicule vérifiant au moins un des trois critères, par exemple une voiture rouge à essence dès qu'elle est de modèle BERLINE, ce qui est beaucoup plus large que ce que demande l'énoncé.",
+          "correction_markdown": "Relire l'énoncé : la conjonction « et » dans la consigne (couleur ET modèle ET carburant) se traduit toujours par AND en SQL, jamais par OR."
+        },
+        {
+          "erreur_markdown": "Oublier la jointure et écrire les trois conditions dans un WHERE portant sur une seule table.",
+          "pourquoi_faux": "Sans jointure, la requête ne peut filtrer que sur les colonnes de VEHICULE ; LibeleModele et Carburant, qui appartiennent à MODELE, ne sont alors pas accessibles et la requête échoue ou omet ces critères.",
+          "correction_markdown": "Vérifier systématiquement, avant d'écrire le WHERE, que toutes les colonnes citées existent bien dans les tables listées après FROM ou JOIN."
+        },
+        {
+          "erreur_markdown": "Omettre les guillemets autour des valeurs textuelles ('BLANCHE', 'BERLINE', 'DIESEL').",
+          "pourquoi_faux": "En SQL, toute valeur de type chaîne de caractères doit être délimitée par des apostrophes ; une valeur nue est interprétée comme un nom de colonne ou de table et provoque une erreur de syntaxe.",
+          "correction_markdown": "Prendre l'habitude d'entourer systématiquement toute valeur texte de guillemets simples, y compris pour des valeurs qui ressemblent à des mots-clés."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui retourne tous les véhicules de couleur NOIRE.",
+          "solution_markdown": "SELECT * FROM VEHICULE WHERE Couleur = 'NOIRE';"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête qui retourne l'immatriculation et la couleur de tous les véhicules dont le modèle s'appelle « SUV » et qui consomment de l'ESSENCE.",
+          "solution_markdown": "SELECT V.Immatriculation, V.Couleur FROM VEHICULE V JOIN MODELE M ON V.IdModele = M.IdModele WHERE M.LibeleModele = 'SUV' AND M.Carburant = 'ESSENCE';"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la requête qui retourne le nom des propriétaires (table PROPRIETAIRE) qui possèdent au moins un véhicule de couleur BLANCHE, sachant que la copropriété est gérée par la table POSSEDE (#Immatriculation, #Identifiant).",
+          "solution_markdown": "SELECT DISTINCT P.Nom FROM PROPRIETAIRE P JOIN POSSEDE PO ON P.Identifiant = PO.Identifiant JOIN VEHICULE V ON PO.Immatriculation = V.Immatriculation WHERE V.Couleur = 'BLANCHE'; Le mot-clé DISTINCT évite qu'un propriétaire de plusieurs véhicules blancs n'apparaîsse plusieurs fois dans le résultat, et la double jointure est nécessaire car PROPRIETAIRE et VEHICULE ne sont reliés qu'indirectement, via la table d'association POSSEDE."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une requête de sélection multi-tables suit toujours l'ordre SELECT, FROM ... JOIN ... ON, WHERE.",
+        "AND impose que toutes les conditions soient vraies en même temps ; OR se contente d'une seule.",
+        "Préfixer les colonnes par l'alias de leur table dès qu'une jointure entre en jeu.",
+        "Toute valeur texte s'entoure de guillemets simples en SQL.",
+        "Quand deux tables ne sont reliées que par une table d'association intermédiaire, il faut enchaîner deux jointures pour les relier."
+      ]
+    }
+  ]
+}

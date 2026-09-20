@@ -1,0 +1,73 @@
+{
+  "cours_id": "cours-selectionner-des-lignes-par-intervalle-avec-between-bacprog2025",
+  "meta": {
+    "titre": "Selectionner des lignes SQL respectant un intervalle avec BETWEEN",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - SQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "BETWEEN"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b7",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour selectionner en SQL toutes les lignes dont une colonne numerique se situe dans un intervalle donne, l'operateur BETWEEN est plus lisible que deux comparaisons combinees."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Syntaxe de base de SELECT ... FROM ... WHERE ..."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "BETWEEN ... AND ...",
+      "contenu_markdown": "`SELECT * FROM table WHERE colonne BETWEEN valeur_min AND valeur_max;` selectionne toutes les lignes pour lesquelles `colonne` est comprise entre `valeur_min` et `valeur_max`, **bornes incluses**. C'est strictement equivalent a `colonne >= valeur_min AND colonne <= valeur_max`, mais plus concis."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Selectionner tous les eleves ayant exactement 8 jours d'exclusion.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier que 'exactement 8' se traduit par un intervalle degenere [8, 8]",
+          "justification": "BETWEEN accepte une meme valeur comme borne haute et basse",
+          "resultat_markdown": "SELECT * FROM eleves WHERE joursExclusion BETWEEN 8 AND 8;"
+        }
+      ],
+      "conclusion_markdown": "Cette requete renvoie exactement les lignes ou joursExclusion vaut 8, ni plus ni moins."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser BETWEEN avec la borne haute inferieure a la borne basse",
+          "pourquoi_faux": "BETWEEN valeur_max AND valeur_min (ordre inverse) ne renvoie aucune ligne en SQL standard."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "BETWEEN min AND max selectionne les lignes dont la colonne est comprise entre min et max, bornes incluses.",
+        "Une valeur exacte se traduit par BETWEEN v AND v."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "cours_id": "cours-valider-des-champs-non-vides-en-javascript-bacprog2025",
+  "meta": {
+    "titre": "Valider qu'un champ de formulaire n'est pas vide en JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - JavaScript",
+    "duree_estimee_min": 15,
+    "tags": [
+      "JavaScript",
+      "validation de formulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-i2-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'envoyer un formulaire, on verifie souvent cote client que les champs obligatoires ont bien ete remplis."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Acces aux champs d'un formulaire en JavaScript (document.form.champ.value)",
+        "Structure conditionnelle if"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Detecter un champ vide",
+      "contenu_markdown": "Un champ texte est considere vide lorsque sa valeur est une chaine vide `\"\"`. On teste cette condition avec `if(document.form.champ.value == \"\")`. Si le test est vrai, on affiche un message d'alerte et on renvoie `false` pour empecher l'envoi du formulaire (dans une fonction appelee par `onsubmit`)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Verifier que les champs matricule et date d'un formulaire ne sont pas vides avant validation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester chaque champ obligatoire",
+          "justification": "Chaque champ doit etre verifie independamment",
+          "resultat_markdown": "if(document.form.matricule.value==\"\" || document.form.date.value==\"\"){ alert(\"Veuillez remplir tous les champs\"); return false; }"
+        }
+      ],
+      "conclusion_markdown": "La fonction ne laisse passer la soumission que si tous les champs obligatoires contiennent une valeur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Considerer qu'un `<select>` peut etre 'vide' comme un champ texte",
+          "pourquoi_faux": "Une liste deroulante affiche toujours l'une de ses options par defaut ; elle n'a donc jamais de valeur vide sauf si une option vide est explicitement ajoutee dans le code HTML."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un champ texte vide se detecte par value == \"\".",
+        "return false dans le gestionnaire onsubmit annule l'envoi du formulaire."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "cours_id": "cours-elements-syntaxiques-de-base-du-langage-c-bacprog2025",
+  "meta": {
+    "titre": "Reperer bibliotheques, operateurs logiques, instructions de rupture et variables locales en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation C - Syntaxe de base",
+    "duree_estimee_min": 15,
+    "tags": [
+      "langage C",
+      "bibliotheques",
+      "operateurs logiques",
+      "portee des variables"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2025-ex2-q2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lire un programme C impose de savoir reperer ses briques syntaxiques de base : bibliotheques incluses, operateurs, instructions de controle de boucle et etendue (portee) des variables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure generale d'un programme C (#include, fonctions, main)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bibliotheques necessaires, operateurs logiques, rupture d'iteration, portee des variables",
+      "contenu_markdown": "Une **bibliotheque** (fichier d'en-tete inclus par `#include`) n'est necessaire que si au moins une fonction ou macro qu'elle declare est reellement utilisee ailleurs dans le code ; sinon, elle est superflue. Les **operateurs logiques** (`&&` ET, `||` OU, `!` NON) combinent des expressions booleennes dans une condition. Une **instruction d'arret d'iteration** comme `break` interrompt immediatement la boucle englobante des qu'elle est executee, sans attendre la fin naturelle de la condition de boucle. La **portee** (ou etendue) d'une variable **locale** se limite au bloc de code (fonction ou bloc `{}`) dans lequel elle est declaree : elle est creee a l'entree du bloc et detruite a la sortie, invisible en dehors."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier ces quatre notions dans un extrait de code C comportant des #include, un || dans une condition, un break dans une boucle, et des variables declarees dans des fonctions.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Verifier chaque #include contre les fonctions reellement appelees",
+          "justification": "Une bibliotheque incluse mais dont aucune fonction n'est utilisee est superflue",
+          "resultat_markdown": "Les bibliotheques dont aucune fonction n'apparait dans le code sont a signaler comme non necessaires."
+        },
+        {
+          "numero": 2,
+          "action": "Reperer les symboles && || ! dans les conditions",
+          "justification": "Ce sont les seuls operateurs logiques du langage C",
+          "resultat_markdown": "Chaque occurrence de && ou || est un operateur logique."
+        },
+        {
+          "numero": 3,
+          "action": "Reperer le mot-cle break",
+          "justification": "C'est l'instruction standard d'arret immediat d'une boucle",
+          "resultat_markdown": "Chaque break trouve dans une boucle est une instruction d'arret d'iteration."
+        },
+        {
+          "numero": 4,
+          "action": "Reperer les variables declarees a l'interieur des corps de fonction",
+          "justification": "Une variable declaree dans une fonction n'existe que pendant son execution",
+          "resultat_markdown": "Ces variables sont locales, par opposition a des variables globales declarees hors de toute fonction."
+        }
+      ],
+      "conclusion_markdown": "Ces quatre notions sont independantes mais se reperent toutes par lecture directe du code source, sans avoir besoin de l'executer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre une variable locale a une fonction avec une variable globale utilisee dans plusieurs fonctions",
+          "pourquoi_faux": "Seule une variable declaree en dehors de toute fonction, ou passee explicitement en parametre, peut etre partagee entre plusieurs fonctions ; une variable locale reste strictement confinee a son bloc de declaration."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliotheque est necessaire seulement si une de ses fonctions est reellement utilisee.",
+        "&&, || et ! sont les operateurs logiques du C ; break arrete immediatement une boucle.",
+        "Une variable locale n'existe que dans le bloc ou elle est declaree."
+      ]
+    }
+  ]
+}

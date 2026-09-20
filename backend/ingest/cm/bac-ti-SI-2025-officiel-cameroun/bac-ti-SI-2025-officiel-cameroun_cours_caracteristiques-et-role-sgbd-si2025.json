@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-caracteristiques-et-role-sgbd-si2025",
+  "meta": {
+    "titre": "Caractéristiques et rôle d'un SGBD",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases de données - environnement d'implantation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SGBD",
+      "base de données",
+      "caractéristiques",
+      "rôle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2025 - Cameroun",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-si2025-ex4-q4.1-1",
+    "rappels_lies": [
+      "rdm-si2025-ex4-q4.2-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données seule n'est qu'un ensemble de fichiers ; c'est le SGBD qui la rend réellement exploitable, sécurisée et partageable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de la notion de base de données",
+        "Notion de table, d'enregistrement et de champ"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Caractéristiques et rôle d'un SGBD",
+      "contenu_markdown": "Un Système de Gestion de Base de Données (SGBD) est le logiciel qui sert d'intermédiaire unique entre les utilisateurs, ou les applications, et les données stockées sur un support physique. Il se caractérise par le contrôle de la redondance et de l'intégrité des données (il impose les contraintes définies : clés, types, unicité), l'indépendance des données vis-à-vis des programmes qui les exploitent, la gestion des accès concurrents, la sécurité et la confidentialité, et des mécanismes de sauvegarde et de reprise après incident. Son rôle dans la mise en place d'une base de données consiste à traduire le schéma logique en structures physiques de stockage, puis à exécuter les requêtes de création, de consultation, de modification et de suppression formulées par les utilisateurs, tout en garantissant à chaque instant le respect des contraintes d'intégrité définies."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Lister deux caractéristiques d'un SGBD et préciser son rôle dans la mise en place de la base de données du parc automobile de l'énoncé.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir deux caractéristiques parmi celles du cours",
+          "justification": "La question demande deux caractéristiques, pas la liste complète : autant choisir les plus faciles à illustrer sur le cas donné.",
+          "resultat_markdown": "Contrôle de l'intégrité des données (le SGBD refusera un véhicule sans modèle associé, conformément à C4) ; gestion des accès concurrents (plusieurs agents du parc peuvent consulter ou modifier la base simultanément)."
+        },
+        {
+          "numero": 2,
+          "action": "Relier le rôle du SGBD au cas concret du parc automobile",
+          "justification": "Le rôle s'exprime toujours en le rattachant aux tables et contraintes réellement définies dans le MCD de l'énoncé.",
+          "resultat_markdown": "Le SGBD crée physiquement les tables VEHICULE, PROPRIETAIRE, MODELE et POSSEDE déduites du MCD, exécute les requêtes SQL de gestion du parc, et vérifie à chaque insertion le respect des contraintes C1 à C5."
+        }
+      ],
+      "conclusion_markdown": "Les caractéristiques d'un SGBD ne sont donc pas de simples arguments commerciaux : elles se retrouvent concrètement dans la façon dont il fait vivre, ici, la base de données du gestionnaire de parc."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre SGBD et base de données, en répondant par des caractéristiques des données elles-mêmes (volumineuses, structurées) plutôt que du logiciel.",
+          "pourquoi_faux": "Le SGBD est le logiciel de gestion ; la base de données est l'ensemble des données qu'il gère. La question porte sur le logiciel, pas sur son contenu.",
+          "correction_markdown": "Vérifier que chaque caractéristique citée décrit une fonctionnalité du logiciel (contrôle, sécurité, accès concurrent), jamais une propriété des données stockées."
+        },
+        {
+          "erreur_markdown": "Réduire le rôle du SGBD à « stocker les données ».",
+          "pourquoi_faux": "Le stockage n'est qu'une des fonctions du SGBD parmi la création des structures, l'exécution des requêtes et le contrôle des contraintes ; s'arrêter au stockage fait perdre une grande partie des points d'une question à 1,5 point.",
+          "correction_markdown": "Structurer systématiquement la réponse en trois temps : création des structures physiques, exécution des requêtes, contrôle des contraintes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer deux caractéristiques d'un SGBD autres que celles utilisées dans l'exemple ci-dessus.",
+          "solution_markdown": "L'indépendance des données vis-à-vis des programmes (une application peut évoluer sans que la structure des données ne change) et la sécurité/confidentialité (chaque utilisateur ne voit ou ne modifie que les données pour lesquelles il a un droit d'accès)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une entreprise gère ses stocks dans de simples fichiers Excel partagés sur un réseau. Expliquer, à l'aide d'une caractéristique du SGBD, pourquoi ce choix pose un risque en cas de modification simultanée par deux employés.",
+          "solution_markdown": "Un SGBD assure la gestion des accès concurrents : il verrouille ou sérialise les modifications simultanées pour garantir la cohérence des données. Un fichier Excel partagé n'offre pas ce contrôle : deux employés qui modifient la même feuille en même temps risquent d'écraser silencieusement les changements l'un de l'autre, sans qu'aucun mécanisme ne détecte ni ne prévienne le conflit."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi le rôle d'un SGBD ne se limite pas à l'exécution des requêtes, en vous appuyant sur la contrainte C4 de l'énoncé (« une voiture est d'un seul modèle »).",
+          "solution_markdown": "Si le SGBD se contentait d'exécuter les requêtes sans contrôle, une insertion incohérente, par exemple un véhicule rattaché à deux modèles à la fois ou à aucun, serait acceptée telle quelle. Le rôle du SGBD inclut donc le contrôle de l'intégrité : il vérifie, à chaque insertion ou mise à jour dans la table VEHICULE, que la clé étrangère IdModele référence bien un et un seul enregistrement existant de la table MODELE, ce qui applique concrètement la contrainte C4 sans qu'aucun programme externe n'ait à la revérifier lui-même."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un SGBD est le logiciel intermédiaire unique entre les utilisateurs et les données stockées.",
+        "Ses caractéristiques clés : contrôle de l'intégrité, indépendance des données, accès concurrents, sécurité, sauvegarde/reprise.",
+        "Son rôle : créer les structures physiques, exécuter les requêtes, contrôler les contraintes à chaque opération.",
+        "Ne jamais réduire son rôle au seul stockage : c'est la fonction de contrôle qui le distingue d'un simple fichier partagé.",
+        "Au BAC TI, cette question précède presque toujours les questions de transformation du MCD et d'écriture de requêtes SQL."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "cours_id": "cours-dictionnaire-des-donnees-merise-probatoire-ti-si-2023",
+  "meta": {
+    "titre": "Le dictionnaire des donnees en MERISE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "MERISE - dictionnaire des donnees",
+    "duree_estimee_min": 15,
+    "tags": [
+      "dictionnaire des donnees",
+      "MERISE",
+      "MCD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Epreuve de systemes d'information au probatoire TI 2023",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-probati2023-ex2-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de dessiner le MCD, il est utile de recenser une bonne fois pour toutes chaque donnee du systeme dans un tableau unique : c'est le role du dictionnaire des donnees."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les entites et proprietes d'un systeme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire un dictionnaire des donnees",
+      "contenu_markdown": "Le **dictionnaire des donnees** est un tableau qui recense, pour chaque propriete (donnee elementaire) du systeme etudie, quatre informations : son **code** (nom technique abrege), sa **designation** (nom explicite en langage courant), son **type** (alphanumerique, numerique, date, booleen...) et sa **taille**, ainsi que sa **nature** : *simple* (saisie directement) ou *calculee* (obtenue par une formule a partir d'autres proprietes, par exemple un age calcule a partir d'une date de naissance).\n\nIl est etabli avant la construction du MCD et sert de reference commune a toute l'equipe projet pour eviter les ambiguites de nommage ou de format."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dresser la ligne du dictionnaire des donnees correspondant a la propriete « prix unitaire d'un accessoire », sachant qu'elle est saisie directement et exprimee en un nombre a deux decimales.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir un code",
+          "justification": "Le code doit etre court et sans espace.",
+          "resultat_markdown": "Code : PrixUnitaire"
+        },
+        {
+          "numero": 2,
+          "action": "Determiner le type et la taille",
+          "justification": "Un prix avec decimales est une donnee numerique de taille adaptee au plus grand montant attendu.",
+          "resultat_markdown": "Type : Numerique, Taille : 10"
+        },
+        {
+          "numero": 3,
+          "action": "Determiner la nature",
+          "justification": "La donnee est saisie directement, elle n'est le resultat d'aucun calcul.",
+          "resultat_markdown": "Nature : Simple"
+        }
+      ],
+      "conclusion_markdown": "La ligne complete est : Code=PrixUnitaire, Designation=Prix unitaire de l'accessoire, Type=Numerique, Taille=10, Nature=Simple."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer une donnee calculee (comme un age deduit d'une date de naissance, ou un total de commande) comme « simple ».",
+          "pourquoi_faux": "Une donnee obtenue par une formule a partir d'autres proprietes deja recensees est par definition « calculee » : elle ne doit pas etre saisie une seconde fois, sous peine de redondance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La propriete « montant total d'une commande », obtenue en multipliant la quantite par le prix unitaire, est-elle simple ou calculee ?",
+          "solution_markdown": "Calculee, car elle resulte d'une formule appliquee a d'autres proprietes deja recensees (quantite, prix unitaire)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le dictionnaire des donnees recense code, designation, type, taille et nature de chaque propriete.",
+        "Une donnee calculee ne doit jamais etre stockee en plus des donnees qui servent a la calculer.",
+        "Il precede la construction du MCD et evite les ambiguites de nommage."
+      ]
+    }
+  ]
+}

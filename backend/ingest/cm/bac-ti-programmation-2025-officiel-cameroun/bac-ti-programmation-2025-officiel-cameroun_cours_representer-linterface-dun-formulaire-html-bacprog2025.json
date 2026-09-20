@@ -1,0 +1,80 @@
+{
+  "cours_id": "cours-representer-linterface-dun-formulaire-html-bacprog2025",
+  "meta": {
+    "titre": "Representer l'interface d'un formulaire HTML a partir de son code",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - HTML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "HTML",
+      "formulaire",
+      "interface"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-i1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'ecrire ou de corriger du code HTML, il faut savoir 'lire' un formulaire : deviner a quoi il ressemble a l'ecran a partir des seules balises."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Balises HTML de base (form, input, select, button)",
+        "Notion d'attribut HTML (type, name, placeholder)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Associer chaque balise a son rendu visuel",
+      "contenu_markdown": "Un `<fieldset>` avec `<legend>` dessine un cadre encadrant les champs, avec un titre pose sur le bord du cadre. Un `<input type=\"text\">` est une zone de saisie libre a une ligne. Un `<input type=\"date\">` affiche un champ avec un selecteur de date. Un `<select>` avec des `<option>` affiche une liste deroulante ; la premiere `<option>` sert souvent de valeur par defaut affichee. Un `<button>` ou `<input type=\"submit\">` affiche un bouton cliquable."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un formulaire contient un `<fieldset>` intitule 'Evaluation', un champ texte 'Matricule', un champ date, un `<select>` a 4 options pour le type de faute, et un bouton 'soumettre'.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le cadre englobant",
+          "justification": "Le fieldset/legend definit la zone visuelle du formulaire",
+          "resultat_markdown": "Un cadre rectangulaire intitule 'Evaluation' contient tous les champs."
+        },
+        {
+          "numero": 2,
+          "action": "Placer chaque champ dans l'ordre du code source",
+          "justification": "L'ordre d'apparition dans le HTML correspond a l'ordre d'affichage vertical",
+          "resultat_markdown": "Matricule (texte), puis Date, puis une liste deroulante des fautes, puis le bouton."
+        }
+      ],
+      "conclusion_markdown": "Le schema obtenu reconstitue fidelement l'interface que verrait l'utilisateur final, sans avoir besoin d'executer le code."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier qu'un `<select>` affiche toujours une valeur par defaut (jamais un champ visuellement 'vide')",
+          "pourquoi_faux": "Contrairement a un champ texte, une liste deroulante presente toujours au moins l'une de ses options a l'ecran."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque balise HTML a un rendu visuel caracteristique qu'il faut savoir associer sans executer le code.",
+        "L'ordre du code source determine l'ordre d'affichage vertical du formulaire."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "cours_id": "cours-elaborer-un-diagramme-de-sequences-si2024",
+  "meta": {
+    "titre": "Elaborer un diagramme de sequences UML",
+    "matiere": "Systemes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modelisation dynamique UML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "UML",
+      "diagramme de sequences",
+      "message",
+      "ligne de vie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2024-officiel-cameroun",
+    "epreuve_titre": "Baccalaureat TI - Systemes d'Information - 2024 - Cameroun",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-si2024-ex3-q3-5",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le diagramme de sequences montre, dans l'ordre chronologique, les echanges de messages entre les acteurs et les elements du systeme pour realiser un cas d'utilisation."
+    },
+    {
+      "type": "regle",
+      "titre": "Methode d'elaboration",
+      "contenu_markdown": "1. **Placer une ligne de vie verticale** pour chaque acteur/objet participant, avec un rectangle d'en-tete nomme en haut.\n2. **Numeroter les messages** dans l'ordre chronologique de leur emission.\n3. **Representer chaque message par une fleche horizontale** entre deux lignes de vie : trait plein a pointe pleine pour un message synchrone (avec reponse attendue), pointille pour un message de retour.\n4. **Representer un message reflexif** (un objet qui s'envoie un message a lui-meme, ex. un auto-controle) par une petite boucle qui part et revient sur la meme ligne de vie."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Elaborer le diagramme de sequences du processus de formation des employes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les participants et l'ordre chronologique des echanges",
+          "justification": "Le texte de l'enonce decrit deja l'ordre des actions (demande, qualification, consultation du catalogue, proposition, inscription...).",
+          "resultat_markdown": "Employe, ResponsableFormation, CatalogueFormations, OrganismeFormation comme lignes de vie."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer et numeroter chaque message dans l'ordre",
+          "justification": "La numerotation restitue fidelement la chronologie du texte source.",
+          "resultat_markdown": "1: soumettreDemande(), 2: qualifierDemande() [reflexif], 3: consulterCatalogue(), ... jusqu'a la facture."
+        }
+      ],
+      "conclusion_markdown": "Un diagramme de sequences fidele respecte strictement l'ordre chronologique des actions decrites dans le texte source."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de numeroter les messages ou les numeroter dans le desordre par rapport au texte.",
+          "pourquoi_faux": "Sans numerotation coherente, le diagramme ne restitue plus la chronologie reelle du processus.",
+          "correction_markdown": "Numeroter chaque message strictement dans l'ordre ou l'action correspondante apparait dans le texte source."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lignes de vie verticales + messages horizontaux numerotes dans l'ordre chronologique.",
+        "Un message reflexif se represente par une boucle sur la meme ligne de vie."
+      ]
+    }
+  ]
+}

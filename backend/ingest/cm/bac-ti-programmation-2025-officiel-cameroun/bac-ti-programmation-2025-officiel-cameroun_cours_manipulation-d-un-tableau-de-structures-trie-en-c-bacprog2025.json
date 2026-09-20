@@ -1,0 +1,93 @@
+{
+  "cours_id": "cours-manipulation-d-un-tableau-de-structures-trie-en-c-bacprog2025",
+  "meta": {
+    "titre": "Exploiter un tableau de structures deja trie : extremum, recherche et comptage conditionnel",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation C - Tableaux de structures",
+    "duree_estimee_min": 15,
+    "tags": [
+      "langage C",
+      "tableau de structures",
+      "recherche",
+      "comptage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bacprog2025-ex2-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois un tableau de structures trie, plusieurs traitements classiques deviennent plus simples : trouver un extremum, rechercher un element precis, ou compter les elements verifiant une condition."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de structure (struct) en C",
+        "Boucles for et parcours de tableau",
+        "[[cours-algorithme-du-tri-par-selection-en-langage-c-bacprog2025-dup]] Tri par selection"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois traitements classiques sur un tableau trie",
+      "contenu_markdown": "Si un tableau est deja trie par ordre croissant selon un critere, l'element de **valeur maximale** pour ce critere se trouve directement au **dernier indice** (`tab[taille-1]`), sans avoir besoin de le rechercher. Pour **rechercher un element precis** correspondant a une valeur donnee, une fonction dediee qui parcourt le tableau et s'arrete des le premier element trouve (via `break`) evite de dupliquer la logique de recherche ; une valeur calculee (comme une moyenne) peut necessiter une **conversion (cast)** explicite, par exemple `(int) valeur`, pour n'en garder que la partie entiere avant de la comparer. Pour **compter les elements verifiant une condition** (un intervalle de valeurs, par exemple), il faut parcourir tout le tableau avec une boucle et incrementer un compteur initialise a 0 chaque fois que la condition est verifiee."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un tableau d'eleves est trie par moyenne croissante. Afficher l'eleve de plus grande moyenne, rechercher l'eleve dont la moyenne correspond a la partie entiere de la moyenne generale, et compter les eleves ayant une moyenne entre 10 et 12.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Acceder au dernier indice pour l'extremum",
+          "justification": "Le tableau est trie par ordre croissant : le maximum est en derniere position",
+          "resultat_markdown": "tab[taille-1] est l'eleve de plus grande moyenne."
+        },
+        {
+          "numero": 2,
+          "action": "Appeler la fonction de recherche avec la valeur convertie",
+          "justification": "La partie entiere s'obtient par un cast (int)",
+          "resultat_markdown": "rechercherEleve(tab, (int) moyenneGenerale(tab));"
+        },
+        {
+          "numero": 3,
+          "action": "Parcourir le tableau avec un compteur pour le comptage conditionnel",
+          "justification": "Aucune formule directe ne remplace un parcours complet pour compter des occurrences",
+          "resultat_markdown": "for(i=0;i<taille;i++){ if(tab[i].moyenne>=10 && tab[i].moyenne<=12){ compteur++; } }"
+        }
+      ],
+      "conclusion_markdown": "Chacun de ces trois traitements repose sur une idee differente : acces direct pour l'extremum sur tableau trie, reutilisation d'une fonction existante pour la recherche, parcours complet avec compteur pour le denombrement conditionnel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Reparcourir tout le tableau pour chercher un maximum alors qu'il est deja trie",
+          "pourquoi_faux": "C'est un travail inutile : sur un tableau deja trie par ordre croissant, le maximum est garanti au dernier indice."
+        },
+        {
+          "erreur_markdown": "Utiliser une comparaison stricte (> et <) pour un comptage 'entre deux bornes incluses'",
+          "pourquoi_faux": "Cela exclurait a tort les elements egaux exactement aux bornes ; il faut utiliser >= et <= quand l'enonce dit 'compris entre'."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sur un tableau trie croissant, le maximum est au dernier indice.",
+        "Une fonction de recherche existante peut etre reutilisee avec une valeur convertie (cast).",
+        "Compter des elements sous condition impose un parcours complet avec un compteur."
+      ]
+    }
+  ]
+}

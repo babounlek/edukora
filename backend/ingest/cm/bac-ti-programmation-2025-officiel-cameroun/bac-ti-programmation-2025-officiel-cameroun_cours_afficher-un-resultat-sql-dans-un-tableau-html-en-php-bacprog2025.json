@@ -1,0 +1,87 @@
+{
+  "cours_id": "cours-afficher-un-resultat-sql-dans-un-tableau-html-en-php-bacprog2025",
+  "meta": {
+    "titre": "Afficher un resultat de requete SQL dans un tableau HTML avec PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP/MySQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "mysqli",
+      "HTML",
+      "tableau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
+    "epreuve_titre": "BAC TI Informatique - Programmation 2025",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-bacprog2025-ex1-ii-b10",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les lignes d'un resultat SQL recuperees une a une, on les insere dans un tableau HTML pour les afficher au format lisible."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "[[cours-role-de-mysqli-fetch-assoc-bacprog2025]] mysqli_fetch_assoc()",
+        "Structure d'un tableau HTML (table, tr, td)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Boucler sur les lignes et generer le tableau",
+      "contenu_markdown": "On combine une boucle `while($ligne = mysqli_fetch_assoc($resultat))` (qui s'arrete quand il n'y a plus de ligne) avec du code HTML genere en PHP : a chaque tour, on ouvre une ligne `<tr>`, on parcourt les valeurs de `$ligne` (souvent avec `foreach($ligne as $cle=>$valeur)`) pour generer une cellule `<td>` par colonne, puis on ferme la ligne `</tr>`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Afficher toutes les lignes d'un resultat dans un tableau HTML.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la balise table avant la boucle",
+          "justification": "Le tableau HTML englobe toutes les lignes affichees",
+          "resultat_markdown": "echo \"<table>\";"
+        },
+        {
+          "numero": 2,
+          "action": "Boucler sur chaque ligne du resultat",
+          "justification": "mysqli_fetch_assoc() avance d'une ligne a chaque appel",
+          "resultat_markdown": "`while($ligne = mysqli_fetch_assoc($resultat)){ echo \"<tr>\"; foreach($ligne as $val){ echo \"<td>$val</td>\"; } echo \"</tr>\"; }`"
+        },
+        {
+          "numero": 3,
+          "action": "Fermer la balise table apres la boucle",
+          "justification": "Toutes les lignes ont ete inserees",
+          "resultat_markdown": "echo \"</table>\";"
+        }
+      ],
+      "conclusion_markdown": "Le tableau HTML final contient autant de lignes <tr> que de lignes retournees par la requete SQL."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Rouvrir la balise <table> a chaque tour de boucle",
+          "pourquoi_faux": "La balise table doit englober toutes les lignes ; elle ne s'ouvre et ne se ferme qu'une seule fois, en dehors de la boucle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On boucle sur les lignes avec `while($ligne = mysqli_fetch_assoc(...))`.",
+        "A chaque tour, une ligne <tr> est generee avec une cellule <td> par colonne."
+      ]
+    }
+  ]
+}
