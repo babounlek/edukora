@@ -1,0 +1,226 @@
+[
+  {
+    "external_id": "cqc-debogage-faible-0",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le compilateur signale une erreur sur ce code. Quelle en est la cause ?\n\n```c\nint a = 5\nprintf(\"%d\", a);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat).\n\n### Corrigé\n\nL'instruction `int a = 5` n'est pas terminée par un point-virgule : c'est une **erreur de syntaxe**, signalée à la compilation (souvent à la ligne suivante). Il faut écrire `int a = 5;`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Il manque un point-virgule après `5`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`printf` est mal orthographié"
+      },
+      {
+        "lettre": "C",
+        "texte": "La variable `a` n'a pas de type"
+      },
+      {
+        "lettre": "D",
+        "texte": "`%d` est interdit dans `printf`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-debogage-faible-1",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Ce programme compile mais affiche toujours « Égal à 3 », quelle que soit la valeur de `x` saisie. Pourquoi ?\n\n```c\nif (x = 3) {\n    printf(\"Égal à 3\");\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat).\n\n### Corrigé\n\n`x = 3` est une **affectation** : elle range 3 dans `x` et vaut 3, donc non nul, donc vrai. La comparaison s'écrit `x == 3`. C'est une erreur de logique : le compilateur ne la signale pas comme une erreur.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`=` affecte la valeur 3 à `x` au lieu de la comparer, il faut `==`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`if` doit être écrit en majuscules"
+      },
+      {
+        "lettre": "C",
+        "texte": "Il manque des guillemets autour de 3"
+      },
+      {
+        "lettre": "D",
+        "texte": "`printf` ne peut pas être dans un `if`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-debogage-moyenne-2",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Lors de l'exécution, ce programme se comporte de façon incorrecte après la saisie. Quelle correction est nécessaire ?\n\n```c\nint n;\nscanf(\"%d\", n);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat).\n\n### Corrigé\n\n`scanf()` doit recevoir l'**adresse** de la variable où ranger la valeur lue : on écrit `scanf(\"%d\", &n);`. Sans le `&`, `scanf` interprète la valeur de `n` comme une adresse, ce qui provoque un comportement indéfini.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Remplacer `%d` par `%f`"
+      },
+      {
+        "lettre": "B",
+        "texte": "Écrire `&n` à la place de `n`"
+      },
+      {
+        "lettre": "C",
+        "texte": "Remplacer `scanf` par `printf`"
+      },
+      {
+        "lettre": "D",
+        "texte": "Déclarer `n` en dehors de `main`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-debogage-moyenne-3",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Ce programme ne compile pas. Relever les deux erreurs et réécrire le programme corrigé.\n\n```c\n#include <stdlib.h>\nint main() {\n    int n = 3;\n    printf(\"Valeur : %d\\n\", n)\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat). On lit le message du compilateur ligne par ligne : une erreur de syntaxe peut en cacher une autre.\n\n### Corrigé\n\n**Erreur 1** : `printf()` est déclarée dans `stdio.h`, or seule `stdlib.h` est incluse ; il faut `#include <stdio.h>`.\n\n**Erreur 2** : il manque le point-virgule à la fin de la ligne du `printf`.\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int n = 3;\n    printf(\"Valeur : %d\\n\", n);\n    return 0;\n}\n```",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-debogage-moyenne-4",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Ce programme ne s'arrête jamais. Quelle est la cause ?\n\n```c\nint i = 0;\nwhile (i < 5) {\n    printf(\"%d \", i);\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat). Une boucle infinie vient presque toujours d'une variable de la condition qui n'est jamais modifiée dans le corps.\n\n### Corrigé\n\nLa condition `i < 5` porte sur `i`, mais le corps ne modifie jamais `i` : elle reste vraie indéfiniment. Il faut ajouter `i++;` dans la boucle.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`printf` est mal utilisé"
+      },
+      {
+        "lettre": "B",
+        "texte": "`i` n'est jamais incrémenté dans la boucle"
+      },
+      {
+        "lettre": "C",
+        "texte": "`5` doit être écrit `5.0`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`while` doit être remplacé par `if`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-debogage-elevee-5",
+    "theme": "débogage",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On veut afficher la moyenne (avec décimales) de 4 notes. Le programme compile, mais affiche `11.000000` alors que la moyenne attendue est 11,75, et il lit parfois une valeur aberrante. Trouver **les deux erreurs de logique**, les expliquer et donner le code corrigé.\n\n```c\nint notes[4] = {12, 9, 15, 11};\nint somme = 0, i;\nfloat moy;\nfor (i = 0; i <= 4; i++) {\n    somme = somme + notes[i];\n}\nmoy = somme / 4;\nprintf(\"%f\", moy);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDéboguer, c'est lire le message du compilateur ou comparer le résultat obtenu au résultat attendu pour localiser l'erreur. On distingue les erreurs de **syntaxe** (signalées à la compilation) des erreurs de **logique** (le programme compile mais donne un mauvais résultat). Deux réflexes : comparer avec un calcul à la main sur les valeurs réelles, et vérifier les **bornes** des boucles sur les tableaux (un tableau de `n` éléments a des indices de 0 à `n - 1`).\n\n### Corrigé\n\n**Erreur 1 (borne)** : le tableau a 4 éléments (indices 0 à 3), mais la boucle va jusqu'à `i = 4` (`i <= 4`) : `notes[4]` est **hors du tableau**, sa valeur est indéterminée et fausse la somme. Il faut `i < 4`.\n\n**Erreur 2 (division entière)** : `somme` et `4` sont des entiers, donc `somme / 4` est une division entière : avec `somme = 12 + 9 + 15 + 11 = 47`, on obtient 11 (et non 11,75), converti ensuite en `11.000000`. Il faut forcer une division réelle avec `(float)somme / 4`.\n\n```c\nint notes[4] = {12, 9, 15, 11};\nint somme = 0, i;\nfloat moy;\nfor (i = 0; i < 4; i++) {\n    somme = somme + notes[i];\n}\nmoy = (float)somme / 4;\nprintf(\"%f\", moy);\n```\n\nRésultat : `11.750000`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10536,
+      10742,
+      10743
+    ]
+  }
+]

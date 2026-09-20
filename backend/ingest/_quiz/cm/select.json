@@ -1,0 +1,190 @@
+[
+  {
+    "external_id": "cqc-select-faible-0",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Produit` contient les enregistrements suivants (prix en FCFA) :\n\n| ref | nom | categorie | prix | stock |\n|---|---|---|---|---|\n| 1 | Clavier | Périphérique | 8500 | 15 |\n| 2 | Souris | Périphérique | 4500 | 0 |\n| 3 | Écran | Affichage | 75000 | 6 |\n| 4 | Imprimante | Impression | 65000 | 3 |\n| 5 | Câble HDMI | Câblage | 3500 | 40 |\n| 6 | Casque | Périphérique | 12000 | 9 |\n\nQuel est le résultat de la requête suivante ?\n\n```sql\nSELECT nom FROM Produit WHERE prix > 10000;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`.\n\n### Corrigé\n\nOn garde les lignes dont le prix dépasse 10 000 : Écran (75 000), Imprimante (65 000) et Casque (12 000). La requête renvoie donc `Écran`, `Imprimante`, `Casque`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Écran, Imprimante, Casque"
+      },
+      {
+        "lettre": "B",
+        "texte": "Écran, Imprimante"
+      },
+      {
+        "lettre": "C",
+        "texte": "Clavier, Souris, Câble HDMI"
+      },
+      {
+        "lettre": "D",
+        "texte": "Toutes les lignes de la table"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-select-faible-1",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle requête affiche **toutes les colonnes** de **toutes les lignes** de la table `Produit` ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`.\n\n### Corrigé\n\nL'étoile `*` désigne toutes les colonnes ; sans clause `WHERE`, toutes les lignes sont renvoyées : `SELECT * FROM Produit;`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "SELECT * FROM Produit;"
+      },
+      {
+        "lettre": "B",
+        "texte": "SELECT ALL WHERE Produit;"
+      },
+      {
+        "lettre": "C",
+        "texte": "SELECT Produit FROM *;"
+      },
+      {
+        "lettre": "D",
+        "texte": "FROM Produit SELECT nom;"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-select-moyenne-2",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Produit` contient les enregistrements suivants (prix en FCFA) :\n\n| ref | nom | categorie | prix | stock |\n|---|---|---|---|---|\n| 1 | Clavier | Périphérique | 8500 | 15 |\n| 2 | Souris | Périphérique | 4500 | 0 |\n| 3 | Écran | Affichage | 75000 | 6 |\n| 4 | Imprimante | Impression | 65000 | 3 |\n| 5 | Câble HDMI | Câblage | 3500 | 40 |\n| 6 | Casque | Périphérique | 12000 | 9 |\n\nQuel est le résultat de cette requête ?\n\n```sql\nSELECT nom FROM Produit ORDER BY prix DESC LIMIT 2;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`.\n\n### Corrigé\n\n`ORDER BY prix DESC` trie du plus cher au moins cher (Écran 75 000, Imprimante 65 000, Casque 12 000...) et `LIMIT 2` ne garde que les deux premières lignes : `Écran` puis `Imprimante`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Câble HDMI, Souris"
+      },
+      {
+        "lettre": "B",
+        "texte": "Écran, Imprimante"
+      },
+      {
+        "lettre": "C",
+        "texte": "Imprimante, Écran"
+      },
+      {
+        "lettre": "D",
+        "texte": "Écran, Casque"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-select-moyenne-3",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Produit` contient les enregistrements suivants (prix en FCFA) :\n\n| ref | nom | categorie | prix | stock |\n|---|---|---|---|---|\n| 1 | Clavier | Périphérique | 8500 | 15 |\n| 2 | Souris | Périphérique | 4500 | 0 |\n| 3 | Écran | Affichage | 75000 | 6 |\n| 4 | Imprimante | Impression | 65000 | 3 |\n| 5 | Câble HDMI | Câblage | 3500 | 40 |\n| 6 | Casque | Périphérique | 12000 | 9 |\n\nQuelle ligne figure dans le résultat de la requête suivante ?\n\n```sql\nSELECT categorie, COUNT(*) FROM Produit GROUP BY categorie;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`. `GROUP BY` regroupe les lignes qui ont la même valeur, et `COUNT(*)` compte les lignes de chaque groupe.\n\n### Corrigé\n\nTrois produits (Clavier, Souris, Casque) ont la catégorie `Périphérique` : la ligne `Périphérique | 3` figure dans le résultat, aux côtés de `Affichage | 1`, `Impression | 1` et `Câblage | 1`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Périphérique | 1"
+      },
+      {
+        "lettre": "B",
+        "texte": "Périphérique | 3"
+      },
+      {
+        "lettre": "C",
+        "texte": "Affichage | 2"
+      },
+      {
+        "lettre": "D",
+        "texte": "Périphérique | 6"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-select-moyenne-4",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Produit` contient les enregistrements suivants (prix en FCFA) :\n\n| ref | nom | categorie | prix | stock |\n|---|---|---|---|---|\n| 1 | Clavier | Périphérique | 8500 | 15 |\n| 2 | Souris | Périphérique | 4500 | 0 |\n| 3 | Écran | Affichage | 75000 | 6 |\n| 4 | Imprimante | Impression | 65000 | 3 |\n| 5 | Câble HDMI | Câblage | 3500 | 40 |\n| 6 | Casque | Périphérique | 12000 | 9 |\n\nÉcrire la requête SQL qui affiche le nom et le prix des produits **en stock** (`stock` supérieur à 0) dont le prix est compris **entre 4 000 et 13 000 FCFA inclus**, du moins cher au plus cher. Donner ensuite le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`. `BETWEEN a AND b` est inclusif ; plusieurs conditions se combinent avec `AND`.\n\n### Corrigé\n\n```sql\nSELECT nom, prix\nFROM Produit\nWHERE prix BETWEEN 4000 AND 13000\n  AND stock > 0\nORDER BY prix;\n```\n\nLa Souris (4 500) répond au critère de prix mais son stock est 0 : elle est exclue. Le Câble HDMI (3 500) est trop bon marché. Résultat :\n\n| nom | prix |\n|---|---|\n| Clavier | 8500 |\n| Casque | 12000 |",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-select-elevee-5",
+    "theme": "SELECT",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Produit` contient les enregistrements suivants (prix en FCFA) :\n\n| ref | nom | categorie | prix | stock |\n|---|---|---|---|---|\n| 1 | Clavier | Périphérique | 8500 | 15 |\n| 2 | Souris | Périphérique | 4500 | 0 |\n| 3 | Écran | Affichage | 75000 | 6 |\n| 4 | Imprimante | Impression | 65000 | 3 |\n| 5 | Câble HDMI | Câblage | 3500 | 40 |\n| 6 | Casque | Périphérique | 12000 | 9 |\n\nÉcrire une **seule** requête qui affiche le nom et le prix des produits dont le prix est **strictement supérieur au prix moyen** de tous les produits, du plus cher au moins cher. Donner le prix moyen et le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\n`SELECT colonnes FROM table` extrait des données ; `WHERE` filtre les lignes, `ORDER BY` les trie, `GROUP BY` les regroupe et `LIMIT` en garde un nombre donné. Pour prévoir le résultat, on applique les clauses dans cet ordre : `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`. Quand la valeur de comparaison est elle-même calculée (une moyenne, un maximum), on la place dans une **sous-requête** entre parenthèses.\n\n### Corrigé\n\n```sql\nSELECT nom, prix\nFROM Produit\nWHERE prix > (SELECT AVG(prix) FROM Produit)\nORDER BY prix DESC;\n```\n\nLe prix moyen vaut (8 500 + 4 500 + 75 000 + 65 000 + 3 500 + 12 000) / 6 = 168 500 / 6 ≈ 28 083,33 FCFA. Seuls deux produits le dépassent :\n\n| nom | prix |\n|---|---|\n| Écran | 75000 |\n| Imprimante | 65000 |",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10742
+    ]
+  }
+]

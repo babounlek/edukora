@@ -1,0 +1,202 @@
+[
+  {
+    "external_id": "cqc-schema-relationnel-faible-0",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'est-ce qu'une clé primaire dans une table ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables.\n\n### Corrigé\n\nLa clé primaire est une colonne (ou un groupe de colonnes) dont la valeur **identifie de façon unique** chaque ligne : deux lignes ne peuvent pas avoir la même clé primaire, et elle ne peut pas être vide.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une colonne qui peut contenir des doublons"
+      },
+      {
+        "lettre": "B",
+        "texte": "Une colonne dont la valeur identifie de façon unique chaque ligne"
+      },
+      {
+        "lettre": "C",
+        "texte": "Une colonne qui référence une autre table"
+      },
+      {
+        "lettre": "D",
+        "texte": "La première colonne de la table, quelle qu'elle soit"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-schema-relationnel-faible-1",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'est-ce qu'une clé étrangère ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables.\n\n### Corrigé\n\nUne clé étrangère est une colonne d'une table qui **référence la clé primaire d'une autre table** : elle matérialise le lien entre les deux tables (par exemple `Compte.idC` qui pointe vers `Client.idC`).",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une colonne qui référence la clé primaire d'une autre table"
+      },
+      {
+        "lettre": "B",
+        "texte": "Une colonne toujours numérique"
+      },
+      {
+        "lettre": "C",
+        "texte": "Une clé primaire écrite en majuscules"
+      },
+      {
+        "lettre": "D",
+        "texte": "Une colonne réservée aux dates"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-schema-relationnel-moyenne-2",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le schéma suivant, quelle est la clé étrangère ?\n\n- Client(**idC**, nom, ville)\n- Compte(**numCompte**, solde, idC#)",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables. Une clé étrangère est repérable parce qu'elle porte le nom (ou le rôle) de la clé primaire d'une autre table.\n\n### Corrigé\n\nDans `Compte`, la colonne `idC#` est la **clé étrangère** : elle reprend la clé primaire `idC` de la table `Client`. `numCompte` est la clé primaire de `Compte`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "numCompte, dans la table Compte"
+      },
+      {
+        "lettre": "B",
+        "texte": "idC, dans la table Compte"
+      },
+      {
+        "lettre": "C",
+        "texte": "idC, dans la table Client"
+      },
+      {
+        "lettre": "D",
+        "texte": "solde, dans la table Compte"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-schema-relationnel-moyenne-3",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un MCD relie `Etudiant` et `Club` par l'association « adhérer » de cardinalités `(0,N)` de chaque côté, avec la propriété `dateAdhesion`. Combien de tables comporte le schéma relationnel, et quelle est la clé primaire de la table d'association ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables. Une association `(·,N)–(·,N)` devient une **table à part**, dont la clé primaire regroupe les identifiants des deux entités.\n\n### Corrigé\n\nChaque entité donne une table (`Etudiant`, `Club`), et l'association plusieurs–plusieurs donne une **troisième table** `Adherer(numEtu#, idClub#, dateAdhesion)`, soit **3 tables**. Sa clé primaire est le **couple** (`numEtu`, `idClub`) : chacun est aussi clé étrangère. `dateAdhesion` est une propriété de l'association et se place dans cette table.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "2 tables ; clé primaire : numEtu"
+      },
+      {
+        "lettre": "B",
+        "texte": "3 tables ; clé primaire : le couple (numEtu, idClub)"
+      },
+      {
+        "lettre": "C",
+        "texte": "3 tables ; clé primaire : dateAdhesion"
+      },
+      {
+        "lettre": "D",
+        "texte": "2 tables ; clé primaire : idClub"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-schema-relationnel-moyenne-4",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le schéma : Vente(**numVente**, dateVente, codeClient#, matricule#), Client(**codeClient**, nom), Vendeur(**matricule**, nom). Donner la clé primaire et les clés étrangères de `Vente`, et dire ce qu'exige le système si on enregistre une vente avec un `codeClient` qui n'existe pas dans `Client`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables.\n\n### Corrigé\n\n**Clé primaire de `Vente`** : `numVente`.\n\n**Clés étrangères** : `codeClient` (référence `Client.codeClient`) et `matricule` (référence `Vendeur.matricule`).\n\nEnregistrer une vente avec un `codeClient` inexistant viole l'**intégrité référentielle** : le SGBD refuse l'enregistrement, car une clé étrangère doit toujours correspondre à une valeur existante de la clé primaire référencée.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-schema-relationnel-elevee-5",
+    "theme": "schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un centre de santé applique les règles suivantes : chaque médecin a un matricule, un nom et une spécialité ; chaque patient a un numéro et un nom, et possède **un seul médecin traitant** (un médecin suit plusieurs patients) ; un patient peut consulter n'importe quel médecin, à des dates différentes, et chaque consultation aboutit à un diagnostic. Déduire le schéma relationnel (tables, clés primaires, clés étrangères) en justifiant chaque choix.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn **schéma relationnel** liste les tables avec leurs colonnes. La **clé primaire** identifie chaque ligne de façon unique (en **gras**) ; une **clé étrangère** (suivie de `#`) est une colonne qui référence la clé primaire d'une autre table et garantit la cohérence des liens entre tables.\n\n### Corrigé\n\nConvention : clé primaire en **gras**, clé étrangère suivie de `#`.\n\n- Medecin(**matricule**, nom, specialite)\n- Patient(**numPat**, nom, matriculeTraitant#)\n- Consultation(**numPat#**, **matricule#**, **dateCons**, diagnostic)\n\n**Justifications** :\n\n- « un patient a un seul médecin traitant » est une association *un à plusieurs* : l'identifiant du médecin **migre** dans `Patient` (`matriculeTraitant#`) ;\n- « un patient consulte plusieurs médecins et un médecin reçoit plusieurs patients » est une association *plusieurs à plusieurs* : elle devient la table `Consultation` ;\n- sa clé primaire contient la **date** : un même patient peut revoir le même médecin à une autre date, ce qui donne plusieurs consultations ;\n- `diagnostic` dépend de la consultation entière (patient, médecin et date) : il se place dans `Consultation`.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10683,
+      10720,
+      10592
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

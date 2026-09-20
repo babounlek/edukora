@@ -1,0 +1,179 @@
+[
+  {
+    "external_id": "cqc-base-de-donnees-faible-0",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "En PHP, quelle fonction de l'extension `mysqli` permet d'ouvrir une connexion à un serveur MySQL ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn PHP, l'accès à une base MySQL suit toujours le même enchaînement : se **connecter** au serveur, **exécuter** des requêtes, exploiter les résultats, puis **fermer** la connexion.\n\n### Corrigé\n\nC'est `mysqli_connect()`, qui reçoit l'adresse du serveur, le nom d'utilisateur, le mot de passe (et éventuellement le nom de la base) et renvoie l'identifiant de la connexion. `mysqli_query()` envoie une requête, `mysqli_close()` ferme la connexion.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "mysqli_connect()"
+      },
+      {
+        "lettre": "B",
+        "texte": "mysqli_query()"
+      },
+      {
+        "lettre": "C",
+        "texte": "mysqli_close()"
+      },
+      {
+        "lettre": "D",
+        "texte": "mysqli_num_rows()"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  },
+  {
+    "external_id": "cqc-base-de-donnees-faible-1",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quel est le rôle de la fonction `mysqli_close()` dans un script PHP ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn PHP, l'accès à une base MySQL suit toujours le même enchaînement : se **connecter** au serveur, **exécuter** des requêtes, exploiter les résultats, puis **fermer** la connexion.\n\n### Corrigé\n\n`mysqli_close()` **ferme la connexion** ouverte avec `mysqli_connect()`, ce qui libère les ressources du serveur une fois le travail terminé.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Elle supprime la base de données"
+      },
+      {
+        "lettre": "B",
+        "texte": "Elle ferme la connexion au serveur MySQL"
+      },
+      {
+        "lettre": "C",
+        "texte": "Elle arrête le serveur MySQL"
+      },
+      {
+        "lettre": "D",
+        "texte": "Elle ferme la page web du navigateur"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  },
+  {
+    "external_id": "cqc-base-de-donnees-moyenne-2",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire le code PHP qui se connecte au serveur MySQL local avec l'utilisateur `gestionnaire` et le mot de passe `Kd2024`, sélectionne la base `ECOLE_DB` et affiche un message d'erreur si la connexion échoue.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn PHP, l'accès à une base MySQL suit toujours le même enchaînement : se **connecter** au serveur, **exécuter** des requêtes, exploiter les résultats, puis **fermer** la connexion. `mysqli_connect(serveur, utilisateur, mot de passe, base)` renvoie `false` en cas d'échec : on teste ce retour.\n\n### Corrigé\n\n```php\n<?php\n$cnx = mysqli_connect(\"localhost\", \"gestionnaire\", \"Kd2024\", \"ECOLE_DB\");\nif (!$cnx) {\n    die(\"Connexion impossible : \" . mysqli_connect_error());\n}\n?>\n```\n\nLe quatrième argument de `mysqli_connect()` sélectionne directement la base `ECOLE_DB` ; on peut aussi la choisir ensuite avec `mysqli_select_db($cnx, \"ECOLE_DB\")`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  },
+  {
+    "external_id": "cqc-base-de-donnees-moyenne-3",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une table `ELEVE` contient 3 enregistrements dont la colonne `classe` vaut `'Tle TI'`. Que renvoie `mysqli_num_rows($res)` si `$res` est le résultat de `SELECT * FROM ELEVE WHERE classe = 'Tle TI'` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn PHP, l'accès à une base MySQL suit toujours le même enchaînement : se **connecter** au serveur, **exécuter** des requêtes, exploiter les résultats, puis **fermer** la connexion. `mysqli_num_rows()` compte les lignes d'un résultat de `SELECT`.\n\n### Corrigé\n\nLe `SELECT` renvoie exactement les enregistrements de la classe `Tle TI`, soit 3 lignes : `mysqli_num_rows($res)` vaut donc `3`. Cette fonction sert aussi à tester l'existence d'un enregistrement (résultat supérieur à 0).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "0"
+      },
+      {
+        "lettre": "B",
+        "texte": "1"
+      },
+      {
+        "lettre": "C",
+        "texte": "3"
+      },
+      {
+        "lettre": "D",
+        "texte": "Le contenu des trois lignes"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  },
+  {
+    "external_id": "cqc-base-de-donnees-moyenne-4",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une connexion `$cnx` est déjà ouverte. Écrire le code PHP qui cherche dans la table `PRODUIT` (colonnes `ref`, `nom`, `prix`) le produit dont la référence est stockée dans la variable `$ref`, puis affiche « Produit trouvé » ou « Produit inconnu ».",
+    "corrige_markdown": "### Rappel de méthode\n\nEn PHP, l'accès à une base MySQL suit toujours le même enchaînement : se **connecter** au serveur, **exécuter** des requêtes, exploiter les résultats, puis **fermer** la connexion. Pour tester l'existence d'un enregistrement : `SELECT`, puis comparer `mysqli_num_rows()` à 0.\n\n### Corrigé\n\n```php\n<?php\n$requete = \"SELECT * FROM PRODUIT WHERE ref = '$ref'\";\n$res = mysqli_query($cnx, $requete);\nif (mysqli_num_rows($res) > 0) {\n    echo \"Produit trouvé\";\n} else {\n    echo \"Produit inconnu\";\n}\n?>\n```\n\n`mysqli_num_rows($res) > 0` signifie qu'au moins une ligne correspond à la référence. (Voir l'exercice sur les requêtes préparées pour sécuriser ce type de requête.)",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  },
+  {
+    "external_id": "cqc-base-de-donnees-elevee-5",
+    "theme": "base de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le code suivant vérifie la connexion d'un utilisateur.\n\n```php\n$login = $_POST['login'];\n$pwd = $_POST['pwd'];\n$res = mysqli_query($cnx, \"SELECT * FROM USERS WHERE login = '$login' AND password = '$pwd'\");\nif (mysqli_num_rows($res) > 0) { echo \"Bienvenue\"; }\n```\n\nUn visiteur saisit `inconnu` comme identifiant et `' OR '1'='1` comme mot de passe. 1) Écrire la requête réellement envoyée à MySQL et dire ce qui se passe. 2) Nommer cette faille et proposer une correction en PHP.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne requête construite par **concaténation** d'une saisie utilisateur peut être détournée : la saisie devient du code SQL. La parade est la **requête préparée** : la requête et les données voyagent séparément et la saisie n'est jamais interprétée comme du SQL.\n\n### Corrigé\n\n**1)** La requête envoyée est :\n\n```sql\nSELECT * FROM USERS WHERE login = 'inconnu' AND password = '' OR '1'='1'\n```\n\nComme `AND` est prioritaire sur `OR`, la condition devient `(login = 'inconnu' AND password = '') OR '1'='1'` : la seconde partie est toujours vraie, donc **toutes les lignes** de `USERS` sont renvoyées. `mysqli_num_rows()` est supérieur à 0 et le visiteur est accepté sans connaître aucun mot de passe.\n\n**2)** C'est une **injection SQL**. Correction avec une requête préparée :\n\n```php\n$stmt = mysqli_prepare($cnx, \"SELECT id FROM USERS WHERE login = ? AND password = ?\");\nmysqli_stmt_bind_param($stmt, \"ss\", $login, $pwd);\nmysqli_stmt_execute($stmt);\nmysqli_stmt_store_result($stmt);\nif (mysqli_stmt_num_rows($stmt) > 0) { echo \"Bienvenue\"; }\n```\n\nLes points d'interrogation reçoivent les valeurs saisies comme de simples chaînes : `' OR '1'='1` est alors comparé tel quel au mot de passe et ne renvoie aucune ligne.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10574,
+      10721
+    ]
+  }
+]

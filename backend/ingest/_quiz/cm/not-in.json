@@ -1,0 +1,190 @@
+[
+  {
+    "external_id": "cqc-not-in-faible-0",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Que fait l'opérateur `NOT IN` dans une clause `WHERE` ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\nIl sélectionne les lignes dont la valeur **ne figure pas** dans la liste de valeurs (souvent fournie par une sous-requête).",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Il garde les lignes dont la valeur figure dans la liste"
+      },
+      {
+        "lettre": "B",
+        "texte": "Il garde les lignes dont la valeur ne figure pas dans la liste"
+      },
+      {
+        "lettre": "C",
+        "texte": "Il supprime la table"
+      },
+      {
+        "lettre": "D",
+        "texte": "Il trie les lignes"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-not-in-faible-1",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle expression française se traduit naturellement par un `NOT IN` ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\n« Les employés qui **ne travaillent sur aucun** projet » demande les employés absents de la liste de ceux qui travaillent : c'est un `NOT IN`.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Les employés qui travaillent sur au moins un projet"
+      },
+      {
+        "lettre": "B",
+        "texte": "Les employés qui ne travaillent sur aucun projet"
+      },
+      {
+        "lettre": "C",
+        "texte": "Le nombre d'employés"
+      },
+      {
+        "lettre": "D",
+        "texte": "Le nom de chaque projet"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-not-in-moyenne-2",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nQuel est le résultat de la requête suivante ?\n\n```sql\nSELECT nom FROM Employe\nWHERE mat NOT IN (SELECT mat FROM Travaille);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\nLa sous-requête renvoie les matricules 1, 1, 2 et 3 (employés qui travaillent). Le seul matricule absent est le 4 : la requête renvoie `Ngassa`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Bello"
+      },
+      {
+        "lettre": "B",
+        "texte": "Ngassa"
+      },
+      {
+        "lettre": "C",
+        "texte": "Tagne"
+      },
+      {
+        "lettre": "D",
+        "texte": "Bello, Mvondo, Tagne"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-not-in-moyenne-3",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nQuels employés retourne la requête suivante ?\n\n```sql\nSELECT nom FROM Employe\nWHERE mat NOT IN (SELECT mat FROM Travaille\n                  WHERE codeP IN (SELECT codeP FROM Projet WHERE lieu = 'Dubai'));\n```",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\nLa sous-requête interne trouve le projet de Dubai (`P2`). La sous-requête intermédiaire renvoie les employés qui y travaillent : 1 (Bello) et 2 (Mvondo). Les employés **absents** de cette liste sont Tagne (3) et Ngassa (4).",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Bello, Mvondo"
+      },
+      {
+        "lettre": "B",
+        "texte": "Tagne, Ngassa"
+      },
+      {
+        "lettre": "C",
+        "texte": "Ngassa seulement"
+      },
+      {
+        "lettre": "D",
+        "texte": "Tous les employés"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-not-in-moyenne-4",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nÉcrire la requête qui affiche le nom des employés qui **ne travaillent pas** sur un projet situé à Douala, puis donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\n```sql\nSELECT nom FROM Employe\nWHERE mat NOT IN (SELECT mat FROM Travaille\n                  WHERE codeP IN (SELECT codeP FROM Projet WHERE lieu = 'Douala'));\n```\n\nLe projet de Douala est `P1` ; seul Bello (1) y travaille. Résultat : `Mvondo`, `Tagne`, `Ngassa`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-not-in-elevee-5",
+    "theme": "NOT IN",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux tables : `A(x)` contient 1, 2, 3 et `B(y)` contient 1 et `NULL`. On exécute `SELECT x FROM A WHERE x NOT IN (SELECT y FROM B);`. Quel est le résultat ? Expliquer ce piège, puis donner deux écritures qui renvoient bien les valeurs 2 et 3.",
+    "corrige_markdown": "### Rappel de méthode\n\n`x NOT IN (sous-requête)` garde les lignes dont la valeur **n'apparaît pas** dans la liste renvoyée par la sous-requête : c'est la façon de traduire « qui n'a aucun... », « qui ne fait pas... ». Attention : si la liste contient une valeur `NULL`, `NOT IN` ne renvoie **aucune** ligne.\n\n### Corrigé\n\n**Résultat** : **aucune ligne**, alors qu'on attendait 2 et 3.\n\n**Explication** : `x NOT IN (1, NULL)` équivaut à `x <> 1 AND x <> NULL`. La comparaison avec `NULL` n'est jamais vraie (elle vaut « inconnu »), donc la condition n'est jamais vraie, pour aucune valeur de `x`.\n\n**Deux corrections** :\n\n```sql\nSELECT x FROM A WHERE x NOT IN (SELECT y FROM B WHERE y IS NOT NULL);\n\nSELECT x FROM A WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.y = A.x);\n```\n\nLes deux renvoient bien `2` et `3`.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

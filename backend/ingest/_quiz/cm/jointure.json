@@ -1,0 +1,196 @@
+[
+  {
+    "external_id": "cqc-jointure-faible-0",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "À quoi sert une jointure en SQL ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde.\n\n### Corrigé\n\nLa jointure **rapproche les lignes de deux (ou plusieurs) tables** liées par une clé, pour obtenir dans un même résultat des informations réparties, par exemple le nom d'un client et le solde de son compte.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Supprimer les doublons d'une table"
+      },
+      {
+        "lettre": "B",
+        "texte": "Combiner des lignes de plusieurs tables grâce à une colonne commune"
+      },
+      {
+        "lettre": "C",
+        "texte": "Créer une nouvelle table"
+      },
+      {
+        "lettre": "D",
+        "texte": "Trier les lignes d'une table"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-faible-1",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux tables : `Client(idC, nom, ville)` et `Compte(numCompte, idC, solde)`, où `Compte.idC` référence `Client.idC`.\n\n| idC | nom | ville |\n|---|---|---|\n| 1 | Awa | Douala |\n| 2 | Paul | Yaoundé |\n| 3 | Fanta | Douala |\n\n| numCompte | idC | solde |\n|---|---|---|\n| 101 | 1 | 25000 |\n| 102 | 1 | -3000 |\n| 103 | 2 | 120000 |\n| 104 | 3 | -15000 |\n\nOn écrit `SELECT nom, solde FROM Client, Compte;` **sans condition de jointure**. Combien de lignes le résultat contient-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde.\n\n### Corrigé\n\nSans condition, SQL fait le produit cartésien : 3 clients × 4 comptes = **12 lignes**, dont la plupart associent un client à un compte qui n'est pas le sien. C'est le signe d'un `ON` oublié.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "4"
+      },
+      {
+        "lettre": "B",
+        "texte": "3"
+      },
+      {
+        "lettre": "C",
+        "texte": "12"
+      },
+      {
+        "lettre": "D",
+        "texte": "7"
+      }
+    ],
+    "reponse_correcte": "C"
+  },
+  {
+    "external_id": "cqc-jointure-moyenne-2",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux tables : `Client(idC, nom, ville)` et `Compte(numCompte, idC, solde)`, où `Compte.idC` référence `Client.idC`.\n\n| idC | nom | ville |\n|---|---|---|\n| 1 | Awa | Douala |\n| 2 | Paul | Yaoundé |\n| 3 | Fanta | Douala |\n\n| numCompte | idC | solde |\n|---|---|---|\n| 101 | 1 | 25000 |\n| 102 | 1 | -3000 |\n| 103 | 2 | 120000 |\n| 104 | 3 | -15000 |\n\nQuel est le résultat de la requête suivante ?\n\n```sql\nSELECT nom, solde\nFROM Client JOIN Compte ON Client.idC = Compte.idC\nWHERE solde < 0;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde.\n\n### Corrigé\n\nLa jointure associe chaque compte à son client. On ne garde ensuite que les comptes de solde négatif : le compte 102 (client Awa, −3000) et le compte 104 (client Fanta, −15000). Résultat : `Awa | -3000` et `Fanta | -15000`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Awa | -3000 et Fanta | -15000"
+      },
+      {
+        "lettre": "B",
+        "texte": "Paul | 120000"
+      },
+      {
+        "lettre": "C",
+        "texte": "Awa | 25000 et Awa | -3000"
+      },
+      {
+        "lettre": "D",
+        "texte": "Aucune ligne"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-jointure-moyenne-3",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux tables : `Client(idC, nom, ville)` et `Compte(numCompte, idC, solde)`, où `Compte.idC` référence `Client.idC`.\n\n| idC | nom | ville |\n|---|---|---|\n| 1 | Awa | Douala |\n| 2 | Paul | Yaoundé |\n| 3 | Fanta | Douala |\n\n| numCompte | idC | solde |\n|---|---|---|\n| 101 | 1 | 25000 |\n| 102 | 1 | -3000 |\n| 103 | 2 | 120000 |\n| 104 | 3 | -15000 |\n\nQuelle requête donne **exactement** les noms des clients qui possèdent au moins un compte débiteur (`solde < 0`) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde. On vérifie dans une requête de jointure que la condition `ON` relie bien la clé étrangère à la clé primaire correspondante.\n\n### Corrigé\n\n**B** est correcte : la condition `Client.idC = Compte.idC` relie chaque compte à son client et `DISTINCT` évite de répéter un client qui aurait plusieurs comptes débiteurs.\n\n- **A** compare `Client.idC` à `Compte.numCompte` : ces valeurs ne correspondent jamais, le résultat est vide.\n- **C** n'a pas de condition de jointure : produit cartésien, on obtiendrait aussi `Paul`, associé à des comptes qui ne sont pas les siens.\n- **D** ne joint pas les tables : la colonne `solde` n'existe pas dans `Client`, la requête est erronée.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT nom FROM Client JOIN Compte ON Client.idC = Compte.numCompte WHERE solde < 0`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`SELECT DISTINCT nom FROM Client JOIN Compte ON Client.idC = Compte.idC WHERE solde < 0`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`SELECT nom FROM Client, Compte WHERE solde < 0`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`SELECT nom FROM Client WHERE solde < 0`"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-moyenne-4",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux tables : `Client(idC, nom, ville)` et `Compte(numCompte, idC, solde)`, où `Compte.idC` référence `Client.idC`.\n\n| idC | nom | ville |\n|---|---|---|\n| 1 | Awa | Douala |\n| 2 | Paul | Yaoundé |\n| 3 | Fanta | Douala |\n\n| numCompte | idC | solde |\n|---|---|---|\n| 101 | 1 | 25000 |\n| 102 | 1 | -3000 |\n| 103 | 2 | 120000 |\n| 104 | 3 | -15000 |\n\nÉcrire la requête qui affiche le nom et le solde des comptes des clients de **Douala**, du solde le plus élevé au plus faible, puis donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde.\n\n### Corrigé\n\n```sql\nSELECT nom, solde\nFROM Client JOIN Compte ON Client.idC = Compte.idC\nWHERE ville = 'Douala'\nORDER BY solde DESC;\n```\n\nLes clients de Douala sont Awa et Fanta ; Paul (Yaoundé) est exclu.\n\n| nom | solde |\n|---|---|\n| Awa | 25000 |\n| Awa | -3000 |\n| Fanta | -15000 |",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-jointure-elevee-5",
+    "theme": "jointure",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom)`, `Projet(codeP, lieu)` et `Travaille(mat, codeP, heures)` (la table `Travaille` relie un employé à un projet).\n\n| mat | nom |\n|---|---|\n| 1 | Mbarga |\n| 2 | Nji |\n| 3 | Essomba |\n\n| codeP | lieu |\n|---|---|\n| P1 | Yaoundé |\n| P2 | Douala |\n| P3 | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 20 |\n| 1 | P3 | 10 |\n| 2 | P2 | 15 |\n| 3 | P3 | 30 |\n\nÉcrire la requête qui affiche, pour chaque employé travaillant sur au moins un projet situé à **Yaoundé**, son nom et son **total d'heures sur les projets de Yaoundé**, classés par nom. Donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **jointure** combine les lignes de deux tables grâce à une condition entre leurs colonnes (`JOIN ... ON table1.colonne = table2.colonne`), en général clé étrangère = clé primaire. Sans condition de jointure, SQL renvoie le **produit cartésien** : chaque ligne de la première table associée à chaque ligne de la seconde. Pour relier trois tables, on enchaîne deux jointures : `Employe` → `Travaille` → `Projet`. Pour totaliser par employé : `GROUP BY` et `SUM`.\n\n### Corrigé\n\n```sql\nSELECT nom, SUM(heures) AS total_heures\nFROM Employe\nJOIN Travaille ON Employe.mat = Travaille.mat\nJOIN Projet ON Travaille.codeP = Projet.codeP\nWHERE lieu = 'Yaoundé'\nGROUP BY Employe.mat, nom\nORDER BY nom;\n```\n\nLes projets de Yaoundé sont P1 et P3. Mbarga y a travaillé 20 h (P1) + 10 h (P3) = 30 h ; Essomba 30 h (P3) ; Nji n'y travaille pas (P2 est à Douala) et n'apparaît pas.\n\n| nom | total_heures |\n|---|---|\n| Essomba | 30 |\n| Mbarga | 30 |",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10683,
+      10592
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

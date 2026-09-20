@@ -1,0 +1,202 @@
+[
+  {
+    "external_id": "cqc-diagramme-de-classes-faible-0",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "En UML, une classe se représente par un rectangle divisé en compartiments. Quels sont, de haut en bas, les trois compartiments d'une classe complète ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs.\n\n### Corrigé\n\nDe haut en bas : le **nom** de la classe, ses **attributs**, puis ses **méthodes** (opérations). Exemple : `Client` / `nom : String` / `commander()`.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Nom, attributs, méthodes"
+      },
+      {
+        "lettre": "B",
+        "texte": "Attributs, nom, méthodes"
+      },
+      {
+        "lettre": "C",
+        "texte": "Nom, méthodes, cardinalités"
+      },
+      {
+        "lettre": "D",
+        "texte": "Attributs, méthodes, associations"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-diagramme-de-classes-faible-1",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un diagramme de classes, un attribut est précédé du signe `-`, comme `- solde : float`. Que signifie ce signe ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs.\n\n### Corrigé\n\nLes symboles de visibilité sont : `+` public, `-` privé, `#` protégé. Le signe `-` indique donc que l'attribut est **privé** : il n'est accessible que depuis sa propre classe.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "L'attribut est public"
+      },
+      {
+        "lettre": "B",
+        "texte": "L'attribut est privé"
+      },
+      {
+        "lettre": "C",
+        "texte": "L'attribut est protégé"
+      },
+      {
+        "lettre": "D",
+        "texte": "L'attribut est supprimé"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-diagramme-de-classes-moyenne-2",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une école de formation, « un formateur anime plusieurs sessions ; une session est animée par un seul formateur ». Quelles cardinalités placer entre les classes `Formateur` et `Session` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs. La cardinalité placée près d'une classe indique combien d'objets de cette classe sont liés à **un** objet de l'autre classe.\n\n### Corrigé\n\nUne session est animée par **un seul** formateur : côté `Formateur`, la cardinalité est `1`. Un formateur anime **plusieurs** sessions (éventuellement aucune pour un nouveau formateur) : côté `Session`, c'est `0..*`. On lit donc `Formateur 1 —— 0..* Session`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Formateur 0..* — 0..* Session"
+      },
+      {
+        "lettre": "B",
+        "texte": "Formateur 1 — 0..* Session"
+      },
+      {
+        "lettre": "C",
+        "texte": "Formateur 0..* — 1 Session"
+      },
+      {
+        "lettre": "D",
+        "texte": "Formateur 1 — 1 Session"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-diagramme-de-classes-moyenne-3",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Les classes `Camion` et `Voiture` partagent les attributs `immatriculation` et `marque` de la classe `Vehicule`. Comment représenter cette relation d'héritage ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs. L'héritage relie une sous-classe (spécialisation) à sa classe mère (généralisation) par une flèche à pointe triangulaire vide.\n\n### Corrigé\n\nLes attributs communs sont placés dans la classe mère `Vehicule`. Chaque sous-classe (`Camion`, `Voiture`) est reliée à `Vehicule` par une **flèche à pointe triangulaire vide dirigée vers `Vehicule`** : elles héritent de tous ses attributs et méthodes et ajoutent les leurs.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Flèche pleine de Vehicule vers Camion et Voiture"
+      },
+      {
+        "lettre": "B",
+        "texte": "Flèche à triangle vide de Camion et Voiture vers Vehicule"
+      },
+      {
+        "lettre": "C",
+        "texte": "Losange plein côté Camion et Voiture"
+      },
+      {
+        "lettre": "D",
+        "texte": "Trait simple sans flèche ni cardinalité"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-diagramme-de-classes-moyenne-4",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une bibliothèque de quartier enregistre ses adhérents (numéro, nom) et ses livres (code, titre). Un adhérent peut emprunter plusieurs livres ; un livre est emprunté par un seul adhérent à la fois, et peut ne pas être emprunté. Proposer le diagramme de classes (classes, attributs, association et cardinalités), décrit en texte.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs.\n\n### Corrigé\n\n**Classes candidates** (noms) : `Adherent` et `Livre`. **Attributs** : `Adherent` : `numero`, `nom` ; `Livre` : `code`, `titre`.\n\n**Association** (verbe « emprunte ») : `Adherent 0..1 —— 0..* Livre`, nommée `emprunte`.\n\nLecture : un livre est emprunté par **0 ou 1** adhérent (il peut être disponible) ; un adhérent emprunte **0 à plusieurs** livres.\n\n| Adherent | | Livre |\n|---|---|---|\n| `- numero`, `- nom` | 0..1 — emprunte — 0..* | `- code`, `- titre` |",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-diagramme-de-classes-elevee-5",
+    "theme": "diagramme de classes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une entreprise de vente établit des factures. Une facture porte un numéro et une date ; elle est composée d'une ou plusieurs lignes (quantité, prix unitaire) qui n'existent pas sans elle. Chaque ligne concerne un seul article (code, désignation), et un article peut figurer sur beaucoup de lignes. Élaborer le diagramme de classes (décrit en texte) en précisant le type de chaque relation et ses cardinalités, puis justifier le choix de la composition.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn diagramme de classes décrit la **structure** d'un système : ses classes (nom, attributs, méthodes) et les relations qui les lient (association avec cardinalités, héritage, agrégation, composition). On le construit en lisant le texte : noms → classes, verbes → associations, compléments → attributs. Une **composition** (losange plein) exprime que la partie n'existe pas sans le tout ; une simple **association** relie des objets qui existent indépendamment.\n\n### Corrigé\n\n**Classes** : `Facture` (`numero`, `date`), `LigneFacture` (`quantite`, `prixUnitaire`), `Article` (`code`, `designation`).\n\n**Relations** :\n\n| Relation | Type | Cardinalités |\n|---|---|---|\n| `Facture` — `LigneFacture` | **Composition** (losange plein côté `Facture`) | `Facture 1` — `LigneFacture 1..*` |\n| `LigneFacture` — `Article` | Association simple | `LigneFacture 0..*` — `Article 1` |\n\n**Justification** : une ligne n'a aucun sens en dehors de sa facture et disparaît avec elle : c'est une composition. Un article, au contraire, existe indépendamment des factures : une association suffit, et il peut figurer sur 0 à plusieurs lignes.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10681,
+      10718,
+      10591
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

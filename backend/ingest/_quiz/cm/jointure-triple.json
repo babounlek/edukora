@@ -1,0 +1,190 @@
+[
+  {
+    "external_id": "cqc-jointure-triple-faible-0",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Pourquoi faut-il **deux** jointures pour relier `Employe`, `Travaille` et `Projet` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`.\n\n### Corrigé\n\n`Travaille` est la table intermédiaire : une première jointure relie `Employe` à `Travaille` (par `mat`), une seconde relie `Travaille` à `Projet` (par `codeP`). Trois tables demandent toujours deux conditions de jointure.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Parce que SQL n'accepte que deux tables"
+      },
+      {
+        "lettre": "B",
+        "texte": "Parce que trois tables se relient par deux conditions (deux `ON`)"
+      },
+      {
+        "lettre": "C",
+        "texte": "Parce qu'il faut trier deux fois"
+      },
+      {
+        "lettre": "D",
+        "texte": "Parce que les tables ont deux clés primaires chacune"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-triple-faible-1",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la jointure `Travaille JOIN Projet ON ...`, quelle est la condition correcte ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`.\n\n### Corrigé\n\nLa clé étrangère `Travaille.codeP` référence la clé primaire `Projet.codeP` : la condition est `Travaille.codeP = Projet.codeP`.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Travaille.mat = Projet.codeP"
+      },
+      {
+        "lettre": "B",
+        "texte": "Travaille.codeP = Projet.codeP"
+      },
+      {
+        "lettre": "C",
+        "texte": "Travaille.heures = Projet.lieu"
+      },
+      {
+        "lettre": "D",
+        "texte": "Travaille.mat = Projet.lieu"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-triple-moyenne-2",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nQue renvoie cette requête ?\n\n```sql\nSELECT nom\nFROM Employe\nJOIN Travaille ON Employe.mat = Travaille.mat\nJOIN Projet ON Travaille.codeP = Projet.codeP\nWHERE lieu = 'Dubai' AND heures > 10;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`.\n\n### Corrigé\n\nLe projet de Dubai est `P2`. Sur `P2`, Bello a travaillé 8 h (non retenu, 8 ≤ 10) et Mvondo 15 h (15 > 10). Résultat : `Mvondo`.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Bello"
+      },
+      {
+        "lettre": "B",
+        "texte": "Mvondo"
+      },
+      {
+        "lettre": "C",
+        "texte": "Bello, Mvondo"
+      },
+      {
+        "lettre": "D",
+        "texte": "Aucune ligne"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-triple-moyenne-3",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nQuelle requête donne le **titre des projets sur lesquels travaille Bello** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`.\n\n### Corrigé\n\n**B** est correcte : elle relie les trois tables par leurs clés, puis filtre sur le nom. Le résultat est `Pont` et `Route`.\n\n- **A** n'a pas de jointure avec `Employe` : `nom` n'existe pas dans `Projet`.\n- **C** compare `mat` à `codeP`, deux colonnes de nature différente : aucun résultat.\n- **D** oublie la condition entre `Travaille` et `Projet` : produit cartésien.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT titre FROM Projet WHERE nom = 'Bello'`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`SELECT titre FROM Projet JOIN Travaille ON Projet.codeP = Travaille.codeP JOIN Employe ON Travaille.mat = Employe.mat WHERE nom = 'Bello'`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`SELECT titre FROM Projet JOIN Travaille ON Projet.codeP = Travaille.mat WHERE nom = 'Bello'`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`SELECT titre FROM Projet, Travaille, Employe WHERE nom = 'Bello'`"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-jointure-triple-moyenne-4",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nÉcrire la requête qui affiche, pour chaque employé qui travaille sur au moins un projet, son nom et son **total d'heures**, par ordre alphabétique. Donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`. Pour totaliser par employé : `SUM(heures)` avec `GROUP BY`.\n\n### Corrigé\n\n```sql\nSELECT nom, SUM(heures) AS total_heures\nFROM Employe\nJOIN Travaille ON Employe.mat = Travaille.mat\nGROUP BY Employe.mat, nom\nORDER BY nom;\n```\n\n| nom | total_heures |\n|---|---|\n| Bello | 20 |\n| Mvondo | 15 |\n| Tagne | 6 |\n\nNgassa ne travaille sur aucun projet : la jointure ne produit aucune ligne pour lui, il n'apparaît pas.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-jointure-triple-elevee-5",
+    "theme": "jointure triple",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Trois tables : `Employe(mat, nom, ville)`, `Projet(codeP, titre, lieu)` et `Travaille(mat, codeP, heures)`.\n\n| mat | nom | ville |\n|---|---|---|\n| 1 | Bello | Douala |\n| 2 | Mvondo | Yaoundé |\n| 3 | Tagne | Douala |\n| 4 | Ngassa | Bafoussam |\n\n| codeP | titre | lieu |\n|---|---|---|\n| P1 | Pont | Douala |\n| P2 | Route | Dubai |\n| P3 | Ecole | Yaoundé |\n\n| mat | codeP | heures |\n|---|---|---|\n| 1 | P1 | 12 |\n| 1 | P2 | 8 |\n| 2 | P2 | 15 |\n| 3 | P3 | 6 |\n\nÉcrire la requête qui affiche le nom de chaque employé habitant à **Douala** et le titre des projets sur lesquels il travaille **hors de Douala** (le lieu du projet est différent de sa ville). Donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour relier **trois tables** (ici `Employe`, `Travaille`, `Projet`), on enchaîne **deux jointures** : `Employe JOIN Travaille ON Employe.mat = Travaille.mat JOIN Projet ON Travaille.codeP = Projet.codeP`. Chaque `ON` relie une clé étrangère à la clé primaire correspondante ; les filtres viennent ensuite dans `WHERE`. La condition `lieu <> ville` compare une colonne de `Projet` à une colonne de `Employe` : elle n'est possible qu'après les deux jointures.\n\n### Corrigé\n\n```sql\nSELECT nom, titre\nFROM Employe\nJOIN Travaille ON Employe.mat = Travaille.mat\nJOIN Projet ON Travaille.codeP = Projet.codeP\nWHERE ville = 'Douala' AND lieu <> ville\nORDER BY nom, titre;\n```\n\nEmployés de Douala : Bello et Tagne. Bello travaille sur `P1` (Douala, exclu) et `P2` (Dubai, retenu) ; Tagne sur `P3` (Yaoundé, retenu).\n\n| nom | titre |\n|---|---|\n| Bello | Route |\n| Tagne | Ecole |",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

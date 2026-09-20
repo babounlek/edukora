@@ -1,0 +1,190 @@
+[
+  {
+    "external_id": "cqc-ldd-faible-0",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle commande SQL fait partie du **LDD** (définition de données) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`).\n\n### Corrigé\n\n`CREATE TABLE` définit la structure d'une table : c'est du LDD. `INSERT`, `UPDATE` et `DELETE` modifient des lignes (LMD) et `SELECT` les lit.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "INSERT INTO"
+      },
+      {
+        "lettre": "B",
+        "texte": "CREATE TABLE"
+      },
+      {
+        "lettre": "C",
+        "texte": "UPDATE"
+      },
+      {
+        "lettre": "D",
+        "texte": "DELETE"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-ldd-faible-1",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle requête crée une base de données nommée `boutique_db` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`).\n\n### Corrigé\n\n`CREATE DATABASE boutique_db;` crée la base. `CREATE TABLE` crée une table à l'intérieur d'une base existante.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "CREATE DATABASE boutique_db;"
+      },
+      {
+        "lettre": "B",
+        "texte": "CREATE TABLE boutique_db;"
+      },
+      {
+        "lettre": "C",
+        "texte": "INSERT DATABASE boutique_db;"
+      },
+      {
+        "lettre": "D",
+        "texte": "NEW DATABASE boutique_db;"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-ldd-moyenne-2",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Laquelle de ces requêtes crée correctement la table `Client` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`). Chaque colonne s'écrit `nom type [contraintes]`, les colonnes sont séparées par des **virgules** et l'ensemble est entre **parenthèses**.\n\n### Corrigé\n\n**A** est correcte : `CREATE TABLE`, le nom, puis les colonnes entre parenthèses séparées par une virgule, avec leur type et leur contrainte.\n\n- **B** inverse l'ordre des mots-clés (`CREATE Client TABLE`).\n- **C** oublie la virgule entre les deux colonnes.\n- **D** utilise des crochets au lieu des parenthèses.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`CREATE TABLE Client (id INT PRIMARY KEY, nom VARCHAR(50) NOT NULL);`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`CREATE Client TABLE (id INT PRIMARY KEY, nom VARCHAR(50));`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`CREATE TABLE Client (id INT PRIMARY KEY nom VARCHAR(50));`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`CREATE TABLE Client [id INT, nom VARCHAR(50)];`"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-ldd-moyenne-3",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `Client(id, nom)` existe déjà. Quelle requête lui ajoute une colonne `ville` de type `VARCHAR(30)` **sans supprimer la table** ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`).\n\n### Corrigé\n\n`ALTER TABLE` modifie la structure d'une table existante : `ALTER TABLE Client ADD ville VARCHAR(30);`. `DROP TABLE` supprimerait la table et ses données ; `CREATE TABLE` échouerait puisque la table existe déjà ; `INSERT` ajoute des lignes, pas des colonnes.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`INSERT INTO Client (ville) VALUES ('Douala');`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`CREATE TABLE Client ADD ville VARCHAR(30);`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`ALTER TABLE Client ADD ville VARCHAR(30);`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`DROP TABLE Client ville;`"
+      }
+    ],
+    "reponse_correcte": "C"
+  },
+  {
+    "external_id": "cqc-ldd-moyenne-4",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire les requêtes qui créent la base `boutique_db`, puis, dans cette base, la table `Produit` avec : `ref` (texte de 10 caractères, clé primaire), `designation` (texte de 60 caractères, obligatoire), `prix` (entier) et `stock` (entier).",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`).\n\n### Corrigé\n\n```sql\nCREATE DATABASE boutique_db;\nUSE boutique_db;\n\nCREATE TABLE Produit (\n    ref VARCHAR(10) PRIMARY KEY,\n    designation VARCHAR(60) NOT NULL,\n    prix INT,\n    stock INT\n);\n```\n\n`USE boutique_db;` sélectionne la base dans laquelle la table sera créée. `PRIMARY KEY` rend `ref` unique et non nulle ; `NOT NULL` impose de renseigner la désignation.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-ldd-elevee-5",
+    "theme": "LDD",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire les requêtes de création de deux tables : `Client(id, nom)` (`id` entier clé primaire, `nom` obligatoire) et `Commande(num, dateCmd, idClient)` (`num` clé primaire, `dateCmd` de type date, `idClient` obligatoire et clé étrangère vers `Client`). Dans quel ordre faut-il les créer ? Que se passe-t-il si on insère ensuite une commande avec `idClient = 99` alors qu'aucun client n'a cet identifiant ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe **LDD** (langage de définition de données) crée et modifie la **structure** de la base : `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`. Il ne manipule pas les lignes (c'est le rôle du LMD : `INSERT`, `UPDATE`, `DELETE`). Une table se définit par ses colonnes (nom, type, contraintes `PRIMARY KEY`, `NOT NULL`, `FOREIGN KEY`). Une clé étrangère (`FOREIGN KEY ... REFERENCES`) exige que la table référencée **existe déjà** et que chaque valeur insérée y ait une correspondance : c'est l'**intégrité référentielle**.\n\n### Corrigé\n\n```sql\nCREATE TABLE Client (\n    id INT PRIMARY KEY,\n    nom VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE Commande (\n    num INT PRIMARY KEY,\n    dateCmd DATE,\n    idClient INT NOT NULL,\n    FOREIGN KEY (idClient) REFERENCES Client(id)\n);\n```\n\n**Ordre** : `Client` d'abord, car `Commande` référence `Client(id)` et la table référencée doit exister au moment de la création de la clé étrangère.\n\n**Insertion avec `idClient = 99`** : le SGBD **refuse** l'insertion avec une erreur de contrainte de clé étrangère, car aucun client d'identifiant 99 n'existe. C'est l'intégrité référentielle : une commande ne peut pas pointer vers un client inexistant.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10720
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

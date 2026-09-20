@@ -1,0 +1,196 @@
+[
+  {
+    "external_id": "cqc-while-faible-0",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Que **affiche** le programme suivant ?\n\n```c\nint i = 1;\nwhile (i <= 4) {\n    printf(\"%d \", i);\n    i++;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while (condition)` teste la condition **avant** chaque tour : si elle est fausse dès le départ, le corps n'est jamais exécuté. Pour prévoir le résultat, on déroule la boucle en suivant la valeur des variables à chaque tour.\n\n### Corrigé\n\n`i` vaut 1, 2, 3 puis 4 : la condition `i <= 4` est vraie à chacun de ces tours, on affiche donc `1 2 3 4`. Quand `i` vaut 5, la condition est fausse et la boucle s'arrête sans afficher 5.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "1 2 3 4"
+      },
+      {
+        "lettre": "B",
+        "texte": "1 2 3"
+      },
+      {
+        "lettre": "C",
+        "texte": "0 1 2 3 4"
+      },
+      {
+        "lettre": "D",
+        "texte": "2 3 4 5"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-while-faible-1",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle est la valeur de `n` après l'exécution de ce code ?\n\n```c\nint n = 8;\ndo {\n    n = n + 1;\n} while (n < 5);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `do ... while (condition)` exécute son corps **au moins une fois**, puis teste la condition ; c'est la différence avec `while`, qui teste d'abord.\n\n### Corrigé\n\nLe corps s'exécute une première fois : `n` passe de 8 à 9. La condition `9 < 5` est ensuite fausse, la boucle s'arrête. Avec un `while` simple, le corps n'aurait jamais été exécuté et `n` serait resté à 8.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "8"
+      },
+      {
+        "lettre": "B",
+        "texte": "9"
+      },
+      {
+        "lettre": "C",
+        "texte": "5"
+      },
+      {
+        "lettre": "D",
+        "texte": "La boucle ne s'arrête jamais"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-while-moyenne-2",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle valeur affiche ce programme ?\n\n```c\nint s = 0, i = 1;\nwhile (i <= 5) {\n    s = s + i * i;\n    i++;\n}\nprintf(\"%d\", s);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while (condition)` teste la condition **avant** chaque tour : si elle est fausse dès le départ, le corps n'est jamais exécuté. Pour prévoir le résultat, on déroule la boucle en suivant la valeur des variables à chaque tour. Ici `s` est un accumulateur : sa valeur est mise à jour à chaque tour.\n\n### Corrigé\n\nTour par tour, `s` prend les valeurs 1, 5, 14, 30 puis 55 (on ajoute 1², 2², 3², 4², 5²). La boucle s'arrête quand `i` atteint 6. Le programme affiche `55`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "15"
+      },
+      {
+        "lettre": "B",
+        "texte": "55"
+      },
+      {
+        "lettre": "C",
+        "texte": "25"
+      },
+      {
+        "lettre": "D",
+        "texte": "30"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-while-moyenne-3",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle valeur affiche ce programme ? (Rappel : en C, la division de deux entiers donne un entier.)\n\n```c\nint x = 100, c = 0;\nwhile (x > 1) {\n    x = x / 3;\n    c++;\n}\nprintf(\"%d\", c);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while (condition)` teste la condition **avant** chaque tour : si elle est fausse dès le départ, le corps n'est jamais exécuté. Pour prévoir le résultat, on déroule la boucle en suivant la valeur des variables à chaque tour. Avec des entiers, `/` renvoie le quotient entier (la partie décimale est perdue).\n\n### Corrigé\n\n`x` vaut successivement 33, 11, 3 puis 1 : quatre tours ont été nécessaires. Quand `x` vaut 1, la condition `x > 1` est fausse et la boucle s'arrête. Le compteur `c` vaut donc `4`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3"
+      },
+      {
+        "lettre": "B",
+        "texte": "4"
+      },
+      {
+        "lettre": "C",
+        "texte": "5"
+      },
+      {
+        "lettre": "D",
+        "texte": "33"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-while-moyenne-4",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Réécrire la boucle suivante avec une boucle `while`, puis donner la valeur finale de `s`.\n\n```c\nint s = 0, i;\nfor (i = 2; i <= 20; i += 6) {\n    s = s + i;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nToute boucle `for (init; condition; pas)` se traduit en `while` : l'initialisation se place **avant** la boucle, la condition entre les parenthèses du `while`, et le pas à la **fin** du corps.\n\n### Corrigé\n\n```c\nint s = 0, i = 2;\nwhile (i <= 20) {\n    s = s + i;\n    i = i + 6;\n}\n```\n\n`i` prend les valeurs 2, 8, 14 et 20 (26 dépasse 20). On obtient `s = 2 + 8 + 14 + 20 = 44`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  },
+  {
+    "external_id": "cqc-while-elevee-5",
+    "theme": "while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme suivant.\n\n```c\nint a = 84, b = 30, r;\nint nb = 0;\nwhile (b != 0) {\n    r = a % b;\n    a = b;\n    b = r;\n    nb++;\n}\nprintf(\"%d %d\", a, nb);\n```\n\nRecopier et compléter le tableau de suivi des variables, puis donner ce qu'affiche le programme et le rôle de la boucle.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour tracer une boucle, on dresse un tableau avec une ligne par tour et une colonne par variable modifiée ; on applique les instructions du corps dans l'ordre, puis on teste la condition avec les **nouvelles** valeurs.\n\n### Corrigé\n\n| Tour | `r = a % b` | `a` | `b` |\n|---|---|---|---|\n| début | | 84 | 30 |\n| 1 | 24 | 30 | 24 |\n| 2 | 6 | 24 | 6 |\n| 3 | 0 | 6 | 0 |\n\nAprès le tour 3, `b` vaut 0 : la condition `b != 0` est fausse et la boucle s'arrête. Le programme affiche `6 3` (valeur de `a` puis nombre de tours). Cette boucle applique l'**algorithme d'Euclide** : à la sortie, `a` contient le PGCD de 84 et 30, soit 6.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10625,
+      10742
+    ]
+  }
+]

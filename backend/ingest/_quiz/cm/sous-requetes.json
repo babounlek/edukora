@@ -1,0 +1,196 @@
+[
+  {
+    "external_id": "cqc-sous-requetes-faible-0",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'est-ce qu'une sous-requête en SQL ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale.\n\n### Corrigé\n\nC'est une requête `SELECT` **imbriquée** dans une autre, écrite entre parenthèses ; son résultat sert de valeur ou de liste de valeurs à la requête principale.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une requête qui supprime des lignes"
+      },
+      {
+        "lettre": "B",
+        "texte": "Un SELECT écrit entre parenthèses à l'intérieur d'une autre requête"
+      },
+      {
+        "lettre": "C",
+        "texte": "Une jointure sans condition"
+      },
+      {
+        "lettre": "D",
+        "texte": "Une table temporaire"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-sous-requetes-faible-1",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Tables `Etudiant(numEtu, nom, filiere, moyenne)` et `Adhesion(numEtu, club)` (un étudiant peut adhérer à plusieurs clubs, ou à aucun).\n\n| numEtu | nom | filiere | moyenne |\n|---|---|---|---|\n| 1 | Aline | TI | 14.5 |\n| 2 | Bruno | TI | 9 |\n| 3 | Carine | C | 16 |\n| 4 | Denis | C | 11 |\n| 5 | Estelle | TI | 12.5 |\n\n| numEtu | club |\n|---|---|\n| 1 | Théâtre |\n| 3 | Football |\n| 3 | Théâtre |\n| 5 | Football |\n\nQue renvoie la sous-requête `(SELECT AVG(moyenne) FROM Etudiant)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale.\n\n### Corrigé\n\n`AVG` calcule la moyenne des moyennes : (14,5 + 9 + 16 + 11 + 12,5) / 5 = 63 / 5 = **12,6**. La sous-requête renvoie donc une **valeur unique**, qu'on peut comparer à une colonne.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une liste de cinq valeurs"
+      },
+      {
+        "lettre": "B",
+        "texte": "La valeur 12,6"
+      },
+      {
+        "lettre": "C",
+        "texte": "La valeur 16"
+      },
+      {
+        "lettre": "D",
+        "texte": "La valeur 63"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-sous-requetes-moyenne-2",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Tables `Etudiant(numEtu, nom, filiere, moyenne)` et `Adhesion(numEtu, club)` (un étudiant peut adhérer à plusieurs clubs, ou à aucun).\n\n| numEtu | nom | filiere | moyenne |\n|---|---|---|---|\n| 1 | Aline | TI | 14.5 |\n| 2 | Bruno | TI | 9 |\n| 3 | Carine | C | 16 |\n| 4 | Denis | C | 11 |\n| 5 | Estelle | TI | 12.5 |\n\n| numEtu | club |\n|---|---|\n| 1 | Théâtre |\n| 3 | Football |\n| 3 | Théâtre |\n| 5 | Football |\n\nQuel est le résultat de cette requête ?\n\n```sql\nSELECT nom FROM Etudiant\nWHERE moyenne > (SELECT AVG(moyenne) FROM Etudiant);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale.\n\n### Corrigé\n\nLa sous-requête vaut 12,6. On garde les étudiants dont la moyenne dépasse 12,6 : Aline (14,5) et Carine (16). Estelle (12,5) est juste en dessous.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Aline, Carine"
+      },
+      {
+        "lettre": "B",
+        "texte": "Aline, Carine, Estelle"
+      },
+      {
+        "lettre": "C",
+        "texte": "Bruno, Denis"
+      },
+      {
+        "lettre": "D",
+        "texte": "Carine"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-sous-requetes-moyenne-3",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Tables `Etudiant(numEtu, nom, filiere, moyenne)` et `Adhesion(numEtu, club)` (un étudiant peut adhérer à plusieurs clubs, ou à aucun).\n\n| numEtu | nom | filiere | moyenne |\n|---|---|---|---|\n| 1 | Aline | TI | 14.5 |\n| 2 | Bruno | TI | 9 |\n| 3 | Carine | C | 16 |\n| 4 | Denis | C | 11 |\n| 5 | Estelle | TI | 12.5 |\n\n| numEtu | club |\n|---|---|\n| 1 | Théâtre |\n| 3 | Football |\n| 3 | Théâtre |\n| 5 | Football |\n\nQuel est le résultat de cette requête ?\n\n```sql\nSELECT nom FROM Etudiant\nWHERE numEtu NOT IN (SELECT numEtu FROM Adhesion);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale. `NOT IN` garde les lignes dont la valeur n'apparaît **pas** dans la liste fournie par la sous-requête.\n\n### Corrigé\n\nLa sous-requête renvoie les numéros 1, 3, 3 et 5 (adhérents à un club). Les étudiants absents de cette liste sont ceux qui n'adhèrent à **aucun** club : `Bruno` (2) et `Denis` (4).",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Aline, Carine, Estelle"
+      },
+      {
+        "lettre": "B",
+        "texte": "Bruno, Denis"
+      },
+      {
+        "lettre": "C",
+        "texte": "Bruno"
+      },
+      {
+        "lettre": "D",
+        "texte": "Carine"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-sous-requetes-moyenne-4",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Tables `Etudiant(numEtu, nom, filiere, moyenne)` et `Adhesion(numEtu, club)` (un étudiant peut adhérer à plusieurs clubs, ou à aucun).\n\n| numEtu | nom | filiere | moyenne |\n|---|---|---|---|\n| 1 | Aline | TI | 14.5 |\n| 2 | Bruno | TI | 9 |\n| 3 | Carine | C | 16 |\n| 4 | Denis | C | 11 |\n| 5 | Estelle | TI | 12.5 |\n\n| numEtu | club |\n|---|---|\n| 1 | Théâtre |\n| 3 | Football |\n| 3 | Théâtre |\n| 5 | Football |\n\nÉcrire, avec une sous-requête, la requête qui affiche le nom et la moyenne de l'étudiant qui a la **meilleure moyenne**. Donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale.\n\n### Corrigé\n\n```sql\nSELECT nom, moyenne\nFROM Etudiant\nWHERE moyenne = (SELECT MAX(moyenne) FROM Etudiant);\n```\n\nLa sous-requête renvoie 16 ; la requête principale ne garde que l'étudiant dont la moyenne est égale à 16 : `Carine | 16`. (On ne peut pas écrire `WHERE moyenne = MAX(moyenne)` : une fonction d'agrégat ne s'utilise pas directement dans un `WHERE`.)",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-sous-requetes-elevee-5",
+    "theme": "Sous-requêtes",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Tables `Etudiant(numEtu, nom, filiere, moyenne)` et `Adhesion(numEtu, club)` (un étudiant peut adhérer à plusieurs clubs, ou à aucun).\n\n| numEtu | nom | filiere | moyenne |\n|---|---|---|---|\n| 1 | Aline | TI | 14.5 |\n| 2 | Bruno | TI | 9 |\n| 3 | Carine | C | 16 |\n| 4 | Denis | C | 11 |\n| 5 | Estelle | TI | 12.5 |\n\n| numEtu | club |\n|---|---|\n| 1 | Théâtre |\n| 3 | Football |\n| 3 | Théâtre |\n| 5 | Football |\n\nÉcrire la requête qui affiche les étudiants dont la moyenne est **supérieure à la moyenne de leur propre filière**. Donner les moyennes de filière et le résultat, et expliquer en quoi cette sous-requête diffère de celle de la moyenne générale.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne **sous-requête** est un `SELECT` placé entre parenthèses à l'intérieur d'une autre requête, typiquement dans un `WHERE`. Elle s'exécute d'abord et fournit une valeur (`AVG`, `MAX`...) ou une liste de valeurs (avec `IN` / `NOT IN`) à la requête principale. Une sous-requête **corrélée** utilise une colonne de la requête principale : elle est recalculée pour chaque ligne examinée.\n\n### Corrigé\n\n```sql\nSELECT nom\nFROM Etudiant e\nWHERE moyenne > (SELECT AVG(moyenne)\n                 FROM Etudiant\n                 WHERE filiere = e.filiere);\n```\n\nMoyennes par filière : **TI** = (14,5 + 9 + 12,5) / 3 = 12 ; **C** = (16 + 11) / 2 = 13,5.\n\n| nom | filière | moyenne | moyenne de la filière | gardé ? |\n|---|---|---|---|---|\n| Aline | TI | 14,5 | 12 | oui |\n| Bruno | TI | 9 | 12 | non |\n| Estelle | TI | 12,5 | 12 | oui |\n| Carine | C | 16 | 13,5 | oui |\n| Denis | C | 11 | 13,5 | non |\n\nRésultat : `Aline`, `Carine`, `Estelle`. Contrairement à la moyenne générale (12,6, une seule valeur), la sous-requête dépend ici de la ligne courante (`e.filiere`) : elle est **corrélée** et donne une valeur différente selon la filière. Estelle, éliminée par la moyenne générale, est retenue car elle dépasse la moyenne de sa filière.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10570,
+      10741
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

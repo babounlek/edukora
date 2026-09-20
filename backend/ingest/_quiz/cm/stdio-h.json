@@ -1,0 +1,232 @@
+[
+  {
+    "external_id": "cqc-stdio-h-faible-0",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle bibliothèque du langage C faut-il inclure pour utiliser les fonctions `printf()` et `scanf()` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne.\n\n### Corrigé\n\n`printf()` (affichage) et `scanf()` (saisie) sont les fonctions d'entrée/sortie standard, déclarées dans `stdio.h` (*standard input/output*).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "stdio.h"
+      },
+      {
+        "lettre": "B",
+        "texte": "math.h"
+      },
+      {
+        "lettre": "C",
+        "texte": "string.h"
+      },
+      {
+        "lettre": "D",
+        "texte": "time.h"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-stdio-h-faible-1",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Que fait la ligne `#include <stdio.h>` au début d'un programme C ? Pourquoi est-elle nécessaire dès qu'on utilise `printf()` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne.\n\n### Corrigé\n\n`#include <stdio.h>` est une directive de **préprocesseur** : avant la compilation, elle insère dans le programme le contenu du fichier d'en-tête `stdio.h`, qui **déclare** les fonctions d'entrée/sortie (`printf`, `scanf`...). Sans elle, le compilateur ne connaît pas `printf()` et ne peut pas vérifier son utilisation.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-stdio-h-moyenne-2",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme calcule la racine carrée d'un nombre avec `sqrt()`. Quelle bibliothèque contient cette fonction ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne. Les fonctions mathématiques (racine, puissance, sinus...) sont regroupées ensemble.\n\n### Corrigé\n\n`sqrt()` (comme `pow()`, `sin()`, `fabs()`) est déclarée dans `math.h`. `stdio.h` ne traite que les entrées/sorties et `string.h` que les chaînes de caractères.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "stdio.h"
+      },
+      {
+        "lettre": "B",
+        "texte": "stdlib.h"
+      },
+      {
+        "lettre": "C",
+        "texte": "math.h"
+      },
+      {
+        "lettre": "D",
+        "texte": "string.h"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-stdio-h-moyenne-3",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Ce programme utilise `printf()`, `strlen()` et `sqrt()`. Quel ensemble d'inclusions est **suffisant et exact** ?\n\n```c\nint main() {\n    char mot[] = \"reseau\";\n    printf(\"%f\", sqrt(strlen(mot)));\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne. Pour chaque fonction du programme, on repère la bibliothèque qui la déclare.\n\n### Corrigé\n\n`printf()` vient de `stdio.h`, `strlen()` (longueur d'une chaîne) de `string.h` et `sqrt()` de `math.h` : il faut donc `stdio.h`, `string.h` et `math.h`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "stdio.h et math.h"
+      },
+      {
+        "lettre": "B",
+        "texte": "stdio.h, string.h et math.h"
+      },
+      {
+        "lettre": "C",
+        "texte": "stdlib.h, string.h et math.h"
+      },
+      {
+        "lettre": "D",
+        "texte": "stdio.h et string.h"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-stdio-h-moyenne-4",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme génère un nombre aléatoire avec `rand()` et réserve de la mémoire avec `malloc()`. Quelle bibliothèque déclare ces deux fonctions ?",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne. `stdlib.h` (*standard library*) rassemble les utilitaires généraux : allocation mémoire, nombres aléatoires, conversions, `exit()`.\n\n### Corrigé\n\n`rand()`, `srand()`, `malloc()`, `free()`, `atoi()` et `exit()` sont déclarées dans `stdlib.h`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "stdio.h"
+      },
+      {
+        "lettre": "B",
+        "texte": "stdlib.h"
+      },
+      {
+        "lettre": "C",
+        "texte": "time.h"
+      },
+      {
+        "lettre": "D",
+        "texte": "math.h"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-stdio-h-elevee-5",
+    "theme": "stdio.h",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Décrire chacune des trois bibliothèques utilisées dans ce code (rôle général) et citer, pour chacune, une fonction qu'il emploie.\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nint main() {\n    srand(time(NULL));\n    int de = rand() % 6 + 1;\n    printf(\"Lancer : %d\\n\", de);\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, une **bibliothèque** regroupe des fonctions prêtes à l'emploi ; la directive `#include <nom.h>` placée en tête du fichier en rend les déclarations disponibles. Chaque fonction usuelle appartient à une bibliothèque précise : il faut la connaître pour inclure la bonne. Pour décrire une bibliothèque, on donne son rôle général puis on relève, dans le code, la fonction qui en provient.\n\n### Corrigé\n\n- **`stdio.h`** : entrées/sorties standard (affichage, saisie clavier). Fonction utilisée : `printf()`, qui affiche le résultat du lancer.\n- **`stdlib.h`** : utilitaires généraux (nombres pseudo-aléatoires, allocation de mémoire, conversions). Fonctions utilisées : `srand()` et `rand()`, qui initialisent et produisent le nombre aléatoire.\n- **`time.h`** : gestion du temps et des dates. Fonction utilisée : `time()`, qui renvoie l'heure courante et sert ici de graine à `srand()` pour que le tirage change à chaque exécution.\n\n`rand() % 6 + 1` donne un entier entre 1 et 6, comme le résultat d'un dé.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10572,
+      10586,
+      10622
+    ]
+  }
+]
