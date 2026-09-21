@@ -1,0 +1,159 @@
+{
+  "epreuve_source": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "serie": "TI",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Collège de la Retraite",
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "statut": "brouillon",
+  "numero_exercice": "1",
+  "introduction_markdown": "Aucun document ou matériel en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.",
+  "points": 3,
+  "groupes": [
+    "PARTIE I : PROGRAMMATION EN LANGAGE C (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE I : PROGRAMMATION EN LANGAGE C (10 points)**\n\n**A.** On considère le programme C suivant :\n\n```c\n1  #include<stdio.h>\n2  #define taille 7\n3  int T[taille];\n4  int i, j, elt;\n5  int main(){\n6      for(i=0; i<taille; i++) scanf(\"%d\", &T[i]);\n7      for (i=taille; i>=4; i--){\n8          elt=T[taille];\n9          for(j=5; j>=0; j--) T[j+1]=T[j];\n10         T[0]=elt;\n11     }\n12     for(i=0; i<taille; i++) printf(\"%d \", T[i]);\n13     return 0;\n14 }\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Donner le rôle de `%d` et de `&` présents dans ce code. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans `scanf` et `printf`, le format `%d` indique que la donnée manipulée est un entier relatif (type `int`) écrit en base 10 ; le symbole `&` placé devant une variable est l'opérateur d'adressage, qui fournit l'adresse mémoire de cette variable plutôt que sa valeur.\n\nDans ce programme, `%d` apparaît aussi bien dans `scanf(\"%d\", &T[i])` que dans `printf(\"%d \", T[i])` : il indique dans les deux cas que l'on lit ou que l'on affiche un entier. Le symbole `&` n'apparaît en revanche que dans le `scanf` (`&T[i]`) : cette fonction a besoin de connaître l'adresse de la case mémoire `T[i]` pour pouvoir y écrire directement la valeur saisie au clavier, alors que `printf` n'a besoin que de la valeur de `T[i]` pour l'afficher, jamais de son adresse.\n\n### Piège à éviter\nOublier le `&` devant une variable simple passée à `scanf` (par exemple écrire `scanf(\"%d\", T[i])` au lieu de `scanf(\"%d\", &T[i])`) est une erreur très fréquente : le programme compile parfois quand même (avec un avertissement), mais `scanf` reçoit alors une valeur au lieu d'une adresse et écrit à un endroit imprévisible de la mémoire.\n\n### Conseil\nRetiens la règle simple : `&` devant une variable seulement quand on veut écrire dedans (lecture avec `scanf`), jamais quand on se contente de lire sa valeur (affichage avec `printf`).",
+      "themes": [
+        "Entrées-sorties en C (scanf/printf)",
+        "Opérateur d'adressage &"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex1-q1-1",
+          "competence": "Entrées-sorties formatées en C (scanf/printf)",
+          "contenu_markdown": "Dans `scanf` et `printf`, le format `%d` indique que la donnée manipulée est un entier relatif (type `int`) écrit en base 10 ; le symbole `&` placé devant une variable est l'opérateur d'adressage, qui fournit l'adresse mémoire de cette variable plutôt que sa valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Expliquer le rôle de la ligne 1. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa ligne `#include<stdio.h>` est une directive de préprocesseur : avant la compilation proprement dite, elle demande d'insérer le contenu du fichier d'en-tête `stdio.h`, qui contient les déclarations des fonctions standard d'entrée-sortie du langage C.\n\nSans cette ligne, les fonctions `scanf` et `printf` utilisées plus loin dans le programme (lignes 6 et 12) ne seraient pas déclarées : le compilateur ne connaîtrait ni leur nombre de paramètres, ni leur type de retour, et la compilation échouerait ou produirait des avertissements graves.\n\n### Conseil\nVérifie systématiquement, avant de coder, que chaque fonction de bibliothèque que tu comptes utiliser (`scanf`, `printf`, mais aussi `strlen`, `strcpy` pour les chaînes) possède bien son `#include` correspondant en tête de fichier - un oubli est une des toutes premières causes d'erreur de compilation chez les débutants.",
+      "themes": [
+        "Directives de préprocesseur",
+        "Fichiers d'en-tête standard"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex1-q2-1",
+          "competence": "Rôle des directives de préprocesseur (#include)",
+          "contenu_markdown": "La ligne `#include<stdio.h>` est une directive de préprocesseur : avant la compilation proprement dite, elle demande d'insérer le contenu du fichier d'en-tête `stdio.h`, qui contient les déclarations des fonctions standard d'entrée-sortie du langage C.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Donner le nombre d'instructions (itérations) de la boucle de la ligne 8. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe nombre d'itérations d'une boucle `for(init; condition; incrément)` se détermine en énumérant toutes les valeurs successives prises par la variable de contrôle tant que la condition reste vraie.\n\nÀ la ligne 7 de ce programme, `for (i=taille; i>=4; i--){` ouvre une boucle dont le corps s'étend des lignes 8 à 10 (c'est en ce sens que l'énoncé la désigne comme la « boucle de la ligne 8 », puisque sa première instruction s'y trouve) : la variable `i` part de `taille` (soit 7) et diminue de 1 à chaque tour tant que `i>=4`. Elle prend donc successivement les valeurs 7, 6, 5 puis 4, avant de s'arrêter puisque `i=3` ne vérifie plus `i>=4`. Cette boucle s'exécute donc **4 fois**.\n\n### Piège à éviter\nNe confonds pas la valeur de départ de `i` (7) avec le nombre de répétitions de la boucle : ici, malgré un `i` qui part de 7, la boucle ne tourne que 4 fois, parce qu'elle s'arrête dès que `i` descend sous 4.",
+      "themes": [
+        "Boucle for",
+        "Comptage d'itérations"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex1-q3-1",
+          "competence": "Comptage des itérations d'une boucle for",
+          "contenu_markdown": "Le nombre d'itérations d'une boucle `for(init; condition; incrément)` se détermine en énumérant toutes les valeurs successives prises par la variable de contrôle tant que la condition reste vraie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Exécuter la suite d'instructions des lignes 7 à 11 et dire ce qu'elle produit, pour le tableau initial T = [2, 5, 6, 7, 5, 3, 5]. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter « à la main » une boucle qui modifie un tableau consiste à réécrire l'état complet du tableau après chaque itération, en appliquant scrupuleusement chaque instruction du corps de la boucle dans l'ordre où elle est écrite.\n\nUne remarque préalable s'impose : la ligne 8, `elt=T[taille];`, lit la case `T[7]`, alors que le tableau `T` ne compte que 7 cases valides, numérotées de `T[0]` à `T[6]` (puisque `#define taille 7`). Cette lecture sort donc du tableau : en C, un tel accès est un comportement indéterminé, dont le résultat réel dépend du compilateur et ne peut pas être garanti. Tout porte cependant à croire, à la lecture de l'algorithme, qu'il s'agit d'une erreur d'écriture à la ligne 8, et que l'instruction voulue était `elt=T[taille-1];` (c'est-à-dire `elt=T[6];`, le dernier élément valide du tableau) : c'est cette version corrigée qui donne à l'algorithme un sens cohérent, et c'est elle qui est exécutée ci-dessous. Avec `elt=T[taille-1]`, chaque tour de la boucle « ligne 7 » retire le dernier élément du tableau, décale tous les autres d'un cran vers la droite (`for(j=5;j>=0;j--) T[j+1]=T[j];`), puis replace l'élément retiré en tête (`T[0]=elt;`) : c'est une rotation d'un cran vers la droite. La boucle extérieure répétant cette rotation 4 fois (question 3), le tableau final est le tableau de départ après une rotation de 4 crans vers la droite.\n\nPartons de T = [2, 5, 6, 7, 5, 3, 5] (indices 0 à 6).\n\nTour 1 (elt = T[6] = 5) : décalage → [2, 2, 5, 6, 7, 5, 3], puis T[0] = 5 → **[5, 2, 5, 6, 7, 5, 3]**\n\nTour 2 (elt = T[6] = 3) : décalage → [5, 5, 2, 5, 6, 7, 5], puis T[0] = 3 → **[3, 5, 2, 5, 6, 7, 5]**\n\nTour 3 (elt = T[6] = 5) : décalage → [3, 3, 5, 2, 5, 6, 7], puis T[0] = 5 → **[5, 3, 5, 2, 5, 6, 7]**\n\nTour 4 (elt = T[6] = 7) : décalage → [5, 5, 3, 5, 2, 5, 6], puis T[0] = 7 → **[7, 5, 3, 5, 2, 5, 6]**\n\nLe tableau affiché en sortie du programme est donc : **7 5 3 5 2 5 6**, c'est-à-dire exactement le tableau de départ dont les 4 derniers éléments (7, 5, 3, 5) sont passés en tête, dans le même ordre, suivis des 3 premiers (2, 5, 6).\n\n### Piège à éviter\nUne exécution à la main qui recopierait littéralement `elt=T[taille]` (donc `T[7]`) ne peut aboutir à aucun résultat garanti, puisque cette case n'existe pas : ne jamais inventer une valeur pour une case hors tableau, et toujours signaler ce type d'anomalie plutôt que de la passer sous silence.\n\n### Conseil\nPour ne pas se perdre dans les décalages d'indices, réécris entièrement le tableau après chaque instruction plutôt que d'essayer de suivre les changements « de tête » - c'est plus long à l'écrit mais beaucoup plus fiable le jour de l'examen.",
+      "themes": [
+        "Trace d'exécution",
+        "Rotation de tableau",
+        "Débordement de tableau (comportement indéterminé)"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex1-q4-1",
+          "competence": "Trace d'exécution d'une boucle sur un tableau",
+          "contenu_markdown": "Exécuter « à la main » une boucle qui modifie un tableau consiste à réécrire l'état complet du tableau après chaque itération, en appliquant scrupuleusement chaque instruction du corps de la boucle dans l'ordre où elle est écrite.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Dire, en une phrase, ce que fait ce programme. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDécrire « en une phrase » un programme demande de prendre du recul sur le résultat global produit, plutôt que de reformuler instruction par instruction ce qu'il fait.\n\nEn admettant la correction de la ligne 8 discutée à la question précédente, ce programme lit 7 entiers saisis par l'utilisateur dans un tableau, puis affiche ce même tableau après lui avoir fait subir une rotation de 4 crans vers la droite (les 4 derniers éléments passent en tête, dans le même ordre, et les 3 premiers se retrouvent à la fin).\n\n### Conseil\nSi la ligne 8 n'est pas corrigée, la réponse honnête à cette question est différente : le programme lit 7 entiers, puis tente une rotation vers la droite répétée 4 fois, mais son résultat exact n'est pas garanti à cause de l'accès à `T[taille]` qui sort du tableau - le dire clairement rapporte plus de points qu'une affirmation fausse présentée avec assurance.",
+      "themes": [
+        "Synthèse d'un algorithme",
+        "Rotation de tableau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex1-q5-1",
+          "competence": "Synthèse du comportement global d'un algorithme",
+          "contenu_markdown": "Décrire « en une phrase » un programme demande de prendre du recul sur le résultat global produit, plutôt que de reformuler instruction par instruction ce qu'il fait.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "rotation de tableau",
+    "algorithme C",
+    "scanf",
+    "printf",
+    "débordement de tableau",
+    "boucle for",
+    "Terminale TI"
+  ],
+  "incertitudes": [
+    "Ligne 8 du code source (`elt=T[taille];`) accède à l'indice T[7], hors des bornes du tableau T (déclaré avec #define taille 7, indices valides 0 à 6) : comportement indéterminé en C. Le corrigé traite ceci comme une coquille probable pour `T[taille-1]`, seule lecture qui donne un sens cohérent à l'algorithme (rotation), et le signale explicitement aux questions 4 et 5.",
+    "L'énoncé de la question 3 mentionne « la boucle de ligne 8 » alors que la ligne 8 (`elt=T[taille];`) n'est pas elle-même un en-tête de boucle - la boucle concernée est celle ouverte à la ligne 7 (`for (i=taille; i>=4; i--)`), dont le corps commence à la ligne 8. Le corrigé retient cette interprétation.",
+    "savoir_officiel non renseigné pour toutes les sous-questions : le référentiel programme officiel (backend/programme/fixtures/programme_officiel_cm_informatique.json) n'est pas accessible depuis cet environnement (dossier connecté = Epreuves uniquement, sans le dépôt edukora).",
+    "Aucun cours généré à partir des rappels de méthode de cet exercice dans cette passe (priorité donnée à la complétude et à l exactitude des corrigés sur les 5 exercices) ; à traiter lors d une prochaine exécution du traitement en lot."
+  ]
+}

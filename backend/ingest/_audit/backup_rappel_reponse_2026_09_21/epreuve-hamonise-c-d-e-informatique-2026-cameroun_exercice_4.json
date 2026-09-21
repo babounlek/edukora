@@ -1,0 +1,128 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "statut": "brouillon",
+  "numero_exercice": "4",
+  "introduction_markdown": null,
+  "points": "3",
+  "groupes": [
+    "PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 points)**\n\n**Exercice 1 : Algorithmique (3 points)**\n\nSoit l'algorithme ci-dessous. Il vous est demandé de l'exécuter. Observez-le et répondez aux questions suivantes :\n\n```pseudo\nALGORITHME\n1. Algorithme traitement\n2. Variable notes : tableau [7] de réel ;\n3. i, nbre : entier ;\n4. Début\n5. Pour i allant de 1 à 7 Faire\n6. Écrire (\"entrez la note de l'élève \", i) ;\n7. Lire (notes[i]) ;\n8. Fin Pour\n9. i ←1;\n10. nbre ←0;\n11. Tantque (i <= 7) Faire\n12. Si (notes[i] >= 10) Alors\n13. nbre←nbre + 1;\n14. FinSi\n15. i ← + 1 ;\n16. Fin Tantque\n17. Écrire (\"Le résultat est : \", nbre) ;\n18. Fin\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Identifier la structure de données utilisée et sa taille. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa structure de données d'un algorithme se lit dans sa déclaration de variables : le mot-clé tableau suivi d'un nombre entre crochets indique un tableau (structure linéaire indicée), et ce nombre entre crochets donne directement sa taille, c'est-à-dire le nombre d'éléments qu'il peut contenir.\n\nLa ligne 2 déclare `notes : tableau [7] de réel`. La structure de données utilisée est donc un tableau (array) à une dimension, de type réel, et sa taille est 7 : il peut stocker exactement 7 notes, indicées de 1 à 7 dans cet algorithme.",
+      "themes": [
+        "structures de données",
+        "tableau",
+        "déclaration de variables"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex4-q1-0",
+          "competence": "Identifier une structure de données et sa taille",
+          "contenu_markdown": "La structure de données d'un algorithme se lit dans sa déclaration de variables : le mot-clé tableau suivi d'un nombre entre crochets indique un tableau (structure linéaire indicée), et ce nombre entre crochets donne directement sa taille, c'est-à-dire le nombre d'éléments qu'il peut contenir.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Exécuter cet algorithme avec les données suivantes : 12.75 ; 9.75 ; 10 ; 11.25 ; 12.5 ; 6 ; 3.5. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter un algorithme à la main consiste à dérouler chaque instruction dans l'ordre en tenant à jour, dans un tableau de trace, la valeur courante de chaque variable après chaque ligne exécutée, jusqu'à atteindre l'instruction d'affichage finale.\n\nLa ligne 15 de l'algorithme est imprimée `i ← + 1 ;`. Lue au pied de la lettre, cette instruction réaffecterait à i la valeur +1 à chaque tour de boucle, i resterait donc bloqué à 1 pour toujours et la boucle Tantque ne se terminerait jamais : c'est une coquille de frappe du sujet, l'instruction voulue est manifestement `i ← i + 1 ;` (incrémenter i de 1), seule lecture qui rend l'algorithme exécutable en un nombre fini d'étapes. La trace ci-dessous utilise cette lecture corrigée.\n\nAprès la boucle Pour (lignes 5 à 8), le tableau notes contient : notes[1]=12.75 ; notes[2]=9.75 ; notes[3]=10 ; notes[4]=11.25 ; notes[5]=12.5 ; notes[6]=6 ; notes[7]=3.5. On initialise ensuite i=1 (ligne 9) et nbre=0 (ligne 10), puis on entre dans la boucle Tantque (i <= 7) :\n\n| i | notes[i] | notes[i] >= 10 ? | nbre après la ligne 13 |\n|---|---|---|---|\n| 1 | 12.75 | oui | 1 |\n| 2 | 9.75 | non | 1 |\n| 3 | 10 | oui | 2 |\n| 4 | 11.25 | oui | 3 |\n| 5 | 12.5 | oui | 4 |\n| 6 | 6 | non | 4 |\n| 7 | 3.5 | non | 4 |\n\nÀ i=8, la condition (i <= 7) devient fausse et la boucle Tantque s'arrête. La ligne 17 affiche donc : « Le résultat est : 4 ». L'algorithme compte le nombre de notes supérieures ou égales à 10 parmi les 7 saisies, soit 4 notes.\n\n### Piège à éviter\nNe recopie jamais une trace d'exécution en appliquant `i ← + 1` au sens strict : tu obtiendrais une boucle infinie et aucun résultat à afficher. Sur ce type de coquille visible dans un sujet, signale-la puis poursuis avec l'instruction manifestement voulue (ici l'incrémentation), en l'indiquant clairement dans ta copie.",
+      "themes": [
+        "trace d'exécution",
+        "boucle Tantque",
+        "structure conditionnelle"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex4-q2-0",
+          "competence": "Exécuter un algorithme à la main (tableau de trace)",
+          "contenu_markdown": "Exécuter un algorithme à la main consiste à dérouler chaque instruction dans l'ordre en tenant à jour, dans un tableau de trace, la valeur courante de chaque variable après chaque ligne exécutée, jusqu'à atteindre l'instruction d'affichage finale.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Citer deux autres types de structures de données autres que celle utilisée dans l'algorithme ci-dessus. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nAu-delà du tableau, l'algorithmique distingue plusieurs structures de données selon la façon dont on y accède : la pile (structure LIFO, dernier entré premier sorti), la file (structure FIFO, premier entré premier sorti), la liste chaînée (éléments reliés par des pointeurs, de taille variable), ou encore l'enregistrement/structure (regroupement de champs de types différents sous un même nom).\n\nDeux structures de données différentes du tableau peuvent être citées : la pile (stack) et la file (queue). D'autres réponses sont également valables, comme la liste chaînée ou l'enregistrement.\n\n### Conseil\nCite des structures réellement différentes du tableau dans leur principe d'accès, pas de simples variantes du tableau : une matrice (tableau à deux dimensions) reste un tableau, alors que la pile ou la file reposent sur un principe d'accès totalement différent (LIFO ou FIFO).",
+      "themes": [
+        "structures de données",
+        "pile",
+        "file"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex4-q3-0",
+          "competence": "Distinguer les types de structures de données",
+          "contenu_markdown": "Au-delà du tableau, l'algorithmique distingue plusieurs structures de données selon la façon dont on y accède : la pile (structure LIFO, dernier entré premier sorti), la file (structure FIFO, premier entré premier sorti), la liste chaînée (éléments reliés par des pointeurs, de taille variable), ou encore l'enregistrement/structure (regroupement de champs de types différents sous un même nom).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithme",
+    "tableau",
+    "boucle Tantque",
+    "structure conditionnelle",
+    "trace d'exécution",
+    "pile",
+    "file"
+  ],
+  "incertitudes": [
+    "Ligne 15 de l'algorithme source : imprimée « i ← + 1 ; » (incrément manquant, i au lieu de rien avant le signe +), lecture littérale impossible car elle produit une boucle infinie. Transcrite verbatim dans l'énoncé (fidélité au sujet), mais la trace d'exécution du corrigé de la question 2 utilise la lecture corrigée « i ← i + 1 ; », manifestement celle voulue par l'auteur du sujet ; ce choix est justifié et signalé explicitement dans le corrigé.",
+    "Aucun des rappels de méthode de cet exercice n'a été retenu parmi les 2 rappels coursifiés de l'épreuve (voir exercice 1 question 6b et exercice 2 question 3) ; ils restent documentés uniquement dans leur corrigé respectif."
+  ]
+}

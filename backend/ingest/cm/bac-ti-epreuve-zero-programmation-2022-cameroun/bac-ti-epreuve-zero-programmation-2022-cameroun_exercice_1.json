@@ -1,0 +1,171 @@
+{
+  "epreuve_source": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": "En dehors des calculatrices, aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.",
+  "points": "5",
+  "groupes": [
+    "I/ PROGRAMMATION WEB (10 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-epreuve-zero-programmation-2022-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "document",
+      "legende": "Formulaire « Calculateur de salaire » : champs Salaire brut, Bonus, Allocation, Genre, Personnes à charge, boutons Calculer/Effacer",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**I/ PROGRAMMATION WEB (10 points)**\n\n**Exercice 1 : HTML et JavaScript (5 points)**\n\nOn veut concevoir un site Web qui va calculer le salaire d'une personne sur la base de son salaire brut en décomptant les frais suivants :\n\n- Impôts sur le revenu : 18 %\n- Assurance employé : 7 %\n- Régime de pensions : 5 %\n- Les personnes peuvent recevoir comme supplément un bonus de 5000 F ou une allocation de 7500 F.\n\nIl est possible de recevoir des réductions sur les impôts sur le revenu sous certaines conditions :\n\n- Si le travailleur est une femme, elle reçoit 2 % de réduction.\n- Si le travailleur a 3 personnes à charge, il reçoit 1 % de réduction.\n- Si le travailleur a 4 personnes à charge, il reçoit 2 % de réduction.\n\nL'objectif du site est de collecter un ensemble d'informations sur une personne et de calculer son salaire exact en tenant compte de tous les paramètres énumérés ci-haut. Le formulaire conçu pour la collecte de ces informations est donné par la figure ci-dessous.\n\n![fig-1](bac-ti-epreuve-zero-programmation-2022-cameroun_exercice_1_fig_1.png)",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir formulaire. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir une notion, on dit ce qu'elle désigne (sa nature ou sa fonction), on donne ses caractéristiques essentielles et, si besoin, un exemple ou une unité.\n\nUn formulaire HTML est un composant de page Web qui rassemble, à l'intérieur de la balise `<form>`, des champs de saisie destinés à recueillir des informations auprès de l'utilisateur pour les transmettre à un programme de traitement situé côté serveur ou côté client.\n\nUn formulaire se caractérise par sa balise conteneur `<form>`, qui porte deux attributs essentiels : `action` (l'adresse du script qui reçoit les données saisies) et `method` (GET ou POST, la manière dont ces données sont envoyées), et par les champs de saisie qu'elle regroupe : zones de texte, cases à cocher, listes déroulantes, boutons. Le *Calculateur de salaire* de la figure ci-dessus applique exactement cette structure : le salaire brut, les cases Bonus et Allocation, le genre et le nombre de personnes à charge sont des champs réunis dans un même formulaire, prêts à être transmis au traitement JavaScript qui calcule le salaire final.\n\n### Conseil\nCite toujours les attributs `action` et `method`, même si la question ne les demande pas explicitement : ça montre au correcteur que tu maîtrises le mécanisme de transmission des données, pas seulement le vocabulaire.",
+      "themes": [
+        "formulaire HTML",
+        "programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q1-0",
+          "competence": "Définition et rôle d'un formulaire HTML",
+          "contenu_markdown": "Pour définir une notion, on dit ce qu'elle désigne (sa nature ou sa fonction), on donne ses caractéristiques essentielles et, si besoin, un exemple ou une unité.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Ecrire le code HTML permettant de créer ce formulaire en utilisant un tableau de 7 lignes et 2 colonnes. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nMettre en page un formulaire avec un tableau consiste à placer chaque champ dans sa propre ligne `<tr>`, l'étiquette (le texte qui décrit le champ) dans la première cellule `<td>` et le champ de saisie correspondant dans la seconde : les étiquettes restent ainsi parfaitement alignées, quelle que soit la longueur du texte.\n\nLa figure impose exactement 7 champs à saisir ou à actionner : Salaire brut, Bonus, Allocation, Genre, Personnes à charge, puis les deux boutons Calculer et Effacer. Cela correspond très précisément aux 7 lignes demandées par l'énoncé, chaque ligne comportant l'étiquette dans la colonne 1 et le contrôle de saisie dans la colonne 2 (les deux boutons occupent chacun une ligne à eux seuls, la deuxième colonne restant vide) :\n\n```html\n<table border=\"0\">\n  <tr>\n    <td>Salaire brut :</td>\n    <td><input type=\"text\" name=\"salaireBrut\"> FCFA</td>\n  </tr>\n  <tr>\n    <td>Bonus :</td>\n    <td><input type=\"checkbox\" name=\"bonus\" value=\"5000\"></td>\n  </tr>\n  <tr>\n    <td>Allocation :</td>\n    <td><input type=\"checkbox\" name=\"allocation\" value=\"7500\"></td>\n  </tr>\n  <tr>\n    <td>Genre :</td>\n    <td>\n      <select name=\"genre\">\n        <option value=\"Homme\">Homme</option>\n        <option value=\"Femme\">Femme</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>Personnes à charge :</td>\n    <td><input type=\"text\" name=\"personnesACharge\"></td>\n  </tr>\n  <tr>\n    <td><input type=\"button\" value=\"Calculer\" onclick=\"calculerSalaire()\"></td>\n    <td></td>\n  </tr>\n  <tr>\n    <td><input type=\"reset\" value=\"Effacer\"></td>\n    <td></td>\n  </tr>\n</table>\n```\n\nLe champ Genre reprend fidèlement le menu déroulant affiché sur la figure, avec « Homme » proposé en premier (c'est la valeur affichée par défaut sur le formulaire de l'énoncé). Les cases Bonus et Allocation portent chacune un attribut `value` égal au montant qu'elles représentent (5000 et 7500 F) : cette valeur n'est pas visible à l'écran, mais elle facilite directement l'écriture de la fonction JavaScript `CalculAddition` demandée à la question suivante, qui n'aura qu'à lire `this.value` plutôt qu'à recopier ces montants en dur dans le script.\n\n### Piège à éviter\nNe place pas les deux boutons `Calculer` et `Effacer` sur la même ligne du tableau si l'énoncé impose 7 lignes précises : en les regroupant, on retombe à 6 lignes et on perd le point attribué au respect de la structure demandée.\n\n### Conseil\nCompte toujours le nombre de lignes annoncées par l'énoncé avant de rédiger le tableau (ici 7) et vérifie, une fois le code écrit, que le nombre de balises `<tr>` correspond exactement à ce compte.",
+      "themes": [
+        "formulaire HTML",
+        "balise table",
+        "mise en page HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q2-0",
+          "competence": "Mise en forme d'un formulaire HTML à l'aide d'un tableau (balise <table>)",
+          "contenu_markdown": "Mettre en page un formulaire avec un tableau consiste à placer chaque champ dans sa propre ligne `<tr>`, l'étiquette (le texte qui décrit le champ) dans la première cellule `<td>` et le champ de saisie correspondant dans la seconde : les étiquettes restent ainsi parfaitement alignées, quelle que soit la longueur du texte.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Ecrire une fonction JavaScript nommée `CalculAddition` qui calcule les frais à ajouter au salaire d'un employé en fonction du type de supplément qu'il peut obtenir. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne fonction JavaScript qui doit réagir à une case à cocher lit la propriété `checked` de l'élément du formulaire (`document.formulaire.champ.checked`, vraie si la case est cochée) et combine les cas possibles avec une structure conditionnelle : chaque case cochée ajoute son propre montant, indépendamment des autres.\n\nL'énoncé précise que « les personnes peuvent recevoir comme supplément un bonus de 5000 F **ou** une allocation de 7500 F » : les deux cases ne sont donc pas censées être cochées à la fois dans la logique de l'exercice, mais rien dans le formulaire ne l'empêche techniquement. La fonction la plus sûre teste donc les deux cases indépendamment plutôt que de supposer qu'une seule sera cochée, ce qui reste correct que le candidat ait ou non ajouté un contrôle de saisie supplémentaire pour interdire de cocher les deux en même temps :\n\n```javascript\nfunction CalculAddition() {\n    var supplement = 0;\n    if (document.monFormulaire.bonus.checked) {\n        supplement = supplement + 5000;\n    }\n    if (document.monFormulaire.allocation.checked) {\n        supplement = supplement + 7500;\n    }\n    return supplement;\n}\n```\n\nLa variable `supplement` part de 0 et reçoit 5000 si la case Bonus est cochée, puis 7500 si Allocation l'est également : la fonction renvoie ainsi le montant total à ajouter au salaire, quel que soit le cas de figure coché sur le formulaire.\n\n### Piège à éviter\nN'écris pas `if (bonus.checked = true)` (un seul signe égal) : c'est une affectation, pas un test, et la condition est alors toujours vraie. Le test d'égalité booléenne s'écrit `.checked` seul (la propriété est déjà un booléen) ou, à défaut, `== true`.\n\n### Conseil\nDonne un nom explicite à la variable de retour (`supplement`, pas `x` ou `a`) : sur une question de calcul de salaire, un correcteur du MINESEC valorise une variable qui porte le sens de ce qu'elle contient.",
+      "themes": [
+        "JavaScript",
+        "case à cocher",
+        "fonction conditionnelle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q3-0",
+          "competence": "Fonctions JavaScript conditionnelles à partir de cases à cocher (checkbox)",
+          "contenu_markdown": "Une fonction JavaScript qui doit réagir à une case à cocher lit la propriété `checked` de l'élément du formulaire (`document.formulaire.champ.checked`, vraie si la case est cochée) et combine les cas possibles avec une structure conditionnelle : chaque case cochée ajoute son propre montant, indépendamment des autres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Ecrire une fonction JavaScript qui calcule les réductions sur les impôts d'un employé en tenant compte des conditions décrites ci-haut. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nQuand plusieurs conditions indépendantes accordent chacune leur propre réduction, on additionne les pourcentages accordés par chaque condition vérifiée séparément (des `if` indépendants, jamais un `if...else if` qui empêcherait de cumuler deux réductions à la fois) plutôt que d'appliquer une seule réduction globale.\n\nLes trois conditions de l'énoncé sont indépendantes les unes des autres (le genre et le nombre de personnes à charge ne s'excluent pas) : une employée qui a 3 personnes à charge cumule bien les deux réductions, 2 % pour son genre et 1 % pour ses personnes à charge, soit 3 % au total. La fonction doit donc tester les trois conditions séparément avec trois instructions `if` distinctes, et non une chaîne `if/else if` qui s'arrêterait à la première condition vraie :\n\n```javascript\nfunction CalculReduction() {\n    var reduction = 0;\n    if (document.monFormulaire.genre.value == \"Femme\") {\n        reduction = reduction + 2;\n    }\n    var nbPersonnes = parseInt(document.monFormulaire.personnesACharge.value);\n    if (nbPersonnes == 3) {\n        reduction = reduction + 1;\n    }\n    if (nbPersonnes == 4) {\n        reduction = reduction + 2;\n    }\n    return reduction;\n}\n```\n\n`reduction` accumule chaque pourcentage accordé et renvoie, à la fin, la réduction totale à retrancher des 18 % d'impôt sur le revenu. La valeur du champ `personnesACharge` est convertie en entier avec `parseInt` avant d'être comparée : un champ de formulaire renvoie toujours une chaîne de caractères, et une comparaison `\"3\" == 3` fonctionnerait ici par coercition implicite de JavaScript, mais convertir explicitement reste la pratique attendue et évite toute ambiguïté si le nombre de personnes à charge devait ensuite servir dans un calcul.\n\n### Piège à éviter\nN'utilise pas `else if` entre les trois conditions : un candidat qui écrit `if (femme) {...} else if (3 personnes) {...}` perd la possibilité de cumuler les réductions, ce qui contredit directement l'esprit du barème (chaque condition rapporte ses propres points, indépendamment des autres).\n\n### Conseil\nRelis l'énoncé pour repérer le mot qui signale l'indépendance des conditions (ici, chaque puce du barème est introduite séparément par « Si... elle/il reçoit... ») : c'est le signal qu'il faut cumuler, pas choisir une seule branche.",
+      "themes": [
+        "JavaScript",
+        "conditions cumulées",
+        "calcul de pourcentage"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q4-0",
+          "competence": "Cumul de réductions conditionnelles en JavaScript (if indépendants)",
+          "contenu_markdown": "Quand plusieurs conditions indépendantes accordent chacune leur propre réduction, on additionne les pourcentages accordés par chaque condition vérifiée séparément (des `if` indépendants, jamais un `if...else if` qui empêcherait de cumuler deux réductions à la fois) plutôt que d'appliquer une seule réduction globale.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Ecrire une fonction JavaScript qui calcule le salaire final d'un employé après avoir ajouté les bonus et retranché les impôts et autres frais. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn calcul final qui combine plusieurs règles déjà programmées séparément (ici un supplément et une réduction d'impôt) s'écrit en réutilisant les fonctions déjà écrites plutôt qu'en recopiant leur logique : chaque fonction reste responsable d'une seule règle, et la fonction finale se contente de les appeler et d'assembler leurs résultats.\n\n```javascript\nfunction CalculSalaireFinal() {\n    var salaireBrut = parseFloat(document.monFormulaire.salaireBrut.value);\n\n    var tauxImpot = 18 - CalculReduction();\n    var impot = salaireBrut * tauxImpot / 100;\n    var assurance = salaireBrut * 7 / 100;\n    var pension = salaireBrut * 5 / 100;\n\n    var salaireFinal = salaireBrut + CalculAddition() - impot - assurance - pension;\n\n    document.monFormulaire.resultat.value = salaireFinal;\n    return salaireFinal;\n}\n```\n\nLe taux d'impôt réellement appliqué n'est jamais 18 % fixe : c'est 18 % diminué de la réduction renvoyée par `CalculReduction()`, calculée à la question précédente. L'impôt, l'assurance (7 %) et le régime de pensions (5 %) sont chacun calculés séparément à partir du salaire brut, comme l'exige l'énoncé (« en décomptant les frais suivants »), puis retranchés du salaire brut auquel on ajoute le supplément renvoyé par `CalculAddition()`. Le résultat obtenu est donc : salaire brut, plus bonus/allocation éventuels, moins l'impôt réduit, moins l'assurance, moins la pension.\n\n### Piège à éviter\nNe calcule pas l'assurance et la pension sur le salaire brut diminué de l'impôt (« salaire imposable ») : l'énoncé décrit trois prélèvements distincts appliqués chacun au salaire brut, pas une cascade de prélèvements successifs. Appliquer les trois pourcentages en cascade change le résultat final et n'est pas ce que demande le sujet.\n\n### Conseil\nVérifie ton résultat avec un cas simple avant de le rendre : un salaire brut de 100 000 F, sans bonus, sans réduction, doit donner 100000 - 18000 - 7000 - 5000 = 70000 F. Si ta fonction ne retombe pas sur ce chiffre pour ce cas simple, une des trois retenues est mal calculée.",
+      "themes": [
+        "JavaScript",
+        "composition de fonctions",
+        "calcul de salaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q5-0",
+          "competence": "Composition de fonctions JavaScript pour un calcul final",
+          "contenu_markdown": "Un calcul final qui combine plusieurs règles déjà programmées séparément (ici un supplément et une réduction d'impôt) s'écrit en réutilisant les fonctions déjà écrites plutôt qu'en recopiant leur logique : chaque fonction reste responsable d'une seule règle, et la fonction finale se contente de les appeler et d'assembler leurs résultats.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "formulaire HTML",
+    "JavaScript",
+    "checkbox",
+    "calcul de salaire",
+    "tableau HTML",
+    "fonctions JavaScript"
+  ],
+  "incertitudes": [
+    "Fichier de référentiel programme officiel programme_officiel_cm_informatique.json introuvable sur cette machine : savoir_officiel laissé à null sur toutes les sous-questions de cette épreuve faute de référentiel disponible pour vérifier le rattachement.",
+    "Le barème cumulé des 5 sous-questions de cet exercice (0,5+1+1+1+1 = 4,5 pts) n'atteint pas les 5 points annoncés en tête d'exercice - incohérence de barème présente dans le sujet source, reproduite telle quelle sans correction inventée.",
+    "Le formulaire ne précise pas d'attribut name/id ni de nom de fonction JavaScript pour les champs autres que la fonction CalculAddition (imposée par l'énoncé) : les noms de variables et de formulaire (monFormulaire, salaireBrut, personnesACharge...) sont donc choisis de façon cohérente et documentée, mais ne sont pas imposés par le sujet - toute autre convention de nommage cohérente serait également acceptée par un correcteur."
+  ],
+  "statut": "brouillon"
+}

@@ -1,0 +1,282 @@
+{
+  "epreuve_source": "bac-ti-programmation-2024-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 2,
+  "introduction_markdown": "Partie II : Programmation procédurale en C (10 points)",
+  "points": "10",
+  "groupes": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\nConsidérons le programme C suivant :\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n#include <math.h>\nint taille=4;\n\nint module(complexe z){\n    return sqrt( pow(z.reel,2) + pow(z.imaginaire,2));\n}\n\nvoid permuter (complexe Z, complexe Y)\n{\n}\n\nint main()\n{\n    int i, tmp;\n    complexe z[5];\n    printf(\"Veuillez entrer 5 nombres complexes \\n\");\n    for(i=0;i<5;i++){\n        printf(\"\\n Entrez la partie reelle du nombre %d\\t\",i+1);\n        scanf(\"%f\",&z[i].reel);\n        printf(\"\\n Entrez la partie imaginaire du nombre %d\\t\",i+1);\n        scanf(\"%f\",&z[i].imaginaire);\n    }\n    while(taille>0) {\n        tmp=0;\n        for(i=1;i<=taille;i++){\n            if(module(z[tmp])< module (z[i]))\n                tmp=i;\n        }\n        if(tmp!=taille){\n            permuter (z[tmp], z[taille]);\n        }\n        taille--;\n    }\n    printf(\"\\n le resultat est \\n\");\n    for(i=0;i<5;i++) {\n      printf(\"%f + %f i \\t\", z[i].reel , z[i].imaginaire);\n    }\nreturn 0;\n}\n```\n\nÀ partir de ce programme et de vos connaissances en programmation C, répondre aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Définir **compilation**. (0,25pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa **compilation** est l'opération qui traduit un code source, écrit dans un langage de programmation de haut niveau (ici le C), en code objet puis en programme exécutable (langage machine), à l'aide d'un logiciel appelé **compilateur**.\n\nLa **compilation** est l'opération qui traduit un code source, écrit dans un langage de programmation de haut niveau (ici le C), en code objet puis en programme exécutable (langage machine), à l'aide d'un logiciel appelé **compilateur**. Elle permet notamment de détecter les erreurs de syntaxe avant toute exécution du programme.",
+      "themes": [
+        "compilation",
+        "définitions"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q1",
+          "competence": "Définir la compilation",
+          "contenu_markdown": "La **compilation** est l'opération qui traduit un code source, écrit dans un langage de programmation de haut niveau (ici le C), en code objet puis en programme exécutable (langage machine), à l'aide d'un logiciel appelé **compilateur**.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-compilation-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Donner deux (02) exemples d'IDE permettant d'écrire et d'exécuter un programme en C. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nDeux exemples d'IDE (environnements de développement intégré) pour le langage C : **Code::Blocks** et **Dev-C++** (on peut également citer Visual Studio, CLion ou Eclipse CDT).\n\nDeux exemples d'IDE (environnements de développement intégré) pour le langage C : **Code::Blocks** et **Dev-C++** (on peut également citer Visual Studio, CLion ou Eclipse CDT).",
+      "themes": [
+        "IDE",
+        "langage C",
+        "outils de développement"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q2",
+          "competence": "Citer des exemples d'IDE pour le langage C",
+          "contenu_markdown": "Deux exemples d'IDE (environnements de développement intégré) pour le langage C : **Code::Blocks** et **Dev-C++** (on peut également citer Visual Studio, CLion ou Eclipse CDT).",
+          "cours_genere": true,
+          "cours_id": "cours-citer-des-environnements-de-developpement-integres-ide-pour-compiler-un-programme-en-langage-c-bacprog2024-dup"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Donner la différence qui existe entre un tableau et une structure en C. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn **tableau** est une collection d'éléments tous de **même type**, stockés de manière contiguë en mémoire et accessibles par un **indice numérique**\n\nUn **tableau** est une collection d'éléments tous de **même type**, stockés de manière contiguë en mémoire et accessibles par un **indice numérique** (ex. `complexe z[5];`, où `z[0]`, `z[1]`... sont tous des `complexe`).\n\nUne **structure** regroupe des éléments (appelés membres ou champs) qui peuvent être de **types différents**, chacun accessible par son **propre nom** plutôt que par un indice (ex. `struct complexe { float reel; float imaginaire; };`, où `reel` et `imaginaire` sont deux membres nommés).",
+      "themes": [
+        "tableau",
+        "structure",
+        "types de données en C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q3",
+          "competence": "Distinguer tableau et structure en C",
+          "contenu_markdown": "Un **tableau** est une collection d'éléments tous de **même type**, stockés de manière contiguë en mémoire et accessibles par un **indice numérique**",
+          "cours_genere": true,
+          "cours_id": "cours-difference-entre-tableau-et-structure-en-c-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Expliquer comment faire la distinction entre une **fonction** et une **procédure** en C. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nEn C, il n'existe formellement qu'un seul type de sous-programme (la fonction), mais on distingue fonction et procédure par leur **type de retour** :\n\nEn C, il n'existe formellement qu'un seul type de sous-programme (la fonction), mais on distingue fonction et procédure par leur **type de retour** :\n\n- Une **fonction** renvoie une valeur exploitable par l'appelant : son type de retour est différent de `void`, et son corps contient une instruction `return valeur;`. Exemple ici : `int module(complexe z)`, qui renvoie le module calculé.\n- Une **procédure** n'a pas de valeur de retour utile : son type de retour est `void`, et elle se contente d'exécuter des instructions (éventuellement un `return;` sans valeur). Exemple ici : `void permuter(complexe Z, complexe Y)`.",
+      "themes": [
+        "fonction",
+        "procédure",
+        "langage C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q4",
+          "competence": "Distinguer fonction et procédure en C par le type de retour",
+          "contenu_markdown": "En C, il n'existe formellement qu'un seul type de sous-programme (la fonction), mais on distingue fonction et procédure par leur **type de retour** :",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-fonction-et-procedure-en-c-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Indiquer le rôle de l'instruction **return 0** dans un code source. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\n`return 0;` placé à la fin de la fonction `main()` termine l'exécution du programme et renvoie au système d'exploitation le code de retour **0**, qui signifie par convention que le programme s'est exécuté **avec succès**, sans erreur.\n\n`return 0;` placé à la fin de la fonction `main()` termine l'exécution du programme et renvoie au système d'exploitation le code de retour **0**, qui signifie par convention que le programme s'est exécuté **avec succès**, sans erreur.",
+      "themes": [
+        "return",
+        "main",
+        "code de retour"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q5",
+          "competence": "Indiquer le rôle de return 0 dans la fonction main",
+          "contenu_markdown": "`return 0;` placé à la fin de la fonction `main()` termine l'exécution du programme et renvoie au système d'exploitation le code de retour **0**, qui signifie par convention que le programme s'est exécuté **avec succès**, sans erreur.",
+          "cours_genere": true,
+          "cours_id": "cours-role-de-return-0-dans-un-programme-c-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Recenser dans ce programme : a. Une (01) bibliothèque ; b. Une (01) variable globale ; c. Un (01) paramètre formel ; d. Une (01) fonction d'entrée ; e. Un (01) format de données ; f. Un (01) appel de fonction ; g. Une (01) structure de données. (1,75pt)",
+      "corrige_markdown": "### Rappel de méthode\na. **Bibliothèque** : `stdio.h` (incluse par `#include <stdio.h>` ; on trouve également `stdlib.h` et `math.h`).\n\na. **Bibliothèque** : `stdio.h` (incluse par `#include <stdio.h>` ; on trouve également `stdlib.h` et `math.h`).\n\nb. **Variable globale** : `taille` (déclarée `int taille=4;` en dehors de toute fonction, donc accessible dans `main()` comme dans la boucle de tri).\n\nc. **Paramètre formel** : `z` dans `int module(complexe z)` (paramètre de la fonction `module`, on peut aussi citer `Z` et `Y` dans `permuter`).\n\nd. **Fonction d'entrée** : `main()` (point d'entrée de l'exécution du programme).\n\ne. **Format de données** : `%f` (utilisé dans les `scanf()`/`printf()` pour lire et afficher les parties réelle et imaginaire, de type flottant).\n\nf. **Appel de fonction** : `module(z[tmp])` (appel de la fonction `module` à l'intérieur de la condition du `if`, dans la boucle de tri).\n\ng. **Structure de données** : `complexe` (le type utilisé pour déclarer `z[5]`, regroupant une partie réelle et une partie imaginaire).",
+      "themes": [
+        "bibliothèque",
+        "variable globale",
+        "paramètre formel",
+        "structure de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q6",
+          "competence": "Identifier les éléments constitutifs d'un programme C (bibliothèque, variable globale, paramètre, fonction d'entrée, format, appel, structure)",
+          "contenu_markdown": "a. **Bibliothèque** : `stdio.h` (incluse par `#include <stdio.h>` ; on trouve également `stdlib.h` et `math.h`).",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-elements-constitutifs-dun-programme-c-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Définir la structure **complexe** permettant de définir un nombre complexe comme un nombre ayant une partie réelle et une partie imaginaire toutes deux représentées par des nombres réels. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nle `typedef` permet ensuite d'utiliser directement `complexe` comme nom de type (comme dans `complexe z[5];`), sans devoir écrire `struct complexe` à chaque déclaration.\n\n```c\nstruct complexe {\n    float reel;\n    float imaginaire;\n};\ntypedef struct complexe complexe;\n```\n\nLes deux membres `reel` et `imaginaire` sont de type `float` (nombres réels), conformément à l'énoncé ; le `typedef` permet ensuite d'utiliser directement `complexe` comme nom de type (comme dans `complexe z[5];`), sans devoir écrire `struct complexe` à chaque déclaration.",
+      "themes": [
+        "structure",
+        "typedef",
+        "nombre complexe"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q7",
+          "competence": "Définir une structure C avec typedef pour un nombre complexe",
+          "contenu_markdown": "le `typedef` permet ensuite d'utiliser directement `complexe` comme nom de type (comme dans `complexe z[5];`), sans devoir écrire `struct complexe` à chaque déclaration.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-une-structure-c-pour-un-nombre-complexe-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Écrire le code de la procédure **permuter()**. (1,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nles paramètres `Z` et `Y` étant ici passés **par valeur** (et non par pointeur), ce code échange uniquement les copies locales `Z` et `Y` à l'intérieur de `permuter()` ; il ne modifie **pas** les éléments `z[tmp]` et `z[taille]` du tableau dans `main()`.\n\nEn reprenant exactement l'en-tête imposée par l'énoncé, `void permuter (complexe Z, complexe Y)`, une implémentation directe échange les deux paramètres locaux à l'aide d'une variable temporaire :\n\n```c\nvoid permuter (complexe Z, complexe Y)\n{\n    complexe tmp;\n    tmp = Z;\n    Z = Y;\n    Y = tmp;\n}\n```\n\n**Attention (voir incertitude ci-dessous)** : les paramètres `Z` et `Y` étant ici passés **par valeur** (et non par pointeur), ce code échange uniquement les copies locales `Z` et `Y` à l'intérieur de `permuter()` ; il ne modifie **pas** les éléments `z[tmp]` et `z[taille]` du tableau dans `main()`. Pour que l'échange soit réellement répercuté dans le tableau appelant, il faudrait déclarer `permuter` avec des pointeurs et l'appeler avec l'opérateur d'adresse :\n\n```c\nvoid permuter (complexe *Z, complexe *Y)\n{\n    complexe tmp;\n    tmp = *Z;\n    *Z = *Y;\n    *Y = tmp;\n}\n/* appel : permuter(&z[tmp], &z[taille]); */\n```",
+      "themes": [
+        "procédure",
+        "passage par valeur",
+        "passage par pointeur",
+        "échange de variables"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q8",
+          "competence": "Écrire une procédure d'échange et distinguer passage par valeur et passage par pointeur",
+          "contenu_markdown": "les paramètres `Z` et `Y` étant ici passés **par valeur** (et non par pointeur), ce code échange uniquement les copies locales `Z` et `Y` à l'intérieur de `permuter()` ; il ne modifie **pas** les éléments `z[tmp]` et `z[taille]` du tableau dans `main()`.",
+          "cours_genere": true,
+          "cours_id": "cours-passage-par-valeur-vs-passage-par-pointeur-en-c-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "Exécuter cet algorithme pour les valeurs suivantes : 3+2i, 1+i, √3+i√2, 5.7+3i. (2pts)",
+      "corrige_markdown": "### Rappel de méthode\nL'algorithme place, à chaque tour de la boucle `while`, le nombre de **plus grand module** trouvé dans la portion `[0, taille]` à la position `taille`, puis réduit `taille` de 1 (tri par sélection du maximum, placé en fin de portion) :\n\n**Incertitude sur les données** : le tableau `z` déclaré dans le programme contient **5** nombres complexes (`complexe z[5];`, boucles `for(i=0;i<5;i++)`), mais l'énoncé n'en fournit que **4** dans le tableau de valeurs ci-dessus ; un cinquième nombre complexe est manquant dans le sujet source. La trace ci-dessous est donc réalisée, à titre pédagogique, sur ces **4** valeurs connues (indices 0 à 3), en adaptant la borne de la boucle de tri en conséquence (`taille` initial = 3 au lieu de 4) ; la méthode reste rigoureusement la même pour un tableau de 5 éléments.\n\nOn calcule d'abord le module de chaque nombre complexe (`module(z)` = √(reel² + imaginaire²)) :\n\n| Indice | Nombre | Module |\n|---|---|---|\n| z[0] | 3+2i | √(9+4) = √13 ≈ 3,606 |\n| z[1] | 1+i | √(1+1) = √2 ≈ 1,414 |\n| z[2] | √3+i√2 | √(3+2) = √5 ≈ 2,236 |\n| z[3] | 5,7+3i | √(32,49+9) = √41,49 ≈ 6,441 |\n\nL'algorithme place, à chaque tour de la boucle `while`, le nombre de **plus grand module** trouvé dans la portion `[0, taille]` à la position `taille`, puis réduit `taille` de 1 (tri par sélection du maximum, placé en fin de portion) :\n\n**Tour 1 (taille = 3)** : tmp=0 (module 3,606). i=1 : 3,606 < 1,414 ? non. i=2 : 3,606 < 2,236 ? non. i=3 : 3,606 < 6,441 ? oui -> tmp=3. Comme tmp (3) = taille (3), aucun échange nécessaire. taille devient 2.\nÉtat : z[0]=3,606 ; z[1]=1,414 ; z[2]=2,236 ; z[3]=6,441 (déjà bien placé).\n\n**Tour 2 (taille = 2)** : tmp=0 (module 3,606). i=1 : 3,606 < 1,414 ? non. i=2 : 3,606 < 2,236 ? non. tmp reste 0. Comme tmp (0) != taille (2), on échange z[0] et z[2].\nÉtat : z[0]=2,236 (√3+i√2) ; z[1]=1,414 (1+i) ; z[2]=3,606 (3+2i) ; z[3]=6,441 (5,7+3i). taille devient 1.\n\n**Tour 3 (taille = 1)** : tmp=0 (module 2,236). i=1 : 2,236 < 1,414 ? non. tmp reste 0. Comme tmp (0) != taille (1), on échange z[0] et z[1].\nÉtat : z[0]=1,414 (1+i) ; z[1]=2,236 (√3+i√2) ; z[2]=3,606 (3+2i) ; z[3]=6,441 (5,7+3i). taille devient 0, la boucle `while` s'arrête.\n\n**Résultat final (ordre croissant de module)** : `1+i`, `√3+i√2`, `3+2i`, `5,7+3i`.\n\n(Rappel : conformément à la remarque de la question 8, cet échange logique ne serait effectif sur le tableau réel que si `permuter()` recevait des pointeurs ; la trace ci-dessus décrit le résultat *attendu* de l'algorithme tel que conçu.)",
+      "themes": [
+        "tri par sélection",
+        "module d'un complexe",
+        "trace d'exécution"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q9",
+          "competence": "Tracer l'exécution d'un tri par sélection sur un tableau de nombres complexes",
+          "contenu_markdown": "L'algorithme place, à chaque tour de la boucle `while`, le nombre de **plus grand module** trouvé dans la portion `[0, taille]` à la position `taille`, puis réduit `taille` de 1 (tri par sélection du maximum, placé en fin de portion) :",
+          "cours_genere": true,
+          "cours_id": "cours-tracer-un-tri-par-selection-de-nombres-complexes-bacprog2024"
+        }
+      ]
+    },
+    {
+      "numero": "10",
+      "enonce_markdown": "Indiquer ce que permet de faire ce programme. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nCe programme permet de **trier un tableau de nombres complexes par ordre croissant de leur module**, en demandant à l'utilisateur de saisir 5 nombres complexes (partie réelle et partie imaginaire), puis en appliquant un **tri par sélection**\n\nCe programme permet de **trier un tableau de nombres complexes par ordre croissant de leur module**, en demandant à l'utilisateur de saisir 5 nombres complexes (partie réelle et partie imaginaire), puis en appliquant un **tri par sélection** (recherche répétée du plus grand module restant, placé en fin de portion active du tableau), avant d'afficher le tableau trié.",
+      "themes": [
+        "tri par sélection",
+        "objectif d'un programme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2024-ex2-q10",
+          "competence": "Identifier l'objectif global d'un programme de tri",
+          "contenu_markdown": "Ce programme permet de **trier un tableau de nombres complexes par ordre croissant de leur module**, en demandant à l'utilisateur de saisir 5 nombres complexes (partie réelle et partie imaginaire), puis en appliquant un **tri par sélection**",
+          "cours_genere": true,
+          "cours_id": "cours-objectif-dun-programme-de-tri-par-selection-bacprog2024"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "structure",
+    "tableau",
+    "fonction",
+    "procédure",
+    "tri par sélection",
+    "nombre complexe",
+    "passage par valeur",
+    "passage par pointeur"
+  ],
+  "incertitudes": [
+    "Question 9 (trace d'exécution) : le programme déclare un tableau de 5 nombres complexes (`complexe z[5];`), mais l'énoncé ne fournit que 4 valeurs à exécuter (3+2i, 1+i, √3+i√2, 5,7+3i). Un cinquième nombre complexe manque dans le sujet source. La trace fournie est adaptée sur les 4 valeurs connues, la méthode restant identique pour un tableau de 5 éléments.",
+    "Question 8 : le prototype imposé par l'énoncé, `void permuter (complexe Z, complexe Y)`, passe les paramètres par valeur. Techniquement, une telle procédure ne peut pas modifier le tableau `z` de `main()` lors de l'appel `permuter(z[tmp], z[taille])` : seules des copies locales sont échangées. Le corrigé respecte l'en-tête imposée (réponse attendue à la question 8) tout en signalant explicitement cette limite et la correction par pointeurs qui rendrait le tri réellement effectif.",
+    "La fonction `module()` est déclarée avec un type de retour `int` (`int module(complexe z)`) alors que son corps renvoie le résultat de `sqrt()`, une valeur flottante ; ceci tronquerait le module à sa partie entière en toute rigueur C. Ce point n'affecte pas la comparaison de modules dans la trace de la question 9 pour les valeurs fournies (l'ordre relatif des modules entiers tronqués reste le même), mais est signalé par souci de fidélité au code imprimé."
+  ],
+  "statut": "brouillon"
+}

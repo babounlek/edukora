@@ -1,0 +1,279 @@
+{
+  "epreuve_source": "bac-ti-programmation-2022-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": 3,
+  "numero_exercice": 3,
+  "introduction_markdown": "Partie II : Programmation procedurale en C (10 points)",
+  "points": "10",
+  "groupes": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3**\n\nSoit le programme C ci-dessous qui permet de produire partiellement une facture.\n\n```c\n 1: #include <stdio.h>\n 2: #include <stdlib.h>\n 3: #define Max 4\n 4: struct produit {\n 5: char designation[20];\n 6: int qantite ;\n 7: float prix;\n 8: float montant;\n 9: };\n10: struct produit list[Max];\n11: int i;\n12: int main() {\n13:     for (i = 0; i < Max; i++) {\n14:       printf(\"\\nEntrez le nom du produit : \");\n15:       scanf(\"%20s\", list[i].designation);\n16:       printf(\"Entrez la quantite souhaitee: \");\n17:       scanf(\"%10s\", list[i].quantite);\n18:       printf(\"Entrez le prix unitaire du produit : \");\n19:       scanf(\"%10s\", list[i].prix);\n20:       list[i].montant = list[i].quantite * list[i].prix;\n21:     }\n22:     printf(\"\\n\\n\");\n23:     for (i = 0; i < Max; i++) {\n24:       printf(\"\\nLes produits de la facture sont : %s %d %f = %f FCFA\\n\", list[i].designation,\n          list[i].quantite, list[i].prix, list[i].montant);\n25:     }\n26:     return 0;\n27: }\n```\n\nEn vous servant du code ci-dessus et de vos connaissances en programmation C, repondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": 1,
+      "enonce_markdown": "Definir le terme Programme. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn programme est une suite ordonnée d'instructions, écrites dans un langage de programmation, que l'ordinateur exécute pour résoudre un problème ou accomplir une tâche. Pour le définir, on précise qu'il est écrit dans un langage (par exemple le C) puis traduit en langage machine par un compilateur ou un interpréteur. Attention : ne pas confondre le programme (le code) avec le processus, c'est-à-dire son exécution en mémoire.\n\nUn **programme** est un ensemble ordonne d'instructions, ecrites dans un langage de programmation (ici le C), qui indiquent a un ordinateur la suite d'operations a executer pour resoudre un probleme ou realiser une tache donnee -- ici, saisir les produits d'une facture et calculer leur montant.",
+      "themes": [
+        "definitions",
+        "programme informatique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q1",
+          "competence": "Definir la notion de programme informatique",
+          "contenu_markdown": "Un programme est une suite ordonnée d'instructions, écrites dans un langage de programmation, que l'ordinateur exécute pour résoudre un problème ou accomplir une tâche. Pour le définir, on précise qu'il est écrit dans un langage (par exemple le C) puis traduit en langage machine par un compilateur ou un interpréteur. Attention : ne pas confondre le programme (le code) avec le processus, c'est-à-dire son exécution en mémoire.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-programme-compilateur-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "enonce_markdown": "Decrire les deux bibliotheques utilisees dans ce code. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nEn C, la directive `#include` insère une bibliothèque, c'est-à-dire un ensemble de fonctions déjà écrites. `<stdio.h>` (Standard Input Output) fournit les entrées-sorties comme `printf()` et `scanf()`. `<stdlib.h>` (Standard Library) fournit des utilitaires généraux : allocation mémoire (`malloc`, `free`), conversions (`atoi`) et `exit()`. Pour décrire une bibliothèque, on donne son nom, sa signification et quelques fonctions typiques. Attention : elle est déclarée avec `#include` en début de fichier, sans point-virgule.\n\n**`<stdio.h>`** (ligne 1) : bibliotheque d'entrees-sorties standard (\"STanDard Input/Output\"), qui fournit les fonctions de lecture et d'ecriture comme `scanf()` (lecture au clavier) et `printf()` (affichage a l'ecran), utilisees tout au long de ce programme.\n- **`<stdlib.h>`** (ligne 2) : bibliotheque standard generale (\"STanDard LIBrary\"), qui fournit notamment des fonctions de gestion memoire (`malloc`, `free`), de conversion (`atoi`, `atof`) et d'utilitaires divers ; elle n'est pas strictement indispensable a ce programme tel qu'ecrit, mais est habituellement incluse par prudence des qu'on manipule des tableaux ou des conversions.",
+      "themes": [
+        "bibliotheques C",
+        "stdio.h",
+        "stdlib.h"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q2",
+          "competence": "Decrire le role des bibliotheques stdio.h et stdlib.h en C",
+          "contenu_markdown": "En C, la directive `#include` insère une bibliothèque, c'est-à-dire un ensemble de fonctions déjà écrites. `<stdio.h>` (Standard Input Output) fournit les entrées-sorties comme `printf()` et `scanf()`. `<stdlib.h>` (Standard Library) fournit des utilitaires généraux : allocation mémoire (`malloc`, `free`), conversions (`atoi`) et `exit()`. Pour décrire une bibliothèque, on donne son nom, sa signification et quelques fonctions typiques. Attention : elle est déclarée avec `#include` en début de fichier, sans point-virgule.",
+          "cours_genere": true,
+          "cours_id": "cours-bibliotheques-standard-c-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": "3.1",
+      "enonce_markdown": "Donner le role de la ligne 3. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa directive `#define NOM valeur` déclare une constante symbolique gérée par le préprocesseur : avant la compilation, chaque occurrence de `NOM` est remplacée textuellement par la valeur. Elle centralise une valeur fixe, comme la taille d'un tableau, ce qui facilite sa modification et rend le code lisible. Attention : il n'y a ni signe `=` ni point-virgule, et ce n'est pas une variable, donc aucune mémoire ne lui est réservée.\n\nLa ligne 3 (`#define Max 4`) declare une **constante symbolique** nommee `Max`, de valeur `4`, grace a la directive de preprocesseur `#define`. Partout ou `Max` apparait dans le code (lignes 10, 13, 23), le preprocesseur le remplace textuellement par `4` avant la compilation. Cela permet de fixer en un seul endroit le nombre de produits geres par le programme, et de le modifier facilement si besoin.",
+      "themes": [
+        "#define",
+        "constante",
+        "preprocesseur C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q3-1",
+          "competence": "Donner le role d'une directive #define en C",
+          "contenu_markdown": "La directive `#define NOM valeur` déclare une constante symbolique gérée par le préprocesseur : avant la compilation, chaque occurrence de `NOM` est remplacée textuellement par la valeur. Elle centralise une valeur fixe, comme la taille d'un tableau, ce qui facilite sa modification et rend le code lisible. Attention : il n'y a ni signe `=` ni point-virgule, et ce n'est pas une variable, donc aucune mémoire ne lui est réservée.",
+          "cours_genere": true,
+          "cours_id": "cours-constantes-define-const-c-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": "3.2",
+      "enonce_markdown": "Donner le role de la ligne 10. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne instruction du type `struct type nom[N];` déclare un tableau de N éléments, chacun étant une structure du type indiqué. Une structure regroupe plusieurs champs de types différents sous un même nom, et le tableau permet de stocker plusieurs enregistrements indexés de 0 à N-1. On accède à un champ avec `nom[i].champ`. Attention : les indices vont de 0 à N-1, donc l'accès à `nom[N]` sort du tableau.\n\nLa ligne 10 (`struct produit list[Max];`) declare un **tableau** nomme `list`, de `Max` (soit 4) elements, ou chaque element est une structure de type `struct produit` (definie lignes 4-9, avec les champs designation, qantite/quantite, prix et montant). Cela permet de stocker, dans une seule variable indexable, les informations des 4 produits de la facture.",
+      "themes": [
+        "structure",
+        "tableau de structures",
+        "langage C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q3-2",
+          "competence": "Donner le role de la declaration d'un tableau de structures en C",
+          "contenu_markdown": "Une instruction du type `struct type nom[N];` déclare un tableau de N éléments, chacun étant une structure du type indiqué. Une structure regroupe plusieurs champs de types différents sous un même nom, et le tableau permet de stocker plusieurs enregistrements indexés de 0 à N-1. On accède à un champ avec `nom[i].champ`. Attention : les indices vont de 0 à N-1, donc l'accès à `nom[N]` sort du tableau.",
+          "cours_genere": true,
+          "cours_id": "cours-declarer-un-tableau-de-structures-en-c"
+        }
+      ]
+    },
+    {
+      "numero": "3.3",
+      "enonce_markdown": "Donner le role de la ligne 22. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUn `printf` dont la chaîne ne contient aucun format (`%d`, `%s`...) n'affiche que du texte fixe. La séquence d'échappement `\\n` provoque un retour à la ligne, donc chaque `\\n` supplémentaire ajoute une ligne vide. Ces instructions servent à aérer l'affichage et à séparer visuellement deux phases du programme, comme la saisie et le résultat. Attention : elles n'affectent aucune donnée ni variable du programme.\n\nLa ligne 22 (`printf(\"\\n\\n\");`) n'affiche aucune donnee : elle insere simplement **deux sauts de ligne** a l'ecran. Placee juste apres la boucle de saisie (lignes 13-21) et avant la boucle d'affichage de la facture (lignes 23-25), elle sert uniquement a aerer visuellement la sortie du programme, en separant clairement la phase de saisie de la phase d'affichage des resultats.",
+      "themes": [
+        "printf",
+        "mise en forme de l'affichage",
+        "langage C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q3-3",
+          "competence": "Donner le role d'un printf de mise en forme sans variable (ex: printf(\"\\n\\n\"))",
+          "contenu_markdown": "Un `printf` dont la chaîne ne contient aucun format (`%d`, `%s`...) n'affiche que du texte fixe. La séquence d'échappement `\\n` provoque un retour à la ligne, donc chaque `\\n` supplémentaire ajoute une ligne vide. Ces instructions servent à aérer l'affichage et à séparer visuellement deux phases du programme, comme la saisie et le résultat. Attention : elles n'affectent aucune donnée ni variable du programme.",
+          "cours_genere": true,
+          "cours_id": "cours-role-des-instructions-daffichage-de-mise-en-forme-en-c"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "enonce_markdown": "Executer pas a pas ce programme pour les valeurs suivantes :\nlist[0] = [Ordinateur, 5, 250000]\nlist[1] = [Disque dur externe, 20, 40000]\nlist[2] = [Souris optique, 12, 12000]\nlist[3] = [Anti-virus, 5, 25000]\n(2,5 pts)",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter un programme pas à pas, on construit un tableau de suivi avec une colonne par variable importante (compteur, champs modifiés) et une ligne par itération. On applique chaque instruction dans l'ordre exact du code, en notant les valeurs lues, les calculs effectués puis les affichages produits, avant d'écrire le résultat final. On vérifie aussi la syntaxe, car une coquille dans un nom de champ peut empêcher la compilation. Attention : `scanf(\"%s\")` s'arrête au premier espace, ce qui peut fausser la lecture d'une chaîne composée de plusieurs mots.\n\n**Piege a eviter avant de commencer** : le code source presente deux anomalies. D'une part, le champ est declare `qantite` (ligne 6, sans le u) mais utilise partout ailleurs sous le nom `quantite` (lignes 17, 20, 24) -- tel quel, ce code ne compilerait pas (`quantite` ne serait pas un membre connu de la structure) ; il faut comprendre qu'il s'agit d'une coquille du sujet et que `qantite` et `quantite` designent le meme champ. \n\nD'autre part, les lignes 17 et 19 utilisent le format `%10s` (chaine de caracteres) et omettent l'operateur d'adresse `&` pour lire un `int` (`list[i].quantite`) et un `float` (`list[i].prix`) : le format correct aurait ete `scanf(\"%d\", &list[i].quantite);` et `scanf(\"%f\", &list[i].prix);`. Ces deux points sont de veritables erreurs de programmation dans le sujet ; la trace ci-dessous suit neanmoins l'intention evidente de l'algorithme (saisir correctement la quantite et le prix de chaque produit), comme le permettent les valeurs fournies par l'enonce.\n\n**Boucle de saisie (lignes 13 a 21), pour i de 0 a 3 :**\n\n| i | designation | quantite | prix | montant = quantite x prix |\n|---|---|---|---|---|\n| 0 | Ordinateur | 5 | 250000 | 5 x 250000 = **1 250 000** |\n| 1 | Disque dur externe | 20 | 40000 | 20 x 40000 = **800 000** |\n| 2 | Souris optique | 12 | 12000 | 12 x 12000 = **144 000** |\n| 3 | Anti-virus | 5 | 25000 | 5 x 25000 = **125 000** |\n\nA la fin de cette boucle, `i` vaut 4 et la condition `i < Max` (4 < 4) devient fausse : la boucle s'arrete.\n\n**Ligne 22** : affichage de deux sauts de ligne (separation visuelle).\n\n**Boucle d'affichage (lignes 23 a 25), pour i de 0 a 3 :**\n\n```\nLes produits de la facture sont : Ordinateur 5 250000.000000 = 1250000.000000 FCFA\nLes produits de la facture sont : Disque dur externe 20 40000.000000 = 800000.000000 FCFA\nLes produits de la facture sont : Souris optique 12 12000.000000 = 144000.000000 FCFA\nLes produits de la facture sont : Anti-virus 5 25000.000000 = 125000.000000 FCFA\n```\n\n(Le format `%f` de `printf` affiche par defaut 6 chiffres apres la virgule, d'ou `250000.000000` bien que `prix` et `montant` soient ici des valeurs entieres stockees en `float`.) Le programme se termine ensuite normalement avec `return 0;`.",
+      "themes": [
+        "trace d'execution",
+        "structure",
+        "tableau de structures",
+        "langage C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q4",
+          "competence": "Tracer l'execution d'une boucle de saisie et de calcul sur un tableau de structures en C",
+          "contenu_markdown": "Pour exécuter un programme pas à pas, on construit un tableau de suivi avec une colonne par variable importante (compteur, champs modifiés) et une ligne par itération. On applique chaque instruction dans l'ordre exact du code, en notant les valeurs lues, les calculs effectués puis les affichages produits, avant d'écrire le résultat final. On vérifie aussi la syntaxe, car une coquille dans un nom de champ peut empêcher la compilation. Attention : `scanf(\"%s\")` s'arrête au premier espace, ce qui peut fausser la lecture d'une chaîne composée de plusieurs mots.",
+          "cours_genere": true,
+          "cours_id": "cours-tracer-execution-dune-boucle-de-saisie-et-calcul-sur-un-tableau-de-structures-en-c"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "enonce_markdown": "Definir le prototype de la fonction somme() qui permettra de calculer le montant total de la facture. (2,5 pts)",
+      "corrige_markdown": "### Rappel de méthode\nLe prototype d'une fonction en C déclare son en-tête sans corps, avec la syntaxe `type_retour nom(type1 param1, type2 param2);`. Le type de retour se déduit de la nature du résultat (un total de montants décimaux donne `float`), et les paramètres correspondent aux données dont la fonction a besoin. Un tableau se passe avec sa taille, car la fonction ne peut pas la connaître seule. Attention : le prototype se termine par un point-virgule et ne contient pas les accolades.\n\nLa fonction doit recevoir le tableau de structures (et sa taille, pour pouvoir le parcourir) et renvoyer un total, donc un nombre a virgule flottante (les montants sont des `float`) :\n\n```c\nfloat somme(struct produit list[], int n);\n```\n\n`struct produit list[]` : le tableau de produits a parcourir (passe automatiquement par reference en C, comme tout tableau).\n- `int n` : le nombre d'elements effectivement remplis dans ce tableau (ici `Max`), necessaire car un tableau en C ne connait pas sa propre taille.\n- `float` (type de retour) : le montant total cumule, coherent avec le type du champ `montant` de chaque produit.\n\nUne implementation possible serait :\n\n```c\nfloat somme(struct produit list[], int n) {\n    float total = 0;\n    for (int k = 0; k < n; k++) {\n        total += list[k].montant;\n    }\n    return total;\n}\n```",
+      "themes": [
+        "prototype de fonction",
+        "langage C",
+        "tableau de structures"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q5",
+          "competence": "Definir le prototype d'une fonction qui calcule une somme sur un tableau de structures",
+          "contenu_markdown": "Le prototype d'une fonction en C déclare son en-tête sans corps, avec la syntaxe `type_retour nom(type1 param1, type2 param2);`. Le type de retour se déduit de la nature du résultat (un total de montants décimaux donne `float`), et les paramètres correspondent aux données dont la fonction a besoin. Un tableau se passe avec sa taille, car la fonction ne peut pas la connaître seule. Attention : le prototype se termine par un point-virgule et ne contient pas les accolades.",
+          "cours_genere": true,
+          "cours_id": "cours-prototype-fonction-c-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "enonce_markdown": "Indiquer a quel niveau sera placee la declaration de la fonction somme() definie precedemment. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nLe compilateur C lit le fichier de haut en bas et doit connaître une fonction avant son premier appel. On place donc le prototype après les `#include`, les `#define` et les définitions de types dont il a besoin, mais avant la fonction `main()`. La définition complète de la fonction peut alors venir plus loin dans le fichier. Attention : sans prototype ni définition préalable, le compilateur signale un avertissement ou une erreur de déclaration implicite à l'appel.\n\nLe prototype `float somme(struct produit list[], int n);` doit etre place **avant la fonction `main()`** (donc apres les lignes 1 a 11 : includes, `#define`, definition de `struct produit`, declaration du tableau `list` et de `i`, mais avant la ligne 12 `int main()`). Cela permet au compilateur de connaitre la signature de `somme()` -- et donc de verifier les types des arguments et du retour -- des que cette fonction est appelee a l'interieur de `main()`, meme si son corps complet n'est defini que plus loin dans le fichier (ou dans un autre fichier).",
+      "themes": [
+        "prototype de fonction",
+        "organisation du code C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q6",
+          "competence": "Placer la declaration (prototype) d'une fonction avant main()",
+          "contenu_markdown": "Le compilateur C lit le fichier de haut en bas et doit connaître une fonction avant son premier appel. On place donc le prototype après les `#include`, les `#define` et les définitions de types dont il a besoin, mais avant la fonction `main()`. La définition complète de la fonction peut alors venir plus loin dans le fichier. Attention : sans prototype ni définition préalable, le compilateur signale un avertissement ou une erreur de déclaration implicite à l'appel.",
+          "cours_genere": true,
+          "cours_id": "cours-prototype-fonction-c-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "enonce_markdown": "Donner la difference entre une variable globale et une variable locale. (0,5 pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne variable globale est déclarée en dehors de toute fonction : elle est visible depuis tout le fichier, existe pendant toute l'exécution du programme et peut être modifiée par n'importe quelle fonction. Une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc : elle n'est visible que là et disparaît quand ce bloc se termine. Attention : si une variable locale porte le même nom qu'une globale, elle masque cette dernière dans son bloc.\n\nUne **variable globale** (comme `list` et `i`, declarees lignes 10-11, en dehors de toute fonction) est declaree en dehors de toute fonction : elle est visible et modifiable depuis n'importe quelle fonction du fichier, et conserve sa valeur pendant toute la duree d'execution du programme.\n\nUne **variable locale** (comme `total` ou `k` dans la fonction `somme()` proposee a la question 5) est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et utilisable qu'a l'interieur de ce bloc, et elle est detruite (sa memoire est liberee) des que l'execution sort de ce bloc.",
+      "themes": [
+        "variable globale",
+        "variable locale",
+        "portee des variables"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q7",
+          "competence": "Distinguer variable globale et variable locale en C",
+          "contenu_markdown": "Une variable globale est déclarée en dehors de toute fonction : elle est visible depuis tout le fichier, existe pendant toute l'exécution du programme et peut être modifiée par n'importe quelle fonction. Une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc : elle n'est visible que là et disparaît quand ce bloc se termine. Attention : si une variable locale porte le même nom qu'une globale, elle masque cette dernière dans son bloc.",
+          "cours_genere": true,
+          "cours_id": "cours-portee-variables-c-bacprog2022-dup"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "enonce_markdown": "Reecrire le bout de code allant de la ligne 23 a la ligne 25 en utilisant la boucle while(). (1 pt)",
+      "corrige_markdown": "### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se réécrit en `while` en trois temps : l'initialisation est placée juste avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle, après le traitement. Le corps de la boucle reste identique. Attention : oublier l'incrément en fin de corps provoque une boucle infinie, et placer l'incrément avant le traitement décale les indices.\n\nLe code original est une boucle `for` qui affiche chacun des `Max` produits :\n\n```c\ni = 0;\nwhile (i < Max) {\n    printf(\"\\nLes produits de la facture sont : %s %d %f = %f FCFA\\n\", list[i].designation,\n        list[i].quantite, list[i].prix, list[i].montant);\n    i++;\n}\n```\n\nComme pour toute conversion `for` -> `while`, l'initialisation (`i = 0`) est placee avant la boucle, la condition d'arret (`i < Max`) devient la condition du `while`, et l'increment (`i++`) est deplace en derniere instruction du corps de la boucle, pour reproduire exactement le meme deroulement que la boucle `for` d'origine.",
+      "themes": [
+        "boucle for",
+        "boucle while",
+        "conversion de boucle",
+        "langage C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bacprog2022-ex3-q8",
+          "competence": "Convertir une boucle for en boucle while en langage C",
+          "contenu_markdown": "Toute boucle `for (init; condition; incrément)` se réécrit en `while` en trois temps : l'initialisation est placée juste avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle, après le traitement. Le corps de la boucle reste identique. Attention : oublier l'incrément en fin de corps provoque une boucle infinie, et placer l'incrément avant le traitement décale les indices.",
+          "cours_genere": true,
+          "cours_id": "cours-convertir-for-while-c-bacprog2022-dup"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "structure",
+    "tableau de structures",
+    "scanf",
+    "prototype de fonction",
+    "for vers while",
+    "portee des variables"
+  ],
+  "incertitudes": [
+    "Le champ de la structure produit est declare `qantite` (ligne 6, sans le u) mais utilise partout ailleurs sous le nom `quantite` (lignes 17, 20, 24) : il s'agit d'une coquille du document source. Le code tel quel ne compilerait pas ; le corrige traite les deux noms comme designant le meme champ, conformement a l'intention evidente de l'enonce.",
+    "Les lignes 17 et 19 lisent un champ entier (quantite) et un champ flottant (prix) avec le format chaine `%10s` et sans l'operateur d'adresse `&` (`scanf(\"%10s\", list[i].quantite)` et `scanf(\"%10s\", list[i].prix)`), alors que les formats corrects auraient ete `%d`/`%f` precedes de `&`. C'est une erreur de programmation presente dans le sujet source ; elle est signalee au debut du corrige de la question 4 (trace d'execution), qui suit neanmoins l'intention algorithmique du programme en utilisant les valeurs fournies par l'enonce."
+  ],
+  "statut": "brouillon"
+}

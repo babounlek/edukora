@@ -1,0 +1,155 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-officiel-2026.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "examen": "bac",
+  "serie": "C, D, E",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "statut": "brouillon",
+  "numero_exercice": "3",
+  "introduction_markdown": null,
+  "points": 4,
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (4 points)**\n\nSoit la table suivante représentant les informations sur les employés d'une entreprise de construction.\n\nTable : Employes\n\n| Code | Noms | Titre | Salaire |\n|---|---|---|---|\n| C001 | KOLAGUE Grâce | Médecin | 190 000 |\n| C002 | TCHISSA Jonathan | Ingénieur BTP | 300 000 |\n| C003 | KANA Herschell | Enseignant | 210 000 |",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Citer un exemple de logiciel permettant d'implémenter cette table. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nImplémenter une table relationnelle suppose un logiciel de la famille des systèmes de gestion de bases de données (SGBD), un programme spécialisé dans le stockage structuré, l'interrogation et la manipulation de données organisées en tables.\n\nOn peut citer, par exemple, MySQL, un système de gestion de base de données relationnelle libre et largement utilisé pour implémenter ce type de table. Microsoft Access, Oracle Database ou PostgreSQL sont d'autres exemples valables de SGBD permettant d'implémenter la table Employes.\n\n### Conseil\nCite un vrai SGBD relationnel (MySQL, Access, Oracle, PostgreSQL, SQL Server) plutôt qu'un simple tableur comme Excel : un tableur n'est pas conçu pour gérer les relations entre plusieurs tables ni pour interroger les données avec un langage comme SQL.",
+      "themes": [
+        "Systèmes de gestion de bases de données",
+        "SGBD",
+        "Implémentation d'une table"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex3-q1-0",
+          "competence": "Identifier un logiciel de gestion de base de données (SGBD)",
+          "contenu_markdown": "Implémenter une table relationnelle suppose un logiciel de la famille des systèmes de gestion de bases de données (SGBD), un programme spécialisé dans le stockage structuré, l'interrogation et la manipulation de données organisées en tables.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Donner la signification du sigle SQL. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn sigle informatique se développe en reprenant, dans l'ordre, la signification complète de chacune de ses lettres dans la langue d'origine du terme.\n\nSQL signifie Structured Query Language, c'est-à-dire « langage de requête structuré » (ou langage d'interrogation structuré) en français. C'est le langage standard utilisé pour créer, interroger et manipuler les données d'une base de données relationnelle.",
+      "themes": [
+        "SQL",
+        "Vocabulaire des bases de données",
+        "Langage de requête"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex3-q2-0",
+          "competence": "Développer le sigle SQL",
+          "contenu_markdown": "Un sigle informatique se développe en reprenant, dans l'ordre, la signification complète de chacune de ses lettres dans la langue d'origine du terme.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Écrire la requête SQL qui permet d'enregistrer l'employé (\"C004\", \"NKOMA Leslie\", \"Statisticienne\", 300 000) dans la table Employes. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'ajout d'une nouvelle ligne dans une table SQL se fait avec l'instruction INSERT INTO, suivie du nom de la table, de la liste des colonnes concernées entre parenthèses, du mot-clé VALUES, puis de la liste des valeurs correspondantes dans le même ordre que les colonnes, les valeurs textuelles étant placées entre guillemets.\n\n```sql\nINSERT INTO Employes (Code, Noms, Titre, Salaire) VALUES (\"C004\", \"NKOMA Leslie\", \"Statisticienne\", 300000);\n```\n\nChaque valeur de la clause VALUES correspond, dans l'ordre, à la colonne de même rang énumérée après le nom de la table : \"C004\" pour Code, \"NKOMA Leslie\" pour Noms, \"Statisticienne\" pour Titre et 300000 pour Salaire, cette dernière valeur n'étant pas mise entre guillemets puisqu'il s'agit d'une valeur numérique.\n\n### Piège à éviter\nN'oublie pas les guillemets autour des valeurs textuelles (Code, Noms, Titre) : une valeur numérique comme le salaire s'écrit sans guillemets, mais toute chaîne de caractères doit en être entourée, sous peine d'erreur de syntaxe.",
+      "themes": [
+        "SQL",
+        "Instruction INSERT INTO",
+        "Ajout de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex3-q3-0",
+          "competence": "Écrire une requête SQL d'insertion (INSERT INTO)",
+          "contenu_markdown": "L'ajout d'une nouvelle ligne dans une table SQL se fait avec l'instruction INSERT INTO, suivie du nom de la table, de la liste des colonnes concernées entre parenthèses, du mot-clé VALUES, puis de la liste des valeurs correspondantes dans le même ordre que les colonnes, les valeurs textuelles étant placées entre guillemets.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Donner le résultat de la requête suivante : `SELECT Noms, Titre FROM Employes WHERE Salaire<= 200 000 ;` *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne requête SELECT ... FROM ... WHERE affiche uniquement les colonnes listées après SELECT, pour les seules lignes de la table qui vérifient la condition posée après WHERE ; il faut donc examiner chaque ligne de la table une à une et ne retenir que celles qui satisfont réellement la condition.\n\nOn examine la colonne Salaire ligne par ligne. L'employé C001 a un salaire de 190 000, soit 190 000 ≤ 200 000 : la condition est vérifiée. L'employé C002 a un salaire de 300 000, soit 300 000 ≤ 200 000 : c'est faux, la condition n'est pas vérifiée. L'employé C003 a un salaire de 210 000, soit 210 000 ≤ 200 000 : c'est également faux, la condition n'est pas vérifiée.\n\nSeul l'employé C001 vérifie la condition Salaire <= 200000. La requête affiche donc uniquement les colonnes Noms et Titre de cette ligne :\n\n| Noms | Titre |\n|---|---|\n| KOLAGUE Grâce | Médecin |\n\n### Piège à éviter\nNe te laisse pas piéger par la valeur 210 000, proche de 200 000 en apparence : 210 000 est strictement supérieur à 200 000, donc l'employé C003 est exclu du résultat malgré cette proximité apparente.",
+      "themes": [
+        "SQL",
+        "Instruction SELECT",
+        "Clause WHERE",
+        "Filtrage de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex3-q4-0",
+          "competence": "Évaluer le résultat d'une requête SELECT ... WHERE",
+          "contenu_markdown": "Une requête SELECT ... FROM ... WHERE affiche uniquement les colonnes listées après SELECT, pour les seules lignes de la table qui vérifient la condition posée après WHERE ; il faut donc examiner chaque ligne de la table une à une et ne retenir que celles qui satisfont réellement la condition.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "SGBD",
+    "INSERT INTO",
+    "SELECT",
+    "WHERE",
+    "base de données relationnelle",
+    "table Employes"
+  ],
+  "incertitudes": []
+}

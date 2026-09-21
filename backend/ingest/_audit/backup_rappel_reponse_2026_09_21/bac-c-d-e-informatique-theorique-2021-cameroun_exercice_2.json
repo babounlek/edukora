@@ -1,0 +1,125 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "numero_exercice": "2",
+  "points": "3",
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE II : SYSTEMES D'INFORMATIONS ET BASES DE DONNEES (7pts)**\n\n**EXERCICE 1 : SYSTEMES D'INFORMATIONS (3pts)**\n\nM. OTABELA est gestionnaire d'une société de location des voitures. Il souhaite mettre en place une plateforme de gestion des locations des voitures (par ses clients) selon les règles de gestion suivantes :\n\n- Les clients louent des voitures ;\n- Un client est caractérisé par le numéro CNI, un nom, un prénom et une adresse ;\n- Un client peut louer une ou plusieurs voitures, et une voiture peut être louée par plusieurs clients ;\n- La voiture est définie par un numéro d'immatriculation, une marque, une puissance et un type ;\n- Lors d'une location de voiture, la date de début et la date de retour sont enregistrées.\n\nAfin de l'aider à accomplir cette tâche, répondez aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Définir : propriété. (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne propriété (ou attribut) est une caractéristique élémentaire qui décrit une entité ou une association dans un modèle conceptuel de données ; elle prend une valeur pour chaque occurrence de l'entité ou de l'association.\n\n### Corrigé\nUne **propriété** est une donnée élémentaire qui caractérise une entité ou une association d'un modèle conceptuel de données (par exemple, le nom ou l'adresse d'un client), et qui prend une valeur précise pour chaque occurrence de cette entité ou association.",
+      "themes": [
+        "Merise",
+        "propriété",
+        "attribut"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q1-0",
+          "competence": "Définir la notion de propriété (attribut) en modélisation de données",
+          "contenu_markdown": "Une propriété (ou attribut) est une caractéristique élémentaire qui décrit une entité ou une association dans un modèle conceptuel de données ; elle prend une valeur pour chaque occurrence de l'entité ou de l'association.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-la-notion-de-propriete-attribut-en-modelisation-de-donnees-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "2. Construire le MCD correspondant à cette description en faisant ressortir :\n\na. Les entités du système et pour chaque entité, ses attributs et son identifiant ; (0,5pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne entité regroupe les objets de même nature que le système doit mémoriser ; ses attributs sont ses caractéristiques, et l'identifiant est l'attribut (souligné) qui distingue chaque occurrence sans ambiguïté.\n\n### Corrigé\nDeux entités se dégagent des règles de gestion : le Client et la Voiture, chacune avec les attributs qui la caractérisent.\n\n**Client** (**numCNI**, nom, prenom, adresse) - identifiant : numCNI\n\n**Voiture** (**numImmatriculation**, marque, puissance, type) - identifiant : numImmatriculation",
+      "themes": [
+        "MCD",
+        "entités",
+        "identifiant"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.a-0",
+          "competence": "Identifier les entités, attributs et identifiants d'un MCD à partir d'un cahier des charges",
+          "contenu_markdown": "Une entité regroupe les objets de même nature que le système doit mémoriser ; ses attributs sont ses caractéristiques, et l'identifiant est l'attribut (souligné) qui distingue chaque occurrence sans ambiguïté.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-entites-attributs-et-identifiants-d-un-mcd-a-partir-d-un-cahier-des-charges-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "b. Les associations, leurs propriétés éventuelles et leurs entités participantes ; (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nUne association relie deux entités qui interagissent selon une règle de gestion ; si un fait ne dépend ni de l'une ni de l'autre entité seule, mais de leur mise en relation (ici, une location précise), il devient une propriété portée par l'association elle-même, pas par une entité.\n\n### Corrigé\nLa règle de gestion « les clients louent des voitures » définit une association entre Client et Voiture, qu'on peut nommer **Louer**.\n\nLa date de début et la date de retour sont enregistrées \"lors d'une location\" : elles ne caractérisent ni le client seul, ni la voiture seule (un même client et une même voiture peuvent être associés à plusieurs locations différentes, à des dates différentes) - ce sont donc des propriétés de l'association Louer elle-même, pas des entités Client ou Voiture.\n\n**Association Louer**, entre Client et Voiture, propriétés : dateDebut, dateRetour.\n\n### Piège à éviter\nNe place jamais dateDebut et dateRetour comme attributs de l'entité Voiture ou Client : une voiture peut être louée plusieurs fois, à des dates différentes, donc ces dates ne peuvent pas être des attributs fixes d'une seule occurrence de Voiture.",
+      "themes": [
+        "MCD",
+        "association",
+        "propriétés portées par une association"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.b-0",
+          "competence": "Identifier une association et ses propriétés portées, distinctes des attributs des entités",
+          "contenu_markdown": "Une association relie deux entités qui interagissent selon une règle de gestion ; si un fait ne dépend ni de l'une ni de l'autre entité seule, mais de leur mise en relation (ici, une location précise), il devient une propriété portée par l'association elle-même, pas par une entité.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-une-association-et-ses-proprietes-portees-distinctes-des-attributs-des-entites-terminale-c"
+        }
+      ]
+    },
+    {
+      "numero": "2.c",
+      "enonce_markdown": "c. Les différentes cardinalités. (1pt)",
+      "corrige_markdown": "### Rappel de méthode\nLa cardinalité, notée (min,max) près de chaque entité, traduit dans le formalisme MCD une règle de gestion énoncée en langage naturel : le minimum indique si la participation est obligatoire (1) ou facultative (0), le maximum indique si l'entité peut participer une seule fois (1) ou plusieurs fois (n) à l'association.\n\n### Corrigé\n« Un client peut louer une ou plusieurs voitures » : côté Voiture (cardinalité lue près de l'entité Client), un client est associé à 1 ou plusieurs voitures → **(1,n)**.\n\n« Une voiture peut être louée par plusieurs clients » : côté Client (cardinalité lue près de l'entité Voiture), une voiture est associée à 1 ou plusieurs clients → **(1,n)**.\n\nSchéma MCD complet :\n\n```\nClient (numCNI, nom, prenom, adresse)\n         (1,n)\n           |\n         Louer  — propriétés : dateDebut, dateRetour\n           |\n         (1,n)\nVoiture (numImmatriculation, marque, puissance, type)\n```\n\nLes deux cardinalités maximales valent n : l'association Louer est de type **N,N** (plusieurs-à-plusieurs).\n\n### Conseil\nUne association N,N (comme ici) devra donner lieu, lors du passage au MLD, à une table intermédiaire portant les deux clés étrangères (numCNI, numImmatriculation) et les propriétés de l'association (dateDebut, dateRetour) - contrairement à une association 1,N où la clé migre simplement dans une des deux tables existantes.",
+      "themes": [
+        "MCD",
+        "cardinalités",
+        "association N,N"
+      ],
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2021-cameroun-ex2-q2.c-0",
+          "competence": "Déterminer les cardinalités d'une association sur un MCD à partir des règles de gestion",
+          "contenu_markdown": "La cardinalité, notée (min,max) près de chaque entité, traduit dans le formalisme MCD une règle de gestion énoncée en langage naturel : le minimum indique si la participation est obligatoire (1) ou facultative (0), le maximum indique si l'entité peut participer une seule fois (1) ou plusieurs fois (n) à l'association.",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-les-cardinalites-d-une-association-sur-un-mcd-a-partir-des-regles-de-gestion-terminale-c"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "systèmes d'information",
+    "MCD",
+    "cardinalités",
+    "association N,N",
+    "Merise",
+    "bac c d e informatique 2021"
+  ],
+  "incertitudes": [
+    "Le champ serie est fixé à C, comme pour l'exercice 1 de cette même épreuve.",
+    "Les cardinalités de l'association Louer (client-voiture) ne sont pas données explicitement en chiffres par l'énoncé, seulement décrites en langage naturel (« un client peut louer une ou plusieurs voitures », « une voiture peut être louée par plusieurs clients ») ; le corrigé retient (1,n) des deux côtés, lecture la plus directe du texte. Une lecture (0,n) resterait également défensible si l'on considère qu'un client ou une voiture peuvent exister dans le système sans avoir encore été associés à une location - à confirmer avec le barème officiel avant publication."
+  ],
+  "statut": "brouillon",
+  "nature_epreuve": "theorique"
+}

@@ -1,0 +1,155 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-officiel-2026.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "examen": "bac",
+  "serie": "C, D, E",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "statut": "brouillon",
+  "numero_exercice": "5",
+  "introduction_markdown": null,
+  "points": 3,
+  "groupes": [
+    "PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Programmation (3 points)**\n\nLors de votre participation au concours national de programmation en langage C, le code ci-dessous vous est proposé.\n\n```c\n1.  #include<stdio.h>\n2.  #include<stdlib.h>\n3.  int main (void)\n4.  {\n5.      int n, i;\n6.      float p, T;\n7.      i=1; T=1;\n8.      printf(\"Veuillez saisir les deux nombres p et n respectivement:\");\n9.      scanf(\"%f %d\", &p, &n);\n10.     while (i<=n) {\n11.         T=T*p;\n12.         i=i+1;\n13.     }\n14.     printf(\"le résultat de ce programme est %f :, T \");\n15.     return 0;\n16. }\n```\n\nÀ l'aide de vos connaissances en programmation, répondre aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "**1.** Nommer la structure de contrôle dans ce programme. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour nommer une structure de contrôle, on repère le mot-clé et la forme de la condition, on observe si le bloc est répété ou exécuté une seule fois, puis on donne le nom exact de la structure.\n\nUne structure de contrôle itérative (une boucle) répète un bloc d'instructions tant qu'une condition reste vraie ; on la reconnaît par son mot-clé (while, for, do...while en C) suivi d'une condition entre parenthèses, et elle s'arrête dès que cette condition devient fausse.\n\nLa structure de contrôle utilisée dans ce programme est la boucle tant que, écrite `while (i<=n)` en langage C. C'est une structure itérative qui répète le bloc d'instructions `T=T*p ; i=i+1 ;` tant que la condition `i<=n` reste vraie.",
+      "themes": [
+        "Structures de contrôle",
+        "Boucle while",
+        "Langage C"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex5-q1.a-0",
+          "competence": "Identifier une structure de contrôle itérative (boucle while)",
+          "contenu_markdown": "Pour nommer une structure de contrôle, on repère le mot-clé et la forme de la condition, on observe si le bloc est répété ou exécuté une seule fois, puis on donne le nom exact de la structure.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "Donner sa condition de sortie. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa condition de sortie d'une boucle while est la négation de sa condition de maintien : la boucle continue de s'exécuter tant que la condition écrite entre parenthèses est vraie, et elle s'arrête dès que cette condition devient fausse, c'est-à-dire dès que sa négation devient vraie.\n\nLa boucle continue tant que `i<=n` est vraie ; elle s'arrête donc dès que cette condition devient fausse, c'est-à-dire dès que `i>n`. La condition de sortie de cette boucle est donc i strictement supérieur à n.\n\n### Piège à éviter\nNe confonds pas condition de maintien et condition de sortie : ce ne sont pas deux conditions différentes à chercher séparément dans le code, mais la même condition lue dans deux sens opposés. `i<=n` fait continuer la boucle, sa négation `i>n` la fait sortir.",
+      "themes": [
+        "Structures de contrôle",
+        "Boucle while",
+        "Condition de sortie"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex5-q1.b-0",
+          "competence": "Déterminer la condition de sortie d'une boucle while",
+          "contenu_markdown": "La condition de sortie d'une boucle while est la négation de sa condition de maintien : la boucle continue de s'exécuter tant que la condition écrite entre parenthèses est vraie, et elle s'arrête dès que cette condition devient fausse, c'est-à-dire dès que sa négation devient vraie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Donner la trace d'exécution du programme avec les valeurs p=4 et n=3 et trouver la valeur de la variable T. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTracer l'exécution d'une boucle consiste à recopier, ligne par ligne et itération par itération, la valeur de chaque variable concernée au fur et à mesure que les instructions s'exécutent, jusqu'à ce que la condition de la boucle devienne fausse.\n\nAvant la boucle, l'initialisation donne i=1 et T=1 (ligne 7), puis la saisie donne p=4 et n=3 (ligne 9).\n\n| Itération | Test i<=n | T = T*p | i = i+1 |\n|---|---|---|---|\n| 1 | i=1, 1<=3 vraie | T=1*4=4 | i=2 |\n| 2 | i=2, 2<=3 vraie | T=4*4=16 | i=3 |\n| 3 | i=3, 3<=3 vraie | T=16*4=64 | i=4 |\n| 4 | i=4, 4<=3 fausse | sortie de la boucle | - |\n\nLa condition i<=n devient fausse dès que i vaut 4, puisque 4<=3 est faux : la boucle s'arrête donc après trois itérations. La valeur finale de la variable T est 64.\n\n### Piège à éviter\nNe t'arrête pas après avoir recopié la dernière valeur utile de T : il faut aussi exécuter le test qui provoque la sortie de la boucle (ici i=4, 4<=3 faux), sans quoi on oublie de vérifier que la boucle s'arrête bien au bon moment et on risque de se tromper sur le nombre d'itérations réellement effectuées.",
+      "themes": [
+        "Trace d'exécution",
+        "Boucle while",
+        "Simulation d'algorithme"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex5-q2-0",
+          "competence": "Tracer l'exécution d'une boucle while",
+          "contenu_markdown": "Tracer l'exécution d'une boucle consiste à recopier, ligne par ligne et itération par itération, la valeur de chaque variable concernée au fur et à mesure que les instructions s'exécutent, jusqu'à ce que la condition de la boucle devienne fausse.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Une erreur s'est glissée à la ligne 14 dans ce programme. Proposez une correction pour cette erreur en réécrivant correctement cette ligne du programme. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour afficher la valeur d'une variable avec printf en langage C, le format d'affichage (%f, %d, %c...) doit être placé dans la chaîne de caractères entre guillemets, et la variable dont on veut afficher la valeur doit être passée comme argument supplémentaire de printf, séparé de la chaîne par une virgule, en dehors des guillemets.\n\nÀ la ligne 14, la variable T est écrite à l'intérieur des guillemets, comme du texte ordinaire, au lieu d'être passée comme argument de printf en dehors de la chaîne :\n\n```c\nprintf(\"le résultat de ce programme est %f :, T \");\n```\n\nLe spécificateur %f n'a donc aucune variable associée pour lui fournir la valeur réelle à afficher : le texte « :, T » s'afficherait littéralement au lieu de la valeur de T.\n\nLa ligne corrigée doit fermer la chaîne de caractères juste après le spécificateur %f, puis passer T comme second argument de printf, séparé par une virgule :\n\n```c\nprintf(\"le résultat de ce programme est %f\", T);\n```\n\n### Piège à éviter\nNe confonds pas le texte à afficher tel quel et la valeur d'une variable : tout ce qui doit apparaître littéralement à l'écran reste entre les guillemets, avec le spécificateur %f à l'endroit voulu, tandis que la variable qui fournit la valeur réelle se place toujours après la virgule, en dehors des guillemets.",
+      "themes": [
+        "Fonction printf",
+        "Spécificateurs de format",
+        "Correction de code C"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex5-q3-0",
+          "competence": "Corriger un appel incorrect à printf en langage C",
+          "contenu_markdown": "Pour afficher la valeur d'une variable avec printf en langage C, le format d'affichage (%f, %d, %c...) doit être placé dans la chaîne de caractères entre guillemets, et la variable dont on veut afficher la valeur doit être passée comme argument supplémentaire de printf, séparé de la chaîne par une virgule, en dehors des guillemets.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "boucle while",
+    "trace d'exécution",
+    "printf",
+    "structure de contrôle",
+    "condition de sortie"
+  ],
+  "incertitudes": [
+    "savoir_officiel rattaché à TCMP101-I (1ère, Tronc commun, « Utiliser les notions élémentaires de l'algorithmique ») pour les 4 sous-questions : le référentiel Informatique ne comporte aucun module couvrant spécifiquement le langage C (le seul module de programmation en Terminale, TCMT001-I, porte sur JavaScript) ; les notions testées ici (boucle while, trace d'exécution, printf) restent des notions algorithmiques transférables déjà couvertes en Première, rattachement documenté par prudence."
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "statut": "brouillon",
+  "numero_exercice": "2",
+  "introduction_markdown": null,
+  "points": "3",
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "epreuve-hamonise-c-d-e-informatique-2026-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "MCD de la gestion des élèves du Collège LAROUSE : entités ÉLÈVE, CLASSE, ENSEIGNANT et associations INSCRIT, AFFECTER avec leurs cardinalités.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)**\n\n**Exercice 1 : Systèmes d'information (3 points)**\n\nDans le but de simplifier la gestion des élèves, le Principal du Collège LAROUSE vous demande de concevoir un système d'information décrit de la manière suivante : « Un élève est caractérisé par son matricule, son nom, son prénom, son sexe, sa date de naissance et statut (R : Redoublant, N : Nouveau) et est inscrit dans une et une seule classe caractérisée par un code et un libellé. On y affecte des enseignants identifiés par leur CNI, noms, prénoms et téléphone. ».\n\nÀ l'aide de cette description textuelle et de vos connaissances en systèmes d'information, répondez aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir : **système d'information**, **entité**. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn système d'information organise la circulation de l'information dans une organisation, tandis qu'une entité est l'un des objets concrets ou abstraits que ce système doit mémoriser ; distinguer les deux niveaux, celui de l'organisation entière et celui d'un objet particulier, évite de confondre ces deux définitions à l'examen.\n\nUn système d'information est l'ensemble organisé de ressources (matériel, logiciels, personnes, procédures, données) qui permet de collecter, stocker, traiter et diffuser l'information au sein d'une organisation pour appuyer sa prise de décision et son fonctionnement.\n\nUne entité est un objet, concret ou abstrait, du monde réel, identifiable de manière unique et pertinent pour le système d'information à modéliser. Dans le cas du Collège LAROUSE, Élève, Classe et Enseignant sont des entités : chacune regroupe des informations propres à un même type d'objet.",
+      "themes": [
+        "système d'information",
+        "entité",
+        "modélisation des données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex2-q1-0",
+          "competence": "Définir système d'information et entité",
+          "contenu_markdown": "Un système d'information organise la circulation de l'information dans une organisation, tandis qu'une entité est l'un des objets concrets ou abstraits que ce système doit mémoriser ; distinguer les deux niveaux, celui de l'organisation entière et celui d'un objet particulier, évite de confondre ces deux définitions à l'examen.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Élaborer le MCD correspondant à la situation décrite dans le texte. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nConstruire un Modèle Conceptuel de Données consiste à relire la description textuelle phrase par phrase pour en extraire trois ingrédients : les entités (les objets à mémoriser, avec leurs attributs et un identifiant unique), les associations qui les relient (les verbes de la description, comme « est inscrit dans » ou « affecte »), puis les cardinalités de chaque association, qui expriment combien d'occurrences d'une entité peuvent être liées à combien d'occurrences de l'autre, en distinguant toujours le minimum (0 ou 1) du maximum (1 ou n).\n\nLa description fait apparaître trois entités. ÉLÈVE porte les attributs matricule (identifiant), nom, prénom, sexe, date_naissance et statut. CLASSE porte code (identifiant) et libellé. ENSEIGNANT porte CNI (identifiant), nom, prénom et téléphone.\n\nDeux associations relient ces entités. La phrase « est inscrit dans une et une seule classe » donne l'association INSCRIT entre ÉLÈVE et CLASSE : un élève est inscrit dans exactement une classe, d'où la cardinalité (1,1) côté ÉLÈVE ; une classe accueille plusieurs élèves, d'où la cardinalité (1,n) côté CLASSE. La phrase « on y affecte des enseignants » donne l'association AFFECTER entre CLASSE et ENSEIGNANT : une classe peut recevoir plusieurs enseignants et un enseignant peut être affecté à plusieurs classes, d'où des cardinalités (0,n) des deux côtés.\n\n![fig-1](epreuve-hamonise-c-d-e-informatique-2026-cameroun_exercice_2_fig_1.png)\n\nLe schéma ci-dessus représente ce MCD complet, avec les trois entités, leurs attributs, les deux associations et les cardinalités justifiées ci-dessus.\n\n### Piège à éviter\nNe mélange jamais un attribut avec une entité : téléphone ou libellé sont des attributs qui décrivent respectivement ENSEIGNANT et CLASSE, ils ne forment pas des entités à part entière.",
+      "themes": [
+        "MCD",
+        "Merise",
+        "entités et associations",
+        "cardinalités"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex2-q2-0",
+          "competence": "Élaborer un Modèle Conceptuel de Données (MCD)",
+          "contenu_markdown": "Construire un Modèle Conceptuel de Données consiste à relire la description textuelle phrase par phrase pour en extraire trois ingrédients : les entités (les objets à mémoriser, avec leurs attributs et un identifiant unique), les associations qui les relient (les verbes de la description, comme « est inscrit dans » ou « affecte »), puis les cardinalités de chaque association, qui expriment combien d'occurrences d'une entité peuvent être liées à combien d'occurrences de l'autre, en distinguant toujours le minimum (0 ou 1) du maximum (1 ou n).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Déduire le MLD associé à ce MCD. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe passage du MCD au Modèle Logique de Données suit deux règles fixes. Une association dont une des deux cardinalités maximales vaut 1 (ici (1,1) côté ÉLÈVE) est absorbée dans la table du côté (1,1) : cette table reçoit comme clé étrangère l'identifiant de l'entité côté (1,n). Une association dont les deux cardinalités maximales valent n (ici (0,n) des deux côtés) devient au contraire une table à part entière, dont la clé primaire est la concaténation des identifiants des deux entités reliées.\n\nL'association INSCRIT est du premier type : (1,1) côté ÉLÈVE et (1,n) côté CLASSE. Elle disparaît donc en tant que table et se traduit par l'ajout de la clé étrangère #code (celle de CLASSE) dans la table ÉLÈVE.\n\nL'association AFFECTER est du second type : (0,n) des deux côtés. Elle devient une table indépendante dont la clé primaire est composée des deux clés étrangères #CNI et #code.\n\nLe MLD complet s'écrit ainsi :\n\n```\nELEVE (matricule, nom, prenom, sexe, date_naissance, statut, #code)\nCLASSE (code, libelle)\nENSEIGNANT (CNI, nom, prenom, telephone)\nAFFECTER (#CNI, #code)\n```\n\nLes identifiants soulignés dans la notation habituelle (matricule, code, CNI, et le couple #CNI-#code pour AFFECTER) sont les clés primaires de chaque table ; les attributs précédés de # sont des clés étrangères.\n\n### Conseil\nPour ne jamais te tromper de sens lors de la transformation, pose-toi systématiquement la question « quelle entité porte le (1,1) ? » : c'est toujours cette entité-là qui reçoit la clé étrangère de l'autre, jamais l'inverse.",
+      "themes": [
+        "MLD",
+        "passage MCD-MLD",
+        "clé étrangère",
+        "clé primaire composée"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex2-q3-0",
+          "competence": "Déduire le MLD à partir d'un MCD",
+          "contenu_markdown": "Le passage du MCD au Modèle Logique de Données suit deux règles fixes. Une association dont une des deux cardinalités maximales vaut 1 (ici (1,1) côté ÉLÈVE) est absorbée dans la table du côté (1,1) : cette table reçoit comme clé étrangère l'identifiant de l'entité côté (1,n). Une association dont les deux cardinalités maximales valent n (ici (0,n) des deux côtés) devient au contraire une table à part entière, dont la clé primaire est la concaténation des identifiants des deux entités reliées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "système d'information",
+    "entité",
+    "MCD",
+    "MLD",
+    "Merise",
+    "cardinalités",
+    "clé étrangère"
+  ],
+  "incertitudes": [
+    "La cardinalité maximale de CLASSE dans l'association INSCRIT a été fixée à (1,n) par convention pédagogique usuelle (une classe accueille au moins un élève) ; l'énoncé ne précise pas explicitement cette borne minimale, une réponse (0,n) reste également défendable et n'est pas pénalisante.",
+    "Le rappel de méthode de la question 3 (déduction du MLD à partir d'un MCD) est l'un des deux rappels de toute l'épreuve transformés en cours complet (voir fichier cours associé). Celui de la question 1 (définir système d'information et entité) et celui de la question 2 (élaborer un MCD) ne sont pas coursifiés."
+  ]
+}

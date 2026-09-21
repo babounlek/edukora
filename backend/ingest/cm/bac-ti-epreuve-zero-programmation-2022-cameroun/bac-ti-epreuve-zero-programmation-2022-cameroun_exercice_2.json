@@ -1,0 +1,283 @@
+{
+  "epreuve_source": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "5",
+  "groupes": [
+    "I/ PROGRAMMATION WEB (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Configuration d'un serveur Web et programmation PHP (5 points)**\n\nLe script PHP suivant sert à vérifier le mot de passe d'un utilisateur. Si le mot de passe est correct, le script retourne un message indiquant qu'il est accepté. Dans le cas contraire, le script retourne un message signalant que le mot de passe est erroné et invite à nouveau l'utilisateur à saisir son adresse électronique et son mot de passe.\n\n```php\n1.  <html>\n2.  <head>\n3.  <title>Script de vérification du mot de passe</title>\n4.  </head>\n5.  <body>\n6.  <?php\n7.  function print_form( ) {\n8.      ?>\n9.      <form action=\"verif_motdepasse.php\" method=\"POST\">\n10.     <h3>Saisissez vos nom et mot de passe pour ouvrir une session</h3>\n11.     Nom d'utilisateur : <input type=\"text\" name=\"nom_utilisateur\">\n12.     <br>Mot de passe : <input type=\"password\" name=\"motdepasse\">\n13.     <input type=\"submit\" name=\"soumettre\" value=\"Ouvrir une session\">\n14.     </form>\n15.     <?\n16. }\n17.\n18. if(isset($soumettre)):\n19.     if(!$bd = mysql_connect(\"localhost\",\"root\")):\n20.         print(\"<h1>Connexion à la base de données impossible !</h1>\\n\");\n21.     else:\n22.         mysql_select_db(\"php\", $bd);\n23.     endif;\n24.     $sql = \"select * from utilisateurs where nom_utilisateur = '$nom_utilisateur'\";\n25.     $resultat = mysql_query($sql);\n26.     $compte_lignes = mysql_num_rows($resultat);\n27.     if($compte_lignes == 0):\n28.         ?>\n29.         <h3>Nom d'utilisateur erroné ! Essayez à nouveau. </h3>\n30.         <?\n31.         print_form( );\n32.     else:\n33.         $ligne = mysql_fetch_array($resultat);\n34.         if($motdepasse != $ligne[\"motdepasse_utilisateur\"]):\n35.             ?>\n36.             <h3>Mot de passe incorrect ! Essayez à nouveau.</h3>\n37.             <?\n38.             print_form( );\n39.         else:\n40.             ?>\n41.             <h3>Mot de passe accepté !</h3>\n42.             <?\n43.         endif\n44.     endif;\n45. else:\n46.     print_form( );\n47. endif;\n48. ?>\n49. </body>\n50. </html>\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Expliquer de quel côté s'exécute un script PHP. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour dire de quel côté s'exécute un script, on identifie la machine qui interprète le code (serveur ou navigateur) et on précise ce que reçoit réellement l'autre partie.\n\nPHP est un langage de script exécuté côté serveur : le serveur Web interprète le code PHP avant d'envoyer la page au navigateur, si bien que le navigateur ne reçoit jamais le code PHP lui-même, seulement le HTML qu'il a produit.\n\nDans le script de l'énoncé, tout ce qui se trouve entre `<?php` (ligne 6) et `?>` est donc exécuté sur le serveur qui héberge le site : c'est le serveur qui se connecte à la base de données (ligne 19), qui compare le mot de passe (ligne 34) et qui décide quel message HTML renvoyer. Le navigateur du candidat qui remplit le formulaire ne voit jamais ces instructions ; il ne reçoit que le résultat, sous forme de HTML déjà généré (le `<h3>` correspondant au cas rencontré).\n\n### Conseil\nPour répondre à ce type de question, oppose toujours explicitement PHP (« côté serveur ») à JavaScript (« côté client, dans le navigateur ») : c'est cette opposition, plus que la définition seule, que le correcteur attend de retrouver.",
+      "themes": [
+        "PHP",
+        "exécution côté serveur",
+        "client-serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q1-0",
+          "competence": "Exécution côté serveur d'un script PHP (opposition client/serveur)",
+          "contenu_markdown": "Pour dire de quel côté s'exécute un script, on identifie la machine qui interprète le code (serveur ou navigateur) et on précise ce que reçoit réellement l'autre partie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Expliquer ce que fait la ligne 6 de ce code. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa balise `<?php` ouvre un bloc de code PHP à l'intérieur d'une page qui, par ailleurs, contient du HTML classique : elle indique au serveur que tout ce qui suit, jusqu'à la balise fermante `?>`, doit être interprété comme du code PHP et non recopié tel quel dans la page envoyée au navigateur.\n\nLa ligne 6, `<?php`, marque précisément la transition entre la partie HTML statique du document (les lignes 1 à 5 : `<html>`, `<head>`, `<title>`, `<body>`) et la partie dynamique prise en charge par l'interpréteur PHP. À partir de cette ligne et jusqu'à la balise fermante correspondante (ligne 15, `<?` refermé implicitement par le `}` puis reformulé plus loin), le serveur exécute des instructions PHP : ici, la définition de la fonction `print_form()`.\n\n### Piège à éviter\nNe confonds pas `<?php` (ouverture d'un bloc de code) avec une instruction du langage : cette balise ne calcule rien et ne renvoie aucune valeur, elle sert uniquement de signal au parseur du serveur.",
+      "themes": [
+        "PHP",
+        "balises <?php ?>",
+        "syntaxe PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q2-0",
+          "competence": "Balises d'ouverture et de fermeture d'un bloc de code PHP (<?php ... ?>)",
+          "contenu_markdown": "La balise `<?php` ouvre un bloc de code PHP à l'intérieur d'une page qui, par ailleurs, contient du HTML classique : elle indique au serveur que tout ce qui suit, jusqu'à la balise fermante `?>`, doit être interprété comme du code PHP et non recopié tel quel dans la page envoyée au navigateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Identifier le nom de la page qui va traiter les informations du formulaire ainsi que la méthode de récupération de données de ce formulaire. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa page qui traite les données d'un formulaire HTML est celle indiquée dans l'attribut `action` de la balise `<form>`, et la méthode de transmission (donc de récupération côté serveur, via le tableau superglobal `$_GET` ou `$_POST`) est celle indiquée dans l'attribut `method`.\n\nÀ la ligne 9 du script, la balise s'écrit `<form action=\"verif_motdepasse.php\" method=\"POST\">`. La page qui va traiter les informations saisies (nom d'utilisateur et mot de passe) est donc **verif_motdepasse.php**, et la méthode de récupération des données est **POST** : côté serveur, ces données seraient récupérées via le tableau `$_POST` (par exemple `$_POST[\"nom_utilisateur\"]`).\n\n### Conseil\nRepère toujours l'attribut `action` en premier : c'est lui qui répond directement à « quelle page traite le formulaire ». L'attribut `method` vient juste après dans la même balise, ce qui en fait une question rapide à traiter en une seule lecture de la ligne concernée.",
+      "themes": [
+        "formulaire HTML",
+        "attribut action",
+        "attribut method",
+        "PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q3-0",
+          "competence": "Attributs action et method d'un formulaire HTML transmis à un script serveur",
+          "contenu_markdown": "La page qui traite les données d'un formulaire HTML est celle indiquée dans l'attribut `action` de la balise `<form>`, et la méthode de transmission (donc de récupération côté serveur, via le tableau superglobal `$_GET` ou `$_POST`) est celle indiquée dans l'attribut `method`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Donner les rôles des extensions PHP suivantes : `mysql_query()`, `mysql_select_db()`, `mysql_fetch_array()`. *[0,75 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'ancienne extension `mysql_*` de PHP fournit une fonction dédiée à chaque étape du dialogue avec une base MySQL : sélectionner la base à utiliser, envoyer une requête SQL, puis parcourir le résultat renvoyé ligne par ligne.\n\n- **`mysql_select_db(\"php\", $bd)`** (ligne 22) : sélectionne, sur la connexion `$bd` déjà ouverte, la base de données à utiliser pour les requêtes suivantes (ici la base nommée `php`).\n- **`mysql_query($sql)`** (ligne 25) : envoie la requête SQL contenue dans la variable `$sql` au serveur MySQL et renvoie un identifiant de résultat exploitable par les autres fonctions `mysql_*`.\n- **`mysql_fetch_array($resultat)`** (ligne 33) : extrait, du résultat renvoyé par `mysql_query`, la ligne courante sous forme de tableau accessible à la fois par index numérique et par nom de colonne (ex. `$ligne[\"motdepasse_utilisateur\"]`).\n\n### Piège à éviter\nNe confonds pas `mysql_connect()` (établir la connexion au serveur MySQL, ligne 19) avec `mysql_select_db()` (choisir la base à l'intérieur de cette connexion, ligne 22) : ce sont deux étapes distinctes et successives, jamais interchangeables.\n\n### Conseil\nMentionne que cette extension `mysql_*` est aujourd'hui obsolète et retirée des versions récentes de PHP (remplacée par `mysqli_*` ou PDO) : une remarque de ce type, en fin de réponse, montre une culture technique à jour sans jamais être exigée par le barème.",
+      "themes": [
+        "PHP",
+        "MySQL",
+        "API mysql_*",
+        "base de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q4-0",
+          "competence": "Fonctions PHP historiques d'accès à une base MySQL (API mysql_*)",
+          "contenu_markdown": "L'ancienne extension `mysql_*` de PHP fournit une fonction dédiée à chaque étape du dialogue avec une base MySQL : sélectionner la base à utiliser, envoyer une requête SQL, puis parcourir le résultat renvoyé ligne par ligne.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Expliquer ce que fait cette partie du code : de la ligne 32 à 38. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nComprendre un extrait de script PHP consiste à identifier, dans l'ordre, la donnée récupérée, le test effectué sur cette donnée et l'action déclenchée dans chacune des deux branches du test.\n\nLe nom d'utilisateur ayant été retrouvé dans la base (le cas contraire est traité plus haut, lignes 27 à 31), la ligne 33 récupère la ligne correspondante de la table `utilisateurs` dans `$ligne`. La ligne 34 compare le mot de passe saisi dans le formulaire (`$motdepasse`) à celui enregistré dans la base pour cet utilisateur (`$ligne[\"motdepasse_utilisateur\"]`). Si les deux mots de passe diffèrent, les lignes 35 à 38 affichent le message « Mot de passe incorrect ! Essayez à nouveau. » puis rappellent le formulaire de saisie en appelant à nouveau `print_form()`, pour que l'utilisateur retente sa connexion.\n\n### Conseil\nQuand une question porte sur un intervalle de lignes précis, structure ta réponse en suivant l'ordre du code (d'abord ce qui est lu, puis ce qui est testé, puis ce qui est affiché) plutôt que de résumer directement le résultat : c'est ce déroulé qui montre que le code a été réellement compris ligne par ligne, pas seulement deviné à partir des messages affichés.",
+      "themes": [
+        "PHP",
+        "lecture de code",
+        "authentification"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q5-0",
+          "competence": "Contrôle conditionnel d'authentification en PHP (comparaison de mot de passe)",
+          "contenu_markdown": "Comprendre un extrait de script PHP consiste à identifier, dans l'ordre, la donnée récupérée, le test effectué sur cette donnée et l'action déclenchée dans chacune des deux branches du test.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6.1",
+      "enonce_markdown": "**6.1.** Définir serveur Web. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un élément technique, on dit ce qu'il est, quel rôle il joue et avec quels autres éléments il interagit.\n\nUn serveur Web est un logiciel (souvent installé sur une machine dédiée) qui reçoit les requêtes HTTP envoyées par les navigateurs, exécute si nécessaire les scripts côté serveur associés à la page demandée, puis renvoie une réponse au client, généralement une page HTML.\n\nDans le script étudié, c'est le serveur Web qui reçoit la requête POST envoyée par le formulaire, qui transmet son contenu à l'interpréteur PHP pour exécuter `verif_motdepasse.php`, puis qui renvoie au navigateur la page HTML contenant le message adapté (« Mot de passe accepté ! » ou message d'erreur). Le serveur Web fonctionne donc selon un modèle client-serveur : le client (navigateur) demande, le serveur traite et répond.\n\n### Conseil\nCite un exemple concret de logiciel serveur Web (Apache, Nginx) : cela ancre la définition dans un cas réel et évite une réponse purement théorique.",
+      "themes": [
+        "serveur Web",
+        "modèle client-serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.1-0",
+          "competence": "Définition du serveur Web et principe client-serveur",
+          "contenu_markdown": "Pour définir un élément technique, on dit ce qu'il est, quel rôle il joue et avec quels autres éléments il interagit.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6.2",
+      "enonce_markdown": "**6.2.** Citer un autre exemple d'environnement intégré de développement Web qu'on pourrait utiliser. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn environnement intégré de développement (EDI) Web regroupe en une seule installation un serveur Web, un interpréteur de langage serveur (PHP, par exemple) et un système de gestion de bases de données, pour permettre de développer et tester un site dynamique en local sans configuration séparée de chaque composant.\n\nWampServer, cité dans l'énoncé, en est un exemple sous Windows (Apache + MySQL + PHP). D'autres environnements équivalents existent et répondent à la question : **XAMPP** (multiplateforme, le plus répandu), **MAMP** (sous macOS), ou **EasyPHP**. Il suffit d'en citer un seul pour valider cette sous-question.\n\n### Conseil\nSi le nom exact t'échappe le jour de l'examen, décris la fonction plutôt que de laisser la réponse vide : « un environnement regroupant Apache, MySQL et PHP en une seule installation » identifie déjà correctement la famille d'outils visée.",
+      "themes": [
+        "EDI Web",
+        "WampServer",
+        "XAMPP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.2-0",
+          "competence": "Environnements Intégrés de Développement (EDI) Web : définition et composants",
+          "contenu_markdown": "Un environnement intégré de développement (EDI) Web regroupe en une seule installation un serveur Web, un interpréteur de langage serveur (PHP, par exemple) et un système de gestion de bases de données, pour permettre de développer et tester un site dynamique en local sans configuration séparée de chaque composant.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6.3",
+      "enonce_markdown": "**6.3.** Citer trois éléments constitutifs d'un environnement intégré de développement Web. *[0,75 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour citer les éléments constitutifs d'un ensemble, on nomme chaque élément distinct, en précisant brièvement son rôle, sans citer deux fois la même fonction.\n\nUn environnement intégré de développement (EDI) Web regroupe en une seule installation un serveur Web, un interpréteur de langage serveur (PHP, par exemple) et un système de gestion de bases de données, pour permettre de développer et tester un site dynamique en local sans configuration séparée de chaque composant.\n\nUn environnement intégré de développement Web comme WampServer regroupe typiquement trois composants installés et configurés ensemble : **un serveur Web** (Apache, qui reçoit les requêtes HTTP), **un interpréteur de langage serveur** (PHP, qui exécute les scripts dynamiques comme celui de cet exercice) et **un système de gestion de bases de données** (MySQL/MariaDB, qui stocke la table `utilisateurs` interrogée par le script). Une interface d'administration de la base (phpMyAdmin) est également fournie, mais elle est accessoire par rapport aux trois composants ci-dessus.\n\n### Conseil\nFais le lien avec le sigle WAMP lui-même (Windows, Apache, MySQL, PHP) : les trois dernières lettres du sigle désignent exactement les trois composants attendus dans la réponse.",
+      "themes": [
+        "EDI Web",
+        "Apache",
+        "PHP",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.3-0",
+          "competence": "Environnements Intégrés de Développement (EDI) Web : définition et composants",
+          "contenu_markdown": "Pour citer les éléments constitutifs d'un ensemble, on nomme chaque élément distinct, en précisant brièvement son rôle, sans citer deux fois la même fonction.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6.4",
+      "enonce_markdown": "**6.4.** Donner le répertoire de WampServer où sont stockés en local les dossiers d'un site Web. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour donner un emplacement, un nom ou une valeur de configuration d'un logiciel, on se rappelle l'organisation par défaut de l'outil et on écrit la réponse exacte attendue.\n\nWampServer réserve un dossier racine unique, généralement `www` à l'intérieur de son répertoire d'installation, dans lequel chaque site Web développé en local doit être placé dans son propre sous-dossier pour être accessible par le serveur Apache.\n\nLe répertoire attendu est **C:\\wamp64\\www** (ou `C:\\wamp\\www` selon la version 32 ou 64 bits installée). Un site placé dans `www\\monsite` devient ensuite accessible depuis le navigateur à l'adresse `http://localhost/monsite`.\n\n### Piège à éviter\nNe confonds pas ce répertoire avec le dossier d'installation de MySQL ou de PHP à l'intérieur de WampServer : `www` est spécifiquement le dossier que le serveur Apache expose aux navigateurs, pas un dossier de configuration.",
+      "themes": [
+        "WampServer",
+        "arborescence de fichiers",
+        "hébergement local"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.4-0",
+          "competence": "Architecture des dossiers d'un serveur local WampServer (répertoire www)",
+          "contenu_markdown": "Pour donner un emplacement, un nom ou une valeur de configuration d'un logiciel, on se rappelle l'organisation par défaut de l'outil et on écrit la réponse exacte attendue.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6.5",
+      "enonce_markdown": "**6.5.** Expliquer comment démarrer votre application Web hébergée sur un serveur Web en local. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour expliquer une procédure, on décrit les étapes dans l'ordre chronologique, en précisant à chaque étape l'action à réaliser et le repère qui confirme qu'elle a réussi.\n\nDémarrer une application Web hébergée en local suppose deux étapes successives : lancer les services du serveur (Apache et MySQL) depuis le panneau de contrôle de l'environnement de développement, puis appeler l'application depuis un navigateur à l'adresse locale correspondant à son dossier.\n\nConcrètement avec WampServer : on lance l'icône WampServer, dont le témoin dans la barre des tâches passe du orange au vert lorsque les services Apache et MySQL sont pleinement démarrés. On ouvre ensuite un navigateur et on saisit l'adresse `http://localhost/nom_du_dossier` (ou directement `http://localhost` pour afficher la page d'accueil de WampServer), ce qui déclenche l'exécution du script PHP placé dans ce dossier, exactement comme le script de vérification de mot de passe de cet exercice serait appelé à l'adresse `http://localhost/verif_motdepasse.php`.\n\n### Conseil\nPrécise toujours le repère visuel (icône verte) qui confirme que le serveur est réellement démarré : beaucoup d'erreurs de manipulation en TP viennent d'un service resté orange (MySQL non démarré, port déjà occupé) que l'utilisateur n'a pas vérifié avant de tester son application.",
+      "themes": [
+        "WampServer",
+        "démarrage de services",
+        "hébergement local"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.5-0",
+          "competence": "Démarrage et accès à une application web hébergée en local (WampServer)",
+          "contenu_markdown": "Pour expliquer une procédure, on décrit les étapes dans l'ordre chronologique, en précisant à chaque étape l'action à réaliser et le repère qui confirme qu'elle a réussi.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "MySQL",
+    "mysql_query",
+    "formulaire POST",
+    "serveur Web",
+    "WampServer",
+    "authentification"
+  ],
+  "incertitudes": [
+    "Fichier de référentiel programme officiel programme_officiel_cm_informatique.json introuvable sur cette machine : savoir_officiel laissé à null sur toutes les sous-questions de cette épreuve faute de référentiel disponible pour vérifier le rattachement.",
+    "Le code PHP source utilise l'extension mysql_* (mysql_connect, mysql_query...), retirée de PHP depuis la version 7 : le corrigé explique le code tel qu'il est donné dans le sujet (fidélité à la source), en signalant en Conseil son caractère aujourd'hui obsolète plutôt que de le réécrire avec mysqli_*/PDO, ce que l'énoncé ne demande pas."
+  ],
+  "statut": "brouillon"
+}

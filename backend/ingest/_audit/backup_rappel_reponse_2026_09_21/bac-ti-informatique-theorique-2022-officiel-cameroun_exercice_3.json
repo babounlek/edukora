@@ -1,0 +1,312 @@
+{
+  "epreuve_source": "bac-ti-informatique-theorique-2022-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "2h",
+  "coefficient": "4",
+  "introduction_markdown": null,
+  "points": "8",
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3**\n\n**PARTIE II : DEVELOPPEMENT DES BASES DE DONNEES (08 PTS)**\n\nLa gestion des comptes client est effectuée à l'aide d'une base de données appelée « Banque » dont les tables sont les suivantes :\n\n*AGENCE (Num_Agence, Nom_Agence, Ville_Agence, Actif)*\n\n*CLIENT (Num_Client, Nom, Prenom, Ville_client)*\n\n*COMPTE (Num_Compte, #Num_Agence, #Num_Client, Solde)*\n\n*EMPRUNT (Num_Emprunt, #Num_Agence, #Num_Client, Montant)*\n\n(les identifiants soulignés dans le sujet original - Num_Agence, Num_Client, Num_Compte, Num_Emprunt - sont les clés primaires de chaque table ; les attributs précédés de `#` sont des clés étrangères.)",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir : Base de données, SGBD, Langage SQL. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne base de données regroupe les données stockées et organisées de façon structurée ; un SGBD est le logiciel qui permet de créer, manipuler, interroger et sécuriser cette base ; le langage SQL est le langage normalisé utilisé pour dialoguer avec un SGBD relationnel, à la fois pour définir la structure des données et pour les manipuler.\n\n**Base de données.** Ensemble structuré et organisé de données, stockées de façon durable sur un support informatique, destinées à être partagées et exploitées par plusieurs utilisateurs ou applications, tout en évitant autant que possible les redondances.\n\n**SGBD (Système de Gestion de Base de Données).** Logiciel qui permet de créer une base de données, d'y insérer, modifier, supprimer et interroger des données, tout en garantissant leur cohérence, leur sécurité et l'accès simultané de plusieurs utilisateurs.\n\n**Langage SQL (Structured Query Language).** Langage normalisé utilisé pour créer et modifier la structure d'une base de données relationnelle (langage de définition de données : CREATE, ALTER) et pour y insérer, modifier, supprimer et interroger les données qu'elle contient (langage de manipulation de données : INSERT, UPDATE, DELETE, SELECT).",
+      "themes": [
+        "base de données",
+        "SGBD",
+        "SQL",
+        "vocabulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q1-1",
+          "competence": "Vocabulaire des bases de données relationnelles : SGBD et langage SQL",
+          "contenu_markdown": "Une base de données regroupe les données stockées et organisées de façon structurée ; un SGBD est le logiciel qui permet de créer, manipuler, interroger et sécuriser cette base ; le langage SQL est le langage normalisé utilisé pour dialoguer avec un SGBD relationnel, à la fois pour définir la structure des données et pour les manipuler.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Identifier dans la liste suivante deux SGBD relationnels : Ms Excel, MySQL, Chrome, Oracle, PostgreSQL, Ms ACCESS. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn SGBD relationnel gère des données organisées en tables reliées par des clés et propose un moteur de requêtes SQL complet ; ce n'est ni un tableur, qui organise des données en feuilles de calcul sans moteur relationnel, ni un navigateur web.\n\nParmi la liste proposée, **MySQL** et **Oracle** sont des SGBD relationnels (PostgreSQL et Ms Access le sont également et constituent des réponses tout aussi valables). Ms Excel est un tableur, pas un SGBD ; Chrome est un navigateur web, pas un logiciel de gestion de base de données.\n\n### Piège à éviter\nNe confonds pas Ms Excel avec un SGBD sous prétexte qu'il permet d'organiser des données en tableau : Excel ne gère ni les clés étrangères, ni l'intégrité référentielle, ni un véritable moteur de requêtes relationnelles.",
+      "themes": [
+        "SGBD",
+        "logiciels",
+        "base de données relationnelle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q2-1",
+          "competence": "Vocabulaire des bases de données relationnelles : SGBD et langage SQL",
+          "contenu_markdown": "Un SGBD relationnel gère des données organisées en tables reliées par des clés et propose un moteur de requêtes SQL complet ; ce n'est ni un tableur, qui organise des données en feuilles de calcul sans moteur relationnel, ni un navigateur web.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Identifier dans cette base de données : une clé primaire et une clé étrangère. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans un schéma relationnel, la clé primaire (soulignée) identifie de façon unique chaque ligne d'une table, tandis qu'une clé étrangère (préfixée `#` dans la notation utilisée ici) est un attribut d'une table qui reprend la clé primaire d'une autre table, afin de matérialiser un lien entre les deux.\n\nDans la table **COMPTE**, **Num_Compte** (souligné) est la clé primaire : elle identifie chaque compte de façon unique. **#Num_Client** est une clé étrangère : elle reprend la clé primaire Num_Client de la table CLIENT, pour indiquer à quel client appartient ce compte (de même, #Num_Agence est une clé étrangère vers la table AGENCE).",
+      "themes": [
+        "clé primaire",
+        "clé étrangère",
+        "schéma relationnel"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q3-1",
+          "competence": "Clé primaire et clé étrangère dans un schéma relationnel",
+          "contenu_markdown": "Dans un schéma relationnel, la clé primaire (soulignée) identifie de façon unique chaque ligne d'une table, tandis qu'une clé étrangère (préfixée `#` dans la notation utilisée ici) est un attribut d'une table qui reprend la clé primaire d'une autre table, afin de matérialiser un lien entre les deux.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4a",
+      "enonce_markdown": "**4.** Écrire en langage SQL, les requêtes suivantes :\n\na) Création de la table COMPTE *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `CREATE TABLE nom_table (colonne1 type1, colonne2 type2, ..., PRIMARY KEY (...), FOREIGN KEY (...) REFERENCES ...)` définit la structure d'une nouvelle table en SQL, en précisant pour chaque colonne son nom et son type de données, puis en déclarant la clé primaire et les éventuelles clés étrangères de la table.\n\n```sql\nCREATE TABLE COMPTE (\n    Num_Compte   VARCHAR(10)   PRIMARY KEY,\n    Num_Agence   VARCHAR(10),\n    Num_Client   VARCHAR(10),\n    Solde        DECIMAL(10,2),\n    FOREIGN KEY (Num_Agence) REFERENCES AGENCE(Num_Agence),\n    FOREIGN KEY (Num_Client) REFERENCES CLIENT(Num_Client)\n);\n```",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "langage de définition de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4a-1",
+          "competence": "Définir et modifier la structure d'une table en SQL (CREATE TABLE, ALTER TABLE)",
+          "contenu_markdown": "L'instruction `CREATE TABLE nom_table (colonne1 type1, colonne2 type2, ..., PRIMARY KEY (...), FOREIGN KEY (...) REFERENCES ...)` définit la structure d'une nouvelle table en SQL, en précisant pour chaque colonne son nom et son type de données, puis en déclarant la clé primaire et les éventuelles clés étrangères de la table.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4b",
+      "enonce_markdown": "b) Ajout d'une colonne Num_telephone après la ville *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `ALTER TABLE nom_table ADD COLUMN nouvelle_colonne type AFTER colonne_existante` ajoute une nouvelle colonne à une table déjà créée, en précisant éventuellement après quelle colonne elle doit apparaître.\n\n```sql\nALTER TABLE CLIENT ADD COLUMN Num_telephone VARCHAR(15) AFTER Ville_client;\n```\n\n### Piège à éviter\nLa clause `AFTER` n'est pas reconnue par tous les SGBD (Oracle, par exemple, ne la propose pas) : si le SGBD utilisé ne la supporte pas, l'instruction reste valide en omettant simplement `AFTER Ville_client`, la nouvelle colonne étant alors ajoutée en dernière position.",
+      "themes": [
+        "SQL",
+        "ALTER TABLE",
+        "langage de définition de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4b-1",
+          "competence": "Définir et modifier la structure d'une table en SQL (CREATE TABLE, ALTER TABLE)",
+          "contenu_markdown": "L'instruction `ALTER TABLE nom_table ADD COLUMN nouvelle_colonne type AFTER colonne_existante` ajoute une nouvelle colonne à une table déjà créée, en précisant éventuellement après quelle colonne elle doit apparaître.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4c",
+      "enonce_markdown": "c) Afficher les noms et prénoms des clients par ordre alphabétique des noms *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `SELECT colonnes FROM table ORDER BY colonne [ASC|DESC]` sélectionne les colonnes demandées et trie les lignes du résultat selon la colonne précisée, par ordre croissant (ASC, valeur par défaut) ou décroissant (DESC).\n\n```sql\nSELECT Nom, Prenom FROM CLIENT ORDER BY Nom ASC;\n```",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "ORDER BY"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4c-1",
+          "competence": "Interroger une base de données avec SELECT : jointure, tri et filtre",
+          "contenu_markdown": "L'instruction `SELECT colonnes FROM table ORDER BY colonne [ASC|DESC]` sélectionne les colonnes demandées et trie les lignes du résultat selon la colonne précisée, par ordre croissant (ASC, valeur par défaut) ou décroissant (DESC).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4d",
+      "enonce_markdown": "d) Afficher les noms des clients et le solde de leur compte respectif *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nQuand les colonnes demandées appartiennent à deux tables différentes, il faut les joindre sur leur clé commune avec une clause `INNER JOIN ... ON ...`, qui associe chaque ligne de la première table à la ligne correspondante de la seconde.\n\nLe nom du client se trouve dans la table CLIENT et le solde dans la table COMPTE : les deux tables se joignent sur Num_Client.\n\n```sql\nSELECT CLIENT.Nom, COMPTE.Solde\nFROM CLIENT\nINNER JOIN COMPTE ON CLIENT.Num_Client = COMPTE.Num_Client;\n```",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4d-1",
+          "competence": "Interroger une base de données avec SELECT : jointure, tri et filtre",
+          "contenu_markdown": "Quand les colonnes demandées appartiennent à deux tables différentes, il faut les joindre sur leur clé commune avec une clause `INNER JOIN ... ON ...`, qui associe chaque ligne de la première table à la ligne correspondante de la seconde.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4e",
+      "enonce_markdown": "e) Afficher les noms des clients et leur montant emprunté *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa même démarche de jointure s'applique dès que deux informations à afficher ensemble proviennent de deux tables distinctes : on joint sur la colonne qui leur est commune, ici Num_Client entre CLIENT et EMPRUNT.\n\n```sql\nSELECT CLIENT.Nom, EMPRUNT.Montant\nFROM CLIENT\nINNER JOIN EMPRUNT ON CLIENT.Num_Client = EMPRUNT.Num_Client;\n```",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4e-1",
+          "competence": "Interroger une base de données avec SELECT : jointure, tri et filtre",
+          "contenu_markdown": "La même démarche de jointure s'applique dès que deux informations à afficher ensemble proviennent de deux tables distinctes : on joint sur la colonne qui leur est commune, ici Num_Client entre CLIENT et EMPRUNT.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4f",
+      "enonce_markdown": "f) Ajouter un nouveau client (Cli023, Bambi, Célestin, Garoua, 655023124) *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `INSERT INTO table (colonnes) VALUES (valeurs)` ajoute une nouvelle ligne dans une table, en faisant correspondre chaque valeur à la colonne de même position dans la liste.\n\nDepuis la question 4.b, la table CLIENT compte désormais cinq colonnes (Num_Client, Nom, Prenom, Ville_client, Num_telephone) : le nouveau client fournit une valeur pour chacune d'elles.\n\n```sql\nINSERT INTO CLIENT (Num_Client, Nom, Prenom, Ville_client, Num_telephone)\nVALUES ('Cli023', 'Bambi', 'Célestin', 'Garoua', '655023124');\n```",
+      "themes": [
+        "SQL",
+        "INSERT INTO",
+        "langage de manipulation de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4f-1",
+          "competence": "Modifier des données en SQL : INSERT INTO et UPDATE",
+          "contenu_markdown": "L'instruction `INSERT INTO table (colonnes) VALUES (valeurs)` ajoute une nouvelle ligne dans une table, en faisant correspondre chaque valeur à la colonne de même position dans la liste.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4g",
+      "enonce_markdown": "g) Transférer la ville de domiciliation du compte de Moussa à Maroua *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `UPDATE table SET colonne = nouvelle_valeur WHERE condition` modifie la ou les lignes qui vérifient la condition ; sans clause WHERE, la modification s'appliquerait à toutes les lignes de la table.\n\n```sql\nUPDATE CLIENT\nSET Ville_client = 'Maroua'\nWHERE Nom = 'Moussa';\n```\n\n### Piège à éviter\nOmettre la clause `WHERE` transformerait cette instruction en une mise à jour de TOUS les clients de la table vers la ville de Maroua : vérifie toujours deux fois la présence et la justesse de la condition avant de valider une instruction UPDATE.",
+      "themes": [
+        "SQL",
+        "UPDATE",
+        "langage de manipulation de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4g-1",
+          "competence": "Modifier des données en SQL : INSERT INTO et UPDATE",
+          "contenu_markdown": "L'instruction `UPDATE table SET colonne = nouvelle_valeur WHERE condition` modifie la ou les lignes qui vérifient la condition ; sans clause WHERE, la modification s'appliquerait à toutes les lignes de la table.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4h",
+      "enonce_markdown": "h) Afficher les noms et les soldes des comptes des clients dont le compte est débiteur (solde < 0) *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa clause `WHERE` filtre les lignes du résultat selon une condition ; combinée à une jointure, elle permet de restreindre l'affichage aux seules lignes qui vérifient à la fois le critère de jointure et le critère de sélection.\n\n```sql\nSELECT CLIENT.Nom, COMPTE.Solde\nFROM CLIENT\nINNER JOIN COMPTE ON CLIENT.Num_Client = COMPTE.Num_Client\nWHERE COMPTE.Solde < 0;\n```",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "WHERE",
+        "jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4h-1",
+          "competence": "Interroger une base de données avec SELECT : jointure, tri et filtre",
+          "contenu_markdown": "La clause `WHERE` filtre les lignes du résultat selon une condition ; combinée à une jointure, elle permet de restreindre l'affichage aux seules lignes qui vérifient à la fois le critère de jointure et le critère de sélection.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "SGBD",
+    "base de données relationnelle",
+    "clé primaire",
+    "clé étrangère",
+    "CREATE TABLE",
+    "ALTER TABLE",
+    "INSERT INTO",
+    "UPDATE",
+    "SELECT",
+    "jointure",
+    "BAC TI",
+    "banque"
+  ],
+  "incertitudes": [
+    "Le fichier fixture backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé dans cet environnement de traitement : savoir_officiel est laissé à null pour toutes les sous-questions.",
+    "Question 4.g : le prénom ou l'identifiant complet du client « Moussa » n'est pas précisé dans l'énoncé (nom seul) ; la requête suppose ce nom unique dans la table CLIENT. En cas d'homonymie réelle, il faudrait filtrer sur Num_Client plutôt que sur Nom pour cibler un client précis - ce point est à signaler à l'élève si l'énoncé complet du sujet précisait un identifiant que la présente lecture n'aurait pas capté.",
+    "La syntaxe SQL des requêtes (clause AFTER, fonctions de date) suit le dialecte MySQL par défaut, cohérent avec la présence de MySQL dans la liste des SGBD proposée en question 2 ; une syntaxe légèrement différente serait attendue avec un autre SGBD (Oracle, PostgreSQL)."
+  ],
+  "statut": "brouillon"
+}

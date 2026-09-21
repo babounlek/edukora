@@ -1,0 +1,248 @@
+{
+  "epreuve_source": "bac-ti-informatique-2018-officiel-cameroun",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2018,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "8",
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 (8 points)**\n\nLa table suivante contient un extrait des enregistrements des enseignants du CES de Bambam.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir le terme tuple. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans le modèle relationnel, un tuple (ou n-uplet) désigne une ligne d'une table : une association de valeurs, une par attribut de la table, qui représente une occurrence précise de l'entité modélisée.\n\nDans la table ENSEIGNANT, chaque ligne - par exemple celle qui regroupe le matricule, le nom DZOULA, le prénom Fernand, la discipline Informatique, l'âge 59 ans et sa date d'intégration - constitue un tuple de cette table.",
+      "themes": [
+        "modèle relationnel",
+        "tuple",
+        "vocabulaire des bases de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q1-1",
+          "competence": "Vocabulaire du modèle relationnel : tuple et attribut",
+          "contenu_markdown": "Dans le modèle relationnel, un tuple (ou n-uplet) désigne une ligne d'une table : une association de valeurs, une par attribut de la table, qui représente une occurrence précise de l'entité modélisée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Quel champ peut être considéré pertinemment comme étant la clé primaire ? *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa clé primaire d'une table est l'attribut, ou le plus petit groupe d'attributs, dont la valeur identifie chaque tuple de façon unique et qui ne peut jamais rester vide ; un bon candidat doit en outre rester stable dans le temps, jamais sujet à homonymie ni à modification.\n\nPassons en revue les colonnes de la table ENSEIGNANT. Nom et Prénom sont exposés à l'homonymie (rien n'empêche deux enseignants de porter le même nom). Discipline est partagée par plusieurs enseignants à la fois (DZOULA et BABA sont tous deux en Informatique dans l'extrait fourni). Age change chaque année et ne peut donc pas servir d'identifiant stable. Seul le champ **Matricule** est conçu, par nature administrative, pour être unique et attribué une fois pour toutes à chaque enseignant : c'est donc lui qui doit être retenu comme clé primaire de la table.",
+      "themes": [
+        "modèle relationnel",
+        "clé primaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q2-1",
+          "competence": "Identifier la clé primaire d'une table relationnelle",
+          "contenu_markdown": "La clé primaire d'une table est l'attribut, ou le plus petit groupe d'attributs, dont la valeur identifie chaque tuple de façon unique et qui ne peut jamais rester vide ; un bon candidat doit en outre rester stable dans le temps, jamais sujet à homonymie ni à modification.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Écrire la requête SQL qui crée cette table ENSEIGNANT. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction CREATE TABLE du langage de définition de données (LDD) déclare une nouvelle table en listant, entre parenthèses et séparées par des virgules, chaque colonne suivie de son type de données ; la clé primaire est signalée par la contrainte PRIMARY KEY accolée à la colonne concernée.\n\n```sql\nCREATE TABLE ENSEIGNANT (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Discipline VARCHAR(30),\n    Age INT,\n    DateIntegration DATE\n);\n```\n\nMatricule est déclaré en VARCHAR car son format observé (par exemple « 995M24 ») mélange chiffres et lettres, ce qu'un type numérique ne peut pas représenter. Nom, Prenom et Discipline sont du texte de longueur variable, donc en VARCHAR. Age reste un entier (INT) et DateIntegration un type DATE, seuls types permettant ensuite des comparaisons numériques ou chronologiques correctes.\n\n### Piège à éviter\nDéclarer Age en VARCHAR par réflexe, parce que toutes les colonnes qui précèdent sont textuelles, empêcherait toute comparaison numérique ultérieure - comme celle utilisée par la requête `WHERE Age BETWEEN 44 AND 59` de la question suivante, qui échouerait ou donnerait un résultat incohérent sur un champ texte.",
+      "themes": [
+        "SQL",
+        "langage de définition de données",
+        "CREATE TABLE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q3-1",
+          "competence": "Créer une table avec CREATE TABLE (langage de définition de données)",
+          "contenu_markdown": "L'instruction CREATE TABLE du langage de définition de données (LDD) déclare une nouvelle table en listant, entre parenthèses et séparées par des virgules, chaque colonne suivie de son type de données ; la clé primaire est signalée par la contrainte PRIMARY KEY accolée à la colonne concernée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Madame OVAH Sandrine, âgée de 26 ans et qui a été intégrée dans le corps des enseignants depuis le 27/12/2015 avec le matricule 995M24, vient d'être affectée en tant que professeur d'EPS. Donner la requête SQL permettant de l'insérer dans la table ENSEIGNANT.",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction INSERT INTO ajoute un nouveau tuple à une table existante ; on précise le nom de la table, la liste ordonnée des colonnes concernées, puis la liste des valeurs correspondantes dans le même ordre, les valeurs textuelles et les dates étant placées entre apostrophes.\n\n```sql\nINSERT INTO ENSEIGNANT (Matricule, Nom, Prenom, Discipline, Age, DateIntegration)\nVALUES ('995M24', 'OVAH', 'Sandrine', 'EPS', 26, '2015-12-27');\n```\n\nLa discipline enregistrée est EPS, conformément à l'affectation initiale de Mme OVAH Sandrine décrite dans l'énoncé.",
+      "themes": [
+        "SQL",
+        "langage de manipulation de données",
+        "INSERT INTO"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q4-1",
+          "competence": "Insérer un enregistrement avec INSERT INTO",
+          "contenu_markdown": "L'instruction INSERT INTO ajoute un nouveau tuple à une table existante ; on précise le nom de la table, la liste ordonnée des colonnes concernées, puis la liste des valeurs correspondantes dans le même ordre, les valeurs textuelles et les dates étant placées entre apostrophes.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Que fait la requête SQL suivante ? *[0,5 pt]*\n\n```sql\nDELETE FROM ENSEIGNANT\nWHERE Age BETWEEN 44 AND 59;\n```",
+      "corrige_markdown": "### Rappel de méthode\nLire une requête SQL de suppression revient à identifier, dans la clause WHERE, la condition qui sélectionne les tuples concernés : DELETE FROM table WHERE condition supprime définitivement tous les tuples qui vérifient cette condition, et seulement ceux-là.\n\nLa requête supprime de la table ENSEIGNANT tous les enseignants dont l'âge est compris entre 44 et 59 ans inclus - l'opérateur BETWEEN inclut les deux bornes de l'intervalle. D'après l'extrait fourni, DZOULA Fernand (59 ans) et DJAMBONG Owen (46 ans) vérifient cette condition et seraient donc supprimés de la table ; les trois autres enseignants de l'extrait (37, 35 et 33 ans) ne sont pas concernés par cette suppression.\n\n### Piège à éviter\nNe crois pas que BETWEEN 44 AND 59 exclut l'une des deux bornes : l'opérateur BETWEEN inclut systématiquement la valeur de départ ET la valeur de fin de l'intervalle, contrairement à ce que suggère parfois son nom en anglais.",
+      "themes": [
+        "SQL",
+        "langage de manipulation de données",
+        "DELETE",
+        "BETWEEN"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q5-1",
+          "competence": "Lire et interpréter une requête SQL de suppression (DELETE ... WHERE ... BETWEEN)",
+          "contenu_markdown": "Lire une requête SQL de suppression revient à identifier, dans la clause WHERE, la condition qui sélectionne les tuples concernés : DELETE FROM table WHERE condition supprime définitivement tous les tuples qui vérifient cette condition, et seulement ceux-là.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "**6.** En scrutant attentivement la décision d'affectation de chaque enseignant durant le recensement, il se trouve que l'enseignante de matricule 995M24 est plutôt professeur d'ESF. Donner la requête SQL qui fait la mise à jour de la discipline qu'elle enseigne. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction UPDATE modifie la valeur d'une ou plusieurs colonnes pour les tuples qui vérifient la condition de la clause WHERE ; omettre cette clause mettrait à jour la totalité des tuples de la table, une erreur aux conséquences potentiellement lourdes sur une vraie base de données.\n\n```sql\nUPDATE ENSEIGNANT\nSET Discipline = 'ESF'\nWHERE Matricule = '995M24';\n```\n\nLa clause WHERE cible précisément l'enseignante de matricule 995M24 (Mme OVAH Sandrine), et seule sa discipline est modifiée : les autres colonnes et les autres tuples de la table restent inchangés.\n\n### Piège à éviter\nOublier la clause WHERE dans un UPDATE mettrait la discipline « ESF » à TOUS les enseignants de la table, pas seulement à Mme OVAH Sandrine : vérifie toujours qu'un UPDATE porte une condition avant de le considérer terminé.",
+      "themes": [
+        "SQL",
+        "langage de manipulation de données",
+        "UPDATE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q6-1",
+          "competence": "Mettre à jour des données avec UPDATE ... SET ... WHERE",
+          "contenu_markdown": "L'instruction UPDATE modifie la valeur d'une ou plusieurs colonnes pour les tuples qui vérifient la condition de la clause WHERE ; omettre cette clause mettrait à jour la totalité des tuples de la table, une erreur aux conséquences potentiellement lourdes sur une vraie base de données.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "**7.** Écrire la requête SQL qui affiche la liste des enseignants d'informatique. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa clause WHERE d'une instruction SELECT restreint les tuples affichés à ceux qui vérifient une condition d'égalité ou de comparaison sur une colonne ; une valeur textuelle comparée dans cette condition s'écrit toujours entre apostrophes.\n\n```sql\nSELECT *\nFROM ENSEIGNANT\nWHERE Discipline = 'Informatique';\n```\n\nD'après l'extrait fourni, cette requête renverrait les tuples de DZOULA Fernand et de BABA Souley, les deux seuls enseignants d'informatique visibles dans l'extrait.",
+      "themes": [
+        "SQL",
+        "langage de manipulation de données",
+        "SELECT",
+        "WHERE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q7-1",
+          "competence": "Sélectionner des données d'une seule table avec une condition (SELECT ... WHERE)",
+          "contenu_markdown": "La clause WHERE d'une instruction SELECT restreint les tuples affichés à ceux qui vérifient une condition d'égalité ou de comparaison sur une colonne ; une valeur textuelle comparée dans cette condition s'écrit toujours entre apostrophes.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "**8.** Écrire la requête qui permet de supprimer la colonne Age. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction ALTER TABLE modifie la structure d'une table déjà créée ; associée à la clause DROP COLUMN, elle supprime définitivement une colonne entière et l'ensemble des valeurs qu'elle contenait pour tous les tuples existants.\n\n```sql\nALTER TABLE ENSEIGNANT\nDROP COLUMN Age;\n```\n\n### Piège à éviter\nNe confonds pas DROP COLUMN, qui retire une colonne entière de la structure de la table, avec DELETE, qui retire des lignes : les deux instructions agissent sur deux dimensions différentes de la table et ne sont jamais interchangeables.",
+      "themes": [
+        "SQL",
+        "langage de définition de données",
+        "ALTER TABLE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q8-1",
+          "competence": "Modifier la structure d'une table avec ALTER TABLE (ajout ou suppression de colonne)",
+          "contenu_markdown": "L'instruction ALTER TABLE modifie la structure d'une table déjà créée ; associée à la clause DROP COLUMN, elle supprime définitivement une colonne entière et l'ensemble des valeurs qu'elle contenait pour tous les tuples existants.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "figures": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "tuple",
+    "clé primaire",
+    "CREATE TABLE",
+    "INSERT INTO",
+    "UPDATE",
+    "DELETE",
+    "ALTER TABLE",
+    "SELECT WHERE",
+    "base de données relationnelle",
+    "table ENSEIGNANT",
+    "baccalauréat TI 2018",
+    "bac ti informatique"
+  ],
+  "incertitudes": [
+    "Le fichier fixture backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé dans cet environnement : savoir_officiel est laissé à null pour toutes les sous-questions, faute de pouvoir consulter le référentiel officiel.",
+    "La durée de l'épreuve et le coefficient ne sont indiqués nulle part sur le sujet source : les deux champs sont laissés à null plutôt que devinés.",
+    "Dans le tableau ENSEIGNANT du sujet source, la colonne des matricules et les millésimes complets de la colonne Date d'intégration sont tronqués par la mise en page du document original (débordement hors de la marge de page, visible aussi bien à la lecture visuelle qu'à l'extraction du texte) : seuls le dernier chiffre du matricule et le préfixe de l'année (19.., 20..) restent lisibles pour les 5 lignes de l'extrait. Aucune question de cet exercice ne dépend de ces valeurs tronquées (les données nécessaires - matricule complet 995M24, âges, noms, disciplines - sont toutes données en toutes lettres ailleurs dans l'énoncé ou pleinement lisibles dans le tableau), donc cela ne bloque la correction d'aucune sous-question.",
+    "Le sujet source enchaîne la question 4 puis une question non numérotée (« Que fait la requête SQL suivante ? ») avant de reprendre à la question 6 : le numéro 5, absent de la mise en page du document fourni, a été rétabli par cohérence avec la numérotation qui l'entoure plutôt que de laisser un repère de question orphelin."
+  ],
+  "statut": "brouillon"
+}

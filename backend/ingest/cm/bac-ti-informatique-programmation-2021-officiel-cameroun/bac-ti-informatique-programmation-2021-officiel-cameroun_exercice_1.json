@@ -1,0 +1,367 @@
+{
+  "epreuve_source": "bac-ti-informatique-programmation-2021-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "groupes": [],
+  "numero_exercice": "1",
+  "introduction_markdown": "Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.",
+  "points": 10,
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-informatique-programmation-2021-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "document",
+      "legende": "Page de saisie du code client : un cadre de saisie affichant \"Code client : 12\" et un bouton Modifier",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**PARTIE I : PROGRAMMATION WEB** *(10 points)*\n\nUne entreprise de la place souhaite mettre sur pied une application web dynamique de gestion de son magasin. Souhaitant faire une programmation modulaire, elle confie au candidat le module de modification des coordonnées de ses clients. Ce module consiste à créer deux pages web. La première permet de récupérer le « code » (identifiant du champ de saisie) du client dont les autres propriétés seront modifiées. L'interface de cette page se présente comme l'indique la figure 1 ci-dessous.\n\n![fig-1](bac-ti-informatique-programmation-2021-officiel-cameroun_exercice_1_fig_1.png)\n\nLa deuxième page web permet de modifier les propriétés du client choisi. Le code source qui permet de réaliser cette action est le suivant :\n\n```php\n1  <?php\n2  if(empty($_POST['code'])){header(\"Location:mysqliex8.php\");}\n3  ?>\n4  <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n5  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n6  <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\">\n7  <head>\n8  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n9  <title>Modifiez vos coordonnées</title>\n10 <meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">\n11 </head>\n12 <body>\n13 <?php\n14 $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n15 if($_POST['modif']!='Enregistrer') {\n16 $code=$idcom->escape_string($_POST['code']);\n17 //Requête SQL\n18 $requete=\"SELECT * FROM client WHERE id_client='$code' \";\n19 $result=$idcom->query($requete);\n20 $coord=$result->fetch_row();\n21 //Création du formulaire complété avec les données existantes\n22 echo \"<form action=\\\"\". $_SERVER['PHP_SELF'].\"\\\"\n23 method=\\\"post\\\" enctype=\\\"application/x-www-form-urlencoded\\\">\";\n24 echo \"<fieldset>\";\n25 echo \"<legend><b>Modifiez vos coordonnées</b></legend>\";\n26 echo \"<table>\";\n27 echo \"<tr><td>Nom : </td><td><input type=\\\"text\\\" name=\\\"nom\\\" size=\\\"40\\\" maxlength=\\\"30\\\" value=\\\"$coord[1]\\\"/> </td></tr>\";\n28 echo \"<tr><td>Prénom : </td><td><input type=\\\"text\\\" name=\\\"prenom\\\" size=\\\"40\\\" maxlength=\\\"30\\\" value=\\\"$coord[2]\\\"/></td></tr>\";\n28 echo \"<tr><td>Ville : </td><td><input type=\\\"text\\\" name=\\\"ville\\\" size=\\\"40\\\" maxlength=\\\"40\\\" value=\\\"$coord[5]\\\"/></td></tr>\";\n29 echo \"<tr><td>Mail : </td><td><input type=\\\"text\\\" name=\\\"mail\\\" size=\\\"40\\\" maxlength=\\\"50\\\" value=\\\"$coord[6]\\\"/></td></tr>\";\n30 echo \"<tr><td><input type=\\\"reset\\\" value=\\\" Effacer \\\"></td> <td><input type=\\\"submit\\\" name=\\\"modif\\\" value=\\\"Enregistrer\\\"></td></tr></table>\";\n31 echo \"</fieldset>\";\n32 echo \"<input type=\\\"hidden\\\" name=\\\"code\\\" value=\\\"$code\\\"/>\";\n33 echo \"</form>\";\n34 $result->close();\n35 $idcom->close();\n36 }\n37 elseif(isset($_POST['nom'])&&isset($_POST['ville']))\n38 {\n39 //ENREGISTREMENT\n40 $nom=$idcom->escape_string($_POST['nom']);\n41 $ville=$idcom->escape_string($_POST['ville']);\n42 $mail=$idcom->escape_string($_POST['mail']);\n43 $code=$idcom->escape_string($_POST['code']);\n44 //Requête SQL\n45 $requete=\"UPDATE client SET nom='$nom', ville='$ville',mail='$mail'\n           WHERE id_client='$code'\";\n46 $result=$idcom->query($requete);\n47 if(!$result) {\n48 echo \"<script type=\\\"text/javascript\\\">\n49 alert('Erreur : \".$result->error.\"')</script>\";\n50 }\n51 else {\n52 echo \"<script type=\\\"text/javascript\\\"> alert('Vos modifications sont enregistrées');\n           window.location='index.html';</script>\";\n53 }\n54 $result->close();\n55 $idcom->close();\n56 }\n57 else {\n58 echo \"Modifier vos coordonnées!\";\n59 }\n60 ?>\n61 </body>\n62 </html>\n```\n\nEn vous servant du code ci-dessus et de vos connaissances en programmation web, répondez aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "**I/ Programmation HTML et JavaScript** *(3 points)*\n\n**1.** Définir l'expression **application web**. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne application web est un logiciel dont le traitement s'exécute en partie sur un serveur distant et qui s'utilise à travers un navigateur, sans installation locale, par opposition à un logiciel de bureau classique qui s'installe et s'exécute entièrement sur le poste de l'utilisateur.\n\nUne **application web** est un programme informatique accessible par un navigateur (Chrome, Firefox, Edge...) via une connexion réseau, dont une partie du traitement (calculs, accès aux données) s'exécute sur un serveur distant tandis que l'affichage se fait sur le poste client. Elle génère des pages dont le contenu peut varier selon les actions de l'utilisateur ou les données stockées, contrairement à un simple site web statique dont le contenu est figé.\n\nExemple : le module décrit dans cet exercice (saisie d'un code client puis modification de ses coordonnées) est une application web, car les pages affichées dépendent des données réellement stockées dans la base **magasin** et des actions du client à chaque instant.\n\n### Conseil\nPense toujours à opposer explicitement l'application web au site web statique dans ta définition : c'est ce qui montre au correcteur que tu maîtrises la nuance entre contenu figé et contenu généré dynamiquement, souvent ce qui distingue une réponse à 0.5 pt complète d'une réponse partielle.",
+      "themes": [
+        "application web",
+        "programmation web",
+        "vocabulaire du web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qI-1-0",
+          "competence": "Notion d'application web",
+          "contenu_markdown": "Une application web est un logiciel dont le traitement s'exécute en partie sur un serveur distant et qui s'utilise à travers un navigateur, sans installation locale, par opposition à un logiciel de bureau classique qui s'installe et s'exécute entièrement sur le poste de l'utilisateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.2",
+      "enonce_markdown": "**2.** Écrire le code HTML qui permet d'afficher le formulaire de la figure 1. Il est conseillé d'utiliser un tableau de 2 lignes et 2 colonnes. *[1.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML se construit avec la balise `<form>`, qui définit l'action (la page de destination) et la méthode d'envoi des données, et contient des champs de saisie (`<input>`) associés chacun à un attribut `name` qui sert de clé pour récupérer la valeur côté serveur ; un tableau `<table>` permet d'aligner proprement les étiquettes de champ et les champs eux-mêmes.\n\nLa figure 1 montre deux lignes : une ligne « Code client » avec une zone de saisie pré-remplie à 12, et une ligne « Modifier » avec un bouton de validation. Le nom du champ de saisie doit être **code**, puisque le script PHP donné lit sa valeur avec `$_POST['code']` (ligne 2 et ligne 16 du code source).\n\n```html\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n<title>Saisie du code client</title>\n</head>\n<body>\n<form action=\"mysqliex9.php\" method=\"post\">\n<fieldset>\n<legend>Saisissez votre code client pour modifier vos coordonnées</legend>\n<table>\n<tr>\n<td>Code client :</td>\n<td><input type=\"text\" name=\"code\" value=\"12\" /></td>\n</tr>\n<tr>\n<td>Modifier :</td>\n<td><input type=\"submit\" name=\"modif\" value=\"Modifier\" /></td>\n</tr>\n</table>\n</fieldset>\n</form>\n</body>\n</html>\n```\n\nLe tableau comporte bien deux lignes (`<tr>`) et deux colonnes (`<td>`) par ligne, comme demandé. Le nom du fichier cible de l'attribut `action` (ici `mysqliex9.php`) n'est pas imposé par l'énoncé : seul compte que ce soit la page contenant le code PHP donné, celle qui lit `$_POST['code']`.\n\n### Piège à éviter\nBeaucoup d'élèves oublient de nommer le champ de saisie **code** exactement (en écrivant par exemple `client` ou `id`) : le script PHP fourni ne fonctionnerait alors jamais, puisqu'il cherche précisément `$_POST['code']`. Le nom du champ n'est pas un détail esthétique, c'est la clé qui relie le formulaire au script qui le traite.\n\n### Conseil\nRelis toujours le code PHP fourni pour retrouver les noms exacts de champs attendus (`$_POST['xxx']`) avant d'écrire le formulaire HTML correspondant : c'est la garantie la plus sûre de ne pas perdre de points sur un simple nom de champ.",
+      "themes": [
+        "formulaire HTML",
+        "balise form",
+        "input",
+        "tableau HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qI-2-0",
+          "competence": "Mise en forme d'un formulaire HTML à l'aide d'un tableau (balise <table>)",
+          "contenu_markdown": "Un formulaire HTML se construit avec la balise `<form>`, qui définit l'action (la page de destination) et la méthode d'envoi des données, et contient des champs de saisie (`<input>`) associés chacun à un attribut `name` qui sert de clé pour récupérer la valeur côté serveur ; un tableau `<table>` permet d'aligner proprement les étiquettes de champ et les champs eux-mêmes.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.3",
+      "enonce_markdown": "**3.** Écrire le code JavaScript qui permet de contrôler que la valeur saisie dans le champ du **Code client** soit entière et d'afficher le message **\"code incorrect\"** dans le cas contraire, lorsqu'on clique sur le bouton **Modifier**. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nContrôler une saisie côté client consiste à écrire une fonction JavaScript déclenchée par un événement (ici le clic sur un bouton), qui récupère la valeur du champ concerné, la teste avec une condition, puis empêche la validation du formulaire en cas d'échec du test, généralement en affichant un message d'erreur et en renvoyant `false`.\n\nIl faut d'abord donner un identifiant au champ de saisie pour pouvoir le récupérer facilement en JavaScript, puis écrire une fonction qui teste que la valeur ne contient que des chiffres (donc un entier) à l'aide d'une expression régulière, et enfin relier cette fonction au clic sur le bouton **Modifier**.\n\n```html\n<input type=\"text\" name=\"code\" id=\"code\" value=\"12\" />\n<input type=\"submit\" name=\"modif\" value=\"Modifier\" onclick=\"return verifierCode();\" />\n\n<script type=\"text/javascript\">\nfunction verifierCode() {\n    var code = document.getElementById(\"code\").value;\n    if (!/^[0-9]+$/.test(code)) {\n        alert(\"code incorrect\");\n        return false;\n    }\n    return true;\n}\n</script>\n```\n\nL'expression régulière `/^[0-9]+$/` vérifie que la chaîne saisie est composée uniquement de chiffres, du premier au dernier caractère (les ancres `^` et `$` interdisent tout caractère parasite avant ou après). Si le test échoue, `alert(\"code incorrect\")` affiche le message demandé et la fonction renvoie `false` : associée à `onclick=\"return verifierCode();\"`, cette valeur `false` empêche l'envoi du formulaire.\n\n### Piège à éviter\nUn test comme `isNaN(code)` seul ne suffit pas toujours : une saisie comme `12.5` ou `-3` est reconnue comme un nombre par `isNaN`, alors que la question demande précisément une valeur **entière**. Préfère une expression régulière ou une comparaison avec `Number.isInteger(Number(code))` plutôt qu'un simple test « est-ce un nombre ».\n\n### Conseil\nN'oublie jamais le `return` devant l'appel de la fonction dans l'attribut `onclick` (`onclick=\"return verifierCode();\"`). Sans lui, la valeur `false` renvoyée par la fonction est ignorée et le formulaire continue de s'envoyer même en cas de saisie incorrecte.",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire",
+        "expression régulière",
+        "événement onclick"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qI-3-0",
+          "competence": "Validation d'une saisie numérique en JavaScript",
+          "contenu_markdown": "Contrôler une saisie côté client consiste à écrire une fonction JavaScript déclenchée par un événement (ici le clic sur un bouton), qui récupère la valeur du champ concerné, la teste avec une condition, puis empêche la validation du formulaire en cas d'échec du test, généralement en affichant un message d'erreur et en renvoyant `false`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.1",
+      "enonce_markdown": "**II/ Programmation PHP** *(7 points)*\n\n**1.** Décrire les éléments constitutifs d'un environnement intégré de développement web (serveur web, serveur de données, préprocesseur). *[1.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nFaire fonctionner une application web dynamique en local exige trois logiciels qui coopèrent : un serveur web qui reçoit les requêtes du navigateur, un serveur de données qui stocke et restitue les informations, et un préprocesseur qui exécute le code du langage serveur avant de renvoyer une page HTML au navigateur.\n\n**Le serveur web** (exemple : Apache, Nginx) reçoit les requêtes HTTP envoyées par le navigateur, retrouve le fichier demandé dans le répertoire racine du site, et renvoie une réponse HTTP contenant la page au client.\n\n**Le serveur de données** (exemple : MySQL, MariaDB, appelé aussi SGBD - système de gestion de base de données) stocke les données de l'application de façon organisée et durable, et répond aux requêtes SQL envoyées par les scripts serveur pour lire ou modifier ces données.\n\n**Le préprocesseur** (exemple : l'interpréteur PHP) exécute le code écrit dans le langage serveur (ici le PHP contenu entre `<?php ... ?>`) avant que la page ne soit envoyée au navigateur : il remplace ce code par le résultat de son exécution (du HTML), de sorte que le navigateur ne reçoit jamais le code PHP lui-même.\n\nCes trois éléments réunis (par exemple dans une suite comme WAMP, LAMP ou XAMPP) forment un environnement intégré de développement web, permettant de développer et tester une application dynamique comme celle de cet exercice sans dépendre d'un hébergement en ligne.\n\n### Conseil\nCite systématiquement un exemple concret pour chacun des trois éléments (Apache, MySQL, PHP) : une réponse purement théorique sans nommer d'outil réel est souvent moins valorisée par le barème qu'une réponse illustrée.",
+      "themes": [
+        "serveur web",
+        "SGBD",
+        "préprocesseur PHP",
+        "environnement de développement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-1-0",
+          "competence": "Pile logicielle d'un serveur web : serveur HTTP, SGBD et préprocesseur",
+          "contenu_markdown": "Faire fonctionner une application web dynamique en local exige trois logiciels qui coopèrent : un serveur web qui reçoit les requêtes du navigateur, un serveur de données qui stocke et restitue les informations, et un préprocesseur qui exécute le code du langage serveur avant de renvoyer une page HTML au navigateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.2",
+      "enonce_markdown": "**2.** Spécifier le rôle du répertoire racine du serveur d'hébergement d'une application web. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe répertoire racine (ou racine des documents, *DocumentRoot*) est le dossier que le serveur web considère comme point de départ pour retrouver les fichiers demandés par le navigateur : tout fichier accessible publiquement par une URL doit s'y trouver, directement ou dans un de ses sous-dossiers.\n\nQuand un navigateur envoie une requête HTTP pour une adresse comme `http://localhost/mysite/index.php`, le serveur web traduit le chemin `/mysite/index.php` en le cherchant à partir de son répertoire racine (par exemple `htdocs` pour WAMP/XAMPP, ou `www` pour d'autres distributions). Un fichier placé en dehors de ce répertoire n'est jamais accessible directement par une URL, même s'il se trouve sur le même disque : il reste invisible du navigateur. Le répertoire racine délimite donc la zone publique de l'application, séparée du reste du système de fichiers du serveur.",
+      "themes": [
+        "serveur web",
+        "DocumentRoot",
+        "hébergement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-2-0",
+          "competence": "Répertoire racine (DocumentRoot) d'un serveur web",
+          "contenu_markdown": "Le répertoire racine (ou racine des documents, *DocumentRoot*) est le dossier que le serveur web considère comme point de départ pour retrouver les fichiers demandés par le navigateur : tout fichier accessible publiquement par une URL doit s'y trouver, directement ou dans un de ses sous-dossiers.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.3",
+      "enonce_markdown": "**3.** Expliquer de quel côté s'exécute un script PHP. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour dire de quel côté s'exécute un script, on identifie qui interprète le code (serveur ou client), puis on précise ce que le navigateur reçoit en fin de compte.\n\nUn script PHP s'exécute exclusivement côté serveur : le serveur web interprète le code PHP, produit le résultat sous forme de HTML, puis envoie uniquement ce résultat au navigateur, qui ne reçoit et n'exécute jamais le code PHP source.\n\nDans le code fourni, tout ce qui se trouve entre `<?php` et `?>` (par exemple la connexion à la base avec `new mysqli(...)` ligne 14, ou la construction de la requête SQL) est exécuté sur le serveur, avant l'envoi de la page. Le navigateur du client ne voit jamais ce code : si l'on affichait le « code source de la page » depuis le navigateur, on n'y trouverait que le HTML généré par les instructions `echo`, jamais les instructions PHP elles-mêmes. C'est cette exécution côté serveur qui permet, entre autres, de cacher les identifiants de connexion à la base de données (`\"root\"`, `\"\"`) au client final.\n\n### Conseil\nSi on te demande de justifier pourquoi PHP est adapté à la sécurité d'une application (accès base de données, mots de passe), rappelle-toi que c'est précisément parce que le code ne quitte jamais le serveur, contrairement au JavaScript qui, lui, s'exécute côté client et reste visible dans le code source de la page.",
+      "themes": [
+        "PHP",
+        "exécution côté serveur",
+        "langage serveur vs langage client"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-3-0",
+          "competence": "Exécution côté serveur d'un script PHP (opposition client/serveur)",
+          "contenu_markdown": "Pour dire de quel côté s'exécute un script, on identifie qui interprète le code (serveur ou client), puis on précise ce que le navigateur reçoit en fin de compte.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.4",
+      "enonce_markdown": "**4.** Expliquer les variables super globales **$_GET** et **$_POST**. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\n$_GET et $_POST sont des tableaux associatifs superglobaux de PHP, c'est-à-dire accessibles depuis n'importe quel endroit du script sans déclaration préalable, qui contiennent automatiquement les données envoyées par un formulaire HTML, chaque valeur étant indexée par le nom (`name`) du champ correspondant.\n\n**$_GET** récupère les données transmises par la méthode GET, c'est-à-dire ajoutées directement dans l'URL sous forme de paires clé=valeur après un point d'interrogation (par exemple `page.php?id=3`). Ces données restent visibles dans la barre d'adresse et sont limitées en taille, ce qui les rend inadaptées à des informations sensibles ou volumineuses.\n\n**$_POST** récupère les données transmises par la méthode POST, envoyées dans le corps de la requête HTTP plutôt que dans l'URL. Elles ne sont donc pas visibles dans la barre d'adresse et ne sont pas limitées par la longueur d'une URL, ce qui les rend adaptées à l'envoi de formulaires contenant des informations sensibles (mots de passe) ou volumineuses.\n\nDans le code de l'exercice, le formulaire est envoyé avec `method=\"post\"` (ligne 23), ce qui explique que le script lise systématiquement ses données avec `$_POST` (`$_POST['code']`, `$_POST['nom']`, etc.) plutôt qu'avec `$_GET`.\n\n### Piège à éviter\nNe dis jamais que $_GET et $_POST sont interchangeables : le choix entre les deux dépend de l'attribut `method` du formulaire HTML (`method=\"get\"` ou `method=\"post\"`). Un script qui lit `$_POST['code']` alors que le formulaire a été envoyé avec `method=\"get\"` ne récupérera jamais la valeur attendue.",
+      "themes": [
+        "PHP",
+        "variables superglobales",
+        "$_GET",
+        "$_POST",
+        "méthode HTTP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-4-0",
+          "competence": "Récupérer les données d'un formulaire en PHP : $_GET et $_POST",
+          "contenu_markdown": "$_GET et $_POST sont des tableaux associatifs superglobaux de PHP, c'est-à-dire accessibles depuis n'importe quel endroit du script sans déclaration préalable, qui contiennent automatiquement les données envoyées par un formulaire HTML, chaque valeur étant indexée par le nom (`name`) du champ correspondant.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.5.1",
+      "enonce_markdown": "**5.** Donner le rôle :\n\n**5.1.** Du bloc de lignes de code allant de 1 à 3. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `header()` permet à un script PHP d'envoyer un en-tête HTTP personnalisé avant tout affichage ; associée à l'en-tête `Location:`, elle redirige immédiatement le navigateur vers une autre page, ce qui sert typiquement de garde d'accès pour empêcher qu'une page ne soit exécutée sans passer par une étape préalable.\n\n```php\n1  <?php\n2  if(empty($_POST['code'])){header(\"Location:mysqliex8.php\");}\n3  ?>\n```\n\nCe bloc teste si la variable `$_POST['code']` est vide (fonction `empty()`), c'est-à-dire si la page a été atteinte sans qu'un code client n'ait été transmis par un formulaire. Si c'est le cas, `header(\"Location:mysqliex8.php\")` redirige immédiatement le navigateur vers la page `mysqliex8.php` (vraisemblablement la page de saisie du code client de la figure 1). Ce bloc protège donc la page de modification des coordonnées contre tout accès direct (par exemple en tapant son URL dans le navigateur) sans être passé par l'étape de saisie du code client.\n\n### Piège à éviter\n`header()` doit impérativement être appelée avant tout envoi de contenu au navigateur (avant tout `echo`, avant même un simple espace en dehors des balises PHP) : appelée trop tard, elle provoque une erreur « headers already sent » plutôt que la redirection attendue. Sa position tout en haut du fichier, avant même la déclaration `<!DOCTYPE html>`, n'est donc pas un hasard.",
+      "themes": [
+        "PHP",
+        "header()",
+        "redirection HTTP",
+        "contrôle d'accès à une page"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-5-1-0",
+          "competence": "Redirection HTTP conditionnelle avec header() en PHP",
+          "contenu_markdown": "La fonction `header()` permet à un script PHP d'envoyer un en-tête HTTP personnalisé avant tout affichage ; associée à l'en-tête `Location:`, elle redirige immédiatement le navigateur vers une autre page, ce qui sert typiquement de garde d'accès pour empêcher qu'une page ne soit exécutée sans passer par une étape préalable.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.5.2",
+      "enonce_markdown": "**5.2.** De la ligne de code 14. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.\n\n```php\n14 $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n```\n\nCette ligne crée un objet `mysqli`, stocké dans la variable `$idcom`, représentant une connexion au serveur de base de données. Les quatre arguments précisent respectivement : l'hôte du serveur MySQL (`localhost`, c'est-à-dire la machine locale), le nom d'utilisateur (`root`), le mot de passe (une chaîne vide `\"\"`, cas typique d'une installation de développement) et le nom de la base de données à utiliser (`magasin`). C'est cet objet `$idcom` qui sera ensuite utilisé pour exécuter toutes les requêtes SQL du script (`$idcom->query(...)`) et qui devra être refermé avec `$idcom->close()` une fois le traitement terminé (lignes 35 et 55 du code).\n\n### Piège à éviter\nUn mot de passe vide (`\"\"`) n'est acceptable que sur un poste de développement local. Dans un projet réel destiné à être hébergé, laisser un compte `root` sans mot de passe est une faille de sécurité majeure : le correcteur peut valoriser une réponse qui le signale, même si la question ne le demande pas explicitement.",
+      "themes": [
+        "PHP",
+        "mysqli",
+        "connexion base de données",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-5-2-0",
+          "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+          "contenu_markdown": "En PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.5.3",
+      "enonce_markdown": "**5.3.** De la ligne de code 55. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.\n\n```php\n55 $idcom->close();\n```\n\nCette ligne referme la connexion à la base de données ouverte ligne 14, à l'endroit précis où le script vient de terminer le traitement de la branche « ENREGISTREMENT » (mise à jour des coordonnées du client, lignes 39 à 53). Fermer explicitement la connexion libère la ressource associée sur le serveur MySQL dès qu'elle n'est plus nécessaire, plutôt que d'attendre la fin d'exécution du script pour que PHP la ferme automatiquement.\n\n### Piège à éviter\nNe confonds pas `$result->close()` (ligne 54, qui libère uniquement le résultat de la dernière requête) et `$idcom->close()` (ligne 55, qui ferme la connexion entière au serveur de données) : ce sont deux ressources distinctes, et fermer l'une ne dispense jamais de fermer l'autre.",
+      "themes": [
+        "PHP",
+        "mysqli",
+        "fermeture de connexion",
+        "gestion des ressources"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-5-3-0",
+          "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+          "contenu_markdown": "En PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.6",
+      "enonce_markdown": "**6.** Écrire la requête qui crée la table **client** manipulée dans ce code. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction SQL `CREATE TABLE nom_table (colonne1 type, colonne2 type, ...)` crée une nouvelle table dans une base de données, en définissant pour chaque colonne un nom et un type de données ; une colonne peut en outre être désignée clé primaire pour identifier chaque ligne de façon unique.\n\nLe code manipule la table **client** à travers les colonnes `id_client` (utilisée dans les clauses `WHERE id_client='$code'`), `nom`, `prenom`, `ville` et `mail` (lues dans `$coord[1]`, `$coord[2]`, `$coord[5]` et `$coord[6]`, et mises à jour lignes 40 à 43). La requête de création correspondante est :\n\n```sql\nCREATE TABLE client (\n    id_client INT(11) NOT NULL AUTO_INCREMENT,\n    nom VARCHAR(30) NOT NULL,\n    prenom VARCHAR(30) NOT NULL,\n    ville VARCHAR(40),\n    mail VARCHAR(50),\n    PRIMARY KEY (id_client)\n);\n```\n\n`id_client` est déclarée clé primaire auto-incrémentée puisqu'elle sert d'identifiant unique de chaque client dans toutes les requêtes du script. Les tailles des champs `VARCHAR` (30, 40, 50) reprennent les attributs `maxlength` des champs de saisie correspondants dans le formulaire HTML (lignes 27 à 29), ce qui garantit que la colonne peut toujours contenir la plus longue valeur saisissable par l'utilisateur.\n\n### Piège à éviter\n`$coord[3]` et `$coord[4]` n'apparaissent jamais dans le code fourni : la table **client** comporte donc très probablement d'autres colonnes que celles listées ci-dessus (par exemple téléphone, adresse), non manipulées par ce script précis. Le sujet ne donnant pas leur nom exact, il est admis de ne créer que les colonnes réellement identifiables dans le code, à condition de le signaler clairement plutôt que d'inventer des noms de colonnes au hasard.\n\n### Conseil\nFais toujours correspondre la taille des colonnes `VARCHAR` de ta table aux attributs `maxlength` visibles dans le formulaire HTML associé : c'est un indice fiable, systématiquement présent dans ce type de sujet, pour deviner une taille de champ cohérente sans l'inventer au hasard.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "conception de base de données",
+        "clé primaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-6-0",
+          "competence": "Créer une table SQL avec l'instruction CREATE TABLE",
+          "contenu_markdown": "L'instruction SQL `CREATE TABLE nom_table (colonne1 type, colonne2 type, ...)` crée une nouvelle table dans une base de données, en définissant pour chaque colonne un nom et un type de données ; une colonne peut en outre être désignée clé primaire pour identifier chaque ligne de façon unique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.7",
+      "enonce_markdown": "**7.** Réécrire le bout de code de la ligne 47 à 53 en utilisant la structure de contrôle simple **if**. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nToute structure `if(condition) {...} else {...}` à deux branches strictement complémentaires peut être réécrite sans `else`, en remplaçant la seconde branche par un second `if` testant la condition inverse (négation logique de la première).\n\nLe code original teste `!$result` dans le premier `if`, puis exécute la branche alternative dans le `else`. La condition inverse de `!$result` est `$result` (vrai quand la requête a réussi). La réécriture sans `else` donne :\n\n```php\n47 if(!$result) {\n48 echo \"<script type=\\\"text/javascript\\\">\n49 alert('Erreur : \".$result->error.\"')</script>\";\n50 }\n51 if($result) {\n52 echo \"<script type=\\\"text/javascript\\\"> alert('Vos modifications sont enregistrées');\n           window.location='index.html';</script>\";\n53 }\n```\n\nLes deux `if` sont mutuellement exclusifs par construction, puisque `$result` et `!$result` ne peuvent jamais être vrais en même temps : le comportement du programme reste donc rigoureusement identique à la version avec `else`, une seule des deux branches s'exécutant à chaque passage.\n\n### Piège à éviter\nUne erreur fréquente consiste à réécrire le second bloc avec la même condition `!$result` recopiée par réflexe au lieu de la négation correcte. Vérifie toujours que la condition du second `if` est bien l'inverse logique de celle du premier, sans quoi les deux branches peuvent s'exécuter ensemble ou ne jamais s'exécuter du tout.\n\n### Conseil\nFace à une conversion if/else vers if simple, identifie d'abord la condition du if de départ, puis écris sa négation avant même de recopier le contenu des blocs : cela évite l'erreur classique de recopier deux fois la même condition.",
+      "themes": [
+        "PHP",
+        "structure conditionnelle",
+        "if simple",
+        "négation logique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex1-qII-7-0",
+          "competence": "Réécrire une structure if/else en une suite de if simples",
+          "contenu_markdown": "Toute structure `if(condition) {...} else {...}` à deux branches strictement complémentaires peut être réécrite sans `else`, en remplaçant la seconde branche par un second `if` testant la condition inverse (négation logique de la première).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "mysqli",
+    "formulaire HTML",
+    "JavaScript",
+    "SQL",
+    "CREATE TABLE",
+    "$_GET",
+    "$_POST",
+    "header()",
+    "serveur web",
+    "application web",
+    "DocumentRoot"
+  ],
+  "incertitudes": [
+    "Le programme officiel d'Informatique (backend/programme/fixtures/programme_officiel_cm_informatique.json) n'a pas été trouvé dans cet environnement : savoir_officiel est laissé à null sur toutes les sous-questions, faute de référentiel disponible pour le rattachement.",
+    "Sur le scan original (page 2), la numérotation imprimée du code PHP saute de 27 à 28 puis répète 28 (ligne « Ville ») avant de reprendre à 29 : ce doublon figure tel quel sur le sujet officiel et a été recopié fidèlement dans la transcription ; il n'affecte aucune des réponses attendues, les lignes réellement interrogées (14, 47-53, 55) restant identifiables sans ambiguïté.",
+    "Le sujet ne précise pas les colonnes de la table client correspondant aux index 3 et 4 du tableau $coord (non manipulés par ce script) : la requête CREATE TABLE proposée en II.6 ne reconstitue que les colonnes effectivement utilisées dans le code (id_client, nom, prenom, ville, mail), ce qui est signalé explicitement dans le corrigé de cette sous-question.",
+    "Deux compétences de ce corrigé (« Récupérer les données d'un formulaire en PHP : $_GET et $_POST » et « Se connecter à une base de données MySQL avec PHP (extension mysqli) ») ont été rédigées en cours complet après vérification qu'aucune version complète n'existait encore dans le corpus déjà produit ni dans le dossier partagé de ce lot au moment de la rédaction ; un autre sous-agent traitant en parallèle bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun a depuis produit un cours complet portant exactement le même intitulé pour ces deux compétences. Ce doublon inter-épreuves entre deux traitements strictement simultanés est du ressort de la déduplication côté plateforme (correspondance de titre à l'ingestion), conformément au fonctionnement prévu, et ne nécessite pas de correction manuelle de ce corrigé."
+  ],
+  "statut": "brouillon"
+}

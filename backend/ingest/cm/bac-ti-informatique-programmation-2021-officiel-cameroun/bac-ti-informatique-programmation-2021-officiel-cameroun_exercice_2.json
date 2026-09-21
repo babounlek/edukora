@@ -1,0 +1,381 @@
+{
+  "epreuve_source": "bac-ti-informatique-programmation-2021-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "groupes": [],
+  "numero_exercice": "2",
+  "introduction_markdown": null,
+  "points": 10,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\n**PARTIE II : PROGRAMMATION PROCÉDURALE EN C** *(10 points)*\n\nOn vous donne le programme C ci-dessous, qui calcule la factorielle d'un nombre.\n\n```c\n1: /* Exemple de fonction récurrente. Calcul de la factorielle d'un nombre\n2: #include <stdio.h>\n3: #include <stdlib.h>\n4: unsigned int f, x;\n5: unsigned int factorielle(unsigned int a);\n6: int main() {\n7: puts(\"Entrez une valeur entière entre 1 et 8: \");\n8: scanf(\"%d\", &x);\n9: if(x > 8 || x < 1) {\n10: printf(\"On a dit entre 1 to 8 !\");\n11: }\n12: else {\n13: f = factorielle(x);\n14: printf(\"Factorielle %u égal %u\\n\", x, f);\n15: }\n16: exit(EXIT_SUCCESS);\n17: }\n18: unsigned int factorielle(unsigned int a)\n19: {\n20: if (a == 1) {\n21: return 1;\n22: }\n23: else {\n24: a *= factorielle(a-1);\n25: return a;\n26: }\n27: }\n```\n\nEn vous servant du code ci-dessus et de vos connaissances en programmation C, répondez aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Décrire de façon précise le type de base utilisé dans ce code. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe type `unsigned int` désigne, en langage C, un entier non signé codé le plus souvent sur 4 octets (32 bits) sur les systèmes actuels, capable de représenter uniquement des valeurs positives ou nulles, de 0 à 2³²-1, sans bit réservé au signe contrairement à `int`.\n\nLe code utilise exclusivement le type `unsigned int` (variables `f`, `x` ligne 4, paramètre et type de retour de `factorielle` lignes 5 et 18). Sur la plupart des compilateurs actuels, `unsigned int` occupe 4 octets, soit 32 bits, et peut donc stocker des valeurs entières comprises entre 0 et 2³²-1, c'est-à-dire 4 294 967 295. Le mot-clé `unsigned` indique explicitement l'absence de bit de signe : tous les bits du mot mémoire servent à représenter la valeur elle-même, ce qui double la plus grande valeur représentable par rapport à un `int` signé de même taille, mais interdit toute valeur négative.\n\n### Conseil\nQuand une question demande de décrire un type « de façon précise », donne systématiquement trois informations : sa taille en octets/bits, sa plage de valeurs exacte, et ce qui le distingue du type voisin le plus proche (ici `int`, par l'absence de valeurs négatives). Une réponse réduite à « un entier » ne rapporte généralement qu'une fraction du barème.",
+      "themes": [
+        "langage C",
+        "type unsigned int",
+        "entiers non signés"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q1-0",
+          "competence": "Le type unsigned int en C : plage de valeurs et limites",
+          "contenu_markdown": "Le type `unsigned int` désigne, en langage C, un entier non signé codé le plus souvent sur 4 octets (32 bits) sur les systèmes actuels, capable de représenter uniquement des valeurs positives ou nulles, de 0 à 2³²-1, sans bit réservé au signe contrairement à `int`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Décrire les deux bibliothèques utilisées dans ce code. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.\n\n**`<stdio.h>`** (Standard Input/Output) fournit les fonctions d'entrée-sortie standard du langage C. Le code l'utilise pour `puts()` (ligne 7, affichage d'un message), `scanf()` (ligne 8, lecture d'une saisie clavier) et `printf()` (lignes 10 et 14, affichage formaté).\n\n**`<stdlib.h>`** (Standard Library) fournit des fonctions générales utilitaires : gestion de la mémoire, conversions, contrôle du programme. Le code l'utilise ici pour `exit()` et la constante `EXIT_SUCCESS` (ligne 16), qui terminent le programme en signalant au système d'exploitation que l'exécution s'est déroulée sans erreur.",
+      "themes": [
+        "langage C",
+        "bibliothèques standard",
+        "stdio.h",
+        "stdlib.h"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q2-0",
+          "competence": "Les bibliothèques standard du langage C",
+          "contenu_markdown": "Une bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.1",
+      "enonce_markdown": "**3.** Donner le rôle :\n\n**3.1.** De la ligne 5. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn prototype de fonction annonce au compilateur, avant sa définition complète, le type de retour d'une fonction, son nom et le type de ses paramètres, ce qui permet d'appeler cette fonction plus haut dans le fichier, avant l'endroit où elle est réellement définie.\n\n```c\n5: unsigned int factorielle(unsigned int a);\n```\n\nCette ligne déclare le prototype de la fonction `factorielle` : elle indique au compilateur que cette fonction existe, qu'elle retourne un `unsigned int` et qu'elle prend un paramètre de type `unsigned int`, sans en donner le corps (le code exécuté n'apparaît qu'à la ligne 18). Grâce à ce prototype, l'appel `f = factorielle(x);` fait à la ligne 13, à l'intérieur de `main()`, est accepté par le compilateur alors que la définition complète de `factorielle` se trouve plus bas dans le fichier (lignes 18 à 27).\n\n### Piège à éviter\nSans ce prototype, le compilateur rencontrerait l'appel `factorielle(x)` ligne 13 avant d'avoir connaissance de cette fonction, ce qui provoquerait une erreur (ou, selon le compilateur, un simple avertissement dangereux supposant un type de retour par défaut incorrect). Le prototype n'est donc pas une formalité : il conditionne la compilation correcte du programme.",
+      "themes": [
+        "langage C",
+        "prototype de fonction",
+        "déclaration anticipée",
+        "compilation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q3-1-0",
+          "competence": "Le prototype (déclaration anticipée) d'une fonction en C",
+          "contenu_markdown": "Un prototype de fonction annonce au compilateur, avant sa définition complète, le type de retour d'une fonction, son nom et le type de ses paramètres, ce qui permet d'appeler cette fonction plus haut dans le fichier, avant l'endroit où elle est réellement définie.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.2",
+      "enonce_markdown": "**3.2.** De la ligne 7. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `puts()`, définie dans `<stdio.h>`, affiche à l'écran la chaîne de caractères passée en argument, en ajoutant automatiquement un retour à la ligne après l'affichage, contrairement à `printf()` qui n'en ajoute que si on l'écrit explicitement.\n\n```c\n7: puts(\"Entrez une valeur entière entre 1 et 8: \");\n```\n\nCette ligne affiche à l'écran le message d'invite `Entrez une valeur entière entre 1 et 8: `, destiné à indiquer à l'utilisateur ce qu'il doit saisir juste avant l'appel à `scanf()` de la ligne suivante. `puts()` est adaptée ici car le message est une simple chaîne de caractères fixe, sans valeur à insérer dynamiquement, ce qui rend son usage plus simple que `printf()` pour ce cas précis.",
+      "themes": [
+        "langage C",
+        "puts()",
+        "affichage à l'écran",
+        "entrées-sorties"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q3-2-0",
+          "competence": "Les fonctions de saisie/affichage de chaînes en C : gets() et puts()",
+          "contenu_markdown": "La fonction `puts()`, définie dans `<stdio.h>`, affiche à l'écran la chaîne de caractères passée en argument, en ajoutant automatiquement un retour à la ligne après l'affichage, contrairement à `printf()` qui n'en ajoute que si on l'écrit explicitement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.3",
+      "enonce_markdown": "**3.3.** De la ligne 8. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf()` lit une valeur saisie au clavier et la stocke à l'adresse mémoire fournie en argument ; le spécificateur de format (`%d`, `%f`, `%c`...) lui indique sous quelle forme interpréter les caractères tapés, et l'opérateur `&` fournit l'adresse de la variable destinée à recevoir la valeur.\n\n```c\n8: scanf(\"%d\", &x);\n```\n\nCette ligne lit au clavier une valeur saisie par l'utilisateur, l'interprète comme un entier décimal grâce au spécificateur `%d`, puis la stocke à l'adresse mémoire de la variable `x`, adresse obtenue avec l'opérateur `&x`. Après exécution de cette ligne, `x` contient la valeur entrée par l'utilisateur, prête à être testée puis transmise à la fonction `factorielle()`.\n\n### Piège à éviter\nOublier le `&` devant `x` est l'erreur la plus fréquente sur cette ligne : sans lui, `scanf()` recevrait la valeur actuelle de `x` au lieu de son adresse, et ne pourrait donc pas y écrire la saisie de l'utilisateur (comportement indéfini, souvent un plantage du programme).",
+      "themes": [
+        "langage C",
+        "scanf()",
+        "spécificateur de format",
+        "adresse mémoire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q3-3-0",
+          "competence": "Spécificateurs de format en C (printf et scanf)",
+          "contenu_markdown": "La fonction `scanf()` lit une valeur saisie au clavier et la stocke à l'adresse mémoire fournie en argument ; le spécificateur de format (`%d`, `%f`, `%c`...) lui indique sous quelle forme interpréter les caractères tapés, et l'opérateur `&` fournit l'adresse de la variable destinée à recevoir la valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.4",
+      "enonce_markdown": "**3.4.** De la ligne 13. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nAppeler une fonction qui retourne une valeur (par un `return`) permet de récupérer cette valeur en l'affectant à une variable au moment de l'appel, l'expression `variable = nom_fonction(arguments);` exécutant d'abord entièrement la fonction avant de placer son résultat dans la variable.\n\n```c\n13: f = factorielle(x);\n```\n\nCette ligne appelle la fonction `factorielle` avec la valeur de `x` comme argument, exécute entièrement cette fonction (y compris ses appels récursifs internes), puis affecte la valeur qu'elle retourne (via ses instructions `return`, lignes 21 et 25) à la variable `f`. Une fois cette ligne exécutée, `f` contient le résultat du calcul de la factorielle de `x`, prêt à être affiché ligne 14.",
+      "themes": [
+        "langage C",
+        "appel de fonction",
+        "valeur de retour",
+        "affectation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q3-4-0",
+          "competence": "Appel de fonction et récupération de sa valeur de retour en C",
+          "contenu_markdown": "Appeler une fonction qui retourne une valeur (par un `return`) permet de récupérer cette valeur en l'affectant à une variable au moment de l'appel, l'expression `variable = nom_fonction(arguments);` exécutant d'abord entièrement la fonction avant de placer son résultat dans la variable.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Donner la différence fondamentale entre la variable **x** et la variable **a** dans ce code. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable en C dépend de l'endroit où elle est déclarée : une variable déclarée en dehors de toute fonction est globale et reste accessible depuis tout le fichier durant toute l'exécution du programme, tandis qu'une variable déclarée à l'intérieur d'une fonction (y compris un paramètre) est locale, créée à chaque appel de cette fonction et détruite dès qu'elle se termine.\n\n**`x`** est déclarée ligne 4 (`unsigned int f, x;`), en dehors de toute fonction : c'est une **variable globale**, visible et modifiable depuis `main()` comme depuis n'importe quelle autre fonction du fichier, et qui conserve sa valeur pendant toute la durée d'exécution du programme.\n\n**`a`** est le paramètre de la fonction `factorielle` (ligne 18) : c'est une **variable locale**. Une nouvelle variable `a` est créée à chaque appel de `factorielle` (donc six fois de suite lors des appels récursifs de la question 5), avec sa propre valeur indépendante des autres appels, puis détruite dès que l'appel correspondant se termine. La variable `a` de `factorielle(3)` n'est ni la même case mémoire, ni la même valeur, que la variable `a` de `factorielle(2)`, bien qu'elles portent le même nom.\n\n### Piège à éviter\nNe confonds pas « variable locale » et « paramètre » comme s'ils s'excluaient : un paramètre de fonction EST une variable locale à cette fonction, simplement initialisée automatiquement avec la valeur transmise lors de l'appel.",
+      "themes": [
+        "langage C",
+        "portée des variables",
+        "variable globale",
+        "variable locale",
+        "paramètre"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q4-0",
+          "competence": "Portée des variables en langage C (globale vs locale)",
+          "contenu_markdown": "La portée d'une variable en C dépend de l'endroit où elle est déclarée : une variable déclarée en dehors de toute fonction est globale et reste accessible depuis tout le fichier durant toute l'exécution du programme, tandis qu'une variable déclarée à l'intérieur d'une fonction (y compris un paramètre) est locale, créée à chaque appel de cette fonction et détruite dès qu'elle se termine.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Exécuter pas à pas ce programme lorsque la valeur de x = 6.\n\n*NB : il est conseillé d'utiliser un tableau pour une meilleure lisibilité de la trace d'exécution.* *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter pas à pas une fonction récursive consiste à dérouler séparément sa phase de descente, où chaque appel en déclenche un nouveau avant de pouvoir se terminer, puis sa phase de remontée, où chaque appel en attente reprend son calcul dès que l'appel suivant lui a renvoyé sa valeur, dans l'ordre exactement inverse de la descente.\n\nAvec `x = 6`, le test `x > 8 || x < 1` (ligne 9) est faux (6 est bien compris entre 1 et 8), le programme entre donc dans le `else` et exécute `f = factorielle(6);` (ligne 13).\n\n**Phase de descente** - chaque appel teste `a == 1` ; le test étant faux jusqu'à `a = 1`, chaque appel doit attendre le résultat du suivant avant de pouvoir calculer le sien :\n\n| Appel | Test `a == 1` | Instruction exécutée | En attente de |\n|---|---|---|---|\n| `factorielle(6)` | 6 == 1 : faux | `a *= factorielle(5);` | retour de `factorielle(5)` |\n| `factorielle(5)` | 5 == 1 : faux | `a *= factorielle(4);` | retour de `factorielle(4)` |\n| `factorielle(4)` | 4 == 1 : faux | `a *= factorielle(3);` | retour de `factorielle(3)` |\n| `factorielle(3)` | 3 == 1 : faux | `a *= factorielle(2);` | retour de `factorielle(2)` |\n| `factorielle(2)` | 2 == 1 : faux | `a *= factorielle(1);` | retour de `factorielle(1)` |\n| `factorielle(1)` | 1 == 1 : vrai | `return 1;` | (rien, la pile commence à se dépiler) |\n\n**Phase de remontée** - une fois `factorielle(1)` renvoyé 1, chaque appel en attente reprend son calcul dans l'ordre inverse de la descente :\n\n| Retour depuis | Calcul effectué | Valeur renvoyée |\n|---|---|---|\n| `factorielle(1)` | - (cas de base) | 1 |\n| `factorielle(2)` | `a = 2 * 1` | 2 |\n| `factorielle(3)` | `a = 3 * 2` | 6 |\n| `factorielle(4)` | `a = 4 * 6` | 24 |\n| `factorielle(5)` | `a = 5 * 24` | 120 |\n| `factorielle(6)` | `a = 6 * 120` | 720 |\n\nLe résultat final `720` remonte jusqu'à `f = factorielle(6);` (ligne 13) : la variable `f` vaut alors `720`, et l'instruction `printf(\"Factorielle %u égal %u\\n\", x, f);` (ligne 14) affiche à l'écran :\n\n```\nFactorielle 6 égal 720\n```\n\n### Piège à éviter\nUne erreur très répandue consiste à multiplier les valeurs au fur et à mesure de la descente (par exemple croire que `factorielle(6)` calcule `6 * 5` dès son premier passage). En réalité, aucune multiplication n'a lieu tant que `factorielle(1)` n'a pas renvoyé sa valeur : toute la phase de descente ne fait qu'empiler des appels en attente, et tous les calculs se produisent uniquement pendant la remontée.\n\n### Conseil\nPour ne jamais te tromper sur une trace récursive, sépare toujours ta réponse en deux tableaux distincts, descente puis remontée, plutôt que d'essayer de tout faire tenir sur une seule ligne par appel : c'est exactement ce que suggère l'énoncé en conseillant d'utiliser un tableau.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "trace d'exécution",
+        "pile d'appels",
+        "factorielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q5-0",
+          "competence": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+          "contenu_markdown": "Exécuter pas à pas une fonction récursive consiste à dérouler séparément sa phase de descente, où chaque appel en déclenche un nouveau avant de pouvoir se terminer, puis sa phase de remontée, où chaque appel en attente reprend son calcul dès que l'appel suivant lui a renvoyé sa valeur, dans l'ordre exactement inverse de la descente.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "**6.** Déterminer à partir de la trace d'exécution le nombre de fois que la fonction **factorielle()** a été appelée. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter pas à pas une fonction récursive consiste à dérouler séparément sa phase de descente, où chaque appel en déclenche un nouveau avant de pouvoir se terminer, puis sa phase de remontée, où chaque appel en attente reprend son calcul dès que l'appel suivant lui a renvoyé sa valeur, dans l'ordre exactement inverse de la descente.\n\nLa phase de descente de la trace précédente montre exactement six appels distincts : `factorielle(6)`, `factorielle(5)`, `factorielle(4)`, `factorielle(3)`, `factorielle(2)` et `factorielle(1)`. La fonction **factorielle()** a donc été appelée **6 fois** au total pour `x = 6` (l'appel initial depuis `main()` inclus).\n\nPlus généralement, pour une valeur `x` quelconque comprise entre 1 et 8, `factorielle()` est appelée exactement `x` fois : une fois par valeur entière de `x` jusqu'à 1 inclus.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "nombre d'appels récursifs"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q6-0",
+          "competence": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+          "contenu_markdown": "Exécuter pas à pas une fonction récursive consiste à dérouler séparément sa phase de descente, où chaque appel en déclenche un nouveau avant de pouvoir se terminer, puis sa phase de remontée, où chaque appel en attente reprend son calcul dès que l'appel suivant lui a renvoyé sa valeur, dans l'ordre exactement inverse de la descente.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "**7.** Nommer ce type de fonction. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour nommer un type de fonction ou de structure dans un programme, on repère dans le code la caractéristique qui la distingue, puis on la nomme avec le terme du cours.\n\nUne fonction est dite récursive lorsqu'elle s'appelle elle-même, directement ou indirectement, dans son propre corps ; ce mécanisme exige toujours un cas de base qui arrête les appels successifs, faute de quoi la fonction s'appellerait indéfiniment jusqu'à épuiser la mémoire réservée aux appels de fonctions.\n\n`factorielle()` est une **fonction récursive** : à la ligne 24, `a *= factorielle(a-1);`, elle s'appelle elle-même à l'intérieur de son propre corps, avec un argument différent (`a-1`) à chaque appel. Le cas de base, ligne 20 (`if (a == 1) { return 1; }`), arrête cette chaîne d'appels dès que l'argument atteint 1, ce qui garantit que la récursion se termine bien après un nombre fini d'appels plutôt que de se poursuivre indéfiniment.\n\n### Piège à éviter\nUne fonction récursive sans cas de base correctement écrit (ou avec une condition d'arrêt jamais atteinte, par exemple un décrément dans le mauvais sens) provoque un débordement de pile (*stack overflow*) qui plante le programme. Vérifie toujours que chaque appel récursif progresse réellement vers le cas de base.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "fonction récursive",
+        "cas de base"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q7-0",
+          "competence": "La récursivité en programmation : principe et fonctionnement",
+          "contenu_markdown": "Pour nommer un type de fonction ou de structure dans un programme, on repère dans le code la caractéristique qui la distingue, puis on la nomme avec le terme du cours.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "**8.** Sachant que la limitation du nombre à la ligne 7 est due au fait que le type **unsigned int** ne peut contenir une valeur plus grande que le factoriel de 8, proposer un type de donnée qui peut contenir le plus grand nombre possible pour ce code. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe choix d'un type entier en C dépend directement de la plus grande valeur que le programme doit pouvoir stocker : plus un type occupe d'octets en mémoire, plus sa plage de valeurs représentables est étendue, au prix d'une consommation mémoire plus importante.\n\n`unsigned int` occupe généralement 4 octets et plafonne à 4 294 967 295, ce qui limite déjà largement au-delà de 8! = 40320, mais l'énoncé demande le type pouvant contenir **le plus grand nombre possible**. Le type **`unsigned long long int`** (souvent noté simplement `unsigned long long`), codé sur 8 octets (64 bits) sur la quasi-totalité des compilateurs actuels, est le type entier standard le plus large disponible en C : il peut représenter des valeurs allant jusqu'à 2⁶⁴-1, soit 18 446 744 073 709 551 615. C'est le type qui permettrait de repousser le plus loin la limite « entre 1 et 8 » imposée ligne 9, en autorisant le calcul de factorielles bien plus grandes sans dépassement de capacité.\n\n### Conseil\nLe préfixe `unsigned` reste pertinent ici puisque le résultat d'une factorielle n'est jamais négatif : associer `unsigned` à `long long` maximise la plage de valeurs positives représentable, plutôt que de gaspiller la moitié de la plage sur des valeurs négatives inutiles à ce calcul.",
+      "themes": [
+        "langage C",
+        "types entiers",
+        "unsigned long long",
+        "dépassement de capacité"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q8-0",
+          "competence": "Choisir un type entier selon sa plage de valeurs en C",
+          "contenu_markdown": "Le choix d'un type entier en C dépend directement de la plus grande valeur que le programme doit pouvoir stocker : plus un type occupe d'octets en mémoire, plus sa plage de valeurs représentables est étendue, au prix d'une consommation mémoire plus importante.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "**9.** Réécrire ce code sans la fonction **factorielle()** et en utilisant la boucle **for**. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nToute fonction récursive qui accumule un résultat par des appels successifs peut être remplacée par une version itérative équivalente, en initialisant une variable accumulateur avant une boucle, puis en la mettant à jour à chaque itération de manière à reproduire exactement le même enchaînement de calculs que les appels récursifs.\n\nLa récursivité calcule `factorielle(x) = x × (x-1) × ... × 2 × 1`. Une boucle `for` qui parcourt les entiers de 1 à `x` en multipliant un accumulateur à chaque tour reproduit exactement ce même calcul, sans jamais rappeler la fonction `factorielle()` :\n\n```c\n/* Exemple de calcul itératif de la factorielle d'un nombre */\n#include <stdio.h>\n#include <stdlib.h>\nunsigned int f, x;\nint main() {\n    puts(\"Entrez une valeur entière entre 1 et 8: \");\n    scanf(\"%d\", &x);\n    if(x > 8 || x < 1) {\n        printf(\"On a dit entre 1 to 8 !\");\n    }\n    else {\n        f = 1;\n        for (unsigned int i = 1; i <= x; i++) {\n            f *= i;\n        }\n        printf(\"Factorielle %u égal %u\\n\", x, f);\n    }\n    exit(EXIT_SUCCESS);\n}\n```\n\nL'accumulateur `f` est initialisé à `1` (élément neutre de la multiplication) avant la boucle, puis multiplié par chaque entier `i` de 1 à `x` inclus (condition `i <= x`). Pour `x = 6`, la boucle produit exactement la même suite de produits que la trace récursive de la question 5 : `1×1=1`, `1×2=2`, `2×3=6`, `6×4=24`, `24×5=120`, `120×6=720`, ce qui confirme l'équivalence des deux versions.\n\n### Piège à éviter\nInitialiser l'accumulateur à `0` au lieu de `1` est l'erreur la plus fréquente sur ce type de conversion : toute multiplication par `0` renverrait systématiquement `0`, quel que soit `x`. L'élément neutre de la multiplication est `1`, pas `0` (qui, lui, est l'élément neutre de l'addition).\n\n### Conseil\nVérifie toujours ta boucle en la comparant à la trace récursive déjà établie à une question précédente lorsque l'énoncé en propose une : si les deux méthodes donnent le même résultat sur le même exemple, la conversion récursif/itératif est presque certainement correcte.",
+      "themes": [
+        "langage C",
+        "boucle for",
+        "récursivité",
+        "itération",
+        "accumulateur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2.0,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q9-0",
+          "competence": "Transformer une fonction récursive en boucle itérative (for)",
+          "contenu_markdown": "Toute fonction récursive qui accumule un résultat par des appels successifs peut être remplacée par une version itérative équivalente, en initialisant une variable accumulateur avant une boucle, puis en la mettant à jour à chaque itération de manière à reproduire exactement le même enchaînement de calculs que les appels récursifs.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "10",
+      "enonce_markdown": "**10.** Nommer un IDE qui peut être utilisé pour tester ce code. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn IDE (environnement de développement intégré) regroupe dans un seul logiciel l'éditeur de texte, le compilateur et le débogueur nécessaires pour écrire, compiler et corriger un programme, évitant à l'utilisateur de jongler entre plusieurs outils séparés.\n\nCe code étant écrit en langage C standard (sans bibliothèque spécifique à un système), il peut être testé dans n'importe quel IDE supportant le C, par exemple **Code::Blocks**, **Dev-C++** ou **Visual Studio Code** (associé à un compilateur comme GCC/MinGW). Un seul nom, correctement justifié comme capable de compiler et d'exécuter du C, suffit à répondre à la question.",
+      "themes": [
+        "langage C",
+        "IDE",
+        "outils de développement",
+        "compilation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 0.5,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-info-prog-2021-ex2-q10-0",
+          "competence": "L'IDE : environnement de développement intégré",
+          "contenu_markdown": "Un IDE (environnement de développement intégré) regroupe dans un seul logiciel l'éditeur de texte, le compilateur et le débogueur nécessaires pour écrire, compiler et corriger un programme, évitant à l'utilisateur de jongler entre plusieurs outils séparés.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "récursivité",
+    "fonction récursive",
+    "factorielle",
+    "boucle for",
+    "unsigned int",
+    "trace d'exécution",
+    "stdio.h",
+    "stdlib.h",
+    "IDE"
+  ],
+  "incertitudes": [
+    "Le programme officiel d'Informatique (backend/programme/fixtures/programme_officiel_cm_informatique.json) n'a pas été trouvé dans cet environnement : savoir_officiel est laissé à null sur toutes les sous-questions, faute de référentiel disponible pour le rattachement.",
+    "Le commentaire de la ligne 1 du code C (« /* Exemple de fonction récurrente... ») ne comporte pas de balise de fermeture */ visible sur le scan : il a été transcrit tel quel, sans effet sur les réponses attendues puisqu'aucune question ne porte sur cette ligne."
+  ],
+  "statut": "brouillon"
+}

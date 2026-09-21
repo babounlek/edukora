@@ -1,0 +1,164 @@
+{
+  "epreuve_source": "bepc-informatique-2026-cameroun.pdf",
+  "numero_exercice": "4",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "matiere_normalisee": "INFORMATIQUE",
+  "nature_epreuve": "theorique",
+  "serie": null,
+  "classe": "3e",
+  "examen": "bepc",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": "2026",
+  "duree_epreuve": "1h30",
+  "coefficient": "2",
+  "points": "4",
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : INITIATION À L'ALGORITHMIQUE ET AU DÉVELOPPEMENT LOGICIEL (/07pts)**\n\n**Exercice 1 : Initiation à l'algorithmique (04pts)**\n\nSoit l'algorithme suivant permettant de déterminer si un candidat a réussi ou échoué au BEPC en fonction de la moyenne obtenue.\n\n```\nAlgorithme Decision\n    Variable Moyenne : Reel ;\nDebut\n    Ecrire(\"Veuillez saisir la moyenne\");\n    Lire(Moyenne);\n    Si(Moyenne>=10) alors\n        Ecrire(\"Admis au BEPC\");\n    Sinon\n        Ecrire(\"Recalé au BEPC\");\n    Finsi\nFin\n```\n\nObserver attentivement cet algorithme, puis répondre aux questions suivantes :",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Définir le terme : **Variable**. *(1pt)*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un terme, on dit ce qu'il désigne (sa nature), à quoi il sert et ses caractéristiques essentielles, en une phrase complète, sans se contenter d'un exemple.\n\nUne variable se définit par ses trois attributs indissociables : un **nom** (l'identifiant qui permet d'y accéder), un **type** (la nature des valeurs qu'elle peut contenir) et une **valeur** (le contenu du moment, qui peut changer). Une définition qui oublie l'un des trois reste incomplète. L'image à garder en tête est celle d'une boîte étiquetée dans la mémoire de l'ordinateur.\n\n**Définition attendue**\n\nUne variable est un emplacement de la mémoire de l'ordinateur, désigné par un nom et associé à un type de données, destiné à contenir une valeur susceptible d'être modifiée au cours de l'exécution de l'algorithme.\n\n**Illustration sur l'algorithme du sujet**\n\nLa ligne `Variable Moyenne : Reel ;` déclare une variable :\n\n- son **nom** est `Moyenne` ;\n- son **type** est `Reel`, donc elle peut contenir un nombre à virgule comme 11,75 ;\n- sa **valeur** n'est pas encore fixée à la déclaration ; elle le sera par l'instruction `Lire(Moyenne)`, qui y range ce que l'utilisateur saisit au clavier.\n\nC'est précisément parce que cette valeur change d'un candidat à l'autre que l'on parle de variable, et non de constante.\n\n### Piège à éviter\nNe confonds pas la variable avec sa valeur. Écrire « une variable est un nombre » est faux : la variable est le contenant, pas le contenu. C'est aussi ce qui la distingue de la **constante**, dont la valeur est fixée une fois pour toutes et ne peut plus être modifiée pendant l'exécution.\n\n### Conseil\nQuand tu définis une variable en examen, cite systématiquement un exemple tiré de l'algorithme donné dans le sujet. Une phrase du type « ici, `Moyenne` de type `Reel` est une variable » prouve que tu sais reconnaître la notion sur un cas concret, et pas seulement en réciter la définition.",
+      "themes": [
+        "variable",
+        "type de données",
+        "mémoire",
+        "déclaration",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2026-cameroun-ex4-q1-1",
+          "competence": "Variables et types de données en algorithmique",
+          "contenu_markdown": "Pour définir un terme, on dit ce qu'il désigne (sa nature), à quoi il sert et ses caractéristiques essentielles, en une phrase complète, sans se contenter d'un exemple.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Identifier la structure de contrôle utilisée dans cet algorithme. *(1pt)*",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier une structure de contrôle, on ne se fie pas au sens de l'algorithme mais aux mots-clés qui l'écrivent. Trois familles seulement existent au programme : la structure **séquentielle** (les instructions s'enchaînent l'une après l'autre), la structure **alternative** ou conditionnelle (`Si ... Alors ... Sinon ... Finsi`), et la structure **répétitive** ou itérative (`Pour`, `Tant que`, `Répéter`). Il suffit de chercher lequel de ces mots-clés apparaît.\n\n**Repérage dans l'algorithme**\n\nL'algorithme contient les mots-clés `Si`, `alors`, `Sinon` et `Finsi` :\n\n```\nSi(Moyenne>=10) alors\n    Ecrire(\"Admis au BEPC\");\nSinon\n    Ecrire(\"Recalé au BEPC\");\nFinsi\n```\n\nAucun mot-clé de répétition (`Pour`, `Tant que`, `Répéter`) n'y figure.\n\n**Réponse**\n\nLa structure de contrôle utilisée est la **structure alternative complète** (ou structure conditionnelle `Si ... Alors ... Sinon ... Finsi`).\n\n**Justification de son fonctionnement**\n\nLa condition `Moyenne >= 10` est évaluée une seule fois et fournit un résultat booléen :\n\n- si elle est **vraie**, seule l'instruction `Ecrire(\"Admis au BEPC\")` est exécutée ;\n- si elle est **fausse**, seule l'instruction `Ecrire(\"Recalé au BEPC\")` est exécutée.\n\nLes deux affichages ne peuvent jamais se produire ensemble : c'est ce caractère exclusif qui caractérise l'alternative.\n\n### Piège à éviter\nNe réponds pas « la structure séquentielle » sous prétexte que les instructions se suivent de haut en bas. La séquence est présente dans tout algorithme, elle n'a donc aucune valeur discriminante ici : la question porte sur la structure remarquable qu'on y a introduite, celle qui fait choisir entre deux chemins.\n\n### Conseil\nDistingue bien l'alternative **complète** (avec `Sinon`) de l'alternative **réduite** (sans `Sinon`, où rien ne se passe quand la condition est fausse). Préciser « complète » quand le `Sinon` est présent est un détail de vocabulaire que les correcteurs remarquent, et cela ne coûte qu'un mot.",
+      "themes": [
+        "structure de contrôle",
+        "structure alternative",
+        "condition",
+        "Si Alors Sinon",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2026-cameroun-ex4-q2-1",
+          "competence": "La structure alternative en algorithmique",
+          "contenu_markdown": "Pour identifier une structure de contrôle, on ne se fie pas au sens de l'algorithme mais aux mots-clés qui l'écrivent. Trois familles seulement existent au programme : la structure **séquentielle** (les instructions s'enchaînent l'une après l'autre), la structure **alternative** ou conditionnelle (`Si ... Alors ... Sinon ... Finsi`), et la structure **répétitive** ou itérative (`Pour`, `Tant que`, `Répéter`). Il suffit de chercher lequel de ces mots-clés apparaît.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.a",
+      "enonce_markdown": "3. Relever dans cet algorithme :\n\n   a. Une instruction d'entrée ; *(0,5pt)*",
+      "corrige_markdown": "### Rappel de méthode\nLe sens d'une instruction d'entrée ou de sortie se détermine du point de vue de la **machine**, jamais de l'utilisateur. Une instruction d'entrée fait entrer une donnée dans la mémoire depuis un périphérique d'entrée : son mot-clé est `Lire`. Une instruction de sortie fait sortir une donnée de la mémoire vers un périphérique de sortie : son mot-clé est `Ecrire`. Le verbe `Lire` correspond donc à ce que l'élève, lui, écrit au clavier : c'est ce croisement qui trompe.\n\n**Réponse**\n\nL'instruction d'entrée de cet algorithme est :\n\n```\nLire(Moyenne);\n```\n\n**Justification**\n\nCette instruction met l'algorithme en attente d'une saisie au clavier, puis range la valeur saisie dans la variable `Moyenne`. La donnée franchit bien la frontière de l'extérieur vers la mémoire de l'ordinateur : c'est une entrée.\n\nÀ titre de comparaison, les trois instructions `Ecrire(...)` de l'algorithme sont des instructions de **sortie** : elles affichent un message à l'écran, donc font sortir une information de la mémoire.\n\n### Piège à éviter\nBeaucoup d'élèves désignent `Ecrire(\"Veuillez saisir la moyenne\");` comme l'instruction d'entrée, parce que ce message annonce une saisie. C'est une erreur : cette ligne ne fait qu'afficher une invite, elle ne récupère aucune donnée. Ce qui compte est ce que l'instruction *fait*, pas ce qu'elle *annonce*.\n\n### Conseil\nRetiens le sens par la position de la mémoire : `Lire` = du clavier **vers** la mémoire, `Ecrire` = de la mémoire **vers** l'écran. Trace au brouillon une flèche dans chaque sens la première fois, et tu ne te tromperas plus. Recopie enfin l'instruction exactement telle qu'elle figure dans l'algorithme, point-virgule compris : la consigne dit « relever », donc citer littéralement.",
+      "themes": [
+        "instruction d'entrée",
+        "instruction de sortie",
+        "Lire",
+        "Ecrire",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2026-cameroun-ex4-q3a-1",
+          "competence": "Instructions d'entrée, de sortie et structure d'un algorithme",
+          "contenu_markdown": "Le sens d'une instruction d'entrée ou de sortie se détermine du point de vue de la **machine**, jamais de l'utilisateur. Une instruction d'entrée fait entrer une donnée dans la mémoire depuis un périphérique d'entrée : son mot-clé est `Lire`. Une instruction de sortie fait sortir une donnée de la mémoire vers un périphérique de sortie : son mot-clé est `Ecrire`. Le verbe `Lire` correspond donc à ce que l'élève, lui, écrit au clavier : c'est ce croisement qui trompe.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.b",
+      "enonce_markdown": "   b. Le type de la variable. *(0,5pt)*",
+      "corrige_markdown": "### Rappel de méthode\nLe type d'une variable se lit dans sa **déclaration**, jamais ailleurs : il figure après le nom de la variable et le symbole deux-points, dans la partie qui précède le `Debut`. On n'a donc rien à deviner, il suffit de retourner à la ligne de déclaration et de recopier le mot qui s'y trouve.\n\n**Réponse**\n\nLa déclaration de l'algorithme est :\n\n```\nVariable Moyenne : Reel ;\n```\n\nLe type de la variable `Moyenne` est donc le type **Réel** (`Reel` dans l'écriture du sujet).\n\n**Pourquoi ce type est le bon choix ici**\n\nUne moyenne au BEPC n'est presque jamais un nombre entier : elle vaut 11,75 ou 9,5. Le type `Reel` autorise les nombres à virgule, alors que le type `Entier` les refuserait et provoquerait une perte de précision au moment de la comparaison avec 10.\n\n**Les types de base à connaître en 3e**\n\n| Type | Valeurs contenues | Exemple |\n|---|---|---|\n| Entier | nombres entiers | 15, -3 |\n| Réel | nombres à virgule | 11,75 |\n| Caractère | un seul symbole | 'A' |\n| Chaîne de caractères | une suite de symboles | \"Admis au BEPC\" |\n| Booléen | vrai ou faux | Vrai |\n\n### Piège à éviter\nNe réponds pas « Moyenne » : ce mot est le **nom** de la variable, pas son type. Dans une déclaration, le nom est écrit à gauche des deux-points et le type à droite. Confondre les deux côtés de ce symbole est l'erreur classique de cette question.\n\n### Conseil\nQuand tu déclares toi-même une variable, choisis son type en te demandant si la grandeur peut avoir une virgule. Un âge en années ou un nombre d'élèves : `Entier`. Une moyenne, un prix, une taille : `Reel`. Ce réflexe évite les erreurs de conception que les correcteurs sanctionnent dans les exercices d'écriture d'algorithme.",
+      "themes": [
+        "type de données",
+        "type réel",
+        "déclaration de variable",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2026-cameroun-ex4-q3b-1",
+          "competence": "Variables et types de données en algorithmique",
+          "contenu_markdown": "Le type d'une variable se lit dans sa **déclaration**, jamais ailleurs : il figure après le nom de la variable et le symbole deux-points, dans la partie qui précède le `Debut`. On n'a donc rien à deviner, il suffit de retourner à la ligne de déclaration et de recopier le mot qui s'y trouve.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Déterminer le nombre d'instructions de cet algorithme. *(1pt)*",
+      "corrige_markdown": "### Rappel de méthode\nCompter les instructions d'un algorithme suppose de savoir ce qui compte et ce qui ne compte pas. Ne sont **pas** des instructions : l'en-tête `Algorithme`, la partie déclarative `Variable ... : ... ;`, et les délimiteurs `Debut`, `Fin`, `Sinon`, `Finsi` qui ne font qu'ouvrir ou fermer un bloc. Sont des instructions les actions exécutables situées entre `Debut` et `Fin` : les affichages, les lectures, les affectations, et la structure de contrôle elle-même.\n\n**Recensement, ligne par ligne**\n\n| Ligne | Compte comme instruction ? | Nature |\n|---|---|---|\n| `Algorithme Decision` | non | en-tête |\n| `Variable Moyenne : Reel ;` | non | déclaration |\n| `Debut` | non | délimiteur de bloc |\n| `Ecrire(\"Veuillez saisir la moyenne\");` | oui | sortie |\n| `Lire(Moyenne);` | oui | entrée |\n| `Si(Moyenne>=10) alors` | oui | structure alternative |\n| `Ecrire(\"Admis au BEPC\");` | oui | sortie |\n| `Sinon` | non | délimiteur de l'alternative |\n| `Ecrire(\"Recalé au BEPC\");` | oui | sortie |\n| `Finsi` | non | fermeture de l'alternative |\n| `Fin` | non | délimiteur de bloc |\n\n**Décompte**\n\n$$1 + 1 + 1 + 1 + 1 = 5$$\n\nL'algorithme comporte donc **5 instructions** : trois instructions de sortie (`Ecrire`), une instruction d'entrée (`Lire`) et une instruction de contrôle (l'alternative `Si ... Sinon ... Finsi`).\n\n**Deuxième décompte, à titre de vérification**\n\nEn ne comptant que les instructions **simples**, c'est-à-dire en considérant l'alternative comme une simple enveloppe et non comme une instruction, on obtient : `Ecrire`, `Lire`, `Ecrire`, `Ecrire`, soit **4** instructions simples. Les deux décomptes se rejoignent : $4$ instructions simples $+\\ 1$ structure de contrôle $=5$.\n\nLa réponse à retenir est **5**, en indiquant sur la copie le détail « 4 instructions simples et 1 structure alternative » : cette précision rend la réponse acceptable quelle que soit la convention retenue par le correcteur.\n\n### Piège à éviter\nNe compte pas les lignes du texte : `Sinon`, `Finsi`, `Debut` et `Fin` occupent une ligne chacun sans exécuter la moindre action. Compter les lignes conduirait à 11, ce qui est faux. De même, la déclaration `Variable Moyenne : Reel ;` réserve un emplacement mémoire avant l'exécution, elle n'est pas une action de l'algorithme.\n\n### Conseil\nSur ce type de question, écris toujours le détail de ton décompte plutôt que le seul nombre final. Un correcteur qui compte 4 là où tu écris « 5 » sans justification te retire le point ; le même correcteur, lisant « 4 instructions simples plus la structure alternative », voit que tu maîtrises la notion et te l'accorde.",
+      "themes": [
+        "instructions d'un algorithme",
+        "structure d'un algorithme",
+        "partie déclarative",
+        "corps de l'algorithme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2026-cameroun-ex4-q4-1",
+          "competence": "Instructions d'entrée, de sortie et structure d'un algorithme",
+          "contenu_markdown": "Compter les instructions d'un algorithme suppose de savoir ce qui compte et ce qui ne compte pas. Ne sont **pas** des instructions : l'en-tête `Algorithme`, la partie déclarative `Variable ... : ... ;`, et les délimiteurs `Debut`, `Fin`, `Sinon`, `Finsi` qui ne font qu'ouvrir ou fermer un bloc. Sont des instructions les actions exécutables situées entre `Debut` et `Fin` : les affichages, les lectures, les affectations, et la structure de contrôle elle-même.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "BEPC informatique 2026",
+    "algorithme Decision BEPC",
+    "définition variable algorithmique",
+    "structure alternative Si Alors Sinon",
+    "instruction d'entrée Lire",
+    "nombre d'instructions d'un algorithme"
+  ],
+  "incertitudes": [
+    "savoir_officiel = null sur les 5 sous-questions : l'algorithmique (variable, type, structure de contrôle, instructions d'entrée-sortie) ne figure dans aucun des sept savoirs du vivier Informatique 3e, limité aux modules 301 (numération, codage, unités de mesure, transfert de données) et 302 (tableur). Aucun rattachement approximatif n'a été forcé.",
+    "Question 4 : l'énoncé ne précise pas la convention de décompte. Le corrigé retient 5 instructions (4 instructions simples et 1 structure alternative) et signale explicitement le décompte alternatif à 4 instructions simples, un barème officiel pouvant retenir l'une ou l'autre valeur.",
+    "L'algorithme est reproduit dans un cadre sur le scan ; il a été transcrit intégralement en bloc de code (aucun crop d'image nécessaire, texte entièrement lisible)."
+  ],
+  "statut": "brouillon"
+}
