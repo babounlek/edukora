@@ -10,7 +10,10 @@ from django.utils import timezone
 
 from .ingestion import ingest_exercise
 from .models import Tag
-from .tunnel import ALERTE, BLOQUANT, _VARIANT_INDEX, find_tag_variant, gate_structure, gate_tags, parse_since, tag_key
+from .tunnel import (
+    ALERTE, BLOQUANT, _VARIANT_INDEX, find_tag_variant, gate_structure, gate_tags, parse_since,
+    rappel_est_reponse_deguisee, tag_key,
+)
 
 
 def _payload(themes, numero="1"):
@@ -19,6 +22,22 @@ def _payload(themes, numero="1"):
         "serie": "C", "examen": "BAC",
         "questions": [{"numero": "1", "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé.", "themes": themes}],
     }
+
+
+class RappelReponseDeguiseeTests(SimpleTestCase):
+    ENONCE = "**1.** Qu'appelle-t-on capacité d'un accumulateur ?"
+
+    def test_declarative_rappel_answering_the_question_is_flagged(self):
+        corrige = "### Rappel de méthode\nLa capacité d'un accumulateur est la quantité d'électricité qu'il fournit.\n\nSuite."
+        self.assertTrue(rappel_est_reponse_deguisee(self.ENONCE, corrige))
+
+    def test_method_formula_rappel_passes(self):
+        corrige = "### Rappel de méthode\nPour définir une grandeur, on dit ce qu'elle représente.\n\nLa capacité est..."
+        self.assertFalse(rappel_est_reponse_deguisee(self.ENONCE, corrige))
+
+    def test_calculation_question_is_never_flagged(self):
+        corrige = "### Rappel de méthode\nLa loi d'Ohm relie U et I.\n\nOn calcule."
+        self.assertFalse(rappel_est_reponse_deguisee("**2.** Calculer la tension.", corrige))
 
 
 class ParseSinceTests(SimpleTestCase):

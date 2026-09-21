@@ -28,6 +28,28 @@ BLOQUANT, ALERTE, INFO = "BLOQUANT", "ALERTE", "INFO"
 
 _TITRE_RAPPEL = re.compile(r"###\s*Rappel de m[eé]thode", re.IGNORECASE)
 
+# Réponse déguisée en Rappel (physique-probatoire-d-et-ti-2019, 2026-09-21) : question de cours
+# (Définir / Qu'appelle-t-on / Donner le principe...) dont le premier paragraphe du Rappel n'est pas
+# une formule de méthode ("Pour...", "Lorsque...") mais une phrase déclarative qui répond à la question.
+_RAPPEL_PREMIER_PARAGRAPHE = re.compile(r"\A\s*###\s*Rappel de m[eé]thode[^\n]*\n+(.*?)(?=\n{2,}|\Z)", re.IGNORECASE | re.DOTALL)
+_ENONCE_DE_COURS = re.compile(
+    r"(?m)^[\W\d]*(?:\*\*[^*]*\*\*)?\W*(d[ée]finir|qu['’]appelle|[ée]noncer|rappeler|citer"
+    r"|donner\s+(?:la|le|les|l['’])\s*(?:d[ée]finition|principe|[ée]nonc[ée]|r[ôo]le|loi)|indiquer\s+le\s+r[ôo]le)",
+    re.IGNORECASE,
+)
+_RAPPEL_FORMULE_DE_METHODE = re.compile(
+    r"\s*(pour|lorsqu|quand|si |afin|d[eè]s |on |avant|face|il faut|une (?:d[ée]finition|question)|d[ée]finir|citer|[ée]noncer)",
+    re.IGNORECASE,
+)
+
+
+def rappel_est_reponse_deguisee(enonce, corrige):
+    """Vrai si la question demande du cours et que le Rappel qui ouvre le corrigé y répond au lieu d'expliquer COMMENT répondre."""
+    match = _RAPPEL_PREMIER_PARAGRAPHE.match(corrige or "")
+    if not match or not _ENONCE_DE_COURS.search(enonce or ""):
+        return False
+    return not _RAPPEL_FORMULE_DE_METHODE.match(match.group(1))
+
 _RELATIF = re.compile(r"^(\d+)\s*([mhd])$")
 
 
@@ -206,6 +228,16 @@ def gate_structure(since):
                 "structure", BLOQUANT if nb_titres == 0 else ALERTE,
                 f"{ex.lesson.slug}#{ex.numero_exercice} : {nb_rappels} rappel(s) en base mais {nb_titres} titre(s) "
                 "`### Rappel de méthode` dans le corrigé (rappels jamais affichés)",
+            ))
+        deguises = [
+            q.numero for q in ex.questions.all() if rappel_est_reponse_deguisee(q.enonce_markdown, q.corrige_markdown)
+        ]
+        if deguises:
+            findings.append(Finding(
+                "structure", ALERTE,
+                f"{ex.lesson.slug}#{ex.numero_exercice} : le Rappel de la/des sous-question(s) {', '.join(deguises)} "
+                "commence par une phrase déclarative, pas par une formule de méthode - probable réponse déguisée "
+                "en Rappel (la réponse va en clair dans le corps du corrigé)",
             ))
         sans_cours = ex.rappels_de_methode.filter(cours__isnull=True).count()
         if sans_cours:
