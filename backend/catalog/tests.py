@@ -22,6 +22,7 @@ from rest_framework.test import APIClient, APIRequestFactory
 
 from access.models import LectureProgress
 from inedit.models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite, TentativeInedite
+from quiz.models import CompetenceItem
 from subscriptions.models import DureeMode, Subscription
 from users.models import User
 
@@ -49,7 +50,8 @@ def _exercise_payload(epreuve_source, numero="1"):
         "serie": "C",
         "examen": "BAC",
         "questions": [
-            {"numero": "1", "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé."},
+            # Un thème par question : run_ingestion rejette désormais une question sans thème.
+            {"numero": "1", "enonce_markdown": "Énoncé.", "corrige_markdown": "Corrigé.", "themes": ["Thème de test"]},
         ],
     }
 
@@ -206,6 +208,96 @@ class SavoirOfficielLinkingTests(TestCase):
         self.assertEqual(question.savoir_officiel_id, self.savoir.pk)
         self.assertEqual(Tag.objects.get(name="partage").savoir_officiel_id, autre.pk)
         self.assertIn(question, Question.objects.rattachees_au_savoir(self.savoir))
+
+    def test_does_not_link_a_structural_tag(self):
+        # "QCM" nomme un format de réponse, jamais une notion (voir
+        # catalog.ingestion._est_tag_structurel) - même générique à outrance qu'un tag
+        # qu'aucune règle de conflit ne pourrait détecter avant sa toute première
+        # utilisation, celui-ci est reconnaissable par son nom seul.
+        payload = _exercise_payload("bac-maths-savoir-13")
+        payload["questions"][0]["themes"] = ["QCM"]
+        payload["questions"][0]["savoir_officiel"] = self.savoir_ref
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-13"))
+
+        tag = Tag.objects.get(name="QCM")
+        self.assertIsNone(tag.savoir_officiel_id)
+
+    def test_does_not_link_a_tag_already_used_across_several_cursus(self):
+        # Même garde que programme.management.commands.map_tags_to_savoir_officiel :
+        # un tag déjà vu sur deux cursus (ici BAC C et BAC D) avant même d'avoir un
+        # savoir ne peut pas être épinglé à un seul sans mentir pour l'autre.
+        payload_c = _exercise_payload("bac-maths-savoir-14")
+        payload_c["questions"][0]["themes"] = ["transverse"]
+        ingest_exercise(payload_c, source_dir=Path("ingest/cm/bac-maths-savoir-14"))
+
+        payload_d = _exercise_payload("bac-maths-savoir-15")
+        payload_d["serie"] = "D"
+        payload_d["questions"][0]["themes"] = ["transverse"]
+        ingest_exercise(payload_d, source_dir=Path("ingest/cm/bac-maths-savoir-15"))
+
+        payload_target = _exercise_payload("bac-maths-savoir-16")
+        payload_target["questions"][0]["themes"] = ["transverse"]
+        payload_target["questions"][0]["savoir_officiel"] = self.savoir_ref
+        ingest_exercise(payload_target, source_dir=Path("ingest/cm/bac-maths-savoir-16"))
+
+        tag = Tag.objects.get(name="transverse")
+        self.assertIsNone(tag.savoir_officiel_id)
+
+    def test_does_not_link_a_tag_conflicting_with_a_sibling_cours_tag(self):
+        # Reproduit l'incident du 2026-09-07 ("racine évidente" rattaché à tort à
+        # TRIGONOMETRIE) : un tag qui côtoie déjà, sur un AUTRE Cours, un tag distinct
+        # rattaché à un savoir différent ne doit pas être épinglé au savoir visé ici.
+        autre_savoir = Savoir.objects.create(module=self.savoir.module, numero="III", intitule="Autre notion cours")
+        autre_ref = {**self.savoir_ref, "savoir_numero": "III"}
+
+        payload = _exercise_payload("bac-maths-savoir-17")
+        payload["questions"][0]["rappels_de_methode"] = [
+            {"id": "rdm-savoir-17-a", "competence": "Notion A", "contenu_markdown": "Contenu A."},
+            {"id": "rdm-savoir-17-b", "competence": "Notion B", "contenu_markdown": "Contenu B."},
+            {"id": "rdm-savoir-17-c", "competence": "Notion C", "contenu_markdown": "Contenu C."},
+        ]
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-savoir-17"))
+
+        # Cours 1 : porte seulement "sibling-tag", vise autre_savoir - se rattache
+        # normalement, rien à comparer encore.
+        ingest_cours({
+            "cours_id": "cours-savoir-17-a",
+            "meta": {
+                "titre": "Cours conflit A", "matiere": "Mathematiques",
+                "tags": ["sibling-tag"], "savoir_officiel": autre_ref,
+            },
+            "source": {"rappel_id": "rdm-savoir-17-a"},
+            "sections": [],
+        })
+
+        # Cours 2 : porte "partage-cours" ET "sibling-tag" ensemble, mais sans
+        # savoir_officiel propre - établit juste la cohabitation des deux tags sur un
+        # même Cours, sans rien rattacher lui-même (_link_tags_to_savoir sort tôt
+        # faute de savoir résolu).
+        ingest_cours({
+            "cours_id": "cours-savoir-17-b",
+            "meta": {
+                "titre": "Cours conflit B", "matiere": "Mathematiques",
+                "tags": ["partage-cours", "sibling-tag"],
+            },
+            "source": {"rappel_id": "rdm-savoir-17-b"},
+            "sections": [],
+        })
+
+        # Cours 3 : vise self.savoir avec le même "partage-cours" - doit rester non
+        # rattaché, puisqu'il côtoie déjà "sibling-tag" (-> autre_savoir) sur le Cours 2.
+        ingest_cours({
+            "cours_id": "cours-savoir-17-c",
+            "meta": {
+                "titre": "Cours conflit C", "matiere": "Mathematiques",
+                "tags": ["partage-cours"], "savoir_officiel": self.savoir_ref,
+            },
+            "source": {"rappel_id": "rdm-savoir-17-c"},
+            "sections": [],
+        })
+
+        self.assertIsNone(Tag.objects.get(name="partage-cours").savoir_officiel_id)
+        self.assertEqual(Tag.objects.get(name="sibling-tag").savoir_officiel_id, autre_savoir.pk)
 
     def test_rattachees_au_savoir_unions_both_routes(self):
         # La voie historique doit continuer de compter : les milliers de questions déjà
@@ -940,6 +1032,13 @@ class SplitSeriesTests(TestCase):
         from .ingestion import _split_series
 
         self.assertEqual(_split_series("D et TI"), ["D", "TI"])
+
+    def test_treats_ampersand_as_a_separator_not_a_series_code(self):
+        """Même blocage que 'et', vu cette fois sur bac-d-maths-2018/2019/2020-cameroun
+        ("D & TI") : '&' rejeté comme code de série inconnu avant ce fix."""
+        from .ingestion import _split_series
+
+        self.assertEqual(_split_series("D & TI"), ["D", "TI"])
 
     def test_still_handles_the_existing_separator_forms(self):
         from .ingestion import _split_series
@@ -2771,19 +2870,63 @@ class LessonExercisesBreakdownTests(TestCase):
         self.assertEqual(breakdown[0]["corrige_markdown"], "Corrige 1.")
 
     def test_intro_is_exposed_separately_and_stripped_from_enonce(self):
-        # La référence de l'exercice + le préambule partagé doivent rester visibles
-        # même quand l'élève ne déplie pas l'énoncé complet (voir EpreuveReaderPage,
-        # qui affiche enonce_intro_markdown hors du toggle, juste avant le corrigé) -
-        # sans quoi un lecteur du corrigé seul n'a aucun repère sur l'exercice qu'il
-        # lit ni sur le contexte auquel le corrigé fait implicitement référence.
+        # Le préambule partagé doit rester visible même quand l'élève ne déplie pas
+        # l'énoncé complet (voir EpreuveReaderPage, qui affiche enonce_intro_markdown
+        # hors du toggle, juste avant le corrigé) - sans quoi un lecteur du corrigé
+        # seul n'a aucun repère sur le contexte auquel le corrigé fait implicitement
+        # référence. Intro à deux exercices (pas de repère "Exercice N" solo ici,
+        # volontairement - voir test_solo_exercise_heading_is_stripped_from_intro
+        # pour ce cas précis) pour isoler ce test de la logique de repère redondant.
+        self._exercise("1", intro="**Partie commune**\n\nDonnées communes.", enonce="Question posée.")
+        self._exercise("2", enonce="Autre question.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "**Partie commune**\n\nDonnées communes.")
+        # Pas de doublon : le préambule ne doit plus apparaître dans enonce_markdown
+        # une fois sorti dans son propre champ.
+        self.assertEqual(breakdown[0]["enonce_markdown"], "Question posée.")
+
+    def test_solo_exercise_heading_is_stripped_from_intro(self):
+        # Une Lesson à exercice UNIQUE n'a rien à distinguer : le repère "Exercice N"
+        # (recopié du sujet ou injecté par ingestion_repairs._repair_missing_exercise_heading)
+        # est retiré de l'intro, jamais le préambule réel qui le suit - voir
+        # rendering._strip_solo_exercise_heading (signalé en prod sur
+        # education-civique-bepc-2008).
         self._exercise("1", intro="**Exercice 1 (6 points)**\n\nDonnées communes.", enonce="Question posée.")
 
         breakdown = self.lesson.exercises_breakdown()
 
-        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "**Exercice 1 (6 points)**\n\nDonnées communes.")
-        # Pas de doublon : le préambule ne doit plus apparaître dans enonce_markdown
-        # une fois sorti dans son propre champ.
-        self.assertEqual(breakdown[0]["enonce_markdown"], "Question posée.")
+        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "Données communes.")
+
+    def test_solo_exercise_bare_heading_alone_leaves_no_intro(self):
+        self._exercise("1", intro="**Exercice unique**", enonce="Question posée.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["enonce_intro_markdown"], "")
+
+    def test_solo_exercise_heading_with_its_own_subtitle_is_kept(self):
+        # Un sous-titre propre à l'exercice ("Chimie organique") est une information
+        # réelle, absente ailleurs de la page - contrairement au numéro seul, il ne
+        # doit jamais disparaître.
+        self._exercise("1", intro="**Exercice 1 : Chimie organique**\n\nDonnées communes.", enonce="Question posée.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(
+            breakdown[0]["enonce_intro_markdown"], "**Exercice 1 : Chimie organique**\n\nDonnées communes.",
+        )
+
+    def test_exercise_heading_is_kept_when_lesson_has_several_exercises(self):
+        self._exercise("1", intro="**Exercice 1 (6 points)**\n\nDonnées communes.", enonce="Question posée.")
+        self._exercise("2", enonce="Autre question.")
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(
+            breakdown[0]["enonce_intro_markdown"], "**Exercice 1 (6 points)**\n\nDonnées communes.",
+        )
 
     def test_enonce_markdown_unchanged_when_no_intro(self):
         self._exercise("1", enonce="Question posée.")
@@ -2870,6 +3013,155 @@ class LessonExercisesBreakdownTests(TestCase):
         self.assertIn(marker, rendered)
         self.assertLess(rendered.index(marker), rendered.index("Suite du corrigé de la question 1"))
 
+    def test_cours_link_matches_a_rappel_truncated_shorter_than_its_corrige_paragraph(self):
+        # Non-régression : contenu_markdown n'est parfois qu'un extrait tronqué du paragraphe
+        # du corrigé (probatoire-blanc-ti-SI-bayangam-2023 : 138 caractères pour 301) - le
+        # bloc n'était alors jamais le début du rappel, et tous les liens finissaient en
+        # fin d'exercice au lieu de suivre leur propre encadré.
+        cours = Cours.objects.create(
+            external_id="cours-test", titre="Le système d'exploitation", subject=self.lesson.subject,
+        )
+        paragraphe = (
+            "Un système d'exploitation est le logiciel de base qui pilote l'ordinateur et sans "
+            "lequel aucun autre logiciel ne peut fonctionner : il gère les ressources matérielles."
+        )
+        corrige = (
+            f"**1a.** Définir.\n\n### Rappel de méthode\n\n{paragraphe}\n\n"
+            "**1b.** Question suivante, sans rapport."
+        )
+        exercise = self._exercise("1", corrige=corrige)
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-tronque", competence="SE",
+            contenu_markdown=paragraphe[:70], cours=cours,
+        )
+
+        rendered = self.lesson.exercises_breakdown()[0]["corrige_markdown"]
+
+        marker = f"[COURS_LINK:{cours.slug}]"
+        self.assertEqual(rendered.count(marker), 1)
+        self.assertLess(rendered.index(marker), rendered.index("Question suivante"))
+
+    def test_cours_link_matches_a_rappel_spanning_several_paragraphs(self):
+        # Non-régression : _RAPPEL_BLOCK_RE ne capture que le PREMIER paragraphe après
+        # le titre (voir sa docstring), mais contenu_markdown peut légitimement s'étendre
+        # sur plusieurs paragraphes (méthode générale + application chiffrée séparées
+        # par une ligne blanche, comme ici) - avant le passage en correspondance par
+        # préfixe, une inclusion stricte "contenu_markdown entier dans le bloc tronqué"
+        # échouait systématiquement pour ce cas, et le lien finissait entassé en fin
+        # d'exercice au lieu d'apparaître sous son propre encadré (scan corpus du
+        # 2026-08-31 : bac-blanc-c-d-e-chimie-2026-cameroun exercice 2).
+        cours = Cours.objects.create(
+            external_id="cours-test", titre="Nomenclature des acides carboxyliques", subject=self.lesson.subject,
+        )
+        corrige = (
+            "### Rappel de méthode\n"
+            "Pour passer d'un nom systématique à sa formule, on repère la chaîne principale.\n\n"
+            "La chaîne principale comporte ici sept atomes de carbone.\n\n"
+            "$$CH_3-COOH$$\n\n"
+            "### Piège à éviter\n"
+            "Oublier le carbone du groupe acide dans le compte."
+        )
+        exercise = self._exercise("1", corrige=corrige)
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-multi", competence="Nomenclature",
+            contenu_markdown=(
+                "Pour passer d'un nom systématique à sa formule, on repère la chaîne principale."
+                "\n\nLa chaîne principale comporte ici sept atomes de carbone."
+            ),
+            cours=cours,
+        )
+
+        rendered = self.lesson.exercises_breakdown()[0]["corrige_markdown"]
+
+        marker = f"[COURS_LINK:{cours.slug}]"
+        self.assertEqual(rendered.count(marker), 1)
+        self.assertLess(rendered.index(marker), rendered.index("### Piège à éviter"))
+
+    def test_cours_link_not_duplicated_when_several_rappels_share_identical_content(self):
+        # Non-régression : la compétence répète parfois verbatim le même paragraphe de
+        # méthode sur plusieurs sous-questions consécutives (ex. bac-c-d-e-ti-anglais-
+        # 2025 exercice 2, sous-questions B1.1 à B1.5, scan corpus du 2026-08-31) - sans
+        # dédoublonnage par slug, chaque occurrence du paragraphe matchait TOUS les
+        # rappels au contenu identique, empilant jusqu'à cinq fois le même lien "Voir le
+        # cours complet" sous un seul encadré au lieu d'un seul.
+        cours = Cours.objects.create(
+            external_id="cours-test", titre="Stratégie du texte à trous", subject=self.lesson.subject,
+        )
+        contenu = "Pour compléter un texte à trous, il faut identifier la nature grammaticale attendue."
+        exercise = self._exercise(
+            "1",
+            corrige=(
+                f"### Rappel de méthode\n{contenu}\n\n**2.** Suite.\n\n"
+                f"### Rappel de méthode\n{contenu}"
+            ),
+        )
+        for suffix in ("a", "b"):
+            RappelDeMethode.objects.create(
+                exercise=exercise, external_id=f"rdm-{suffix}", competence="Texte à trous",
+                contenu_markdown=contenu, cours=cours,
+            )
+
+        rendered = self.lesson.exercises_breakdown()[0]["corrige_markdown"]
+
+        marker = f"[COURS_LINK:{cours.slug}]"
+        self.assertEqual(rendered.count(marker), 2)
+
+    def test_identical_rappel_repeated_with_distinct_cours_gets_one_link_per_occurrence(self):
+        # Non-régression (histoire-geographie-bepc-2013 exercice 1, sous-questions B1 à B6) :
+        # le même paragraphe répété N fois avec N rappels portant N cours DIFFÉRENTS empilait
+        # les N liens sous chaque encadré (36 liens pour 6 cours). Un lien par occurrence.
+        contenu = "Une question de cours au barème fractionné se traite en autant d'éléments que de points."
+        cours = [
+            Cours.objects.create(external_id=f"cours-occ-{i}", titre=f"Cours {i}", subject=self.lesson.subject)
+            for i in range(3)
+        ]
+        exercise = self._exercise(
+            "1",
+            corrige="\n\n**2.** Suite.\n\n".join(f"### Rappel de méthode\n{contenu}" for _ in cours),
+        )
+        for i, c in enumerate(cours):
+            RappelDeMethode.objects.create(
+                exercise=exercise, external_id=f"rdm-occ-{i}", competence=f"Compétence {i}",
+                contenu_markdown=contenu, cours=c,
+            )
+
+        rendered = self.lesson.exercises_breakdown()[0]["corrige_markdown"]
+
+        for c in cours:
+            self.assertEqual(rendered.count(f"[COURS_LINK:{c.slug}]"), 1)
+        ordre = [rendered.index(f"[COURS_LINK:{c.slug}]") for c in cours]
+        self.assertEqual(ordre, sorted(ordre))
+
+    def test_unmatched_cours_link_tail_separated_from_a_trailing_callout(self):
+        # Non-régression : quand le corrigé se termine par un "### Conseil"/"Piège à
+        # éviter"/"Rappel de méthode" (fréquent - rien ne garantit qu'une sous-question
+        # numérotée suive), la queue des rappels non appariés (append_unmatched) était
+        # collée juste après avec un simple "\n\n" - extractCallouts (frontend, voir sa
+        # docstring) ne voit alors aucune frontière entre le corps de ce dernier callout
+        # et cette queue, qui n'a pourtant RIEN à voir avec lui (chaque rappel non
+        # apparié pouvant provenir de n'importe quelle sous-question de l'exercice), et
+        # l'engloutit entièrement dans son encadré - repéré en prod sur
+        # mathematiques-probatoire-c-2004 (exercice "Problème", 12 rappels non appariés
+        # happés dans son dernier "### Conseil"). Un "---" doit désormais séparer les
+        # deux, frontière reconnue par extractCallouts au même titre qu'un titre "###".
+        cours = Cours.objects.create(
+            external_id="cours-test", titre="Cours jamais cité verbatim", subject=self.lesson.subject,
+        )
+        exercise = self._exercise(
+            "1",
+            corrige="### Conseil\nDernier conseil de l'exercice, sans sous-question après lui.",
+        )
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-reformule", competence="Test",
+            contenu_markdown="Reformulation qui ne matche verbatim aucun bloc du corrigé.",
+            cours=cours,
+        )
+
+        rendered = self.lesson.exercises_breakdown()[0]["corrige_markdown"]
+
+        marker = f"[COURS_LINK:{cours.slug}]"
+        self.assertIn(f"---\n\n{marker}", rendered)
+
     def test_exposes_titre_and_points_for_the_navigation_sommaire(self):
         self._exercise("1", intro="**Exercice 1 : Chimie organique (5 points)**\n\nDonnées.")
 
@@ -2930,6 +3222,18 @@ class LessonPreviewExercisesTests(TestCase):
 
         self.assertIn("Données communes.", preview[0]["enonce_markdown"])
         self.assertIn("Question posée.", preview[0]["enonce_markdown"])
+
+    def test_solo_exercise_heading_is_stripped_from_the_public_preview_too(self):
+        # Même repère redondant que LessonExercisesBreakdownTests
+        # .test_solo_exercise_heading_is_stripped_from_intro, vérifié ici séparément
+        # car preview_exercises() est un chemin de code distinct (vue publique) - voir
+        # rendering._strip_solo_exercise_heading.
+        self._exercise("1", intro="**Exercice 1 (6 points)**\n\nDonnées communes.", enonce="Question posée.")
+
+        preview = self.lesson.preview_exercises()
+
+        self.assertNotIn("Exercice 1", preview[0]["enonce_markdown"])
+        self.assertIn("Données communes.", preview[0]["enonce_markdown"])
 
     def test_exposes_the_same_labels_and_order_as_the_reader(self):
         for numero in ["10", "2", "1"]:
@@ -3227,6 +3531,35 @@ class ExerciseGroupPathsTests(TestCase):
         # de groupe au lieu de rester la référence propre de l'exercice.
         self.assertEqual(
             self._paths(["**EXERCICE 1 : CHIMIE ORGANIQUE / 5 points**"]),
+            [[]],
+        )
+
+    def test_probleme_split_across_exercises_becomes_the_shared_group_label(self):
+        # mathematiques-bac-c-et-e-2018 : le Problème est scindé en deux Exercise (un
+        # par Partie). L'exercice de la Partie A répète "PROBLÈME" en tête, celui de la
+        # Partie B ne restate que "PARTIE B" (voir _partie_labels_to_strip) - "Problème"
+        # doit rejoindre la pile des DEUX pour que le sommaire les relie (2026-08-24).
+        self.assertEqual(
+            self._paths([
+                "**PROBLÈME (10 points)**\n\n**PARTIE A (4 points)**\n\n1. a) Résoudre...",
+                "**PARTIE B (6 points)**\n\nOn considère l'équation différentielle...",
+            ]),
+            [
+                ["PROBLÈME (10 points)", "PARTIE A (4 points)"],
+                ["PROBLÈME (10 points)", "PARTIE B (6 points)"],
+            ],
+        )
+
+    def test_probleme_with_all_its_parts_in_a_single_exercise_stays_ungrouped(self):
+        # mathematiques-bac-a-2007 exercice 3 : "Problème" > "I." puis, plus loin dans
+        # cette MÊME intro, "II." - contrairement au cas ci-dessus, ce Problème n'est
+        # PAS scindé en plusieurs Exercise, il garde toutes ses parties dans un seul.
+        # Le promouvoir en repère de groupe étiquetterait à tort tout l'exercice du nom
+        # de sa seule première partie ("I.") - voir _has_further_group_label.
+        self.assertEqual(
+            self._paths([
+                "**Problème (10 points)**\n\n**I.** On considère la fonction f...\n\n**II.** Étudier...",
+            ]),
             [[]],
         )
 
@@ -3964,6 +4297,27 @@ class VarianteSujetIngestionTests(TestCase):
         ex1.lesson.refresh_from_db()
         self.assertEqual(ex1.lesson.variante_sujet, VarianteSujet.SUJET_1)
 
+    def test_conflicting_variantes_on_same_epreuve_source_get_separate_lessons(self):
+        """Régression 2026-09-04 : correction-experte est censée donner un
+        epreuve_source distinct à chaque variante (voir test_titles_and_slugs_are_
+        disambiguated), mais un scan corpus-wide a trouvé 8 épreuves où les DEUX
+        variantes partagent le même epreuve_source avec les mêmes numero_exercice.
+        Sans filtrer sur variante_sujet, le Sujet 2 rejoignait silencieusement le
+        Lesson du Sujet 1 (même epreuve_source/subject/année) puis chaque Exercise se
+        heurtait au raccourci "déjà existant" (posé par le Sujet 1) et disparaissait
+        sans la moindre erreur - aucune donnée créée, aucune erreur levée."""
+        sujet1, _ = ingest_exercise(
+            self._payload(numero_exercice="1", variante_sujet="sujet 1"),
+            source_dir=Path("ingest/cm/bepc-svt-2015"),
+        )
+        sujet2, _ = ingest_exercise(
+            self._payload(numero_exercice="1", variante_sujet="sujet 2"),
+            source_dir=Path("ingest/cm/bepc-svt-2015"),
+        )
+        self.assertNotEqual(sujet1.lesson_id, sujet2.lesson_id)
+        self.assertEqual(sujet1.lesson.variante_sujet, VarianteSujet.SUJET_1)
+        self.assertEqual(sujet2.lesson.variante_sujet, VarianteSujet.SUJET_2)
+
 
 class ExerciseGroupesIngestionTests(TestCase):
     """Champ optionnel Exercise.groupes (voir modèle) : la pile de repères de groupe
@@ -4276,6 +4630,124 @@ class CoursSearchApiTests(TestCase):
         self.assertEqual(titles.count(self.cours.titre), 1)
 
 
+class CoursListSousThemePrioritaireApiTests(TestCase):
+    """`?sous_theme_prioritaire=` sur /catalog/cours/ - fait remonter les cours du même
+    sous-thème que le cours consulté dans RelatedCours (frontend), sans jamais exclure
+    le reste de la matière (voir catalog.views.CoursListView)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        # Créé en premier (donc plus ancien) mais du même sous-thème que la requête -
+        # doit malgré tout devancer le cours plus récent d'un autre sous-thème.
+        self.meme_sous_theme = Cours.objects.create(
+            external_id="cours-cas-egalite-triangles", titre="Cas d'égalité des triangles",
+            subject=subject, statut=StatutContenu.VALIDE, sous_theme="Théorème de Thalès",
+        )
+        self.autre_sous_theme = Cours.objects.create(
+            external_id="cours-resolution-equation-second-degre",
+            titre="Résoudre une équation du second degré",
+            subject=subject, statut=StatutContenu.VALIDE, sous_theme="Équations",
+        )
+
+    def _list(self, sous_theme_prioritaire=None):
+        params = {"subject": "MATHS"}
+        if sous_theme_prioritaire:
+            params["sous_theme_prioritaire"] = sous_theme_prioritaire
+        response = self.client.get(reverse("catalog:cours-list"), params)
+        return [item["titre"] for item in response.json()["results"]]
+
+    def test_default_order_is_most_recent_first(self):
+        titles = self._list()
+        self.assertLess(titles.index(self.autre_sous_theme.titre), titles.index(self.meme_sous_theme.titre))
+
+    def test_same_sous_theme_ranks_first_even_if_older(self):
+        titles = self._list("Théorème de Thalès")
+        self.assertLess(titles.index(self.meme_sous_theme.titre), titles.index(self.autre_sous_theme.titre))
+
+    def test_does_not_exclude_other_sous_themes(self):
+        # Un sous-thème donné ne compte souvent qu'un ou deux cours - un filtre
+        # strict laisserait la section de suggestions vide la plupart du temps.
+        self.assertIn(self.autre_sous_theme.titre, self._list("Théorème de Thalès"))
+
+
+class CoursListSavoirFilterApiTests(TestCase):
+    """`?savoir=` sur /catalog/cours/ - lien "voir tous les cours" depuis
+    ParcoursSubjectPage (frontend), pour dépasser le plafond d'affichage de
+    quiz.services.construire_parcours (PARCOURS_COURS_PAR_SAVOIR_MAX). Même relation
+    Cours.tags -> Tag.savoir_officiel que ce plafond, mais sans lui - filtre exclusif,
+    contrairement à `sous_theme_prioritaire` ci-dessus qui ne fait que réordonner."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        module = Module.objects.create(subject=subject, classe="Tle", serie_label="C", numero="1", titre="Suites")
+        self.savoir = Savoir.objects.create(module=module, numero="I", intitule="Suites numériques")
+        autre_module = Module.objects.create(subject=subject, classe="Tle", serie_label="C", numero="2", titre="Autre")
+        autre_savoir = Savoir.objects.create(module=autre_module, numero="I", intitule="Autre savoir")
+
+        self.du_savoir = Cours.objects.create(
+            external_id="cours-du-savoir", titre="Cours du savoir visé", subject=subject, statut=StatutContenu.VALIDE,
+        )
+        self.du_savoir.tags.set([Tag.objects.create(name="tag du savoir visé", savoir_officiel=self.savoir)])
+
+        self.autre = Cours.objects.create(
+            external_id="cours-autre-savoir", titre="Cours d'un autre savoir",
+            subject=subject, statut=StatutContenu.VALIDE,
+        )
+        self.autre.tags.set([Tag.objects.create(name="tag autre savoir", savoir_officiel=autre_savoir)])
+
+        self.sans_savoir = Cours.objects.create(
+            external_id="cours-sans-savoir", titre="Cours sans savoir rattaché",
+            subject=subject, statut=StatutContenu.VALIDE,
+        )
+
+    def _list(self, savoir_id):
+        response = self.client.get(reverse("catalog:cours-list"), {"savoir": savoir_id})
+        return [item["titre"] for item in response.json()["results"]]
+
+    def test_returns_cours_linked_to_the_savoir(self):
+        self.assertIn(self.du_savoir.titre, self._list(self.savoir.pk))
+
+    def test_excludes_cours_of_a_different_savoir(self):
+        self.assertNotIn(self.autre.titre, self._list(self.savoir.pk))
+
+    def test_excludes_cours_without_any_savoir(self):
+        self.assertNotIn(self.sans_savoir.titre, self._list(self.savoir.pk))
+
+
+class CoursListThemeFilterApiTests(TestCase):
+    """`?theme=` sur /catalog/cours/ - pendant de CoursListSavoirFilterApiTests
+    ci-dessus pour les matières en mode Parcours par fréquence (voir
+    quiz.services.SUBJECTS_PARCOURS_PAR_FREQUENCE) : le thème EST directement le
+    Tag, sans passer par Tag.savoir_officiel (démontré non fiable pour ces
+    matières, voir quiz.services.construire_parcours_par_frequence)."""
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.theme = Tag.objects.create(name="vecteurs")
+        autre_theme = Tag.objects.create(name="statistiques")
+
+        self.du_theme = Cours.objects.create(
+            external_id="cours-du-theme", titre="Cours du thème visé", subject=subject, statut=StatutContenu.VALIDE,
+        )
+        self.du_theme.tags.set([self.theme])
+
+        self.autre = Cours.objects.create(
+            external_id="cours-autre-theme", titre="Cours d'un autre thème",
+            subject=subject, statut=StatutContenu.VALIDE,
+        )
+        self.autre.tags.set([autre_theme])
+
+    def _list(self, theme_id):
+        response = self.client.get(reverse("catalog:cours-list"), {"theme": theme_id})
+        return [item["titre"] for item in response.json()["results"]]
+
+    def test_returns_cours_linked_to_the_theme(self):
+        self.assertIn(self.du_theme.titre, self._list(self.theme.pk))
+
+    def test_excludes_cours_of_a_different_theme(self):
+        self.assertNotIn(self.autre.titre, self._list(self.theme.pk))
+
+
 class LessonThemeFilterApiTests(TestCase):
     """`?theme=` sur /catalog/lessons/ - lien "s'entraîner sur ce thème" depuis
     ThemesFrequentsView (voir ThemesFrequentsApiTests ci-dessous). Filtre sur
@@ -4439,6 +4911,153 @@ class ThemesFrequentsApiTests(TestCase):
         self.assertTrue(data["has_access"])
         self.assertEqual(data["nb_themes_verrouilles"], 0)
         self.assertEqual(len(data["themes"]), 3)
+
+    def test_theme_exposes_tag_id_and_quiz_availability(self):
+        """id/quiz_disponible alimentent les deux boutons "Exercices"/"Quiz" à côté de
+        chaque thème (voir ThemesFrequents.tsx) - quiz_disponible doit refléter la
+        couverture RÉELLE (CompetenceItem), jamais supposée."""
+        self._seed_above_threshold()
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        premier = data["themes"][0]
+        self.assertIn("id", premier)
+        self.assertFalse(premier["quiz_disponible"])
+
+        tag = Tag.objects.get(pk=premier["id"])
+        item = CompetenceItem.objects.create(
+            theme=tag, subject=self.subject, statut=StatutContenu.VALIDE,
+            enonce_markdown="a", corrige_markdown="b",
+        )
+        item.cursus.add(self.cursus)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        self.assertTrue(data["themes"][0]["quiz_disponible"])
+
+    def test_quiz_availability_via_savoir_cascade_when_tag_differs(self):
+        """Deux vocabulaires de tags coexistent (voir quiz.views, même cascade côté
+        cours lié) : correction-experte tague les questions par TECHNIQUE
+        ("tableau de variation"), le Quiz par CHAPITRE ("dérivation"). Une
+        CompetenceItem sur un tag DIFFÉRENT du thème du classement, mais pointant le
+        même savoir_officiel, doit quand même marquer quiz_disponible=True - sinon la
+        moitié des thèmes réellement couvrables restent à tort marqués indisponibles
+        (mesuré en pratique : 10/20 sur le top Maths BAC C avant ce correctif)."""
+        self._seed_above_threshold()
+
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="Dérivation")
+        savoir = Savoir.objects.create(module=module, numero="I", intitule="Dérivation")
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        premier = data["themes"][0]
+        self.assertFalse(premier["quiz_disponible"])
+
+        tag_classement = Tag.objects.get(pk=premier["id"])
+        tag_classement.savoir_officiel = savoir
+        tag_classement.save(update_fields=["savoir_officiel"])
+
+        tag_quiz = Tag.objects.create(name="tag de chapitre distinct", savoir_officiel=savoir)
+        item = CompetenceItem.objects.create(
+            theme=tag_quiz, subject=self.subject, statut=StatutContenu.VALIDE,
+            enonce_markdown="a", corrige_markdown="b",
+        )
+        item.cursus.add(self.cursus)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        self.assertTrue(data["themes"][0]["quiz_disponible"])
+
+    def test_quiz_unavailable_stays_false_without_savoir_officiel(self):
+        """Un thème sans savoir_officiel du tout ne peut pas bénéficier de la cascade -
+        pas de faux positif par accident (ex. deux tags avec savoir_officiel=None ne
+        doivent jamais se faire passer pour "le même savoir")."""
+        self._seed_above_threshold()
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        self.assertIsNone(Tag.objects.get(pk=data["themes"][0]["id"]).savoir_officiel_id)
+        self.assertFalse(data["themes"][0]["quiz_disponible"])
+
+
+class ThemeExercicesApiTests(TestCase):
+    """GET /catalog/cursus/<id>/themes-frequents/<tag_id>/exercices/ - alimente le
+    bouton "Exercices" à côté d'un thème du classement (voir ThemesFrequentsApiTests,
+    qui expose l'id du Tag nécessaire ici). Contrairement au classement, pas de
+    restriction origine=OFFICIEL ni de seuil minimum : un examen blanc compte,
+    l'objectif est un support d'entraînement concret, pas une statistique de fréquence."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.tag = Tag.objects.create(name="tableau de variation")
+        self.client = APIClient()
+
+    def _url(self, tag_id=None, cursus_id=None):
+        return reverse("catalog:theme-exercices", args=[cursus_id or self.cursus.pk, tag_id or self.tag.pk])
+
+    def _make_lesson(self, title, origine=Origine.OFFICIEL, year=2022, est_vitrine=False):
+        lesson = Lesson.objects.create(
+            title=title, subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=origine, year=year, est_vitrine=est_vitrine,
+        )
+        lesson.cursus.add(self.cursus)
+        return lesson
+
+    def test_missing_subject_is_a_400(self):
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 400)
+
+    def test_unknown_cursus_is_a_404(self):
+        response = self.client.get(self._url(cursus_id=999999), {"subject": self.subject.code})
+        self.assertEqual(response.status_code, 404)
+
+    def test_lists_exercise_tagged_with_theme(self):
+        lesson = self._make_lesson("Maths BAC C 2022")
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        question = Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown="a", corrige_markdown="b",
+        )
+        question.themes.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(len(data["exercices"]), 1)
+        self.assertEqual(data["exercices"][0]["lesson_slug"], lesson.slug)
+        self.assertEqual(data["exercices"][0]["numero_exercice"], "1")
+        self.assertFalse(data["exercices"][0]["has_access"])
+
+    def test_examen_blanc_is_included_unlike_the_ranking(self):
+        lesson = self._make_lesson("Maths blanc", origine=Origine.BLANC)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        question = Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown="a", corrige_markdown="b",
+        )
+        question.themes.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(len(data["exercices"]), 1)
+
+    def test_multiple_questions_in_the_same_exercise_count_once(self):
+        lesson = self._make_lesson("Maths BAC C 2022")
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        for i in range(1, 4):
+            question = Question.objects.create(
+                exercise=exercise, numero=str(i), ordre=i, enonce_markdown="a", corrige_markdown="b",
+            )
+            question.themes.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(len(data["exercices"]), 1)
+
+    def test_vitrine_lesson_grants_access_without_subscription(self):
+        lesson = self._make_lesson("Maths vitrine", est_vitrine=True)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        question = Question.objects.create(
+            exercise=exercise, numero="1", ordre=1, enonce_markdown="a", corrige_markdown="b",
+        )
+        question.themes.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertTrue(data["exercices"][0]["has_access"])
 
 
 class DoubleJsonEscapingRepairTests(TestCase):
@@ -4677,6 +5296,71 @@ class DoubleJsonEscapingRepairTests(TestCase):
         self.assertEqual(
             question.corrige_markdown,
             r"Sommets : $B_1\begin{pmatrix}1\\\sqrt3\end{pmatrix}$.",
+        )
+
+    def test_preserves_a_matrix_row_separator_followed_by_two_adjacent_variables(self):
+        # Reproduit mathematiques-probatoire-a-2013 (exercice 4, "$a+b=320\\ab=17500$")
+        # et deux Cours "changement de variable" / "méthode de substitution" (systèmes
+        # littéraux "aX+bY=k_1\\cX+dY=k_2" et "x+y=s\\ax+by=p") : contrairement au cas
+        # à UNE lettre isolée déjà couvert plus haut, DEUX lettres adjacentes juste
+        # après un séparateur de ligne (un produit implicite "ab", un coefficient
+        # collé à une variable "cX"/"ax") ressemblaient à tort à une commande LaTeX à
+        # 2 lettres doublée et se faisaient réduire à "\ab"/"\cX"/"\ax" - une
+        # pseudo-commande inconnue de KaTeX, rendue en rouge sans lever d'exception
+        # (constaté en direct sur /epreuves/.../lire, leçon 1322 et les 2 Cours cités).
+        # Aucune des lettres à 2 (ab, cX, ax) n'appartient à la courte liste blanche
+        # des vraies commandes LaTeX à 2 lettres (in, to, le, ge, pm...) : le
+        # séparateur doit rester intact.
+        payload = _exercise_payload("bac-maths-2024")
+        two_backslashes = "\\" * 2
+        payload["questions"][0]["corrige_markdown"] = (
+            f"Système : ${two_backslashes}begin{{cases}}a+b=320{two_backslashes}"
+            f"ab=17500{two_backslashes}end{{cases}}$."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertEqual(
+            question.corrige_markdown,
+            r"Système : $\begin{cases}a+b=320\\ab=17500\end{cases}$.",
+        )
+
+    def test_still_halves_a_doubled_two_letter_command_from_the_short_whitelist(self):
+        # Symétrique du test précédent : "in" fait partie de la courte liste blanche
+        # des vraies commandes LaTeX à 2 lettres (contrairement à "ab"/"cX"/"ax", qui
+        # n'y figurent pas) - une commande "\\in" doublée par une couche d'échappement
+        # en trop doit donc toujours être réduite à "\in", comme avant ce correctif.
+        payload = _exercise_payload("bac-maths-2024")
+        two_backslashes = "\\" * 2
+        payload["questions"][0]["corrige_markdown"] = f"Soit $x{two_backslashes}inE$."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertEqual(question.corrige_markdown, r"Soit $x\inE$.")
+
+    def test_repairs_a_doubled_backslash_before_an_escaped_percent_or_thin_space(self):
+        # Reproduit Cours#6733 "polygone des fréquences cumulées croissantes" :
+        # "\text{FCC en \\%})$" - contrairement aux commandes à lettres (mathbb,
+        # sqrt...), une commande à un seul symbole d'échappement ("\%", "\,") doublée
+        # n'était repérée par aucune des deux règles existantes (% et , ne sont pas
+        # des lettres). Un "%" non protégé ouvre un commentaire LaTeX qui avale tout
+        # le reste de la ligne - d'où l'erreur KaTeX constatée en direct
+        # "Unexpected end of input ... expected '}'" sur /cours/.../lire.
+        payload = _exercise_payload("bac-maths-2024")
+        two_backslashes = "\\" * 2
+        payload["questions"][0]["corrige_markdown"] = (
+            f"Point : $({two_backslashes}text{{a}}{two_backslashes},;{two_backslashes},"
+            f"{two_backslashes}text{{FCC en {two_backslashes}%}})$"
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        question = exercise.questions.first()
+        self.assertEqual(
+            question.corrige_markdown,
+            r"Point : $(\text{a}\,;\,\text{FCC en \%})$",
         )
 
     def test_repairs_the_affected_field_without_touching_a_sibling_reserved_letter_field(self):
@@ -4996,6 +5680,28 @@ class MissingExerciseHeadingRepairTests(TestCase):
         # avoir été injecté par _repair_missing_exercise_heading.
         self.assertFalse(any("Titre" in note for note in exercise.incertitudes))
 
+    def test_never_injects_a_heading_in_front_of_a_markdown_heading_part_marker(self):
+        # mathematiques-bac-c-2021 (exercice 4, id=6923) et bac-a-abi-maths-2022-
+        # cameroun (exercice 4) : "Partie B" est balisé en titre Markdown ("##"/"###"),
+        # pas en gras - _INTRO_PART_HEADER_RE ne reconnaissait que "**Partie B**" et
+        # injectait un second "**Exercice N (points)**" en double au-dessus (scan
+        # corpus du 2026-08-30).
+        payload = _exercise_payload("bac-maths-2024", numero="4")
+        payload["points"] = "3,5"
+        payload["enonce_intro_markdown"] = "## Partie B - Évaluation des compétences\n\nSituation-problème."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "## Partie B - Évaluation des compétences\n\nSituation-problème.",
+        )
+        # Repère de regex FRÈRE et délibérément séparé de _INTRO_PART_HEADER_RE (voir
+        # son commentaire) : "Partie B" désigne ici l'exercice ENTIER, donc ne doit pas
+        # non plus déclencher _flag_part_headers_in_intro (qui suppose l'inverse - un
+        # repère mal placé, à porter par une Question plutôt que par l'intro).
+        self.assertEqual(exercise.incertitudes, [])
+
     def test_recognizes_an_unmarked_heading_and_injects_nothing(self):
         # Reproduit probatoire-c-d-chimie-2003-cameroun : le repère existe bien dans
         # l'intro, simplement en texte nu (ni "#" ni gras). L'ancienne détection, ancrée
@@ -5006,6 +5712,48 @@ class MissingExerciseHeadingRepairTests(TestCase):
         exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
 
         self.assertEqual(exercise.enonce_intro_markdown, "Exercice 1 (5 points) - hydrocarbures et isomérie")
+        self.assertEqual(exercise.incertitudes, [])
+
+    def test_recognizes_a_bare_situation_probleme_heading(self):
+        # physique-bac-c-2025 (leçon 1262), exercice 5 : la Partie qui regroupe les
+        # deux situations-problèmes ("**PARTIE B : ÉVALUATION DES COMPÉTENCES**") n'est
+        # établie que sur l'exercice 4 - l'exercice 5 reprend directement "Situation-
+        # problème 2" en tête, sans jamais répéter "Partie B". Avant l'ajout de
+        # _BARE_SITUATION_PROBLEME_HEADER_RE, ce repère passait inaperçu et un second
+        # "**Exercice 5 (8 points)**" s'injectait au-dessus, en double visible avec
+        # "Situation-problème 2" juste en dessous - scan corpus du 2026-08-30, 11
+        # autres exercices touchés (physique BAC C/D, histoire-géo/éducation civique
+        # BEPC).
+        payload = _exercise_payload("bac-maths-2024", numero="5")
+        payload["points"] = 8
+        payload["enonce_intro_markdown"] = "**Situation-problème 2** *(8 points)*\n\nUn propulseur..."
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Situation-problème 2** *(8 points)*\n\nUn propulseur...",
+        )
+        self.assertEqual(exercise.incertitudes, [])
+
+    def test_recognizes_a_bare_competence_label_heading(self):
+        # sciences-de-la-vie-et-de-la-terre-bac-c-et-ti-2024 (leçon 1017), exercice 5 :
+        # même défaut que ci-dessus, mais c'est "Compétence ciblée" - pas "Situation
+        # problème", qui n'apparaît qu'au 2e paragraphe - qui occupe la première ligne.
+        payload = _exercise_payload("bac-maths-2024", numero="5")
+        payload["points"] = 10
+        payload["enonce_intro_markdown"] = (
+            "**Compétence ciblée** : Lutter contre les maladies métaboliques.\n\n"
+            "**Situation problème** : De nombreux documentaires..."
+        )
+
+        exercise, _ = ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+
+        self.assertEqual(
+            exercise.enonce_intro_markdown,
+            "**Compétence ciblée** : Lutter contre les maladies métaboliques.\n\n"
+            "**Situation problème** : De nombreux documentaires...",
+        )
         self.assertEqual(exercise.incertitudes, [])
 
     def test_recognizes_a_locally_numbered_roman_reference_further_down(self):
@@ -5823,7 +6571,7 @@ class ReingererDepuisFichierActionTests(TestCase):
             json.dumps({
                 "epreuve_source": "bac-maths-2024.pdf", "numero_exercice": "1",
                 "matiere": "Mathematiques", "serie": "C", "examen": "BAC",
-                "questions": [{"numero": "1", "enonce_markdown": enonce_markdown, "corrige_markdown": corrige_markdown}],
+                "questions": [{"numero": "1", "enonce_markdown": enonce_markdown, "corrige_markdown": corrige_markdown, "themes": ["Thème de test"]}],
             }),
             encoding="utf-8",
         )

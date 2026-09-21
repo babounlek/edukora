@@ -51,6 +51,13 @@ _RAPPEL_BLOCK_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+# Isole la seule ligne de titre d'un `block` déjà capturé par _RAPPEL_BLOCK_RE, pour
+# comparer son corps (le premier paragraphe) au `contenu_markdown` complet du rappel -
+# voir annotate_cours_links, dont le rappel peut légitimement s'étendre sur PLUSIEURS
+# paragraphes (méthode générale + application chiffrée) même si le paragraphe isolé
+# ci-dessus ne capture que le premier.
+_RAPPEL_HEADING_PREFIX_RE = re.compile(r"\A###\s*Rappel de m[eé]thode\s*\n+", re.IGNORECASE)
+
 # Marqueur de secours que correction-experte ajoute quand un rappel_de_methode ne peut
 # pas être fait à correspondre verbatim au corrigé (voir SKILL.md) - la publication étant
 # désormais automatique (aucune relecture humaine), on le retire par sécurité pour ne
@@ -298,14 +305,45 @@ def compile_exercise_from_questions(exercise):
     exercise.themes.set(themes)
 
 
+# Longueur minimale d'un `contenu_markdown` pour qu'il puisse s'apparier à un bloc plus long
+# que lui (voir _rappel_matches_block) : en dessous, un fragment court comme "Nombre de" ou
+# "Le calcul" serait le début de blocs sans rapport.
+_MIN_TRUNCATED_RAPPEL_LEN = 40
+
+
+def _rappel_matches_block(contenu, body):
+    """
+    Un rappel correspond à un bloc si l'un est le début de l'autre. Sens historique : le bloc
+    (premier paragraphe seul) est le début du `contenu` du rappel, qui s'étale sur plusieurs
+    paragraphes. Sens inverse : `contenu` n'est qu'un extrait tronqué du paragraphe du corrigé
+    (constaté sur probatoire-blanc-ti-SI-bayangam-2023 : 138 caractères stockés pour un
+    paragraphe de 301) - sans lui, aucun bloc ne s'apparie et tous les liens "Voir le cours
+    complet" finissent entassés en fin d'exercice.
+    """
+    if not contenu or not body:
+        return False
+    if contenu.startswith(body):
+        return True
+    return len(contenu) >= _MIN_TRUNCATED_RAPPEL_LEN and body.startswith(contenu)
+
+
 def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
     """
     Insère un marqueur `[COURS_LINK:<slug>]` juste après chaque bloc "### Rappel de
     méthode" dont le rappel correspondant a donné naissance à un Cours - le frontend le
     détecte pour afficher un lien "Voir le cours complet" sur le callout, vers l'URL
     publique du cours ("/cours/<slug>"). La correspondance entre un bloc du texte et son
-    rappel se fait par inclusion du texte exact extrait à l'ingestion (contenu_markdown),
-    seule donnée fiable puisque le Markdown compilé ne porte pas de FK.
+    rappel se fait par préfixe : le bloc capturé (voir _RAPPEL_BLOCK_RE, qui ne retient
+    que le premier paragraphe) doit être le DÉBUT du `contenu_markdown` exact extrait à
+    l'ingestion, seule donnée fiable puisque le Markdown compilé ne porte pas de FK. Une
+    inclusion stricte (`contenu_markdown` entier retrouvé dans le bloc) échouait pour un
+    rappel étalé sur plusieurs paragraphes (méthode générale + application chiffrée,
+    séparés par une ligne blanche comme le bloc lui-même) : `contenu_markdown` dépassait
+    alors le premier paragraphe capturé et ne matchait plus jamais aucun bloc - son lien
+    finissait entassé en fin d'exercice avec les autres rappels non appariés (voir
+    append_unmatched plus bas), au lieu d'apparaître sous son propre encadré (scan
+    corpus du 2026-08-31 : bac-blanc-c-d-e-chimie-2026-cameroun exercice 2, entre
+    autres).
 
     Pas spécifique à catalog malgré le module : `rappels` accepte tout itérable
     exposant `.cours_id`/`.cours`/`.contenu_markdown` - RappelDeMethode ici, mais aussi
@@ -315,7 +353,12 @@ def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
     Un même bloc peut correspondre à plusieurs rappels : la compétence fusionne parfois
     plusieurs sous-questions sous un unique "### Rappel de méthode" plutôt que d'en
     écrire un par sous-question - dans ce cas tous les cours associés sont insérés à la
-    suite du bloc.
+    suite du bloc. Un même cours n'apparaît toutefois jamais deux fois sur le même bloc
+    (dédoublonné par slug) : la compétence répète parfois verbatim le même paragraphe de
+    méthode sur plusieurs sous-questions consécutives (ex. bac-c-d-e-ti-anglais-2025
+    exercice 2, sous-questions B1.1 à B1.5) - sans ce filtre, CHAQUE occurrence de ce
+    paragraphe matchait TOUS les rappels au contenu identique, empilant le même lien
+    "Voir le cours complet" jusqu'à cinq fois de suite sous un seul encadré.
 
     Il arrive aussi que `contenu_markdown` soit une reformulation plutôt qu'une
     citation exacte du corrigé (l'IA ne respecte pas toujours cette consigne) : le
@@ -335,9 +378,29 @@ def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
 
     injected_slugs = set()
 
+    # Un même paragraphe de méthode répété verbatim sur N sous-questions consécutives, avec
+    # N rappels (un cours chacun), matche chaque occurrence avec les N rappels : N liens
+    # empilés sous CHAQUE encadré (histoire-geographie-bepc-2013 exercice 1, sous-questions
+    # B1 à B6 : 36 liens pour 6 cours). Quand le nombre d'occurrences identiques égale le
+    # nombre de rappels qui les matchent, on attribue un rappel par occurrence, dans l'ordre.
+    occurrences = {}
+    for m in _RAPPEL_BLOCK_RE.finditer(corrige):
+        b = _RAPPEL_HEADING_PREFIX_RE.sub("", m.group(0), count=1).strip()
+        occurrences[b] = occurrences.get(b, 0) + 1
+    rappels = sorted(rappels, key=lambda r: getattr(r, "pk", 0) or 0)
+    deja_vus = {}
+
     def _inject(match):
         block = match.group(0)
-        cours_slugs = [r.cours.slug for r in rappels if r.contenu_markdown.strip() in block]
+        body = _RAPPEL_HEADING_PREFIX_RE.sub("", block, count=1).strip()
+        if not body:
+            return block
+        matching = [r for r in rappels if _rappel_matches_block(r.contenu_markdown.strip(), body)]
+        rang = deja_vus.get(body, 0)
+        deja_vus[body] = rang + 1
+        if occurrences.get(body, 0) > 1 and len(matching) == occurrences[body]:
+            matching = [matching[rang]]
+        cours_slugs = list(dict.fromkeys(r.cours.slug for r in matching))
         if not cours_slugs:
             return block
         injected_slugs.update(cours_slugs)
@@ -352,10 +415,21 @@ def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
     corrige = _RAPPEL_BLOCK_RE.sub(_inject, corrige)
 
     if append_unmatched:
-        remaining_slugs = [r.cours.slug for r in rappels if r.cours.slug not in injected_slugs]
+        remaining_slugs = list(dict.fromkeys(
+            r.cours.slug for r in rappels if r.cours.slug not in injected_slugs
+        ))
         if remaining_slugs:
             markers = "\n\n".join(f"[COURS_LINK:{slug}]" for slug in remaining_slugs)
-            corrige = f"{corrige.rstrip()}\n\n{markers}"
+            # Le "---" sépare cette queue de tout callout qui termine `corrige` (un
+            # "### Conseil"/"Piège à éviter"/"Rappel de méthode" sans sous-question
+            # après lui, cas fréquent en fin d'exercice) : sans lui, extractCallouts
+            # (frontend, voir sa docstring) ne voit aucune frontière entre le corps de
+            # ce dernier callout et cette queue - qui n'a pourtant rien à voir avec lui,
+            # chaque rappel non apparié pouvant provenir de N'IMPORTE quelle sous-question
+            # de l'exercice - et l'engloutit entièrement dans son encadré. Repéré en
+            # prod sur mathematiques-probatoire-c-2004 (exercice "Problème", 12 rappels
+            # non appariés happés dans son dernier "### Conseil").
+            corrige = f"{corrige.rstrip()}\n\n---\n\n{markers}"
 
     return corrige
 
@@ -502,10 +576,13 @@ _POINTS_TRAILING_IN_PAREN_RE = re.compile(r",?\s*[\d.,/]+\s*(?:points?|pts?|mark
 # première sous-question ("**1.** Écris le nombre..."). Sans ce filtre, une épreuve
 # dont l'exercice 1 n'a pas de préambule propre se retrouvait étiquetée "1." dans le
 # sommaire. Un titre Markdown ("### ...") ne pose pas cette ambiguïté et n'y est pas
-# soumis. Mêmes mots-clés que _EXERCISE_HEADING_PRESENT_RE côté ingestion_repairs,
+# soumis. Mêmes mots-clés que _EXERCISE_LABEL_RE côté ingestion_repairs (tenus en
+# synchronisation manuelle - voir sa docstring pour l'historique de chaque ajout),
 # élargis aux découpages non numérotés réellement présents dans le corpus (les épreuves
-# d'anglais ouvrent sur "**Section A: Grammar (10 marks)**").
-_REFERENCE_EXERCICE_RE = re.compile(r"^(?:exercice|exercise|probl[eè]me|partie|section)\b", re.IGNORECASE)
+# d'anglais ouvrent sur "**Section A: Grammar (10 marks)**", les épreuves à dissertation
+# au choix - Philosophie, Littérature, Économie, Français "expression écrite" - sur
+# "**Sujet I**").
+_REFERENCE_EXERCICE_RE = re.compile(r"^(?:exercice|exercise|probl[eè]me|partie|section|sujet)\b", re.IGNORECASE)
 
 
 def _exercise_titre_et_points(exercise):
@@ -648,6 +725,43 @@ def _leading_label(text):
     return contenu.strip(), match.end()
 
 
+# "Problème" est presque toujours la propre référence de l'exercice, jamais un repère
+# de groupe (_is_group_label l'exclut explicitement - voir _BARE_MATIERE_EXCLUDE_RE) :
+# un Problème qui subdivise ses parties EN SOUS-QUESTIONS d'un seul et même Exercise
+# doit garder "Problème" comme titre unique, pas se voir arbitrairement rattaché à sa
+# seule première partie. Mais quand un Problème est scindé en plusieurs Exercise (un
+# par Partie - ex. mathematiques-bac-c-et-e-2018 : l'exercice 4 est "PROBLÈME > PARTIE
+# A", l'exercice 5 "PARTIE B" seul), "Problème" EST bien le repère de groupe englobant
+# les deux, et sa Partie A ne doit plus rester sa propre référence (elle doit rejoindre
+# la pile comme "Partie B" le fait déjà) - sans quoi le sommaire affiche "PROBLÈME" pour
+# la partie A et "Partie B" sans lien visible pour l'autre (2026-08-24).
+_PROBLEME_LABEL_RE = re.compile(r"\A\s*Probl[eè]me\b", re.IGNORECASE)
+_BOLD_SEGMENT_RE = re.compile(r"\*\*([^\n*]{1,80}?)\*\*")
+
+
+def _has_further_group_label(text):
+    """True si un AUTRE repère de groupe en gras apparaît plus loin dans `text` -
+    signe qu'un Problème promu en repère de groupe (voir _PROBLEME_LABEL_RE ci-dessus)
+    garde en réalité TOUTES ses parties dans ce même Exercise (ex. mathematiques-bac-a-
+    2007 exercice 3 : "**Problème**" puis "**I.**" puis, plus loin dans la MÊME
+    intro, "**II.**") plutôt que de les scinder en plusieurs Exercise - la promotion
+    doit alors être annulée pour ne pas étiqueter tout l'exercice du seul nom de sa
+    première partie."""
+    return any(_is_group_label(segment.strip()) for segment in _BOLD_SEGMENT_RE.findall(text))
+
+
+# Chapeau d'épreuve entièrement en italique ("*MINESEC-DECC - BEPC - ... - Session
+# 2020*"), jamais annoncé par une ligne vide qui en ferait un paragraphe à part - un
+# seul "*" (jamais "**", exclu par le lookahead négatif) suivi d'un saut de ligne.
+# Dupliqué depuis catalog.ingestion_repairs._LEADING_ITALIC_CHAPEAU_RE plutôt
+# qu'importé (préoccupations distinctes, voir la docstring de tête de ce fichier) :
+# sans lui, _leading_label_stack ne voit que ce chapeau en tête de texte - jamais
+# bordé de "**" - et conclut à tort qu'aucun repère de groupe ne précède l'exercice,
+# alors qu'un vrai "**Partie A - ...**" le suit directement (bepc-ecm-2020-officiel-
+# cameroun, scan corpus du 2026-08-30).
+_LEADING_ITALIC_CHAPEAU_RE = re.compile(r"\A\*(?!\*)[^*\n]+\*\s*\n+")
+
+
 def _leading_label_stack(text):
     """
     (pile de repères de partie, position juste après le dernier) en tête de `text` -
@@ -657,16 +771,40 @@ def _leading_label_stack(text):
     propre à l'exercice) - voir _partie_labels_to_strip, qui compare deux piles plutôt
     que deux repères isolés. S'arrête au premier segment en tête qui n'est PAS un
     repère de partie (_PARTIE_LABEL_RE) : la propre référence de l'exercice
-    ("**Exercice 2 : ...**") ne rejoint donc jamais la pile.
+    ("**Exercice 2 : ...**") ne rejoint donc jamais la pile - sauf "Problème" suivi
+    d'un véritable repère de groupe et d'aucun autre plus loin, voir
+    _PROBLEME_LABEL_RE/_has_further_group_label ci-dessus.
+
+    Un chapeau d'épreuve entièrement en italique en tête de `text` est ignoré avant de
+    chercher le premier repère (voir _LEADING_ITALIC_CHAPEAU_RE) : ni lui ni la position
+    qu'il occupe n'a de sens dans la pile retournée (jamais un repère de groupe), mais sa
+    seule présence ne doit pas empêcher de reconnaître un vrai repère juste derrière.
     """
     pile = []
     reste = text or ""
+    chapeau = _LEADING_ITALIC_CHAPEAU_RE.match(reste)
+    if chapeau:
+        reste = reste[chapeau.end():]
     while True:
         contenu, fin = _leading_label(reste)
-        if not contenu or not _is_group_label(contenu):
+        if not contenu:
             break
-        pile.append(contenu)
-        reste = reste[fin:].lstrip()
+        if _is_group_label(contenu):
+            pile.append(contenu)
+            reste = reste[fin:].lstrip()
+            continue
+        if _PROBLEME_LABEL_RE.match(contenu):
+            apres = reste[fin:].lstrip()
+            suivant, fin_suivant = _leading_label(apres)
+            if (
+                suivant
+                and _is_group_label(suivant)
+                and not _has_further_group_label(apres[fin_suivant:])
+            ):
+                pile.append(contenu)
+                reste = apres
+                continue
+        break
     return pile, len(text or "") - len(reste)
 
 
@@ -818,6 +956,48 @@ def _strip_leading_label(text, nb_labels):
     return reste
 
 
+# Contenu d'un repère "Exercice N"/"Exercice unique"/"Problème" NU - seulement un
+# numéro (arabe ou romain) et/ou le mot "unique" et/ou un barème entre parenthèses,
+# rien d'autre. Un repère qui porte en plus un sous-titre propre à l'exercice
+# ("Exercice 1 : Chimie organique") ne matche PAS ici et n'est jamais retiré par
+# _strip_solo_exercise_heading ci-dessous : ce sous-titre est une information réelle,
+# absente ailleurs de la page, contrairement au numéro seul.
+_BARE_EXERCISE_LABEL_CONTENT_RE = re.compile(
+    r"\A(?:Exercices?|Exercise|Probl[eè]mes?)\b"
+    r"(?:\s+(?:unique|[IVXLC]+|\d+))?"
+    r"(?:\s*\([^()]*\))?"
+    r"\s*[:.]?\Z",
+    re.IGNORECASE,
+)
+
+
+def _strip_solo_exercise_heading(text):
+    """
+    `text` sans son repère "Exercice N"/"Exercice unique"/"Problème" de tête - à
+    n'appeler QUE pour un exercice qui est seul dans sa Lesson (voir les 3 appelants,
+    tous conditionnés sur `len(exercises) == 1`).
+
+    Un tel repère sert à distinguer plusieurs exercices d'une même épreuve les uns des
+    autres - y compris quand la seule raison de sa présence est que
+    ingestion_repairs._repair_missing_exercise_heading l'a injecté automatiquement
+    faute d'en trouver un dans le texte source (280 des 491 exercices du corpus au
+    2026-08-03, voir sa docstring). Mais dans une épreuve à exercice UNIQUE, il n'y a
+    justement rien à distinguer : le titre de la fiche et son badge "1 exercice"
+    portent déjà cette information, et "Exercice 1" affiché en tête du sujet ne fait
+    que répéter une évidence (signalé en prod sur education-civique-bepc-2008).
+
+    Recalculé à chaque lecture, jamais persisté sur Exercise.enonce_markdown /
+    enonce_intro_markdown eux-mêmes - même principe que _clean_exercise_corrige : le
+    nombre d'exercices d'une épreuve n'est définitivement connu qu'une fois TOUS ses
+    fichiers ingérés, jamais fichier par fichier au moment où
+    compile_exercise_from_questions() compile un Exercise pris isolément.
+    """
+    contenu, fin = _leading_label(text or "")
+    if not contenu or not _BARE_EXERCISE_LABEL_CONTENT_RE.match(contenu):
+        return text
+    return (text or "")[fin:].lstrip()
+
+
 def lesson_exercises_breakdown(lesson):
     """
     Liste ordonnée {numero_exercice, titre, points, enonce_intro_markdown,
@@ -864,6 +1044,7 @@ def lesson_exercises_breakdown(lesson):
     le frontend retombe alors sur content_markdown tel quel.
     """
     exercises = sorted(lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key)
+    solo = len(exercises) == 1
     a_retirer = _partie_labels_to_strip(exercises)
     groupes_par_exercice = _fallback_group_paths_if_needed(exercises)
     result = []
@@ -874,6 +1055,8 @@ def lesson_exercises_breakdown(lesson):
             enonce = enonce[len(intro) + 2 :]
         if exercise.pk in a_retirer:
             intro = _strip_leading_label(intro, a_retirer[exercise.pk])
+        if solo:
+            intro = _strip_solo_exercise_heading(intro)
         titre, points = _exercise_titre_et_points(exercise)
         groupes = exercise.groupes or groupes_par_exercice.get(exercise.pk, [])
         result.append({
@@ -913,6 +1096,7 @@ def lesson_preview_exercises(lesson):
     exercises = sorted(
         lesson.exercises.filter(statut=StatutContenu.VALIDE), key=exercise_sort_key,
     )
+    solo = len(exercises) == 1
     a_retirer = _partie_labels_to_strip(exercises)
     groupes_par_exercice = _fallback_group_paths_if_needed(exercises)
     result = []
@@ -921,6 +1105,8 @@ def lesson_preview_exercises(lesson):
         enonce_markdown = exercise.enonce_markdown
         if exercise.pk in a_retirer:
             enonce_markdown = _strip_leading_label(enonce_markdown, a_retirer[exercise.pk])
+        if solo:
+            enonce_markdown = _strip_solo_exercise_heading(enonce_markdown)
         groupes = exercise.groupes or groupes_par_exercice.get(exercise.pk, [])
         result.append({
             "numero_exercice": exercise.numero_exercice,
@@ -955,6 +1141,8 @@ def lesson_preview_markdown(lesson):
         if exercise.pk in a_retirer else exercise.enonce_markdown
         for exercise in exercises
     ]
+    if len(exercises) == 1:
+        blocs = [_strip_solo_exercise_heading(blocs[0])]
     if lesson.introduction_markdown:
         blocs.insert(0, lesson.introduction_markdown)
     return "\n\n---\n\n".join(blocs)
